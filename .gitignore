@@ -3,6 +3,8 @@
 /public/storage
 /storage/*.key
 /vendor
+/laradock
+# cd into laradock dir and push, then come back to project and push
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml
