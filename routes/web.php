@@ -32,6 +32,7 @@ Route::get('/about_us', function () { // second test (layout with blade)
 
 Route::get('/template_test', function () { // second test (layout with blade)
     return view('testTemplate');
+    // return view('templateChart');
 });
 
 Route::get('/inspire', [InspiringController::class, 'inspire']); // third test ( connect controllers )
