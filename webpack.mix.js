@@ -15,5 +15,12 @@ mix.js('resources/js/app.js', 'public/js')
     .vue()
     .sass('resources/sass/app.scss', 'public/css')
     .postCss('resources/css/app.css', 'public/css')
-    .version();
-   
+    .version()
+    .sourceMaps();
+
+mix.autoload({
+    jquery: ['$', 'window.jQuery',"jQuery","window.$","jquery","window.jquery"],
+    'popper.js/dist/umd/popper.js': ['Popper']
+}) ;
+
+

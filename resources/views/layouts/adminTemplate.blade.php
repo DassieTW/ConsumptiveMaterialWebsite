@@ -35,31 +35,31 @@
                         Pages
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('dashboard') }}">
                         <a class="sidebar-link" href="index.html">
                             <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="pages-profile.html">
                             <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="pages-sign-in.html">
                             <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Sign In</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="pages-sign-up.html">
                             <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Sign Up</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="pages-blank.html">
                             <i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>
                         </a>
@@ -69,31 +69,31 @@
                         Tools & Components
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="ui-buttons.html">
                             <i class="align-middle" data-feather="square"></i> <span class="align-middle">Buttons</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="ui-forms.html">
                             <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Forms</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="ui-cards.html">
                             <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Cards</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="ui-typography.html">
                             <i class="align-middle" data-feather="align-left"></i> <span class="align-middle">Typography</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="icons-feather.html">
                             <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Icons</span>
                         </a>
@@ -103,13 +103,13 @@
                         Plugins & Addons
                     </li>
 
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item {{ isActiveRoute('charts') }}">
                         <a class="sidebar-link" href="charts-chartjs.html">
                             <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Charts</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item {{ isActiveRoute('') }}">
                         <a class="sidebar-link" href="maps-google.html">
                             <i class="align-middle" data-feather="map"></i> <span class="align-middle">Maps</span>
                         </a>
@@ -118,12 +118,12 @@
 
                 <div class="sidebar-cta">
                     <div class="sidebar-cta-content">
-                        <strong class="d-inline-block mb-2">Upgrade to Pro</strong>
+                        <strong class="d-inline-block mb-2">Test</strong>
                         <div class="mb-3 text-sm">
-                            Are you looking for more components? Check out our premium version.
+                            test test
                         </div>
                         <div class="d-grid">
-                            <a href="upgrade-to-pro.html" class="btn btn-primary">Upgrade to Pro</a>
+                            <a href="#" class="btn btn-primary">Hello World</a>
                         </div>
                     </div>
                 </div>

@@ -30,10 +30,17 @@ Route::get('/about_us', function () { // second test (layout with blade)
     return view('about_us');
 });
 
-Route::get('/template_test', function () { // second test (layout with blade)
+Route::get('/template_test', function () {
+    return view('templateChart');
+})->name('charts');
+
+Route::get('/dashboard', function () {
     return view('testTemplate');
-    // return view('templateChart');
-});
+})->name('dashboard');
+
+Route::get('/barcode_gen', function () {
+    return view('barcode_gen_page');
+})->name('barcode_gen');
 
 Route::get('/inspire', [InspiringController::class, 'inspire']); // third test ( connect controllers )
 
