@@ -62,6 +62,40 @@ Route::get('/test2', function(){
     return $mats;
 });
 
+Route::get('member', [LoginController::class, 'index'])->name('member.index');
+
+Route::get('member/login', [LoginController::class, 'login'])->name('member.login');
+
+Route::post('member/login', [LoginController::class, 'login'])->name('member.login');
+
+Route::get('member/register', [LoginController::class, 'register'])->name('member.register');
+
+Route::post('member/register', [LoginController::class, 'register'])->name('member.register');
+
+Route::get('member/logout', [LoginController::class, 'logout'])->name('member.logout');
+
+Route::post('member/logout', [LoginController::class, 'logout'])->name('member.logout');
+
+Route::middleware('priority')->get('member/call', [PriorityController::class, 'call'])->name('member.call');
+
+Route::middleware('priority')->post('member/call', [PriorityController::class, 'call'])->name('member.call');
+
+Route::middleware('priority')->get('member/data', [PriorityController::class, 'data'])->name('member.data');
+
+Route::middleware('priority')->post('member/data', [PriorityController::class, 'data'])->name('member.data');
+
+Route::middleware('priority')->get('member/shop', [PriorityController::class, 'shop'])->name('member.shop');
+
+Route::middleware('priority')->post('member/shop', [PriorityController::class, 'shop'])->name('member.shop');
+
+Route::middleware('priority')->get('member/inwarehouse', [PriorityController::class, 'inwarehouse'])->name('member.inwarehouse');
+
+Route::middleware('priority')->post('member/inwarehouse', [PriorityController::class, 'inwarehouse'])->name('member.inwarehouse');
+
+Route::middleware('priority')->get('member/outwarehouse', [PriorityController::class, 'outwarehouse'])->name('member.outwarehouse');
+
+Route::middleware('priority')->post('member/outwarehouse', [PriorityController::class, 'outwarehouse'])->name('member.outwarehouse');
+
 Route::resource('posts', Controllers\PostController::class);
 
 Auth::routes();
