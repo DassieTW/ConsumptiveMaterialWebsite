@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\InspiringController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PriorityController;
 use App\Http\Controllers;
 use App\Models;
 use Illuminate\Database\Eloquent\Model;
