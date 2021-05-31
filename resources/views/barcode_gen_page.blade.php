@@ -26,98 +26,45 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
         <div class="col-auto ml-auto text-right mt-n1">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                    <li class="breadcrumb-item"><a href="#">AdminKit</a></li>
+                    <li class="breadcrumb-item"><a href="#">Consumables Management Website</a></li>
                     <li class="breadcrumb-item"><a href="#">Dashboards</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Analytics</li>
+                    <li class="breadcrumb-item active" aria-current="page">Barcode Generator</li>
                 </ol>
             </nav>
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-6 col-xxl-5 d-flex">
-            <div class="w-100">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-0">ISN</h5>
-                                <form class="text-center needs-validation" method="post" accept-charset="utf-8" novalidate>
-                                    <div class="row justify-content-center align-items-center">
-                                        <div class="col col-auto p-0 mb-1">
-                                            <label for="isn" class="col-form-label">料號: &nbsp;&nbsp;</label>
-                                        </div>
-                                        <div class="col col-auto p-0">
-                                            <input type="text" name="barcode1" class="form-control" id="isn" maxlength="4" style="width: 7ch; padding: 1px; border: 1px solid black" placeholder="1234" pattern="[0-9A-Za-z]{4,4}" required autofocus>
-                                            <div class="invalid-feedback p-0">
-                                                (Enter 4 digits)
-                                            </div>
-                                        </div>
-                                        <div class="col col-auto p-0">
-                                            -
-                                        </div>
-                                        <div class="col-auto p-0">
-                                            <input type="text" name="barcode2" class="form-control" maxlength="7" style="width: 10ch; padding: 1px; border: 1px solid black" placeholder="12AB345" pattern="[a-zA-Z0-9]{7,7}" required autofocus>
-                                            <div class="invalid-feedback">
-                                                (Enter 7 digits)
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row justify-content-center align-items-center">
-                                        <div class="col col-auto p-0 m-0">
-                                            <label for="isn" class="col-form-label">品名: &nbsp;&nbsp;</label>
-                                        </div>
-                                        <div class="col col-auto p-0">
-                                            <input type="text" name="pName" class="form-control" id="pName" maxlength="15" style="width: 15ch; padding: 1px; border: 1px solid black" placeholder="電動起子頭" required>
-                                            <div class="invalid-feedback p-0">
-                                                (Enter a name)
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row justify-content-center align-items-center">
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <button class="btn btn-primary col-auto" type="submit">Generate</button>
-                                    </div>
-                                </form>
-                                <!-- <div class="mb-1">
-                                    <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
-                                    <span class="text-muted">Since last week</span>
-                                </div> -->
+        <div class="col-xl-6 col-xxl-12">
+            <div class="card flex-fill w-100">
+                <div class="card-header">
+                    <div class="float-end">
+                        <form class="row g-2">
+                            <div class="col-auto">
+                                <select class="form-select form-select-sm bg-light border-0">
+                                    <option>Jan</option>
+                                    <option value="1">Feb</option>
+                                    <option value="2">Mar</option>
+                                    <option value="3">Apr</option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">Visitors</h5>
-                                <h1 class="mt-1 mb-3">14.212</h1>
-                                <div class="mb-1">
-                                    <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 5.25% </span>
-                                    <span class="text-muted">Since last week</span>
-                                </div>
+                            <div class="col-auto">
+                                <input type="text" class="form-control form-control-sm bg-light rounded-2 border-0" style="width: 100px;" placeholder="Search..">
                             </div>
-                        </div>
+                        </form>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">Earnings</h5>
-                                <h1 class="mt-1 mb-3">$21.300</h1>
-                                <div class="mb-1">
-                                    <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
-                                    <span class="text-muted">Since last week</span>
-                                </div>
+                    <h5 class="card-title mb-0">Recent Movement</h5>
+                </div>
+                <div class="card-body pt-2 pb-3">
+                    <div class="chart chart-sm">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class=""></div>
+                            </div>
+                            <div class="chartjs-size-monitor-shrink">
+                                <div class=""></div>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">Orders</h5>
-                                <h1 class="mt-1 mb-3">64</h1>
-                                <div class="mb-1">
-                                    <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -2.25% </span>
-                                    <span class="text-muted">Since last week</span>
-                                </div>
-                            </div>
-                        </div>
+                        <canvas id="chartjs-dashboard-line" style="display: block; height: 250px; width: 605px;" width="756" height="312" class="chartjs-render-monitor"></canvas>
                     </div>
                 </div>
             </div>
