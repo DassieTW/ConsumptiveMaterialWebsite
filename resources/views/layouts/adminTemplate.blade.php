@@ -18,7 +18,7 @@
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
     <script src="{{ asset('../js/app.js') }}" defer></script>
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css') . '?v=echo time();' }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('../admin/css/app.css') . '?v=echo time();' }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
@@ -144,8 +144,8 @@
                                                 </svg> <span class="align-middle">Auth</span>
                                             </a>
                                             <ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                                                <li class="sidebar-item"><a class="sidebar-link" href="pages-sign-in.html">Sign In</a></li>
-                                                <li class="sidebar-item"><a class="sidebar-link" href="pages-sign-up.html">Sign Up</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link" href="{{route('member.login')}}">Sign In</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link" href="{{route('member.register')}}">Sign Up</a></li>
                                                 <li class="sidebar-item"><a class="sidebar-link" href="pages-reset-password.html">Reset Password <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
                                                 <li class="sidebar-item"><a class="sidebar-link" href="pages-404.html">404 Page <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
                                                 <li class="sidebar-item"><a class="sidebar-link" href="pages-500.html">500 Page <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
