@@ -35,6 +35,11 @@
     <input type="submit" value="outwarehouse">
 </form>
 
+<form action="{{ route('member.change') }}" method="GET">
+    @csrf
+    <input type="submit" value="Change">
+</form>
+
 <form action="{{ route('member.logout') }}" method="POST">
     @csrf
     <input type="submit" value="Logout">

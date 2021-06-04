@@ -76,6 +76,7 @@ class LoginController extends Controller
             return view('member.login');
         }
     }
+
     public function register(Request $request)
     {
         if($request->input('username') !== null && $request->input('password') !== null)
@@ -121,6 +122,52 @@ class LoginController extends Controller
             return view('member.register');
 
         }
+    }
+
+    public function change(Request $request)
+    {
+        if (Session::has('username'))
+        {
+            if($request->input('password') !== null && $request->input('newpassword') !== null)
+            {
+                if($request->input('newpassword') === $request->input('surepassword'))
+                {
+                    $username = Session::get('username');
+                    $password = DB::table('login')->where('username', $username)->value('password');
+                    if(Hash::check($request->input('password'),$password))
+                    {
+                        DB::table('login')
+                        ->where('username', $username)
+                        ->update(['password' => 123]);
+                        $request->session()->flush();
+                        return view('member.changeok');
+                    }
+                    else
+                    {
+                        return back()->withErrors([
+                            'password' => 'Old Password is wrong! Please enter again',
+                            ]);
+                    }
+                }
+                else
+                {
+                    return back()->withErrors([
+                        'newpassword' => ' ',
+                        'surepassword' => 'Password confirmation does not match!',
+                    ]);
+                }
+            }
+            else
+            {
+                return view('member.change');
+            }
+        }
+
+        else
+        {
+            return redirect(route('member.login'));
+        }
+
     }
 
     public function logout(Request $request)

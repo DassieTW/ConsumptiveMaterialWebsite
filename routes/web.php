@@ -70,6 +70,10 @@ Route::get('member/login', [LoginController::class, 'login'])->name('member.logi
 
 Route::post('member/login', [LoginController::class, 'login'])->name('member.login');
 
+Route::get('member/change', [LoginController::class, 'change'])->name('member.change');
+
+Route::post('member/change', [LoginController::class, 'change'])->name('member.change');
+
 Route::get('member/register', [LoginController::class, 'register'])->name('member.register');
 
 Route::post('member/register', [LoginController::class, 'register'])->name('member.register');

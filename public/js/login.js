@@ -9,6 +9,19 @@ function showpassword() {
       x.type = "password";
     }
 }
+
+function showpassword1() {
+    var x = document.getElementById("newpassword");
+    if (x.type === "password")
+    {
+      x.type = "text";
+    }
+    else
+    {
+      x.type = "password";
+    }
+}
+
 function showpassword2() {
     var x = document.getElementById("surepassword");
     if (x.type === "password")
@@ -20,8 +33,7 @@ function showpassword2() {
       x.type = "password";
     }
 }
-function test() {
-    var x = document.getElementById("username");
 
-}
+
+
 
