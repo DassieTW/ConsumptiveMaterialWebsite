@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\InspiringController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PriorityController;
-use App\Http\Controllers;
+use App\Http\Controllers\BarcodeDisplayController;
 use App\Models;
 use Illuminate\Database\Eloquent\Model;
 
@@ -66,14 +66,8 @@ Route::get('/test2', function(){
     return $mats;
 });
 
-Route::get("barWebDisplay", [
-    'uses' => 'BarcodeDisplayController@drawBarcode',
-    'as' => 'barcodeImage'
-]);
 
-Route::post('barcode_gen', function () {
-    return back();
-});
+Route::post('/barcode_gen', [BarcodeDisplayController::class, 'postBack']);
 
 Route::get('member', [LoginController::class, 'index'])->name('member.index');
 //login
