@@ -11,6 +11,7 @@ use Route;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 
+
 class LoginController extends Controller
 {
     //
@@ -23,6 +24,8 @@ class LoginController extends Controller
     public function index()
     {
         //
+
+
         return view('member.index');
     }
 
@@ -75,6 +78,7 @@ class LoginController extends Controller
             return view('member.login');
         }
     }
+    //register login people
     public function register(Request $request)
     {
         if($request->input('username') !== null && $request->input('password') !== null)
@@ -121,7 +125,185 @@ class LoginController extends Controller
 
         }
     }
+    //change password
+    public function change(Request $request)
+    {
+        if (Session::has('username'))
+        {
+            if($request->input('password') !== null && $request->input('newpassword') !== null)
+            {
+                if($request->input('newpassword') === $request->input('surepassword'))
+                {
+                    $username = Session::get('username');
+                    $password = DB::table('login')->where('username', $username)->value('password');
+                    if(Hash::check($request->input('password'),$password))
+                    {
+                        DB::table('login')
+                        ->where('username', $username)
+                        ->update(['password' => Hash::make($request->input('newpassword'))]);
+                        $request->session()->flush();
+                        return view('member.changeok');
+                    }
+                    else
+                    {
+                        return back()->withErrors([
+                            'password' => 'Old Password is wrong! Please enter again',
+                            ]);
+                    }
+                }
+                else
+                {
+                    return back()->withErrors([
+                        'newpassword' => ' ',
+                        'surepassword' => 'Password confirmation does not match!',
+                    ]);
+                }
+            }
+            else
+            {
+                return view('member.change');
+            }
+        }
 
+        else
+        {
+            return redirect(route('member.login'));
+        }
+
+    }
+
+    //new people inf
+    public function new(Request $request)
+    {
+        if (Session::has('username'))
+        {
+            if($request->input('number') !== null && $request->input('name') !== null)
+            {
+                    $number = $request->input('number');
+                    $name = $request->input('name');
+                    $department = $request->input('department');
+                    $numbers = DB::table('人員信息')->pluck('工號');
+                    for($i = 0 ; $i < count($numbers) ; $i ++)
+                    {
+                        if($number == $numbers[$i])
+                        {
+                            return back()->withErrors([
+                            'number' => 'Job number is repeated , Please enter another job number',
+                            ]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    DB::insert('insert into 人員信息 (工號, 姓名 , 部門) values (?,?,?)',
+                    [$number, $name , $department]);
+
+                    return view('member.newok');
+
+            }
+            else
+            {
+                return view('member.new');
+
+            }
+        }
+        else
+        {
+            return redirect(route('member.login'));
+        }
+    }
+    //search
+    public function search(Request $request)
+    {
+        if(Session::has('username'))
+        {
+            if($request->input('number') !== null)
+            {
+
+                $number = $request->input('number');
+                $name = DB::table('人員信息')->where('工號', $number)->value('姓名');
+                $department = DB::table('人員信息')->where('工號', $number)->value('部門');
+                if($name !== NULL && $department !==NULL)
+                {
+                    Session::put('number', $number);
+                    return view('member.searchok')
+                    ->with('number' , $number)
+                    ->with('name', $name)
+                    ->with('department', $department);
+                }
+                else
+                {
+                    return back()->withErrors([
+                        'number' => 'Job number is not exist , Please enter another job number',
+                        ]);
+
+                }
+            }
+            else
+            {
+                return view('member.search');
+
+            }
+        }
+        else
+        {
+            return redirect(route('member.login'));
+        }
+    }
+
+    //change change by job number
+    public function changenumber(Request $request)
+    {
+        if (Session::has('username'))
+        {
+            if($request->input('name') !== NULL && $request->input('department') !== NULL)
+            {
+                $number = Session::get('number');
+                $name = $request->input('name');
+                $department = $request->input('department');
+                DB::table('人員信息')
+                ->where('工號', $number)
+                ->update(['姓名' => $name , '部門' => $department]);
+                $request->session()->forget('number');
+                return view('member.changenumberok');
+            }
+            else if($request->input('name') !== NULL && $request->input('department') === NULL)
+            {
+                $number = Session::get('number');
+                $name = $request->input('name');
+                DB::table('人員信息')
+                ->where('工號', $number)
+                ->update(['姓名' => $name]);
+                $request->session()->forget('number');
+                return view('member.changenumberok');
+            }
+            else if($request->input('name') === NULL && $request->input('department') !== NULL)
+            {
+                $number = Session::get('number');
+                $department = $request->input('department');
+                DB::table('人員信息')
+                ->where('工號', $number)
+                ->update(['部門' => $department]);
+                $request->session()->forget('number');
+                return view('member.changenumberok');
+            }
+            else
+            {
+                return view('member.changenumber');
+
+            }
+        }
+
+        else
+        {
+            return redirect(route('member.login'));
+        }
+
+    }
+
+
+    //logout
     public function logout(Request $request)
     {
         if (Session::has('username'))

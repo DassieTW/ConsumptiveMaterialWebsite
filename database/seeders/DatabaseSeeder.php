@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
                 PostTableSeeder::class,
                 UserTableSeeder::class,
                 ConsumptiveMaterialTableSeeder::class,
+                LoginTableSeeder::class,
             ]
         );
     }

@@ -33,7 +33,7 @@
                             <div class="text-center mt-4">
                                 <h1 class="h2">Welcome come</h1>
                                 <p class="lead">
-                                    Sign up to your account to continue
+                                    New People
                                 </p>
                             </div>
 
@@ -43,71 +43,41 @@
                                         <div class="text-center">
                                             <img src="../admin/img/avatars/avatar.jpg" alt="Charles Hall" class="img-fluid rounded-circle" width="132" height="132" />
                                         </div>
-                                        <form action="{{ route('member.register') }}" method="POST">
+                                        <form action="{{ route('member.new') }}" method="POST">
                                             @csrf
                                             <div class="mb-3">
-                                                <label class="form-label">Username</label>
-                                                <input class="form-control form-control-lg @error('username') is-invalid @enderror" type="text" id ="username" name="username" placeholder="Enter your username" required/>
-                                                @error('username')
+                                                <label class="form-label">工號</label>
+                                                <input class="form-control form-control-lg @error('number') is-invalid @enderror" type="text" id ="number" name="number" placeholder="Enter your job number" required/>
+                                                @error('number')
                                                 <span class="invalid-feedback d-block" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
 
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label">Password</label>
-                                                <input class="form-control form-control-lg @error('password') is-invalid @enderror" type="password" id = "password" name="password" placeholder="Enter your password" required/>
-                                                <input type="checkbox" onclick="showpassword()">Show Password<br>
-                                                @error('password')
-                                                <span class="invalid-feedback d-block" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label">Confirm Password</label>
-                                                <input class="form-control form-control-lg  @error('surepassword') is-invalid @enderror" type="password" id = "surepassword" name="surepassword" placeholder="Enter your password again" required/>
-                                                <input type="checkbox" onclick="showpassword2()">Show Password<br>
-                                                @error('surepassword')
-                                                <span class="invalid-feedback d-block" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">姓名</label>
-                                                <input class="form-control form-control-lg" type="text" id = "name" name="name" placeholder="Enter your name" required/>
-
-
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label">Priority</label>
-
-                                                <select class="form-control form-control-lg" id = "priority" name="priority" class = "@error('priority') is-invalid @enderror" required>
-                                                    <option>Choose your priority</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                </select>
-
+                                                <input class="form-control form-control-lg @error('name') is-invalid @enderror" type="text" id = "name" name="name" placeholder="Enter your name" required/>
+                                                @error('name')
+                                                <span class="invalid-feedback d-block" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">部門</label>
-                                                <input class="form-control form-control-lg " type="text" id = "department" name="department" placeholder="Enter your department" required>
+                                                <input class="form-control form-control-lg  @error('department') is-invalid @enderror" type="text" id = "department" name="department" placeholder="Enter your department" required/>
+                                                @error('department')
+                                                <span class="invalid-feedback d-block" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
                                             </div>
 
-
-
-
                                             <div class="text-center mt-3">
-                                                <input type = "submit" class="btn btn-lg btn-primary" value="Sign Up">
+                                                <input type = "submit" class="btn btn-lg btn-primary" value="New People">
                                                 <!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
                                             </div>
                                         </form>

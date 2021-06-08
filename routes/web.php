@@ -52,6 +52,8 @@ Route::get('/test', function(){ // cursor() : a LazyCollection implement by yiel
     });
 });
 
+
+
 Route::get('/test2', function(){
     // \Log::info('觸發 Test2'); // test
     // App::setLocale('en');
@@ -68,18 +70,41 @@ Route::get('/test2', function(){
 Route::post('/barcode_gen', [BarcodeDisplayController::class, 'postBack']);
 
 Route::get('member', [LoginController::class, 'index'])->name('member.index');
-
+//login
 Route::get('member/login', [LoginController::class, 'login'])->name('member.login');
 
 Route::post('member/login', [LoginController::class, 'login'])->name('member.login');
 
+//change password
+Route::get('member/change', [LoginController::class, 'change'])->name('member.change');
+
+Route::post('member/change', [LoginController::class, 'change'])->name('member.change');
+
+//register login people
 Route::get('member/register', [LoginController::class, 'register'])->name('member.register');
 
 Route::post('member/register', [LoginController::class, 'register'])->name('member.register');
 
+//new people information
+Route::get('member/new', [LoginController::class, 'new'])->name('member.new');
+
+Route::post('member/new', [LoginController::class, 'new'])->name('member.new');
+
+//search
+Route::get('member/search', [LoginController::class, 'search'])->name('member.search');
+
+Route::post('member/search', [LoginController::class, 'search'])->name('member.search');
+
+//change by job number
+Route::get('member/changenumber', [LoginController::class, 'changenumber'])->name('member.changenumber');
+
+Route::post('member/changenumber', [LoginController::class, 'changenumber'])->name('member.changenumber');
+
+//logout
 Route::get('member/logout', [LoginController::class, 'logout'])->name('member.logout');
 
 Route::post('member/logout', [LoginController::class, 'logout'])->name('member.logout');
+
 
 Route::middleware('priority')->get('member/call', [PriorityController::class, 'call'])->name('member.call');
 
