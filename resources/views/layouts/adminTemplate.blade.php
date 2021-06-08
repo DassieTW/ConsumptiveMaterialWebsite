@@ -18,6 +18,14 @@
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
     @yield('css')
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script>
+        if (window.history.replaceState) {
+            // java script to prvent "confirm form resubmission" dialog
+            // 避免重新整理這個頁面時跳出要你重新提交表單的對話框
+            // (避免重新提交表單)
+            window.history.replaceState(null, null, window.location.href);
+        } // if
+    </script>
 </head>
 
 <body>
@@ -510,7 +518,7 @@
                 @yield('content')
             </main>
 
-            <footer class="footer">
+            <!-- <footer class="footer">
                 <div class="container-fluid">
                     <div class="row text-muted">
                         <div class="col-6 text-start">
@@ -530,7 +538,7 @@
                         </div>
                     </div>
                 </div>
-            </footer>
+            </footer> -->
         </div>
     </div>
 
