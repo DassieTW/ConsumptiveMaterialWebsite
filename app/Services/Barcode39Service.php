@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Services;
 /**
  * Barcode39 - Code 39 Barcode Image Generator
  * 

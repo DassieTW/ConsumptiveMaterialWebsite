@@ -10,7 +10,6 @@ use Route;
 
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\LoginController;
 
 class LoginController extends Controller
 {

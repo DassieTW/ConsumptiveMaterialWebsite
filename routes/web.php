@@ -64,6 +64,15 @@ Route::get('/test2', function(){
     return $mats;
 });
 
+Route::get("barWebDisplay", [
+    'uses' => 'BarcodeDisplayController@drawBarcode',
+    'as' => 'barcodeImage'
+]);
+
+Route::post('barcode_gen', function () {
+    return back();
+});
+
 Route::get('member', [LoginController::class, 'index'])->name('member.index');
 
 Route::get('member/login', [LoginController::class, 'login'])->name('member.login');

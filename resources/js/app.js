@@ -27,8 +27,8 @@ import App from './components/ExampleComponent.vue'
 // createApp(App).mount("#app") // vue3
 
 import { Notyf } from 'notyf';
+window.Notyf = Notyf ; 
 import 'notyf/notyf.min.css'; // for React, Vue and Svelte
-
 import "../sass/app.scss";
 
 /**

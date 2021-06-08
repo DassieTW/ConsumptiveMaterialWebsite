@@ -15,10 +15,22 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
 
 @extends('layouts.adminTemplate')
 
+@section('css')
+<link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+@endsection
+
+@section('js')
+<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('/admin/js/app.js') }}"></script>
+<!-- <script src="{{ asset('js/popupNotice.js') }}"></script> -->
+<!--for notifications pop up -->
+@endsection
+
+
 @section('content')
 <div class="container-fluid p-0">
 
-    <div class="row mb-2 mb-xl-3">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
         <div class="col-auto d-none d-sm-block">
             <h3><strong>Barcode Generator</strong> Dashboard</h3>
         </div>
@@ -69,9 +81,88 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
                 </div>
             </div>
         </div>
+
+        <div class="col-xl-6 col-xxl-12">
+            <div class="card flex-fill w-100">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">產生料號條碼</h3>
+                </div>
+                <div class="card-body pt-2 pb-3">
+                    <form class="text-center needs-validation" action="{{ route('barcode_gen') }}" method="post" accept-charset="utf-8" novalidate>
+                        @csrf
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col col-auto p-0 m-0">
+                                <label for="isn" class="col-form-label">料號: &nbsp;&nbsp;</label>
+                            </div>
+                            <div class="col col-auto p-0">
+                                <input type="text" name="barcode1" class="form-control" id="isn" maxlength="4" style="width: 7ch; padding: 1px; border: 1px solid black" placeholder="1234" pattern="[0-9A-Za-z]{4,4}" required autofocus>
+                                <div class="invalid-feedback p-0">
+                                    (Enter 4 digits)
+                                </div>
+                            </div>
+                            <div class="col col-auto p-0">
+                                -
+                            </div>
+                            <div class="col-auto p-0">
+                                <input type="text" name="barcode2" class="form-control" maxlength="7" style="width: 10ch; padding: 1px; border: 1px solid black" placeholder="12AB345" pattern="[a-zA-Z0-9]{7,7}" required autofocus>
+                                <div class="invalid-feedback">
+                                    (Enter 7 digits)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col col-auto p-0 m-0">
+                                <label for="isn" class="col-form-label">品名: &nbsp;&nbsp;</label>
+                            </div>
+                            <div class="col col-auto p-0">
+                                <input type="text" name="pName" class="form-control" id="pName" maxlength="15" style="width: 15ch; padding: 1px; border: 1px solid black" placeholder="電動起子頭" required>
+                                <div class="invalid-feedback p-0">
+                                    (Enter a name)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center align-items-center">
+                            <button class="btn btn-primary col-auto" type="submit">Generate</button>
+                        </div>
+                    </form>
+                    <div class="col-auto">
+                        <?php
+                        // -------------------------------- file access version of barcode generate -------------------------------
+                        //                $oldPath = getcwd(); 
+                        //                chdir('barcodeImg');
+                        //
+                        //                $images = glob("*.bmp");
+                        //                foreach ($images as $image) {
+                        //                    echo '<img src="http://localhost/web1/barcodeImg/' . $image . '" alt="' . $image . '" />' . "<br>";
+                        //                } // foreach
+                        //
+                        //                chdir($oldPath);
+                        // ------------------------------------------------------- end --------------------------------------------------
+                        // -------------------------------- web display version of barcode generate -------------------------------
+                        if (isset($_POST['barcode1'])) {
+
+                            echo '<img src="' . 'barWebDisplay?' .
+                                'barcode1=' . $_POST['barcode1'] .
+                                '&barcode2=' . $_POST['barcode2'] .
+                                '&pName=' . $_POST['pName'] .
+                                '&isIsn=' . 'true' .
+                                '&toSess=' . 'true' .
+                                '" onerror="this.src=' . "'barWebDisplay?" .
+                                'barcode1=' . $_POST['barcode1'] .
+                                '&barcode2=' . $_POST['barcode2'] .
+                                '&pName=' . $_POST['pName'] .
+                                '&isIsn=' . 'true' .
+                                '&toSess=' . 'true' . "'"
+                                . '"/>';
+
+                            echo '<br>';
+                        }
+                        // ------------------------------------------------------- end --------------------------------------------------
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
-
-<script src="{{ asset('js/app.js') }}"></script>
-<script src="admin/js/app.js"></script>
