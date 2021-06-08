@@ -15,6 +15,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "open-smf/connection-pool": "~1.0",
         "phpoffice/phpspreadsheet": "^1.17",
         "predis/predis": "^1.1",
         "symfony/polyfill-mbstring": "^1.22",

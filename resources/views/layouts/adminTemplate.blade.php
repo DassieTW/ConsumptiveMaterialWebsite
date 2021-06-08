@@ -540,7 +540,7 @@
     <!-- <div id="vue-app">
         <example-component></example-component>
     </div> -->
-    <script src="{{ asset('/admin/js/app.js') }}"></script>
+    <script src="{{ asset('../admin/js/app.js') }}"></script>
 </body>
 
 </html>
