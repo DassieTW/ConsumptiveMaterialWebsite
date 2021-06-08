@@ -28,7 +28,7 @@ class LoginController extends Controller
 
         return view('member.index');
     }
-
+    //login
     public function login(Request $request)
     {
 
