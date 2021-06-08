@@ -15,10 +15,22 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
 
 @extends('layouts.adminTemplate')
 
+@section('css')
+<link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+@endsection
+
+@section('js')
+<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('/admin/js/app.js') }}"></script>
+<!-- <script src="{{ asset('js/popupNotice.js') }}"></script> -->
+<!--for notifications pop up -->
+@endsection
+
+
 @section('content')
 <div class="container-fluid p-0">
 
-    <div class="row mb-2 mb-xl-3">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
         <div class="col-auto d-none d-sm-block">
             <h3><strong>Barcode Generator</strong> Dashboard</h3>
         </div>
@@ -143,6 +155,3 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
     </div>
 </div>
 @endsection
-
-<script src="{{ asset('js/app.js') }}"></script>
-<script src="admin/js/app.js"></script>
