@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\BarWebDisplay;
 use Illuminate\Http\Request;
+use SebastianBergmann\Environment\Console;
 
 class BarcodeDisplayController extends Controller
 {
@@ -12,14 +13,6 @@ class BarcodeDisplayController extends Controller
     {
         $this->service = $barWebDisplay;
     } // constructor
-
-    /**
-     * draw barcode
-     */
-    public function drawBarcode(Request $request)
-    {
-        return $this->service->drawBarcode($request);
-    }
 
     /**
      * go back when post
@@ -43,7 +36,8 @@ class BarcodeDisplayController extends Controller
         ];
 
         $this->validate($request, $rules, $customMessages);
-
-        return back();
+        $img = $this->service->drawBarcode($request) ;
+        return redirect()->back()->with('imgg', $img);
+        
     } // postBack
 } // end of class

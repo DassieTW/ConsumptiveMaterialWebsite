@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Services;
+
 /**
  * Barcode39 - Code 39 Barcode Image Generator
  * 
@@ -12,7 +14,8 @@ namespace App\Services;
  * @license http://www.gnu.org/licenses/gpl.html GPL License
  * This is free software and is distributed WITHOUT ANY WARRANTY
  */
-final class Barcode39 {
+final class Barcode39
+{
 
     /**
      * Code 39 format 2 specifications
@@ -160,21 +163,25 @@ final class Barcode39 {
      *
      * @param string $code
      */
-    public function setUseSession($saveInSess = 'false') {
+    public function setUseSession($saveInSess = 'false')
+    {
         $this->saveInSession = $saveInSess;
     }
 
-    public function setMaterialName($in_Name = null) {
+    public function setMaterialName($in_Name = null)
+    {
         $this->MaterialName = (string) $in_Name;
     }
 
-    public function setIsItISN($in_bool = 'false') {
+    public function setIsItISN($in_bool = 'false')
+    {
         $this->isIsn = $in_bool;
     }
 
-// setMaterialName
+    // setMaterialName
 
-    public function __construct($code = null) {
+    public function __construct($code = null)
+    {
         // format and code
         $code = (string) strtoupper($code);
 
@@ -195,9 +202,10 @@ final class Barcode39 {
      * Draw barcode (and save as file if filename set)
      *
      * @param string $filename (optional)
-     * @return bool
+     * @return $img GdImage|false an image resource identifier on success, false on errors.
      */
-    function draw($filename = null) {
+    function draw($filename = null)
+    {
         // check if GB library functions installed
         if (!function_exists("imagepng")) {
             return false;
@@ -229,7 +237,7 @@ final class Barcode39 {
             // check for valid code
             if (isset($this->_codes_39[ord($v)])) {
                 // valid code add code 39, also add separator between characters if not first character
-                $code = ( $i ? self::f2w : null ) . $this->_codes_39[ord($v)];
+                $code = ($i ? self::f2w : null) . $this->_codes_39[ord($v)];
 
                 // check for valid code 39 code
                 if ($code) {
@@ -256,8 +264,10 @@ final class Barcode39 {
                             // check for valid bar params
                             if ($w && $fill) {
                                 // add bar coordinates and params
-                                $bars[] = array($pos, $this->barcode_padding, $pos - 1 + $w,
-                                    $this->barcode_height - $this->barcode_padding - 1, $fill);
+                                $bars[] = array(
+                                    $pos, $this->barcode_padding, $pos - 1 + $w,
+                                    $this->barcode_height - $this->barcode_padding - 1, $fill
+                                );
 
                                 // move position pointer
                                 $pos += $w;
@@ -320,8 +330,14 @@ final class Barcode39 {
         if ($this->barcode_text) {
             // set barcode text box
             $barcode_text_h = 10 + $this->barcode_padding;
-            imagefilledrectangle($img, $this->barcode_padding, $this->barcode_height - $this->barcode_padding - $barcode_text_h,
-                    $bc_w - $this->barcode_padding, $this->barcode_height - $this->barcode_padding, $_fff);
+            imagefilledrectangle(
+                $img,
+                $this->barcode_padding,
+                $this->barcode_height - $this->barcode_padding - $barcode_text_h,
+                $bc_w - $this->barcode_padding,
+                $this->barcode_height - $this->barcode_padding,
+                $_fff
+            );
             // set barcode text font params
             $font_size = $this->barcode_text_size;
             $font_w = imagefontwidth($font_size);
@@ -333,7 +349,7 @@ final class Barcode39 {
 
             // set text position
             $txt_w = $font_w * strlen($barcode_string);
-            $txt_w2 = $bbox[2] - $bbox[0] ; // lower right corner, X position - lower left corner, X position 得到字串長度(pixel)
+            $txt_w2 = $bbox[2] - $bbox[0]; // lower right corner, X position - lower left corner, X position 得到字串長度(pixel)
             $pos_center = ceil((($bc_w - $this->barcode_padding) - $txt_w) / 2);
             $pos_center2 = ceil((($bc_w - $this->barcode_padding) - $txt_w2) / 2);
 
@@ -341,54 +357,68 @@ final class Barcode39 {
             $txt_color = imagecolorallocate($img, 0, 255, 255);
 
             // draw barcode text
-            imagestring($img, $font_size, $pos_center, $this->barcode_height - $barcode_text_h - 2,
-                    $barcode_string, $_000);
+            imagestring(
+                $img,
+                $font_size,
+                $pos_center,
+                $this->barcode_height - $barcode_text_h - 2,
+                $barcode_string,
+                $_000
+            );
         } // if using barcodce text
 
         if ($this->isIsn === "false") { // check if writing second line of words
             // do nothing 
         } // if
         else {
-            $font = dirname(__FILE__) . '\public\css\fonts\msTrueBlack.ttf'; // 微軟正黑體檔案路徑
+            $font = public_path() . '\css\fonts\msTrueBlack.ttf'; // 微軟正黑體檔案路徑
             $black = imagecolorallocate($img, 0, 0, 0);
-            imagettftext($img, 10, 0, $pos_center2, $this->barcode_height - $barcode_text_h + 23,
-                    $black, $font, $this->MaterialName);
+            imagettftext(
+                $img,
+                10,
+                0,
+                $pos_center2,
+                $this->barcode_height - $barcode_text_h + 23,
+                $black,
+                $font,
+                $this->MaterialName
+            );
         } // else 
         //
         //
         // check if writing image
         if ($filename) {
-            $save = getcwd() . "\\barcodeImg\\" . $filename . ".imagepng";
-            //                       NOTE! is the system using "/" or "\" ????
-            chmod(getcwd(), 0777);
-            imagepng($img, $save);
+            // $save = "\\public\storage\barcodeImg\\" . $filename . ".imagepng";
+            // //                       NOTE! is the system using "/" or "\" ????
+            // chmod(getcwd(), 0777);
+            // imagepng($img, $save);
         } else { // display image
-            header("Content-type: image/imagepng");
-            imagepng($img);
+            // header("Content-type: image/imagepng");
+            // imagepng($img);
         } // if else
 
         if (strlen($this->barcode2) == 0) {
             $namee = $this->barcode1;
         } else {
             $namee = $this->barcode1 . "-" . $this->barcode2;
-        }
+        } // if else 
 
-        imagedestroy($img);
+        // imagedestroy($img);
 
         session_start();
 
         if ($this->saveInSession === 'true') {
-            if ( $this->isIsn === "true" && isset($_SESSION['isnCount'])) {
+            if ($this->isIsn === "true" && isset($_SESSION['isnCount'])) {
                 $a = $_SESSION['isnCount'];
                 $a = $a + 1;
                 $_SESSION['isnCount'] = $a;
                 $_SESSION['isnArray'][] = $namee;
                 $_SESSION['isnName'][] = $this->MaterialName;
-            } else if ( $this->isIsn === "true" && !isset($_SESSION['isnCount'])) {
+            } else if ($this->isIsn === "true" && !isset($_SESSION['isnCount'])) {
                 $_SESSION['isnCount'] = 0;
                 $_SESSION['isnArray'][] = $namee;
                 $_SESSION['isnName'][] = $this->MaterialName;
-            } else if ( $this->isIsn === "false" && isset($_SESSION['locCount'])) {
+            } else if ($this->isIsn === "false" && isset($_SESSION['locCount'])) {
                 $a = $_SESSION['locCount'];
                 $a = $a + 1;
                 $_SESSION['locCount'] = $a;
@@ -399,7 +429,8 @@ final class Barcode39 {
             } // if else
         } // if
         // valid barcode
-        return true;
-    }
+        // return true;
+        return $img;
+    } // draw()
 
 }
