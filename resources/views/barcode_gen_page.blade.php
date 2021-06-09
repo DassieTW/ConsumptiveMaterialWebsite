@@ -92,14 +92,18 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
                                 @enderror
                                 <input type="hidden" name="isIsn" id="isIsn" value="true">
                                 <input type="hidden" name="toSess" id="toSess" value="true">
+                                <input type="hidden" name="fName" id="fName" value="{!! \Session::getId() !!}">
                             </div>
                         </div>
                         <div class="row justify-content-center align-items-center">
                             <button class="btn btn-primary col-auto" type="submit">Generate</button>
                         </div>
                     </form>
-                    @if (\Session::has('imgg'))
-                    <div class="col-auto">{!! \Image::make(\Session::get('imgg')) !!}</div>
+                    @if (\Session::has('imgg') && \Session::get('imgg') === true)
+                    <div class="col-auto">
+                        <img src="{{asset('storage/barcodeImg/' . \Session::getId() . '.png')}}">
+                        <?php \File::delete(asset('storage/barcodeImg/').\Session::getId() . '.png'); ?>
+                    </div>
                     @endif
                 </div>
             </div>

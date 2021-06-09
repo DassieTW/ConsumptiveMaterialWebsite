@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
+
 /**
  * Barcode39 - Code 39 Barcode Image Generator
  * 
@@ -204,7 +206,7 @@ final class Barcode39
      * @param string $filename (optional)
      * @return $img GdImage|false an image resource identifier on success, false on errors.
      */
-    function draw($filename = null)
+    function draw(Request $request, $filename = null)
     {
         // check if GB library functions installed
         if (!function_exists("imagepng")) {
@@ -342,7 +344,9 @@ final class Barcode39
             $font_size = $this->barcode_text_size;
             $font_w = imagefontwidth($font_size);
 
-            $fontfile = dirname(__FILE__) . '../public/admin/css/fonts/msTrueBlack.ttf'; // 微軟正黑體檔案路徑
+            $fontfile = public_path() . '/admin/fonts/msTrueBlack.ttf'; // 微軟正黑體檔案路徑
+            // echo $fontfile ; // test
+            // exit(0); // test
             $bbox = imagettfbbox(10, 0, $fontfile, $this->MaterialName);  // 拿到中文字的pixel座標陣列
 
             $font_h = imagefontheight($font_size);
@@ -371,7 +375,7 @@ final class Barcode39
             // do nothing 
         } // if
         else {
-            $font = public_path() . '\css\fonts\msTrueBlack.ttf'; // 微軟正黑體檔案路徑
+            $font = public_path() . '/admin/fonts/msTrueBlack.ttf'; // 微軟正黑體檔案路徑
             $black = imagecolorallocate($img, 0, 0, 0);
             imagettftext(
                 $img,
@@ -388,13 +392,19 @@ final class Barcode39
         //
         // check if writing image
         if ($filename) {
-            // $save = "\\public\storage\barcodeImg\\" . $filename . ".imagepng";
-            // //                       NOTE! is the system using "/" or "\" ????
-            // chmod(getcwd(), 0777);
-            // imagepng($img, $save);
+            $save = storage_path('barcodeImg/') . $filename . ".png";
+            //                       NOTE! is the system using "/" or "\" ????
+            // chmod($save,0777);
+            $resource = \Image::make($img)->encode('png');
+            \Log::debug("Storing image");
+            if ($resource !== false) {
+                \Storage::put("public/barcodeImg/{$filename}.png", (string) $resource);
+            } else {
+                \Log::error("Failed to get resource from string");
+            } // if else
         } else { // display image
-            // header("Content-type: image/imagepng");
-            // imagepng($img);
+            header("Content-type: image/imagepng");
+            imagepng($img);
         } // if else
 
         if (strlen($this->barcode2) == 0) {
@@ -429,8 +439,7 @@ final class Barcode39
             } // if else
         } // if
         // valid barcode
-        // return true;
-        return $img;
+        return true;
     } // draw()
 
 }
