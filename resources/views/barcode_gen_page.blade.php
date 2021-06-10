@@ -90,65 +90,21 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
+                                <input type="hidden" name="isIsn" id="isIsn" value="true">
+                                <input type="hidden" name="toSess" id="toSess" value="true">
+                                <input type="hidden" name="fName" id="fName" value="{!! \Session::getId() !!}">
                             </div>
                         </div>
                         <div class="row justify-content-center align-items-center">
                             <button class="btn btn-primary col-auto" type="submit">Generate</button>
                         </div>
                     </form>
-
-                    <!-- @if ( isset($_POST['barcode1']))
+                    @if (\Session::has('imgg') && \Session::get('imgg') === true)
                     <div class="col-auto">
-                        <img src="{{ route('barWebDisplay').'?'.
-                                'barcode1=' . $_POST['barcode1'] .
-                                '&barcode2=' . $_POST['barcode2'] .
-                                '&pName=' . $_POST['pName'] .
-                                '&isIsn=' . 'true' .
-                                '&toSess=' . 'true'}}" onerror='this.src="{{ route('barWebDisplay').'?'.
-                                'barcode1=' . $_POST['barcode1'] .
-                                '&barcode2=' . $_POST['barcode2'] .
-                                '&pName=' . $_POST['pName'] .
-                                '&isIsn=' . 'true' .
-                                '&toSess=' . 'true'}}"'>
+                        <img src="{{asset('storage/barcodeImg/' . \Session::getId() . '.png')}}">
+                        <?php \File::delete(asset('storage/barcodeImg/').\Session::getId() . '.png'); ?>
                     </div>
-                    @endif -->
-
-                    <div class="col-auto">
-                        <?php
-                        // -------------------------------- file access version of barcode generate -------------------------------
-                        //                $oldPath = getcwd(); 
-                        //                chdir('barcodeImg');
-                        //
-                        //                $images = glob("*.bmp");
-                        //                foreach ($images as $image) {
-                        //                    echo '<img src="http://localhost/web1/barcodeImg/' . $image . '" alt="' . $image . '" />' . "<br>";
-                        //                } // foreach
-                        //
-                        //                chdir($oldPath);
-                        // ------------------------------------------------------- end --------------------------------------------------
-                        // -------------------------------- web display version of barcode generate -------------------------------
-                        
-                        if (isset($_POST['barcode1'])) {
-                            echo $_POST['barcode1'] ;
-                            echo '<img src="' . '{{ route(\'barWebDisplay\')?' .
-                                'barcode1=' . $_POST['barcode1'] .
-                                '&barcode2=' . $_POST['barcode2'] .
-                                '&pName=' . $_POST['pName'] .
-                                '&isIsn=' . 'true' .
-                                '&toSess=' . 'true}}' .
-                                '" onerror="this.src=' . "'{{ route(\'barWebDisplay\')?" .
-                                'barcode1=' . $_POST['barcode1'] .
-                                '&barcode2=' . $_POST['barcode2'] .
-                                '&pName=' . $_POST['pName'] .
-                                '&isIsn=' . 'true' .
-                                '&toSess=' . 'true' . "}}'"
-                                . '"/>';
-
-                            echo '<br>';
-                        }
-                        // ------------------------------------------------------- end --------------------------------------------------
-                        ?>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>

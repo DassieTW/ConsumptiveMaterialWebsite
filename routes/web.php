@@ -52,7 +52,9 @@ Route::get('/test', function(){ // cursor() : a LazyCollection implement by yiel
     });
 });
 
-
+Route::get('/phpinfo', function(){
+    phpinfo();
+});
 
 Route::get('/test2', function(){
     // \Log::info('觸發 Test2'); // test
@@ -65,7 +67,6 @@ Route::get('/test2', function(){
     $mats = Models\ConsumptiveMaterial::first();
     return $mats;
 });
-
 
 Route::post('/barcode_gen', [BarcodeDisplayController::class, 'postBack']);
 
