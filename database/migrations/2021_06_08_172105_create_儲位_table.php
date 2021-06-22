@@ -14,7 +14,9 @@ class Create儲位Table extends Migration
     public function up()
     {
         Schema::create('儲位', function (Blueprint $table) {
-            $table->string('儲位',30)->primary();
+            $table->string('儲存位置',30)->primary();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

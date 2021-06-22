@@ -17,10 +17,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
     <script src="{{ asset('../js/app.js') }}" defer></script>
-
     <script src="{{ asset('../js/login.js') }}" defer></script>
-
     <link href="../admin/css/app.css" rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -43,7 +42,7 @@
                                         <div class="text-center">
                                             <img src="../admin/img/avatars/avatar.jpg" alt="Charles Hall" class="img-fluid rounded-circle" width="132" height="132" />
                                         </div>
-                                        <form action="{{ route('member.login') }}" method="POST">
+                                        <form>
                                             @csrf
                                             <div class="mb-3">
                                                 <label class="form-label">Username</label>
@@ -67,8 +66,8 @@
                                                 @enderror
 
                                                 <small>
-                <a href="index.html">Forgot password?</a>
-            </small>
+                                                    <a href="#">Forgot password?</a>
+                                                </small>
                                             </div>
                                             <div class="text-center mt-3">
                                                 <input type = "submit" class="btn btn-lg btn-primary" value="Login">
