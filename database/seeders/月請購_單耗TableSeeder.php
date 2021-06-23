@@ -1,0 +1,43 @@
+<?php
+
+namespace Database\Seeders;
+use App\Models\月請購_單耗;
+use Illuminate\Database\Seeder;
+
+class 月請購_單耗TableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    protected $table = "月請購_單耗";
+
+    public function run()
+    {
+        //
+        $month = new 月請購_單耗;
+        $month->料號 = '4003-07R0000';
+        $month->客戶別 = 'Fendi';
+        $month->機種 = 'Vulcan';
+        $month->製程 = 'FAE';
+        $month->單耗 = 5;
+        $month->save();
+        //
+        $month = new 月請購_單耗;
+        $month->料號 = '4608-020K000';
+        $month->客戶別 = 'Cisco';
+        $month->機種 = 'EZ1K';
+        $month->製程 = 'FATP';
+        $month->單耗 = 0.0015;
+        $month->save();
+        //
+        $month = new 月請購_單耗;
+        $month->料號 = '4152-01ER000';
+        $month->客戶別 = 'Fendi';
+        $month->機種 = 'Atlas';
+        $month->製程 = 'LCON';
+        $month->單耗 = 0.003;
+        $month->save();
+    }
+}

@@ -6,6 +6,7 @@ use App\Http\Controllers\InspiringController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\BarcodeDisplayController;
+use App\Http\Controllers\BasicInformationController;
 use App\Models;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,6 +57,7 @@ Route::get('/phpinfo', function(){
     phpinfo();
 });
 
+
 Route::get('/test2', function(){
     // \Log::info('觸發 Test2'); // test
     // App::setLocale('en');
@@ -71,6 +73,35 @@ Route::get('/test2', function(){
 Route::post('/barcode_gen', [BarcodeDisplayController::class, 'postBack']);
 
 Route::get('member', [LoginController::class, 'index'])->name('member.index');
+
+Route::get('basic', [BasicInformationController::class, 'index'])->name('basic.index');
+
+
+//basic information change or delete
+Route::get('basic/inf', [BasicInformationController::class, 'changeordelete'])->name('basic.changeordelete');
+
+Route::post('basic/inf', [BasicInformationController::class, 'changeordelete'])->name('basic.changeordelete');
+
+//new material inff
+Route::get('basic/new', [BasicInformationController::class, 'new'])->name('basic.new');
+
+Route::post('basic/new', [BasicInformationController::class, 'new'])->name('basic.new');
+
+//modify material inf
+Route::get('basic/modify', [BasicInformationController::class, 'modify'])->name('basic.modify');
+
+Route::post('basic/modify', [BasicInformationController::class, 'modify'])->name('basic.modify');
+
+//search material number
+Route::get('basic/search/material', [BasicInformationController::class, 'searchmaterial'])->name('basic.searchmaterial');
+
+Route::post('basic/search/material', [BasicInformationController::class, 'searchmaterial'])->name('basic.searchmaterial');
+
+//search position
+Route::get('basic/search/position', [BasicInformationController::class, 'searchposition'])->name('basic.searchposition');
+
+Route::post('basic/search/position', [BasicInformationController::class, 'searchposition'])->name('basic.searchposition');
+
 //login
 Route::get('member/login', [LoginController::class, 'login'])->name('member.login');
 
@@ -91,7 +122,7 @@ Route::get('member/new', [LoginController::class, 'new'])->name('member.new');
 
 Route::post('member/new', [LoginController::class, 'new'])->name('member.new');
 
-//search
+//search people
 Route::get('member/search', [LoginController::class, 'search'])->name('member.search');
 
 Route::post('member/search', [LoginController::class, 'search'])->name('member.search');

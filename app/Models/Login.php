@@ -13,7 +13,7 @@ class Login extends Model
 
     protected $keyType = 'string';
 
-    //return 0
+    //PK no return 0
     public $incrementing = false;
 
     protected $fillable = [

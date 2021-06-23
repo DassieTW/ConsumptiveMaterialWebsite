@@ -24,9 +24,7 @@ class LoginController extends Controller
     public function index()
     {
         //
-
-
-        return view('member.index');
+        return view('member.infor');
     }
     //login
     public function login(Request $request)
@@ -213,7 +211,7 @@ class LoginController extends Controller
             return redirect(route('member.login'));
         }
     }
-    //search
+    //search people
     public function search(Request $request)
     {
         if(Session::has('username'))
@@ -257,44 +255,30 @@ class LoginController extends Controller
     {
         if (Session::has('username'))
         {
-            if($request->input('name') !== NULL && $request->input('department') !== NULL)
+            if($request->input('number') !== NULL)
             {
-                $number = Session::get('number');
-                $name = $request->input('name');
-                $department = $request->input('department');
-                DB::table('人員信息')
-                ->where('工號', $number)
-                ->update(['姓名' => $name , '部門' => $department]);
-                $request->session()->forget('number');
-                return view('member.changenumberok');
-            }
-            else if($request->input('name') !== NULL && $request->input('department') === NULL)
-            {
-                $number = Session::get('number');
-                $name = $request->input('name');
-                DB::table('人員信息')
-                ->where('工號', $number)
-                ->update(['姓名' => $name]);
-                $request->session()->forget('number');
-                return view('member.changenumberok');
-            }
-            else if($request->input('name') === NULL && $request->input('department') !== NULL)
-            {
-                $number = Session::get('number');
-                $department = $request->input('department');
-                DB::table('人員信息')
-                ->where('工號', $number)
-                ->update(['部門' => $department]);
-                $request->session()->forget('number');
-                return view('member.changenumberok');
+                $number = $request->input('number');
+                $name = DB::table('人員信息')->where('工號', $number)->value('姓名');
+                $department = DB::table('人員信息')->where('工號', $number)->value('部門');
+                if($name !== NULL && $department !==NULL)
+                {
+                    return view('basic.modify')
+                    ->with('number' , $number)
+                    ->with('name', $name)
+                    ->with('department', $department);
+                }
+                else
+                {
+                    return back()->withErrors([
+                        'number' => 'Job number is not exist , Please enter another Job number',
+                        ]);
+                }
             }
             else
             {
-                return view('member.changenumber');
-
+                return view('member.search');
             }
         }
-
         else
         {
             return redirect(route('member.login'));

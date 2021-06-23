@@ -43,7 +43,7 @@
                                         <div class="text-center">
                                             <img src="../admin/img/avatars/avatar.jpg" alt="Charles Hall" class="img-fluid rounded-circle" width="132" height="132" />
                                         </div>
-                                        <form action="{{ route('member.change') }}" method="POST">
+                                        <form>
                                             @csrf
                                             <?php
                                                 $username = Session::get('username');
