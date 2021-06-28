@@ -102,7 +102,7 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
                     @if (\Session::has('imgg') && \Session::get('imgg') === true)
                     <div class="col-auto">
                         <img src="{{asset('storage/barcodeImg/' . \Session::getId() . '.png')}}">
-                        <?php \File::delete(asset('storage/barcodeImg/').\Session::getId() . '.png'); ?>
+                        <!-- I need to delete file in js -->
                     </div>
                     @endif
                 </div>
