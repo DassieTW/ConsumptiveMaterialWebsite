@@ -149,7 +149,7 @@ function UpdateTempField() {
             '</span><br><span>' +
             isnName[ty] +
             '</span></td><td class="col col-auto align-items-center px-0 m-0">' +
-            '<input type="number" min="0" id="' + isnArray[ty] + '__' + isnName[ty] + '" class="printNum" name="printNum" style="width: 8ch;"value="' +
+            '<input inputmode="numeric" type="number" min="0" id="' + isnArray[ty] + '__' + isnName[ty] + '" class="printNum" name="printNum" style="width: 8ch;"value="' +
             isnSepCount[ty] + '">'
             + '</td></tr>'
         ));
@@ -168,7 +168,7 @@ function UpdateTempField() {
             locArray[ty] +
             '</span>' +
             '</td><td class="col col-auto align-items-center px-0 m-0">' +
-            '<input type="number" min="0" id="' + locArray[ty] + '" class="printNum2" name="printNum2" style="width: 8ch;"value="' +
+            '<input inputmode="numeric" type="number" min="0" id="' + locArray[ty] + '" class="printNum2" name="printNum2" style="width: 8ch;"value="' +
             locSepCount[ty] + '">'
             + '</td></tr>'
         ));
@@ -370,7 +370,7 @@ function CallPhpSpreadSheetToGetData(fileName) {
             else {
                 // Lang = new Lang();
                 console.log(err); // test
-                notyf.success({
+                notyf.error({
                     message: Lang.get('barcodeGenerator.temp_save_error') + err.status,
                     duration: 0,   //miliseconds, use 0 for infinite duration
                     ripple: true,
@@ -670,7 +670,7 @@ $(document).ready(function () {
                     // Lang = new Lang();
                     console.log(err.status); // test
                 } // else
-            }
+            } // error
         }); // end of ajax
     }); // on locForm Submit
 
@@ -796,7 +796,7 @@ $(document).ready(function () {
 
 
 
-    UpdateTempField(); // to it once on page load to make sure it shows correct info
+    UpdateTempField(); // do it once on page load to make sure it shows correct info
 
     $('#printBtn').on('click', function (e) {
         e.preventDefault();

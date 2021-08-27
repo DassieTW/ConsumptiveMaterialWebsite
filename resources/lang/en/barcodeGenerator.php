@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | bBrcode Generator Language Lines
+    | Barcode Generator Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are used during authentication for various
