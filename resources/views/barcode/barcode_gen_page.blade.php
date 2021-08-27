@@ -16,7 +16,7 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
 @extends('layouts.adminTemplate')
 
 @section('css')
-
+<link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
@@ -199,6 +199,7 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
                         <h3 class="card-title">{!! __('barcodeGenerator.Temporary_Storage_Zone') !!}</h3>
                     </div>
                     <form class="text-center needs-validation" method="post" novalidate>
+                        @csrf
                         <table class="table align-items-center">
                             <tbody>
                                 <tr id="tableHead" class="table-primary align-items-center">
