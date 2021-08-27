@@ -1,0 +1,92 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | All The Wordings on Outbound Page Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used during authentication for various
+    | messages that we need to display to the user. You are free to modify
+    | these language lines according to your application's requirements.
+    |
+    */
+
+    'pick' => 'Pick Material',
+    'picklist' => 'Pick Material List',
+    'pickrecord' => 'Pick Material Record',
+    'back' => 'Back Material',
+    'backlist' => 'Back Material List',
+    'backrecord' => 'Back Material Record',
+
+    'client' =>'Clients',
+    'machine' =>'Machines',
+    'process' =>'Processes',
+    'line' =>'Lines',
+    'usereason' =>'Usereasons',
+    'enterclient' =>'Please select client',
+    'entermachine' =>'Please select machine',
+    'enterprocess' =>'Please select process',
+    'enterline' =>'Please select line',
+    'enterusereason' =>'Please select usereason',
+    'inputusereason' =>'Please enter usereason',
+    'isn' =>'ISN',
+    'enterisn' =>'Please enter the isn',
+    'isnlength' =>'ISN length is not 12',
+    'noisn' =>'ISN does not exist',
+    'nostock' =>'The Client & Isn do not have stock,can not bill material requisition',
+    'submit' =>'Submit',
+    'return' =>'return',
+    'pName' =>'MATL.',
+    'format' =>'Specification',
+    'unit' =>'Unit',
+    'senddep' =>'Sending Department',
+    'pickamount' =>'Pre-pick amount',
+    'mark' =>'Remarks',
+    'enteramount' =>'Please enter the amount',
+    'loc' =>'Location',
+    'nowstock' =>'Nowstock',
+    'enterpicklist'=>'Please select picking list',
+    'entersenddep' =>'Please select the sending department',
+    'searchpicklist' =>'Search picklist',
+    'deletepicklist' =>'Delete picklist',
+    'begindate' =>'begin date',
+    'enddate' =>'end date',
+    'search' =>'Search',
+    'realpickamount' =>'Real-pick amount',
+    'diffreason' =>'Real use difference reasons',
+    'pickpeople' =>'Pick people',
+    'pickpeoplenum' =>'Pick people job number',
+    'sendpeople' =>'Send people',
+    'sendpeoplenum' =>'Send people job number',
+    'picklistnum' =>'Picklist number',
+    'opentime' =>'Open list time',
+    'outboundtime' =>'outbound time',
+    'download' =>'download',
+    'enterloc' =>'Please select Location',
+    'enterdiffreason'=>'Please input the reason',
+    'entersendpeople' =>'Please select sending people',
+    'enterpickpeople' =>'Please select picking people',
+    'nostock1'=>'The ISN & Location do not have stock,can not outbound',
+    'backreason' =>'Backreasons',
+    'backamount' =>'Pre-back amount',
+    'realbackamount' =>'Real-back amount',
+    'backdiffreason' =>'Real back difference reasons',
+    'receivepeople' =>'Receive people',
+    'receivepeoplenum' =>'Receive people job number',
+    'enterreceivepeople' =>'Please select receivie people',
+    'enterbackpeople' =>'Please select back people',
+    'backpeople' =>'Back people',
+    'backpeoplenum' =>'Back people job number',
+    'backlistnum' =>'Backlist number',
+    'inboundtime' =>'Inbound time',
+    'status' =>'Status',
+    'enterbackreason' =>'Please select backreason',
+    'inputbackreason' =>'Please enter backreason',
+    'enterbacklist'=>'Please select backing list',
+    'searchbacklist' =>'Search backlist',
+    'deletebacklist' =>'Delete backlist',
+    'enterstatus' =>'Please select the status',
+
+];

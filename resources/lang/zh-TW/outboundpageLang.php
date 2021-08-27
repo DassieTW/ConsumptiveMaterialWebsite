@@ -1,0 +1,91 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | All The Wordings on Outbound Page Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used during authentication for various
+    | messages that we need to display to the user. You are free to modify
+    | these language lines according to your application's requirements.
+    |
+    */
+
+    'pick' => '領料',
+    'picklist' => '領料單',
+    'pickrecord' => '領料記錄表',
+    'back' => '退料',
+    'backlist' => '退料單',
+    'backrecord' => '退料記錄表',
+    'client' => '客戶別',
+    'machine' => '機種',
+    'process' => '製程',
+    'line' => '線別',
+    'usereason' => '領用原因',
+    'enterclient' => '請選擇客戶別',
+    'entermachine' => '請選擇機種',
+    'enterprocess' => '請選擇製程',
+    'enterline' => '請選擇線別',
+    'enterusereason' => '請選擇領用原因',
+    'inputusereason' => '請輸入領用原因',
+    'isn' => '料號',
+    'enterisn' => '請輸入料號',
+    'isnlength' => '料號長度不為12',
+    'noisn' => '料號不存在',
+    'nostock' => '該客戶&料號沒有庫存，無法開領料單。',
+    'submit' => '提交',
+    'return' => '返回',
+    'pName' => '品名',
+    'format' => '規格',
+    'unit' => '單位',
+    'senddep' => '發料部門',
+    'pickamount' => '預領數量',
+    'mark' => '備註',
+    'enteramount' => '請輸入數量',
+    'loc' => '儲位',
+    'nowstock' => '現有庫存',
+    'enterpicklist'=> '請選擇領料單',
+    'entersenddep' => '請選擇發料部門',
+    'searchpicklist' => '搜尋領料單',
+    'deletepicklist' => '刪除領料單',
+    'begindate' => '起始日期',
+    'enddate' => '結束日期',
+    'search' => '查詢',
+    'realpickamount' => '實際領用數量',
+    'diffreason' => '實領差異原因',
+    'pickpeople' => '領料人員',
+    'pickpeoplenum' => '領料人員工號',
+    'sendpeople' => '發料人員',
+    'sendpeoplenum' => '發料人員工號',
+    'picklistnum' => '領料單號',
+    'opentime' => '開單時間',
+    'outboundtime' => '出庫時間',
+    'download' => '下載',
+    'enterloc'  =>'請選擇儲位',
+    'enterdiffreason'=> '請輸入差異原因',
+    'entersendpeople' =>'請選擇發料人員',
+    'enterpickpeople' =>'請選擇領料人員',
+    'nostock1'=> '該料號&儲位沒有庫存，無法出庫。',
+    'backreason' => '退回原因',
+    'backamount' => '預退數量',
+    'realbackamount' => '實際退回數量',
+    'backdiffreason' => '實退差異原因',
+    'receivepeople' => '收料人員',
+    'receivepeoplenum' => '收料人員工號',
+    'enterreceivepeople' => '請選擇收料人員',
+    'enterbackpeople' => '請選擇退料人員',
+    'backpeople' => '退料人員',
+    'backpeoplenum' => '退料人員工號',
+    'backlistnum' => '退料單號',
+    'inboundtime' => '入庫時間',
+    'status' => '功能狀況',
+    'enterbackreason' => '請選擇退回原因',
+    'inputbackreason' => '請輸入退回原因',
+    'enterbacklist'=> '請選擇退料單',
+    'searchbacklist' => '搜尋退料單',
+    'deletebacklist' => '刪除退料單',
+    'enterstatus' => '請選擇功能狀況',
+
+];

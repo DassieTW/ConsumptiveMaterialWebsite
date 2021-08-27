@@ -1,0 +1,58 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | All The Wordings on Login Page Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used during authentication for various
+    | messages that we need to display to the user. You are free to modify
+    | these language lines according to your application's requirements.
+    |
+    */
+
+    'username' => '帳號',
+    'password' => '密碼',
+    'username_placeholder' => '請輸入帳號',
+    'password_placeholder' => '請輸入密碼',
+    'home' => '主頁',
+    'welcome' => '歡迎',
+    'welcome_msg' => '請登入帳戶以繼續使用功能',
+    'login_btn' => '登入',
+    'settings' => '設定',
+    'home' => '首頁',
+    'register' => '用戶註冊',
+    'surepassword' => '確認密碼',
+    'enterpassword' => '請再次輸入密碼',
+    'name' => '姓名',
+    'entername' => '請輸入姓名',
+    'enterpriority' => '請選擇權限',
+    'priority' => '權限',
+    'dep' => '部門',
+    'enterdep' => '請輸入部門',
+    'signup' => '註冊',
+    'oldpass' => '舊密碼',
+    'enteroldpass' => '請輸入舊密碼',
+    'newpass' => '新密碼',
+    'enternewpass' => '請輸入新密碼',
+    'change' => '更新',
+    'return' => '返回',
+    'errorpassword2' => '密碼並不相符',
+    'errorpassword' => '舊密碼輸入錯誤',
+    'upload' => '批量上傳',
+    'plz_upload' => '請上傳Excel檔',
+    'exampleExcel' => '範例格式下載',
+    'jobnumber' => '工號',
+    'jobrepeat' => '工號重複',
+    'joblength' => '工號長度不為9',
+    'new' => '新增',
+    'loginsearch' => '登入帳號查詢',
+    'enterlogin' => '請輸入登入帳號',
+    'search' => '查詢',
+    'delete' => '刪除',
+    'jobsearch' => '工號查詢',
+    'enterjobsearch' => '請輸入工號',
+    'addtodatabase' => '新增至資料庫',
+];

@@ -1,0 +1,59 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // $this->call(UsersTableSeeder::class);
+        $this->call(
+            [
+                ConsumptiveMaterialTableSeeder::class,
+                LoginTableSeeder::class,
+                人員信息TableSeeder::class,
+                廠別TableSeeder::class,
+                客戶別TableSeeder::class,
+                機種TableSeeder::class,
+                製程TableSeeder::class,
+                線別TableSeeder::class,
+                領用部門TableSeeder::class,
+                領用原因TableSeeder::class,
+                入庫原因TableSeeder::class,
+                儲位TableSeeder::class,
+                發料部門TableSeeder::class,
+                AuthorizationManagementTableSeeder::class,
+                InboundTableSeeder::class,
+                InventoryTableSeeder::class,
+                MPSTableSeeder::class,
+                OutboundTableSeeder::class,
+                O庫MaterialTableSeeder::class,
+                月請購_站位TableSeeder::class,
+                月請購_單耗TableSeeder::class,
+                出庫退料TableSeeder::class,
+                在途量TableSeeder::class,
+                非月請購TableSeeder::class,
+                DB_ListTableSeeder::class,
+                O庫不良品InventoryTableSeeder::class,
+                O庫出庫退料TableSeeder::class,
+                O庫InventoryTableSeeder::class,
+                不良品InventoryTableSeeder::class,
+                不良品TableSeeder::class,
+                退回原因TableSeeder::class,
+                O庫InboundTableSeeder::class,
+                O庫OutboundTableSeeder::class,
+                O庫TableSeeder::class,
+                請購單TableSeeder::class,
+                Checking_inventoryTableSeeder::class,
+
+            ]
+        );
+    }
+}
