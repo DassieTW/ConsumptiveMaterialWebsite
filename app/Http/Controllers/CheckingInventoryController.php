@@ -57,17 +57,17 @@ class CheckingInventoryController extends Controller
     public function updateChecking(Request $request)
     {
         $rules = [
-            'texBox' => ['required'],
+            'checkk' => ['required', 'regex:/^(\+|-)?\d+$/'],
         ];
 
         $this->validate($request, $rules);
-        $fetchedData = $this->service->fetchInventCheckRecord($request);
+        $updateDone = $this->service->updateInventCheckRecord($request);
 
-        if (count($fetchedData) === 0) { // return 420 if the search result length is 0
-            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+        if (!$updateDone) { // return 420 if the search result length is 0
+            return \Response::json(['messgae' => 'Update Failed !'], 420/* Status code here default is 200 ok*/);
         } // if no results are found
         else {
-            return \Response::json([ 'data' => $fetchedData ]/* Status code here default is 200 ok*/);
+            return \Response::json([ 'messgae' => 'Update Success !' ]/* Status code here default is 200 ok*/);
         } // else
 
     } // updateChecking

@@ -30,6 +30,7 @@ return [
     'shortage' => '盤虧',
     'exact' => '盤正確',
     'submit' => '送出',
+    'edit' => '修改',
     'this' => '此',
     'has' => '還有',
     'unchecked' => '筆未盤',

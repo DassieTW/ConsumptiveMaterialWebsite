@@ -30,6 +30,7 @@ return [
     'shortage' => 'Shortage',
     'exact' => 'Exact',
     'submit' => 'Submit',
+    'edit' => 'Edit',
     'this' => 'This',
     'has' => 'has',
     'unchecked' => 'not yet checked !',
