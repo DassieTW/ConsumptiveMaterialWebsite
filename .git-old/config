@@ -1,9 +1,0 @@
-[core]
-	repositoryformatversion = 0
-	filemode = true
-	bare = false
-	logallrefupdates = true
-[branch "develop"]
-[remote "origin"]
-	url = https://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@github.com/VinTheMan/ConsumptiveMaterialWebsite.git
-	fetch = +refs/heads/*:refs/remotes/origin/*
