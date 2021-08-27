@@ -3,12 +3,20 @@
 
 <head>
     <meta charset="utf-8">
+<<<<<<< HEAD
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>盤點網站</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+=======
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+>>>>>>> 0827tony
 
     <!-- Styles -->
     <style>
@@ -396,6 +404,7 @@
             font-family: 'Nunito', sans-serif;
         }
     </style>
+<<<<<<< HEAD
 </head>
 
 <body class="antialiased">
@@ -418,11 +427,58 @@
             <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
                 <p style="font-size: 3rem;">
                     盤點管理網站
+=======
+
+    <title>{{ __('templateWords.websiteName')}}</title>
+</head>
+
+<body class="antialiased">
+    <div
+        class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
+
+        <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+            @if (Auth::check())
+            <a href="{{ route('member.index') }}"
+                class="text-lg text-gray-700 underline">{{ __('welcomePageLang.menu')}}</a>
+            @else
+            <a href="{{ url('/member/login') }}"
+                class="text-lg text-gray-700 underline">{{ __('welcomePageLang.login_btn')}}</a>
+            @endif
+            <br>
+            <div class="dropdown">
+                <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown"
+                    data-bs-auto-close="outside" data-bs-display="static" aria-expanded="false">
+                    <i class="align-middle mr-1" data-feather="book-open"></i>
+                </a>
+
+                <a class="text-lg text-gray-700 underline dropdown-toggle align-middle d-none d-sm-inline-block"
+                    href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
+                    aria-expanded="false">
+                    {{ __('templateWords.language')}}</a>
+
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
+                        English</a>
+                    <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-TW') }}">
+                        繁體中文</a>
+                    <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-CN') }}">
+                        简体中文</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="flex text-gray-900 dark:text-white justify-center pt-8 sm:pt-0">
+                <p style="font-size: 2rem;">
+                    {{ __('welcomePageLang.header')}}
+>>>>>>> 0827tony
                 </p>
             </div>
 
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <div class="grid grid-cols-1 md:grid-cols-2">
+<<<<<<< HEAD
                     <div class="p-6">
                         <div class="flex items-center">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
@@ -434,10 +490,33 @@
                         <div class="ml-12">
                             <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                 Laravel has wonderful, thorough documentation covering every aspect of the framework. Whether you are new to the framework or have previous experience with Laravel, we recommend reading all of the documentation from beginning to end.
+=======
+
+                    <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
+                        <div class="flex items-center">
+                            <svg fill="currentColor" class="w-8 h-8 text-gray-500" viewBox="0 0 16 16"
+                                class="w-8 h-8 text-gray-500">
+                                <path fill-rule="evenodd"
+                                    d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                                <path
+                                    d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                                <path
+                                    d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                            </svg>
+                            <div class="ml-4 text-xl leading-7 font-semibold">
+                                <a href="{{ url('/checking') }}" class="underline text-gray-900 dark:text-white">盤點管理</a>
+                            </div>
+                        </div>
+                        <div class="ml-12">
+                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-md">
+                                清查與盤點耗材在各儲位之數量，
+                                <br>查詢盤點結果與紀錄。
+>>>>>>> 0827tony
                             </div>
                         </div>
                     </div>
 
+<<<<<<< HEAD
                     <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
                         <div class="flex items-center">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
@@ -450,10 +529,31 @@
                         <div class="ml-12">
                             <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                 Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process.
+=======
+                    <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
+                        <div class="flex items-center">
+                            <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
+                                class="w-8 h-8 text-gray-500">
+                                <path
+                                    d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5zM3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                            </svg>
+                            <div class="ml-4 text-xl leading-7 font-semibold">
+                                <a href="{{ url('/barcode') }}"
+                                    class="underline text-gray-900 dark:text-white">條碼生成</a>
+                            </div>
+                        </div>
+
+                        <div class="ml-12">
+                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-md">
+                                單筆產生料號/儲位條碼，或批量生成條碼，
+                                <br>結果可存至PDF印出，
+                                <br>亦可由資料庫取得料號與儲位條碼一次性生成。
+>>>>>>> 0827tony
                             </div>
                         </div>
                     </div>
 
+<<<<<<< HEAD
                     <div class="p-6 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
@@ -465,10 +565,33 @@
                         <div class="ml-12">
                             <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                 Laravel News is a community driven portal and newsletter aggregating all of the latest and most important news in the Laravel ecosystem, including new package releases and tutorials.
+=======
+                    <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-l">
+                        <div class="flex items-center">
+                            <svg width="16" height="16" fill="currentColor" class="w-8 h-8 text-gray-500"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z" />
+                                <path
+                                    d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                                <path
+                                    d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                            </svg>
+                            <div class="ml-4 text-xl leading-7 font-semibold">
+                                <a href="{{ url('/member') }}" class="underline text-gray-900 dark:text-white">耗材管理</a>
+                            </div>
+                        </div>
+
+                        <div class="ml-12">
+                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-md">
+                                包含基礎資料、月請購、出入庫、
+                                <br>報警系統、O庫等功能。
+>>>>>>> 0827tony
                             </div>
                         </div>
                     </div>
 
+<<<<<<< HEAD
                     <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
                         <div class="flex items-center">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
@@ -480,6 +603,27 @@
                         <div class="ml-12">
                             <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                 Laravel's robust library of first-party tools and libraries, such as <a href="https://forge.laravel.com" class="underline">Forge</a>, <a href="https://vapor.laravel.com" class="underline">Vapor</a>, <a href="https://nova.laravel.com" class="underline">Nova</a>, and <a href="https://envoyer.io" class="underline">Envoyer</a> help you take your projects to the next level. Pair them with powerful open source libraries like <a href="https://laravel.com/docs/billing" class="underline">Cashier</a>, <a href="https://laravel.com/docs/dusk" class="underline">Dusk</a>, <a href="https://laravel.com/docs/broadcasting" class="underline">Echo</a>, <a href="https://laravel.com/docs/horizon" class="underline">Horizon</a>, <a href="https://laravel.com/docs/sanctum" class="underline">Sanctum</a>, <a href="https://laravel.com/docs/telescope" class="underline">Telescope</a>, and more.
+=======
+                    <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-l">
+                        <div class="flex items-center">
+                            <svg width="16" height="16" fill="currentColor" class="w-8 h-8 text-gray-500"
+                                viewBox="0 0 16 16">
+                                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                <path fill-rule="evenodd"
+                                    d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
+                                <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                            </svg>
+                            <div class="ml-4 text-xl leading-7 font-semibold">
+                                <a href="{{ url('/member') }}" class="underline text-gray-900 dark:text-white">用戶管理</a>
+                            </div>
+                        </div>
+
+                        <div class="ml-12">
+                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-md">
+                                包含人員訊息新增/查詢/修改、
+                                <br>用戶訊息新增/查詢/修改/刪除、
+                                <br>以及密碼修改。
+>>>>>>> 0827tony
                             </div>
                         </div>
                     </div>
@@ -487,32 +631,67 @@
             </div>
 
             <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
+<<<<<<< HEAD
                 <div class="text-center text-sm text-gray-500 sm:text-left">
                     <div class="flex items-center">
                         <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="-mt-px w-5 h-5 text-gray-400">
                             <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+=======
+                {{-- <div class="text-center text-sm text-gray-500 sm:text-left">
+                    <div class="flex items-center">
+                        <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            viewBox="0 0 24 24" stroke="currentColor" class="-mt-px w-5 h-5 text-gray-400">
+                            <path
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+>>>>>>> 0827tony
                         </svg>
 
                         <a href="https://laravel.bigcartel.com" class="ml-1 underline">
                             Shop
                         </a>
 
+<<<<<<< HEAD
                         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="ml-4 -mt-px w-5 h-5 text-gray-400">
                             <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+=======
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" viewBox="0 0 24 24" class="ml-4 -mt-px w-5 h-5 text-gray-400">
+                            <path
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                            </path>
+>>>>>>> 0827tony
                         </svg>
 
                         <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline">
                             Sponsor
                         </a>
                     </div>
+<<<<<<< HEAD
                 </div>
 
                 <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+=======
+                </div> --}}
+
+                <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0" style="display:none;">
+                    {{-- for checking laravel and php VERSION --}}
+>>>>>>> 0827tony
                     Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                 </div>
             </div>
         </div>
     </div>
+<<<<<<< HEAD
 </body>
 
 </html>
+=======
+
+    <script src="{{ asset('/js/app.js') }}"></script>
+    <script src="{{ asset('/admin/js/app.js') }}"></script>
+    <script src="{{ asset('/messages.js') }}"></script>
+</body>
+
+</html>
+>>>>>>> 0827tony

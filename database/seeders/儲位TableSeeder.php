@@ -31,5 +31,16 @@ class 儲位TableSeeder extends Seeder
         $position = new 儲位;
         $position->儲存位置 = 'Mcaca-01';
         $position->save();
+<<<<<<< HEAD
+=======
+        //
+        $position = new 儲位;
+        $position->儲存位置 = '7-A019';
+        $position->save();
+        //
+        $position = new 儲位;
+        $position->儲存位置 = '1-2';
+        $position->save();
+>>>>>>> 0827tony
     }
 }

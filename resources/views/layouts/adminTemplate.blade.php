@@ -10,12 +10,24 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<<<<<<< HEAD
     <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
     <meta name="author" content="AdminKit">
     <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
+=======
+    {{-- <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"> --}}
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . time() }}">
+>>>>>>> 0827tony
     @yield('css')
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script>
@@ -40,12 +52,24 @@
                         <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                             <div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;">
                                 <div class="simplebar-content" style="padding: 0px;">
+<<<<<<< HEAD
                                     <a class="sidebar-brand" href="index.html">
                                         <span class="sidebar-brand-text align-middle">
                                             AdminKit
                                             <sup><small class="badge bg-primary text-uppercase">Pro</small></sup>
                                         </span>
                                         <svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" color="#FFFFFF" style="margin-left: -3px">
+=======
+                                    <a class="sidebar-brand" href="#">
+                                        <span class="sidebar-brand-text align-middle">
+                                            {!! __('templateWords.websiteName') !!}
+                                            {{-- <sup><small class="badge bg-primary text-uppercase">Pro</small></sup> --}}
+                                        </span>
+                                        <svg class="sidebar-brand-icon align-middle" width="32px" height="32px"
+                                            viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
+                                            stroke-linecap="square" stroke-linejoin="miter" color="#FFFFFF"
+                                            style="margin-left: -3px">
+>>>>>>> 0827tony
                                             <path d="M12 4L20 8.00004L12 12L4 8.00004L12 4Z"></path>
                                             <path d="M20 12L12 16L4 12"></path>
                                             <path d="M20 16L12 20L4 16"></path>
@@ -54,6 +78,7 @@
 
 
                                     <ul class="sidebar-nav">
+<<<<<<< HEAD
                                         <li class="sidebar-header">
                                             Pages
                                         </li>
@@ -164,10 +189,418 @@
                                         <li class="sidebar-item">
                                             <a data-bs-target="#ui" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase align-middle">
+=======
+                                        {{-- <li class="sidebar-header">
+                                            Pages
+                                        </li> --}}
+                                        <li class="sidebar-item {{ isActiveRoute(['none']) }}">
+                                            <a class="sidebar-link" href="#">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-sliders align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z" />
+                                                </svg>
+                                                <span class="align-middle">{!! __('templateWords.dashboard') !!}</span>
+                                                {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                            </a>
+                                        </li>
+
+                                        <li class="sidebar-item {{ isActiveRoute(['basic/', 'basic.index']) }}">
+                                            <a data-bs-target="#basicInfo" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-info-circle align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                    <path
+                                                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                                </svg> <span class="align-middle">{!! __('templateWords.basicInfo')
+                                                    !!}</span>
+                                            </a>
+                                            <ul id="basicInfo" class="sidebar-dropdown list-unstyled collapse"
+                                                data-bs-parent="#sidebar" style="">
+                                                <li class="sidebar-item {{ isActiveRoute(['basic.index','basic/uploadbasic','basic/inf']) }}">
+                                                    <a class="sidebar-link" href="{{url('basic')}}">
+                                                        {!! __('basicInfoLang.basicInfo') !!}</a></li>
+                                                <li class="sidebar-item {{ isActiveRoute(['basic/new']) }}"><a
+                                                        class="sidebar-link" href="{{url('basic/new')}}">
+                                                        {!! __('basicInfoLang.newMats') !!}</a></li>
+                                                <li class="sidebar-item {{ isActiveRoute(['basic/material']) }}"><a
+                                                        class="sidebar-link" href="{{url('basic/material')}}">
+                                                        {!! __('basicInfoLang.matsInfo') !!}</a></li>
+
+                                            </ul>
+                                        </li>
+
+                                        <li class="sidebar-item {{ isActiveRoute(['barcode/', 'barcode.index']) }}">
+                                            <a data-bs-target="#barcodePages" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-upc align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                                </svg>
+                                                <span class="align-middle">{!! __('templateWords.barcode_gen')
+                                                    !!}</span>
+                                            </a>
+                                            <ul id="barcodePages" class="sidebar-dropdown list-unstyled collapse"
+                                                data-bs-parent="#sidebar" style="">
+                                                <li class="sidebar-item {{ isActiveRoute(['barcode.index']) }}">
+                                                    <a class="sidebar-link" href="{{url('barcode')}}">
+                                                        {!! __('templateWords.barcode_generator') !!}</a></li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['barcode/gen_isn_fromDB']) }}">
+                                                    <a class="sidebar-link" href="{{url('barcode/gen_isn_fromDB')}}">
+                                                        {!! __('templateWords.locBarcode') !!}</a></li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['barcode/gen_loc_fromDB']) }}">
+                                                    <a class="sidebar-link" href="{{url('barcode/gen_loc_fromDB')}}">
+                                                        {!! __('templateWords.isnBarcode') !!}</a></li>
+                                            </ul>
+                                        </li>
+
+
+
+
+                                        <li class="sidebar-item {{ isActiveRoute(['inbound/']) }}">
+                                            <a data-bs-target="#inbound" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-inboxes-fill align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M4.98 1a.5.5 0 0 0-.39.188L1.54 5H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0A.5.5 0 0 1 10 5h4.46l-3.05-3.812A.5.5 0 0 0 11.02 1H4.98zM3.81.563A1.5 1.5 0 0 1 4.98 0h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 10H1.883A1.5 1.5 0 0 1 .394 8.686l-.39-3.124a.5.5 0 0 1 .106-.374L3.81.563zM.125 11.17A.5.5 0 0 1 .5 11H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0 .5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 16H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .121-.393z" />
+                                                </svg>
+                                                <span class="align-middle">{!! __('templateWords.inbound') !!}</span>
+                                            </a>
+                                            <ul id="inbound" class="sidebar-dropdown list-unstyled collapse"
+                                                data-bs-parent="#sidebar" style="">
+                                                <li class="sidebar-item {{ isActiveRoute(['inbound/add']) }}">
+                                                    <a class="sidebar-link" href="{{route('inbound.add')}}">
+                                                        {!! __('inboundpageLang.new') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['inbound.search']) }}">
+                                                    <a class="sidebar-link" href="{{route('inbound.search')}}">
+                                                        {!! __('inboundpageLang.search') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['inbound/searchstock']) }}">
+                                                    <a class="sidebar-link" href="{{route('inbound.searchstock')}}">
+                                                    {!! __('inboundpageLang.searchstock') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['inbound/positionchange']) }}">
+                                                    <a class="sidebar-link" href="{{route('inbound.positionchange')}}">
+                                                    {!! __('inboundpageLang.locationchange') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['inbound/upload']) }}">
+                                                    <a class="sidebar-link" href="{{route('inbound.upload')}}">
+                                                        {!! __('inboundpageLang.stockupload') !!}
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+
+                                        <li class="sidebar-item {{ isActiveRoute(['outbound/']) }}">
+                                            <a data-bs-target="#outbound" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-inboxes align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M4.98 1a.5.5 0 0 0-.39.188L1.54 5H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0A.5.5 0 0 1 10 5h4.46l-3.05-3.812A.5.5 0 0 0 11.02 1H4.98zm9.954 5H10.45a2.5 2.5 0 0 1-4.9 0H1.066l.32 2.562A.5.5 0 0 0 1.884 9h12.234a.5.5 0 0 0 .496-.438L14.933 6zM3.809.563A1.5 1.5 0 0 1 4.981 0h6.038a1.5 1.5 0 0 1 1.172.563l3.7 4.625a.5.5 0 0 1 .105.374l-.39 3.124A1.5 1.5 0 0 1 14.117 10H1.883A1.5 1.5 0 0 1 .394 8.686l-.39-3.124a.5.5 0 0 1 .106-.374L3.81.563zM.125 11.17A.5.5 0 0 1 .5 11H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0 .5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 16H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .121-.393zm.941.83.32 2.562a.5.5 0 0 0 .497.438h12.234a.5.5 0 0 0 .496-.438l.32-2.562H10.45a2.5 2.5 0 0 1-4.9 0H1.066z" />
+                                                </svg>
+                                                <span class="align-middle">{!! __('templateWords.outbound') !!}</span>
+                                                {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                            </a>
+                                            <ul id="outbound" class="sidebar-dropdown list-unstyled collapse"
+                                                data-bs-parent="#sidebar" style="">
+                                                <li class="sidebar-item {{ isActiveRoute(['outbound.pick']) }}">
+                                                    <a class="sidebar-link" href="{{route('outbound.pick')}}">
+                                                        {!! __('outboundpageLang.pick') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['outbound/picklist']) }}">
+                                                    <a class="sidebar-link" href="{{route('outbound.picklistpage')}}">
+                                                        {!! __('outboundpageLang.picklist') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['outbound/pickrecord']) }}">
+                                                    <a class="sidebar-link" href="{{route('outbound.pickrecord')}}">
+                                                    {!! __('outboundpageLang.pickrecord') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['outbound.back']) }}">
+                                                    <a class="sidebar-link" href="{{route('outbound.back')}}">
+                                                    {!! __('outboundpageLang.back') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['outbound/backlist']) }}">
+                                                    <a class="sidebar-link" href="{{route('outbound.backlistpage')}}">
+                                                        {!! __('outboundpageLang.backlist') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['outbound/backrecord']) }}">
+                                                    <a class="sidebar-link" href="{{route('outbound.backrecord')}}">
+                                                        {!! __('outboundpageLang.backrecord') !!}
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+                                        </li>
+
+                                        <li class="sidebar-item {{ isActiveRoute(['month/']) }}">
+                                            <a data-bs-target="#monthly" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-cart2 align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
+                                                </svg>
+                                                <span class="align-middle">{!! __('templateWords.monthly') !!}</span>
+                                                {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                            </a>
+                                            <ul id="monthly" class="sidebar-dropdown list-unstyled collapse"
+                                                data-bs-parent="#sidebar" style="">
+                                                <li class="sidebar-item {{ isActiveRoute(['month/consumeadd','month/consumenewok']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.consumeadd')}}">
+                                                        {!! __('monthlyPRpageLang.isnConsumeAdd') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['month.consume','month/consumesearch']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.consume')}}">
+                                                        {!! __('monthlyPRpageLang.isnConsumeUpdate') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['month/standadd']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.standadd')}}">
+                                                        {!! __('monthlyPRpageLang.standAdd') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['month.stand','month/standsearch']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.stand')}}">
+                                                        {!! __('monthlyPRpageLang.standUpdate') !!}
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['month/importnotmonth', 'month/uploadnotmonth','month/notmonthinf']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.importnotmonth')}}">
+                                                        {!! __('monthlyPRpageLang.importNonMonthlyData') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['month/importmonth','month/uploadmonth','month/monthinf']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.importmonth')}}">
+                                                        {!! __('monthlyPRpageLang.importMonthlyData') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['month/buylist']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.buylist')}}">
+                                                        {!! __('monthlyPRpageLang.PR') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['month/srm']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.srm')}}">
+                                                        {!! __('monthlyPRpageLang.SRM') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['month/sxb']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.sxb')}}">
+                                                        {!! __('monthlyPRpageLang.SXB_search') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['month/transit']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.transit')}}">
+                                                        {!! __('monthlyPRpageLang.on_the_way_search') !!}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+
+                                        <li class="sidebar-item {{ isActiveRoute(['obound/']) }}">
+                                            <a data-bs-target="#obound" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                    class="bi bi-box-seam" viewBox="0 0 16 16">
+                                                    <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                                                </svg>
+                                                <span class="align-middle">{!! __('templateWords.obound') !!}</span>
+                                                {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                            </a>
+                                            <ul id="obound" class="sidebar-dropdown list-unstyled collapse"
+                                                data-bs-parent="#sidebar" style="">
+                                                <li class="sidebar-item {{ isActiveRoute(['obound/new' , 'obound/uploadmaterial']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.new')}}">
+                                                        {!! __('oboundpageLang.newMats') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound.material']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.material')}}">
+                                                        {!! __('oboundpageLang.matsInfo') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound.inbound']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.inbound')}}">
+                                                        {!! __('oboundpageLang.inbound') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound/inboundsearch']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.inboundsearch')}}">
+                                                        {!! __('oboundpageLang.inboundsearch') !!}
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['obound.upload']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.upload')}}">
+                                                        {!! __('oboundpageLang.stockupload') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound/searchstock']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.searchstock')}}">
+                                                        {!! __('oboundpageLang.searchstock') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound.pick']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.pick')}}">
+                                                        {!! __('oboundpageLang.pick') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound/picklist']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.picklistpage')}}">
+                                                        {!! __('oboundpageLang.picklist') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound/pickrecord']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.pickrecord')}}">
+                                                        {!! __('oboundpageLang.pickrecord') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound.back']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.back')}}">
+                                                        {!! __('oboundpageLang.back') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound/backlist']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.backlistpage')}}">
+                                                        {!! __('oboundpageLang.backlist') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['obound/backrecord']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.backrecord')}}">
+                                                        {!! __('oboundpageLang.backrecord') !!}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="sidebar-item {{ isActiveRoute(['call/']) }}">
+                                            <a href="#call" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                                                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
+                                                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
+                                                  </svg>
+                                                <span class="align-middle">{!! __('templateWords.callsys') !!}</span>
+                                            </a>
+                                            <ul id="call" class="sidebar-dropdown list-unstyled collapse "
+                                                data-bs-parent="#sidebar">
+                                                <li class="sidebar-item {{ isActiveRoute(['call/safe']) }}">
+                                                    <a class="sidebar-link" href="{{route('call.safe')}}">
+                                                        {!! __('callpageLang.safe') !!}
+                                                    </a>
+                                                </li>
+
+                                                <li class="sidebar-item {{ isActiveRoute(['call/day']) }}">
+                                                    <a class="sidebar-link" href="{{route('call.day')}}">
+                                                        {!! __('callpageLang.day') !!}
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+
+                                        <li class="sidebar-item {{ isActiveRoute(['checking/']) }}">
+                                            <a class="sidebar-link" href="{{route('checking.index')}}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-clipboard-check align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                                                    <path
+                                                        d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                                                    <path
+                                                        d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                                                </svg>
+                                                <span class="align-middle">{!! __('templateWords.checkIvent') !!}</span>
+                                                {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                            </a>
+                                        </li>
+
+                                        <li class="sidebar-item {{ isActiveRoute(['member/', 'member.index']) }}">
+                                            <a href="#auth" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-people align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+                                                </svg>
+                                                <span class="align-middle">{!! __('templateWords.userManage') !!}</span>
+                                            </a>
+                                            <ul id="auth" class="sidebar-dropdown list-unstyled collapse "
+                                                data-bs-parent="#sidebar">
+                                                @can('create', \Auth::user() )
+                                                <li class="sidebar-item {{ isActiveRoute(['member/register']) }}">
+                                                    <a class="sidebar-link" href="{{route('member.register')}}">
+                                                        {!! __('templateWords.newUser') !!}</a>
+                                                </li>
+                                                @endcan
+                                                <li class="sidebar-item {{ isActiveRoute(['member/change']) }}">
+                                                    <a class="sidebar-link" href="{{route('member.change')}}">
+                                                        {!! __('templateWords.changePass') !!}
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                                    </a></li>
+                                                <li class="sidebar-item {{ isActiveRoute(['member/new']) }}"><a
+                                                        class="sidebar-link" href="{{route('member.new')}}">
+                                                        {!! __('templateWords.newPInfo') !!}
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                                    </a></li>
+                                                <li class="sidebar-item {{ isActiveRoute(['member/number']) }}">
+                                                    <a class="sidebar-link" href="{{route('member.number')}}">
+                                                        {!! __('templateWords.PInfo') !!}
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                                    </a></li>
+                                                <li class="sidebar-item {{ isActiveRoute(['member/username']) }}">
+                                                    <a class="sidebar-link" href="{{route('member.username')}}">
+                                                        {!! __('templateWords.UserInfo') !!}
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                                    </a></li>
+                                            </ul>
+                                        </li>
+
+                                        {{-- <li class="sidebar-header">
+                                            Components
+                                        </li> --}}
+
+                                        {{-- <li class="sidebar-item">
+                                            <a data-bs-target="#ui" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-briefcase align-middle me-2">
+>>>>>>> 0827tony
                                                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                                                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                                                 </svg> <span class="align-middle">UI Elements</span>
                                             </a>
+<<<<<<< HEAD
                                             <ul id="ui" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                                                 <li class="sidebar-item"><a class="sidebar-link" href="ui-alerts.html">Alerts</a></li>
                                                 <li class="sidebar-item"><a class="sidebar-link" href="ui-buttons.html">Buttons</a></li>
@@ -183,19 +616,72 @@
                                         <li class="sidebar-item">
                                             <a data-bs-target="#forms" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle align-middle">
+=======
+                                            <ul id="ui" class="sidebar-dropdown list-unstyled collapse "
+                                                data-bs-parent="#sidebar">
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="ui-alerts.html">Alerts</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="ui-buttons.html">Buttons</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="ui-cards.html">Cards</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="ui-general.html">General</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="ui-grid.html">Grid</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="ui-modals.html">Modals</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="ui-offcanvas.html">Offcanvas <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="ui-tabs.html">Tabs <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="ui-typography.html">Typography</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="sidebar-item">
+                                            <a data-bs-target="#forms" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-check-circle align-middle me-2">
+>>>>>>> 0827tony
                                                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                                 </svg> <span class="align-middle">Forms</span>
                                             </a>
+<<<<<<< HEAD
                                             <ul id="forms" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                                                 <li class="sidebar-item"><a class="sidebar-link" href="forms-basic-inputs.html">Basic Inputs</a></li>
                                                 <li class="sidebar-item"><a class="sidebar-link" href="forms-layouts.html">Form Layouts <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
                                                 <li class="sidebar-item"><a class="sidebar-link" href="forms-input-groups.html">Input Groups <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
+=======
+                                            <ul id="forms" class="sidebar-dropdown list-unstyled collapse "
+                                                data-bs-parent="#sidebar">
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="forms-basic-inputs.html">Basic Inputs</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="forms-layouts.html">Form Layouts <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="forms-input-groups.html">Input Groups <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+>>>>>>> 0827tony
                                             </ul>
                                         </li>
                                         <li class="sidebar-item">
                                             <a class="sidebar-link" href="tables-bootstrap.html">
+<<<<<<< HEAD
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list align-middle">
+=======
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-list align-middle me-2">
+>>>>>>> 0827tony
                                                     <line x1="8" y1="6" x2="21" y2="6"></line>
                                                     <line x1="8" y1="12" x2="21" y2="12"></line>
                                                     <line x1="8" y1="18" x2="21" y2="18"></line>
@@ -204,6 +690,7 @@
                                                     <line x1="3" y1="18" x2="3.01" y2="18"></line>
                                                 </svg> <span class="align-middle">Tables</span>
                                             </a>
+<<<<<<< HEAD
                                         </li>
 
                                         <li class="sidebar-header">
@@ -225,6 +712,45 @@
                                         <li class="sidebar-item">
                                             <a data-bs-target="#datatables" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list align-middle">
+=======
+                                        </li> --}}
+
+                                        {{-- <li class="sidebar-header">
+                                            Plugins &amp; Addons
+                                        </li> --}}
+                                        {{-- <li class="sidebar-item">
+                                            <a data-bs-target="#form-plugins" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-check-square align-middle me-2">
+                                                    <polyline points="9 11 12 14 22 4"></polyline>
+                                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11">
+                                                    </path>
+                                                </svg> <span class="align-middle">Form Plugins</span>
+                                            </a>
+                                            <ul id="form-plugins" class="sidebar-dropdown list-unstyled collapse "
+                                                data-bs-parent="#sidebar">
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="forms-advanced-inputs.html">Advanced Inputs <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="forms-editors.html">Editors <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="forms-validation.html">Validation <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                            </ul>
+                                        </li> --}}
+                                        {{-- <li class="sidebar-item">
+                                            <a data-bs-target="#datatables" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-list align-middle me-2">
+>>>>>>> 0827tony
                                                     <line x1="8" y1="6" x2="21" y2="6"></line>
                                                     <line x1="8" y1="12" x2="21" y2="12"></line>
                                                     <line x1="8" y1="18" x2="21" y2="18"></line>
@@ -233,6 +759,7 @@
                                                     <line x1="3" y1="18" x2="3.01" y2="18"></line>
                                                 </svg> <span class="align-middle">DataTables</span>
                                             </a>
+<<<<<<< HEAD
                                             <ul id="datatables" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                                                 <li class="sidebar-item"><a class="sidebar-link" href="tables-datatables-responsive.html">Responsive Table <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
                                                 <li class="sidebar-item"><a class="sidebar-link" href="tables-datatables-buttons.html">Table with Buttons <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
@@ -245,11 +772,43 @@
                                         <li class="sidebar-item">
                                             <a data-bs-target="#charts" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2 align-middle">
+=======
+                                            <ul id="datatables" class="sidebar-dropdown list-unstyled collapse "
+                                                data-bs-parent="#sidebar">
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="tables-datatables-responsive.html">Responsive Table <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="tables-datatables-buttons.html">Table with Buttons <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="tables-datatables-column-search.html">Column Search <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="tables-datatables-fixed-header.html">Fixed Header <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="tables-datatables-multi.html">Multi Selection <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="tables-datatables-ajax.html">Ajax Sourced Data <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                            </ul>
+                                        </li> --}}
+                                        {{-- <li class="sidebar-item">
+                                            <a data-bs-target="#charts" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-bar-chart-2 align-middle me-2">
+>>>>>>> 0827tony
                                                     <line x1="18" y1="20" x2="18" y2="10"></line>
                                                     <line x1="12" y1="20" x2="12" y2="4"></line>
                                                     <line x1="6" y1="20" x2="6" y2="14"></line>
                                                 </svg> <span class="align-middle">Charts</span>
                                             </a>
+<<<<<<< HEAD
                                             <ul id="charts" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                                                 <li class="sidebar-item"><a class="sidebar-link" href="charts-chartjs.html">Chart.js</a></li>
                                                 <li class="sidebar-item"><a class="sidebar-link" href="charts-apexcharts.html">ApexCharts <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
@@ -258,20 +817,51 @@
                                         <li class="sidebar-item">
                                             <a class="sidebar-link" href="notifications.html">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell align-middle">
+=======
+                                            <ul id="charts" class="sidebar-dropdown list-unstyled collapse "
+                                                data-bs-parent="#sidebar">
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="charts-chartjs.html">Chart.js</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="charts-apexcharts.html">ApexCharts <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                            </ul>
+                                        </li> --}}
+                                        {{-- <li class="sidebar-item">
+                                            <a class="sidebar-link" href="notifications.html">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-bell align-middle me-2">
+>>>>>>> 0827tony
                                                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                                                     <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                                                 </svg> <span class="align-middle">Notifications</span>
                                                 <span class="sidebar-badge badge bg-primary">Pro</span>
                                             </a>
+<<<<<<< HEAD
                                         </li>
                                         <li class="sidebar-item">
                                             <a data-bs-target="#maps" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map align-middle">
                                                     <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+=======
+                                        </li> --}}
+                                        {{-- <li class="sidebar-item">
+                                            <a data-bs-target="#maps" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-map align-middle me-2">
+                                                    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6">
+                                                    </polygon>
+>>>>>>> 0827tony
                                                     <line x1="8" y1="2" x2="8" y2="18"></line>
                                                     <line x1="16" y1="6" x2="16" y2="22"></line>
                                                 </svg> <span class="align-middle">Maps</span>
                                             </a>
+<<<<<<< HEAD
                                             <ul id="maps" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                                                 <li class="sidebar-item"><a class="sidebar-link" href="maps-google.html">Google Maps</a></li>
                                                 <li class="sidebar-item"><a class="sidebar-link" href="maps-vector.html">Vector Maps <span class="sidebar-badge badge bg-primary">Pro</span></a></li>
@@ -281,13 +871,40 @@
                                         <li class="sidebar-item">
                                             <a data-bs-target="#multi" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-corner-right-down align-middle">
+=======
+                                            <ul id="maps" class="sidebar-dropdown list-unstyled collapse "
+                                                data-bs-parent="#sidebar">
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="maps-google.html">Google Maps</a></li>
+                                                <li class="sidebar-item"><a class="sidebar-link"
+                                                        href="maps-vector.html">Vector Maps <span
+                                                            class="sidebar-badge badge bg-primary">Pro</span></a></li>
+                                            </ul>
+                                        </li> --}}
+
+                                        {{-- <li class="sidebar-item">
+                                            <a data-bs-target="#multi" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-corner-right-down align-middle me-2">
+>>>>>>> 0827tony
                                                     <polyline points="10 15 15 20 20 15"></polyline>
                                                     <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                                                 </svg> <span class="align-middle">Multi Level</span>
                                             </a>
+<<<<<<< HEAD
                                             <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                                                 <li class="sidebar-item">
                                                     <a data-bs-target="#multi-2" data-bs-toggle="collapse" class="sidebar-link collapsed">Two Levels</a>
+=======
+                                            <ul id="multi" class="sidebar-dropdown list-unstyled collapse"
+                                                data-bs-parent="#sidebar">
+                                                <li class="sidebar-item">
+                                                    <a data-bs-target="#multi-2" data-bs-toggle="collapse"
+                                                        class="sidebar-link collapsed">Two Levels</a>
+>>>>>>> 0827tony
                                                     <ul id="multi-2" class="sidebar-dropdown list-unstyled collapse">
                                                         <li class="sidebar-item">
                                                             <a class="sidebar-link" href="#">Item 1</a>
@@ -296,11 +913,22 @@
                                                     </ul>
                                                 </li>
                                                 <li class="sidebar-item">
+<<<<<<< HEAD
                                                     <a data-bs-target="#multi-3" data-bs-toggle="collapse" class="sidebar-link collapsed">Three Levels</a>
                                                     <ul id="multi-3" class="sidebar-dropdown list-unstyled collapse">
                                                         <li class="sidebar-item">
                                                             <a data-bs-target="#multi-3-1" data-bs-toggle="collapse" class="sidebar-link collapsed">Item 1</a>
                                                             <ul id="multi-3-1" class="sidebar-dropdown list-unstyled collapse">
+=======
+                                                    <a data-bs-target="#multi-3" data-bs-toggle="collapse"
+                                                        class="sidebar-link collapsed">Three Levels</a>
+                                                    <ul id="multi-3" class="sidebar-dropdown list-unstyled collapse">
+                                                        <li class="sidebar-item">
+                                                            <a data-bs-target="#multi-3-1" data-bs-toggle="collapse"
+                                                                class="sidebar-link collapsed">Item 1</a>
+                                                            <ul id="multi-3-1"
+                                                                class="sidebar-dropdown list-unstyled collapse">
+>>>>>>> 0827tony
                                                                 <li class="sidebar-item">
                                                                     <a class="sidebar-link" href="#">Item 1</a>
                                                                     <a class="sidebar-link" href="#">Item 2</a>
@@ -313,10 +941,18 @@
                                                     </ul>
                                                 </li>
                                             </ul>
+<<<<<<< HEAD
                                         </li>
                                     </ul>
 
                                     <div class="sidebar-cta">
+=======
+                                        </li> --}}
+
+                                    </ul>
+
+                                    {{-- <div class="sidebar-cta">
+>>>>>>> 0827tony
                                         <div class="sidebar-cta-content">
                                             <strong class="d-inline-block mb-2">Weekly Sales Report</strong>
                                             <div class="mb-3 text-sm">
@@ -324,21 +960,38 @@
                                             </div>
 
                                             <div class="d-grid">
+<<<<<<< HEAD
                                                 <a href="https://adminkit.io/" class="btn btn-outline-primary" target="_blank">Download</a>
                                             </div>
                                         </div>
                                     </div>
+=======
+                                                <a href="#" class="btn btn-outline-primary"
+                                                    target="_blank">Download</a>
+                                            </div>
+                                        </div>
+                                    </div> --}}
+>>>>>>> 0827tony
                                 </div>
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div class="simplebar-placeholder" style="width: auto; height: 1199px;"></div>
+=======
+                    <div class="simplebar-placeholder" style="width: auto; height: 1314px;"></div>
+>>>>>>> 0827tony
                 </div>
                 <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
                     <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
                 </div>
                 <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+<<<<<<< HEAD
                     <div class="simplebar-scrollbar" style="height: 434px; transform: translate3d(0px, 287px, 0px); display: block;"></div>
+=======
+                    <div class="simplebar-scrollbar"
+                        style="height: 396px; transform: translate3d(0px, 325px, 0px); display: block;"></div>
+>>>>>>> 0827tony
                 </div>
             </div>
         </nav>
@@ -361,13 +1014,23 @@
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
                         <li class="nav-item dropdown">
+<<<<<<< HEAD
                             <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+=======
+                            <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown"
+                                data-bs-display="static">
+>>>>>>> 0827tony
                                 <div class="position-relative">
                                     <i class="align-middle" data-feather="bell"></i>
                                     <span class="indicator">4</span>
                                 </div>
                             </a>
+<<<<<<< HEAD
                             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+=======
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-lg-end py-0"
+                                aria-labelledby="alertsDropdown">
+>>>>>>> 0827tony
                                 <div class="dropdown-menu-header">
                                     4 New Notifications
                                 </div>
@@ -379,7 +1042,12 @@
                                             </div>
                                             <div class="col-10">
                                                 <div class="text-dark">Update completed</div>
+<<<<<<< HEAD
                                                 <div class="text-muted small mt-1">Restart server 12 to complete the update.</div>
+=======
+                                                <div class="text-muted small mt-1">Restart server 12 to complete the
+                                                    update.</div>
+>>>>>>> 0827tony
                                                 <div class="text-muted small mt-1">30m ago</div>
                                             </div>
                                         </div>
@@ -391,7 +1059,12 @@
                                             </div>
                                             <div class="col-10">
                                                 <div class="text-dark">Lorem ipsum</div>
+<<<<<<< HEAD
                                                 <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
+=======
+                                                <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate
+                                                    hendrerit et.</div>
+>>>>>>> 0827tony
                                                 <div class="text-muted small mt-1">2h ago</div>
                                             </div>
                                         </div>
@@ -414,7 +1087,12 @@
                                             </div>
                                             <div class="col-10">
                                                 <div class="text-dark">New connection</div>
+<<<<<<< HEAD
                                                 <div class="text-muted small mt-1">Christina accepted your request.</div>
+=======
+                                                <div class="text-muted small mt-1">Christina accepted your request.
+                                                </div>
+>>>>>>> 0827tony
                                                 <div class="text-muted small mt-1">14h ago</div>
                                             </div>
                                         </div>
@@ -426,12 +1104,22 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown">
+<<<<<<< HEAD
                             <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-toggle="dropdown">
+=======
+                            <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-bs-toggle="dropdown"
+                                data-bs-display="static">
+>>>>>>> 0827tony
                                 <div class="position-relative">
                                     <i class="align-middle" data-feather="message-square"></i>
                                 </div>
                             </a>
+<<<<<<< HEAD
                             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="messagesDropdown">
+=======
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-lg-end py-0"
+                                aria-labelledby="messagesDropdown">
+>>>>>>> 0827tony
                                 <div class="dropdown-menu-header">
                                     <div class="position-relative">
                                         4 New Messages
@@ -441,11 +1129,21 @@
                                     <a href="#" class="list-group-item">
                                         <div class="row g-0 align-items-center">
                                             <div class="col-2">
+<<<<<<< HEAD
                                                 <img src="../admin/img/avatars/avatar-5.jpg" class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
                                             </div>
                                             <div class="col-10 pl-2">
                                                 <div class="text-dark">Vanessa Tucker</div>
                                                 <div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis arcu tortor.</div>
+=======
+                                                <img src="../admin/img/avatars/avatarBot5.png"
+                                                    class="avatar img-fluid rounded-circle" alt="Vanessa">
+                                            </div>
+                                            <div class="col-10 pl-2">
+                                                <div class="text-dark">Vanessa Tucker</div>
+                                                <div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis arcu
+                                                    tortor.</div>
+>>>>>>> 0827tony
                                                 <div class="text-muted small mt-1">15m ago</div>
                                             </div>
                                         </div>
@@ -453,11 +1151,21 @@
                                     <a href="#" class="list-group-item">
                                         <div class="row g-0 align-items-center">
                                             <div class="col-2">
+<<<<<<< HEAD
                                                 <img src="../admin/img/avatars/avatar-2.jpg" class="avatar img-fluid rounded-circle" alt="William Harris">
                                             </div>
                                             <div class="col-10 pl-2">
                                                 <div class="text-dark">William Harris</div>
                                                 <div class="text-muted small mt-1">Curabitur ligula sapien euismod vitae.</div>
+=======
+                                                <img src="../admin/img/avatars/avatarBot2.png"
+                                                    class="avatar img-fluid rounded-circle" alt="William">
+                                            </div>
+                                            <div class="col-10 pl-2">
+                                                <div class="text-dark">William Harris</div>
+                                                <div class="text-muted small mt-1">Curabitur ligula sapien euismod
+                                                    vitae.</div>
+>>>>>>> 0827tony
                                                 <div class="text-muted small mt-1">2h ago</div>
                                             </div>
                                         </div>
@@ -465,11 +1173,21 @@
                                     <a href="#" class="list-group-item">
                                         <div class="row g-0 align-items-center">
                                             <div class="col-2">
+<<<<<<< HEAD
                                                 <img src="../admin/img/avatars/avatar-4.jpg" class="avatar img-fluid rounded-circle" alt="Christina Mason">
                                             </div>
                                             <div class="col-10 pl-2">
                                                 <div class="text-dark">Christina Mason</div>
                                                 <div class="text-muted small mt-1">Pellentesque auctor neque nec urna.</div>
+=======
+                                                <img src="../admin/img/avatars/avatarBot4.png"
+                                                    class="avatar img-fluid rounded-circle" alt="Christina">
+                                            </div>
+                                            <div class="col-10 pl-2">
+                                                <div class="text-dark">Christina Mason</div>
+                                                <div class="text-muted small mt-1">Pellentesque auctor neque nec urna.
+                                                </div>
+>>>>>>> 0827tony
                                                 <div class="text-muted small mt-1">4h ago</div>
                                             </div>
                                         </div>
@@ -477,11 +1195,21 @@
                                     <a href="#" class="list-group-item">
                                         <div class="row g-0 align-items-center">
                                             <div class="col-2">
+<<<<<<< HEAD
                                                 <img src="../admin/img/avatars/avatar-3.jpg" class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
                                             </div>
                                             <div class="col-10 pl-2">
                                                 <div class="text-dark">Sharon Lessman</div>
                                                 <div class="text-muted small mt-1">Aenean tellus metus, bibendum sed, posuere ac, mattis non.</div>
+=======
+                                                <img src="../admin/img/avatars/avatarBot3.png"
+                                                    class="avatar img-fluid rounded-circle" alt="Sharon">
+                                            </div>
+                                            <div class="col-10 pl-2">
+                                                <div class="text-dark">Sharon Lessman</div>
+                                                <div class="text-muted small mt-1">Aenean tellus metus, bibendum sed,
+                                                    posuere ac, mattis non.</div>
+>>>>>>> 0827tony
                                                 <div class="text-muted small mt-1">5h ago</div>
                                             </div>
                                         </div>
@@ -493,6 +1221,7 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown">
+<<<<<<< HEAD
                             <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
                                 <i class="align-middle" data-feather="settings"></i>
                             </a>
@@ -508,6 +1237,41 @@
                                 <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="help-circle"></i> Help Center</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('member.logout') }}">Log out</a>
+=======
+                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
+                                data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static">
+                                <i class="align-middle" data-feather="settings"></i>
+                            </a>
+
+                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
+                                data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static">
+                                <img src="../admin/img/avatars/avatarBot{{ \Auth::user()->avatarChoice }}.png"
+                                    class="avatar img-fluid rounded mr-1" alt="Charles Hall" /> <span
+                                    class="text-dark">{{ \Auth::user()->姓名 }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="user"></i>
+                                    Profile</a>
+                                <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu"
+                                    aria-expanded="false"><i class="align-middle mr-1" data-feather="book-open"></i>
+                                    {!! __('templateWords.language') !!}</a>
+                                <div class="collapse" id="langMenu">
+                                    <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
+                                        English</a>
+                                    <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-TW') }}">
+                                        繁體中文</a>
+                                    <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-CN') }}">
+                                        简体中文</a>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="align-middle mr-1"
+                                        data-feather="settings"></i> Settings</a>
+                                <a class="dropdown-item" href="#"><i class="align-middle mr-1"
+                                        data-feather="help-circle"></i> Help Center</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" id="logoutbtn" href="{{ route('member.logout') }}">{!!
+                                    __('templateWords.logout_btn') !!}</a>
+>>>>>>> 0827tony
                             </div>
                         </li>
                     </ul>
@@ -783,6 +1547,16 @@
         });
     </script> -->
 
+<<<<<<< HEAD
+=======
+
+    <script src="{{ asset('/js/app.js') }}"></script>
+    <script src="{{ asset('/admin/js/app.js') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
+    <script src="{{ asset('/messages.js') }}"></script>
+    <script src="{{ asset('/js/logout.js') }}"></script>
+    <script src="{{ asset('js/popupNotice.js') }}"></script>
+>>>>>>> 0827tony
     @yield('js')
 </body>
 

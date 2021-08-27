@@ -1,0 +1,76 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Basic Info Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used during authentication for various
+    | messages that we need to display to the user. You are free to modify
+    | these language lines according to your application's requirements.
+    |
+    */
+    'basicInfo' => '基礎信息',
+    'newMats' => '新增料件',
+    'matsInfo' => '料件信息(查詢/修改)',
+    'change' => '更新',
+    'delete' => '刪除',
+    'exampleExcel' => '範例格式下載',
+    'factory' => '廠別',
+    'client' => '客戶別',
+    'machine' => '機種',
+    'process' => '製程',
+    'line' => '線別',
+    'usedep' => '領用部門',
+    'usereason' => '領用原因',
+    'inreason' => '入庫原因',
+    'loc' => '儲位',
+    'senddep' => '發料部門',
+    'obound' => 'O庫(借貸庫)',
+    'returnreason' => '退回原因',
+    'upload' => '批量上傳',
+    'new' => '新增',
+    'plz_upload' => '請上傳Excel檔',
+    'changeok' => '更新成功',
+    'return' => '返回',
+    'deleteok' => '刪除成功',
+    'matsdata' => '料件資料',
+    'isn' => '料號',
+    'pName' => '品名',
+    'format' => '規格',
+    'price' => '單價' ,
+    'unit' => '單位',
+    'money' => '幣別',
+    'mpq' => 'MPQ',
+    'moq' => 'MOQ',
+    'lt' => 'LT',
+    'gradea' => 'A級資材',
+    'belong' => '耗材歸屬',
+    'month' => '月請購',
+    'safe' => '安全庫存',
+    'enterisn' => '請輸入料號',
+    'enterpName' => '請輸入品名',
+    'enterformat' => '請輸入規格',
+    'enterprice' => '請輸入單價',
+    'enterunit' => '請輸入單位',
+    'entermoney' => '請選擇幣別',
+    'entermpq' => '請輸入MPQ',
+    'entermoq' => '請輸入MOQ',
+    'enterlt' => '請輸入LT',
+    'enteryorn' => '請選擇是/否',
+    'enterbelong' => '請選擇耗材歸屬',
+    'entersenddep' => '請選擇發料部門',
+    'entersafe' => '請輸入安全庫存',
+    'consume' => '單耗',
+    'stand' => '站位',
+    'yes' => '是',
+    'no' => '否',
+    'add' => '新增至資料庫',
+    'matssearch' => '料號查詢',
+    'download' => '下載',
+    'newbasicInfo' => '新增基礎信息',
+    'isnlength' => '料號長度不為12',
+    'isnrepeat' => '料號重複',
+];

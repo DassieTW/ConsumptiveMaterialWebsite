@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @extends('layouts.adminTemplate')
 
 @section('content')
@@ -21,3 +22,6 @@
     </div>
 </div>
 @endsection
+=======
+sup
+>>>>>>> 0827tony

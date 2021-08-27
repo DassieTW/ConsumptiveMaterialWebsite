@@ -56,9 +56,15 @@ class OutboundTableSeeder extends Seeder
         $outbound->備註 = '';
         $outbound->實領差異原因 = '';
         $outbound->儲位 = '';
+<<<<<<< HEAD
         $outbound->領料人員 = '';
         $outbound->領料人員工號 = NULL;
         $outbound->發料人員 = '';
+=======
+        $outbound->領料人員 = NULL;
+        $outbound->領料人員工號 = NULL;
+        $outbound->發料人員 = NULL;
+>>>>>>> 0827tony
         $outbound->發料人員工號 = NULL;
         $outbound->領料單號 = 202101150004;
         $outbound->開單時間 = Carbon::create(2021, 1, 15, 13, 26, 57, 'GMT');

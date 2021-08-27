@@ -22,6 +22,7 @@ class Create月請購站位Table extends Migration
             $table->float('當月站位人數');
             $table->float('當月開線數');
             $table->float('當月開班數');
+<<<<<<< HEAD
             $table->float('當月每人使用量');
             $table->float('當月更換頻率');
             $table->float('下月站位人數');
@@ -29,6 +30,15 @@ class Create月請購站位Table extends Migration
             $table->float('下月開班數');
             $table->float('下月每人使用量');
             $table->float('下月更換頻率');
+=======
+            $table->float('當月每人每日需求量');
+            $table->float('當月每日更換頻率');
+            $table->float('下月站位人數');
+            $table->float('下月開線數');
+            $table->float('下月開班數');
+            $table->float('下月每人每日需求量');
+            $table->float('下月每日更換頻率');
+>>>>>>> 0827tony
             $table->timestamps();
             $table->softDeletes();
         });

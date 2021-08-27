@@ -4,7 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+<<<<<<< HEAD
 class CreateO庫inboundTable extends Migration
+=======
+class CreateO庫InboundTable extends Migration
+>>>>>>> 0827tony
 {
     /**
      * Run the migrations.
@@ -15,15 +19,27 @@ class CreateO庫inboundTable extends Migration
     {
         //
         Schema::create('O庫inbound', function (Blueprint $table) {
+<<<<<<< HEAD
             $table->string('料號',100);
             $table->string('品名',100);
             $table->string('規格',100);
             $table->string('廠別',45);
+=======
+            $table->string('入庫單號',45);
+            $table->string('料號',100);
+            $table->string('品名',100);
+            $table->string('規格',100);
+            $table->string('客戶別',45);
+>>>>>>> 0827tony
             $table->string('庫別',50);
             $table->integer('數量');
             $table->string('入庫人員',100);
             $table->dateTime('時間');
             $table->string('備註',45)->nullable();
+<<<<<<< HEAD
+=======
+            $table->string('入庫原因',45);
+>>>>>>> 0827tony
             $table->timestamps();
             $table->softDeletes();
         });

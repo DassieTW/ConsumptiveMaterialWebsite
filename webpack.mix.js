@@ -11,7 +11,11 @@ const mix = require('laravel-mix');
  |
  */
 
+<<<<<<< HEAD
 mix.js('resources/js/app.js', 'public/js/app.js')
+=======
+mix.js('resources/js/app.js', 'public/js')
+>>>>>>> 0827tony
     .vue()
     .sass('resources/sass/app.scss', 'public/css')
     .postCss('resources/css/app.css', 'public/css')
@@ -19,8 +23,24 @@ mix.js('resources/js/app.js', 'public/js/app.js')
     .sourceMaps();
 
 mix.autoload({
+<<<<<<< HEAD
     jquery: ['$', 'window.jQuery',"jQuery","window.$","jquery","window.jquery"],
     'popper.js/dist/umd/popper.js': ['Popper']
 }) ;
+=======
+    jquery: ['$', 'window.jQuery', "jQuery", "window.$", "jquery", "window.jquery"],
+    'popper.js/dist/umd/popper.js': ['Popper']
+});
+
+const WebpackShellPlugin = require('webpack-shell-plugin-next');
+
+// Add shell command plugin configured to create JavaScript language file
+mix.webpackConfig({
+    plugins:
+        [
+            new WebpackShellPlugin({ onBuildStart: ['php artisan lang:js --quiet'], onBuildEnd: [] })
+        ]
+});
+>>>>>>> 0827tony
 
 

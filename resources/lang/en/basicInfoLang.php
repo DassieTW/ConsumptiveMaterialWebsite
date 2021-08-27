@@ -1,0 +1,72 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used during authentication for various
+    | messages that we need to display to the user. You are free to modify
+    | these language lines according to your application's requirements.
+    |
+    */
+    'basicInfo' => 'Basic Info.',
+    'newMats' => 'Add Material',
+    'matsInfo' => 'Material Info. <br/> &nbsp;&nbsp;&nbsp; (Search & Update)',
+    'change' =>'Update',
+    'delete' =>'Delete',
+    'exampleExcel' =>'Example Template Download',
+    'factory' =>'Factorys',
+    'client' =>'Clients',
+    'machine' =>'Machines',
+    'process' =>'Processes',
+    'line' =>'Lines',
+    'usedep' =>'Requisition Departments',
+    'usereason' =>'Usereasons',
+    'inreason' =>'Inbound Reasons',
+    'loc' =>'Locations',
+    'senddep' =>'Sending Departments',
+    'obound' =>'O-Bounds(Loan Bound)',
+    'returnreason' =>'Return Reasons',
+    'upload' =>'Batch Upload',
+    'new' => 'New :',
+    'plz_upload' => 'Upload an Excel File',
+    'changeok' =>'Update Successfully',
+    'return' =>'Return',
+    'deleteok' => 'Delete Successfully',
+    'matsdata' =>'Material Datas',
+    'isn' =>'ISN',
+    'pName' =>'MATL.',
+    'format' =>'Specification',
+    'price' =>'Unit Price',
+    'unit' =>'Unit',
+    'money' =>'Currency',
+    'mpq' =>'MPQ',
+    'moq' =>'MOQ',
+    'lt' =>'LT',
+    'gradea' =>'A Material',
+    'belong' =>'Conusumables Attribution',
+    'month' =>'Monthly PR',
+    'safe' =>'Safety Stock',
+    'enterisn' =>'Please enter the isn',
+    'enterpName' =>'Please enter the MATL.',
+    'enterformat' =>'Please enter the specification',
+    'enterprice' =>'Please enter the unit price',
+    'enterunit' =>'Please enter the unit',
+    'entermoney' =>'Please select currency',
+    'entermpq' =>'Please enter MPQ',
+    'entermoq' =>'Please enter MOQ',
+    'enterlt' =>'Please enter LT',
+    'enteryorn' =>'Please choose yes/no',
+    'enterbelong' =>'Please select the attribution of consumables',
+    'entersenddep' =>'Please select the sending department',
+    'entersafe' =>'Please enter the safety stock',
+    'add' => 'Add to Database',
+    'matssearch' => 'ISN Search',
+    'download' => 'Download Excel',
+    'newbasicInfo' => 'New Basic Inf',
+    'isnlength' =>'ISN length is not 12',
+    'isnrepeat' =>'ISN is repeat',
+];

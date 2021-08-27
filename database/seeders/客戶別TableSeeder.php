@@ -35,5 +35,12 @@ class 客戶別TableSeeder extends Seeder
         $client = new 客戶別;
         $client->客戶 = 'PACE';
         $client->save();
+<<<<<<< HEAD
+=======
+        //
+        $client = new 客戶別;
+        $client->客戶 = 'Fendi';
+        $client->save();
+>>>>>>> 0827tony
     }
 }

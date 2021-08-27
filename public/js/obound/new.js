@@ -1,0 +1,43 @@
+document.getElementById("numbererror").style.display = "none";
+document.getElementById("numbererror").style.color = "red";
+
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+$('#newmaterial').on('submit', function (e) {
+    e.preventDefault();
+        var number = $("#number").val();
+        var name = $("#name").val();
+        var format = $("#format").val();
+    $.ajax({
+       type:'POST',
+       url:"new",
+       data:{number:number, name:name , format:format},
+       success:function(data){
+        console.log(data);
+          var myObj = JSON.parse(data);
+          console.log(myObj);
+          if(myObj.boolean === true && myObj.passbool === true){
+            var mess = Lang.get('monthlyPRpageLang.newMats')+Lang.get('monthlyPRpageLang.success');
+            alert(mess);
+            window.location.href = "/obound";
+          }
+          else if(myObj.boolean === false && myObj.passbool === true){
+            document.getElementById("numbererror").style.display = "block";
+            document.getElementById('number').style.borderColor = "red";
+            document.getElementById('number').value='';
+          }
+          else if(myObj.boolean === false && myObj.passbool === false){
+            window.location.reload();
+          }
+       },
+       error : function(jqXHR,textStatus,errorThrown){
+        console.warn(jqXHR.responseText);
+        alert(errorThrown);
+      }
+    });
+});

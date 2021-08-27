@@ -392,13 +392,26 @@ final class Barcode39
         //
         // check if writing image
         if ($filename) {
+<<<<<<< HEAD
             $save = storage_path('barcodeImg/') . $filename . ".png";
             //                       NOTE! is the system using "/" or "\" ????
+=======
+            //           NOTE! is the system using "/" or "\" ????
+>>>>>>> 0827tony
             // chmod($save,0777);
             $resource = \Image::make($img)->encode('png');
             \Log::debug("Storing image");
             if ($resource !== false) {
+<<<<<<< HEAD
                 \Storage::put("public/barcodeImg/{$filename}.png", (string) $resource);
+=======
+                if ($this->isIsn === "true") {
+                    \Storage::put("public/barcodeImg/{$filename}.png", (string) $resource);
+                } // if
+                else {
+                    \Storage::put("public/barcodeImg/{$filename}-2.png", (string) $resource);
+                } // else 
+>>>>>>> 0827tony
             } else {
                 \Log::error("Failed to get resource from string");
             } // if else
@@ -407,6 +420,7 @@ final class Barcode39
             imagepng($img);
         } // if else
 
+<<<<<<< HEAD
         if (strlen($this->barcode2) == 0) {
             $namee = $this->barcode1;
         } else {
@@ -438,6 +452,10 @@ final class Barcode39
                 $_SESSION['locArray'][] = $namee;
             } // if else
         } // if
+=======
+        // imagedestroy($img);
+
+>>>>>>> 0827tony
         // valid barcode
         return true;
     } // draw()

@@ -16,9 +16,12 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
         $this->call(
             [
+<<<<<<< HEAD
                 SubjectTableSeeder::class,
                 PostTableSeeder::class,
                 UserTableSeeder::class,
+=======
+>>>>>>> 0827tony
                 ConsumptiveMaterialTableSeeder::class,
                 LoginTableSeeder::class,
                 人員信息TableSeeder::class,
@@ -43,6 +46,22 @@ class DatabaseSeeder extends Seeder
                 出庫退料TableSeeder::class,
                 在途量TableSeeder::class,
                 非月請購TableSeeder::class,
+<<<<<<< HEAD
+=======
+                DB_ListTableSeeder::class,
+                O庫不良品InventoryTableSeeder::class,
+                O庫出庫退料TableSeeder::class,
+                O庫InventoryTableSeeder::class,
+                不良品InventoryTableSeeder::class,
+                不良品TableSeeder::class,
+                退回原因TableSeeder::class,
+                O庫InboundTableSeeder::class,
+                O庫OutboundTableSeeder::class,
+                O庫TableSeeder::class,
+                請購單TableSeeder::class,
+                Checking_inventoryTableSeeder::class,
+
+>>>>>>> 0827tony
             ]
         );
     }
