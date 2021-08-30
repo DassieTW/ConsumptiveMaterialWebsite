@@ -74,4 +74,9 @@ return [
     'month' => '月請購',
     'stock' => '庫存',
     'monthuse' => '月使用量',
+    'locchangeerr' => '調撥數量不可大於現有庫存，無法提交此筆儲位調撥。',
+    'coming' => '即將從',
+    'transfer' => '調撥',
+    'to' => '到',
+
 ];

@@ -29,7 +29,10 @@ $('#pickadd').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true){
-            alert("添加成功，領料單號: " + myObj.message);
+            var mess = Lang.get('outboundpageLang.add')+Lang.get('outboundpageLang.success')+' ， '+
+            Lang.get('outboundpageLang.picklistnum')+' : '+myObj.message;
+            alert(mess);
+            //alert("添加成功，領料單號: " + myObj.message);
             window.location.href = "/outbound";
             //window.location.href = "member.newok";
           }

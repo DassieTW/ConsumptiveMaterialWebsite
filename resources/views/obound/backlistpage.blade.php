@@ -34,7 +34,7 @@
 
                         </div>
                     </div>
-                    <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.enterbacklist') !!}">
+                    <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.searchbacklist') !!}">
                     <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.deletebacklist') !!}">
                 </form>
                 <br>

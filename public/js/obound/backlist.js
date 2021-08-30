@@ -43,7 +43,9 @@ $('#backlist').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true && myObj.passbool === true){
-            window.location.href = "backlistsubmitok";
+            var mess = Lang.get('oboundpageLang.outbackok')+list;
+            alert(mess);
+            window.location.href = "/obound";
             //window.location.href = "member.newok";
           }
           //no reason

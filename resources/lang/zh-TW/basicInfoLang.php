@@ -73,4 +73,13 @@ return [
     'newbasicInfo' => '新增基礎信息',
     'isnlength' => '料號長度不為12',
     'isnrepeat' => '料號重複',
+    'notmonthsafe' => '為非月請購之安全庫存為必填項目',
+    'total' => '共 ',
+    'record' => ' 筆',
+    'success' => '成功',
+    'plz_write' => '請填寫',
+    'row' => '在列',
+    'nowrite' => '尚未填寫',
+    'repeat' => '資料已存放在資料庫內，請檢查。',
+
 ];

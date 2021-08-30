@@ -39,13 +39,13 @@ $(document).ready(function () {
     e.preventDefault();
     var username = $("#username").val();
     var password = $("#password").val();
-    var surepassword = $("#surepassword").val();
+    var surepassword = $("#password2").val();
     var priority = $("#priority").val();
     var name = $("#name").val();
     var department = $("#department").val();
     $.ajax({
       type: 'POST',
-      url: "register",
+      url: "/member/register",
       data: { username: username, password: password, surepassword: surepassword, priority: priority, name: name, department: department },
       success: function (data) {
         console.log(data);
@@ -59,8 +59,8 @@ $(document).ready(function () {
           document.getElementById("message2").style.display = "block";
           document.getElementById('password').style.borderColor = "red";
           document.getElementById('password').value = '';
-          document.getElementById('surepassword').style.borderColor = "red";
-          document.getElementById('surepassword').value = '';
+          document.getElementById('password2').style.borderColor = "red";
+          document.getElementById('password2').value = '';
         }
         else if (myObj.boolean === false && myObj.passbool === true) {
           document.getElementById("message").style.display = "block";

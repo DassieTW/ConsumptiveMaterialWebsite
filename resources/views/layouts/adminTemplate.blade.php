@@ -266,7 +266,7 @@
 
 
 
-                                        <li class="sidebar-item {{ isActiveRoute(['inbound/']) }}">
+                                        <li class="sidebar-item {{ isActiveRoute(['inbound/' , 'inbound.index']) }}">
                                             <a data-bs-target="#inbound" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -294,7 +294,7 @@
                                                     {!! __('inboundpageLang.searchstock') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['inbound/positionchange']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['inbound/positionchange','inbound/change']) }}">
                                                     <a class="sidebar-link" href="{{route('inbound.positionchange')}}">
                                                     {!! __('inboundpageLang.locationchange') !!}
                                                     </a>
@@ -308,7 +308,7 @@
                                             </ul>
                                         </li>
 
-                                        <li class="sidebar-item {{ isActiveRoute(['outbound/']) }}">
+                                        <li class="sidebar-item {{ isActiveRoute(['outbound/' , 'outbound.index']) }}">
                                             <a data-bs-target="#outbound" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -357,7 +357,7 @@
                                             </ul>
                                         </li>
 
-                                        <li class="sidebar-item {{ isActiveRoute(['month/']) }}">
+                                        <li class="sidebar-item {{ isActiveRoute(['month/',  'month.index']) }}">
                                             <a data-bs-target="#monthly" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -426,7 +426,7 @@
                                         </li>
 
 
-                                        <li class="sidebar-item {{ isActiveRoute(['obound/']) }}">
+                                        <li class="sidebar-item {{ isActiveRoute(['obound/' , 'obound.index']) }}">
                                             <a data-bs-target="#obound" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -443,12 +443,12 @@
                                                         {!! __('oboundpageLang.newMats') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['obound.material']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['obound.material' , 'obound/material']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.material')}}">
                                                         {!! __('oboundpageLang.matsInfo') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['obound.inbound']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['obound.inbound' , 'obound/inboundnewok']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.inbound')}}">
                                                         {!! __('oboundpageLang.inbound') !!}
                                                     </a>
@@ -459,7 +459,7 @@
                                                     </a>
                                                 </li>
                                                 <li
-                                                    class="sidebar-item {{ isActiveRoute(['obound.upload']) }}">
+                                                    class="sidebar-item {{ isActiveRoute(['obound.upload','obound/uploadinventory']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.upload')}}">
                                                         {!! __('oboundpageLang.stockupload') !!}
                                                     </a>

@@ -113,6 +113,12 @@ class InboundController extends Controller
     {
         if(Session::has('username'))
         {
+            if($request->input('number') !== null)
+            {
+                $datas = DB::table('inventory')
+                ->where('料號', 'like', $request->input('number').'%')
+                ->get();
+            }
             //all empty
             if($request->input('client') === null && $request->input('position') === null && $request->input('number') === null )
             {
@@ -131,16 +137,8 @@ class InboundController extends Controller
             //input material number
             else if($request->input('client') === null && $request->input('position') === null && $request->input('number') !== null )
             {
-                if(strlen($request->input('number')) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('inbound.change')->with(['data' => Inventory::cursor()->where('料號' , $request->input('number'))->where('現有庫存' , '>' , 0)]);
-                }
+                return view('inbound.change')->with(['data' => $datas->where('現有庫存' , '>' , 0)]);
+
             }
             //select client and position
             else if($request->input('client') !== null && $request->input('position') !== null && $request->input('number') === null)
@@ -152,48 +150,23 @@ class InboundController extends Controller
             //select client and number
             else if($request->input('client') !== null && $request->input('position') === null && $request->input('number') !== null )
             {
-                if(strlen($request->input('number')) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('inbound.change')->with(['data' => Inventory::cursor()
-                    ->where('料號' , $request->input('number'))->where('客戶別' , $request->input('client'))->where('現有庫存' , '>' , 0)]);
-                }
+                return view('inbound.change')->with(['data' => $datas->where('客戶別' , $request->input('client'))->where('現有庫存' , '>' , 0)]);
+
             }
             //select position and number
             else if($request->input('client') === null && $request->input('position') !== null && $request->input('number') !== null )
             {
-                if(strlen($request->input('number')) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('inbound.change')->with(['data' => Inventory::cursor()
-                    ->where('料號' , $request->input('number'))->where('儲位' , $request->input('position'))->where('現有庫存' , '>' , 0)]);
-                }
+
+                return view('inbound.change')->with(['data' => $datas->where('料號' , $request->input('number'))->where('儲位' , $request->input('position'))->where('現有庫存' , '>' , 0)]);
+
             }
             //select all
             else if($request->input('client') !== null && $request->input('position') !== null && $request->input('number') !== null)
             {
-                if(strlen($request->input('number')) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('inbound.change')->with(['data' => Inventory::cursor()
-                    ->where('客戶別' , $request->input('client'))->where('儲位' , $request->input('position'))
-                    ->where('料號' , $request->input('number'))->where('現有庫存' , '>' , 0)]);
-                }
+                return view('inbound.change')->with(['data' => $datas
+                ->where('客戶別' , $request->input('client'))->where('儲位' , $request->input('position'))
+                ->where('現有庫存' , '>' , 0)]);
+
             }
         }
         else
@@ -231,21 +204,24 @@ class InboundController extends Controller
                         /*return back()->withErrors([
                             'stock' => '調撥數量不可大於現有庫存，無法提交此筆儲位調撥',
                         ]);*/
+                        $mess = trans('inboundpageLang.locchangeerr');
                         echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('調撥數量不可大於現有庫存，無法提交此筆儲位調撥');
-                                window.location.href='positionchange';
-                                </script>");
+                        window.alert('$mess');
+                        window.location.href='positionchange';
+                        </script>");
                         //return redirect()->action('InboundController@positionchange', ['stock' => '調撥數量不可大於現有庫存，無法提交此筆儲位調撥']);
                         //return route('inbound.positionchange');
                     }
 
                     else
                     {
+                        $mess = trans('inboundpageLang.coming').' : ' . $oldposition.trans('inboundpageLang.transfer'). ' : '.$number.' : '
+                        .$amount.trans('inboundpageLang.to') . ' '.$newposition . '\\n'.trans('inboundpageLang.client'). ' : '.$client;
                         $sure = ("<script LANGUAGE='JavaScript'>
-                                var c = window.confirm('即將從 : ' + '$oldposition' + ' 調撥 :' + ' $number : ' + '$amount' + ' 到 ' + '$newposition' + ' \\n客戶別 : ' + '$client');
-                                if(!c){window.history.go(-1);}
+                        var c = window.confirm('$mess');
+                        if(!c){window.location.href='positionchange';}
+                        </script>");
 
-                                </script>");
                         echo $sure;
                         DB::beginTransaction();
                         try{
@@ -290,9 +266,9 @@ class InboundController extends Controller
                     continue;
                 }
             }
-
+            $mess = trans('inboundpageLang.transfer').trans('inboundpageLang.success');
             echo ("<script LANGUAGE='JavaScript'>
-            window.alert('調撥成功');
+            window.alert('$mess');
             window.location.href='/inbound';
             </script>");
         }
@@ -329,7 +305,7 @@ class InboundController extends Controller
                 if(strlen($request->input('innumber')) !== 12)
                 {
                     return back()->withErrors([
-                        'innumber' => '入庫單號格式錯誤，長度須為12 , Please enter again',
+                        'innumber' => trans('validation.regex'),
                     ]);
                 }
                 else
@@ -356,7 +332,7 @@ class InboundController extends Controller
                 if(strlen($request->input('innumber')) !== 12)
                 {
                     return back()->withErrors([
-                        'innumber' => '入庫單號格式錯誤，長度須為12 , Please enter again',
+                        'innumber' => trans('validation.regex'),
                     ]);
                 }
                 else
@@ -386,7 +362,7 @@ class InboundController extends Controller
                 if(strlen($request->input('innumber')) !== 12)
                 {
                     return back()->withErrors([
-                        'innumber' => '入庫單號格式錯誤，長度須為12 , Please enter again',
+                        'innumber' => trans('validation.regex'),
                     ]);
                 }
                 else
@@ -401,7 +377,7 @@ class InboundController extends Controller
                 if(strlen($request->input('innumber')) !== 12)
                 {
                     return back()->withErrors([
-                        'innumber' => '入庫單號格式錯誤，長度須為12 , Please enter again',
+                        'innumber' => trans('validation.regex'),
                     ]);
                 }
                 else
@@ -426,7 +402,7 @@ class InboundController extends Controller
                 if(strlen($request->input('innumber')) !== 12)
                 {
                     return back()->withErrors([
-                        'innumber' => '入庫單號格式錯誤，長度須為12 , Please enter again',
+                        'innumber' => trans('validation.regex'),
                     ]);
                 }
                 else
@@ -442,7 +418,7 @@ class InboundController extends Controller
                 if(strlen($request->input('innumber')) !== 12)
                 {
                     return back()->withErrors([
-                        'innumber' => '入庫單號格式錯誤，長度須為12 , Please enter again',
+                        'innumber' => trans('validation.regex'),
                     ]);
                 }
                 else
@@ -468,7 +444,7 @@ class InboundController extends Controller
                 if(strlen($request->input('innumber')) !== 12)
                 {
                     return back()->withErrors([
-                        'innumber' => '入庫單號格式錯誤，長度須為12 , Please enter again',
+                        'innumber' => trans('validation.regex'),
                     ]);
                 }
                 else
@@ -485,7 +461,7 @@ class InboundController extends Controller
                 if(strlen($request->input('innumber')) !== 12)
                 {
                     return back()->withErrors([
-                        'innumber' => '入庫單號格式錯誤，長度須為12 , Please enter again',
+                        'innumber' => trans('validation.regex'),
                     ]);
                 }
                 else
@@ -762,7 +738,7 @@ class InboundController extends Controller
                     $inreason = $request->input('inreason');
                     $number = $request->input('number');
 
-                    if($number !== 'zero' && strlen($number) !== 12)
+                    if($number !== ' ' && $number !== null && strlen($number) !== 12)
                     {
                         $reDive->boolean = true;
                         $reDive->passbool = false;
@@ -981,7 +957,7 @@ class InboundController extends Controller
                             $reDive->boolean = false;
                             $reDive->passbool = false;
                         }
-                        Session::put('addnewsubmitok' , $number);
+
                         $reDive->boolean = true;
                         $reDive->passbool = true;
                         $reDive->message = $opentime;
@@ -1030,7 +1006,6 @@ class InboundController extends Controller
                             $reDive->boolean = false;
                             $reDive->passbool = false;
                         }
-                        Session::put('addnewsubmitok' , $number);
                         $reDive->boolean = true;
                         $reDive->passbool = true;
                         $reDive->message = $opentime;
@@ -1053,7 +1028,7 @@ class InboundController extends Controller
     }
 
 
-    //入庫-新增提交成功
+    /*//入庫-新增提交成功
     public function addnewsubmitok()
     {
         if (Session::has('username'))
@@ -1073,7 +1048,7 @@ class InboundController extends Controller
         {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //入庫-新增(By客戶別)頁面
     public function addclient(Request $request)
@@ -1152,8 +1127,10 @@ class InboundController extends Controller
                     if($amount > $buy && $inreason !== '調撥' && $inreason !== '退庫')
                     {
                         $i++;
+                        $mess = trans('inboundpageLang.amounterror').' ， '.trans('inboundpageLang.row').' : '.$i.
+                        trans('inboundpageLang.client').' : '.$client.trans('inboundpageLang.isn').' : ' .$number;
                         echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('入庫數量不可大於在途量，In Row :' + '$i' + ' 客戶別: ' + '$client' + ' 料號: ' + '$number');
+                                window.alert('$mess');
                                 window.location.href='add';
                                 </script>");
                     }
@@ -1232,8 +1209,11 @@ class InboundController extends Controller
                     continue;
                 }
             }
+            $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
+            .trans('basicInfoLang.update').trans('basicInfoLang.success'). ' : '
+            .trans('basicInfoLang.inlist').' : '.$opentime;
             echo ("<script LANGUAGE='JavaScript'>
-            window.alert('共 ' + '$record' + ' 筆更新完成，入庫單號: ' + '$opentime');
+            window.alert('$mess');
             window.location.href='/inbound';
             </script>");
         }
@@ -1272,8 +1252,12 @@ class InboundController extends Controller
                             if($stock < $amount)
                             {
                                 if($stock === null) $stock = 0;
+
+                                $mess = trans('basicInfoLang.lessstock').$record.trans('basicInfoLang.nowstock').' : '.$stock
+                                .trans('basicInfoLang.inboundnum').' : ' . $amount;
+
                                 echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('目前庫存小於入庫數量，無法刪除此筆入庫。目前庫存: ' + '$stock' + '入庫數量: ' + '$amount');
+                                window.alert('$mess');
                                 window.location.href='search';
                                 </script>");
                                 return;
@@ -1315,8 +1299,12 @@ class InboundController extends Controller
                         continue;
                     }
                 }
+
+                $mess = trans('basicInfoLang.delete').$record.trans('basicInfoLang.success'). ' ， '
+                .trans('basicInfoLang.inlist').' : ' . $list . trans('basicInfoLang.client'). ' : '.$client
+                .trans('basicInfoLang.isn'). ' : ' .$number;
                 echo("<script LANGUAGE='JavaScript'>
-                window.alert('刪除成功: 入庫單號 : ' + '$list' + ' 客戶別: ' +  '$client' + ' 料號: ' + '$number');
+                window.alert('$mess');
                 window.location.href='/inbound';
                 </script>");
             }
@@ -1455,7 +1443,7 @@ class InboundController extends Controller
         if (Session::has('username'))
         {
             $count = $request->input('count');
-            $time = 0;
+            $record = 0;
             $now = Carbon::now();
             $in = false;
             for($i = 0 ; $i < $count ; $i ++)
@@ -1473,7 +1461,7 @@ class InboundController extends Controller
                         DB::table('inventory')
                             ->insert(['料號' => $number , '現有庫存' => $amount , '儲位' => $position ,'客戶別' => $client , '最後更新時間' => $now]);
                         DB::commit();
-                        $time++;
+                        $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
                         $mess = $e->getmessage();
@@ -1493,7 +1481,7 @@ class InboundController extends Controller
                             ->where('儲位', $position)
                             ->update(['現有庫存' => $stock + $amount , '最後更新時間' => $now]);
                         DB::commit();
-                        $time++;
+                        $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
                         $mess = $e->getmessage();
@@ -1504,8 +1492,11 @@ class InboundController extends Controller
                     }
                 }
             }
+
+            $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
+            .trans('basicInfoLang.stockupload').trans('basicInfoLang.success');
             echo("<script LANGUAGE='JavaScript'>
-                window.alert('共 : ' + '$time' + ' 筆庫存上傳成功');
+                window.alert('$mess');
                 window.location.href='/inbound';
                 </script>");
 

@@ -33,7 +33,7 @@
                             </select>
                         </div>
                     </div>
-                    <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.enterpicklist') !!}">
+                    <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.searchpicklist') !!}">
                     <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.deletepicklist') !!}">
                 </form>
                 <br>

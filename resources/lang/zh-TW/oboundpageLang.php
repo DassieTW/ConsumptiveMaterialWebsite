@@ -188,7 +188,7 @@ return [
     'enterdiffreason'=> '請輸入差異原因',
     'entersendpeople' =>'請選擇發料人員',
     'enterpickpeople' =>'請選擇領料人員',
-    'nostock1'=> '該料號&儲位沒有庫存，無法出庫。',
+    'nostock1'=> '之庫存小於實際領用數量，無法出庫。',
     'backreason' => '退回原因',
     'backamount' => '預退數量',
     'realbackamount' => '實際退回數量',
@@ -263,5 +263,10 @@ return [
     'enterbound' => '請選擇庫別',
     'oisn' => 'O庫料號',
     'amountzero' => '入庫數量不可小於等於零',
+    'amount' => '數量',
+    'outpickok' => '出庫完成，領料單號: ',
+    'outbackok' => '出庫完成，退料單號: ',
+    'lessstock' => '目前庫存小於入庫數量，無法刪除此筆入庫。',
+
 
 ];

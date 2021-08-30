@@ -23,7 +23,6 @@ return [
     'SRM' => 'SRM',
     'SXB_search' => 'SXB (Search)',
     'on_the_way_search' => 'On-Order Inventory <br/> &nbsp;&nbsp;&nbsp; (Search)',
-
     'client' =>'Clients',
     'machine' =>'Machines',
     'process' =>'Processes',
@@ -172,7 +171,6 @@ return [
     'nowuse' => 'Daily need per person in this month',
     'nowchange' => 'Daily change frequency of the month',
     'nowdayneed' => 'Daily need of the month',
-
     'nextpeople' => 'Number of next month stand',
     'nextline' => 'Number of next month line',
     'nextclass' => 'Number of next month class',
@@ -202,6 +200,13 @@ return [
     'buytime' => 'Buy time',
     'buyamount1' => 'Requisition amount',
     'success' => 'Success',
+    'total' =>'Total',
+    'record' =>'reocord',
+    'plz_write' =>'Please fill in',
+    'row' =>'in row',
+    'nowrite' =>'Not yet filled in',
+    'upload1' =>'Upload',
+    'notmonth' =>'non-monthly PR',
 
 
 

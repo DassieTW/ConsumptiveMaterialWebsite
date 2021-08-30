@@ -23,7 +23,6 @@ return [
     'SRM' => 'SRM單',
     'SXB_search' => 'SXB單(查詢)',
     'on_the_way_search' => '在途數量(查詢)',
-
     'searchstock' => '庫存查詢',
     'locationchange' => '儲位調撥',
     'stockupload' => '庫存上傳',
@@ -256,10 +255,4 @@ return [
     'repeat' => '資料已存放在資料庫內，請檢查。',
     'upload1' => '上傳',
     'notmonth' => '非月請購',
-
-
-
-
-
-
 ];

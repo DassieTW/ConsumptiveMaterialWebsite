@@ -23,7 +23,9 @@ $('#new_people').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true && myObj.passbool === true){
-            alert('新增人員訊息成功。')
+            var mess = Lang.get('templateWords.newPInfo')+Lang.get('loginPageLang.success');
+            alert(mess);
+            //alert('新增人員訊息成功。')
             window.location.href = "/member";
             //window.location.href = "member.newok";
           }

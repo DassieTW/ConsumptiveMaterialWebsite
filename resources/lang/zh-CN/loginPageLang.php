@@ -55,5 +55,14 @@ return [
     'jobsearch' => '工号查询',
     'enterjobsearch' => '请输入工号',
     'addtodatabase' => '新增至资料库',
+    'success' => '成功',
+    'againlogin' => '请重新登入',
+    'pinf' => '人员信息',
+    'user' => '用户',
+    'repeat' => '资料已存放在资料库内，请检查。 ',
+    'upload1' => '上传',
+    'total' => '共 ',
+    'record' => ' 笔',
+    'usernamerepeat' => '帐号重复，请重新输入。',
 
 ];

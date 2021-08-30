@@ -72,4 +72,7 @@ return [
     'gradea' =>'GradeA Material',
     'month' =>'Monthly PR',
     'monthuse' =>'Monthly Use',
+    'coming' =>'Coming soon',
+    'transfer' =>'transfer',
+    'to' =>'to',
 ];
