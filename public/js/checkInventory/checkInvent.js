@@ -29,6 +29,8 @@ $(document).ready(function () {
         }, 500);
     } // func. arrowChangeToDown
 
+
+
     (function () { // starting show on document ready
         if (document.getElementById("toggle-state").checked) {
             $('#toggle-state-text').text(Lang.get('checkInvLang.isn'));
@@ -40,6 +42,11 @@ $(document).ready(function () {
         } // else
 
         $("#texBox").focus();
+
+        if( $('#continueT').val().length===0 ) {
+            $('#continueT').text(Lang.get('checkInvLang.no_table_found'));
+            $('#continueT').parent().find('ul').append('<li><a class="dropdown-item" href="">' + Lang.get('checkInvLang.create_new_table') + '</a></li>');
+        } // if
     })();
 
     $('#toggle-state').on('change', function () { // 目標改變
@@ -1021,9 +1028,9 @@ $(document).ready(function () {
         var $pageno = "1";
 
         // console.log("isn : " + $(this).find('.isnForm').prop('nodeName')); // test
-        console.log("loc : " + $locc); // test
-        console.log("stock : " + $stock); // test
-        console.log("check : " + $checkk); // test
+        // console.log("loc : " + $locc); // test
+        // console.log("stock : " + $stock); // test
+        // console.log("check : " + $checkk); // test
 
         var $w = JSON.parse(sessionStorage.getItem('isn'));
         var $x = JSON.parse(sessionStorage.getItem('loc'));
@@ -1081,7 +1088,7 @@ $(document).ready(function () {
                     sessionStorage.setItem('check', JSON.stringify($z));
                     let checkResult = parseInt($checkk) - parseInt($y[indexC]);
                     let tempStr = "";
-                    if (checkResult < 0) {
+                    if (checkResult <= 0) {
                         $(that).find('.checkForm').attr("value", $checkk);
                         $(that).find('.checkForm').val($checkk);
                         $(that).find('.checkForm2').attr("value", checkResult);
@@ -1110,11 +1117,20 @@ $(document).ready(function () {
                         $(that).find('.changeOnUpdate').css('background-color', '#FFCDD2');
                         $(that).find('.checkForm').css('border', '3px solid red');
                         $(that).find('.checkForm2').css('border', '3px solid red');
-                        $(that).find('.checkForm2').css('border', '3px solid green');
                         $(that).find('.changeLab').html('&nbsp;' + Lang.get('checkInvLang.shortage') + '&nbsp;');
                         $(that).find('.changeBtnText').html(Lang.get('checkInvLang.edit'));
                     } // if else if
 
+                    notyf.success({
+                        message: Lang.get('checkInvLang.update_success'),
+                        duration: 3000,   //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom"
+                        }
+                    });
                     return false;
                 },
                 beforeSend: function () {
@@ -1128,9 +1144,12 @@ $(document).ready(function () {
                 },
                 error: function (err) {
                     if (err.status == 422) { // when status code is 422, it's a validation issue
-                        // console.log(err.responseJSON.message); // test
-                        $(that).find('.checkForm').addClass("is-invalid");
-                        $(that).find('.checkForm').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
+                        // console.log(err); // test
+                        $.each(err.responseJSON.errors, function (i, error) {
+                            // var el = $(document).find('[name="' + i + '"]');
+                            $(that).find('.checkForm').addClass("is-invalid");
+                            $(that).find('.checkForm').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
+                        });
                     } // if error 422
                     else if (err.status == 420) { // else if error 420
                         $(that).find('.checkForm').addClass("is-invalid");

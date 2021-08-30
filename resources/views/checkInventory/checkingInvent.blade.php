@@ -53,8 +53,9 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
                     <h1 class="card-title">{!! __('checkInvLang.serial_number') !!} :&nbsp;&nbsp;
                         <div class="btn-group col col-auto">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="continueT"
-                                data-bs-toggle="dropdown" data-bs-auto-close="inside"
-                                aria-expanded="false">{{$serialNums->first()->單號}}</button>
+                                data-bs-toggle="dropdown" data-bs-auto-close="inside" aria-expanded="false"><?php 
+                                if( $serialNums->first() !== null )
+                                $serialNums->first()->單號 ?></button>
                             <ul class="dropdown-menu" aria-labelledby="continueT">
                                 @foreach ($serialNums as $serialNum)
                                 @if ($serialNum->單號 === $serialNums->first()->單號)
