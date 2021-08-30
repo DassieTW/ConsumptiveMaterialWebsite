@@ -65,8 +65,9 @@ $('#newmaterial').on('submit', function (e) {
             document.getElementById('safe').value='';
           }
           else if(myObj.boolean === true){
-
-            alert('New Material successfully');
+            var mess = Lang.get('oboundpageLang.newMats')+Lang.get('oboundpageLang.success');
+            alert(mess);
+            //alert('New Material successfully');
             window.location.href = "/basic";
           }
        },

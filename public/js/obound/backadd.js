@@ -7,7 +7,6 @@ $.ajaxSetup({
 
 $('#backadd').on('submit', function (e) {
     e.preventDefault();
-      var test = 'zero';
       var number = $("#number").val();
       var name = $("#name").val();
       var format = $("#format").val();
@@ -20,7 +19,7 @@ $('#backadd').on('submit', function (e) {
       var production = $("#production").val();
       var line = $("#line").val();
       var backreason = $('#backreason').val();
-      if(remark == ""){remark = test};
+
     $.ajax({
        type:'POST',
        url:"backaddsubmit",
@@ -31,8 +30,12 @@ $('#backadd').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true){
-            alert("添加成功，退料單號: " + myObj.message);
-            window.location.href = "backaddsubmitok";
+
+            var mess = Lang.get('oboundpageLang.add')+Lang.get('oboundpageLang.success')+'，'+
+            +Lang.get('oboundpageLang.backlistnum')+' : '+myObj.message;
+            alert(mess);
+            //alert("添加成功，退料單號: " + myObj.message);
+            window.location.href = "/obound";
             //window.location.href = "member.newok";
           }
           else{

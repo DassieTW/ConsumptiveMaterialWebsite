@@ -116,8 +116,11 @@ class OutboundController extends Controller
                 DB::table('outbound')
                 ->where('領料單號', $request->input('list'))
                 ->delete();
+
+                $mess = trans('outboundpageLang.delete').' : '.trans('outboundpageLang.picklistnum')
+                .$list.trans('outboundpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
-                window.alert('已刪除 : 單號' + '$list' );
+                window.alert('$mess' );
                 window.location.href='/outbound';
                         </script>");
 
@@ -215,10 +218,12 @@ class OutboundController extends Controller
                 DB::table('出庫退料')
                 ->where('退料單號', $request->input('list'))
                 ->delete();
+                $mess = trans('outboundpageLang.delete').' : '.trans('outboundpageLang.backlistnum')
+                .$list.trans('outboundpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
-                window.alert('已刪除 : 單號' + '$list' );
+                window.alert('$mess' );
+                window.location.href='/outbound';
                         </script>");
-                return view('outbound.index');
             }
             else
             {
@@ -298,13 +303,25 @@ class OutboundController extends Controller
             $production = $request->input('production');
             $begin = date($request->input('begin'));
             $end = date($request->input('end'));
-            $datas = DB::table('consumptive_material')
-                ->join('outbound', function($join)
-                {
-                    $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                    ->whereNotNull('領料人員');
+            if($number !== null)
+            {
+                $datas = DB::table('consumptive_material')
+                    ->join('outbound', function($join)
+                    {
+                        $join->on('outbound.料號', '=', 'consumptive_material.料號')
+                        ->whereNotNull('領料人員');
+                    })->where('consumptive_material.料號','like', $number.'%')->get();
 
-                })->get();
+            }
+            else
+            {
+                $datas = DB::table('consumptive_material')
+                    ->join('outbound', function($join)
+                    {
+                        $join->on('outbound.料號', '=', 'consumptive_material.料號')
+                        ->whereNotNull('領料人員');
+                    })->get();
+            }
 
             //all empty
             if($client === null && $production === null && $number === null  && $send === null && !($request->has('date')))
@@ -324,16 +341,7 @@ class OutboundController extends Controller
             //input material number
             else if($client === null && $production === null && $number !== null && $send === null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('料號' , $number)]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas]);
             }
             //select send
             else if($client === null && $production === null && $number === null && $send !== null && !($request->has('date')))
@@ -353,16 +361,7 @@ class OutboundController extends Controller
             //select client and number
             else if($client !== null && $production === null && $number !== null && $send === null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('客戶別' , $client)]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)]);
             }
             //select client and time
             else if($client !== null && $production === null && $number === null && $send === null && ($request->has('date')))
@@ -372,16 +371,7 @@ class OutboundController extends Controller
             //select production and number
             else if($client === null && $production !== null && $number !== null && $send === null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('製程' , $production)]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)]);
             }
             //select production and time
             else if($client === null && $production !== null && $number === null && $send === null && ($request->has('date')))
@@ -392,17 +382,8 @@ class OutboundController extends Controller
             //select number and time
             else if($client === null && $production === null && $number !== null && $send === null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])]);
 
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('料號' , $number)]);
-                }
             }
             //select client and send
             else if($client !== null && $production === null && $number === null && $send !== null && !($request->has('date')))
@@ -417,16 +398,9 @@ class OutboundController extends Controller
             //select number and send
             else if($client === null && $production === null && $number !== null && $send !== null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('發料部門' , $send)]);
-                }
+
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)]);
+
             }
             //select time and send
             else if($client === null && $production === null && $number === null && $send !== null && ($request->has('date')))
@@ -436,17 +410,8 @@ class OutboundController extends Controller
             //select client and production and number
             else if($client !== null && $production !== null && $number !== null && $send === null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('製程' , $production)
-                    ->where('客戶別' , $client)]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)
+                ->where('客戶別' , $client)]);
             }
             //select client and production and time
             else if($client !== null && $production !== null && $number === null && $send === null && ($request->has('date')))
@@ -457,34 +422,19 @@ class OutboundController extends Controller
             //select client and number and time
             else if($client !== null && $production === null && $number !== null && $send === null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('料號' , $number)
-                    ->where('客戶別' , $client)]);
-                }
+
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])
+                ->where('客戶別' , $client)]);
+
             }
             //select production and number and time
             else if($client === null && $production !== null && $number !== null && $send === null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
 
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('料號' , $number)
-                    ->where('製程' , $production)]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])
+                ->where('製程' , $production)]);
             }
+
             //select client and production and send
             else if($client !== null && $production !== null && $number === null && $send !== null && !($request->has('date')))
             {
@@ -494,17 +444,10 @@ class OutboundController extends Controller
             //select client and number and send
             else if($client !== null && $production === null && $number !== null && $send !== null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('料號' , $number)
-                    ->where('客戶別' , $client)]);
-                }
+
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)
+                ->where('客戶別' , $client)]);
+
             }
             //select client and time and send
             else if($client !== null && $production === null && $number === null && $send !== null && ($request->has('date')))
@@ -515,18 +458,9 @@ class OutboundController extends Controller
             //select number and production and send
             else if($client === null && $production !== null && $number !== null && $send !== null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                    ->where('料號' , $number)]);
 
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)]);
+
             }
             //select production and time and send
             else if($client === null && $production !== null && $number === null && $send !== null && ($request->has('date')))
@@ -537,63 +471,28 @@ class OutboundController extends Controller
             //select number and time and send
             else if($client === null && $production === null && $number !== null && $send !== null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('料號' , $number)
-                    ->where('發料部門' , $send)]);
 
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])
+                ->where('發料部門' , $send)]);
+
             }
             //select client and production and number and time
             else if($client !== null && $production !== null && $number !== null && $send === null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('製程' , $production)
-                    ->where('客戶別' , $client)->whereBetween('出庫時間' , [$begin, $end])]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)
+                ->where('客戶別' , $client)->whereBetween('出庫時間' , [$begin, $end])]);
             }
             //select client and send and number and time
             else if($client !== null && $production === null && $number !== null && $send !== null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('發料部門' , $send)
-                    ->where('客戶別' , $client)->whereBetween('出庫時間' , [$begin, $end])]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)
+                ->where('客戶別' , $client)->whereBetween('出庫時間' , [$begin, $end])]);
             }
             //select client and production and number and send
             else if($client !== null && $production !== null && $number !== null && $send !== null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('製程' , $production)
-                    ->where('客戶別' , $client)->where('發料部門' , $send)]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)
+                ->where('客戶別' , $client)->where('發料部門' , $send)]);
             }
             //select client and production and send and time
             else if($client !== null && $production !== null && $number === null && $send !== null && ($request->has('date')))
@@ -605,32 +504,14 @@ class OutboundController extends Controller
             //select number and production and send and time
             else if($client === null && $production !== null && $number !== null && $send !== null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                    ->where('料號' , $number)->whereBetween('出庫時間' , [$begin, $end])]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
+                ->whereBetween('出庫時間' , [$begin, $end])]);
             }
             //select all
             else if($client !== null && $production !== null && $number !== null && $send !== null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('料號' , $number)
-                    ->where('製程' , $production)->where('客戶別' , $client)->where('發料部門',$send)]);
-                }
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])
+                ->where('製程' , $production)->where('客戶別' , $client)->where('發料部門',$send)]);
             }
         }
         else
@@ -650,14 +531,24 @@ class OutboundController extends Controller
             $production = $request->input('production');
             $begin = date($request->input('begin'));
             $end = date($request->input('end'));
-            $datas = DB::table('consumptive_material')
-                ->join('出庫退料', function($join)
-                {
-                    $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                    ->whereNotNull('收料人員');
-
-                })->get();
-
+            if($number !== null)
+            {
+                $datas = DB::table('consumptive_material')
+                    ->join('出庫退料', function($join)
+                    {
+                        $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
+                        ->whereNotNull('收料人員');
+                    })->where('consumptive_material.料號','like', $number.'%')->get();
+            }
+            else
+            {
+                $datas = DB::table('consumptive_material')
+                    ->join('出庫退料', function($join)
+                    {
+                        $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
+                        ->whereNotNull('收料人員');
+                    })->get();
+            }
             //all empty
             if($client === null && $production === null && $number === null  && $send === null && !($request->has('date')))
             {
@@ -676,16 +567,7 @@ class OutboundController extends Controller
             //input material number
             else if($client === null && $production === null && $number !== null && $send === null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->where('料號' , $number)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas]);
             }
             //select send
             else if($client === null && $production === null && $number === null && $send !== null && !($request->has('date')))
@@ -705,16 +587,8 @@ class OutboundController extends Controller
             //select client and number
             else if($client !== null && $production === null && $number !== null && $send === null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('客戶別' , $client)]);
-                }
+
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)]);
             }
             //select client and time
             else if($client !== null && $production === null && $number === null && $send === null && ($request->has('date')))
@@ -724,16 +598,7 @@ class OutboundController extends Controller
             //select production and number
             else if($client === null && $production !== null && $number !== null && $send === null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('製程' , $production)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)]);
             }
             //select production and time
             else if($client === null && $production !== null && $number === null && $send === null && ($request->has('date')))
@@ -744,17 +609,7 @@ class OutboundController extends Controller
             //select number and time
             else if($client === null && $production === null && $number !== null && $send === null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('料號' , $number)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])]);
             }
             //select client and send
             else if($client !== null && $production === null && $number === null && $send !== null && !($request->has('date')))
@@ -769,16 +624,7 @@ class OutboundController extends Controller
             //select number and send
             else if($client === null && $production === null && $number !== null && $send !== null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('發料部門' , $send)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)]);
             }
             //select time and send
             else if($client === null && $production === null && $number === null && $send !== null && ($request->has('date')))
@@ -788,17 +634,8 @@ class OutboundController extends Controller
             //select client and production and number
             else if($client !== null && $production !== null && $number !== null && $send === null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('製程' , $production)
-                    ->where('客戶別' , $client)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)
+                ->where('客戶別' , $client)]);
             }
             //select client and production and time
             else if($client !== null && $production !== null && $number === null && $send === null && ($request->has('date')))
@@ -809,33 +646,14 @@ class OutboundController extends Controller
             //select client and number and time
             else if($client !== null && $production === null && $number !== null && $send === null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('料號' , $number)
-                    ->where('客戶別' , $client)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])
+                ->where('客戶別' , $client)]);
             }
             //select production and number and time
             else if($client === null && $production !== null && $number !== null && $send === null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('料號' , $number)
-                    ->where('製程' , $production)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])
+                ->where('製程' , $production)]);
             }
             //select client and production and send
             else if($client !== null && $production !== null && $number === null && $send !== null && !($request->has('date')))
@@ -846,17 +664,8 @@ class OutboundController extends Controller
             //select client and number and send
             else if($client !== null && $production === null && $number !== null && $send !== null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('料號' , $number)
-                    ->where('客戶別' , $client)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)
+                ->where('客戶別' , $client)]);
             }
             //select client and time and send
             else if($client !== null && $production === null && $number === null && $send !== null && ($request->has('date')))
@@ -867,18 +676,7 @@ class OutboundController extends Controller
             //select number and production and send
             else if($client === null && $production !== null && $number !== null && $send !== null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                    ->where('料號' , $number)]);
-
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)]);
             }
             //select production and time and send
             else if($client === null && $production !== null && $number === null && $send !== null && ($request->has('date')))
@@ -889,63 +687,26 @@ class OutboundController extends Controller
             //select number and time and send
             else if($client === null && $production === null && $number !== null && $send !== null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('料號' , $number)
-                    ->where('發料部門' , $send)]);
-
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])
+                ->where('發料部門' , $send)]);
             }
             //select client and production and number and time
             else if($client !== null && $production !== null && $number !== null && $send === null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('製程' , $production)
-                    ->where('客戶別' , $client)->whereBetween('入庫時間' , [$begin, $end])]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)
+                ->where('客戶別' , $client)->whereBetween('入庫時間' , [$begin, $end])]);
             }
             //select client and send and number and time
             else if($client !== null && $production === null && $number !== null && $send !== null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('發料部門' , $send)
-                    ->where('客戶別' , $client)->whereBetween('入庫時間' , [$begin, $end])]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)
+                ->where('客戶別' , $client)->whereBetween('入庫時間' , [$begin, $end])]);
             }
             //select client and production and number and send
             else if($client !== null && $production !== null && $number !== null && $send !== null && !($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->where('料號' , $number)->where('製程' , $production)
-                    ->where('客戶別' , $client)->where('發料部門' , $send)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)
+                ->where('客戶別' , $client)->where('發料部門' , $send)]);
             }
             //select client and production and send and time
             else if($client !== null && $production !== null && $number === null && $send !== null && ($request->has('date')))
@@ -957,32 +718,14 @@ class OutboundController extends Controller
             //select number and production and send and time
             else if($client === null && $production !== null && $number !== null && $send !== null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                    ->where('料號' , $number)->whereBetween('入庫時間' , [$begin, $end])]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
+                ->whereBetween('入庫時間' , [$begin, $end])]);
             }
             //select all
             else if($client !== null && $production !== null && $number !== null && $send !== null && ($request->has('date')))
             {
-                if(strlen($number) !== 12)
-                {
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                    ]);
-                }
-                else
-                {
-                    return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('料號' , $number)
-                    ->where('製程' , $production)->where('客戶別' , $client)->where('發料部門',$send)]);
-                }
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])
+                ->where('製程' , $production)->where('客戶別' , $client)->where('發料部門',$send)]);
             }
         }
         else
@@ -1190,7 +933,7 @@ class OutboundController extends Controller
                         window.location.href='/outbound';
                         </script>");
                 }
-                Session::put('pickaddsubmitok', $number);
+
                 $reDive->boolean = true;
                 $reDive->message = $opentime;
                 $myJSON = json_encode($reDive);
@@ -1255,7 +998,7 @@ class OutboundController extends Controller
                         window.location.href='/outbound';
                         </script>");
                 }
-                Session::put('backaddsubmitok', $number);
+
                 $reDive->boolean = true;
                 $reDive->message = $opentime;
                 $myJSON = json_encode($reDive);

@@ -69,4 +69,12 @@ return [
     'newbasicInfo' => 'New Basic Inf',
     'isnlength' =>'ISN length is not 12',
     'isnrepeat' =>'ISN is repeat',
+    'total' =>'Total',
+    'record' =>'reocord',
+    'plz_write' =>'Please fill in',
+    'row' =>'in row',
+    'nowrite' =>'Not yet filled in',
+    'upload1' =>'Upload',
+    'notmonth' =>'non-monthly PR',
+    'repeat' => 'The data has been stored in the database, please check.',
 ];

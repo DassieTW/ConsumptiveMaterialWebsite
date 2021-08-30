@@ -49,7 +49,9 @@ $('#picklist').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true && myObj.passbool === true && myObj.passstock === true ){
-            alert("出庫完成，領料單號: " + list);
+            var mess = Lang.get('outboundpageLang.outpickok')+list;
+            alert(mess);
+            //alert("出庫完成，領料單號: " + list);
             window.location.href = "/outbound";
             //window.location.href = "member.newok";
           }
@@ -64,16 +66,16 @@ $('#picklist').on('submit', function (e) {
 
             document.getElementById("nostock").style.display = "block";
             document.getElementById("position").style.borderColor = "red";
-            $("#nostock #number").html("料號 : " + myObj.number);
-            $("#nostock #position").html("儲位 : " + myObj.position);
+            $("#nostock #number").html(Lang.get('outboundpageLang.isn') +' : '+ myObj.number);
+            $("#nostock #position").html(Lang.get('outboundpageLang.loc') +' : '  + myObj.position);
           }
           //儲位庫存小於實際領用數量
           else if(myObj.boolean === false && myObj.passbool === true && myObj.passstock === true){
 
             document.getElementById("lessstock").style.display = "block";
             document.getElementById("position").style.borderColor = "red";
-            $("#lessstock #position").html("目前儲位 : " + myObj.position + "之庫存小於實際領用數量，無法出庫。");
-            $("#lessstock #nowstock").html("現有庫存 : " + myObj.nowstock);
+            $("#lessstock #position").html(Lang.get('outboundpageLang.nowloc') +' : ' + myObj.position + Lang.get('outboundpageLang.stockless'));
+            $("#lessstock #nowstock").html(Lang.get('outboundpageLang.nowstock') +' : '+ myObj.nowstock);
             document.getElementById("amount"+list).style.borderColor = "red";
           }
           else if(myObj.boolean === false && myObj.passbool === false && myObj.passstock === false){

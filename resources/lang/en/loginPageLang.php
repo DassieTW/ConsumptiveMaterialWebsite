@@ -56,5 +56,14 @@ return [
     'jobsearch' =>'job number search',
     'enterjobsearch' =>'Please enter your job number',
     'addtodatabase' =>'AddtoDatabase',
+    'total' =>'Total',
+    'record' =>'reocord',
+    'success' =>'Success',
+    'againlogin' =>'Please log in again',
+    'pinf' =>'Personnel Information',
+    'user' =>'user',
+    'repeat' => 'The data has been stored in the database, please check.',
+    'upload1' =>'Upload',
+    'usernamerepeat' =>'The account is repeated, please enter again.'
 
 ];

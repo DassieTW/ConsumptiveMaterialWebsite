@@ -73,4 +73,7 @@ return [
     'stock' => '库存',
     'days' => '呆滞天数',
     'monthuse' => '月使用量',
+    'coming' => '即将从',
+    'transfer' => '调拨',
+    'to' => '到',
 ];

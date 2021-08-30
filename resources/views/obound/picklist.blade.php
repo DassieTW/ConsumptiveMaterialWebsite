@@ -85,7 +85,7 @@
                                     @endforeach
 
                             </table>
-                            <div id = "reasonerror"><h3 style="color: red">{!! __('oboundpageLang.enteriffreason') !!}</h3></div>
+                            <div id = "reasonerror"><h3 style="color: red">{!! __('oboundpageLang.enterdiffreason') !!}</h3></div>
 
                             <label class="form-label">{!! __('oboundpageLang.sendpeople') !!}</label>
                             <select class="form-control form-control-lg" id = "sendpeople" name="sendpeople" required width="250" style="width: 250px">

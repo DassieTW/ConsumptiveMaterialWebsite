@@ -55,4 +55,16 @@ return [
     'jobsearch' => '工號查詢',
     'enterjobsearch' => '請輸入工號',
     'addtodatabase' => '新增至資料庫',
+    'success' => '成功',
+    'againlogin' => '請重新登入',
+    'pinf' => '人員信息',
+    'user' => '用戶',
+    'repeat' => '資料已存放在資料庫內，請檢查。',
+    'upload1' => '上傳',
+    'total' => '共 ',
+    'record' => ' 筆',
+    'usernamerepeat' => '帳號重複，請重新輸入。',
+
+
+
 ];

@@ -87,5 +87,15 @@ return [
     'searchbacklist' => '搜尋退料單',
     'deletebacklist' => '刪除退料單',
     'enterstatus' => '請選擇功能狀況',
+    'outpickok' => '出庫完成，領料單號: ',
+    'outbackok' => '出庫完成，退料單號: ',
+    'nowloc' => '目前儲位',
+    'stockless'=> '之庫存小於實際領用數量，無法出庫。',
+    'add' => '添加',
+    'success' => '成功',
+    'delete' => '刪除',
+
+
+
 
 ];

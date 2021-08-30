@@ -43,7 +43,9 @@ $('#backlist').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true && myObj.passbool === true){
-            alert("出庫完成，退料單號: " + list);
+            var mess = Lang.get('outboundpageLang.outbackok')+list;
+            alert(mess);
+            //alert("出庫完成，退料單號: " + list);
             window.location.href = "/outbound";
             //window.location.href = "member.newok";
           }

@@ -61,6 +61,8 @@ Route::get('/inboundnewsubmitok', [OboundController::class, 'inboundnewsubmitok'
 Route::get('/inboundsearch', [OboundController::class, 'inboundsearch'])->name('obound.inboundsearch');
 
 //O庫-入庫查詢ok
+Route::get('/inboundsearchok', [OboundController::class, 'inboundsearchok']);
+
 Route::post('/inboundsearchok', [OboundController::class, 'inboundsearchok'])->name('obound.inboundsearchok');
 
 //O庫-入庫查詢刪除

@@ -27,7 +27,4 @@
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.upload')}}'">{!! __('inboundpageLang.stockupload') !!}</button>
 &emsp;
 
-<br>
-<br>
-<button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('member.index')}}'">Home</button>
 @endsection

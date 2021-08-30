@@ -87,4 +87,11 @@ return [
     'searchbacklist' => '搜寻退料单',
     'deletebacklist' => '删除退料单',
     'enterstatus' => '请选择功能状况',
+    'outpickok' => '出库完成，领料单号: ',
+    'outbackok' => '出库完成，退料单号: ',
+    'nowloc' => '目前储位',
+    'stockless'=> '之库存小于实际领用数量，无法出库。 ',
+    'add' => '添加',
+    'success' => '成功',
+    'delete' => '删除',
 ];

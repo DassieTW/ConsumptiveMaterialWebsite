@@ -69,4 +69,11 @@ return [
     'newbasicInfo' => '新增基础信息',
     'isnlength' => '料号长度不为12',
     'isnrepeat' => '料号重复',
+    'total' => '共 ',
+    'record' => ' 笔',
+    'success' => '成功',
+    'plz_write' => '请填写',
+    'row' => '在列',
+    'nowrite' => '尚未填写',
+    'repeat' => '资料已存放在资料库内，请检查。 ',
 ];

@@ -22,7 +22,7 @@ $('#newmaterial').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true && myObj.passbool === true){
-            var mess = Lang.get('monthlyPRpageLang.newMats')+Lang.get('monthlyPRpageLang.success');
+            var mess = Lang.get('oboundpageLang.newMats')+Lang.get('oboundpageLang.success');
             alert(mess);
             window.location.href = "/obound";
           }

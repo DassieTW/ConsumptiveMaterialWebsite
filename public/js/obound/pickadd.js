@@ -7,7 +7,6 @@ $.ajaxSetup({
 
 $('#pickadd').on('submit', function (e) {
     e.preventDefault();
-      var test = 'zero';
       var number = $("#number").val();
       var name = $("#name").val();
       var format = $("#format").val();
@@ -20,7 +19,6 @@ $('#pickadd').on('submit', function (e) {
       var production = $("#production").val();
       var line = $("#line").val();
       var usereason = $('#usereason').val();
-      if(remark == ""){remark = test};
     $.ajax({
        type:'POST',
        url:"pickaddsubmit",
@@ -31,8 +29,11 @@ $('#pickadd').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true){
-            alert("添加成功，領料單號: " + myObj.message);
-            window.location.href = "pickaddsubmitok";
+            var mess = Lang.get('oboundpageLang.add')+Lang.get('oboundpageLang.success')+'，'+
+            +Lang.get('oboundpageLang.picklistnum')+' : '+myObj.message;
+            alert(mess);
+            //alert("添加成功，領料單號: " + myObj.message);
+            window.location.href = "/obound";
             //window.location.href = "member.newok";
           }
           else{
