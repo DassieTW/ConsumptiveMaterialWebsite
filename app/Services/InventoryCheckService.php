@@ -27,7 +27,6 @@ class InventoryCheckService
                         $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
                     })
                     ->get();
-
             } else {     // if it is a loc
                 $results = DB::table('checking_inventory')
                     ->where([
@@ -55,41 +54,30 @@ class InventoryCheckService
     public function updateInventCheckRecord(Request $request)
     {
         $results = [];
-        $serialNum = filter_input(INPUT_POST, 'tablename', FILTER_SANITIZE_STRING); // 單號
-        $onlyCode = filter_input(INPUT_POST, 'texBox', FILTER_SANITIZE_STRING); // the scanned in barcode
-        $isIsn = filter_input(INPUT_POST, 'isIsn', FILTER_VALIDATE_BOOLEAN); // is this a ISN or Loc.
+        // isnn: $isnn, locc: $locc, checkk: $checkk, clientt: $client, pageno: $pageno, tname: $tname
+
+        $isn = filter_input(INPUT_POST, 'isnn', FILTER_SANITIZE_STRING);
+        $loc = filter_input(INPUT_POST, 'locc', FILTER_SANITIZE_STRING);
+        $client = filter_input(INPUT_POST, 'clientt', FILTER_SANITIZE_STRING);
+        $checkUpdate = (int) filter_input(INPUT_POST, 'checkk', FILTER_SANITIZE_STRING);
+        $serialNum = filter_input(INPUT_POST, 'tname', FILTER_SANITIZE_STRING); // 單號
 
         DB::beginTransaction();
 
         try {
-            if ($isIsn) {  // if it is an isn 
-                $results = DB::table('checking_inventory')
-                    ->where([
-                        ['checking_inventory.單號', '=', $serialNum],
-                        ['checking_inventory.料號', '=', $onlyCode],
-                    ])->join('consumptive_material', function ($join) {
-                        $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
-                    })
-                    ->get();
-
-            } else {     // if it is a loc
-                $results = DB::table('checking_inventory')
-                    ->where([
-                        ['checking_inventory.單號', '=', $serialNum],
-                        ['checking_inventory.儲位', '=', $onlyCode],
-                    ])
-                    ->join('consumptive_material', function ($join) {
-                        $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
-                    })
-                    ->get();
-            } // if else
-
-            // dd($results); // test
+            $affected = DB::table('checking_inventory')
+                ->where('單號', '=', $serialNum)
+                ->where('料號', '=', $isn)
+                ->where('儲位', '=', $loc)
+                ->where('客戶別', '=', $client)
+                ->update(['盤點' => $checkUpdate]);
 
             DB::commit();
+            return true;
             // all good
         } catch (\Exception $e) {
-            // DB::rollback(); // select statements dont need to roll back
+            dd($e);
+            DB::rollback();
             // something went wrong
         } // try catch
 
