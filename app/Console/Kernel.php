@@ -30,7 +30,8 @@ class Kernel extends ConsoleKernel
         //     \Log::info('成功排程');
         // })->everyMinute();
 
-        $schedule->command('post:clear')->monthly(); // clear all soft deleted posts( forever delete from db )
+        $schedule->command('logs:clear')->cron('0 3 * */3 *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
+        $schedule->command('log:clear')->cron('0 3 * */3 *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
     } // schedule
 
     /**

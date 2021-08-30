@@ -25,7 +25,7 @@ return [
     'no_such_isn' => '查无此料号',
     'inventory' => '盘点',
     'checking_result' => '结果',
-    'unknown' => '未知',
+    'unknown' => 'N/A',
     'excess' => '盘盈',
     'shortage' => '盘亏',
     'exact' => '盘正确',
@@ -36,4 +36,5 @@ return [
     'unchecked' => '个未盘',
     'update_success' => '更新成功',
     'update_failed' => '更新失败',
+    'value_not_changed' => '盘点结果未改变，确定送出？',
 ];

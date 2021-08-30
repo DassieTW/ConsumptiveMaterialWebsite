@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
-use App\Helpers ;
+use App\Helpers;
 use View;
 use Auth;
 
@@ -17,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-    
     }
 
     /**
@@ -31,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('current_user', Auth::User()); // share user data with all views
 
         DB::listen(function ($query) {            // listen on db querys and write logs in storage/log/dbquerys
-            \Log::channel('dbquerys')->info($query->sql);
+            \Log::channel('dbquerys')->info( ['sql' => $query->sql, 'bindings' => $query->bindings, 'time' => $query->time]);
             // $query->bindings
             // $query->time
         });

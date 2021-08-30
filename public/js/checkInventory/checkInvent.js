@@ -542,7 +542,7 @@ $(document).ready(function () {
                                 </div>\n\
                                 <div class="col col-4 d-flex flex-wrap align-items-stretch justify-content-center">\n\
                                     <div class="col-auto align-self-center">\n\
-                                        <label for="checkk" class="col-form-label col-auto changeLab">&nbsp;' + Lang.get('checkInvLang.inventory') + '&nbsp;</label>\n\
+                                        <label for="checkk" class="col-form-label col-auto">&nbsp;' + Lang.get('checkInvLang.inventory') + '&nbsp;</label>\n\
                                     </div>\n\
                                     <div class="col-auto align-self-center">\n\
                                         <input inputmode="numeric" type="text" name="checkk" class="checkForm form-control align-self-center"\n\
@@ -556,7 +556,7 @@ $(document).ready(function () {
                                         <label for="checkk" class="col-form-label col-auto changeLab">&nbsp;' + Lang.get('checkInvLang.checking_result') + '&nbsp;</label>\n\
                                     </div>\n\
                                     <div class="col-auto align-self-center">\n\
-                                        <input inputmode="numeric" type="text" name="checkk" class="form-control align-self-center"\n\
+                                        <input inputmode="numeric" type="text" name="checkk" class="form-control align-self-center checkForm2"\n\
                                                style="text-align: center; width: 5ch; height: 4ch; padding: 1px; border-radius: 10px; border: 3px solid darkblue"\n\
                                                value="' + Lang.get('checkInvLang.unknown') + '" readonly>\n\
                                     </div>\n\
@@ -626,7 +626,7 @@ $(document).ready(function () {
                                 </div>\n\
                                 <div class="col col-4 d-flex flex-wrap align-items-stretch justify-content-center">\n\
                                     <div class="col-auto align-self-center">\n\
-                                        <label for="checkk" class="col-form-label col-auto changeLab">&nbsp;' + Lang.get('checkInvLang.inventory') + '&nbsp;</label>\n\
+                                        <label for="checkk" class="col-form-label col-auto">&nbsp;' + Lang.get('checkInvLang.inventory') + '&nbsp;</label>\n\
                                     </div>\n\
                                     <div class="col-auto align-self-center">\n\
                                         <input inputmode="numeric" type="text" name="checkk" class="checkForm form-control align-self-center"\n\
@@ -641,7 +641,7 @@ $(document).ready(function () {
                                         <label for="checkk" class="col-form-label col-auto changeLab">&nbsp;' + Lang.get('checkInvLang.exact') + '&nbsp;</label>\n\
                                     </div>\n\
                                     <div class="col-auto align-self-center">\n\
-                                        <input inputmode="numeric" type="text" name="checkk" class="form-control align-self-center"\n\
+                                        <input inputmode="numeric" type="text" name="checkk" class="form-control align-self-center checkForm2"\n\
                                                style="text-align: center; width: 5ch; height: 4ch; padding: 1px; border-radius: 10px; border: 3px solid green"\n\
                                                value="' + (reCheckArray[x] - reStockArray[x]) + '" readonly>\n\
                                     </div>\n\
@@ -711,7 +711,7 @@ $(document).ready(function () {
                                 </div>\n\
                                 <div class="col col-4 d-flex flex-wrap align-items-stretch justify-content-center">\n\
                                     <div class="col-auto align-self-center">\n\
-                                        <label for="checkk" class="col-form-label col-auto changeLab">&nbsp;' + Lang.get('checkInvLang.inventory') + '&nbsp;</label>\n\
+                                        <label for="checkk" class="col-form-label col-auto">&nbsp;' + Lang.get('checkInvLang.inventory') + '&nbsp;</label>\n\
                                     </div>\n\
                                     <div class="col-auto align-self-center">\n\
                                         <input inputmode="numeric" type="text" name="checkk" class="checkForm form-control align-self-center"\n\
@@ -726,7 +726,7 @@ $(document).ready(function () {
                                         <label for="checkk" class="col-form-label col-auto changeLab">&nbsp;' + Lang.get('checkInvLang.excess') + '&nbsp;</label>\n\
                                     </div>\n\
                                     <div class="col-auto align-self-center">\n\
-                                        <input inputmode="numeric" type="text" name="checkk" class="form-control align-self-center"\n\
+                                        <input inputmode="numeric" type="text" name="checkk" class="form-control align-self-center checkForm2"\n\
                                                style="text-align: center; width: 5ch; height: 4ch; padding: 1px; border-radius: 10px; border: 3px solid red"\n\
                                                value="+' + (reCheckArray[x] - reStockArray[x]) + '" readonly>\n\
                                     </div>\n\
@@ -796,7 +796,7 @@ $(document).ready(function () {
                                 </div>\n\
                                 <div class="col col-4 d-flex flex-wrap align-items-stretch justify-content-center">\n\
                                     <div class="col-auto align-self-center">\n\
-                                        <label for="checkk" class="col-form-label col-auto changeLab">&nbsp;' + Lang.get('checkInvLang.inventory') + '&nbsp;</label>\n\
+                                        <label for="checkk" class="col-form-label col-auto">&nbsp;' + Lang.get('checkInvLang.inventory') + '&nbsp;</label>\n\
                                     </div>\n\
                                     <div class="col-auto align-self-center">\n\
                                         <input inputmode="numeric" type="text" name="checkk" class="checkForm form-control align-self-center"\n\
@@ -811,7 +811,7 @@ $(document).ready(function () {
                                         <label for="checkk" class="col-form-label col-auto changeLab">&nbsp;' + Lang.get('checkInvLang.shortage') + '&nbsp;</label>\n\
                                     </div>\n\
                                     <div class="col-auto align-self-center">\n\
-                                        <input inputmode="numeric" type="text" name="checkk" class="form-control align-self-center"\n\
+                                        <input inputmode="numeric" type="text" name="checkk" class="form-control align-self-center checkForm2"\n\
                                                style="text-align: center; width: 5ch; height: 4ch; padding: 1px; border-radius: 10px; border: 3px solid red"\n\
                                                value="' + (reCheckArray[x] - reStockArray[x]) + '" readonly>\n\
                                     </div>\n\
@@ -1008,7 +1008,10 @@ $(document).ready(function () {
     $("#carouselExampleSlidesOnly").on("submit", ".updateForm", function (event) {
         event.preventDefault();
 
-        //            console.log("validates"); // test
+        // cleanup previous submit
+        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+
         var $isnn = $(this).find('.isnForm').val();
         var $locc = $(this).find('.locForm').val();
         var $stock = $(this).find('.stockForm').val();
@@ -1017,10 +1020,10 @@ $(document).ready(function () {
         var $tname = $(this).find('.tname').val();
         var $pageno = "1";
 
-        //            console.log("isn : " + $(this).find('.isnForm').prop('nodeName')); // test
-        //            console.log("loc : " + $locc); // test
-        //            console.log("stock : " + $stock); // test
-        //            console.log("check : " + $checkk); // test
+        // console.log("isn : " + $(this).find('.isnForm').prop('nodeName')); // test
+        console.log("loc : " + $locc); // test
+        console.log("stock : " + $stock); // test
+        console.log("check : " + $checkk); // test
 
         var $w = JSON.parse(sessionStorage.getItem('isn'));
         var $x = JSON.parse(sessionStorage.getItem('loc'));
@@ -1043,7 +1046,7 @@ $(document).ready(function () {
         } // if
 
         if (indexC >= 0 && parseInt($z[indexC]) === parseInt($checkk)) {
-            sendd = confirm('Value has not changed, Are you sure?');
+            sendd = confirm(Lang.get('checkInvLang.value_not_changed'));
         } // if
         else {
             sendd = true;
@@ -1076,31 +1079,40 @@ $(document).ready(function () {
                     } // else
                     $z[indexC] = $checkk;
                     sessionStorage.setItem('check', JSON.stringify($z));
+                    let checkResult = parseInt($checkk) - parseInt($y[indexC]);
                     let tempStr = "";
-                    if ($checkk < 0) {
+                    if (checkResult < 0) {
                         $(that).find('.checkForm').attr("value", $checkk);
                         $(that).find('.checkForm').val($checkk);
+                        $(that).find('.checkForm2').attr("value", checkResult);
+                        $(that).find('.checkForm2').val(checkResult);
                     } else {
-                        tempStr = "+" + $checkk;
-                        $(that).find('.checkForm').attr("value", tempStr);
-                        $(that).find('.checkForm').val(tempStr);
+                        tempStr = "+" + checkResult;
+                        $(that).find('.checkForm').attr("value", $checkk);
+                        $(that).find('.checkForm').val($checkk);
+                        $(that).find('.checkForm2').attr("value", tempStr);
+                        $(that).find('.checkForm2').val(tempStr);
                     } // else
 
-                    if (parseInt($checkk) === 0) {
+                    if (checkResult === 0) {
                         $(that).find('.changeOnUpdate').css('background-color', '#C8E6C9');
                         $(that).find('.checkForm').css('border', '3px solid green');
-                        $(that).find('.changeLab').html('&nbsp;盤正確&nbsp;');
-                        $(that).find('.changeBtnText').html('修改');
-                    } else if (parseInt($checkk) > 0) {
+                        $(that).find('.checkForm2').css('border', '3px solid green');
+                        $(that).find('.changeLab').html('&nbsp;' + Lang.get('checkInvLang.exact') + '&nbsp;');
+                        $(that).find('.changeBtnText').html(Lang.get('checkInvLang.edit'));
+                    } else if (checkResult > 0) {
                         $(that).find('.changeOnUpdate').css('background-color', '#FFCDD2');
                         $(that).find('.checkForm').css('border', '3px solid red');
-                        $(that).find('.changeLab').html('&nbsp;盤盈&nbsp;');
-                        $(that).find('.changeBtnText').html('修改');
-                    } else if (parseInt($checkk) < 0) {
+                        $(that).find('.checkForm2').css('border', '3px solid red');
+                        $(that).find('.changeLab').html('&nbsp;' + Lang.get('checkInvLang.excess') + '&nbsp;');
+                        $(that).find('.changeBtnText').html(Lang.get('checkInvLang.edit'));
+                    } else if (checkResult < 0) {
                         $(that).find('.changeOnUpdate').css('background-color', '#FFCDD2');
                         $(that).find('.checkForm').css('border', '3px solid red');
-                        $(that).find('.changeLab').html('&nbsp;盤虧&nbsp;');
-                        $(that).find('.changeBtnText').html('修改');
+                        $(that).find('.checkForm2').css('border', '3px solid red');
+                        $(that).find('.checkForm2').css('border', '3px solid green');
+                        $(that).find('.changeLab').html('&nbsp;' + Lang.get('checkInvLang.shortage') + '&nbsp;');
+                        $(that).find('.changeBtnText').html(Lang.get('checkInvLang.edit'));
                     } // if else if
 
                     return false;
@@ -1117,25 +1129,11 @@ $(document).ready(function () {
                 error: function (err) {
                     if (err.status == 422) { // when status code is 422, it's a validation issue
                         // console.log(err.responseJSON.message); // test
-
-                        // you can loop through the errors object and show it to the user
-                        // console.warn(err.responseJSON.errors); // test
-                        // display errors on each form field
-                        $.each(err.responseJSON.errors, function (i, error) {
-                            var el = $(document).find('[name="' + i + '"]');
-                            // console.log(el.siblings(".input-group-text").length); // test
-                            el.addClass("is-invalid");
-                            if (el.siblings(".input-group-text").length > 0) {
-                                if ($('.invalid-feedback').length === 0) {
-                                    el.parent().after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
-                                } // if
-                            } // if
-                            else {
-                                el.after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
-                            } // if else 
-                        });
+                        $(that).find('.checkForm').addClass("is-invalid");
+                        $(that).find('.checkForm').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
                     } // if error 422
                     else if (err.status == 420) { // else if error 420
+                        $(that).find('.checkForm').addClass("is-invalid");
                         notyf.error({
                             message: Lang.get('checkInvLang.update_failed'),
                             duration: 3000,   //miliseconds, use 0 for infinite duration
