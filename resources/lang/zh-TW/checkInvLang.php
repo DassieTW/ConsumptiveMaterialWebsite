@@ -12,6 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'no_table_found' => '無近期盤點表',
+    'create_new_table' => '建立新盤點表',
     'input_isn_barcode' => '輸入 料號條碼',
     'input_loc_barcode' => '輸入 儲位條碼',
     'isn' => '料號',

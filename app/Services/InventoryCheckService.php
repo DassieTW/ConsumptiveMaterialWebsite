@@ -65,12 +65,13 @@ class InventoryCheckService
         DB::beginTransaction();
 
         try {
+            $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
             $affected = DB::table('checking_inventory')
                 ->where('單號', '=', $serialNum)
                 ->where('料號', '=', $isn)
                 ->where('儲位', '=', $loc)
                 ->where('客戶別', '=', $client)
-                ->update(['盤點' => $checkUpdate]);
+                ->update(['盤點' => $checkUpdate, 'updated_at' => $datetime]);
 
             DB::commit();
             return true;
@@ -78,6 +79,7 @@ class InventoryCheckService
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
+            return false;
             // something went wrong
         } // try catch
 

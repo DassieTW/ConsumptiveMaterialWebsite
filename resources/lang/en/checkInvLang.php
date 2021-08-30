@@ -12,6 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'no_table_found' => 'No table Found',
+    'create_new_table' => 'Create New Table',
     'input_isn_barcode' => 'Scan In ISN Barcode',
     'input_loc_barcode' => 'Scan In Loc. Barcode',
     'isn' => 'ISN',
