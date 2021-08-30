@@ -415,7 +415,7 @@ $(document).ready(function () {
                 data: { DelorNot: DelorNot, isISN: isISN },
                 success: function (reObj) {
                     if (reObj.status == true) {
-                        console.log(reObj.data);
+                        // console.log(reObj.data); // test
                     } // if
                     else {
                         console.log(reObj.status);

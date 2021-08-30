@@ -49,7 +49,7 @@ class CheckingInventoryController extends Controller
             return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
         } // if no results are found
         else {
-            return \Response::json([ 'data' => $fetchedData ]/* Status code here default is 200 ok*/);
+            return \Response::json(['data' => $fetchedData]/* Status code here default is 200 ok*/);
         } // else
 
     } // dbSearch
@@ -63,11 +63,11 @@ class CheckingInventoryController extends Controller
         $this->validate($request, $rules);
         $updateDone = $this->service->updateInventCheckRecord($request);
 
-        if (!$updateDone) { // return 420 if the search result length is 0
-            return \Response::json(['messgae' => 'Update Failed !'], 420/* Status code here default is 200 ok*/);
+        if ($updateDone) { 
+            return \Response::json(['messgae' => 'Update Success !']/* Status code here default is 200 ok*/);
         } // if no results are found
-        else {
-            return \Response::json([ 'messgae' => 'Update Success !' ]/* Status code here default is 200 ok*/);
+        else { // return 420 if updated failed
+            return \Response::json(['messgae' => 'Update Failed !'], 420/* Status code here default is 200 ok*/);
         } // else
 
     } // updateChecking

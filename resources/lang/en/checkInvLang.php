@@ -25,7 +25,7 @@ return [
     'no_such_isn' => 'No Such ISN.',
     'inventory' => 'Inventory',
     'checking_result' => 'Result',
-    'unknown' => 'Unknown',
+    'unknown' => 'N/A',
     'excess' => 'Excess',
     'shortage' => 'Shortage',
     'exact' => 'Exact',
@@ -36,4 +36,5 @@ return [
     'unchecked' => 'not yet checked !',
     'update_success' => 'Update Success!',
     'update_failed' => 'Update Failed.',
+    'value_not_changed' => 'Value has not changed, Are you sure?',
 ];
