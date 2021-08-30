@@ -487,7 +487,7 @@ class OboundController extends Controller
 
     }
 
-    //入庫-新增提交成功
+    /*//入庫-新增提交成功
     public function inboundnewsubmitok()
     {
         if (Session::has('username'))
@@ -507,7 +507,7 @@ class OboundController extends Controller
         {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //O庫-入庫查詢頁面
     public function inboundsearch(Request $request)
@@ -707,28 +707,35 @@ class OboundController extends Controller
                     $bound = $request->input('bound' . $i);
                     $amount = $request->input('amount' . $i);
                     $stock = DB::table('O庫inventory')->where('客戶別', $client)->where('料號', $number)->where('庫別', $bound)->value('現有庫存');
-                    DB::beginTransaction();
-                    try {
-                        if($stock < $amount)
-                        {
-                            echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('目前庫存小於入庫數量，無法刪除此筆入庫。目前庫存: ' + '$stock' + '入庫數量: ' + '$amount');
-                                window.location.href='inboundsearch';
-                                </script>");
-                                return;
-                        }
-                        DB::table('O庫inventory')
+
+                    if($stock < $amount)
+                    {
+                        $mess = trans('oboundpageLang.lessstock').trans('oboundpageLang.nowstock').' : '.$stock
+                        .trans('oboundpageLang.inboundnum').' : '.$amount;
+                        echo ("<script LANGUAGE='JavaScript'>
+                            window.alert('$mess');
+                            window.location.href='inboundsearch';
+                            </script>");
+                            return;
+                    }
+                    else
+                    {
+                        DB::beginTransaction();
+                        try {
+                            DB::table('O庫inventory')
                                 ->where('客戶別', $client)
                                 ->where('料號', $number)
                                 ->where('庫別', $bound)
                                 ->update(['現有庫存' => $stock - $amount , '最後更新時間' => $time]);
 
                                 DB::table('O庫inbound')
-                        ->where('入庫單號', $request->input('number' . $i))
-                        ->delete();
-                        DB::commit();
-                    }catch (\Exception $e) {
-                        DB::rollback();
+                                ->where('入庫單號', $request->input('number' . $i))
+                                ->delete();
+                                $list = $request->input('number' . $i);
+                                DB::commit();
+                        }catch (\Exception $e) {
+                            DB::rollback();
+                        }
                     }
 
                 }
@@ -737,7 +744,12 @@ class OboundController extends Controller
                     continue;
                 }
             }
-            return view('obound.deleteok');
+            $mess = trans('oboundpageLang.delete').trans('oboundpageLang.inlist'). ' : '.
+            $list.trans('oboundpageLang.success');
+                echo ("<script LANGUAGE='JavaScript'>
+                window.alert('$mess');
+                window.location.href='inboundsearch';
+                </script>");
 
         }
         else
@@ -802,7 +814,7 @@ class OboundController extends Controller
         if (Session::has('username'))
         {
             $count = $request->input('count');
-            $time = 0;
+            $record = 0;
             $now = Carbon::now();
             $j = false;
             for($i = 0 ; $i < $count ; $i ++)
@@ -829,11 +841,12 @@ class OboundController extends Controller
                             ->insert(['料號' => $number , '現有庫存' => $amount , '庫別' => $bound ,'客戶別' => $client
                             , '最後更新時間' => $now , '品名' => $name , '規格' => $format]);
                         DB::commit();
-                        $time++;
+                        $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
+                        $mess = $e->getmessage();
                         echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('123123');
+                        window.alert('$mess');
                         </script>");
                         return view('obound.uploadinventory1');
                     }
@@ -848,20 +861,25 @@ class OboundController extends Controller
                             ->where('庫別', $bound)
                             ->update(['現有庫存' => $stock + $amount , '最後更新時間' => $now]);
                         DB::commit();
-                        $time++;
+                        $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
+                        $mess = $e->getmessage();
                         echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('321231');
+                        window.alert('$mess');
                         </script>");
                         return view('obound.uploadinventory1');
                     }
                 }
             }
-            echo("<script LANGUAGE='JavaScript'>
-                window.alert('共 : ' + '$time' + ' 筆O庫庫存上傳成功');
+            $mess = trans('oboundpageLang.total').$record.trans('oboundpageLang.record')
+                .trans('templateWords.obound').trans('oboundpageLang.stockupload')
+                .trans('oboundpageLang.success');
+                echo ("<script LANGUAGE='JavaScript'>
+                window.alert('$mess');
+                window.location.href='/obound';
                 </script>");
-                return view("obound.uploadok");
+
         }
 
         else
@@ -1069,10 +1087,15 @@ class OboundController extends Controller
                 DB::table('O庫outbound')
                 ->where('領料單號', $request->input('list'))
                 ->delete();
+
+
+                $mess = trans('oboundpageLang.delete').trans('oboundpageLang.picklistnum'). ' : '.
+                $list.trans('oboundpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
-                window.alert('已刪除 : 單號' + '$list' );
-                        </script>");
-                return view('obound.index');
+                window.alert('$mess');
+                window.location.href='/obound';
+                </script>");
+
             }
             else
             {
@@ -1111,10 +1134,14 @@ class OboundController extends Controller
                 DB::table('O庫出庫退料')
                 ->where('退料單號', $request->input('list'))
                 ->delete();
+
+                $mess = trans('oboundpageLang.delete').trans('oboundpageLang.backlistnum'). ' : '.
+                $list.trans('oboundpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
-                window.alert('已刪除 : 單號' + '$list' );
-                        </script>");
-                return view('obound.index');
+                window.alert('$mess');
+                window.location.href='/obound';
+                </script>");
+
             }
             else
             {
@@ -1227,7 +1254,6 @@ class OboundController extends Controller
                                 $reDive->passstock = false;
                             }
 
-                            Session::put('picklistsubmitok', $list);
                             $reDive->boolean = true;
                             $reDive->passbool = true;
                             $reDive->passstock = true;
@@ -1367,8 +1393,6 @@ class OboundController extends Controller
                             $myJSON = json_encode($reDive);
                         echo $myJSON;
                         }
-
-                        Session::put('backlistsubmitok', $list);
                         $reDive->boolean = true;
                         $reDive->passbool = true;
                         $myJSON = json_encode($reDive);
@@ -1908,7 +1932,7 @@ class OboundController extends Controller
                     $num = strval($num);
                     $opentime = $num;
                 }
-                if ($remark === 'zero') $remark = '';
+                if ($remark === null || $remark === ' ') $remark = '';
                 DB::beginTransaction();
                 try {
                     DB::table('O庫outbound')
@@ -1920,7 +1944,7 @@ class OboundController extends Controller
                     DB::rollback();
                     $reDive->boolean = false;
                 }
-                Session::put('pickaddsubmitok', $number);
+
                 $reDive->boolean = true;
                 $reDive->message = $opentime;
                 $myJSON = json_encode($reDive);
@@ -1974,7 +1998,7 @@ class OboundController extends Controller
                     $num = strval($num);
                     $opentime = $num;
                 }
-                if ($remark === 'zero') $remark = '';
+                if ($remark === '' || $remark === null) $remark = '';
                 DB::beginTransaction();
                 try {
                     DB::table('O庫出庫退料')
@@ -1986,7 +2010,7 @@ class OboundController extends Controller
                     DB::rollback();
                     $reDive->boolean = false;
                 }
-                Session::put('backaddsubmitok', $number);
+
                 $reDive->boolean = true;
                 $reDive->message = $opentime;
                 $myJSON = json_encode($reDive);
@@ -2003,7 +2027,7 @@ class OboundController extends Controller
         }
     }
 
-    //O庫-提交領料添加成功
+    /*//O庫-提交領料添加成功
     public function pickaddsubmitok()
     {
         if (Session::has('username'))
@@ -2083,7 +2107,7 @@ class OboundController extends Controller
         {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //download
     public function download(Request $request)

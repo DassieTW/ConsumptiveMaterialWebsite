@@ -89,4 +89,12 @@ return [
     'deletebacklist' =>'Delete backlist',
     'enterstatus' =>'Please select the status',
 
+    'outpickok' =>'Outbound completed completed, Picklist number:',
+    'outbackok' =>'Outbound completed, Backlist number:',
+    'nowloc' =>'current storage location',
+    'stockless'=>'The inventory is less than the actual requisition quantity and cannot outbound',
+    'add' =>'Add',
+    'success' =>'Success',
+    'delete' =>'delete',
+
 ];

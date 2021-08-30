@@ -23,7 +23,6 @@ return [
     'SRM' => 'SRM单',
     'SXB_search' => 'SXB单(查询)',
     'on_the_way_search' => '在途数量(查询)',
-
     'searchstock' => '库存查询',
     'locationchange' => '储位调拨',
     'stockupload' => '库存上传',

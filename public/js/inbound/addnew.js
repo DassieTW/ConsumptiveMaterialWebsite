@@ -37,8 +37,10 @@ $('#addnew').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true && myObj.passbool === true){
-
-            alert("添加成功，入庫單號: " + myObj.message);
+            var mess = Lang.get('inboundpageLang.add')+Lang.get('inboundpageLang.success')+' : '+
+            Lang.get('inboundpageLang.inlist')+' : '+myObj.message;
+            alert(mess);
+            //alert("添加成功，入庫單號: " + myObj.message);
             window.location.href = "/inbound";
             //window.location.href = "member.newok";
           }

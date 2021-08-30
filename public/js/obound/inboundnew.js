@@ -34,8 +34,11 @@ $('#inboundnew').on('submit', function (e) {
           console.log(myObj);
           if(myObj.boolean === true && myObj.passbool === true){
 
-            alert("添加成功，入庫單號: " + myObj.message);
-            window.location.href = "inboundnewsubmitok";
+            var mess = Lang.get('oboundpageLang.add')+Lang.get('oboundpageLang.success')+'，'+
+            +Lang.get('oboundpageLang.inlist')+' : '+myObj.message;
+            alert(mess);
+            //alert("添加成功，入庫單號: " + myObj.message);
+            window.location.href = "/obound";
             //window.location.href = "member.newok";
           }
           //入庫數量<0

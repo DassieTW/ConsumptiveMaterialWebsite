@@ -71,7 +71,10 @@ $(document).ready(function () {
             var myObj = JSON.parse(data);
             console.log(myObj);
             if(myObj.boolean === true && myObj.passbool === true){
-                alert('更新成功，請重新登入。');
+                var mess = Lang.get('loginPageLang.change')+Lang.get('oboundpageLang.success')+'，'+
+                Lang.get('loginPageLang.againlogin');
+                alert(mess);
+                //alert('更新成功，請重新登入。');
                 window.location.href = "login";
             }
             else if(myObj.boolean === true && myObj.passbool === false){

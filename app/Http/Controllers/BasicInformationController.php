@@ -586,7 +586,7 @@ class BasicInformationController extends Controller
             //delete
             if($request->has('delete'))
             {
-
+                $record = 0;
                 $count = $request->input('count');
                 for($i = 0 ; $i < $count ; $i++)
                 {
@@ -595,16 +595,20 @@ class BasicInformationController extends Controller
                         DB::table('consumptive_material')
                         ->where('料號', $request->input('number' . $i))
                         ->delete();
+                        $record ++;
                     }
                     else
                     {
                         continue;
                     }
                 }
+                $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
+                .trans('basicInfoLang.isn').trans('basicInfoLang.delete')
+                .trans('basicInfoLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('Delete successfully');
-                    window.location.href = '/basic';
-                    </script>");
+                window.alert('$mess');
+                window.location.href='/basic';
+                </script>");
             }
             //change
             else if($request->has('change'))
@@ -627,10 +631,12 @@ class BasicInformationController extends Controller
                     $row = $i + 1;
                     if($month === '否' && $safe === null || $safe === '')
                     {
+                        $mess = trans('basicInfoLang.row').$row.trans('basicInfoLang.isn').$number
+                        .trans('basicInfoLang.notmonthsafe');
                         echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('IN Row : ' + '$row' + ' 料號 ' + ' $number ' + '為非月請購之安全庫存為必填項目');
-                            window.location.href = 'material';
-                            </script>");
+                        window.alert('$mess');
+                        window.location.href = 'material';
+                        </script>");
 
                     }
                     else
@@ -653,8 +659,10 @@ class BasicInformationController extends Controller
                         }
                     }
                 }
+
+                $mess = trans('basicInfoLang.update').trans('basicInfoLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('Update successfully');
+                    window.alert('$mess');
                     window.location.href = '/basic';
                     </script>");
 
@@ -837,7 +845,8 @@ class BasicInformationController extends Controller
             else
             {
                 return back()->withErrors([
-                    'number' => '料號長度大於12 , Please enter again',
+
+                    'number' => trans('basicInfoLang.isnlength'),
                 ]);
             }
         }
@@ -1046,7 +1055,7 @@ class BasicInformationController extends Controller
         if (Session::has('username'))
         {
             $count = $request->input('count');
-            $time = 0;
+            $record = 0;
             for($i = 0 ; $i < $count ; $i ++)
             {
                 if($request->input('data0a'.$i) !== null && $request->input('data1a'.$i) !== null)
@@ -1071,8 +1080,9 @@ class BasicInformationController extends Controller
                     {
                         if($number == $numbers[$j])
                         {
+                            $mess = trans('basicInfoLang.isnrepeat');
                             echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('Material is repeated , Please check Material number');
+                            window.alert('$mess');
                             window.location.href = 'upload';
                             </script>");
                             /*return back()->withErrors([
@@ -1089,8 +1099,9 @@ class BasicInformationController extends Controller
                     if(strlen($request->input('data0a'.$i)) !== 12)
                     {
 
+                        $mess = trans('basicInfoLang.isnlength');
                         echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('Material length need = 12 , Please check again');
+                        window.alert('$mess');
                         window.location.href = 'upload';
                         </script>");
                         /*return back()->withErrors([
@@ -1102,8 +1113,9 @@ class BasicInformationController extends Controller
                         //check 非月請購是否有填安全庫存
                         if($request->input('data9a'.$i) === '否' && $request->input('data13a'.$i) === null)
                         {
+                            $mess = trans('basicInfoLang.notmonthsafe');
                             echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('非月請購之安全庫存為必填項目 , 請再上傳一次並檢查輸入資料');
+                            window.alert('$mess');
                             window.location.href = 'upload';
                             </script>");
                             /*return back()->withErrors([
@@ -1119,7 +1131,7 @@ class BasicInformationController extends Controller
                                     , 'MPQ' => $mpq , 'MOQ' => $moq , 'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea , '耗材歸屬' => $belong , '發料部門' => $send
                                     , '安全庫存' => $safe ]);
                                 DB::commit();
-                                $time++;
+                                $record++;
                             }catch (\Exception $e) {
                                 DB::rollback();
                                 $mess = $e->getMessage();
@@ -1137,8 +1149,11 @@ class BasicInformationController extends Controller
                 }
 
             }
+            $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
+            .trans('basicInfoLang.isn').trans('basicInfoLang.new')
+            .trans('basicInfoLang.success');
             echo("<script LANGUAGE='JavaScript'>
-            window.alert('共 : ' + '$time' + ' 筆料件新增成功');
+            window.alert('$mess');
             window.location.href = '/basic';
             </script>");
 
@@ -1194,7 +1209,7 @@ class BasicInformationController extends Controller
         {
             $count = $request->input('count');
             $choose = $request->input('title0');
-            $time = 0;
+            $record = 0;
             for($i = 0 ; $i < $count ; $i ++)
             {
                 $data =  $request->input('data0'. $i);
@@ -1205,11 +1220,12 @@ class BasicInformationController extends Controller
                         DB::table('客戶別')
                         ->insert(['客戶' => $data]);
                         DB::commit();
-                        $time++;
+                        $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
+                        $mess = trans('basicInfoLang.repeat');
                         echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('資料已存放在資料庫內，請檢查');
+                        window.alert('$mess');
                         </script>");
                         return view('basic.uploadbasic1');
                     }
@@ -1221,11 +1237,12 @@ class BasicInformationController extends Controller
                         DB::table('儲位')
                         ->insert(['儲存位置' => $data]);
                         DB::commit();
-                        $time++;
+                        $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
+                        $mess = trans('basicInfoLang.repeat');
                         echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('資料已存放在資料庫內，請檢查');
+                        window.alert('$mess');
                         </script>");
                         return view('basic.uploadbasic1');
                     }
@@ -1237,11 +1254,12 @@ class BasicInformationController extends Controller
                         DB::table($choose)
                         ->insert([$choose => $data]);
                         DB::commit();
-                        $time++;
+                        $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
+                        $mess = trans('basicInfoLang.repeat');
                         echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('資料已存放在資料庫內，請檢查');
+                        window.alert('$mess');
                         </script>");
                         return view('basic.uploadbasic1');
                     }
@@ -1250,9 +1268,10 @@ class BasicInformationController extends Controller
 
 
             }
-
+            $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
+            .$choose.trans('basicInfoLang.new').trans('basicInfoLang.success');
             echo("<script LANGUAGE='JavaScript'>
-            window.alert('共 : ' + '$time' +' 筆 ' + '$choose' + ' 基礎信息新增成功');
+            window.alert('$mess');
             window.location.href = '/basic';
             </script>");
 

@@ -34,7 +34,6 @@ $('#add').on('submit', function (e) {
         inreason = $('#reason').val();
       }
       var submit = buttonIndex;
-      if(number === null) number = 'zero';
     $.ajax({
        type:'POST',
        url:"addnew",

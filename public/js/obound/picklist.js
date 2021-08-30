@@ -1,5 +1,4 @@
 document.getElementById("reasonerror").style.display = "none";
-document.getElementById("nostock").style.display = "none";
 document.getElementById("lessstock").style.display = "none";
 
 
@@ -49,7 +48,9 @@ $('#picklist').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true && myObj.passbool === true && myObj.passstock === true ){
-            window.location.href = "picklistsubmitok";
+            var mess = Lang.get('oboundpageLang.outpickok')+list;
+            alert(mess);
+            window.location.href = "/obound";
             //window.location.href = "member.newok";
           }
           //no reason
@@ -63,16 +64,19 @@ $('#picklist').on('submit', function (e) {
 
             document.getElementById("nostock").style.display = "block";
             document.getElementById("position").style.borderColor = "red";
-            $("#nostock #number").html("料號 : " + myObj.number);
-            $("#nostock #position").html("庫別 : " + myObj.position);
+            $("#nostock #number").html(Lang.get('oboundpageLang.isn') +' : ' + myObj.number);
+            $("#nostock #position").html(Lang.get('oboundpageLang.bound') +' : ' + myObj.position);
           }
           //庫別庫存小於實際領用數量
           else if(myObj.boolean === false && myObj.passbool === true && myObj.passstock === true){
 
             document.getElementById("lessstock").style.display = "block";
             document.getElementById("position").style.borderColor = "red";
-            $("#lessstock #position").html("目前庫別 : " + myObj.position + "之庫存小於實際領用數量，無法出庫。");
-            $("#lessstock #nowstock").html("現有庫存 : " + myObj.nowstock);
+
+            var mess = Lang.get('oboundpageLang.bound')+ ' : '+myObj.position+Lang.get('oboundpageLang.nostock1');
+            var mess1 = Lang.get('oboundpageLang.nowstock')+ ' : '+myObj.nowstock;
+            $("#lessstock #position").html(mess);
+            $("#lessstock #nowstock").html(mess1);
             document.getElementById("amount"+list).style.borderColor = "red";
           }
           else if(myObj.boolean === false && myObj.passbool === false && myObj.passstock === false){
