@@ -49,14 +49,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -157,10 +154,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -170,10 +164,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -239,14 +230,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -347,10 +335,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -360,10 +345,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -429,14 +411,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -537,10 +516,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -550,10 +526,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -619,14 +592,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -727,10 +697,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -740,10 +707,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -809,14 +773,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -917,10 +878,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -930,10 +888,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -999,14 +954,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -1107,10 +1059,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -1120,10 +1069,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -1189,14 +1135,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -1297,10 +1240,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -1310,10 +1250,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -1379,14 +1316,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -1487,10 +1421,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -1500,10 +1431,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -1569,14 +1497,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -1677,10 +1602,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -1690,10 +1612,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -1759,14 +1678,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -1867,10 +1783,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -1880,10 +1793,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,
@@ -1949,14 +1859,11 @@ namespace PHPSTORM_META {
             'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
             'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
             'Illuminate\Testing\ParallelTesting' => \Illuminate\Testing\ParallelTesting::class,
-<<<<<<< HEAD
-=======
             'Maatwebsite\Excel\Cache\CacheManager' => \Maatwebsite\Excel\Cache\CacheManager::class,
             'Maatwebsite\Excel\Files\Filesystem' => \Maatwebsite\Excel\Files\Filesystem::class,
             'Maatwebsite\Excel\Files\TemporaryFileFactory' => \Maatwebsite\Excel\Files\TemporaryFileFactory::class,
             'Maatwebsite\Excel\Transactions\TransactionHandler' => \Maatwebsite\Excel\Transactions\DbTransactionHandler::class,
             'Maatwebsite\Excel\Transactions\TransactionManager' => \Maatwebsite\Excel\Transactions\TransactionManager::class,
->>>>>>> 0827tony
             'NunoMaduro\Collision\Contracts\Provider' => \NunoMaduro\Collision\Provider::class,
             'Whoops\Handler\HandlerInterface' => \Facade\Ignition\ErrorPage\IgnitionWhoopsHandler::class,
             'auth' => \Illuminate\Auth\AuthManager::class,
@@ -2057,10 +1964,7 @@ namespace PHPSTORM_META {
             'db.transactions' => \Illuminate\Database\DatabaseTransactionsManager::class,
             'encrypter' => \Illuminate\Encryption\Encrypter::class,
             'events' => \Illuminate\Events\Dispatcher::class,
-<<<<<<< HEAD
-=======
             'excel' => \Maatwebsite\Excel\Excel::class,
->>>>>>> 0827tony
             'files' => \Illuminate\Filesystem\Filesystem::class,
             'filesystem' => \Illuminate\Filesystem\FilesystemManager::class,
             'filesystem.cloud' => \Illuminate\Filesystem\FilesystemAdapter::class,
@@ -2070,10 +1974,7 @@ namespace PHPSTORM_META {
             'hash' => \Illuminate\Hashing\HashManager::class,
             'hash.driver' => \Illuminate\Hashing\BcryptHasher::class,
             'image' => \Intervention\Image\ImageManager::class,
-<<<<<<< HEAD
-=======
             'localization.js' => \Mariuzzo\LaravelJsLocalization\Commands\LangJsCommand::class,
->>>>>>> 0827tony
             'log' => \Illuminate\Log\LogManager::class,
             'mail.manager' => \Illuminate\Mail\MailManager::class,
             'mailer' => \Illuminate\Mail\Mailer::class,

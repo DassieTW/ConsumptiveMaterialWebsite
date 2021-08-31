@@ -64,16 +64,9 @@ class ConsumptiveMaterial extends Model
         'LT',
         '月請購',
         'A級資材',
-<<<<<<< HEAD
-        'GP料件',
-        '耗材歸屬',
-        '發料部門',
-        '安全庫存'
-=======
         '耗材歸屬',
         '發料部門',
         '安全庫存',
->>>>>>> 0827tony
     ];
 
 }

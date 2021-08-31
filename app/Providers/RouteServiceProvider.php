@@ -26,11 +26,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string|null
      */
-<<<<<<< HEAD
-    // protected $namespace = 'App\\Http\\Controllers';
-=======
     protected $namespace = 'App\\Http\\Controllers';
->>>>>>> 0827tony
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -45,13 +41,6 @@ class RouteServiceProvider extends ServiceProvider
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)
-<<<<<<< HEAD
-                ->group(base_path('routes/api.php'));
-
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-=======
                 ->group(base_path('routes/api/api.php'));
 
             Route::middleware(['web', 'auth', 'locale'])
@@ -110,7 +99,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->prefix('barcode')
                 ->group(base_path('routes/web/barcode.php'));
->>>>>>> 0827tony
         });
     }
 

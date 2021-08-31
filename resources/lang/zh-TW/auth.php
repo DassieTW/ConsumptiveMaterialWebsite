@@ -12,10 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-<<<<<<< HEAD
-
-=======
->>>>>>> 0827tony
     'failed' => '登入資料不符合',
     'throttle' => '嘗試登入太多次，請 :seconds 秒後再嘗試',
 

@@ -5,11 +5,7 @@
  */
 
 require('./bootstrap');
-<<<<<<< HEAD
-
-=======
 global.$ = global.jQuery = require('jquery');
->>>>>>> 0827tony
 window.Vue = require('vue').default;
 
 /**
@@ -31,12 +27,6 @@ import App from './components/ExampleComponent.vue'
 // createApp(App).mount("#app") // vue3
 
 import { Notyf } from 'notyf';
-<<<<<<< HEAD
-window.Notyf = Notyf ; 
-import 'notyf/notyf.min.css'; // for React, Vue and Svelte
-import "../sass/app.scss";
-
-=======
 window.Notyf = Notyf;
 import 'notyf/notyf.min.css'; // for React, Vue and Svelte
 import "../sass/app.scss";
@@ -57,7 +47,6 @@ import "./modules/flatpickr";
 // import "./modules/vector-maps"; // not used for now
 // end of AdminKit imports
 
->>>>>>> 0827tony
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -11,27 +11,12 @@ class O庫Outbound extends Model
     use HasFactory;
     use SoftDeletes;
 
-<<<<<<< HEAD
-    protected $table = "O庫Outbound";
-=======
     protected $table = "O庫outbound";
->>>>>>> 0827tony
 
     //PK no return 0
     public $incrementing = false;
 
     protected $fillable = [
-<<<<<<< HEAD
-        '料號',
-        '品名',
-        '規格',
-        '廠別',
-        '庫別',
-        '數量',
-        '領料人',
-        '時間',
-        '備註',
-=======
         '客戶別',
         '機種',
         '製程',
@@ -53,6 +38,5 @@ class O庫Outbound extends Model
         '領料單號',
         '開單時間',
         '出庫時間',
->>>>>>> 0827tony
     ];
 }

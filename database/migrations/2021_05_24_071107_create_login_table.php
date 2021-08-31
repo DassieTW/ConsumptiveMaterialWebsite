@@ -19,13 +19,9 @@ class CreateLoginTable extends Migration
             $table->tinyInteger('priority');
             $table->string('姓名',50)->nullable();
             $table->string('部門',50)->nullable();
-<<<<<<< HEAD
-            $table->timestamps();
-=======
             $table->integer('avatarChoice')->nullable();
             $table->timestamps();
             $table->softDeletes();
->>>>>>> 0827tony
         });
     }
 

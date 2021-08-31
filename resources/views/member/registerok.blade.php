@@ -4,14 +4,7 @@
 @endsection
 
 @section('js')
-<<<<<<< HEAD
-<script src="{{ asset('js/app.js') }}"></script>
-<script src="{{ asset('/admin/js/app.js') }}"></script>
-<!-- <script src="{{ asset('js/popupNotice.js') }}"></script> -->
-<!--for notifications pop up -->
-=======
 <!--for this page's sepcified js -->
->>>>>>> 0827tony
 @endsection
 @section('content')
 <!DOCTYPE html>
@@ -20,17 +13,9 @@
         <meta charset="utf-8">
     </head>
     <body>
-<<<<<<< HEAD
-        sign up ok!!
-        <br>
-        <form action="{{ route('member.login') }}" method="GET">
-            <input type="submit" value="Login">
-        </form>
-=======
         Sign up ok!!
         <br>
         <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('member.login')}}'">Login</button>
->>>>>>> 0827tony
     </body>
 </html>
 @endsection

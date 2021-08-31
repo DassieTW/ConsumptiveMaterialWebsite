@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-
-document.addEventListener("DOMContentLoaded", function (event) {
-    var notyf = new Notyf();
-    notyf.success({
-        message: "Success. Dismiss to retry.",
-        duration: 0,
-        ripple: true,
-        dismissible: true,
-        position: {
-            x: "right",
-            y: "bottom"
-        }
-    });
-=======
 var notyf = new Notyf({
     types: [
         {
@@ -57,5 +42,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //         y: "bottom"
     //     }
     // });
->>>>>>> 0827tony
 });

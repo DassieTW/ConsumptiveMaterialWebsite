@@ -13,11 +13,7 @@ class 客戶別 extends Model
 
     protected $table = "客戶別";
 
-<<<<<<< HEAD
-    protected $primaryKey = '客戶別';
-=======
     protected $primaryKey = '客戶';
->>>>>>> 0827tony
 
     protected $keyType = 'string';
 

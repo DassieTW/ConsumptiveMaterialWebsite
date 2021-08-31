@@ -13,17 +13,6 @@ use App\Models\廠別;
 use App\Models\線別;
 use App\Models\機種;
 use App\Models\儲位;
-<<<<<<< HEAD
-use DB;
-use Session;
-use Route;
-use Carbon;
-
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Hash;
-
-
-=======
 use App\Models\退回原因;
 use App\Models\O庫;
 use App\Models\ConsumptiveMaterial;
@@ -37,7 +26,6 @@ use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
->>>>>>> 0827tony
 class BasicInformationController extends Controller
 {
     //
@@ -61,13 +49,9 @@ class BasicInformationController extends Controller
             ->with(['usereasons' => 領用原因::cursor()])
             ->with(['inreasons' => 入庫原因::cursor()])
             ->with(['positions' => 儲位::cursor()])
-<<<<<<< HEAD
-            ->with(['sends' => 發料部門::cursor()]);
-=======
             ->with(['sends' => 發料部門::cursor()])
             ->with(['os' => O庫::cursor()])
             ->with(['backs' => 退回原因::cursor()]);
->>>>>>> 0827tony
         }
         else
         {
@@ -75,11 +59,7 @@ class BasicInformationController extends Controller
         }
     }
 
-<<<<<<< HEAD
-    //change or delete update
-=======
     //基礎信息更新或刪除
->>>>>>> 0827tony
     public function changeordelete(Request $request)
     {
         if (Session::has('username'))
@@ -306,8 +286,6 @@ class BasicInformationController extends Controller
                     return view('basic.change')->with('choose' , 'send')
                     ->with(['sends' => 發料部門::cursor()]);
                 }
-<<<<<<< HEAD
-=======
                 //o庫
                 else if($request->has('o'))
                 {
@@ -352,7 +330,6 @@ class BasicInformationController extends Controller
                     return view('basic.change')->with('choose' , 'back')
                     ->with(['backs' => 退回原因::cursor()]);
                 }
->>>>>>> 0827tony
             }
             //change
             else if($request->has('change'))
@@ -368,15 +345,12 @@ class BasicInformationController extends Controller
                         ->where('廠別', $names[$i])
                         ->update(['廠別' => $request->input('factory' . $i)]);
                     }
-<<<<<<< HEAD
-=======
                     if($request->input('factorynew') !== null)
                     {
                         DB::table('廠別')
                         ->insert(['廠別' => $request->input('factorynew')]);
                     }
 
->>>>>>> 0827tony
                     return view('basic.change')->with('choose' , 'factory')
                     ->with(['factorys' => 廠別::cursor()]);
                 }
@@ -391,14 +365,11 @@ class BasicInformationController extends Controller
                         ->where('客戶', $names[$i])
                         ->update(['客戶' => $request->input('client' . $i)]);
                     }
-<<<<<<< HEAD
-=======
                     if($request->input('clientnew') !== null)
                     {
                         DB::table('客戶別')
                         ->insert(['客戶' => $request->input('clientnew')]);
                     }
->>>>>>> 0827tony
                     return view('basic.change')->with('choose' , 'client')
                     ->with(['clients' => 客戶別::cursor()]);
                 }
@@ -413,14 +384,11 @@ class BasicInformationController extends Controller
                         ->where('機種', $names[$i])
                         ->update(['機種' => $request->input('machine' . $i)]);
                     }
-<<<<<<< HEAD
-=======
                     if($request->input('machinenew') !== null)
                     {
                         DB::table('機種')
                         ->insert(['機種' => $request->input('machinenew')]);
                     }
->>>>>>> 0827tony
                     return view('basic.change')->with('choose' , 'machine')
                     ->with(['machines' => 機種::cursor()]);
                 }
@@ -435,14 +403,11 @@ class BasicInformationController extends Controller
                         ->where('製程', $names[$i])
                         ->update(['製程' => $request->input('production' . $i)]);
                     }
-<<<<<<< HEAD
-=======
                     if($request->input('productionnew') !== null)
                     {
                         DB::table('製程')
                         ->insert(['製程' => $request->input('productionnew')]);
                     }
->>>>>>> 0827tony
                     return view('basic.change')->with('choose' , 'production')
                     ->with(['productions' => 製程::cursor()]);
                 }
@@ -457,14 +422,11 @@ class BasicInformationController extends Controller
                         ->where('線別', $names[$i])
                         ->update(['線別' => $request->input('line' . $i)]);
                     }
-<<<<<<< HEAD
-=======
                     if($request->input('linenew') !== null)
                     {
                         DB::table('線別')
                         ->insert(['線別' => $request->input('linenew')]);
                     }
->>>>>>> 0827tony
                     return view('basic.change')->with('choose' , 'line')
                     ->with(['lines' => 線別::cursor()]);
                 }
@@ -479,14 +441,11 @@ class BasicInformationController extends Controller
                         ->where('領用部門', $names[$i])
                         ->update(['領用部門' => $request->input('use' . $i)]);
                     }
-<<<<<<< HEAD
-=======
                     if($request->input('usenew') !== null)
                     {
                         DB::table('領用部門')
                         ->insert(['領用部門' => $request->input('usenew')]);
                     }
->>>>>>> 0827tony
                     return view('basic.change')->with('choose' , 'use')
                     ->with(['uses' => 領用部門::cursor()]);
                 }
@@ -501,14 +460,11 @@ class BasicInformationController extends Controller
                         ->where('領用原因', $names[$i])
                         ->update(['領用原因' => $request->input('usereason' . $i)]);
                     }
-<<<<<<< HEAD
-=======
                     if($request->input('usereasonnew') !== null)
                     {
                         DB::table('領用原因')
                         ->insert(['領用原因' => $request->input('usereasonnew')]);
                     }
->>>>>>> 0827tony
                     return view('basic.change')->with('choose' , 'usereason')
                     ->with(['usereasons' => 領用原因::cursor()]);
                 }
@@ -523,14 +479,11 @@ class BasicInformationController extends Controller
                         ->where('入庫原因', $names[$i])
                         ->update(['入庫原因' => $request->input('inreason' . $i)]);
                     }
-<<<<<<< HEAD
-=======
                     if($request->input('inreasonnew') !== null)
                     {
                         DB::table('入庫原因')
                         ->insert(['入庫原因' => $request->input('inreasonnew')]);
                     }
->>>>>>> 0827tony
                     return view('basic.change')->with('choose' , 'inreason')
                     ->with(['inreasons' => 入庫原因::cursor()]);
                 }
@@ -545,14 +498,11 @@ class BasicInformationController extends Controller
                         ->where('儲存位置', $names[$i])
                         ->update(['儲存位置' => $request->input('position' . $i)]);
                     }
-<<<<<<< HEAD
-=======
                     if($request->input('positionnew') !== null)
                     {
                         DB::table('儲位')
                         ->insert(['儲存位置' => $request->input('positionnew')]);
                     }
->>>>>>> 0827tony
                     return view('basic.change')->with('choose' , 'position')
                     ->with(['positions' => 儲位::cursor()]);
                 }
@@ -567,12 +517,6 @@ class BasicInformationController extends Controller
                         ->where('發料部門', $names[$i])
                         ->update(['發料部門' => $request->input('send' . $i)]);
                     }
-<<<<<<< HEAD
-                    return view('basic.change')->with('choose' , 'send')
-                    ->with(['sends' => 發料部門::cursor()]);
-                }
-            }
-=======
                     if($request->input('sendnew') !== null)
                     {
                         DB::table('發料部門')
@@ -623,7 +567,6 @@ class BasicInformationController extends Controller
 
             }
 
->>>>>>> 0827tony
             else
             {
                 return redirect(route('basic.index'));
@@ -631,65 +574,6 @@ class BasicInformationController extends Controller
         }
         else
         {
-<<<<<<< HEAD
-            return redirect(route('basic.index'));
-        }
-    }
-
-    //search material number
-    public function searchmaterial(Request $request)
-    {
-        if(Session::has('username'))
-        {
-            if($request->input('number') !== null)
-            {
-
-                $number = $request->input('number');
-                $name = DB::table('consumptive_material')->where('料號', $number)->value('品名');
-                $format = DB::table('consumptive_material')->where('料號', $number)->value('規格');
-                $gp = DB::table('consumptive_material')->where('料號', $number)->value('GP料件');
-                $gradea = DB::table('consumptive_material')->where('料號', $number)->value('A級資材');
-                $month = DB::table('consumptive_material')->where('料號', $number)->value('月請購');
-                $send = DB::table('consumptive_material')->where('料號', $number)->value('發料部門');
-                $belong = DB::table('consumptive_material')->where('料號', $number)->value('耗材歸屬');
-                $price = DB::table('consumptive_material')->where('料號', $number)->value('單價');
-                $money = DB::table('consumptive_material')->where('料號', $number)->value('幣別');
-                $unit = DB::table('consumptive_material')->where('料號', $number)->value('單位');
-                $mpq = DB::table('consumptive_material')->where('料號', $number)->value('MPQ');
-                $moq = DB::table('consumptive_material')->where('料號', $number)->value('MOQ');
-                $lt = DB::table('consumptive_material')->where('料號', $number)->value('LT');
-                $safe = DB::table('consumptive_material')->where('料號', $number)->value('安全庫存');
-                if($name !== NULL && $format !==NULL)
-                {
-                    return view('basic.modify')
-                    ->with('number' , $number)
-                    ->with('name', $name)
-                    ->with('format', $format)
-                    ->with('gp' , $gp)
-                    ->with('gradea', $gradea)
-                    ->with('month', $month)
-                    ->with('send' , $send)
-                    ->with('belong', $belong)
-                    ->with('price', $price)
-                    ->with('money' , $money)
-                    ->with('unit', $unit)
-                    ->with('mpq', $mpq)
-                    ->with('moq' , $moq)
-                    ->with('lt', $lt)
-                    ->with('safe', $safe);
-                }
-                else
-                {
-                    return back()->withErrors([
-                        'number' => 'Material number is not exist , Please enter another material number',
-                        ]);
-                }
-            }
-            else
-            {
-                return view('basic.searchmaterial');
-
-=======
             return redirect(route('member.login'));
         }
     }
@@ -823,18 +707,12 @@ class BasicInformationController extends Controller
             else
             {
                 return redirect(route('basic.material'));
->>>>>>> 0827tony
             }
         }
         else
         {
             return redirect(route('member.login'));
         }
-<<<<<<< HEAD
-    }
-
-    //search material position
-=======
 
     }
 
@@ -879,38 +757,10 @@ class BasicInformationController extends Controller
     }
 
     //儲位條碼查詢
->>>>>>> 0827tony
     public function searchposition(Request $request)
     {
         if(Session::has('username'))
         {
-<<<<<<< HEAD
-            if($request->input('position') !== null)
-            {
-                $input = $request->input('position');
-                $position = DB::table('inventory')->where('儲位', $input)->value('儲位');
-                $material = DB::table('inventory')->where('儲位', $input)->value('料號');
-                $stock = DB::table('inventory')->where('儲位', $input)->value('現有庫存');
-                if($position !== NULL)
-                {
-                    return view('basic.searchok')
-                    ->with('position' , $position)
-                    ->with('material' , $material)
-                    ->with('stock' , $stock);
-                }
-                else
-                {
-                    return back()->withErrors([
-                        'position' => 'Position number is not exist , Please enter another position number',
-                        ]);
-
-                }
-            }
-            else
-            {
-                return view('basic.searchposition');
-
-=======
             if($request->input('position') === null)
             {
                 return view('basic.searchpositionok')->with(['data' => 儲位::cursor()]);
@@ -998,7 +848,6 @@ class BasicInformationController extends Controller
 
                     'number' => trans('basicInfoLang.isnlength'),
                 ]);
->>>>>>> 0827tony
             }
         }
         else
@@ -1007,17 +856,11 @@ class BasicInformationController extends Controller
         }
     }
 
-<<<<<<< HEAD
-    //new material inf
-    public function new(Request $request)
-    {
-=======
 
     //新增料件
     public function new(Request $request)
     {
         $reDive = new responseObj();
->>>>>>> 0827tony
         if(Session::has('username'))
         {
             $number = $request->input('number');
@@ -1030,10 +873,6 @@ class BasicInformationController extends Controller
             $moq = $request->input('moq');
             $lt = $request->input('lt');
             $gradea = $request->input('gradea');
-<<<<<<< HEAD
-            $gp = $request->input('gp');
-=======
->>>>>>> 0827tony
             $belong = $request->input('belong');
             $month = $request->input('month');
             $send = $request->input('send');
@@ -1044,11 +883,6 @@ class BasicInformationController extends Controller
             {
                 if($number == $numbers[$i])
                 {
-<<<<<<< HEAD
-                    return back()->withErrors([
-                    'number' => '料號 is repeated , Please enter another 料號',
-                    ]);
-=======
                     $reDive->newerror[0] = true;
                     $myJSON = json_encode($reDive);
                     echo $myJSON;
@@ -1056,7 +890,6 @@ class BasicInformationController extends Controller
                     /*return back()->withErrors([
                     'number' => '料號 is repeated , Please enter another 料號',
                     ]);*/
->>>>>>> 0827tony
                 }
                 else
                 {
@@ -1068,86 +901,6 @@ class BasicInformationController extends Controller
                 //長度是否為12
                 if(strlen($request->input('number')) !== 12)
                 {
-<<<<<<< HEAD
-                    return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                        ]);
-                }
-                //check 是否有選幣別
-                if($request->input('money') === "選擇幣別")
-                {
-                    return back()->withErrors([
-                        'money' => '請選擇幣別',
-                        ]);
-                }
-                //check 是否有選A級資材
-                if($request->input('gradea') === "是/否")
-                {
-                    return back()->withErrors([
-                        'gradea' => '請選擇是否是A級資材',
-                        ]);
-                }
-                //check 是否有選GP料件
-                if($request->input('gp') === "是/否")
-                {
-                    return back()->withErrors([
-                        'gp' => '請選擇是否是GP料件',
-                        ]);
-                }
-                //check 是否有選耗材歸屬
-                if($request->input('belong') === "選擇耗材歸屬")
-                {
-                    return back()->withErrors([
-                        'belong' => '請選擇耗材歸屬',
-                        ]);
-                }
-                //check 是否有選發料部門
-                if($request->input('send') === "選擇發料部門")
-                {
-                    return back()->withErrors([
-                        'send' => '請選擇發料部門',
-                        ]);
-                }
-                //check 非月請購是否有填安全庫存
-                if($request->input('month') === '否' && $request->input('safe') === null)
-                {
-                    return back()->withErrors([
-                        'safe' => '非月請購之安全庫存為必填項目',
-                    ]);
-                }
-                //是月請購有安全庫存
-                else if($request->input('month') === '是' && $request->input('safe') !== null)
-                {
-                    DB::insert('insert into consumptive_material (料號, 品名 , 規格 , 單價 , 幣別 , 單位, MPQ , MOQ , LT , 月請購 ,
-                    A級資材, GP料件 , 耗材歸屬 , 發料部門 , 安全庫存)
-                    values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                    [$number, $name , $format , $price , $money , $unit, $mpq , $moq , $lt , $month ,$gradea, $gp , $belong , $send , $safe]);
-                    return view('basic.newok');
-                }
-                //是月請購無安全庫存
-                else if($request->input('month') === '是' && $request->input('safe') === null)
-                {
-                    DB::insert('insert into consumptive_material (料號, 品名 , 規格 , 單價 , 幣別 , 單位, MPQ , MOQ , LT , 月請購 ,
-                    A級資材, GP料件 , 耗材歸屬 , 發料部門)
-                    values (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                    [$number, $name , $format , $price , $money , $unit, $mpq , $moq , $lt , $month ,$gradea, $gp , $belong , $send]);
-                    return view('basic.newok');
-                }
-                //非月請購有安全庫存
-                else
-                {
-                    DB::insert('insert into consumptive_material (料號, 品名 , 規格 , 單價 , 幣別 , 單位, MPQ , MOQ , LT , 月請購 ,
-                    A級資材, GP料件 , 耗材歸屬 , 發料部門 , 安全庫存)
-                    values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                    [$number, $name , $format , $price , $money , $unit, $mpq , $moq , $lt , $month ,$gradea, $gp , $belong , $send ,$safe]);
-                    return view('basic.newok');
-                }
-            }
-            else
-            {
-                return view('basic.new');
-            }
-=======
 
                     $reDive->newerror[1] = true;
                     $myJSON = json_encode($reDive);
@@ -1404,7 +1157,6 @@ class BasicInformationController extends Controller
             window.location.href = '/basic';
             </script>");
 
->>>>>>> 0827tony
         }
         else
         {
@@ -1412,45 +1164,6 @@ class BasicInformationController extends Controller
         }
     }
 
-<<<<<<< HEAD
-    //modify material inf
-    public function modify(Request $request)
-    {
-        if (Session::has('username'))
-        {
-            $number = $request->input('number');
-            $name = $request->input('name');
-            $format = $request->input('format');
-            $price = $request->input('price');
-            $unit = $request->input('unit');
-            $money = $request->input('money');
-            $mpq = $request->input('mpq');
-            $moq = $request->input('moq');
-            $lt = $request->input('lt');
-            $gradea = $request->input('gradea');
-            $gp = $request->input('gp');
-            $belong = $request->input('belong');
-            $month = $request->input('month');
-            $send = $request->input('send');
-            $safe = $request->input('safe');
-            if($month === '否' && $safe === null)
-            {
-                return back()->withErrors([
-                    'safe' => '非月請購之安全庫存為必填項目',
-                ]);
-            }
-            DB::table('consumptive_material')
-            ->where('料號', $number)
-            ->update(['料號' => $number , '品名' => $name , '規格' => $format , '單價' => $price ,
-            '幣別' => $money , '單位' => $unit , 'MPQ' => $mpq , 'MOQ' => $moq ,
-            'LT' => $lt , 'A級資材' => $gradea , 'GP料件' => $gp , '耗材歸屬' => $belong ,
-            '月請購' => $month , '發料部門' => $send , '安全庫存' => $safe]);
-            return view('basic.modifyok');
-
-
-        }
-
-=======
     //基礎資料上傳
     public function uploadbasic(Request $request)
     {
@@ -1483,14 +1196,10 @@ class BasicInformationController extends Controller
         {
             return view('basic.uploadbasic1');
         }
->>>>>>> 0827tony
         else
         {
             return redirect(route('member.login'));
         }
-<<<<<<< HEAD
-
-=======
     }
 
     //基礎信息批量新增至資料庫
@@ -1571,6 +1280,5 @@ class BasicInformationController extends Controller
         {
             return redirect(route('member.login'));
         }
->>>>>>> 0827tony
     }
 }
