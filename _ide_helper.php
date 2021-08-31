@@ -1769,11 +1769,7 @@
                     /**
          * Get the currently authenticated user.
          *
-<<<<<<< HEAD
-         * @return \App\Models\User|null 
-=======
          * @return \App\Models\Login|null 
->>>>>>> 0827tony
          * @static 
          */ 
         public static function user()
@@ -1808,11 +1804,7 @@
          * Log the given user ID into the application without sessions or cookies.
          *
          * @param mixed $id
-<<<<<<< HEAD
-         * @return \App\Models\User|false 
-=======
          * @return \App\Models\Login|false 
->>>>>>> 0827tony
          * @static 
          */ 
         public static function onceUsingId($id)
@@ -1890,11 +1882,7 @@
          *
          * @param mixed $id
          * @param bool $remember
-<<<<<<< HEAD
-         * @return \App\Models\User|false 
-=======
          * @return \App\Models\Login|false 
->>>>>>> 0827tony
          * @static 
          */ 
         public static function loginUsingId($id, $remember = false)
@@ -1970,11 +1958,7 @@
                     /**
          * Get the last user we attempted to authenticate.
          *
-<<<<<<< HEAD
-         * @return \App\Models\User 
-=======
          * @return \App\Models\Login 
->>>>>>> 0827tony
          * @static 
          */ 
         public static function getLastAttempted()
@@ -2076,11 +2060,7 @@
                     /**
          * Return the currently cached user.
          *
-<<<<<<< HEAD
-         * @return \App\Models\User|null 
-=======
          * @return \App\Models\Login|null 
->>>>>>> 0827tony
          * @static 
          */ 
         public static function getUser()
@@ -2126,11 +2106,7 @@
                     /**
          * Determine if the current user is authenticated. If not, throw an exception.
          *
-<<<<<<< HEAD
-         * @return \App\Models\User 
-=======
          * @return \App\Models\Login 
->>>>>>> 0827tony
          * @throws \Illuminate\Auth\AuthenticationException
          * @static 
          */ 
@@ -15175,12 +15151,6 @@
         class Str {
          
     }
-<<<<<<< HEAD
-     
-}
-
-        namespace Facade\Ignition\Facades { 
-=======
             /**
      * 
      *
@@ -15463,7 +15433,6 @@
 }
 
     namespace Facade\Ignition\Facades { 
->>>>>>> 0827tony
             /**
      * Class Flare.
      *
@@ -19113,10 +19082,7 @@ namespace  {
             class URL extends \Illuminate\Support\Facades\URL {}
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
-<<<<<<< HEAD
-=======
             class Excel extends \Maatwebsite\Excel\Facades\Excel {}
->>>>>>> 0827tony
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Image extends \Intervention\Image\Facades\Image {}
      

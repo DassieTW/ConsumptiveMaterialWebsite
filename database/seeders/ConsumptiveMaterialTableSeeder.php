@@ -27,10 +27,6 @@ class ConsumptiveMaterialTableSeeder extends Seeder
         $consumptiveMats->LT = 21 ;
         $consumptiveMats->月請購 = '否' ;
         $consumptiveMats->A級資材 = '否' ;
-<<<<<<< HEAD
-        $consumptiveMats->GP料件 = '否' ;
-=======
->>>>>>> 0827tony
         $consumptiveMats->耗材歸屬 = '站位' ;
         $consumptiveMats->發料部門 = 'IE備品室';
         $consumptiveMats->安全庫存 = 20 ;
@@ -50,10 +46,6 @@ class ConsumptiveMaterialTableSeeder extends Seeder
         $consumptiveMats->LT = 15 ;
         $consumptiveMats->月請購 = '是' ;
         $consumptiveMats->A級資材 = '否' ;
-<<<<<<< HEAD
-        $consumptiveMats->GP料件 = '否' ;
-=======
->>>>>>> 0827tony
         $consumptiveMats->耗材歸屬 = '單耗' ;
         $consumptiveMats->發料部門 = 'IE備品室';
         $consumptiveMats->安全庫存 = null ;
@@ -73,10 +65,6 @@ class ConsumptiveMaterialTableSeeder extends Seeder
         $consumptiveMats->LT = 15 ;
         $consumptiveMats->月請購 = '是' ;
         $consumptiveMats->A級資材 = '否' ;
-<<<<<<< HEAD
-        $consumptiveMats->GP料件 = '否' ;
-=======
->>>>>>> 0827tony
         $consumptiveMats->耗材歸屬 = '站位' ;
         $consumptiveMats->發料部門 = 'IE備品室';
         $consumptiveMats->安全庫存 = null ;
@@ -96,10 +84,6 @@ class ConsumptiveMaterialTableSeeder extends Seeder
         $consumptiveMats->LT = 6 ;
         $consumptiveMats->月請購 = '是' ;
         $consumptiveMats->A級資材 = '否' ;
-<<<<<<< HEAD
-        $consumptiveMats->GP料件 = '否' ;
-=======
->>>>>>> 0827tony
         $consumptiveMats->耗材歸屬 = '單耗' ;
         $consumptiveMats->發料部門 = 'IE備品室';
         $consumptiveMats->安全庫存 = 1 ;
@@ -119,10 +103,6 @@ class ConsumptiveMaterialTableSeeder extends Seeder
         $consumptiveMats->LT = 15 ;
         $consumptiveMats->月請購 = '是' ;
         $consumptiveMats->A級資材 = '否' ;
-<<<<<<< HEAD
-        $consumptiveMats->GP料件 = '否' ;
-=======
->>>>>>> 0827tony
         $consumptiveMats->耗材歸屬 = '單耗' ;
         $consumptiveMats->發料部門 = 'IE備品室';
         $consumptiveMats->安全庫存 = null ;

@@ -22,10 +22,7 @@ class LoginTableSeeder extends Seeder
         $login->password = Hash::make('111');
         $login->priority = 1;
         $login->姓名 = '權限1_測試';
-<<<<<<< HEAD
-=======
         $login->avatarChoice = 1;
->>>>>>> 0827tony
         $login->save();
 
         $login2 = new Login;
@@ -33,10 +30,7 @@ class LoginTableSeeder extends Seeder
         $login2->password = Hash::make('222');
         $login2->priority = 2;
         $login2->姓名 = '權限2_測試';
-<<<<<<< HEAD
-=======
         $login2->avatarChoice = 2;
->>>>>>> 0827tony
         $login2->save();
 
         $login3 = new Login;
@@ -44,10 +38,7 @@ class LoginTableSeeder extends Seeder
         $login3->password = Hash::make('333');
         $login3->priority = 3;
         $login3->姓名 = '權限3_測試';
-<<<<<<< HEAD
-=======
         $login3->avatarChoice = 3;
->>>>>>> 0827tony
         $login3->save();
 
         $login4 = new Login;
@@ -55,10 +46,7 @@ class LoginTableSeeder extends Seeder
         $login4->password = Hash::make('444');
         $login4->priority = 4;
         $login4->姓名 = '權限4_測試';
-<<<<<<< HEAD
-=======
         $login4->avatarChoice = 4;
->>>>>>> 0827tony
         $login4->save();
 
     }

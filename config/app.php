@@ -106,11 +106,7 @@ return [
     |
     */
 
-<<<<<<< HEAD
-    'faker_locale' => 'zh-TW',
-=======
     'faker_locale' => 'en',
->>>>>>> 0827tony
 
     /*
     |--------------------------------------------------------------------------
@@ -180,14 +176,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-<<<<<<< HEAD
-=======
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
         // For generating js version of localization files base on php files from "/resources/lang"
         Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class
 
->>>>>>> 0827tony
     ],
 
     /*
@@ -240,10 +233,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-<<<<<<< HEAD
-=======
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
->>>>>>> 0827tony
 
     ],
 

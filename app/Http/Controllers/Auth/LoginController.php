@@ -2,12 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-<<<<<<< HEAD
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
-=======
 use Illuminate\Http\Request;
 use App\Models\Login;
 use App\Models\人員信息;
@@ -22,7 +16,6 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\responseObj;
 use League\CommonMark\Cursor;
->>>>>>> 0827tony
 
 class LoginController extends Controller
 {
@@ -39,50 +32,6 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-<<<<<<< HEAD
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function login(Request $request)
-    {
-        $input = $request->all();
-
-        $this->validate($request, [
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-
-        $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-        if (\Auth::attempt(array($fieldType => $input['username'], 'password' => $input['password']))) {
-            return redirect()->route('home');
-        } else {
-            return back()->withErrors([
-                'username' => ' ',
-                'password' => 'The provided credentials do not match our records.',
-            ]);
-        }
-    }
-}
-=======
     //login
     public function login(Request $request)
     {
@@ -608,4 +557,3 @@ class LoginController extends Controller
 
 
 } // end of controller
->>>>>>> 0827tony

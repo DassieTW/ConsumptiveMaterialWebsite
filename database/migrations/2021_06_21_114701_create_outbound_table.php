@@ -33,13 +33,8 @@ class CreateOutboundTable extends Migration
             $table->string('發料人員', 45)->nullable();;
             $table->string('發料人員工號', 45)->nullable();;
             $table->string('領料單號', 45);
-<<<<<<< HEAD
-            $table->string('開單時間', 45);
-            $table->string('出庫時間', 45)->nullable();;
-=======
             $table->dateTime('開單時間');
             $table->dateTime('出庫時間')->nullable();;
->>>>>>> 0827tony
             $table->timestamps();
             $table->softDeletes();
         });

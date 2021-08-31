@@ -1,11 +1,4 @@
 <?php
-<<<<<<< HEAD
-function isActiveRoute($route, $output = 'active')
-{
-    if (Route::currentRouteName() == $route) {
-        return $output;
-    }
-=======
 function findsubstrInStrArray($substring, $array){
     foreach ($array as $item){
         if (strpos($item,$substring)!== false){
@@ -32,5 +25,4 @@ function isActiveRoute( array $names, $output = 'active')
     else {
         return null;
     } // else
->>>>>>> 0827tony
 }

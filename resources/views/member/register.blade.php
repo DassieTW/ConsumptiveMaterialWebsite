@@ -11,59 +11,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
-<<<<<<< HEAD
-    <meta name="author" content="AdminKit">
-    <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
-    <script src="{{ asset('../js/app.js') }}" defer></script>
-
-    <script src="{{ asset('../js/login.js') }}" defer></script>
-
-    <link href="../admin/css/app.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-</head>
-<body>
-    <main class="d-flex w-100 h-100">
-            <div class="container d-flex flex-column">
-                <div class="row vh-100">
-                    <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
-                        <div class="d-table-cell align-middle">
-
-                            <div class="text-center mt-4">
-                                <h1 class="h2">Welcome come</h1>
-                                <p class="lead">
-                                    Sign up to your account to continue
-                                </p>
-                            </div>
-
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="m-sm-4">
-                                        <div class="text-center">
-                                            <img src="../admin/img/avatars/avatar.jpg" alt="Charles Hall" class="img-fluid rounded-circle" width="132" height="132" />
-                                        </div>
-                                        <form action="{{ route('member.register') }}" method="POST">
-                                            @csrf
-                                            <div class="mb-3">
-                                                <label class="form-label">Username</label>
-                                                <input class="form-control form-control-lg @error('username') is-invalid @enderror" type="text" id ="username" name="username" placeholder="Enter your username" required/>
-                                                @error('username')
-                                                <span class="invalid-feedback d-block" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label">Password</label>
-                                                <input class="form-control form-control-lg @error('password') is-invalid @enderror" type="password" id = "password" name="password" placeholder="Enter your password" required/>
-                                                <input type="checkbox" onclick="showpassword()">Show Password<br>
-                                                @error('password')
-                                                <span class="invalid-feedback d-block" role="alert">
-=======
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
@@ -528,20 +475,10 @@
                                                 </div>
                                                 @error('password')
                                                 <span class="invalid-feedback p-0 m-0" role="alert">
->>>>>>> 0827tony
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
                                             </div>
-<<<<<<< HEAD
-
-                                            <div class="mb-3">
-                                                <label class="form-label">Confirm Password</label>
-                                                <input class="form-control form-control-lg  @error('surepassword') is-invalid @enderror" type="password" id = "surepassword" name="surepassword" placeholder="Enter your password again" required/>
-                                                <input type="checkbox" onclick="showpassword2()">Show Password<br>
-                                                @error('surepassword')
-                                                <span class="invalid-feedback d-block" role="alert">
-=======
                                         </div>
 
                                         <div class="mb-3">
@@ -565,59 +502,10 @@
                                                 </div>
                                                 @error('password2')
                                                 <span class="invalid-feedback p-0 m-0" role="alert">
->>>>>>> 0827tony
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
                                             </div>
-<<<<<<< HEAD
-
-                                            <div class="mb-3">
-                                                <label class="form-label">姓名</label>
-                                                <input class="form-control form-control-lg" type="text" id = "name" name="name" placeholder="Enter your name" required/>
-
-
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label">Priority</label>
-
-                                                <select class="form-control form-control-lg" id = "priority" name="priority" class = "@error('priority') is-invalid @enderror" required>
-                                                    <option>Choose your priority</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                </select>
-
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label">部門</label>
-                                                <input class="form-control form-control-lg " type="text" id = "department" name="department" placeholder="Enter your department" required>
-                                            </div>
-
-
-
-
-                                            <div class="text-center mt-3">
-                                                <input type = "submit" class="btn btn-lg btn-primary" value="Sign Up">
-                                                <!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
-                                            </div>
-                                        </form>
-                                        <div class="text-center mt-3">
-                                            <input type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('member.index')}}'" value="Home">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </main>
-=======
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.name') !!}</label>
@@ -664,5 +552,4 @@
     <script src="{{ asset('/js/app.js') }}"></script>
     <script src="{{ asset('/admin/js/app.js') }}"></script>
     <script src="{{ asset('/js/login/register.js') }}"></script>
->>>>>>> 0827tony
 </body>

@@ -392,26 +392,17 @@ final class Barcode39
         //
         // check if writing image
         if ($filename) {
-<<<<<<< HEAD
-            $save = storage_path('barcodeImg/') . $filename . ".png";
-            //                       NOTE! is the system using "/" or "\" ????
-=======
             //           NOTE! is the system using "/" or "\" ????
->>>>>>> 0827tony
             // chmod($save,0777);
             $resource = \Image::make($img)->encode('png');
             \Log::debug("Storing image");
             if ($resource !== false) {
-<<<<<<< HEAD
-                \Storage::put("public/barcodeImg/{$filename}.png", (string) $resource);
-=======
                 if ($this->isIsn === "true") {
                     \Storage::put("public/barcodeImg/{$filename}.png", (string) $resource);
                 } // if
                 else {
                     \Storage::put("public/barcodeImg/{$filename}-2.png", (string) $resource);
                 } // else 
->>>>>>> 0827tony
             } else {
                 \Log::error("Failed to get resource from string");
             } // if else
@@ -420,42 +411,8 @@ final class Barcode39
             imagepng($img);
         } // if else
 
-<<<<<<< HEAD
-        if (strlen($this->barcode2) == 0) {
-            $namee = $this->barcode1;
-        } else {
-            $namee = $this->barcode1 . "-" . $this->barcode2;
-        } // if else 
-
         // imagedestroy($img);
 
-        session_start();
-
-        if ($this->saveInSession === 'true') {
-            if ($this->isIsn === "true" && isset($_SESSION['isnCount'])) {
-                $a = $_SESSION['isnCount'];
-                $a = $a + 1;
-                $_SESSION['isnCount'] = $a;
-                $_SESSION['isnArray'][] = $namee;
-                $_SESSION['isnName'][] = $this->MaterialName;
-            } else if ($this->isIsn === "true" && !isset($_SESSION['isnCount'])) {
-                $_SESSION['isnCount'] = 0;
-                $_SESSION['isnArray'][] = $namee;
-                $_SESSION['isnName'][] = $this->MaterialName;
-            } else if ($this->isIsn === "false" && isset($_SESSION['locCount'])) {
-                $a = $_SESSION['locCount'];
-                $a = $a + 1;
-                $_SESSION['locCount'] = $a;
-                $_SESSION['locArray'][] = $namee;
-            } else {
-                $_SESSION['locCount'] = 0;
-                $_SESSION['locArray'][] = $namee;
-            } // if else
-        } // if
-=======
-        // imagedestroy($img);
-
->>>>>>> 0827tony
         // valid barcode
         return true;
     } // draw()

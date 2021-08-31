@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-/node_modules
-/public/hot
-/public/storage
-/storage/*.key
-/vendor
-=======
 # /node_modules
 /public/hot
 /public/storage
 /storage/*.key
 # /vendor
->>>>>>> 0827tony
 /laradock
 # cd into laradock dir and push, then come back to project and push
 .env.backup

@@ -11,13 +11,9 @@ class O庫Inventory extends Model
     use HasFactory;
     use SoftDeletes;
 
-<<<<<<< HEAD
-    protected $table = "O庫Inventory";
-=======
     protected $table = "O庫inventory";
 
     protected $primaryKey = ['料號' , '客戶別','庫別'];
->>>>>>> 0827tony
 
     //PK no return 0
     public $incrementing = false;
@@ -25,11 +21,7 @@ class O庫Inventory extends Model
     protected $fillable = [
         '料號',
         '現有庫存',
-<<<<<<< HEAD
-        '廠別',
-=======
         '客戶別',
->>>>>>> 0827tony
         '庫別',
         '最後更新時間',
         '品名',
