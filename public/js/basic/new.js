@@ -53,11 +53,13 @@ $('#newmaterial').on('submit', function (e) {
             document.getElementById("numbererror").style.display = "block";
             document.getElementById('number').style.borderColor = "red";
             document.getElementById('number').value='';
+            document.getElementById("numbererror1").style.display = "none";
           }
           else if(myObj.newerror[1] === true){
             document.getElementById("numbererror1").style.display = "block";
             document.getElementById('number').style.borderColor = "red";
             document.getElementById('number').value='';
+            document.getElementById("numbererror").style.display = "none";
           }
           else if(myObj.newerror[2] === true){
             document.getElementById("safeerror").style.display = "block";
@@ -65,7 +67,7 @@ $('#newmaterial').on('submit', function (e) {
             document.getElementById('safe').value='';
           }
           else if(myObj.boolean === true){
-            var mess = Lang.get('oboundpageLang.newMats')+Lang.get('oboundpageLang.success');
+            var mess = Lang.get('oboundpageLang.newMats')+' '+Lang.get('oboundpageLang.success');
             alert(mess);
             //alert('New Material successfully');
             window.location.href = "/basic";

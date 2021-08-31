@@ -92,10 +92,10 @@
                                             </a>
                                             <ul id="basicInfo" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
-                                                <li class="sidebar-item {{ isActiveRoute(['basic.index','basic/uploadbasic','basic/inf']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['basic.index','basic/uploadbasic','basic/inf' , 'basic/insertuploadbasic']) }}">
                                                     <a class="sidebar-link" href="{{url('basic')}}">
                                                         {!! __('basicInfoLang.basicInfo') !!}</a></li>
-                                                <li class="sidebar-item {{ isActiveRoute(['basic/new']) }}"><a
+                                                <li class="sidebar-item {{ isActiveRoute(['basic/new','basic.uploadmaterial']) }}"><a
                                                         class="sidebar-link" href="{{url('basic/new')}}">
                                                         {!! __('basicInfoLang.newMats') !!}</a></li>
                                                 <li class="sidebar-item {{ isActiveRoute(['basic/material']) }}"><a

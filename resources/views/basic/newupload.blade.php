@@ -59,13 +59,13 @@
                                 </tr>
                                     @foreach($data as $row)
                                     <tr>
-                                        <td><input type = "text"  name = "data0a{{$loop->index}}" value = "{{$row[0]}}"></td>
-                                        <td><input type = "text"  name = "data1a{{$loop->index}}" value = "{{$row[1]}}"></td>
-                                        <td><input type = "text"  name = "data2a{{$loop->index}}" value = "{{$row[2]}}"></td>
-                                        <td><input style="width:70px" type = "number"  name = "data3a{{$loop->index}}" value = "{{$row[3]}}" step="0.0001"></td>
+                                        <td><input type = "text"  name = "data0a{{$loop->index}}" value = "{{$row[0]}}" required></td>
+                                        <td><input type = "text"  name = "data1a{{$loop->index}}" value = "{{$row[1]}}" required></td>
+                                        <td><input type = "text"  name = "data2a{{$loop->index}}" value = "{{$row[2]}}" required></td>
+                                        <td><input style="width:70px" type = "number"  name = "data3a{{$loop->index}}" value = "{{$row[3]}}" step="0.00001" required></td>
                                         <td>
-                                            <select class="form-control form-control-lg " id = "data4a{{$loop->index}}" name="data4a{{$loop->index}}">
-                                            <option>{{$row[4]}}</option>
+                                            <select class="form-control form-control-lg " id = "data4a{{$loop->index}}" name="data4a{{$loop->index}}" required>
+                                            <option style="display: none" selected value = "{{$row[4]}}">{{$row[4]}}</option>
                                             <option>RMB</option>
                                             <option>USD</option>
                                             <option>TWD</option>
@@ -73,41 +73,41 @@
                                             <option>JPY</option>
                                             </select>
                                         </td>
-                                        <td><input style="width:50px" type = "text"  name = "data5a{{$loop->index}}" value = "{{$row[5]}}"></td>
-                                        <td><input style="width:50px" type = "text"  name = "data6a{{$loop->index}}" value = "{{$row[6]}}"></td>
-                                        <td><input style="width:50px" type = "text"  name = "data7a{{$loop->index}}" value = "{{$row[7]}}"></td>
-                                        <td><input style="width:50px" type = "text"  name = "data8a{{$loop->index}}" value = "{{$row[8]}}"></td>
+                                        <td><input style="width:50px" type = "text"  name = "data5a{{$loop->index}}" value = "{{$row[5]}}" required></td>
+                                        <td><input style="width:50px" type = "number"  name = "data6a{{$loop->index}}" value = "{{$row[6]}}" required></td>
+                                        <td><input style="width:50px" type = "number"  name = "data7a{{$loop->index}}" value = "{{$row[7]}}" required></td>
+                                        <td><input style="width:50px" type = "number"  name = "data8a{{$loop->index}}"  step = "0.00001" value = "{{$row[8]}}" required></td>
                                         <td>
-                                            <select class="form-control form-control-lg " id = "data9a{{$loop->index}}" name="data9a{{$loop->index}}" value = "{{$row[9]}}">
-                                            <option>{{$row[9]}}</option>
+                                            <select class="form-control form-control-lg " id = "data9a{{$loop->index}}" name="data9a{{$loop->index}}" value = "{{$row[9]}}" required>
+                                            <option style="display: none"  selected value = "{{$row[9]}}">{{$row[9]}}</option>
                                             <option>是</option>
                                             <option>否</option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control form-control-lg " name="data10a{{$loop->index}}" value = "{{$row[10]}}">
-                                            <option>{{$row[10]}}</option>
+                                            <select class="form-control form-control-lg " name="data10a{{$loop->index}}" value = "{{$row[10]}}" required>
+                                            <option style="display: none"  selected value = "{{$row[10]}}">{{$row[10]}}</option>
                                             <option>是</option>
                                             <option>否</option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control form-control-lg "  name="data11a{{$loop->index}}" value = "{{$row[11]}}">
-                                            <option>{{$row[11]}}</option>
+                                            <select class="form-control form-control-lg "  name="data11a{{$loop->index}}" value = "{{$row[11]}}" required>
+                                            <option style="display: none"  selected value = "{{$row[11]}}">{{$row[11]}}</option>
                                             <option>單耗</option>
                                             <option>站位</option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control form-control-lg " name="data12a{{$loop->index}}" value = "{{$row[12]}}">
-                                            <option>{{$row[12]}}</option>
+                                            <select class="form-control form-control-lg " name="data12a{{$loop->index}}" value = "{{$row[12]}}" required>
+                                            <option style="display: none"  selected value = "{{$row[12]}}">{{$row[12]}}</option>
                                             <option>IE備品室</option>
                                             <option>ME備品室</option>
                                             <option>設備備品室</option>
                                             <option>備品室</option>
                                             </select>
                                         </td>
-                                        <td><input style="width:50px" type = "text"  name = "data13a{{$loop->index}}" value = "{{$row[13]}}"></td>
+                                        <td><input style="width:70px" type = "number"  name = "data13a{{$loop->index}}" value = "{{$row[13]}}"></td>
 
                                     </tr>
                                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">

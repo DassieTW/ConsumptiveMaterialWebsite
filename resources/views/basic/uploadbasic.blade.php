@@ -78,8 +78,10 @@
                                     @elseif($choose === '退回原因')
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "退回原因">{!! __('basicInfoLang.returnreason') !!}</th>
                                     @else
-                                    <?php echo ("<script LANGUAGE='JavaScript'>
-                                        window.alert('不是批量上傳的格式，請檢查');
+                                    <?php
+                                    $mess = trans('inboundpageLang.uploaderror');
+                                        echo ("<script LANGUAGE='JavaScript'>
+                                        window.alert('$mess');
                                         window.location.href = 'uploadbasic';
                                         </script>");
                                     ?>
@@ -95,7 +97,7 @@
                                 @endforeach
 
                             </table>
-                            <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="新增至資料庫">
+                            <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.add') !!}">
                         </form>
                     </div>
                 </div>
