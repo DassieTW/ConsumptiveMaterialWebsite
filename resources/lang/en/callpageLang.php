@@ -12,7 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'safe' =>'Safe Inventory Alert',
+    'safealert' =>'Safe Inventory Alert',
     'day' =>'Sluggish Day Alert',
     'callsys' =>'Alarm system',
     'client' =>'Client',

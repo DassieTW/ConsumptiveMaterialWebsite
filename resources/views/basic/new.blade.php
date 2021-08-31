@@ -74,8 +74,8 @@
                             <label class="form-label">{!! __('basicInfoLang.gradea') !!}</label>
                             <select class="form-control form-control-lg" id = "gradea" name="gradea" required>
                                 <option style="display: none" disabled selected value = "">{!! __('basicInfoLang.enteryorn') !!}</option>
-                                <option>是</option>
-                                <option>否</option>
+                                <option>{!! __('basicInfoLang.yes') !!}</option>
+                                <option>{!! __('basicInfoLang.no') !!}</option>
                             </select>
                         </div>
 
@@ -83,26 +83,26 @@
                             <label class="form-label">{!! __('basicInfoLang.belong') !!}</label>
                             <select class="form-control form-control-lg" id = "belong" name="belong" required>
                                 <option style="display: none" disabled selected value = "">{!! __('basicInfoLang.enterbelong') !!}</option>
-                                <option>單耗</option>
-                                <option>站位</option>
+                                <option>{!! __('basicInfoLang.consume') !!}</option>
+                                <option>{!! __('basicInfoLang.stand') !!}</option>
                             </select>
                         </div>
                         <div class="mb-3 col-md-4">
                             <label class="form-label">{!! __('basicInfoLang.month') !!}</label>
                             <select class="form-control form-control-lg" id = "month" name="month" required>
                                 <option style="display: none" disabled selected value = "">{!! __('basicInfoLang.enteryorn') !!}</option>
-                                <option>是</option>
-                                <option>否</option>
+                                <option>{!! __('basicInfoLang.yes') !!}</option>
+                                <option>{!! __('basicInfoLang.no') !!}</option>
                             </select>
                         </div>
                         <div class="mb-3 col-md-4">
                             <label class="form-label">{!! __('basicInfoLang.senddep') !!}</label>
                             <select class="form-control form-control-lg" id = "send" name="send" required>
                                 <option style="display: none" disabled selected value = "">{!! __('basicInfoLang.entersenddep') !!}</option>
-                                <option>IE備品室</option>
-                                <option>ME備品室</option>
-                                <option>設備備品室</option>
-                                <option>備品室</option>
+                                <option>{!! __('basicInfoLang.ieroom') !!}</option>
+                                <option>{!! __('basicInfoLang.meroom') !!}</option>
+                                <option>{!! __('basicInfoLang.equiproom') !!}</option>
+                                <option>{!! __('basicInfoLang.room') !!}</option>
                             </select>
                         </div>
                         <div class="mb-3 col-md-4">

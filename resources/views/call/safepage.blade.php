@@ -16,7 +16,7 @@
         <h2>{!! __('callpageLang.callsys') !!}</h2>
         <div class="card">
             <div class="card-header">
-                <h3>{!! __('callpageLang.safe') !!}</h3>
+                <h3>{!! __('callpageLang.safealert') !!}</h3>
             </div>
             <div class="card-body">
                 <form action="{{ route('call.safesubmit') }}" method="POST">

@@ -384,13 +384,13 @@
                                                 data-bs-parent="#sidebar">
                                                 <li class="sidebar-item {{ isActiveRoute(['call/safe']) }}">
                                                     <a class="sidebar-link" href="{{route('call.safe')}}">
-                                                        {!! __('callpageLang.safe') !!}
+                                                        {!! __('callpageLang.safealert') !!}
                                                     </a>
                                                 </li>
 
                                                 <li class="sidebar-item {{ isActiveRoute(['call/day']) }}">
                                                     <a class="sidebar-link" href="{{route('call.day')}}">
-                                                        {!! __('callpageLang.day') !!}
+                                                        {!! __('callpageLang.dayalert') !!}
                                                     </a>
                                                 </li>
 

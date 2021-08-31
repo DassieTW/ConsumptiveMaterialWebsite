@@ -17,7 +17,7 @@
         <h2>{!! __('callpageLang.callsys') !!}</h2>
         <div class="card">
             <div class="card-header">
-                <h3>{!! __('callpageLang.safe') !!}</h3>
+                <h3>{!! __('callpageLang.safealert') !!}</h3>
             </div>
             <div class="card-body">
 
@@ -31,7 +31,7 @@
                                     <th>{!! __('callpageLang.pName') !!}</th>
                                     <th>{!! __('callpageLang.format') !!}</th>
                                     <th>{!! __('callpageLang.stock') !!}</th>
-                                    <th>{!! __('callpageLang.safestock') !!}</th>
+                                    <th>{!! __('callpageLang.safe') !!}</th>
                                     <th>{!! __('callpageLang.loc') !!}</th>
                                     <th>{!! __('callpageLang.mark') !!}</th>
 

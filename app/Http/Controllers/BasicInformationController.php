@@ -16,7 +16,6 @@ use App\Models\儲位;
 use App\Models\退回原因;
 use App\Models\O庫;
 use App\Models\ConsumptiveMaterial;
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use DB;
@@ -675,7 +674,7 @@ class BasicInformationController extends Controller
                     }
                 }
 
-                $mess = trans('basicInfoLang.update').trans('basicInfoLang.success');
+                $mess = trans('basicInfoLang.change').trans('basicInfoLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                     window.alert('$mess');
                     window.location.href = '/basic';
@@ -896,7 +895,7 @@ class BasicInformationController extends Controller
             //判斷料號是否重複
             for($i = 0 ; $i < count($numbers) ; $i ++)
             {
-                if($number == $numbers[$i])
+                if(strcasecmp($number,$numbers[$i]) === 0 )
                 {
                     $reDive->newerror[0] = true;
                     $myJSON = json_encode($reDive);
@@ -927,7 +926,7 @@ class BasicInformationController extends Controller
                 }
 
                 //check 非月請購是否有填安全庫存
-                if($request->input('month') === '否' && $request->input('safe') === " " || $request->input('safe') === null)
+                if($request->input('month') === '否' && $request->input('safe') === null)
                 {
                     $reDive->newerror[2] = true;
                     $myJSON = json_encode($reDive);
