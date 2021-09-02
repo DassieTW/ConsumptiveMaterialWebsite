@@ -13,11 +13,11 @@ return [
     |
     */
     'barcode_gening' => 'Barcode Generate',
-    'isn_gen_barcode' => 'Generate ISN Barcode',
-    'isn' => 'ISN',
+    'isn_gen_barcode' => 'Generate Part Num. Barcode',
+    'isn' => 'Part Num.',
     'loc_gen_barcode' => 'Generate Loc. Barcode',
     'loc' => 'Location',
-    'pName' => 'MATL. ',
+    'pName' => 'Description',
     'gen' => 'Generate',
     'electric_screwdriver_bits' => 'Screwdriver',
     'batch_upload' => 'Batch Generate',

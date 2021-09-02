@@ -25,7 +25,7 @@ return [
     'inbound' => 'Inbound',
     'outbound' => 'Outbound',
     'monthly' => 'Monthly PR',
-    'obound' => 'Obound',
+    'obound' => 'Vendor Stock',
     'callsys' => 'Alarm System',
     'basicInfo' => 'Basic Info.',
     'checkIvent' => 'Check Inv.',
@@ -33,6 +33,6 @@ return [
     'barcode_gen' => 'Barcodes',
     'barcode_generator' => 'Barcode Generator',
     'locBarcode' => 'Find Loc. Barcode',
-    'isnBarcode' => 'Find ISN Barcode',
+    'isnBarcode' => 'Find Part Num. Barcode',
     'nowuser' => 'Now login user is:'
 ];

@@ -85,6 +85,8 @@
             <div class="row vh-100">
                 <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                     <div class="d-table-cell align-middle">
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <div class="w-100 d-none d-sm-inline-block" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
                         <div class="text-center mt-4">
                             <h1 class="h2 d-none d-sm-inline-block">
                                 {{ __('loginPageLang.welcome')}}
@@ -105,6 +107,20 @@
                                     <form id="loginForm" class="needs-validation" method="post" accept-charset="utf-8"
                                         novalidate>
                                         @csrf
+                                        <div class="mb-3">
+                                            <label class="form-label">{{ __('loginPageLang.site')}}</label>
+                                            <select class="form-select form-select-lg" id="site" name="site" required>
+                                                <option value="" selected>{{ __('loginPageLang.site_placeholder')}}</option>
+                                                <option value="testing">TEST</option>
+                                                <option value="default">Default</option>
+                                                <option value="BB1">BB1</option>
+                                                <option value="BB4">BB4</option>
+                                                <option value="M1">M1</option>
+                                                <option value="M2">M2</option>
+                                                <option value="M3">M3</option>
+                                                <option value="SMT">SMT</option>
+                                            </select>
+                                        </div>
                                         <div class="mb-3">
                                             <label class="form-label">{{ __('loginPageLang.username')}}</label>
                                             <input class="form-control form-control-lg" type="text" id="username"

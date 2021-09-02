@@ -30,33 +30,55 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        attemptLogin as baseAttemptLogin;
+    }
+
+    protected $redirectTo = RouteServiceProvider::HOME;
+
+    protected function attemptLogin(Request $request)
+    {
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password,
+        ] ;
+        
+        \Config::set('database.connections.' . env("DB_CONNECTION") .'.database', $request->site );
+        \DB::purge(env("DB_CONNECTION"));
+        // dd($request->site) ; // test
+        return \Auth::attempt($credentials);
+    } // attemptLogin
+
+    protected function authenticated(Request $request, $user)
+    {
+        session(['database' => $request->site]);
+        // dd(session('database')); // test
+    } // authenticated
 
     //login
     public function login(Request $request)
     {
         // exit(0); // test
-        $input = $request->all();
-
-        $credentials = $request->validate(
+        $request->validate(
             [
                 'username' => ['required'],
                 'password' => ['required'],
+                'site' => ['required'],
             ],
         );
 
         // exit(0); // test
 
-        if (\Auth::attempt($credentials)) {
+        if ($this->attemptLogin($request)) {
             $request->session()->regenerate();
 
-            $reDive = new responseObj();
             $usernameAuthed = \Auth::user()->username;
             $prior = \Auth::user()->priority;
             $avatarChoice = \Auth::user()->avatarChoice;
             Session::put('username', $usernameAuthed);
             Session::put('priority', $prior);
             Session::put('avatarChoice', $avatarChoice);
+            $this->authenticated($request, \Auth::user());
             return \Response::json(['message' => 'Log in successful !']); // Status code here
         } // if
         else { // login failed
@@ -124,12 +146,14 @@ class LoginController extends Controller
                 }
 
                 DB::table('login')
-                ->insert(['username' => $username , 'password' => $password , 'priority' => $priority ,
-                '姓名' => $name , '部門' => $department , 'created_at' => Carbon::now()]);
+                    ->insert([
+                        'username' => $username, 'password' => $password, 'priority' => $priority,
+                        '姓名' => $name, '部門' => $department, 'created_at' => Carbon::now()
+                    ]);
 
                 $request->session()->flush();
 
-                $mess = trans('loginPageLang.new').trans('loginPageLang.success').trans('loginPageLang.againlogin');
+                $mess = trans('loginPageLang.new') . trans('loginPageLang.success') . trans('loginPageLang.againlogin');
                 echo ("<script LANGUAGE='JavaScript'>
                     window.alert('$mess');
                     window.location.href='login';
@@ -140,9 +164,9 @@ class LoginController extends Controller
                 $myJSON = json_encode($reDive);
                 echo $myJSON;*/
                 return back()->withErrors([
-                        'password' => '',
-                        'password2' => trans('loginPageLang.errorpassword2'),
-                    ]);
+                    'password' => '',
+                    'password2' => trans('loginPageLang.errorpassword2'),
+                ]);
             }
         } else {
             return view('member.register');
@@ -203,8 +227,7 @@ class LoginController extends Controller
                 $department = $request->input('department');
                 $numbers = DB::table('人員信息')->pluck('工號');
                 $reDive = new responseObj();
-                if(strlen($number) !== 9)
-                {
+                if (strlen($number) !== 9) {
                     $reDive->boolean = false;
                     $reDive->passbool = true;
                     $myJSON = json_encode($reDive);
@@ -227,7 +250,7 @@ class LoginController extends Controller
                 }
 
                 DB::table('人員信息')
-                ->insert(['工號' => $number , '姓名' => $name , '部門' => $department]);
+                    ->insert(['工號' => $number, '姓名' => $name, '部門' => $department]);
 
                 Session::put('new', $number);
                 $reDive->boolean = true;
@@ -281,15 +304,15 @@ class LoginController extends Controller
                         DB::table('人員信息')
                             ->where('工號', $request->input('number' . $i))
                             ->delete();
-                            $record ++;
+                        $record++;
                     } else {
                         continue;
                     }
                 }
 
-                $mess = trans('loginPageLang.total').$record.trans('loginPageLang.record')
-                .trans('loginPageLang.pinf').trans('loginPageLang.delete')
-                .trans('loginPageLang.success');
+                $mess = trans('loginPageLang.total') . $record . trans('loginPageLang.record')
+                    . trans('loginPageLang.pinf') . trans('loginPageLang.delete')
+                    . trans('loginPageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
                 window.location.href='/member';
@@ -305,11 +328,11 @@ class LoginController extends Controller
                     DB::table('人員信息')
                         ->where('工號', $request->input('number' . $i))
                         ->update(['姓名' => $name, '部門' => $department]);
-                        $time ++;
+                    $time++;
                 }
-                $mess = trans('loginPageLang.total').$record.trans('loginPageLang.record')
-                .trans('loginPageLang.pinf').trans('loginPageLang.change')
-                .trans('loginPageLang.success');
+                $mess = trans('loginPageLang.total') . trans('loginPageLang.record')
+                    . trans('loginPageLang.pinf') . trans('loginPageLang.change')
+                    . trans('loginPageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
                 window.location.href='/member';
@@ -361,19 +384,18 @@ class LoginController extends Controller
                         DB::table('login')
                             ->where('username', $request->input('username' . $i))
                             ->delete();
-                            $record ++;
+                        $record++;
                     } else {
                         continue;
                     }
                 }
-                $mess = trans('loginPageLang.total').$record.trans('loginPageLang.record')
-                .trans('loginPageLang.user').trans('loginPageLang.delete')
-                .trans('loginPageLang.success');
+                $mess = trans('loginPageLang.total') . $record . trans('loginPageLang.record')
+                    . trans('loginPageLang.user') . trans('loginPageLang.delete')
+                    . trans('loginPageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
                 window.location.href='/member';
                 </script>");
-
             }
             //change
             /*else if($request->has('change'))
@@ -438,10 +460,9 @@ class LoginController extends Controller
     //人員信息上傳
     public function uploadpeople(Request $request)
     {
-        if (Session::has('username'))
-        {
+        if (Session::has('username')) {
             $this->validate($request, [
-            'select_file'  => 'required|mimes:xls,xlsx'
+                'select_file'  => 'required|mimes:xls,xlsx'
             ]);
             $path = $request->file('select_file')->getRealPath();
 
@@ -451,9 +472,7 @@ class LoginController extends Controller
 
             unset($sheetData[0]);
             return view('member.uploadpeople')->with(['data' => $sheetData]);
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -461,99 +480,75 @@ class LoginController extends Controller
     //人員信息上傳頁面
     function uploadpeoplepage(Request $request)
     {
-        if (Session::has('username'))
-        {
+        if (Session::has('username')) {
             return view('member.uploadpeople1');
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
 
-        //人員信息上傳資料新增至資料庫
-        public function insertuploadpeople(Request $request)
-        {
-            if (Session::has('username'))
-            {
-                $count = $request->input('count');
-                $numbers = DB::table('人員信息')->pluck('工號');
-                $record = 0;
-                for($i = 0 ; $i < $count ; $i ++)
-                {
-                    $number =  $request->input('data0'. $i);
-                    $name =  $request->input('data1'. $i);
-                    $department = $request->input('data2'. $i);
-                    if(strlen($number) !== 9)
-                    {
-                        $mess = trans('loginPageLang.joblength');
-                        echo ("<script LANGUAGE='JavaScript'>
+    //人員信息上傳資料新增至資料庫
+    public function insertuploadpeople(Request $request)
+    {
+        if (Session::has('username')) {
+            $count = $request->input('count');
+            $numbers = DB::table('人員信息')->pluck('工號');
+            $record = 0;
+            for ($i = 0; $i < $count; $i++) {
+                $number =  $request->input('data0' . $i);
+                $name =  $request->input('data1' . $i);
+                $department = $request->input('data2' . $i);
+                if (strlen($number) !== 9) {
+                    $mess = trans('loginPageLang.joblength');
+                    echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                         window.location.href='uploadpeople';
                         </script>");
-                        //return view('member.uploadpeople1');
-                    }
-                    else
-                    {
+                    //return view('member.uploadpeople1');
+                } else {
 
-                        //判斷工號是否重複
-                        for($i = 0 ; $i < count($numbers) ; $i ++)
-                        {
-                            if($number == $numbers[$i])
-                            {
-                                $mess = trans('loginPageLang.repeat');
-                                echo ("<script LANGUAGE='JavaScript'>
+                    //判斷工號是否重複
+                    for ($i = 0; $i < count($numbers); $i++) {
+                        if ($number == $numbers[$i]) {
+                            $mess = trans('loginPageLang.repeat');
+                            echo ("<script LANGUAGE='JavaScript'>
                                 window.alert('$mess');
                                 window.location.href='uploadpeople';
                                 </script>");
-                                return;
-                                /*return back()->withErrors([
+                            return;
+                            /*return back()->withErrors([
                                 'number' => '料號 is repeated , Please enter another 料號',
                                 ]);*/
-                            }
-                            else
-                            {
-                                continue;
-                            }
+                        } else {
+                            continue;
                         }
-                        DB::beginTransaction();
-                        try {
-                            DB::table('人員信息')
-                                ->insert(['工號' => $number , '姓名' => $name , '部門' => $department]);
-                            DB::commit();
-                            $record++;
-                        }catch (\Exception $e) {
-                            DB::rollback();
-                            $mess = trans('loginPageLang.repeat');
-                            echo ("<script LANGUAGE='JavaScript'>
+                    }
+                    DB::beginTransaction();
+                    try {
+                        DB::table('人員信息')
+                            ->insert(['工號' => $number, '姓名' => $name, '部門' => $department]);
+                        DB::commit();
+                        $record++;
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        $mess = trans('loginPageLang.repeat');
+                        echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess'');
                             window.location.href='uploadpeople';
                             </script>");
-                            //return view('member.uploadpeople1');
-                        }
+                        //return view('member.uploadpeople1');
                     }
-
                 }
-                $mess = trans('loginPageLang.total').$record.trans('loginPageLang.record')
-                .trans('loginPageLang.pinf').trans('loginPageLang.upload1')
-                .trans('loginPageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
+            }
+            $mess = trans('loginPageLang.total') . $record . trans('loginPageLang.record')
+                . trans('loginPageLang.pinf') . trans('loginPageLang.upload1')
+                . trans('loginPageLang.success');
+            echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
                 window.location.href='/member';
                 </script>");
-            }
-
-            else
-            {
-                return redirect(route('member.login'));
-            }
-
+        } else {
+            return redirect(route('member.login'));
         }
-
-
-
-
-
-
-
+    }
 } // end of controller

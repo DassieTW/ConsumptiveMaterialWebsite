@@ -4,6 +4,19 @@ namespace App\Providers;
 
 use App\Models\Login;
 use App\Policies\LoginPolicy;
+
+use App\Models\月請購_單耗;
+use App\Policies\MonthlyPRPolicy;
+
+use App\Models\ConsumptiveMaterial;
+use App\Policies\BasicInfoPolicy;
+
+use App\Models\Inbound;
+use App\Policies\InboundPolicy;
+
+use App\Models\O庫;
+use App\Policies\OboundPolicy;
+
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 class AuthServiceProvider extends ServiceProvider
@@ -16,6 +29,10 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Login::class => LoginPolicy::class,
+        月請購_單耗::class => MonthlyPRPolicy::class,
+        ConsumptiveMaterial::class => BasicInfoPolicy::class,
+        Inbound::class => InboundPolicy::class,
+        O庫::class => OboundPolicy::class,
     ];
 
     /**

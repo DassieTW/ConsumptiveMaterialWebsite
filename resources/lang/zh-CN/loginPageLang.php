@@ -15,8 +15,10 @@ return [
 
     'username' => '帐号',
     'password' => '密码',
+    'site' => '厂区',
     'username_placeholder' => '请输入帐号',
     'password_placeholder' => '请输入密码',
+    'site_placeholder' => '请选择厂区',
     'home' => '主页',
     'welcome' => '欢迎',
     'welcome_msg' => '请登入帐户以继续使用功能',

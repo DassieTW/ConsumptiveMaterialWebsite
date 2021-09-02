@@ -15,8 +15,10 @@ return [
 
     'username' => 'Username',
     'password' => 'Password',
+    'site' => 'Site',
     'username_placeholder' => 'Enter your username',
     'password_placeholder' => 'Enter your password',
+    'site_placeholder' => 'Choose your site',
     'home' => 'Home',
     'welcome' => 'Welcome',
     'welcome_msg' => 'Sign in to your account to continue',
