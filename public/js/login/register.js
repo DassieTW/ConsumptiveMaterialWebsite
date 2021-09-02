@@ -47,6 +47,16 @@ $(document).ready(function () {
       type: 'POST',
       url: "/member/register",
       data: { username: username, password: password, surepassword: surepassword, priority: priority, name: name, department: department },
+      beforeSend: function () {
+        // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+        $('body').loadingModal({
+          text: 'Loading...',
+          animation: 'circle'
+        });
+      },
+      complete: function () {
+        $('body').loadingModal('hide');
+      },
       success: function (data) {
         console.log(data);
         var myObj = JSON.parse(data);

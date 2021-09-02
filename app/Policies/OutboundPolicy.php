@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\O庫;
+use App\Models\Outbound;
 use App\Models\Login;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class OboundPolicy
+class OutboundPolicy
 {
     use HandlesAuthorization;
 
@@ -16,7 +16,7 @@ class OboundPolicy
      * @param  \App\Models\Login  $user
      * @return boolean
      */
-    public function viewObound(Login $user)  // 權限1234都能看到O庫
+    public function viewOutbound(Login $user)  // 權限1234都能看到O庫
     {
         if (intval($user->priority) <= 4) {
             return true;

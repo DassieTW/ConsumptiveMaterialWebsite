@@ -181,7 +181,7 @@
                                         </li>
                                         @endcan
 
-                                        @can('viewObound', App\Models\O庫::class )
+
                                         <li class="sidebar-item {{ isActiveRoute(['outbound/' , 'outbound.index']) }}">
                                             <a data-bs-target="#outbound" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
@@ -196,31 +196,38 @@
                                             </a>
                                             <ul id="outbound" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
-                                                <li class="sidebar-item {{ isActiveRoute(['outbound.pick', 'outbound/pickaddok']) }}">
+
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['outbound.pick', 'outbound/pickaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.pick')}}">
                                                         {!! __('outboundpageLang.pick') !!}
                                                     </a>
                                                 </li>
+
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound/picklist']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.picklistpage')}}">
                                                         {!! __('outboundpageLang.picklist') !!}
                                                     </a>
                                                 </li>
+
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound/pickrecord']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.pickrecord')}}">
                                                         {!! __('outboundpageLang.pickrecord') !!}
                                                     </a>
                                                 </li>
+
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound.back']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.back')}}">
                                                         {!! __('outboundpageLang.back') !!}
                                                     </a>
                                                 </li>
+
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound/backlist']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.backlistpage')}}">
                                                         {!! __('outboundpageLang.backlist') !!}
                                                     </a>
                                                 </li>
+
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound/backrecord']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.backrecord')}}">
                                                         {!! __('outboundpageLang.backrecord') !!}
@@ -230,7 +237,7 @@
 
                                             </ul>
                                         </li>
-                                        @endcan
+
 
                                         @can('viewMonthlyPR', App\Models\月請購_單耗::class )
                                         <li class="sidebar-item {{ isActiveRoute(['month/',  'month.index']) }}">
@@ -306,6 +313,7 @@
                                         </li>
                                         @endcan
 
+                                        @can('viewObound', App\Models\O庫::class )
                                         <li class="sidebar-item {{ isActiveRoute(['obound/' , 'obound.index']) }}">
                                             <a data-bs-target="#obound" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
@@ -319,72 +327,97 @@
                                             </a>
                                             <ul id="obound" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
+                                                @can('oboundNewMat', App\Models\O庫::class )
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['obound/new' , 'obound/uploadmaterial']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.new')}}">
                                                         {!! __('oboundpageLang.newMats') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundMatSearch', App\Models\O庫::class )
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['obound.material' , 'obound/material']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.material')}}">
                                                         {!! __('oboundpageLang.matsInfo') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundIn', App\Models\O庫::class )
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['obound.inbound' , 'obound/inboundnewok']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.inbound')}}">
                                                         {!! __('oboundpageLang.inbound') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundInSearch', App\Models\O庫::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['obound/inboundsearch']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.inboundsearch')}}">
                                                         {!! __('oboundpageLang.inboundsearch') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundStockUpload', App\Models\O庫::class )
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['obound.upload','obound/uploadinventory']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.upload')}}">
                                                         {!! __('oboundpageLang.stockupload') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundStockSearch', App\Models\O庫::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['obound/searchstock']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.searchstock')}}">
                                                         {!! __('oboundpageLang.searchstock') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundPickup', App\Models\O庫::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['obound.pick']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.pick')}}">
                                                         {!! __('oboundpageLang.pick') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundPickupSerialNum', App\Models\O庫::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['obound/picklist']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.picklistpage')}}">
                                                         {!! __('oboundpageLang.picklist') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundPickupRecord', App\Models\O庫::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['obound/pickrecord']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.pickrecord')}}">
                                                         {!! __('oboundpageLang.pickrecord') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundReturn', App\Models\O庫::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['obound.back']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.back')}}">
                                                         {!! __('oboundpageLang.back') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundReturnSerialNum', App\Models\O庫::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['obound/backlist']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.backlistpage')}}">
                                                         {!! __('oboundpageLang.backlist') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
+                                                @can('oboundReturnRecord', App\Models\O庫::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['obound/backrecord']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.backrecord')}}">
                                                         {!! __('oboundpageLang.backrecord') !!}
                                                     </a>
                                                 </li>
+                                                @endcan
                                             </ul>
                                         </li>
+                                        @endcan
 
                                         <li class="sidebar-item {{ isActiveRoute(['call/']) }}">
                                             <a href="#call" data-bs-toggle="collapse" class="sidebar-link collapsed">
