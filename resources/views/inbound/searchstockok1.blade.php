@@ -19,8 +19,7 @@
                 <h3>{!! __('inboundpageLang.stockmonth') !!}{!! __('inboundpageLang.search') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+                <div class="table-responsive">
                         <form action="{{ route('inbound.download') }}" method="POST">
                             @csrf
                             <input type = "hidden" id = "title" name = "title" value = "庫存">
@@ -119,10 +118,10 @@
                                     @endforeach
 
                                 </table>
+                            </div>
+                            <br>
                                 <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.download') !!}">
                             </form>
-                        </div>
-                    </div>
                     <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.searchstock')}}'">{!! __('inboundpageLang.return') !!}</button>
                 </div>
             </div>

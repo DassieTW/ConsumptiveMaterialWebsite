@@ -12,7 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
     'username' => 'Username',
     'password' => 'Password',
     'site' => 'Site',
@@ -24,14 +23,12 @@ return [
     'welcome_msg' => 'Sign in to your account to continue',
     'login_btn' => 'Login',
     'settings' => 'Settings',
-
-    'home' =>'Home',
-    'register' =>'User registration',
+    'adduser' => 'Add user',
     'surepassword' =>'Confirm password',
-    'enterpassword' =>'Please enter the password again',
-    'name' =>'name',
+    'enterpassword' =>'Please enter your password again',
+    'name' =>'Name',
     'entername' =>'Please enter your name',
-    'enterpriority' =>'Please select permission',
+    'enterpriority' =>'Please select the permission',
     'priority' =>'Permission',
     'dep' =>'Department',
     'enterdep' =>'Please enter the department',
@@ -59,13 +56,11 @@ return [
     'enterjobsearch' =>'Please enter your ID',
     'addtodatabase' =>'AddtoDatabase',
     'total' =>'Total',
-    'record' =>'reocord',
+    'record' =>'record',
     'success' =>'Success',
     'againlogin' =>'Please log in again',
-    'pinf' =>'Personnel Information',
-    'user' =>'user',
-    'repeat' => 'The data has been stored in the database, please check.',
+    'pinf' =>'Personnel Info.',
     'upload1' =>'Upload',
-    'usernamerepeat' =>'The account is repeated, please enter again.'
-
+    'usernamerepeat' =>'The account is repeated, please enter again.',
+    'row' => 'In Row',
 ];

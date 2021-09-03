@@ -21,8 +21,7 @@
             <div class="card-body">
                 <form id = "backlist">
                     @csrf
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+                <div class="table-responsive">
 
                             <select class=" form-control form-control-lg " id = "list" name="list"  required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.searchbacklist') !!}</option>
@@ -30,6 +29,7 @@
                             <option>{{  $number->退料單號 }}</option>
                             @endforeach
                             </select>
+
                             <table class="table" id = "test">
                                 <tr id = "require">
                                     <th>{!! __('outboundpageLang.client') !!}</th>
@@ -69,8 +69,10 @@
                                     @endforeach
 
                             </table>
-                            <div id = "reasonerror"><h3 style="color: red">{!! __('outboundpageLang.enterdiffreason') !!}</h3></div>
+                </div>
+                            <div id = "reasonerror" style="display:none;"><h3 style="color: red">{!! __('outboundpageLang.enterdiffreason') !!}</h3></div>
 
+                            <br>
                             <label class="form-label">{!! __('outboundpageLang.receivepeople') !!}</label>
                             <select class="form-control form-control-lg" id = "pickpeople" name="pickpeople" required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.enterreceivepeople') !!}</option>
@@ -100,13 +102,11 @@
                             <label class="form-label">{!! __('outboundpageLang.status') !!}</label>
                             <select class="form-control form-control-lg" id = "status" name="status" required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.enterstatus') !!}</option>
-                            <option>良品</option>
-                            <option>不良品</option>
+                            <option>{!! __('outboundpageLang.good') !!}</option>
+                            <option>{!! __('outboundpageLang.nogood') !!}</option>
                             </select>
 
-                            <br><br>
-                            </div>
-                        </div>
+                            <br>
                             <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}">
                             </form>
                         <br>

@@ -19,7 +19,6 @@ return [
     'back' => 'Back Material',
     'backlist' => 'Back Material List',
     'backrecord' => 'Back Material Record',
-
     'client' =>'Clients',
     'machine' =>'Machines',
     'process' =>'Processes',
@@ -88,13 +87,14 @@ return [
     'searchbacklist' =>'Search return list',
     'deletebacklist' =>'Delete return list',
     'enterstatus' =>'Please select the status',
-
-    'outpickok' =>'Outbound completed completed, Picklist number:',
-    'outbackok' =>'Outbound completed, Backlist number:',
+    'outpickok' =>'Outbound completed completed, Picklist number',
+    'outbackok' =>'Outbound completed, Backlist number',
     'nowloc' =>'current storage location',
     'stockless'=>'The inventory is less than the actual requisition quantity and cannot outbound',
     'add' =>'Add',
     'success' =>'Success',
     'delete' =>'delete',
-
+    'other' =>'other',
+    'good' =>'good product',
+    'nogood' =>'bad product',
 ];

@@ -30,9 +30,9 @@
                                     <th>{!! __('inboundpageLang.pName') !!}</th>
                                     <th>{!! __('inboundpageLang.format') !!}</th>
                                     <th>{!! __('inboundpageLang.unit') !!}</th>
-                                    <th>{!! __('inboundpageLang.amount') !!}</th>
+                                    <th>{!! __('inboundpageLang.transit') !!}</th>
                                     <th>{!! __('inboundpageLang.nowstock') !!}</th>
-                                    <th>{!! __('inboundpageLang.safestock') !!}</th>
+                                    <th>{!! __('inboundpageLang.safe') !!}</th>
                                     <th>{!! __('inboundpageLang.inamount') !!}</th>
                                     <th>{!! __('inboundpageLang.inreason') !!}</th>
                                     <th>{!! __('inboundpageLang.oldloc') !!}</th>
@@ -97,7 +97,13 @@
                                         <td>{{$safe}}</td>
                                         <td><input type = "number" id = "amount{{$loop->index}}" name="amount{{$loop->index}}" required placeholder="{!! __('inboundpageLang.enteramount') !!}"></td>
                                         <td><input type = "hidden" id = "inreason{{$loop->index}}" name = "inreason{{$loop->index}}" value = "{{$inreason}}">{{$inreason}}</td>
-                                        <td><input type = "hidden" id = "oldposition{{$loop->index}}" name = "oldposition{{$loop->index}}" value = "{{$posit}}">{{$posit}}</td>
+                                        <td>
+                                            <input type = "hidden" id = "oldposition{{$loop->index}}" name = "oldposition{{$loop->index}}" value = "{{$posit}}">
+                                            @foreach($posit as $oldloc)
+                                            {{  $oldloc }}
+                                            <br>
+                                            @endforeach
+                                        </td>
                                         <td>
                                             <select class="form-control form-control-lg" id = "newposition{{$loop->index}}" name="newposition{{$loop->index}}" width="250" style="width: 250px" required>
                                             <option style="display: none" disabled selected value = "">{!! __('inboundpageLang.enterloc') !!}</option>

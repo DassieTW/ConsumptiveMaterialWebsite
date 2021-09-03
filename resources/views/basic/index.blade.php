@@ -59,9 +59,10 @@
                 @foreach($factorys as $factory)
                 <input class ="factory" type="checkbox" id="factorycheck{{ $loop->index }}" name="factorycheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="factory" type="text" id="factory{{ $loop->index }}" name="factory{{ $loop->index }}" value = "{{ $factory->廠別 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "factorycount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="factory" type="text" id="factorynew" name="factorynew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="factory" type="text" id="factorynew" name="factorynew" value = "" >
                 <hr/>
 
             </div>
@@ -71,9 +72,10 @@
                 @foreach($clients as $client)
                 <input class ="client" type="checkbox" id="clientcheck{{ $loop->index }}" name="clientcheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="client" type="text" id="client{{ $loop->index }}" name="client{{ $loop->index }}" value = "{{ $client->客戶 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "clientcount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="client" type="text" id="clientnew" name="clientnew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="client" type="text" id="clientnew" name="clientnew" value = "" >
                 <hr/>
             </div>
 
@@ -82,9 +84,10 @@
                 @foreach($machines as $machine)
                 <input class ="machine" type="checkbox" id="machinecheck{{ $loop->index }}" name="machinecheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="machine" type="text" id="machine{{ $loop->index }}" name="machine{{ $loop->index }}" value = "{{ $machine->機種 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "machinecount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="machine" type="text" id="machinenew" name="machinenew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="machine" type="text" id="machinenew" name="machinenew" value = "" >
                 <hr/>
             </div>
 
@@ -93,9 +96,10 @@
                 @foreach($productions as $production)
                 <input class ="production" type="checkbox" id="productioncheck{{ $loop->index }}" name="productioncheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="production" type="text" id="production{{ $loop->index }}" name="production{{ $loop->index }}" value = "{{ $production->製程 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "productioncount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="production" type="text" id="productionnew" name="productionnew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="production" type="text" id="productionnew" name="productionnew" value = "" >
                 <hr/>
             </div>
 
@@ -104,9 +108,10 @@
                 @foreach($lines as $line)
                 <input class ="line" type="checkbox" id="linecheck{{ $loop->index }}" name="linecheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="line" type="text" id="line{{ $loop->index }}" name="line{{ $loop->index }}" value = "{{ $line->線別 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "linecount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="line" type="text" id="linenew" name="linewnew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="line" type="text" id="linenew" name="linewnew" value = "" >
                 <hr/>
             </div>
 
@@ -115,9 +120,10 @@
                 @foreach($uses as $use)
                 <input class ="use" type="checkbox" id="usecheck{{ $loop->index }}" name="usecheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="use" type="text" id="use{{ $loop->index }}" name="use{{ $loop->index }}" value = "{{ $use->領用部門 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "usecount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="use" type="text" id="usenew" name="usenew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="use" type="text" id="usenew" name="usenew" value = "" >
                 <hr/>
             </div>
 
@@ -126,9 +132,10 @@
                 @foreach($usereasons as $usereason)
                 <input class ="usereason" type="checkbox" id="usereasoncheck{{ $loop->index }}" name="usereasoncheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="usereason" type="text" id="usereason{{ $loop->index }}" name="usereason{{ $loop->index }}" value = "{{ $usereason->領用原因 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "usereasoncount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="usereason" type="text" id="usereasonnew" name="usereasonnew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="usereason" type="text" id="usereasonnew" name="usereasonnew" value = "" >
                 <hr/>
             </div>
 
@@ -137,9 +144,10 @@
                 @foreach($inreasons as $inreason)
                 <input class ="inreason" type="checkbox" id="inreasoncheck{{ $loop->index }}" name="inreasoncheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="inreason" type="text" id="inreason{{ $loop->index }}" name="inreason{{ $loop->index }}" value = "{{ $inreason->入庫原因 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "inreasoncount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="inreason" type="text" id="inreasonnew" name="inreasonnew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="inreason" type="text" id="inreasonnew" name="inreasonnew" value = "" >
                 <hr/>
             </div>
 
@@ -148,9 +156,10 @@
                 @foreach($positions as $position)
                 <input class ="position" type="checkbox" id="positioncheck{{ $loop->index }}" name="positioncheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="position" type="text" id="position{{ $loop->index }}" name="position{{ $loop->index }}" value = "{{ $position->儲存位置 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "positioncount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="position" type="text" id="positionnew" name="positionnew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="position" type="text" id="positionnew" name="positionnew" value = "" >
                 <hr/>
             </div>
 
@@ -159,9 +168,10 @@
                 @foreach($sends as $send)
                 <input class ="send" type="checkbox" id="sendcheck{{ $loop->index }}" name="sendcheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="send" type="text" id="send{{ $loop->index }}" name="send{{ $loop->index }}" value = "{{ $send->發料部門 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "sendcount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="send" type="text" id="sendnew" name="sendnew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="send" type="text" id="sendnew" name="sendnew" value = "" >
                 <hr/>
             </div>
 
@@ -170,9 +180,10 @@
                 @foreach($os as $o)
                 <input class ="o" type="checkbox" id="ocheck{{ $loop->index }}" name="ocheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="o" type="text" id="o{{ $loop->index }}" name="o{{ $loop->index }}" value = "{{ $o->O庫 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "ocount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="0" type="text" id="onew" name="onew" value = "" >
+                {!! __('basicInfoLang.new') !!} :  <input class ="0" type="text" id="onew" name="onew" value = "" >
                 <hr/>
             </div>
 
@@ -181,9 +192,10 @@
                 @foreach($backs as $back)
                 <input class ="back" type="checkbox" id="backcheck{{ $loop->index }}" name="backcheck{{ $loop->index }}" style="width:20px;height:20px;" >
                 <input class ="back" type="text" id="back{{ $loop->index }}" name="back{{ $loop->index }}" value = "{{ $back->退回原因 }}" >
+                <input type =  "hidden" value="{{$loop->count}}" name = "backcount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} <input class ="back" type="text" id="backnew" name="backnew" value = "" >
+                {!! __('basicInfoLang.new') !!} : <input class ="back" type="text" id="backnew" name="backnew" value = "" >
                 <hr/>
             </div>
 
@@ -198,28 +210,17 @@
             </div>
         </form>
         <br>
-        @if(count($errors) > 0)
-        <div class="alert alert-danger">
-            Upload Validation Error<br><br>
-            <ul>
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-            </ul>
-        </div>
-        @endif
 
-        @if($message = Session::get('success'))
-        <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>{{ $message }}</strong>
-        </div>
-        @endif
         <form method="post" enctype="multipart/form-data" action = "{{ route('basic.uploadbasic') }}">
             @csrf
             <div class="col-6 col-sm-3">
                 <label>{!! __('basicInfoLang.plz_upload') !!}</label>
-                <input  class="form-control"  type="file" name="select_file" />
+                <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" name="select_file" />
+                @error('select_file')
+                    <span class="invalid-feedback d-block" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
                 <br>
                 <input type="submit" name="upload" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.upload') !!}">
             </div>

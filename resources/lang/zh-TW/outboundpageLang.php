@@ -12,7 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
     'pick' => '領料',
     'picklist' => '領料單',
     'pickrecord' => '領料記錄表',
@@ -87,15 +86,14 @@ return [
     'searchbacklist' => '搜尋退料單',
     'deletebacklist' => '刪除退料單',
     'enterstatus' => '請選擇功能狀況',
-    'outpickok' => '出庫完成，領料單號: ',
-    'outbackok' => '出庫完成，退料單號: ',
+    'outpickok' => '出庫完成，領料單號',
+    'outbackok' => '出庫完成，退料單號',
     'nowloc' => '目前儲位',
-    'stockless'=> '之庫存小於實際領用數量，無法出庫。',
+    'stockless'=> '庫存小於實際領用數量，無法出庫。',
     'add' => '添加',
     'success' => '成功',
     'delete' => '刪除',
-
-
-
-
+    'other' => '其他',
+    'good' => '良品',
+    'nogood' => '不良品',
 ];

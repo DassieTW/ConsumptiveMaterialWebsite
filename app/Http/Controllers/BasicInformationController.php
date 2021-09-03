@@ -16,7 +16,6 @@ use App\Models\儲位;
 use App\Models\退回原因;
 use App\Models\O庫;
 use App\Models\ConsumptiveMaterial;
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use DB;
@@ -70,15 +69,16 @@ class BasicInformationController extends Controller
                 //factory
                 if($request->has('factory'))
                 {
-                    $count = DB::table('廠別')->count();
-                    $names = DB::table('廠別')->pluck('廠別');
+                    $count = $request->input('factorycount');
+                    $names = DB::table('廠別')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('factorycheck' . $i))
                         {
-                            DB::table('廠別')
+                            廠別::where('廠別', $names[$i]->廠別)->delete();
+                            /*DB::table('廠別')
                             ->where('廠別', $names[$i])
-                            ->delete();
+                            ->softdelete();*/
                         }
                         else
                         {
@@ -91,16 +91,17 @@ class BasicInformationController extends Controller
                 //client
                 else if($request->has('client'))
                 {
-                    $count = DB::table('客戶別')->count();
-                    $names = DB::table('客戶別')->pluck('客戶');
 
+                    $count = $request->input('clientcount');
+                    $names = DB::table('客戶別')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('clientcheck' . $i))
                         {
-                            DB::table('客戶別')
+                            客戶別::where('客戶', $names[$i]->客戶)->delete();
+                            /*DB::table('客戶別')
                             ->where('客戶', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -113,16 +114,17 @@ class BasicInformationController extends Controller
                 //machine
                 else if($request->has('machine'))
                 {
-                    $count = DB::table('機種')->count();
-                    $names = DB::table('機種')->pluck('機種');
+                    $count = $request->input('machinecount');
+                    $names = DB::table('機種')->whereNull('deleted_at')->get();
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('machinecheck' . $i))
                         {
-                            DB::table('機種')
+                            機種::where('機種', $names[$i]->機種)->delete();
+                            /*DB::table('機種')
                             ->where('機種', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -135,16 +137,17 @@ class BasicInformationController extends Controller
                 //production
                 else if($request->has('production'))
                 {
-                    $count = DB::table('製程')->count();
-                    $names = DB::table('製程')->pluck('製程');
+                    $count = $request->input('productioncount');
+                    $names = DB::table('製程')->whereNull('deleted_at')->get();
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('productioncheck' . $i))
                         {
-                            DB::table('製程')
+                            製程::where('製程', $names[$i]->製程)->delete();
+                            /*DB::table('製程')
                             ->where('製程', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -157,16 +160,17 @@ class BasicInformationController extends Controller
                 //line
                 else if($request->has('line'))
                 {
-                    $count = DB::table('線別')->count();
-                    $names = DB::table('線別')->pluck('線別');
+                    $count = $request->input('linecount');
+                    $names = DB::table('線別')->whereNull('deleted_at')->get();
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('linecheck' . $i))
                         {
-                            DB::table('線別')
+                            線別::where('線別', $names[$i]->線別)->delete();
+                            /*DB::table('線別')
                             ->where('線別', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -179,16 +183,17 @@ class BasicInformationController extends Controller
                 //use
                 else if($request->has('use'))
                 {
-                    $count = DB::table('領用部門')->count();
-                    $names = DB::table('領用部門')->pluck('領用部門');
+                    $count = $request->input('usecount');
+                    $names = DB::table('領用部門')->whereNull('deleted_at')->get();('領用部門');
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('usecheck' . $i))
                         {
-                            DB::table('領用部門')
+                            領用部門::where('領用部門', $names[$i]->領用部門)->delete();
+                            /*DB::table('領用部門')
                             ->where('領用部門', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -201,16 +206,17 @@ class BasicInformationController extends Controller
                 //usereason
                 else if($request->has('usereason'))
                 {
-                    $count = DB::table('領用原因')->count();
-                    $names = DB::table('領用原因')->pluck('領用原因');
+                    $count = $request->input('usereasoncount');
+                    $names = DB::table('領用原因')->whereNull('deleted_at')->get();
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        if($request->has('factorycheck' . $i))
+                        if($request->has('usereasoncheck' . $i))
                         {
-                            DB::table('領用原因')
+                            領用原因::where('領用原因', $names[$i]->領用原因)->delete();
+                            /*DB::table('領用原因')
                             ->where('領用原因', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -223,16 +229,17 @@ class BasicInformationController extends Controller
                 //inreason
                 else if($request->has('inreason'))
                 {
-                    $count = DB::table('入庫原因')->count();
-                    $names = DB::table('入庫原因')->pluck('入庫原因');
+                    $count = $request->input('inreasoncount');
+                    $names = DB::table('入庫原因')->whereNull('deleted_at')->get();
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('inreasoncheck' . $i))
                         {
-                            DB::table('入庫原因')
+                            入庫原因::where('入庫原因', $names[$i]->入庫原因)->delete();
+                            /*DB::table('入庫原因')
                             ->where('入庫原因', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -245,16 +252,17 @@ class BasicInformationController extends Controller
                 //position
                 else if($request->has('position'))
                 {
-                    $count = DB::table('儲位')->count();
-                    $names = DB::table('儲位')->pluck('儲存位置');
+                    $count = $request->input('positioncount');
+                    $names = DB::table('儲位')->whereNull('deleted_at')->get();
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('positioncheck' . $i))
                         {
-                            DB::table('儲位')
+                            儲位::where('儲存位置', $names[$i]->儲存位置)->delete();
+                            /*DB::table('儲位')
                             ->where('儲存位置', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -268,15 +276,16 @@ class BasicInformationController extends Controller
                 else if($request->has('send'))
                 {
                     $count = DB::table('發料部門')->count();
-                    $names = DB::table('發料部門')->pluck('發料部門');
+                    $names = DB::table('發料部門')->whereNull('deleted_at')->get();
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('sendcheck' . $i))
                         {
-                            DB::table('發料部門')
+                            發料部門::where('發料部門', $names[$i]->發料部門)->delete();
+                            /*DB::table('發料部門')
                             ->where('發料部門', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -289,16 +298,17 @@ class BasicInformationController extends Controller
                 //o庫
                 else if($request->has('o'))
                 {
-                    $count = DB::table('O庫')->count();
-                    $names = DB::table('O庫')->pluck('O庫');
+                    $count = $request->input('ocount');
+                    $names = DB::table('O庫')->whereNull('deleted_at')->get();
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('ocheck' . $i))
                         {
-                            DB::table('O庫')
+                            O庫::where('O庫', $names[$i]->O庫)->delete();
+                            /*DB::table('O庫')
                             ->where('O庫', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -309,18 +319,19 @@ class BasicInformationController extends Controller
                     ->with(['os' => O庫::cursor()]);
                 }
                 //退回原因
-                else if($request->has('o'))
+                else if($request->has('back'))
                 {
-                    $count = DB::table('退回原因')->count();
-                    $names = DB::table('退回原因')->pluck('退回原因');
+                    $count = $request->input('backcount');
+                    $names = DB::table('退回原因')->whereNull('deleted_at')->get();
 
                     for($i = 0 ; $i < $count ; $i++)
                     {
                         if($request->has('backcheck' . $i))
                         {
-                            DB::table('退回原因')
+                            退回原因::where('退回原因', $names[$i]->退回原因)->delete();
+                            /*DB::table('退回原因')
                             ->where('退回原因', $names[$i])
-                            ->delete();
+                            ->delete();*/
                         }
                         else
                         {
@@ -337,38 +348,54 @@ class BasicInformationController extends Controller
                 //factory
                 if($request->has('factory'))
                 {
-                    $count = DB::table('廠別')->count();
-                    $names = DB::table('廠別')->pluck('廠別');
+                    $count = $request->input('factorycount');
+                    $names = DB::table('廠別')->whereNull('deleted_at')->get();
+
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('廠別')
-                        ->where('廠別', $names[$i])
-                        ->update(['廠別' => $request->input('factory' . $i)]);
+                        if($request->has('factorycheck' . $i))
+                        {
+                            DB::table('廠別')
+                            ->where('廠別', $names[$i]->廠別)
+                            ->update(['廠別' => $request->input('factory' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('factorynew') !== null)
                     {
                         DB::table('廠別')
-                        ->insert(['廠別' => $request->input('factorynew')]);
+                        ->insert(['廠別' => $request->input('factorynew'),'created_at' => Carbon::now()]);
                     }
 
                     return view('basic.change')->with('choose' , 'factory')
-                    ->with(['factorys' => 廠別::cursor()]);
+                    ->with(['factorys' => 廠別::cursor()->whereNull('deleted_at')]);
+
                 }
                 //client
                 else if($request->has('client'))
                 {
-                    $count = DB::table('客戶別')->count();
-                    $names = DB::table('客戶別')->pluck('客戶');
+                    $count = $request->input('clientcount');
+                    $names = DB::table('客戶別')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('客戶別')
-                        ->where('客戶', $names[$i])
-                        ->update(['客戶' => $request->input('client' . $i)]);
+                        if($request->has('clientcheck' . $i))
+                        {
+                            DB::table('客戶別')
+                            ->where('客戶', $names[$i]->客戶)
+                            ->update(['客戶' => $request->input('client' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('clientnew') !== null)
                     {
                         DB::table('客戶別')
-                        ->insert(['客戶' => $request->input('clientnew')]);
+                        ->insert(['客戶' => $request->input('clientnew') , 'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'client')
                     ->with(['clients' => 客戶別::cursor()]);
@@ -376,18 +403,25 @@ class BasicInformationController extends Controller
                 //machine
                 else if($request->has('machine'))
                 {
-                    $count = DB::table('機種')->count();
-                    $names = DB::table('機種')->pluck('機種');
+                    $count = $request->input('machinecount');
+                    $names = DB::table('機種')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('機種')
-                        ->where('機種', $names[$i])
-                        ->update(['機種' => $request->input('machine' . $i)]);
+                        if($request->has('machinecheck' . $i))
+                        {
+                            DB::table('機種')
+                            ->where('機種', $names[$i]->機種)
+                            ->update(['機種' => $request->input('machine' . $i),'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('machinenew') !== null)
                     {
                         DB::table('機種')
-                        ->insert(['機種' => $request->input('machinenew')]);
+                        ->insert(['機種' => $request->input('machinenew'),'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'machine')
                     ->with(['machines' => 機種::cursor()]);
@@ -395,18 +429,25 @@ class BasicInformationController extends Controller
                 //production
                 else if($request->has('production'))
                 {
-                    $count = DB::table('製程')->count();
-                    $names = DB::table('製程')->pluck('製程');
+                    $count = $request->input('productioncount');
+                    $names = DB::table('製程')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('製程')
-                        ->where('製程', $names[$i])
-                        ->update(['製程' => $request->input('production' . $i)]);
+                        if($request->has('machinecheck' . $i))
+                        {
+                            DB::table('製程')
+                            ->where('製程', $names[$i]->製程)
+                            ->update(['製程' => $request->input('production' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('productionnew') !== null)
                     {
                         DB::table('製程')
-                        ->insert(['製程' => $request->input('productionnew')]);
+                        ->insert(['製程' => $request->input('productionnew') , 'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'production')
                     ->with(['productions' => 製程::cursor()]);
@@ -414,18 +455,25 @@ class BasicInformationController extends Controller
                 //line
                 else if($request->has('line'))
                 {
-                    $count = DB::table('線別')->count();
-                    $names = DB::table('線別')->pluck('線別');
+                    $count = $request->input('linecount');
+                    $names = DB::table('線別')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('線別')
-                        ->where('線別', $names[$i])
-                        ->update(['線別' => $request->input('line' . $i)]);
+                        if($request->has('linecheck' . $i))
+                        {
+                            DB::table('線別')
+                            ->where('線別', $names[$i]->線別)
+                            ->update(['線別' => $request->input('line' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('linenew') !== null)
                     {
                         DB::table('線別')
-                        ->insert(['線別' => $request->input('linenew')]);
+                        ->insert(['線別' => $request->input('linenew') , 'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'line')
                     ->with(['lines' => 線別::cursor()]);
@@ -433,18 +481,25 @@ class BasicInformationController extends Controller
                 //use
                 else if($request->has('use'))
                 {
-                    $count = DB::table('領用部門')->count();
-                    $names = DB::table('領用部門')->pluck('領用部門');
+                    $count = $request->input('usecount');
+                    $names = DB::table('領用部門')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('領用部門')
-                        ->where('領用部門', $names[$i])
-                        ->update(['領用部門' => $request->input('use' . $i)]);
+                        if($request->has('usecheck' . $i))
+                        {
+                            DB::table('領用部門')
+                            ->where('領用部門', $names[$i]->領用部門)
+                            ->update(['領用部門' => $request->input('use' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('usenew') !== null)
                     {
                         DB::table('領用部門')
-                        ->insert(['領用部門' => $request->input('usenew')]);
+                        ->insert(['領用部門' => $request->input('usenew') , 'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'use')
                     ->with(['uses' => 領用部門::cursor()]);
@@ -452,18 +507,25 @@ class BasicInformationController extends Controller
                 //usereason
                 else if($request->has('usereason'))
                 {
-                    $count = DB::table('領用原因')->count();
-                    $names = DB::table('領用原因')->pluck('領用原因');
+                    $count = $request->input('usereasoncount');
+                    $names = DB::table('領用原因')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('領用原因')
-                        ->where('領用原因', $names[$i])
-                        ->update(['領用原因' => $request->input('usereason' . $i)]);
+                        if($request->has('usereasoncheck' . $i))
+                        {
+                            DB::table('領用原因')
+                            ->where('領用原因', $names[$i]->領用原因)
+                            ->update(['領用原因' => $request->input('usereason' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('usereasonnew') !== null)
                     {
                         DB::table('領用原因')
-                        ->insert(['領用原因' => $request->input('usereasonnew')]);
+                        ->insert(['領用原因' => $request->input('usereasonnew') ,'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'usereason')
                     ->with(['usereasons' => 領用原因::cursor()]);
@@ -471,18 +533,25 @@ class BasicInformationController extends Controller
                 //inreason
                 else if($request->has('inreason'))
                 {
-                    $count = DB::table('入庫原因')->count();
-                    $names = DB::table('入庫原因')->pluck('入庫原因');
+                    $count = $request_input('inreasoncount');
+                    $names = DB::table('入庫原因')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('入庫原因')
-                        ->where('入庫原因', $names[$i])
-                        ->update(['入庫原因' => $request->input('inreason' . $i)]);
+                        if($request->has('inreasoncheck' . $i))
+                        {
+                            DB::table('入庫原因')
+                            ->where('入庫原因', $names[$i]->入庫原因)
+                            ->update(['入庫原因' => $request->input('inreason' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('inreasonnew') !== null)
                     {
                         DB::table('入庫原因')
-                        ->insert(['入庫原因' => $request->input('inreasonnew')]);
+                        ->insert(['入庫原因' => $request->input('inreasonnew') ,'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'inreason')
                     ->with(['inreasons' => 入庫原因::cursor()]);
@@ -490,18 +559,25 @@ class BasicInformationController extends Controller
                 //position
                 else if($request->has('position'))
                 {
-                    $count = DB::table('儲位')->count();
-                    $names = DB::table('儲位')->pluck('儲存位置');
+                    $count = $request->input('positioncount');
+                    $names = DB::table('儲位')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('儲位')
-                        ->where('儲存位置', $names[$i])
-                        ->update(['儲存位置' => $request->input('position' . $i)]);
+                        if($request->has('positioncheck' . $i))
+                        {
+                            DB::table('儲位')
+                            ->where('儲存位置', $names[$i]->儲存位置)
+                            ->update(['儲存位置' => $request->input('position' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('positionnew') !== null)
                     {
                         DB::table('儲位')
-                        ->insert(['儲存位置' => $request->input('positionnew')]);
+                        ->insert(['儲存位置' => $request->input('positionnew') ,'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'position')
                     ->with(['positions' => 儲位::cursor()]);
@@ -509,18 +585,25 @@ class BasicInformationController extends Controller
                 //send
                 else if($request->has('send'))
                 {
-                    $count = DB::table('發料部門')->count();
-                    $names = DB::table('發料部門')->pluck('發料部門');
+                    $count = $request->input('sendcount');
+                    $names = DB::table('發料部門')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('發料部門')
-                        ->where('發料部門', $names[$i])
-                        ->update(['發料部門' => $request->input('send' . $i)]);
+                        if($request->has('sendcheck' . $i))
+                        {
+                            DB::table('發料部門')
+                            ->where('發料部門', $names[$i]->發料部門)
+                            ->update(['發料部門' => $request->input('send' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('sendnew') !== null)
                     {
                         DB::table('發料部門')
-                        ->insert(['發料部門' => $request->input('sendnew')]);
+                        ->insert(['發料部門' => $request->input('sendnew') , 'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'send')
                     ->with(['sends' => 發料部門::cursor()]);
@@ -528,18 +611,25 @@ class BasicInformationController extends Controller
                 //O庫
                 else if($request->has('o'))
                 {
-                    $count = DB::table('O庫')->count();
-                    $names = DB::table('O庫')->pluck('O庫');
+                    $count = $request->input('ocount');
+                    $names = DB::table('O庫')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('O庫')
-                        ->where('O庫', $names[$i])
-                        ->update(['O庫' => $request->input('o' . $i)]);
+                        if($request->has('ocheck' . $i))
+                        {
+                            DB::table('O庫')
+                            ->where('O庫', $names[$i]->O庫)
+                            ->update(['O庫' => $request->input('o' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('onew') !== null)
                     {
                         DB::table('O庫')
-                        ->insert(['O庫' => $request->input('onew')]);
+                        ->insert(['O庫' => $request->input('onew') , 'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'o')
                     ->with(['os' => O庫::cursor()]);
@@ -547,18 +637,25 @@ class BasicInformationController extends Controller
                 //退回原因
                 else if($request->has('back'))
                 {
-                    $count = DB::table('退回原因')->count();
-                    $names = DB::table('退回原因')->pluck('退回原因');
+                    $count = $request->input('backcount');
+                    $names = DB::table('退回原因')->whereNull('deleted_at')->get();
                     for($i = 0 ; $i < $count ; $i++)
                     {
-                        DB::table('退回原因')
-                        ->where('退回原因', $names[$i])
-                        ->update(['退回原因' => $request->input('back' . $i)]);
+                        if($request->has('backcheck' . $i))
+                        {
+                            DB::table('退回原因')
+                            ->where('退回原因', $names[$i]->退回原因)
+                            ->update(['退回原因' => $request->input('back' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                     if($request->input('backnew') !== null)
                     {
                         DB::table('退回原因')
-                        ->insert(['退回原因' => $request->input('backnew')]);
+                        ->insert(['退回原因' => $request->input('backnew') , 'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'back')
                     ->with(['backs' => 退回原因::cursor()]);
@@ -592,9 +689,10 @@ class BasicInformationController extends Controller
                 {
                     if($request->has('innumber' . $i))
                     {
-                        DB::table('consumptive_material')
+                        ConsumptiveMaterial::where('料號', $request->input('number' . $i))->delete();
+                        /*DB::table('consumptive_material')
                         ->where('料號', $request->input('number' . $i))
-                        ->delete();
+                        ->delete();*/
                         $record ++;
                     }
                     else
@@ -602,8 +700,8 @@ class BasicInformationController extends Controller
                         continue;
                     }
                 }
-                $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
-                .trans('basicInfoLang.isn').trans('basicInfoLang.delete')
+                $mess = trans('basicInfoLang.total').' '.$record.' '.trans('basicInfoLang.record').' '
+                .trans('basicInfoLang.isn').' '.trans('basicInfoLang.delete').' '
                 .trans('basicInfoLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
@@ -614,57 +712,82 @@ class BasicInformationController extends Controller
             else if($request->has('change'))
             {
                 $count = $request->input('count');
+                $record = 0;
                 for($i = 0 ; $i < $count ; $i++)
                 {
-                    $gradea = $request->input('gradea' . $i);
-                    $month = $request->input('month' . $i);
-                    $send = $request->input('send' . $i);
-                    $belong = $request->input('belong' . $i);
-                    $price = $request->input('price' . $i);
-                    $money = $request->input('money' . $i);
-                    $unit = $request->input('unit' . $i);
-                    $mpq = $request->input('mpq' . $i);
-                    $moq = $request->input('moq' . $i);
-                    $lt = $request->input('lt' . $i);
-                    $safe = $request->input('safe' . $i);
-                    $number = $request->input('number' . $i);
-                    $row = $i + 1;
-                    if($month === '否' && $safe === null || $safe === '')
+                    if($request->has('innumber' . $i))
                     {
-                        $mess = trans('basicInfoLang.row').$row.trans('basicInfoLang.isn').$number
-                        .trans('basicInfoLang.notmonthsafe');
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href = 'material';
-                        </script>");
+                        $gradea = $request->input('gradea' . $i);
+                        $month = $request->input('month' . $i);
+                        $send = $request->input('send' . $i);
+                        $belong = $request->input('belong' . $i);
+                        $price = $request->input('price' . $i);
+                        $money = $request->input('money' . $i);
+                        $unit = $request->input('unit' . $i);
+                        $mpq = $request->input('mpq' . $i);
+                        $moq = $request->input('moq' . $i);
+                        $lt = $request->input('lt' . $i);
+                        $safe = $request->input('safe' . $i);
+                        $number = $request->input('number' . $i);
 
+                        if($gradea === 'Yes') $gradea = '是';
+                        if($gradea === 'No') $gradea = '否';
+                        if($month === 'Yes') $month = '是';
+                        if($month === 'No') $month = '否';
+                        if($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
+                        if($belong === 'Station') $belong = '站位';
+                        if($send === 'Spare parts room' || $send === '备品室') $send = '備品室';
+                        else if($send === 'ME Spare parts room' || $send === 'ME备品室') $send = 'ME備品室';
+                        else if($send === 'IE Spare parts room' || $send === 'IE备品室') $send = 'IE備品室';
+                        else if($send === 'Equip Spare parts room' || $send === '设备备品室') $send = '設備備品室';
+
+                        $row = $i + 1;
+                        if($month === '否' && $safe === null || $safe === '')
+                        {
+                            $mess = trans('basicInfoLang.row').' : '.$row.trans('basicInfoLang.isn').' '.$number.' '
+                            .trans('basicInfoLang.notmonthsafe');
+                            echo ("<script LANGUAGE='JavaScript'>
+                            window.alert('$mess');
+                            window.location.href = 'material';
+                            </script>");
+
+                        }
+                        else
+                        {
+
+                            DB::beginTransaction();
+                            try {
+                                DB::table('consumptive_material')
+                                    ->where('料號', $request->input('number' . $i))
+                                    ->update(['A級資材' => $gradea , '月請購' => $month , '發料部門' => $send , '耗材歸屬' => $belong ,
+                                '單價' => $price , '幣別' => $money , '單位' => $unit , 'MPQ' => $mpq ,
+                                'MOQ' => $moq , 'LT' => $lt , '安全庫存' => $safe , 'updated_at' => Carbon::now()]);
+                                $record++;
+                                DB::commit();
+
+                            }catch (\Exception $e) {
+                                DB::rollback();
+                                $mess = $e->getMessage();
+                                echo ("<script LANGUAGE='JavaScript'>
+                                window.alert('$mess');
+                                window.location.href='/inbound';
+                                </script>");
+                            }
+                        }
                     }
                     else
                     {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('consumptive_material')
-                                ->where('料號', $request->input('number' . $i))
-                                ->update(['A級資材' => $gradea , '月請購' => $month , '發料部門' => $send , '耗材歸屬' => $belong ,
-                                '單價' => $price , '幣別' => $money , '單位' => $unit , 'MPQ' => $mpq ,
-                                'MOQ' => $moq , 'LT' => $lt , '安全庫存' => $safe]);
-                            DB::commit();
-                        }catch (\Exception $e) {
-                            DB::rollback();
-                            $mess = $e->getMessage();
-                            echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href='/inbound';
-                            </script>");
-                        }
+                        continue;
                     }
                 }
 
-                $mess = trans('basicInfoLang.update').trans('basicInfoLang.success');
+                $mess = trans('basicInfoLang.total').' '.$record.' '.trans('basicInfoLang.record').' '
+                .trans('basicInfoLang.isn').' '.trans('basicInfoLang.change').' '
+                .trans('basicInfoLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href = '/basic';
-                    </script>");
+                window.alert('$mess');
+                window.location.href='/basic';
+                </script>");
 
             }
             //download
@@ -881,7 +1004,7 @@ class BasicInformationController extends Controller
             //判斷料號是否重複
             for($i = 0 ; $i < count($numbers) ; $i ++)
             {
-                if($number == $numbers[$i])
+                if(strcasecmp($number,$numbers[$i]) === 0 )
                 {
                     $reDive->newerror[0] = true;
                     $myJSON = json_encode($reDive);
@@ -912,7 +1035,7 @@ class BasicInformationController extends Controller
                 }
 
                 //check 非月請購是否有填安全庫存
-                if($request->input('month') === '否' && $request->input('safe') === "zero")
+                if($request->input('month') === '否' && $request->input('safe') === null)
                 {
                     $reDive->newerror[2] = true;
                     $myJSON = json_encode($reDive);
@@ -926,11 +1049,10 @@ class BasicInformationController extends Controller
                 DB::table('consumptive_material')
                 ->insert(['料號' => $number , '品名' => $name , '規格' => $format , '單價' => $price , '幣別' => $money
                 , '單位' => $unit , 'MPQ' => $mpq , 'MOQ' => $moq ,'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea
-                , '耗材歸屬' => $belong , '發料部門' => $send , '安全庫存' => $safe]);
+                , '耗材歸屬' => $belong , '發料部門' => $send , '安全庫存' => $safe , 'created_at' => Carbon::now()]);
 
                 $reDive->boolean = true;
                 $myJSON = json_encode($reDive);
-                Session::put('newmaterialok' , $number);
                 echo $myJSON;
                 return;
                 //return view('basic.newok');
@@ -1056,6 +1178,7 @@ class BasicInformationController extends Controller
         {
             $count = $request->input('count');
             $record = 0;
+            $row = 0;
             for($i = 0 ; $i < $count ; $i ++)
             {
                 if($request->input('data0a'.$i) !== null && $request->input('data1a'.$i) !== null)
@@ -1074,13 +1197,26 @@ class BasicInformationController extends Controller
                     $belong =  $request->input('data11a'. $i);
                     $send =  $request->input('data12a'. $i);
                     $safe =  $request->input('data13a'. $i);
+
+                    if($gradea === 'Yes') $gradea = '是';
+                    if($gradea === 'No') $gradea = '否';
+                    if($month === 'Yes') $month = '是';
+                    if($month === 'No') $month = '否';
+                    if($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
+                    if($belong === 'Station') $belong = '站位';
+                    if($send === 'Spare parts room' || $send === '备品室') $send = '備品室';
+                    else if($send === 'ME Spare parts room' || $send === 'ME备品室') $send = 'ME備品室';
+                    else if($send === 'IE Spare parts room' || $send === 'IE备品室') $send = 'IE備品室';
+                    else if($send === 'Equip Spare parts room' || $send === '设备备品室') $send = '設備備品室';
+
                     $numbers = DB::table('consumptive_material')->pluck('料號');
                     //判斷料號是否重複
                     for($j = 0 ; $j < count($numbers) ; $j ++)
                     {
-                        if($number == $numbers[$j])
+                        if(strcasecmp($number,$numbers[$j]) === 0)
                         {
-                            $mess = trans('basicInfoLang.isnrepeat');
+                            $row = $i++;
+                            $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnrepeat');
                             echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess');
                             window.location.href = 'upload';
@@ -1098,8 +1234,8 @@ class BasicInformationController extends Controller
                     //長度是否為12
                     if(strlen($request->input('data0a'.$i)) !== 12)
                     {
-
-                        $mess = trans('basicInfoLang.isnlength');
+                        $row = $i++;
+                        $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnlength');
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                         window.location.href = 'upload';
@@ -1111,9 +1247,10 @@ class BasicInformationController extends Controller
                     else
                     {
                         //check 非月請購是否有填安全庫存
-                        if($request->input('data9a'.$i) === '否' && $request->input('data13a'.$i) === null)
+                        if($month === '否' && $request->input('data13a'.$i) === null)
                         {
-                            $mess = trans('basicInfoLang.notmonthsafe');
+                            $row = $i++;
+                            $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.safeerror');
                             echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess');
                             window.location.href = 'upload';
@@ -1129,15 +1266,17 @@ class BasicInformationController extends Controller
                                 DB::table('consumptive_material')
                                     ->insert(['料號' => $number , '品名' => $name , '規格' => $format ,'單價' => $price , '幣別' => $money , '單位' => $unit
                                     , 'MPQ' => $mpq , 'MOQ' => $moq , 'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea , '耗材歸屬' => $belong , '發料部門' => $send
-                                    , '安全庫存' => $safe ]);
+                                    , '安全庫存' => $safe ,'created_at' => Carbon::now()]);
                                 DB::commit();
                                 $record++;
                             }catch (\Exception $e) {
                                 DB::rollback();
+
                                 $mess = $e->getMessage();
+                                dd($mess);
                                 echo ("<script LANGUAGE='JavaScript'>
                                 window.alert('$mess');
-                                window.location.href='/inbound';
+                                window.location.href='/basic';
                                 </script>");
                             }
                         }
@@ -1149,9 +1288,8 @@ class BasicInformationController extends Controller
                 }
 
             }
-            $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
-            .trans('basicInfoLang.isn').trans('basicInfoLang.new')
-            .trans('basicInfoLang.success');
+            $mess = trans('basicInfoLang.total').' '.$record.trans('basicInfoLang.record').' '
+            .trans('basicInfoLang.newMats').' '.trans('basicInfoLang.success');
             echo("<script LANGUAGE='JavaScript'>
             window.alert('$mess');
             window.location.href = '/basic';
@@ -1218,12 +1356,13 @@ class BasicInformationController extends Controller
                     DB::beginTransaction();
                     try {
                         DB::table('客戶別')
-                        ->insert(['客戶' => $data]);
+                        ->insert(['客戶' => $data , 'created_at' => Carbon::now()]);
                         DB::commit();
                         $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
-                        $mess = trans('basicInfoLang.repeat');
+                        $i ++ ;
+                        $mess = trans('basicInfoLang.row').' : '.$i.' '.trans('basicInfoLang.repeat');
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                         </script>");
@@ -1235,12 +1374,13 @@ class BasicInformationController extends Controller
                     DB::beginTransaction();
                     try {
                         DB::table('儲位')
-                        ->insert(['儲存位置' => $data]);
+                        ->insert(['儲存位置' => $data , 'created_at' => Carbon::now()]);
                         DB::commit();
                         $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
-                        $mess = trans('basicInfoLang.repeat');
+                        $i ++ ;
+                        $mess = trans('basicInfoLang.row').' : '.$i.' '.trans('basicInfoLang.repeat');
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                         </script>");
@@ -1252,12 +1392,13 @@ class BasicInformationController extends Controller
                     DB::beginTransaction();
                     try {
                         DB::table($choose)
-                        ->insert([$choose => $data]);
+                        ->insert([$choose => $data , 'created_at' => Carbon::now()]);
                         DB::commit();
                         $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
-                        $mess = trans('basicInfoLang.repeat');
+                        $i ++ ;
+                        $mess = trans('basicInfoLang.row').' : '.$i.' '.trans('basicInfoLang.repeat');
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                         </script>");
@@ -1268,8 +1409,8 @@ class BasicInformationController extends Controller
 
 
             }
-            $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
-            .$choose.trans('basicInfoLang.new').trans('basicInfoLang.success');
+            $mess = trans('basicInfoLang.total').' '.$record.trans('basicInfoLang.record').' '
+            .$choose.' '.trans('basicInfoLang.new').' '.trans('basicInfoLang.success');
             echo("<script LANGUAGE='JavaScript'>
             window.alert('$mess');
             window.location.href = '/basic';

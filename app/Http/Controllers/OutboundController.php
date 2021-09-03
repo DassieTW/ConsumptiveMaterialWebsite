@@ -130,73 +130,41 @@ class OutboundController extends Controller
                 $list = $request->input('list');
                 if($request->input('send') === null)
                 {
-                    if($request->input('list') === null)
-                    {
-                        $datas =  DB::table('outbound')
+
+                    $datas =  DB::table('outbound')
                         ->join('consumptive_material', function ($join) {
                             $join->on('outbound.料號', '=', 'consumptive_material.料號')
                             ->where('outbound.發料人員', '=', null);
 
                         })->select('outbound.*','consumptive_material.發料部門')
                         ->get();
-
-                        return view('outbound.picklist')->with(['number' => $datas])
-                            ->with(['data' => $datas])
-                            ->with(['people' => 人員信息::cursor()])
-                            ->with(['people1' => 人員信息::cursor()]);
-                    }
-                    else
-                    {
-                        $datas =  DB::table('outbound')
-                        ->join('consumptive_material', function ($join) {
-                            $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                            ->where('outbound.發料人員', '=', null);
-
-                        })->select('outbound.*','consumptive_material.發料部門')
-                        ->get();
-
-                        return view('outbound.picklist')->with(['number' => $datas->where('領料單號',$list)])
-                            ->with(['data' => $datas->where('領料單號',$list)])
-                            ->with(['people' => 人員信息::cursor()])
-                            ->with(['people1' => 人員信息::cursor()]);
-                    }
                 }
                 else
                 {
-                    if($request->input('list') === null)
-                    {
-                        $datas =  DB::table('outbound')
-                        ->join('consumptive_material', function ($join) {
-                            $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                            ->where('outbound.發料人員', '=', null);
+                    $datas =  DB::table('outbound')
+                    ->join('consumptive_material', function ($join) {
+                        $join->on('outbound.料號', '=', 'consumptive_material.料號')
+                        ->where('outbound.發料人員', '=', null);
 
-                        })
-                        ->where('consumptive_material.發料部門', '=', $request->input('send'))
-                        ->select('outbound.*','consumptive_material.發料部門')
-                        ->get();
+                    })
+                    ->where('consumptive_material.發料部門', '=', $request->input('send'))
+                    ->select('outbound.*','consumptive_material.發料部門')
+                    ->get();
+                }
 
-                        return view('outbound.picklist')->with(['number' => $datas])
-                            ->with(['data' => $datas])
-                            ->with(['people' => 人員信息::cursor()])
-                            ->with(['people1' => 人員信息::cursor()]);
-                    }
-                    else
-                    {
-                        $datas =  DB::table('outbound')
-                        ->join('consumptive_material', function ($join) {
-                            $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                            ->where('outbound.發料人員', '=', null);
-
-                        })
-                        ->where('consumptive_material.發料部門', '=', $request->input('send'))
-                        ->select('outbound.*','consumptive_material.發料部門')
-                        ->get();
-
-                        return view('outbound.picklist')->with(['number' => $datas->where('領料單號',$list)])
-                            ->with(['data' => $datas->where('領料單號',$list)])
-                            ->with(['people' => 人員信息::cursor()])
-                            ->with(['people1' => 人員信息::cursor()]);
-                    }
+                if($request->input('list') === null)
+                {
+                    return view('outbound.picklist')->with(['number' => $datas])
+                        ->with(['data' => $datas])
+                        ->with(['people' => 人員信息::cursor()])
+                        ->with(['people1' => 人員信息::cursor()]);
+                }
+                else
+                {
+                    return view('outbound.picklist')->with(['number' => $datas->where('領料單號',$list)])
+                        ->with(['data' => $datas->where('領料單號',$list)])
+                        ->with(['people' => 人員信息::cursor()])
+                        ->with(['people1' => 人員信息::cursor()]);
                 }
             }
         }
@@ -227,8 +195,10 @@ class OutboundController extends Controller
             }
             else
             {
+                $list = $request->input('list');
                 if($request->input('send') === null)
                 {
+
                     $datas =  DB::table('出庫退料')
                     ->join('consumptive_material', function ($join) {
                         $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
@@ -237,11 +207,6 @@ class OutboundController extends Controller
                     })->select('出庫退料.*','consumptive_material.發料部門')
                     ->get();
 
-                    return view('outbound.backlist')->with(['number' => $datas])
-                        ->with(['data' => $datas])
-                        ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()])
-                        ->with(['position' => 儲位::cursor()]);
                 }
                 else
                 {
@@ -250,19 +215,26 @@ class OutboundController extends Controller
                         $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
                         ->where('出庫退料.收料人員', '=', null);
 
-                    })
-                    ->where('consumptive_material.發料部門', '=', $request->input('send'))
-                    ->select('出庫退料.*','consumptive_material.發料部門')
+                    })->select('出庫退料.*','consumptive_material.發料部門')
                     ->get();
-
-                    return view('出庫退料.backlist')->with(['number' => $datas])
+                }
+                if($request->input('list') === null)
+                {
+                    return view('outbound.backlist')->with(['number' => $datas])
                         ->with(['data' => $datas])
                         ->with(['people' => 人員信息::cursor()])
                         ->with(['people1' => 人員信息::cursor()])
                         ->with(['position' => 儲位::cursor()]);
                 }
+                else
+                {
+                    return view('outbound.backlist')->with(['number' => $datas->where('退料單號',$list)])
+                        ->with(['data' => $datas->where('退料單號',$list)])
+                        ->with(['people' => 人員信息::cursor()])
+                        ->with(['people1' => 人員信息::cursor()])
+                        ->with(['position' => 儲位::cursor()]);
+                }
             }
-
         }
         else
         {
@@ -1016,8 +988,10 @@ class OutboundController extends Controller
     {
 
         $reDive = new responseObj();
-        if (Session::has('username')) {
-            if ($request->input('amount') !== null && $request->input('position') !== null) {
+        if (Session::has('username'))
+        {
+            if ($request->input('amount') !== null && $request->input('position') !== null)
+            {
                 $list = $request->input('list');
                 $amount = $request->input('amount');
                 $advance = $request->input('advance');
@@ -1030,72 +1004,74 @@ class OutboundController extends Controller
                 $time = Carbon::now();
                 $sendname = DB::table('人員信息')->where('工號', $sendpeople)->value('姓名');
                 $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
-                if ($amount !== $advance && $reason === null) {
+                $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
+                //沒填寫實領差異原因
+                if ($amount !== $advance && $reason === null)
+                {
                     $reDive->boolean = true;
                     $reDive->passbool = false;
                     $reDive->passstock = false;
                     $myJSON = json_encode($reDive);
                     echo $myJSON;
-                } else {
-                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
-                    //該料號儲位沒有庫存,無法出庫
-                    if ($stock === null) {
-                        $reDive->boolean = true;
+                }
+                else
+                {
+                    //庫存小於實際領用數量,無法出庫
+                    if ($amount > $stock)
+                    {
+                        $reDive->boolean = false;
                         $reDive->passbool = true;
-                        $reDive->passstock = false;
-                        $reDive->number = $number;
+                        $reDive->passstock = true;
                         $reDive->position = $position;
+                        $reDive->nowstock = $stock;
                         $myJSON = json_encode($reDive);
                         echo $myJSON;
-                    } else {
-                        //庫存小於實際領用數量,無法出庫
-                        if ($amount > $stock) {
+                    }
+                    else
+                    {
+                        DB::beginTransaction();
+                        try {
+                            DB::table('outbound')
+                                ->where('領料單號', $list)
+                                ->where('客戶別', $client)
+                                ->where('料號', $number)
+                                ->update([
+                                    '實際領用數量' => $amount, '實領差異原因' => $reason, '儲位' => $position,
+                                    '領料人員' => $pickname, '領料人員工號' => $pickpeople, '發料人員' => $sendname, '發料人員工號' => $sendpeople,
+                                    '出庫時間' => $time
+                                ]);
+
+                            DB::table('inventory')
+                                ->where('客戶別', $client)
+                                ->where('料號', $number)
+                                ->where('儲位', $position)
+                                ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $time]);
+
+                            DB::commit();
+                        } catch (\Exception $e) {
+                            DB::rollback();
                             $reDive->boolean = false;
-                            $reDive->passbool = true;
-                            $reDive->passstock = true;
-                            $reDive->position = $position;
-                            $reDive->nowstock = $stock;
-                            $myJSON = json_encode($reDive);
-                            echo $myJSON;
-                        } else {
-                            DB::beginTransaction();
-                            try {
-                                DB::table('outbound')
-                                    ->where('領料單號', $list)
-                                    ->where('客戶別', $client)
-                                    ->where('料號', $number)
-                                    ->update([
-                                        '實際領用數量' => $amount, '實領差異原因' => $reason, '儲位' => $position,
-                                        '領料人員' => $pickname, '領料人員工號' => $pickpeople, '發料人員' => $sendname, '發料人員工號' => $sendpeople,
-                                        '出庫時間' => $time
-                                    ]);
-
-                                DB::table('inventory')
-                                    ->where('客戶別', $client)
-                                    ->where('料號', $number)
-                                    ->where('儲位', $position)
-                                    ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $time]);
-
-                                DB::commit();
-                            } catch (\Exception $e) {
-                                DB::rollback();
-                                $reDive->boolean = false;
-                                $reDive->passbool = false;
-                                $reDive->passstock = false;
-                            }
-
-                            $reDive->boolean = true;
-                            $reDive->passbool = true;
-                            $reDive->passstock = true;
+                            $reDive->passbool = false;
+                            $reDive->passstock = false;
                             $myJSON = json_encode($reDive);
                             echo $myJSON;
                         }
+
+                        $reDive->boolean = true;
+                        $reDive->passbool = true;
+                        $reDive->passstock = true;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
                     }
                 }
-            } else {
+            }
+            else
+            {
                 return view('outbound.picklist');
             }
-        } else {
+        }
+        else
+        {
             return redirect(route('member.login'));
         }
     }

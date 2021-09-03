@@ -38,18 +38,18 @@
                             @foreach($inreason as $inreason)
                             <option>{{  $inreason->入庫原因 }}</option>
                             @endforeach
-                            <option>其他</option>
+                            <option>{!! __('inboundpageLang.other') !!}</option>
                             </select>
                             <br>
-                            <input class="form-control form-control-lg " type="text" id ="reason" name="reason" placeholder="{!! __('inboundpageLang.inputinreason') !!}">
+                            <input class="form-control form-control-lg " style="display:none; color:red;" type="text" id ="reason" name="reason" placeholder="{!! __('inboundpageLang.inputinreason') !!}">
 
 
                             <label class="form-label">{!! __('inboundpageLang.isn') !!}</label>
                             <input class="form-control form-control-lg " type="text" id ="number" name="number">
-                            <div id = "numbererror">{!! __('inboundpageLang.isnlength') !!}</div>
-                            <div id = "numbererror1">{!! __('inboundpageLang.noisn') !!}</div>
+                            <div id = "numbererror" style="display:none; color:red;">{!! __('inboundpageLang.isnlength') !!}</div>
+                            <div id = "numbererror1" style="display:none; color:red;">{!! __('inboundpageLang.noisn') !!}</div>
 
-                            <div id = "noamount">{!! __('inboundpageLang.noamount') !!}</div>
+                            <div id = "notransit" style="display:none; color:red;">{!! __('inboundpageLang.notransit') !!}</div>
 
                         </div>
                     </div>

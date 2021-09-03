@@ -61,17 +61,17 @@
                             @foreach($usereason as $usereason)
                             <option>{{  $usereason->領用原因 }}</option>
                             @endforeach
-                            <option>其他</option>
+                            <option>{!! __('outboundpageLang.other') !!}</option>
                             </select>
                             <br>
-                            <input class="form-control form-control-lg " type="text" id ="reason" name="reason" placeholder="{!! __('outboundpageLang.inputusereason') !!}">
+                            <input style="display:none;" class="form-control form-control-lg " type="text" id ="reason" name="reason" placeholder="{!! __('outboundpageLang.inputusereason') !!}">
 
                             <label class="form-label">{!! __('outboundpageLang.isn') !!}</label>
                             <input class="form-control form-control-lg " type="text" id ="number" name="number" required>
-                            <div id = "numbererror">{!! __('outboundpageLang.isnlength') !!}</div>
-                            <div id = "numbererror1">{!! __('outboundpageLang.noisn') !!}</div>
+                            <div id = "numbererror" style="display:none; color:red;">{!! __('outboundpageLang.isnlength') !!}</div>
+                            <div id = "numbererror1" style="display:none; color:red;">{!! __('outboundpageLang.noisn') !!}</div>
 
-                            <div id = "nostock">{!! __('outboundpageLang.nostock') !!}</div>
+                            <div id = "nostock" style="display:none; color:red;">{!! __('outboundpageLang.nostock') !!}</div>
                         </div>
                     </div>
                     <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}">

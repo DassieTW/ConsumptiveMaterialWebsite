@@ -427,7 +427,7 @@
                         <div class="text-center mt-4">
                             <h1 class="h2 py-0 my-0">{!! __('loginPageLang.welcome') !!}</h1>
                             <p class="lead p-0 m-0">
-                                {!! __('loginPageLang.register') !!}
+                                {!! __('loginPageLang.adduser') !!}
                             </p>
                         </div>
 
@@ -438,15 +438,15 @@
                                         <img src="../admin/img/avatars/avatarBot0.png" alt="Charles Hall"
                                             class="img-fluid rounded-circle" width="132" height="132" />
                                     </div>
-                                    <form class="needs-validation" action="{{ url('/member/register') }}" method="post"
-                                        accept-charset="utf-8" novalidate>
+                                    <form class="needs-validation" action = "{{ route('member.register') }}" method="post"
+                                        accept-charset="utf-8">
                                         @csrf
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.username') !!}</label>
                                             <input
                                                 class="form-control form-control-lg @error('username') is-invalid @enderror"
                                                 type="text" id="username" name="username"
-                                                placeholder="{!! __('loginPageLang.username_placeholder') !!}" required />
+                                                placeholder="{!! __('loginPageLang.username_placeholder') !!}" required >
                                             @error('username')
                                             <span class="invalid-feedback p-0 m-0" role="alert">
                                                 <strong>{{ $message }}</strong>

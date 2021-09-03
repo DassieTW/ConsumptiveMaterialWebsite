@@ -27,10 +27,10 @@
 
                             <label class="form-label">{!! __('loginPageLang.jobnumber') !!}</label>
                             <input class="form-control form-control-lg " type="text" id ="number" name="number" required>
-                            <div id = "message">
+                            <div id = "message" style="display:none; color:red;">
                                 {!! __('loginPageLang.jobrepeat') !!}
                             </div>
-                            <div id = "message1">
+                            <div id = "message1" style="display:none; color:red;">
                                 {!! __('loginPageLang.joblength') !!}
                             </div>
                             <label class="form-label">{!! __('loginPageLang.name') !!}</label>
@@ -46,28 +46,17 @@
                 <br>
                 <a class="btn btn-lg btn-primary" href="{{asset('download/PeopleInformationExample.xlsx')}}" download>{!! __('loginPageLang.exampleExcel') !!}</a>
                 <br>
-                @if(count($errors) > 0)
-                <div class="alert alert-danger">
-                    Upload Validation Error<br><br>
-                    <ul>
-                    @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                    </ul>
-                </div>
-                @endif
 
-                @if($message = Session::get('success'))
-                <div class="alert alert-success alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>{{ $message }}</strong>
-                </div>
-                @endif
                 <form method="post" enctype="multipart/form-data" action = "{{ route('member.uploadpeople') }}">
                     @csrf
                     <div class="col-6 col-sm-3">
                         <label>{!! __('loginPageLang.plz_upload') !!}</label>
-                        <input  class="form-control"  type="file" name="select_file" />
+                        <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" id = "select_file" name="select_file" />
+                        @error('select_file')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                         <br>
                         <input type="submit" name="upload" class="btn btn-lg btn-primary" value="{!! __('loginPageLang.upload') !!}">
                     </div>

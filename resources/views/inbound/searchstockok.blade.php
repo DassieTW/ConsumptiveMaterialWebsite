@@ -18,8 +18,7 @@
                 <h3>{!! __('inboundpageLang.searchstock') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+                <div class="table-responsive">
                         <form action="{{ route('inbound.download') }}" method="POST">
                             @csrf
                             <input type = "hidden" id = "title" name = "title" value = "庫存">
@@ -35,7 +34,7 @@
                                 <th><input type = "hidden" id = "title8" name = "title7" value = "A級資材">{!! __('inboundpageLang.gradea') !!}</th>
                                 <th><input type = "hidden" id = "title9" name = "title8" value = "月請購">{!! __('inboundpageLang.month') !!}</th>
                                 <th><input type = "hidden" id = "title4" name = "title9" value = "庫存">{!! __('inboundpageLang.stock') !!}</th>
-                                <th><input type = "hidden" id = "title10" name = "title10" value = "安全庫存">{!! __('inboundpageLang.safestock') !!}</th>
+                                <th><input type = "hidden" id = "title10" name = "title10" value = "安全庫存">{!! __('inboundpageLang.safe') !!}</th>
                                 <th><input type = "hidden" id = "title11" name = "title11" value = "儲位">{!! __('inboundpageLang.loc') !!}</th>
                                 <th><input type = "hidden" id = "title12" name = "title12" value = "呆滯天數">{!! __('inboundpageLang.days') !!}</th>
                                 <input type = "hidden" id = "time" name = "time" value = "13">
@@ -114,11 +113,11 @@
                                 @endforeach
 
                                 </table>
+                            </div>
+                            <br>
                                 <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="下載">
                             </form>
-                        </div>
-                    </div>
-                    <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.searchstock')}}'">返回</button>
+                            <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.searchstock')}}'">返回</button>
                 </div>
             </div>
     </html>

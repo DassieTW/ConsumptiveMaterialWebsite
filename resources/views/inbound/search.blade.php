@@ -21,7 +21,7 @@
             <div class="card-body">
                 <div class="d-flex w-100 h-100">
                     <div class="mb-3">
-                        <form action="{{ route('inbound.inquire') }}" method="POST">
+                        <form id = "search" action="{{ route('inbound.inquire') }}" method="POST">
                             @csrf
                             <div class="d-flex w-100 h-100">
                                 <div class="mb-3">

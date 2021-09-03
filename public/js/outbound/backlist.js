@@ -1,4 +1,4 @@
-document.getElementById("reasonerror").style.display = "none";
+
 
 
 //show select 退料單號
@@ -18,51 +18,51 @@ $.ajaxSetup({
 });
 
 $('#backlist').on('submit', function (e) {
-  e.preventDefault();
-  var list = $("#list").val();
-  var advance = $("#advance" + list).html();
-  var number = $("#number" + list).html();
-  var client = $("#client" + list).html();
-  var amount = $("#amount" + list).val();
-  var reason = $("#reason" + list).val();
-  var pick = $("#pickpeople").val();
-  pick = pick.split(' ');
-  var pickpeople = pick[0];
-  var back = $("#backpeople").val();
-  back = back.split(' ');
-  var backpeople = back[0];
-  var position = $("#position").val();
-  var status = $("#status").val();
-  $.ajax({
-    type: 'POST',
-    url: "backlistsubmit",
-    data: {
-      list: list, advance: advance, amount: amount, reason: reason, backpeople: backpeople
-      , pickpeople: pickpeople, position: position, number: number, client: client, status: status
-    },
-    beforeSend: function () {
-      // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-      $('body').loadingModal({
-        text: 'Loading...',
-        animation: 'circle'
-      });
-    },
-    complete: function () {
-      $('body').loadingModal('hide');
-    },
-    success: function (data) {
-      console.log(data);
-      var myObj = JSON.parse(data);
-      console.log(myObj);
-      if (myObj.boolean === true && myObj.passbool === true) {
-        var mess = Lang.get('outboundpageLang.outbackok') + list;
-        alert(mess);
-        //alert("出庫完成，退料單號: " + list);
-        window.location.href = "/outbound";
-        //window.location.href = "member.newok";
-      }
-      //no reason
-      else if (myObj.boolean === true && myObj.passbool === false) {
+    e.preventDefault();
+      var list = $("#list").val();
+      var advance = $("#advance"+list).html();
+      var number = $("#number"+list).html();
+      var client = $("#client"+list).html();
+      var amount = $("#amount"+list).val();
+      var reason = $("#reason"+list).val();
+      var pick = $("#pickpeople").val();
+      pick = pick.split(' ');
+      var pickpeople = pick[0];
+      var back = $("#backpeople").val();
+      back = back.split(' ');
+      var backpeople = back[0];
+      var position = $("#position").val();
+      var status = $("#status").val();
+      if(status === "good product") status = '良品';
+      if(status === "bad product") status = '不良品';
+    $.ajax({
+       type:'POST',
+       url:"backlistsubmit",
+       data:{list:list, advance:advance , amount:amount , reason:reason , backpeople:backpeople
+        , pickpeople:pickpeople , position:position , number:number , client:client , status:status},
+        beforeSend: function () {
+            // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+            $('body').loadingModal({
+              text: 'Loading...',
+              animation: 'circle'
+            });
+          },
+          complete: function () {
+            $('body').loadingModal('hide');
+          },
+       success:function(data){
+        console.log(data);
+          var myObj = JSON.parse(data);
+          console.log(myObj);
+          if(myObj.boolean === true && myObj.passbool === true){
+            var mess = Lang.get('outboundpageLang.outbackok')+list;
+            alert(mess);
+            //alert("出庫完成，退料單號: " + list);
+            window.location.href = "/outbound";
+            //window.location.href = "member.newok";
+          }
+          //no reason
+          else if(myObj.boolean === true && myObj.passbool === false){
 
         document.getElementById("reasonerror").style.display = "block";
         document.getElementById("reason" + list).style.borderColor = "red";

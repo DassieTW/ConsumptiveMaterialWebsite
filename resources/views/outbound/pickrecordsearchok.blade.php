@@ -18,12 +18,12 @@
                 <h3>{!! __('outboundpageLang.pickrecord') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
                         <form action="{{ route('outbound.download') }}" method="POST">
                             @csrf
                             <input type = "hidden" id = "title" name = "title" value = "領料記錄表">
-                        <table class="table" id = "pickrecordlist">
+                            <div class="table-responsive">
+                            <table class="table" id = "pickrecordlist">
                             <tr id = "require">
                                 <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('outboundpageLang.client') !!}</th>
                                 <th><input type = "hidden" id = "title1" name = "title1" value = "機種">{!! __('outboundpageLang.machine') !!}</th>
@@ -76,10 +76,11 @@
                                     @endforeach
 
                                 </table>
+                            </div>
+                            <br>
                                 <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.download') !!}">
                             </form>
-                        </div>
-                    </div>
+                        <br>
                     <button class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.pickrecord')}}'">{!! __('outboundpageLang.return') !!}</button>
                 </div>
             </div>

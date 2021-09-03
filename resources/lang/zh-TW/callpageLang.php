@@ -12,9 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
-    'safe' => '安全庫存警報',
-    'day' => '呆滯天數警報',
+    'safealert' => '安全庫存警報',
+    'dayalert' => '呆滯天數警報',
     'callsys' => '報警系統',
     'client' => '客戶別',
     'isn' => '料號',
@@ -28,9 +27,8 @@ return [
     'senddep' => '發料部門',
     'entersenddep' => '請選擇發料部門',
     'change' => '更新',
-    'safestock' => '安全庫存',
+    'safe' => '安全庫存',
     'nostock' => '目前無任何庫存',
     'notmonth' => '非月請購耗材',
     'nowstock' => '現有庫存',
-
 ];

@@ -17,7 +17,7 @@
         <h2>{!! __('callpageLang.callsys') !!}</h2>
         <div class="card">
             <div class="card-header">
-                <h3>{!! __('callpageLang.day') !!}</h3>
+                <h3>{!! __('callpageLang.dayalert') !!}</h3>
             </div>
             <div class="card-body">
 
@@ -65,7 +65,7 @@
                                         @endforeach
                                         </td>
                                         @endif
-                                        <td><input type = "text"></td>
+                                        <td><input type = "text" style="width:100px;"></td>
                                     </tr>
                                     @endif
                                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">

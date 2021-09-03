@@ -21,8 +21,7 @@
             <div class="card-body">
                 <form id = "picklist">
                     @csrf
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+                    <div class="table-responsive">
 
                             <select class=" form-control form-control-lg " id = "list" name="list"  required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.searchpicklist') !!}</option>
@@ -30,6 +29,7 @@
                             <option>{{  $number->領料單號 }}</option>
                             @endforeach
                             </select>
+
                             <table class="table" id = "test">
                                 <tr id = "require">
                                     <th>{!! __('outboundpageLang.client') !!}</th>
@@ -74,7 +74,7 @@
                                         <td>{{$data->領料單號}}</td>
                                         <td>{{$data->開單時間}}</td>
                                         <td>
-                                            <select class="form-control form-control-lg" name = "position{{$data->領料單號}}" id = "position{{$data->領料單號}}">
+                                            <select  style="width: 120px" class="form-control form-control-lg" name = "position{{$data->領料單號}}" id = "position{{$data->領料單號}}">
                                                 <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.enterloc') !!}</option>
                                                 @foreach ($test as $k=> $a)
                                                 <option>儲位:{{$k}} 現有庫存:{{$a}}</option>
@@ -85,8 +85,10 @@
                                     @endforeach
 
                             </table>
-                            <div id = "reasonerror"><h3 style="color: red">{!! __('outboundpageLang.enterdiffreason') !!}</h3></div>
+                    </div>
+                            <div id = "reasonerror" style="display:none;"><h3 style="color: red" >{!! __('outboundpageLang.enterdiffreason') !!}</h3></div>
 
+                            <br>
                             <label class="form-label">{!! __('outboundpageLang.sendpeople') !!}</label>
                             <select class="form-control form-control-lg" id = "sendpeople" name="sendpeople" required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.entersendpeople') !!}</option>
@@ -103,20 +105,13 @@
                             @endforeach
                             </select>
 
-                            </select>
-                            <div id = "nostock">
-                                <h3 style="color: red" >{!! __('outboundpageLang.nostock1') !!}</h3>
-                                <h3 style="color: red" id = "number"></h3>
-                                <h3 style="color: red" id = "position"></h3>
-                            </div>
-                            <div id = "lessstock">
+                            <div id = "lessstock" style="display:none;">
                                 <h3 style="color: red" id = "position"></h3>
                                 <h3 style="color: red" id = "nowstock"></h3>
+                                <h3 style="color: red" id = "amount"></h3>
                             </div>
 
-                            <br><br>
-                            </div>
-                        </div>
+                            <br>
                             <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}">
                             </form>
                         <br>

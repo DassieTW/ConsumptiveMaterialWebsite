@@ -16,8 +16,8 @@
 ?>
 <br>
 <br>
-<button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('call.safe')}}'">{!! __('callpageLang.safe') !!}</button>
+<button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('call.safe')}}'">{!! __('callpageLang.safealert') !!}</button>
 &nbsp;
-<button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('call.day')}}'">{!! __('callpageLang.day') !!}</button>
+<button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('call.day')}}'">{!! __('callpageLang.dayalert') !!}</button>
 &nbsp;
 @endsection

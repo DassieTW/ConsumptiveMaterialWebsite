@@ -21,7 +21,7 @@
             <div class="card-body">
                 <form id = "pickadd">
                     @csrf
-                    <div class="row">
+                    <div class="table-responsive">
                         <table class="table" id = "test">
                             <tr id = "require">
                                 <th>{!! __('outboundpageLang.isn') !!}</th>
@@ -53,7 +53,10 @@
                                 <td><input type="hidden" id ="usereason" name="usereason"  value = "{{ Session::get('usereason') }}">{{ Session::get('usereason') }}</td>
                             </tr>
 
+
                         </table>
+                    </div>
+                    <br>
                         <?php
                             $stock = DB::table('inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->pluck('現有庫存')->toArray();
                             $position = DB::table('inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->pluck('儲位')->toArray();
@@ -64,7 +67,7 @@
                             <p>{!! __('outboundpageLang.loc') !!}:{{$k}} {!! __('outboundpageLang.nowstock') !!}:{{$a}}</p>
                         @endforeach
 
-                    </div>
+
                     <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}">
                 </form>
                 <br>

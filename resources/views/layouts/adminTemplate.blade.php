@@ -93,11 +93,10 @@
                                             </a>
                                             <ul id="basicInfo" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
-                                                <li
-                                                    class="sidebar-item {{ isActiveRoute(['basic.index','basic/uploadbasic','basic/inf']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['basic.index','basic/uploadbasic','basic/inf' , 'basic/insertuploadbasic']) }}">
                                                     <a class="sidebar-link" href="{{url('basic')}}">
                                                         {!! __('basicInfoLang.basicInfo') !!}</a></li>
-                                                <li class="sidebar-item {{ isActiveRoute(['basic/new']) }}"><a
+                                                <li class="sidebar-item {{ isActiveRoute(['basic/new','basic.uploadmaterial']) }}"><a
                                                         class="sidebar-link" href="{{url('basic/new')}}">
                                                         {!! __('basicInfoLang.newMats') !!}</a></li>
                                                 <li class="sidebar-item {{ isActiveRoute(['basic/material']) }}"><a
@@ -155,7 +154,7 @@
                                                         {!! __('inboundpageLang.new') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['inbound.search']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['inbound.search','inbound/inquire']) }}">
                                                     <a class="sidebar-link" href="{{route('inbound.search')}}">
                                                         {!! __('inboundpageLang.search') !!}
                                                     </a>
@@ -219,7 +218,7 @@
                                                 </li>
                                                 @endcan
                                                 @can('outboundReturn', App\Models\Outbound::class )
-                                                <li class="sidebar-item {{ isActiveRoute(['outbound.back']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['outbound.back', 'outbound/backaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.back')}}">
                                                         {!! __('outboundpageLang.back') !!}
                                                     </a>
@@ -440,13 +439,13 @@
                                                 data-bs-parent="#sidebar">
                                                 <li class="sidebar-item {{ isActiveRoute(['call/safe']) }}">
                                                     <a class="sidebar-link" href="{{route('call.safe')}}">
-                                                        {!! __('callpageLang.safe') !!}
+                                                        {!! __('callpageLang.safealert') !!}
                                                     </a>
                                                 </li>
 
                                                 <li class="sidebar-item {{ isActiveRoute(['call/day']) }}">
                                                     <a class="sidebar-link" href="{{route('call.day')}}">
-                                                        {!! __('callpageLang.day') !!}
+                                                        {!! __('callpageLang.dayalert') !!}
                                                     </a>
                                                 </li>
 

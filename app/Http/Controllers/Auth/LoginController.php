@@ -41,9 +41,9 @@ class LoginController extends Controller
         $credentials = [
             'username' => $request->username,
             'password' => $request->password,
-        ] ;
-        
-        \Config::set('database.connections.' . env("DB_CONNECTION") .'.database', $request->site );
+        ];
+
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->site);
         \DB::purge(env("DB_CONNECTION"));
         // dd($request->site) ; // test
         return \Auth::attempt($credentials);
@@ -135,7 +135,7 @@ class LoginController extends Controller
                 $department = $request->input('department');
                 $names = DB::table('login')->pluck('username');
                 for ($i = 0; $i < count($names); $i++) {
-                    if ($username == $names[$i]) {
+                    if (strcasecmp($username, $names[$i]) === 0) {
 
                         return back()->withErrors([
                             'username' => trans('loginPageLang.usernamerepeat'),
@@ -185,7 +185,7 @@ class LoginController extends Controller
                     if (Hash::check($request->input('password'), $password)) {
                         DB::table('login')
                             ->where('username', $username)
-                            ->update(['password' => Hash::make($request->input('newpassword'))]);
+                            ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
 
                         $request->session()->flush();
 
@@ -235,7 +235,7 @@ class LoginController extends Controller
                     return;
                 }
                 for ($i = 0; $i < count($numbers); $i++) {
-                    if ($number == $numbers[$i]) {
+                    if (strcasecmp($number, $numbers[$i]) === 0) {
                         $reDive->boolean = true;
                         $reDive->passbool = false;
                         $myJSON = json_encode($reDive);
@@ -301,8 +301,7 @@ class LoginController extends Controller
                 $count = $request->input('count');
                 for ($i = 0; $i < $count; $i++) {
                     if ($request->has('innumber' . $i)) {
-                        DB::table('人員信息')
-                            ->where('工號', $request->input('number' . $i))
+                        人員信息::where('工號', $request->input('number' . $i))
                             ->delete();
                         $record++;
                     } else {
@@ -310,8 +309,8 @@ class LoginController extends Controller
                     }
                 }
 
-                $mess = trans('loginPageLang.total') . $record . trans('loginPageLang.record')
-                    . trans('loginPageLang.pinf') . trans('loginPageLang.delete')
+                $mess = trans('loginPageLang.total') . ' ' . $record . ' ' . trans('loginPageLang.record') . ' '
+                    . trans('loginPageLang.pinf') . ' ' . trans('loginPageLang.delete') . ' '
                     . trans('loginPageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
@@ -321,17 +320,21 @@ class LoginController extends Controller
             //change
             else if ($request->has('change')) {
                 $count = $request->input('count');
-                $time = 0;
+                $record = 0;
                 for ($i = 0; $i < $count; $i++) {
-                    $name = $request->input('name' . $i);
-                    $department = $request->input('department' . $i);
-                    DB::table('人員信息')
-                        ->where('工號', $request->input('number' . $i))
-                        ->update(['姓名' => $name, '部門' => $department]);
-                    $time++;
+                    if ($request->has('innumber' . $i)) {
+                        $name = $request->input('name' . $i);
+                        $department = $request->input('department' . $i);
+                        DB::table('人員信息')
+                            ->where('工號', $request->input('number' . $i))
+                            ->update(['姓名' => $name, '部門' => $department, 'updated_at' => Carbon::now()]);
+                        $record++;
+                    } else {
+                        continue;
+                    }
                 }
-                $mess = trans('loginPageLang.total') . trans('loginPageLang.record')
-                    . trans('loginPageLang.pinf') . trans('loginPageLang.change')
+                $mess = trans('loginPageLang.total') . ' ' . $record . ' ' . trans('loginPageLang.record') . ' '
+                    . trans('loginPageLang.pinf') . ' ' . trans('loginPageLang.change') . ' '
                     . trans('loginPageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
@@ -389,8 +392,8 @@ class LoginController extends Controller
                         continue;
                     }
                 }
-                $mess = trans('loginPageLang.total') . $record . trans('loginPageLang.record')
-                    . trans('loginPageLang.user') . trans('loginPageLang.delete')
+                $mess = trans('loginPageLang.total') . ' ' . $record . trans('loginPageLang.record') . ' '
+                    . trans('loginPageLang.user') . ' ' . trans('loginPageLang.delete') . ' '
                     . trans('loginPageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
@@ -495,26 +498,29 @@ class LoginController extends Controller
             $numbers = DB::table('人員信息')->pluck('工號');
             $record = 0;
             for ($i = 0; $i < $count; $i++) {
+
                 $number =  $request->input('data0' . $i);
                 $name =  $request->input('data1' . $i);
                 $department = $request->input('data2' . $i);
                 if (strlen($number) !== 9) {
-                    $mess = trans('loginPageLang.joblength');
+                    $i++;
+                    $mess = trans('loginPageLang.row') . ' ' . $i . ' ' . trans('loginPageLang.joblength');
                     echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='uploadpeople';
-                        </script>");
+                    window.alert('$mess');
+                    window.location.href='uploadpeople';
+                    </script>");
                     //return view('member.uploadpeople1');
                 } else {
 
                     //判斷工號是否重複
-                    for ($i = 0; $i < count($numbers); $i++) {
-                        if ($number == $numbers[$i]) {
-                            $mess = trans('loginPageLang.repeat');
+                    for ($j = 0; $j < count($numbers); $j++) {
+                        if (strcasecmp($number, $numbers[$j]) === 0) {
+                            $i++;
+                            $mess = trans('loginPageLang.row') . ' ' . $i . ' ' . trans('loginPageLang.jobrepeat');
                             echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('$mess');
-                                window.location.href='uploadpeople';
-                                </script>");
+                            window.alert('$mess');
+                            window.location.href='uploadpeople';
+                            </script>");
                             return;
                             /*return back()->withErrors([
                                 'number' => '料號 is repeated , Please enter another 料號',
@@ -522,33 +528,33 @@ class LoginController extends Controller
                         } else {
                             continue;
                         }
-                    }
-                    DB::beginTransaction();
-                    try {
-                        DB::table('人員信息')
-                            ->insert(['工號' => $number, '姓名' => $name, '部門' => $department]);
-                        DB::commit();
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        $mess = trans('loginPageLang.repeat');
-                        echo ("<script LANGUAGE='JavaScript'>
+                        DB::beginTransaction();
+                        try {
+                            DB::table('人員信息')
+                                ->insert(['工號' => $number, '姓名' => $name, '部門' => $department, 'created_at' => Carbon::now()]);
+                            DB::commit();
+                            $record++;
+                        } catch (\Exception $e) {
+                            DB::rollback();
+                            $mess = trans('loginPageLang.repeat');
+                            echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess'');
                             window.location.href='uploadpeople';
                             </script>");
-                        //return view('member.uploadpeople1');
+                            //return view('member.uploadpeople1');
+                        }
                     }
                 }
             }
-            $mess = trans('loginPageLang.total') . $record . trans('loginPageLang.record')
-                . trans('loginPageLang.pinf') . trans('loginPageLang.upload1')
+            $mess = trans('loginPageLang.total') . ' ' . $record . ' ' . trans('loginPageLang.record') . ' '
+                . trans('loginPageLang.pinf') . ' ' . trans('loginPageLang.upload1') . ' '
                 . trans('loginPageLang.success');
             echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/member';
-                </script>");
+            window.alert('$mess');
+            window.location.href='/member';
+            </script>");
         } else {
             return redirect(route('member.login'));
         }
     }
-} // end of controller
+}

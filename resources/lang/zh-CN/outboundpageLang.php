@@ -12,7 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
     'pick' => '领料',
     'picklist' => '领料单',
     'pickrecord' => '领料记录表',
@@ -34,7 +33,7 @@ return [
     'enterisn' => '请输入料号',
     'isnlength' => '料号长度不为12',
     'noisn' => '料号不存在',
-    'nostock' => '该客户&料号没有库存，无法开领料单。',
+    'nostock' => '该客户&料号没有库存，无法开领料单。 ',
     'submit' => '提交',
     'return' => '返回',
     'pName' => '品名',
@@ -67,7 +66,7 @@ return [
     'enterdiffreason'=> '请输入差异原因',
     'entersendpeople' =>'请选择发料人员',
     'enterpickpeople' =>'请选择领料人员',
-    'nostock1'=> '该料号&储位没有库存，无法出库。',
+    'nostock1'=> '该料号&储位没有库存，无法出库。 ',
     'backreason' => '退回原因',
     'backamount' => '预退数量',
     'realbackamount' => '实际退回数量',
@@ -87,11 +86,14 @@ return [
     'searchbacklist' => '搜寻退料单',
     'deletebacklist' => '删除退料单',
     'enterstatus' => '请选择功能状况',
-    'outpickok' => '出库完成，领料单号: ',
-    'outbackok' => '出库完成，退料单号: ',
+    'outpickok' => '出库完成，领料单号',
+    'outbackok' => '出库完成，退料单号',
     'nowloc' => '目前储位',
-    'stockless'=> '之库存小于实际领用数量，无法出库。 ',
+    'stockless'=> '库存小于实际领用数量，无法出库。 ',
     'add' => '添加',
     'success' => '成功',
     'delete' => '删除',
+    'other' => '其他',
+    'good' => '良品',
+    'nogood' => '不良品',
 ];
