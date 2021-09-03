@@ -14,8 +14,10 @@ return [
     */
     'username' => 'Username',
     'password' => 'Password',
-    'username_placeholder' => 'Please enter your username',
-    'password_placeholder' => 'Please enter your password',
+    'site' => 'Site',
+    'username_placeholder' => 'Enter your username',
+    'password_placeholder' => 'Enter your password',
+    'site_placeholder' => 'Choose your site',
     'home' => 'Home',
     'welcome' => 'Welcome',
     'welcome_msg' => 'Sign in to your account to continue',

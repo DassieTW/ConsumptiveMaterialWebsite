@@ -6,7 +6,7 @@ use App\Models\Login;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class LoginPolicy
+class LoginPolicy         // 所有用戶管理相關權限
 {
     use HandlesAuthorization;
 
@@ -21,17 +21,6 @@ class LoginPolicy
         //
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\Login  $user
-     * @param  \App\Models\Login  $post
-     * @return mixed
-     */
-    public function view(Login $user, Login $post)
-    {
-        //
-    }
 
     /**
      * Determine whether the user can create models.
@@ -39,7 +28,7 @@ class LoginPolicy
      * @param  \App\Models\Login  $user
      * @return mixed
      */
-    public function create(Login $user)
+    public function create(Login $user)   // 新增用戶權限
     {
         if( intval($user->priority) < 2 ) {
             return true;
@@ -54,22 +43,28 @@ class LoginPolicy
      * @param  \App\Models\Login  $user
      * @return boolean
      */
-    public function updatePriority(Login $user)
+    public function updatePriority(Login $user)  // 修改權限
     {
-        return $user->priority < 2;  // 權限1才能修改權限
+        // 權限1才能修改權限
+        if( intval($user->priority) < 2 ) {
+            return true;
+        }else {
+            return false;
+        } // if else 
     }
+    
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\Login  $user
-     * @param  \App\Models\Login  $post
+     * @param  \App\Models\xxx  $post
      * @return mixed
      */
-    public function delete(Login $user, Login $post)
-    {
-        return $user->id === $post->user_id;
-    }
+    // public function delete(Login $user, xxx $post) // 需要用到另一個Model的例子 限制只有同個人能刪
+    // {
+    //     return $user->id === $post->user_id;
+    // }
 
     /**
      * Determine whether the user can login. 
@@ -88,16 +83,40 @@ class LoginPolicy
     } // canLogin
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can search and update the model.
      *
      * @param  \App\Models\Login  $user
-     * @param  \App\Models\Login  $post
-     * @return mixed
+     * @return boolean
      */
-    public function restore(Login $user, Login $post)
+    public function searchAndUpdateUser(Login $user)
     {
-        //
-    }
+        // 權限1才能用戶訊息 查詢/刪除
+        if( intval($user->priority) < 2 ) {
+            return true;
+        }else {
+            return false;
+        } // if else 
+    } // searchAndUpdate
+
+    public function searchAndUpdatePeople(Login $user)
+    {
+        // 權限123才能用戶訊息 查詢/刪除
+        if( intval($user->priority) < 4 ) {
+            return true;
+        }else {
+            return false;
+        } // if else 
+    } // searchAndUpdate
+
+    public function newPeopleInfo(Login $user)
+    {
+        // 權限123才能新增人員訊息
+        if( intval($user->priority) < 4 ) {
+            return true;
+        }else {
+            return false;
+        } // if else 
+    } // searchAndUpdate
 
     /**
      * Determine whether the user can permanently delete the model.

@@ -2,19 +2,19 @@
 
 
 //show select 退料單號
-$("#list").on("change",function(){
-    var value = $("#list").val();
-    $('#test').find('tr').not('#require').hide();   　
-    var result_style = document.getElementById(value).style;
-    result_style.display = 'table-row';
-    //document.getElementById("test").style.display = "block";
+$("#list").on("change", function () {
+  var value = $("#list").val();
+  $('#test').find('tr').not('#require').hide();
+  var result_style = document.getElementById(value).style;
+  result_style.display = 'table-row';
+  //document.getElementById("test").style.display = "block";
 });
 
 
 $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
 });
 
 $('#backlist').on('submit', function (e) {
@@ -40,6 +40,16 @@ $('#backlist').on('submit', function (e) {
        url:"backlistsubmit",
        data:{list:list, advance:advance , amount:amount , reason:reason , backpeople:backpeople
         , pickpeople:pickpeople , position:position , number:number , client:client , status:status},
+        beforeSend: function () {
+            // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+            $('body').loadingModal({
+              text: 'Loading...',
+              animation: 'circle'
+            });
+          },
+          complete: function () {
+            $('body').loadingModal('hide');
+          },
        success:function(data){
         console.log(data);
           var myObj = JSON.parse(data);
@@ -54,19 +64,19 @@ $('#backlist').on('submit', function (e) {
           //no reason
           else if(myObj.boolean === true && myObj.passbool === false){
 
-            document.getElementById("reasonerror").style.display = "block";
-            document.getElementById("reason"+list).style.borderColor = "red";
-          }
-          else if(myObj.boolean === false && myObj.passbool === false){
-
-            window.location.reload();
-          }
-       },
-       error : function(jqXHR,textStatus,errorThrown){
-        console.warn(jqXHR.responseText);
-        alert(errorThrown);
+        document.getElementById("reasonerror").style.display = "block";
+        document.getElementById("reason" + list).style.borderColor = "red";
       }
-    });
+      else if (myObj.boolean === false && myObj.passbool === false) {
+
+        window.location.reload();
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.warn(jqXHR.responseText);
+      alert(errorThrown);
+    }
+  });
 });
 
 

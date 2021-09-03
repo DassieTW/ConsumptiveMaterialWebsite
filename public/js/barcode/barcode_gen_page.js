@@ -381,7 +381,7 @@ function CallPhpSpreadSheetToGetData(fileName) {
                     }
                 });
             } // else
-        }
+        } // error
     }); // end of ajax
 
 } // CallPhpSpreadSheetToGetData

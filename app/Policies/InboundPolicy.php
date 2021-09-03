@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\ConsumptiveMaterial;
+use App\Models\Inbound;
 use App\Models\Login;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BasicInfoPolicy
+class InboundPolicy
 {
     use HandlesAuthorization;
 
@@ -14,9 +14,9 @@ class BasicInfoPolicy
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\Login  $user
-     * @return mixed
+     * @return boolean
      */
-    public function viewBasicInfo(Login $user)
+    public function viewInbound(Login $user)
     {
         if (intval($user->priority) < 4) {
             return true;

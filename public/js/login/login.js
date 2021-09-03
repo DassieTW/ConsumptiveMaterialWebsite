@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
   $("#eye-button").on('click', function (event) {
     event.preventDefault();
@@ -24,6 +23,8 @@ $(document).ready(function () {
     });
     var name = $("#username").val();
     var pass = $("#password").val();
+    var site = $('#site').children("option:selected").val();
+    console.log(site); // test
 
     // clean up previous input results
     $('.is-invalid').removeClass('is-invalid');
@@ -32,10 +33,10 @@ $(document).ready(function () {
     $.ajax({
       type: "post",
       url: "/member/login",
-      data: { username: name, password: pass },
+      data: { username: name, password: pass, site: site },
       dataType: 'json',              // let's set the expected response format
       beforeSend: function () {
-        console.log('sup, loading modal triggered !');
+        // console.log('sup, loading modal triggered !');
         // e.preventDefault();return false;  // test
         $('body').loadingModal({
           text: 'Loading...',
@@ -69,7 +70,7 @@ $(document).ready(function () {
           // display errors on each form field
           $.each(err.responseJSON.errors, function (i, error) {
             var el = $(document).find('[name="' + i + '"]');
-            console.log(el.siblings(".input-group-text").length); // test
+            // console.log(el); // test
             el.addClass("is-invalid");
             if (el.siblings(".input-group-text").length > 0) {
               el.siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
@@ -81,8 +82,8 @@ $(document).ready(function () {
         } // if error 422
         else if (err.status == 420) { // when login failed
           // Lang = new Lang();
-          console.log(err.responseJSON.message); // test
-          console.log(Lang.getLocale()); // test
+          // console.log(err.responseJSON.message); // test
+          // console.log(Lang.getLocale()); // test
           $('#username').addClass("is-invalid");
           $('#password').addClass("is-invalid");
           $('#password').siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('auth.failed') + '</strong></span>'));

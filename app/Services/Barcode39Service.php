@@ -232,7 +232,7 @@ final class Barcode39
         if ($this->isIsn === 'false') { // decide if this is for isn or save pot
             $barcode_string .= "LOC";
         } else {
-            $barcode_string .= "ISN";
+            $barcode_string .= "";
         } // else 
 
         foreach ($this->_code as $k => $v) {
