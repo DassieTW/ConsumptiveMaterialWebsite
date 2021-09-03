@@ -81,6 +81,9 @@ $(document).ready(function () {
                 document.getElementById("message").style.display = "block";
                 document.getElementById('password').style.borderColor = "red";
                 document.getElementById('password').value='';
+                document.getElementById('newpassword').style.borderColor = "";
+                document.getElementById('surepassword').style.borderColor = "";
+                document.getElementById("message2").style.display = "none";
             }
             else{
                 document.getElementById("message2").style.display = "block";
@@ -88,6 +91,8 @@ $(document).ready(function () {
                 document.getElementById('newpassword').value='';
                 document.getElementById('surepassword').style.borderColor = "red";
                 document.getElementById('surepassword').value='';
+                document.getElementById('password').style.borderColor = "";
+                document.getElementById("message").style.display = "none";
             }
         },
         error : function(jqXHR,textStatus,errorThrown){

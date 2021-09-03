@@ -1,9 +1,4 @@
-document.getElementById("numbererror").style.display = "none";
-document.getElementById("numbererror").style.color = "red";
-document.getElementById("numbererror1").style.display = "none";
-document.getElementById("numbererror1").style.color = "red";
-document.getElementById("safeerror").style.display = "none";
-document.getElementById("safeerror").style.color = "red";
+
 $(document).ready(function(){
     $("select").change(function(){
     var checkedValue = $("#month").val();
@@ -24,6 +19,11 @@ $.ajaxSetup({
 
 $('#newmaterial').on('submit', function (e) {
     e.preventDefault();
+
+    // clean up previous input results
+    $('.is-invalid').removeClass('is-invalid');
+    $(".invalid-feedback").remove();
+
         var number = $("#number").val();
         var name = $("#name").val();
         var format = $("#format").val();

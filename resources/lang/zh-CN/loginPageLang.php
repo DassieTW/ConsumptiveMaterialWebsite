@@ -12,18 +12,16 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
     'username' => '帐号',
     'password' => '密码',
     'username_placeholder' => '请输入帐号',
     'password_placeholder' => '请输入密码',
-    'home' => '主页',
     'welcome' => '欢迎',
     'welcome_msg' => '请登入帐户以继续使用功能',
     'login_btn' => '登入',
     'settings' => '设定',
     'home' => '首页',
-    'register' => '用户注册',
+    'adduser' => '新增用户',
     'surepassword' => '确认密码',
     'enterpassword' => '请再次输入密码',
     'name' => '姓名',
@@ -59,10 +57,8 @@ return [
     'againlogin' => '请重新登入',
     'pinf' => '人员信息',
     'user' => '用户',
-    'repeat' => '资料已存放在资料库内，请检查。 ',
     'upload1' => '上传',
-    'total' => '共 ',
-    'record' => ' 笔',
+    'total' => '共',
+    'record' => '笔',
     'usernamerepeat' => '帐号重复，请重新输入。',
-
 ];

@@ -60,11 +60,11 @@
                                         @else
                                         <td>
                                         @foreach ($test as $k=> $a)
-                                        {!! __('callpageLang.loc') !!}:{{$k}} {!! __('callpageLang.nowstock') !!}:{{$a}}<br>
+                                        {!! __('callpageLang.loc') !!} : {{$k}} {!! __('callpageLang.nowstock') !!} : {{$a}}<br>
                                         @endforeach
                                         </td>
                                         @endif
-                                        <td><input type = "text"></td>
+                                        <td><input type = "text" style="width:100px"></td>
                                     </tr>
                                     @endif
                                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
@@ -94,11 +94,11 @@
                                         @else
                                         <td>
                                         @foreach ($test as $k=> $a)
-                                        {!! __('callpageLang.loc') !!}:{{$k}} {!! __('callpageLang.nowstock') !!}:{{$a}}
+                                        {!! __('callpageLang.loc') !!} : {{$k}} {!! __('callpageLang.nowstock') !!} : {{$a}}<br>
                                         @endforeach
                                         </td>
                                         @endif
-                                        <td><input type = "text"></td>
+                                        <td><input type = "text" style="width:100px"></td>
                                     </tr>
                                     @endif
                                     <input type = "hidden" id="count1" name = "count1" value="{{$loop->count}}">

@@ -12,8 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'safealert' =>'Safe Inventory Alert',
-    'day' =>'Sluggish Day Alert',
+    'safealert' =>'Safety Inventory Alert',
+    'dayalert' =>'Sluggish Day Alert',
     'callsys' =>'Alarm system',
     'client' =>'Client',
     'isn' =>'ISN',
@@ -24,11 +24,11 @@ return [
     'loc' =>'Location',
     'mark' =>'Remarks',
     'return' =>'return',
-    'senddep' =>'Sending Department',
+    'senddep' =>'Sending DEPT.',
     'entersenddep' =>'Please select the sending department',
     'change' =>'Update',
-    'safestock' =>'SafeStock',
+    'safe' =>'Safety Stock',
     'nostock' =>'There is no stock at present',
-    'notmonth' =>'Non-monthly purchase consumables',
+    'notmonth' =>'Non-monthly PR consumables',
     'nowstock' =>'NowStock',
 ];

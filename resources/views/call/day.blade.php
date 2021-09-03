@@ -65,7 +65,7 @@
                                         @endforeach
                                         </td>
                                         @endif
-                                        <td><input type = "text"></td>
+                                        <td><input type = "text" style="width:100px;"></td>
                                     </tr>
                                     @endif
                                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">

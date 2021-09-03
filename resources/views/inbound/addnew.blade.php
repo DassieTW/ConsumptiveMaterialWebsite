@@ -22,6 +22,7 @@
             <div class="card-body">
                 <form id = "addnew">
                     @csrf
+                    <div class="table-responsive">
                     <table class="table" id = "inboundsearch">
                         <tr id = "">
                             <th>{!! __('inboundpageLang.client') !!}</th>
@@ -29,10 +30,10 @@
                             <th>{!! __('inboundpageLang.pName') !!}</th>
                             <th>{!! __('inboundpageLang.format') !!}</th>
                             <th>{!! __('inboundpageLang.unit') !!}</th>
-                            <th>{!! __('inboundpageLang.amount') !!}</th>
+                            <th>{!! __('inboundpageLang.transit') !!}</th>
                             <th>{!! __('inboundpageLang.nowstock') !!}</th>
-                            <th>{!! __('inboundpageLang.safestock') !!}</th>
-                            <th>{!! __('inboundpageLang.inamount') !!}</th>
+                            <th>{!! __('inboundpageLang.safe') !!}</th>
+                            <th>{!! __('inboundpageLang.inboundnum') !!}</th>
                             <th>{!! __('inboundpageLang.inreason') !!}</th>
                             <th>{!! __('inboundpageLang.oldloc') !!}</th>
                             <th>{!! __('inboundpageLang.newloc') !!}</th>
@@ -47,9 +48,15 @@
                                 <td><input type="hidden" id ="amount" name="amount" value = "{{ Session::get('amount') }}">{{ Session::get('amount') }}</td>
                                 <td><input type="hidden" id ="stock" name="stock" value = "{{ Session::get('stock') }}">{{ Session::get('stock') }}</td>
                                 <td><input type="hidden" id ="safe" name="safe" value = "{{ Session::get('safe') }}">{{ Session::get('safe') }}</td>
-                                <td><input type="number" id ="inamount" name="inamount" required placeholder="{!! __('inboundpageLang.enteramount') !!}"></td>
+                                <td><input type="number" id ="inamount" name="inamount" style = "width: 70px" placeholder="{!! __('inboundpageLang.enteramount') !!}" required></td>
                                 <td><input type="hidden" id ="inreason" name="inreason" value = "{{ Session::get('inreason') }}">{{ Session::get('inreason') }}</td>
-                                <td><input type="hidden" id ="oldposition" name="oldposition" value = "{{ Session::get('positions') }}">{{ Session::get('positions') }}</td>
+                                <td><input type="hidden" id ="oldposition" name="oldposition" value = "{{ Session::get('positions') }}">
+                                    @foreach(Session::get('positions') as $oldloc)
+                                    {{  $oldloc }}
+                                    <br>
+                                    @endforeach
+
+                                </td>
                                 <div id = "showposition" >{{ $position =  App\Models\儲位::all() }}</div>
                                 <div id = "showname" >{{ $name =  App\Models\人員信息::all() }}</div>
                                 <td>
@@ -62,6 +69,8 @@
                                 </td>
                             </tr>
                         </table>
+                        </div>
+                        <br>
                         <div class="mb-3 col-md-6">
                             <label class="form-label">{!! __('inboundpageLang.inpeople') !!}</label>
                             <select class="form-control form-control-lg" id = "inpeople" name="inpeople" required width="300" style="width: 300px">
@@ -71,7 +80,7 @@
                             @endforeach
                             </select>
                         </div>
-                        <div id = "nostock">{!! __('inboundpageLang.amounterror') !!}</div>
+                        <div id = "nostock">{!! __('inboundpageLang.transiterror') !!}</div>
                     <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.submit') !!}">
                 </form>
                 <br>

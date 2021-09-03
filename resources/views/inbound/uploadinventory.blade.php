@@ -59,11 +59,12 @@
                                         $positions = DB::table('儲位')->pluck('儲存位置')->toArray();
                                         $i = false;
                                         $j = false;
+                                        $error = $loop->index +1;
                                         //判斷是否有料號
                                         if($name === null || $format === null)
                                         {
                                             echo ("<script LANGUAGE='JavaScript'>
-                                            window.alert('Material is not found , Please check Material number');
+                                            window.alert('Material is not found In Row, +'$error'+'$row[1]'+,Please check Material number');
                                             window.location.href = 'uploadinventory';
                                             </script>");
                                         }
@@ -73,7 +74,7 @@
                                         if($i === false)
                                         {
                                             echo ("<script LANGUAGE='JavaScript'>
-                                                window.alert('Format Error,Not Found ' + '$row[0] ' + 'in 客戶別');
+                                                window.alert('Format Error,Not Found In Row' +'$error'+ '$row[0] ' + 'in 客戶別');
                                                 window.location.href = 'uploadinventory';
                                                 </script>");
                                         }
@@ -84,7 +85,7 @@
                                         if($j === false)
                                         {
                                             echo ("<script LANGUAGE='JavaScript'>
-                                                window.alert('Format Error,Not Found ' + '$row[3] ' + 'in 儲位');
+                                                window.alert('Format Error,Not Found In Row' + '$error'+'$row[3] ' + 'in 儲位');
                                                 window.location.href = 'uploadinventory';
                                                 </script>");
                                         }

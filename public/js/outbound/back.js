@@ -1,8 +1,4 @@
-document.getElementById("numbererror").style.display = "none";
-document.getElementById("numbererror").style.color = "red";
-document.getElementById("numbererror1").style.display = "none";
-document.getElementById("numbererror1").style.color = "red";
-document.getElementById("reason").style.display = "none";
+
 
 $.ajaxSetup({
     headers: {
@@ -12,7 +8,7 @@ $.ajaxSetup({
 $("#backreason").on("change",function(){
 
     var value = $("#backreason").val();
-    if(value === "其他")
+    if(value === "其他" || value === "other")
     {
         document.getElementById("reason").style.display = "block";
     }

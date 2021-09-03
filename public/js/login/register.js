@@ -35,7 +35,7 @@ $(document).ready(function () {
     $("#password2").focus();
   });
 
-  $('#register').on('submit', function (e) {
+  /*$('#register').on('submit', function (e) {
     e.preventDefault();
     var username = $("#username").val();
     var password = $("#password").val();
@@ -73,7 +73,7 @@ $(document).ready(function () {
         alert(errorThrown);
       }
     });
-  });
+  });*/
 });
 
 

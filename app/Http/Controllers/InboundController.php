@@ -180,97 +180,64 @@ class InboundController extends Controller
     {
         if(Session::has('username'))
         {
-            $count = $request->input('time');
-            for($i = 0 ; $i < $count ; $i++)
+            $reDive = new responseObj();
+            $number = $request->input('number');
+            $oldposition = $request->input('oldposition');
+            $client = $request->input('client');
+            $amount = $request->input('amount');
+            $newposition = $request->input('newposition');
+            //$stock = $request->input('stock');
+            $now = Carbon::now();
+            $test = DB::table('inventory')
+                    ->where('客戶別', $client)
+                    ->where('料號', $number)
+                    ->where('儲位', $newposition)
+                    ->value('現有庫存');
+
+            DB::beginTransaction();
+            try{
+
+            if($test !== null)
             {
-                if($request->has('submit' . $i))
-                {
-                    $number = $request->input('number' . $i);
-                    $stock = $request->input('stock' . $i);
-                    $oldposition = $request->input('oldposition' . $i);
-                    $client = $request->input('client' . $i);
-                    $amount = $request->input('amount' . $i);
-                    $newposition = $request->input('newposition' . $i);
-                    $now = Carbon::now();
-                    $test = DB::table('inventory')
-                            ->where('客戶別', $client)
-                            ->where('料號', $number)
-                            ->where('儲位', $newposition)
-                            ->value('現有庫存');
+                DB::table('inventory')
+                    ->where('客戶別', $client)
+                    ->where('料號', $number)
+                    ->where('儲位', $newposition)
+                    ->update(['現有庫存' => $test + $amount , '最後更新時間' => $now]);
 
-                    if($amount > $stock)
-                    {
-                        //echo "<script>alert('調撥數量不可大於現有庫存，無法提交此筆儲位調撥');</script>";
-                        /*return back()->withErrors([
-                            'stock' => '調撥數量不可大於現有庫存，無法提交此筆儲位調撥',
-                        ]);*/
-                        $mess = trans('inboundpageLang.locchangeerr');
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='positionchange';
-                        </script>");
-                        //return redirect()->action('InboundController@positionchange', ['stock' => '調撥數量不可大於現有庫存，無法提交此筆儲位調撥']);
-                        //return route('inbound.positionchange');
-                    }
-
-                    else
-                    {
-                        $mess = trans('inboundpageLang.coming').' : ' . $oldposition.trans('inboundpageLang.transfer'). ' : '.$number.' : '
-                        .$amount.trans('inboundpageLang.to') . ' '.$newposition . '\\n'.trans('inboundpageLang.client'). ' : '.$client;
-                        $sure = ("<script LANGUAGE='JavaScript'>
-                        var c = window.confirm('$mess');
-                        if(!c){window.location.href='positionchange';}
-                        </script>");
-
-                        echo $sure;
-                        DB::beginTransaction();
-                        try{
-
-                        if($test === null)
-                        {
-                            DB::table('inventory')
-                            ->insert(['料號' => $number , '現有庫存' => $amount , '儲位' => $newposition ,'客戶別' => $client , '最後更新時間' => $now]);
-
-                        }
-                        else
-                        {
-                            DB::table('inventory')
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->where('儲位', $newposition)
-                                ->update(['現有庫存' => $test + $amount , '最後更新時間' => $now]);
-                        }
-
-                        DB::table('inventory')
-                            ->where('客戶別', $client)
-                            ->where('料號', $number)
-                            ->where('儲位', $oldposition)
-                            ->update(['現有庫存' => $stock - $amount , '最後更新時間' => $now]);
-
-                            DB::commit();
-                        }catch(\Exception $e){
-                            DB::rollback();
-                            $mess = $e->getMessage();
-                                echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('$mess');
-                                window.location.href='/inbound';
-                                </script>");
-                        }
-
-                    }
-
-                }
-
-                else
-                {
-                    continue;
-                }
             }
-            $mess = trans('inboundpageLang.transfer').trans('inboundpageLang.success');
-            echo ("<script LANGUAGE='JavaScript'>
-            window.alert('$mess');
-            window.location.href='/inbound';
-            </script>");
+            else
+            {
+                DB::table('inventory')
+                ->insert(['料號' => $number , '現有庫存' => $amount , '儲位' => $newposition ,'客戶別' => $client , '最後更新時間' => $now]);
+            }
+
+            $stock = DB::table('inventory')
+                        ->where('客戶別', $client)
+                        ->where('料號', $number)
+                        ->where('儲位', $oldposition)
+                        ->value('現有庫存');
+            DB::table('inventory')
+                ->where('客戶別', $client)
+                ->where('料號', $number)
+                ->where('儲位', $oldposition)
+                ->update(['現有庫存' => $stock - $amount , '最後更新時間' => $now]);
+
+                DB::commit();
+            }catch(\Exception $e){
+                DB::rollback();
+                $mess = $e->getMessage();
+                    echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('$mess');
+                    window.location.href='/inbound';
+                    </script>");
+            }
+
+            $reDive->boolean = true;
+            $myJSON = json_encode($reDive);
+            echo $myJSON;
+
+
         }
         else
         {
@@ -498,7 +465,8 @@ class InboundController extends Controller
                     {
                         $join->on('不良品inventory.料號', '=', 'consumptive_material.料號');
 
-                    })->where('consumptive_material.料號','like', $number.'%')->get();
+                    })->where('consumptive_material.料號','like', $number.'%')
+                    ->where('現有庫存','>', 0)->get();
                 }
                 else
                 {
@@ -507,7 +475,7 @@ class InboundController extends Controller
                     {
                         $join->on('不良品inventory.料號', '=', 'consumptive_material.料號');
 
-                    })->get();
+                    })->where('現有庫存','>', 0)->get();
                 }
             }
             //inventory
@@ -520,7 +488,9 @@ class InboundController extends Controller
                     {
                         $join->on('inventory.料號', '=', 'consumptive_material.料號');
 
-                    })->where('consumptive_material.料號','like', $number.'%')->get();
+                    })->where('consumptive_material.料號','like', $number.'%')
+                    ->where('現有庫存','>', 0)
+                    ->get();
                 }
                 else
                 {
@@ -529,7 +499,7 @@ class InboundController extends Controller
                     {
                         $join->on('inventory.料號', '=', 'consumptive_material.料號');
 
-                    })->get();
+                    })->where('現有庫存','>', 0)->get();
                 }
             }
             //庫存使用月數
@@ -544,14 +514,15 @@ class InboundController extends Controller
                     $datas = DB::table('consumptive_material')
                     ->joinSub($test, 'inventory', function ($join) {
                         $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                    })->where('consumptive_material.料號','like', $number.'%')->get();
+                    })->where('consumptive_material.料號','like', $number.'%')
+                    ->where('現有庫存','>', 0)->get();
                 }
                 else
                 {
                     $datas = DB::table('consumptive_material')
                     ->joinSub($test, 'inventory', function ($join) {
                         $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                    })->get();
+                    })->where('現有庫存','>', 0)->get();
                 }
 
                 //all empty
@@ -697,7 +668,7 @@ class InboundController extends Controller
     }
 
 
-    //入庫-新增
+    //入庫-新增頁面
     public function add(Request $request)
     {
         if(Session::has('username'))
@@ -756,6 +727,7 @@ class InboundController extends Controller
                         $positions = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('現有庫存','>',0)->pluck('儲位');
                         $belong = DB::table('consumptive_material')->where('料號', $number)->value('耗材歸屬');
                         $lt = DB::table('consumptive_material')->where('料號', $number)->value('LT');
+                        $month = DB::table('consumptive_material')->where('料號', $number)->value('月請購');
                         //dd($name);
                         //return;
                         if($name === null || $format === null)
@@ -784,39 +756,46 @@ class InboundController extends Controller
                                 $myJSON = json_encode($reDive);
                                 echo $myJSON;
                             }
-                            if($belong === '單耗')
+                            if($month === '否')
                             {
-                                $machine = DB::table('月請購_單耗')->where('料號',$number)->where('客戶別', $client)->value('機種');
-                                $production = DB::table('月請購_單耗')->where('料號',$number)->where('客戶別', $client)->value('製程');
-                                $consume = DB::table('月請購_單耗')->where('料號',$number)->where('客戶別', $client)->value('單耗');
-                                $nextmps = DB::table('MPS')->where('機種',$machine)->where('客戶別', $client)->where('製程',$production)->value('下月MPS');
-                                $nextday = DB::table('MPS')->where('機種',$machine)->where('客戶別', $client)->where('製程',$production)->value('下月生產天數');
-                                if($nextday == 0)
-                                {
-                                    $safe = 0;
-                                }
-                                else
-                                {
-                                    $safe = $lt * $consume * $nextmps / $nextday;
-                                }
+                                $safe = DB::table('consumptive_material')->where('料號', $number)->value('安全庫存');
                             }
                             else
                             {
-                                $machine = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('機種');
-                                $production = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('製程');
-                                $nextstand = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月站位人數');
-                                $nextline = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月開線數');
-                                $nextclass = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月開班數');
-                                $nextuse = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月每人每日需求量');
-                                $nextchange = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月每日更換頻率');
-                                $mpq = DB::table('consumptive_material')->where('料號',$number)->value('MPQ');
-                                if($mpq == 0)
+                                if($belong === '單耗')
                                 {
-                                    $safe = 0;
+                                    $machine = DB::table('月請購_單耗')->where('料號',$number)->where('客戶別', $client)->value('機種');
+                                    $production = DB::table('月請購_單耗')->where('料號',$number)->where('客戶別', $client)->value('製程');
+                                    $consume = DB::table('月請購_單耗')->where('料號',$number)->where('客戶別', $client)->value('單耗');
+                                    $nextmps = DB::table('MPS')->where('機種',$machine)->where('客戶別', $client)->where('製程',$production)->value('下月MPS');
+                                    $nextday = DB::table('MPS')->where('機種',$machine)->where('客戶別', $client)->where('製程',$production)->value('下月生產天數');
+                                    if($nextday == 0)
+                                    {
+                                        $safe = 0;
+                                    }
+                                    else
+                                    {
+                                        $safe = $lt * $consume * $nextmps / $nextday;
+                                    }
                                 }
                                 else
                                 {
-                                    $safe = $lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange / $mpq;
+                                    $machine = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('機種');
+                                    $production = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('製程');
+                                    $nextstand = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月站位人數');
+                                    $nextline = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月開線數');
+                                    $nextclass = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月開班數');
+                                    $nextuse = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月每人每日需求量');
+                                    $nextchange = DB::table('月請購_站位')->where('料號',$number)->where('客戶別', $client)->value('下月每日更換頻率');
+                                    $mpq = DB::table('consumptive_material')->where('料號',$number)->value('MPQ');
+                                    if($mpq == 0)
+                                    {
+                                        $safe = 0;
+                                    }
+                                    else
+                                    {
+                                        $safe = $lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange / $mpq;
+                                    }
                                 }
                             }
                             Session::put('client' , $client);
@@ -1083,6 +1062,7 @@ class InboundController extends Controller
         {
             $count = $request->input('count');
             $record = 0;
+            $test = 0;
             //入庫單號
             $i = '0001';
             $max = DB::table('inbound')->max('入庫時間');
@@ -1106,15 +1086,49 @@ class InboundController extends Controller
             for($i = 0 ; $i < $count ; $i++)
             {
                 $number = $request->input('number' . $i);
-                if($number !== null)
+                $name = $request->input('name'. $i);
+                $format = $request->input('format'. $i);
+                $unit = $request->input('unit'. $i);
+                $client = $request->input('client'. $i);
+                $amount = $request->input('amount'. $i);
+                $inreason = Session::get('inreason');
+                $newposition = $request->input('newposition'. $i);
+                $inpeo = $request->input('inpeople');
+                $inpeoples = explode(" ", $inpeo);
+                $inpeople = $inpeoples[0];
+
+                $time = Carbon::now();
+                $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $newposition)->value('現有庫存');
+                $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
+                //入庫 > 在途量
+                if($amount > $buy && $inreason !== '調撥' && $inreason !== '退庫')
                 {
+                    $i++;
+                    $row = $i;
+                    $mess = trans('inboundpageLang.transiterror').' ， '.trans('inboundpageLang.row').' : '.$row.'\\n'.
+                    trans('inboundpageLang.client').' : '.' '.$client.' '.trans('inboundpageLang.isn').' : ' .$number;
+                    echo ("<script LANGUAGE='JavaScript'>
+                            window.alert('$mess');
+                            window.location.href='add';
+                            </script>");
+                        return;
+                }
+                else
+                {
+                    $test ++;
+                }
+            }
+            if($test == $count)
+            {
+                for($i = 0 ; $i < $count ; $i++)
+                {
+                    $number = $request->input('number' . $i);
                     $name = $request->input('name'. $i);
                     $format = $request->input('format'. $i);
                     $unit = $request->input('unit'. $i);
                     $client = $request->input('client'. $i);
                     $amount = $request->input('amount'. $i);
                     $inreason = Session::get('inreason');
-                    //$oldposition = $request->input('oldposition'. $i);
                     $newposition = $request->input('newposition'. $i);
                     $inpeo = $request->input('inpeople');
                     $inpeoples = explode(" ", $inpeo);
@@ -1123,19 +1137,6 @@ class InboundController extends Controller
                     $time = Carbon::now();
                     $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $newposition)->value('現有庫存');
                     $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
-                    //入庫>在途量
-                    if($amount > $buy && $inreason !== '調撥' && $inreason !== '退庫')
-                    {
-                        $i++;
-                        $mess = trans('inboundpageLang.amounterror').' ， '.trans('inboundpageLang.row').' : '.$i.
-                        trans('inboundpageLang.client').' : '.$client.trans('inboundpageLang.isn').' : ' .$number;
-                        echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('$mess');
-                                window.location.href='add';
-                                </script>");
-                    }
-                    else
-                    {
                         if($stock !== null)
                         {
 
@@ -1202,16 +1203,11 @@ class InboundController extends Controller
 
                             }
                         }
-                    }
-                }
-                else
-                {
-                    continue;
                 }
             }
-            $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
-            .trans('basicInfoLang.update').trans('basicInfoLang.success'). ' : '
-            .trans('basicInfoLang.inlist').' : '.$opentime;
+            $mess = trans('inboundpageLang.total').' '.$record.' '.trans('inboundpageLang.record').' '
+            .trans('inboundpageLang.change').' '.trans('inboundpageLang.success'). ' , '
+            .trans('inboundpageLang.inlist').' : '.$opentime;
             echo ("<script LANGUAGE='JavaScript'>
             window.alert('$mess');
             window.location.href='/inbound';
@@ -1233,6 +1229,7 @@ class InboundController extends Controller
             if($request->has('delete'))
             {
                 $count = $request->input('count');
+                $sure = false;
                 for($i = 0 ; $i < $count ; $i++)
                 {
                     if($request->has('innumber' . $i))
@@ -1247,14 +1244,16 @@ class InboundController extends Controller
                         $inreason = $request->input('data6' . $i);
                         $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
                         $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
+
+
                         DB::beginTransaction();
                         try {
                             if($stock < $amount)
                             {
                                 if($stock === null) $stock = 0;
 
-                                $mess = trans('basicInfoLang.lessstock').$record.trans('basicInfoLang.nowstock').' : '.$stock
-                                .trans('basicInfoLang.inboundnum').' : ' . $amount;
+                                $mess = trans('inboundpageLang.lessstock').'\\n'.trans('inboundpageLang.nowstock').' : '.$stock.' '
+                                .trans('inboundpageLang.inboundnum').' : ' . $amount;
 
                                 echo ("<script LANGUAGE='JavaScript'>
                                 window.alert('$mess');
@@ -1285,6 +1284,7 @@ class InboundController extends Controller
                                 ->where('儲位', $position)
                                 ->delete();
                             DB::commit();
+                            $sure = true;
                         }catch (\Exception $e) {
                             DB::rollback();
                             $mess = $e->getMessage();
@@ -1300,22 +1300,35 @@ class InboundController extends Controller
                     }
                 }
 
-                $mess = trans('basicInfoLang.delete').$record.trans('basicInfoLang.success'). ' ， '
-                .trans('basicInfoLang.inlist').' : ' . $list . trans('basicInfoLang.client'). ' : '.$client
-                .trans('basicInfoLang.isn'). ' : ' .$number;
-                echo("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/inbound';
-                </script>");
+                if($sure)
+                {
+                    $mess = trans('inboundpageLang.delete').trans('inboundpageLang.success'). ' ， '
+                    .trans('inboundpageLang.inlist').' : ' . $list .'\\n'. trans('inboundpageLang.client'). ' : '.$client.' '
+                    .trans('inboundpageLang.isn'). ' : ' .$number;
+                    echo("<script LANGUAGE='JavaScript'>
+                    window.alert('$mess');
+                    window.location.href='/inbound';
+                    </script>");
+                }
+                else
+                {
+                    $mess = trans('inboundpageLang.nocheck');
+                        echo ("<script LANGUAGE='JavaScript'>
+                        window.alert('$mess');
+                        window.location.href='search';
+                        </script>");
+                }
+
             }
             else if($request->has('download'))
             {
 
                 $spreadsheet = new Spreadsheet();
-                $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
+                $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
                 $worksheet = $spreadsheet->getActiveSheet();
                 $time = $request->input('time');
                 $count = $request->input('count');
+
                 //填寫表頭
                 for($i = 0 ; $i < $time ; $i ++)
                 {
@@ -1493,8 +1506,8 @@ class InboundController extends Controller
                 }
             }
 
-            $mess = trans('basicInfoLang.total').$record.trans('basicInfoLang.record')
-            .trans('basicInfoLang.stockupload').trans('basicInfoLang.success');
+            $mess = trans('inboundpageLang.total').$record.trans('inboundpageLang.record')
+            .trans('inboundpageLang.stockupload').trans('inboundpageLang.success');
             echo("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
                 window.location.href='/inbound';

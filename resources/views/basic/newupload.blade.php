@@ -19,7 +19,7 @@
                 <h3>{!! __('basicInfoLang.newMats') !!}</h3>
             </div>
 
-            <div class="card-body">
+            <div class="table-responsive">
                 <div class="d-flex w-100 h-100">
                     <div class="mb-3">
                         <form method="post" enctype="multipart/form-data" action = "{{ route('basic.uploadmaterial') }}">
@@ -80,31 +80,31 @@
                                         <td>
                                             <select class="form-control form-control-lg " id = "data9a{{$loop->index}}" name="data9a{{$loop->index}}" value = "{{$row[9]}}" required>
                                             <option style="display: none"  selected value = "{{$row[9]}}">{{$row[9]}}</option>
-                                            <option>是</option>
-                                            <option>否</option>
+                                            <option>{!! __('basicInfoLang.yes') !!}</option>
+                                            <option>{!! __('basicInfoLang.no') !!}</option>
                                             </select>
                                         </td>
                                         <td>
                                             <select class="form-control form-control-lg " name="data10a{{$loop->index}}" value = "{{$row[10]}}" required>
                                             <option style="display: none"  selected value = "{{$row[10]}}">{{$row[10]}}</option>
-                                            <option>是</option>
-                                            <option>否</option>
+                                            <option>{!! __('basicInfoLang.yes') !!}</option>
+                                            <option>{!! __('basicInfoLang.no') !!}</option>
                                             </select>
                                         </td>
                                         <td>
                                             <select class="form-control form-control-lg "  name="data11a{{$loop->index}}" value = "{{$row[11]}}" required>
                                             <option style="display: none"  selected value = "{{$row[11]}}">{{$row[11]}}</option>
-                                            <option>單耗</option>
-                                            <option>站位</option>
+                                            <option>{!! __('basicInfoLang.consume') !!}</option>
+                                            <option>{!! __('basicInfoLang.stand') !!}</option>
                                             </select>
                                         </td>
                                         <td>
                                             <select class="form-control form-control-lg " name="data12a{{$loop->index}}" value = "{{$row[12]}}" required>
                                             <option style="display: none"  selected value = "{{$row[12]}}">{{$row[12]}}</option>
-                                            <option>IE備品室</option>
-                                            <option>ME備品室</option>
-                                            <option>設備備品室</option>
-                                            <option>備品室</option>
+                                            <option>{!! __('basicInfoLang.room') !!}</option>
+                                            <option>{!! __('basicInfoLang.ieroom') !!}</option>
+                                            <option>{!! __('basicInfoLang.meroom') !!}</option>
+                                            <option>{!! __('basicInfoLang.equiproom') !!}</option>
                                             </select>
                                         </td>
                                         <td><input style="width:70px" type = "number"  name = "data13a{{$loop->index}}" value = "{{$row[13]}}"></td>

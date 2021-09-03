@@ -1,10 +1,4 @@
-document.getElementById("numbererror").style.display = "none";
-document.getElementById("numbererror").style.color = "red";
-document.getElementById("numbererror1").style.display = "none";
-document.getElementById("numbererror1").style.color = "red";
-document.getElementById("reason").style.display = "none";
-document.getElementById("noamount").style.color = "red";
-document.getElementById("noamount").style.display = "none";
+
 
 $.ajaxSetup({
     headers: {
@@ -27,10 +21,15 @@ $("#inreason").on("change",function(){
 
 $('#add').on('submit', function (e) {
     e.preventDefault();
+
+    // clean up previous input results
+    $('.is-invalid').removeClass('is-invalid');
+    $(".invalid-feedback").remove();
+
       var client = $("#client").val();
       var inreason = $("#inreason").val();
       var number = $("#number").val();
-      if(inreason === "其他"){
+      if(inreason === "其他" || inreason === "other"){
         inreason = $('#reason').val();
       }
       var submit = buttonIndex;
@@ -52,22 +51,28 @@ $('#add').on('submit', function (e) {
             document.getElementById("numbererror").style.display = "block";
             document.getElementById('number').style.borderColor = "red";
             document.getElementById('number').value='';
+            document.getElementById("numbererror1").style.display = "none";
+            document.getElementById("notransit").style.display = "none";
           }
           //無料號
           else if(myObj.boolean === true && myObj.passbool === true && myObj.passstock === false){
             document.getElementById("numbererror1").style.display = "block";
             document.getElementById('number').style.borderColor = "red";
             document.getElementById('number').value='';
+            document.getElementById("numbererror").style.display = "none";
+            document.getElementById("notransit").style.display = "none";
           }
           //在途量為0
           else if(myObj.boolean === true && myObj.passbool === false && myObj.passstock === true){
-            document.getElementById("noamount").style.display = "block";
+            document.getElementById("notransit").style.display = "block";
             document.getElementById('number').style.borderColor = "red";
             document.getElementById('client').style.borderColor = "red";
             document.getElementById('inreason').style.borderColor = "red";
             document.getElementById('inreason').value='';
             document.getElementById('number').value='';
             document.getElementById('client').value='';
+            document.getElementById("numbererror1").style.display = "none";
+            document.getElementById("numbererror").style.display = "none";
           }
 
           //添加By客戶別

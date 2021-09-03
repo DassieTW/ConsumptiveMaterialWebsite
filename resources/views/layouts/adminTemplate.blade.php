@@ -154,7 +154,7 @@
                                                         {!! __('inboundpageLang.new') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['inbound.search']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['inbound.search','inbound/inquire']) }}">
                                                     <a class="sidebar-link" href="{{route('inbound.search')}}">
                                                         {!! __('inboundpageLang.search') !!}
                                                     </a>
@@ -192,7 +192,7 @@
                                             </a>
                                             <ul id="outbound" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
-                                                <li class="sidebar-item {{ isActiveRoute(['outbound.pick']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['outbound.pick', 'outbound/pickaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.pick')}}">
                                                         {!! __('outboundpageLang.pick') !!}
                                                     </a>
@@ -207,7 +207,7 @@
                                                     {!! __('outboundpageLang.pickrecord') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['outbound.back']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['outbound.back','outbound/backaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.back')}}">
                                                     {!! __('outboundpageLang.back') !!}
                                                     </a>

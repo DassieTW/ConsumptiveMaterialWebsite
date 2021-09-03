@@ -25,8 +25,8 @@
                         <div class="mb-3 col-md-4">
                             <label class="form-label">{!! __('basicInfoLang.isn') !!}</label>
                             <input class="form-control form-control-lg" type="text" id ="number" name="number" placeholder="{!! __('basicInfoLang.enterisn') !!}" required/>
-                            <div id="numbererror">{!! __('basicInfoLang.isnrepeat') !!}</div>
-                            <div id="numbererror1">{!! __('basicInfoLang.isnlength') !!}</div>
+                            <div id="numbererror" style="display:none; color:red;">{!! __('basicInfoLang.isnrepeat') !!}</div>
+                            <div id="numbererror1" style="display:none; color:red;">{!! __('basicInfoLang.isnlength') !!}</div>
                         </div>
 
                         <div class="mb-3 col-md-4">
@@ -108,7 +108,7 @@
                         <div class="mb-3 col-md-4">
                             <label class="form-label">{!! __('basicInfoLang.safe') !!}</label>
                             <input class="form-control form-control-lgs" type="number" id ="safe" name="safe" placeholder="{!! __('basicInfoLang.entersafe') !!}"/>
-                            <div id="safeerror">{!! __('basicInfoLang.safeerror') !!}</div>
+                            <div id="safeerror" style="display:none; color:red;">{!! __('basicInfoLang.safeerror') !!}</div>
                         </div>
                     </div>
                     <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.add') !!}">

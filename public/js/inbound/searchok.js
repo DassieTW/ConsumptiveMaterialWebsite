@@ -10,3 +10,5 @@ window.addEventListener("pageshow", () => { // clear the input if user clike bac
 $('.innumber').on('change', function() {
     $('.innumber').not(this).prop('checked', false);
 });
+
+

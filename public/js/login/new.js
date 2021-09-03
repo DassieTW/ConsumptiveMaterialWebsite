@@ -1,7 +1,3 @@
-document.getElementById("message").style.display = "none";
-document.getElementById("message").style.color = "red";
-document.getElementById("message1").style.display = "none";
-document.getElementById("message1").style.color = "red";
 
 $.ajaxSetup({
     headers: {
@@ -10,7 +6,13 @@ $.ajaxSetup({
 });
 
 $('#new_people').on('submit', function (e) {
+
     e.preventDefault();
+
+    // clean up previous input results
+    $('.is-invalid').removeClass('is-invalid');
+    $(".invalid-feedback").remove();
+
       var number = $("#number").val();
       var name = $("#name").val();
       var department = $("#department").val();
@@ -33,11 +35,13 @@ $('#new_people').on('submit', function (e) {
             document.getElementById("message").style.display = "block";
             document.getElementById('number').style.borderColor = "red";
             document.getElementById('number').value='';
+            document.getElementById("message1").style.display = "none";
           }
           else if(myObj.boolean === false && myObj.passbool === true){
             document.getElementById("message1").style.display = "block";
             document.getElementById('number').style.borderColor = "red";
             document.getElementById('number').value='';
+            document.getElementById("message").style.display = "none";
           }
        },
        error : function(jqXHR,textStatus,errorThrown){

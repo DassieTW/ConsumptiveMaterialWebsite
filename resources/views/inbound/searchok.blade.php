@@ -19,9 +19,8 @@
                 <h3>{!! __('inboundpageLang.search') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
-                        <form action="{{ route('inbound.delete') }}" method="POST">
+                <div class="table-responsive">
+                        <form action="{{ route('inbound.delete') }}" method="POST" id = "test">
                             @csrf
                             <input type = "hidden" id = "title" name = "title" value = "入庫查詢">
                         <table class="table" id = "inboundsearch">
@@ -34,7 +33,7 @@
                                 <th><input type = "hidden" id = "title4" name = "title4" value = "入庫人員">{!! __('inboundpageLang.inpeople') !!}</th>
                                 <th><input type = "hidden" id = "title5" name = "title5" value = "客戶別">{!! __('inboundpageLang.client') !!}</th>
                                 <th><input type = "hidden" id = "title6" name = "title6" value = "入庫原因">{!! __('inboundpageLang.inreason') !!}</th>
-                                <th><input type = "hidden" id = "title7" name = "title7" value = "入庫時間">{!! __('inboundpageLang.intime') !!}</th>
+                                <th><input type = "hidden" id = "title7" name = "title7" value = "入庫時間">{!! __('inboundpageLang.inboundtime') !!}</th>
                                 <th><input type = "hidden" id = "title8" name = "title8" value = "備註">{!! __('inboundpageLang.mark') !!}</th>
                                 <input type = "hidden" id = "time" name = "time" value = "9">
                             </tr>
@@ -56,12 +55,11 @@
                                 @endforeach
 
                             </table>
+                        </div>
+                        <br>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.delete') !!}">
                             <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.download') !!}">
                         </form>
-
-                    </div>
-                </div>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.search')}}'">{!! __('inboundpageLang.return') !!}</button>
             </div>
         </div>

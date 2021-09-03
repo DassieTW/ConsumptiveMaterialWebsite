@@ -12,18 +12,16 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
     'username' => '帳號',
     'password' => '密碼',
     'username_placeholder' => '請輸入帳號',
     'password_placeholder' => '請輸入密碼',
-    'home' => '主頁',
     'welcome' => '歡迎',
     'welcome_msg' => '請登入帳戶以繼續使用功能',
     'login_btn' => '登入',
     'settings' => '設定',
     'home' => '首頁',
-    'register' => '用戶註冊',
+    'adduser' => '新增用戶',
     'surepassword' => '確認密碼',
     'enterpassword' => '請再次輸入密碼',
     'name' => '姓名',
@@ -59,12 +57,8 @@ return [
     'againlogin' => '請重新登入',
     'pinf' => '人員信息',
     'user' => '用戶',
-    'repeat' => '資料已存放在資料庫內，請檢查。',
     'upload1' => '上傳',
-    'total' => '共 ',
-    'record' => ' 筆',
+    'total' => '共',
+    'record' => '筆',
     'usernamerepeat' => '帳號重複，請重新輸入。',
-
-
-
 ];

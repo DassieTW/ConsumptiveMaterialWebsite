@@ -24,7 +24,7 @@
                             @csrf
                             <table class="table" id = "test">
                                 <tr>
-                                    <th>{!! __('loginPageLang.delete') !!}</th>
+                                    <th></th>
                                     <th>{!! __('loginPageLang.jobnumber') !!}</th>
                                     <th>{!! __('loginPageLang.name') !!}</th>
                                     <th>{!! __('loginPageLang.dep') !!}</th>

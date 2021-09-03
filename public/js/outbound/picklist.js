@@ -1,6 +1,4 @@
-document.getElementById("reasonerror").style.display = "none";
-document.getElementById("nostock").style.display = "none";
-document.getElementById("lessstock").style.display = "none";
+
 
 
 //show select 領料單號
@@ -34,10 +32,19 @@ $('#picklist').on('submit', function (e) {
       pick = pick.split(' ');
       var pickpeople = pick[0];
       var position = $("#position"+list).val();
-      position = position.split(' ');
-      position = position[0];
-      position = position.split('儲位:');
-      position = position[1];
+      if(position != null)
+      {
+        position = position.split(' ');
+        position = position[0];
+        position = position.split('儲位:');
+        position = position[1];
+      }
+      else
+      {
+        document.getElementById("position"+list).style.borderColor = "red";
+        alert(Lang.get('outboundpageLang.enterloc'));
+        return false;
+      }
 
     $.ajax({
        type:'POST',
@@ -49,7 +56,7 @@ $('#picklist').on('submit', function (e) {
           var myObj = JSON.parse(data);
           console.log(myObj);
           if(myObj.boolean === true && myObj.passbool === true && myObj.passstock === true ){
-            var mess = Lang.get('outboundpageLang.outpickok')+list;
+            var mess = Lang.get('outboundpageLang.outpickok')+' : '+list;
             alert(mess);
             //alert("出庫完成，領料單號: " + list);
             window.location.href = "/outbound";
@@ -60,23 +67,23 @@ $('#picklist').on('submit', function (e) {
 
             document.getElementById("reasonerror").style.display = "block";
             document.getElementById("reason"+list).style.borderColor = "red";
+            document.getElementById("lessstock").style.display = "none";
+            document.getElementById("amount"+list).style.borderColor = "";
+            document.getElementById("position").style.borderColor = "";
           }
-          //儲位沒有庫存
-          else if(myObj.boolean === true && myObj.passbool === true && myObj.passstock === false){
 
-            document.getElementById("nostock").style.display = "block";
-            document.getElementById("position").style.borderColor = "red";
-            $("#nostock #number").html(Lang.get('outboundpageLang.isn') +' : '+ myObj.number);
-            $("#nostock #position").html(Lang.get('outboundpageLang.loc') +' : '  + myObj.position);
-          }
           //儲位庫存小於實際領用數量
           else if(myObj.boolean === false && myObj.passbool === true && myObj.passstock === true){
 
             document.getElementById("lessstock").style.display = "block";
             document.getElementById("position").style.borderColor = "red";
-            $("#lessstock #position").html(Lang.get('outboundpageLang.nowloc') +' : ' + myObj.position + Lang.get('outboundpageLang.stockless'));
+            $("#lessstock #position").html(Lang.get('outboundpageLang.nowloc') +' : ' + myObj.position + '<br>' +Lang.get('outboundpageLang.stockless'));
             $("#lessstock #nowstock").html(Lang.get('outboundpageLang.nowstock') +' : '+ myObj.nowstock);
+            $("#lessstock #amount").html(Lang.get('outboundpageLang.realpickamount') +' : '+ amount);
             document.getElementById("amount"+list).style.borderColor = "red";
+            document.getElementById("reasonerror").style.display = "none";
+            document.getElementById("reason"+list).style.borderColor = "";
+
           }
           else if(myObj.boolean === false && myObj.passbool === false && myObj.passstock === false){
 
