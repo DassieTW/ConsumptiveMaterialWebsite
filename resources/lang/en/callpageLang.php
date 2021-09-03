@@ -16,7 +16,7 @@ return [
     'day' =>'Sluggish Day Alert',
     'callsys' =>'Alarm System',
     'client' =>'Client',
-    'isn' =>'Part Num.',
+    'isn' =>'Part No.',
     'pName' =>'MATL.',
     'format' =>'Specification',
     'stock' =>'Stock',

@@ -17,6 +17,15 @@ use App\Policies\InboundPolicy;
 use App\Models\O庫;
 use App\Policies\OboundPolicy;
 
+use App\Models\Outbound;
+use App\Policies\OutboundPolicy;
+
+use App\Models\Inventory;
+use App\Policies\AlarmPolicy;
+
+use App\Models\Checking_inventory;
+use App\Policies\CheckInventPolicy;
+
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 class AuthServiceProvider extends ServiceProvider
@@ -33,6 +42,9 @@ class AuthServiceProvider extends ServiceProvider
         ConsumptiveMaterial::class => BasicInfoPolicy::class,
         Inbound::class => InboundPolicy::class,
         O庫::class => OboundPolicy::class,
+        Outbound::class => OutboundPolicy::class,
+        Inventory::class => AlarmPolicy::class,
+        Checking_inventory::class => CheckInventPolicy::class,
     ];
 
     /**

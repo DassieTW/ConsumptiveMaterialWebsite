@@ -13,8 +13,8 @@ return [
     |
     */
     'barcode_gening' => 'Barcode Generate',
-    'isn_gen_barcode' => 'Generate Part Num. Barcode',
-    'isn' => 'Part Num.',
+    'isn_gen_barcode' => 'Generate Part No. Barcode',
+    'isn' => 'Part No.',
     'loc_gen_barcode' => 'Generate Loc. Barcode',
     'loc' => 'Location',
     'pName' => 'Description',

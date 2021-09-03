@@ -181,7 +181,7 @@
                                         </li>
                                         @endcan
 
-
+                                        @can('viewOutbound', App\Models\Outbound::class )
                                         <li class="sidebar-item {{ isActiveRoute(['outbound/' , 'outbound.index']) }}">
                                             <a data-bs-target="#outbound" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
@@ -196,48 +196,52 @@
                                             </a>
                                             <ul id="outbound" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
-
+                                                @can('outboundPickup', App\Models\Outbound::class )
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['outbound.pick', 'outbound/pickaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.pick')}}">
                                                         {!! __('outboundpageLang.pick') !!}
                                                     </a>
                                                 </li>
-
+                                                @endcan
+                                                @can('outboundPickupSerialNum', App\Models\Outbound::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound/picklist']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.picklistpage')}}">
                                                         {!! __('outboundpageLang.picklist') !!}
                                                     </a>
                                                 </li>
-
+                                                @endcan
+                                                @can('outboundPickupRecord', App\Models\Outbound::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound/pickrecord']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.pickrecord')}}">
                                                         {!! __('outboundpageLang.pickrecord') !!}
                                                     </a>
                                                 </li>
-
+                                                @endcan
+                                                @can('outboundReturn', App\Models\Outbound::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound.back']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.back')}}">
                                                         {!! __('outboundpageLang.back') !!}
                                                     </a>
                                                 </li>
-
+                                                @endcan
+                                                @can('outboundReturnSerialNum', App\Models\Outbound::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound/backlist']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.backlistpage')}}">
                                                         {!! __('outboundpageLang.backlist') !!}
                                                     </a>
                                                 </li>
-
+                                                @endcan
+                                                @can('outboundReturnRecord', App\Models\Outbound::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['outbound/backrecord']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.backrecord')}}">
                                                         {!! __('outboundpageLang.backrecord') !!}
                                                     </a>
                                                 </li>
-
-
+                                                @endcan
                                             </ul>
                                         </li>
-
+                                        @endcan
 
                                         @can('viewMonthlyPR', App\Models\月請購_單耗::class )
                                         <li class="sidebar-item {{ isActiveRoute(['month/',  'month.index']) }}">
@@ -419,6 +423,7 @@
                                         </li>
                                         @endcan
 
+                                        @can('viewAlarm', App\Models\Inventory::class )
                                         <li class="sidebar-item {{ isActiveRoute(['call/']) }}">
                                             <a href="#call" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -447,7 +452,8 @@
 
                                             </ul>
                                         </li>
-
+                                        @endcan
+                                        @can('viewCheckInvent', App\Models\Checking_inventory::class )
                                         <li class="sidebar-item {{ isActiveRoute(['checking/']) }}">
                                             <a class="sidebar-link" href="{{route('checking.index')}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -464,7 +470,7 @@
                                                 {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
                                             </a>
                                         </li>
-
+                                        @endcan
                                         <li class="sidebar-item {{ isActiveRoute(['member/', 'member.index']) }}">
                                             <a href="#auth" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
