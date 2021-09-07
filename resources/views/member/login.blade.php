@@ -113,12 +113,12 @@
                                                 <option value="" selected>{{ __('loginPageLang.site_placeholder')}}</option>
                                                 <option value="testing">TEST</option>
                                                 <option value="default">Default</option>
-                                                <option value="BB1">BB1</option>
+                                                {{-- <option value="BB1">BB1</option>
                                                 <option value="BB4">BB4</option>
                                                 <option value="M1">M1</option>
                                                 <option value="M2">M2</option>
                                                 <option value="M3">M3</option>
-                                                <option value="SMT">SMT</option>
+                                                <option value="SMT">SMT</option> --}}
                                             </select>
                                         </div>
                                         <div class="mb-3">

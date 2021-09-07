@@ -223,6 +223,7 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
                             </tbody>
                         </table>
 
+                        <input type="hidden" name="sID" id="sID" value="{!! \Session::getId() !!}">
                         <div class="row justify-content-center align-items-center mt-3">
                             <button class="btn btn-primary col-auto" id="printBtn" type="submit">{!! __('barcodeGenerator.print')
                                 !!}</button>
