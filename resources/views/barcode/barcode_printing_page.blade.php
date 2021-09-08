@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Sheets of Paper</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/sheets-of-paper-a4.css') }}">
     <style>
@@ -29,7 +31,7 @@
 </head>
 
 <body class="document">
-    @if( count( \Session::get('isnSepCount')) > 0 )
+    @if( \Session::has('isnSepCount') && \Session::get('isnSepCount') !== "" && count( \Session::get('isnSepCount')) > 0 )
     <div class="page" contenteditable="true">
         @php
             $rowMax = 0;
@@ -67,7 +69,7 @@
         </table>
     </div>
     @endif
-    @if( count( \Session::get('locSepCount')) > 0 )
+    @if( \Session::has('locSepCount') && \Session::get('locSepCount') !== "" && count( \Session::get('locSepCount')) > 0 )
     <div class="page" contenteditable="true">
         @php
             $rowMax2 = 0;
@@ -110,14 +112,19 @@
     <script src="{{ asset('/js/app.js') }}"></script>
     <script src="{{ asset('/admin/js/app.js') }}"></script>
     <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
+    <script src="{{ asset('/messages.js') }}"></script>
     <script src="{{ asset('js/popupNotice.js') }}"></script>
+    <script src="{{ asset('/js/barcode/barcode_pdf_page.js') }}"></script>
     <script type="text/javascript">
         window.print();
     </script>
     <script>
-        $( window ).on( "unload", function() {
-            console.log('hi') ; //test
-        });
+        if (window.history.replaceState) {
+            // java script to prvent "confirm form resubmission" dialog
+            // 避免重新整理這個頁面時跳出要你重新提交表單的對話框
+            // (避免重新提交表單)
+            window.history.replaceState(null, null, window.location.href);
+        } // if
     </script>
 </body>
 

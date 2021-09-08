@@ -388,8 +388,7 @@ function CallPhpSpreadSheetToGetData(fileName) {
 
 $(document).ready(function () {
     (function () {
-        var imgEle = document.getElementById("img-div"); // check if temp isn pic exist
-        if (imgEle) {
+        if (sessionStorage.hasOwnProperty('isnCount')) {
             notyf.success({
                 message: Lang.get('barcodeGenerator.temp_save_success'),
                 duration: 5000,   //miliseconds, use 0 for infinite duration
@@ -408,28 +407,30 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             $.ajax({
                 type: 'POST',
-                url: "/barcode/seenDelete",
+                url: "/barcode/seenDelete",  // refer to the route name in web.php
                 data: { DelorNot: DelorNot, isISN: isISN },
-                success: function (reObj) {
-                    if (reObj.status == true) {
-                        // console.log(reObj.data); // test
-                    } // if
-                    else {
-                        console.log(reObj.status);
-                    } // else 
+                dataType: 'json',              // let's set the expected response format
+                beforeSend: function () {
+                    $('body').loadingModal({
+                        text: 'Loading...',
+                        animation: 'circle'
+                    });
                 },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.warn(jqXHR.responseText);
-                    alert(errorThrown);
+                complete: function () {
+                    $('body').loadingModal('hide');
+                },
+                success: function (data) {
+                    console.log(data.message);
+                },
+                error: function (err) {
+                    console.warn(err);
                 } // error
             });
         } // if
 
-        var imgEle2 = document.getElementById("img-div2"); // check if temp loc pic exist
-        if (imgEle2) {
+        if (sessionStorage.hasOwnProperty('locCount')) {
             notyf.success({
                 message: Lang.get('barcodeGenerator.temp_save_success'),
                 duration: 5000,   //miliseconds, use 0 for infinite duration
@@ -452,17 +453,21 @@ $(document).ready(function () {
                 type: 'POST',
                 url: "/barcode/seenDelete",  // refer to the route name in web.php
                 data: { DelorNot: DelorNot, isISN: isISN },
-                success: function (reObj) {
-                    if (reObj.status == true) {
-                        console.log(reObj.data);
-                    } // if
-                    else {
-                        console.log(reObj.status);
-                    } // else 
+                dataType: 'json',              // let's set the expected response format
+                beforeSend: function () {
+                    $('body').loadingModal({
+                        text: 'Loading...',
+                        animation: 'circle'
+                    });
                 },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.warn(jqXHR.responseText);
-                    alert(errorThrown);
+                complete: function () {
+                    $('body').loadingModal('hide');
+                },
+                success: function (data) {
+                    console.log(data.message);
+                },
+                error: function (err) {
+                    console.warn(err);
                 } // error
             });
         } // if
@@ -752,6 +757,10 @@ $(document).ready(function () {
                     $('#batchUp').addClass("is-invalid");
                     $('#batchUp').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('validation.required') + '</strong></span>'));
                 } // else if
+                else if (err.status == 413) { // if there's no file selected
+                    $('#batchUp').addClass("is-invalid");
+                    $('#batchUp').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('validation.max.file') + '</strong></span>'));
+                } // else if
                 else if (err.status == 420 || err.status == 500) {
                     console.log(err.responseJSON.message); // test
                     if (err.responseJSON.message === 'Invalid parameters.') {
@@ -800,14 +809,19 @@ $(document).ready(function () {
 
     $('#printBtn').on('click', function (e) {
         e.preventDefault();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         var sID = $("#sID").val();
-        var sendingISNArray = [];
-        var sendingISNNameArray = [];
-        var sendingISNSepCount = [];
+        var sendingISNArray = null;
+        var sendingISNNameArray = null;
+        var sendingISNSepCount = null;
 
-        var sendingLocArray = [];
-        var sendingLocSepCount = [];
+        var sendingLocArray = null;
+        var sendingLocSepCount = null;
 
         if (sessionStorage.hasOwnProperty('isnCount')) {
             sendingISNArray = JSON.parse(sessionStorage.getItem('isnArray'));
@@ -824,41 +838,56 @@ $(document).ready(function () {
             sendingLocSepCount = JSON.parse(sessionStorage.getItem('locSepCount'));
         } // if
 
-        $.ajax({
-            url: "/barcode/printBarcode",
-            type: 'post',
-            cache: false,
-            data: {
-                isnArray: sendingISNArray, isnNameArray: sendingISNNameArray, isnSepCount: sendingISNSepCount,
-                locArray: sendingLocArray, locSepCount: sendingLocSepCount, sID: sID
-            },
-            dataType: 'json', // let's set the expected response format
-            beforeSend: function () {
-                $('body').loadingModal({
-                    text: 'Loading...',
-                    animation: 'circle'
-                });
-            },
-            complete: function () {
-                $('body').loadingModal('hide');
-            },
-            success: function (response) {
-                window.location.href = '/barcode/printingPage';
-            },
-            error: function (err) {
-                console.log(err.responseJSON.message); // test
-                notyf.error({
-                    message: Lang.get('barcodeGenerator.temp_save_success'),
-                    duration: 5000,   //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom"
-                    }
-                });
-            } // if error
-        }); // end of ajax
+        if (sessionStorage.hasOwnProperty('locCount') || sessionStorage.hasOwnProperty('isnCount')) {
+            $.ajax({
+                url: "/barcode/printBarcode",
+                type: 'post',
+                cache: false,
+                data: {
+                    isnArray: sendingISNArray, isnNameArray: sendingISNNameArray, isnSepCount: sendingISNSepCount,
+                    locArray: sendingLocArray, locSepCount: sendingLocSepCount, sID: sID
+                },
+                dataType: 'json', // let's set the expected response format
+                beforeSend: function () {
+                    $('body').loadingModal({
+                        text: 'Loading...',
+                        animation: 'circle'
+                    });
+                },
+                complete: function () {
+                    $('body').loadingModal('hide');
+                },
+                success: function (response) {
+                    window.location.href = '/barcode/printingPage';
+                },
+                error: function (err) {
+                    console.log(err.responseJSON.message); // test
+                    notyf.error({
+                        message: Lang.get('barcodeGenerator.temp_save_error') + Lang.get('barcodeGenerator.print'),
+                        duration: 5000,   //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom"
+                        }
+                    });
+                } // if error
+            }); // end of ajax
+        } // if
+        else {
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('barcodeGenerator.nothing_to_print'),
+                duration: 5000,   //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
+        } // else
 
         sessionStorage.clear();
         localStorage.clear();

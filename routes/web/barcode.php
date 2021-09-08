@@ -34,3 +34,6 @@ Route::post('/printBarcode', [BarcodeDisplayController::class, 'printBarcode']);
 Route::get('/printingPage', function () {
     return view('barcode.barcode_printing_page');
 });
+
+// 清除所有暫存條碼（列印後）
+Route::post('/cleanupAllBarcodes', [BarcodeDisplayController::class, 'cleanupAllBarcodes']);

@@ -29,4 +29,6 @@ return [
     'upload_save_success' => '上傳成功',
     'temp_save_success' => '暫存成功',
     'temp_save_error' => '錯誤 :',
+    'nothing_to_print' => '沒有條碼',
+    'leaving_page_alert' => '離開頁面將會清所有暫存資料，確認離開？',
 ];

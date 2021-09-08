@@ -29,4 +29,6 @@ return [
     'upload_save_success' => 'Successfully Uploaded',
     'temp_save_success' => 'Successfully Saved',
     'temp_save_error' => 'Error :',
+    'nothing_to_print' => 'Nothing to print',
+    'leaving_page_alert' => 'Leaving the page will clean up all inputs, are you sure?',
 ];

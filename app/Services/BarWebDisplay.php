@@ -55,7 +55,7 @@ class BarWebDisplay
         $locArray = $request->session()->get('locArray');
         $locSepCount = $request->session()->get('locSepCount');
 
-        for ($a = 0; $a < count($isnArray); $a++) {
+        for ($a = 0; $isnArray !== "" && $a < count($isnArray); $a++) {
             // set Barcode39 object
             $barcodeCom = $isnArray[$a];
             $productName = $isnNameArray[$a];
@@ -67,7 +67,7 @@ class BarWebDisplay
             $bc->draw($request, $fName);
         } // for
 
-        for ($a = 0; $a < count($locArray); $a++) {
+        for ($a = 0; $locArray !== "" && $a < count($locArray); $a++) {
             // set Barcode39 object
             $barcodeCom2 = $locArray[$a];
             $fName = $_POST['sID'] . '--loc--' . $a;

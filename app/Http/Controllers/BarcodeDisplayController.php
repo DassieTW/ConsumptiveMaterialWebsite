@@ -38,10 +38,7 @@ class BarcodeDisplayController extends Controller
 
 
         // Sending json response to client
-        return response()->json([
-            "status" => true,
-            "data" => 'done'
-        ]);
+        return \Response::json(['message' => 'temp img delete successful !']); // Status code here
     }
     
     /**
@@ -229,6 +226,7 @@ class BarcodeDisplayController extends Controller
 
     public function printBarcode(Request $request)
     {
+        // dd($_POST['isnArray']); // test
         $request->session()->put('isnArray', $_POST['isnArray']);
         $request->session()->put('isnNameArray', $_POST['isnNameArray']);
         $request->session()->put('isnSepCount', $_POST['isnSepCount']);
@@ -239,5 +237,32 @@ class BarcodeDisplayController extends Controller
         $this->service->drawABunchofBarcodes($request);
         return \Response::json(['message' => 'loc barcode generated successful !']); // Status code here
     } // printBarcode
+
+    public function cleanupAllBarcodes(Request $request)
+    {
+        // We are collecting all data submitting via Ajax
+
+        if (\Session::has('isnSepCount') && \Session::get('isnSepCount') !== "" && count( \Session::get('isnSepCount')) > 0) {
+            for ( $a = 0 ; $a < count( \Session::get('isnSepCount')) ; $a++) {
+                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--isn--' . $a . '.png'));
+            } // for
+
+            $request->session()->forget('isnSepCount');
+            $request->session()->forget('isnArray');
+            $request->session()->forget('isnNameArray');
+        } // if
+        else if (\Session::has('locSepCount') && \Session::get('locSepCount') !== "" && count( \Session::get('locSepCount')) > 0) {
+            for ( $a = 0 ; $a < count( \Session::get('locSepCount')) ; $a++) {
+                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--loc--' . $a . '-2.png'));
+            } // for
+
+            $request->session()->forget('locSepCount');
+            $request->session()->forget('locArray');
+        } // if else if
+
+
+        // Sending json response to client
+        return \Response::json(['message' => 'all temp img delete successful !']); // Status code here
+    } // cleanupAllBarcodes
 
 } // end of class
