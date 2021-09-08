@@ -164,4 +164,4 @@ Route::get('/picklistsubmitok', [OboundController::class, 'picklistsubmitok'])->
 Route::get('/backlistsubmitok', [OboundController::class, 'backlistsubmitok'])->middleware('can:oboundReturnSerialNum,App\Models\O庫');
 
 //O庫-資料下載
-Route::post('/download', [OboundController::class, 'download'])->name('obound.download')->middleware('can:oboundNewMat,App\Models\O庫');
+Route::post('/download', [OboundController::class, 'download'])->name('obound.download')->middleware('can:viewObound,App\Models\O庫');

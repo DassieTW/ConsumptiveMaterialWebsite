@@ -33,6 +33,6 @@ return [
     'barcode_gen' => 'Barcodes',
     'barcode_generator' => 'Barcode Generator',
     'locBarcode' => 'Find Loc. Barcode',
-    'isnBarcode' => 'Find Part Num. Barcode',
+    'isnBarcode' => 'Find Part No. Barcode',
     'nowuser' => 'Now login user is:'
 ];

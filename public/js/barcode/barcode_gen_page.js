@@ -67,10 +67,10 @@ function appenSVg() {
     $('.printNum').on('input', function (e) {
         //restrict input to numbers
         this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
-        if( this.value === "" ) {
-            this.value = 0 ;
+        if (this.value === "") {
+            this.value = 0;
         } // if
-        
+
         var isnArray = JSON.parse(sessionStorage.getItem('isnArray'));
         var isnName = JSON.parse(sessionStorage.getItem('isnName'));
 
@@ -101,8 +101,8 @@ function appenSVg() {
     $('.printNum2').on('input', function (e) {
         //restrict input to numbers
         this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
-        if( this.value === "" ) {
-            this.value = 0 ;
+        if (this.value === "") {
+            this.value = 0;
         } // if
         var locArray = JSON.parse(sessionStorage.getItem('locArray'));
 
@@ -752,7 +752,7 @@ $(document).ready(function () {
                     $('#batchUp').addClass("is-invalid");
                     $('#batchUp').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('validation.required') + '</strong></span>'));
                 } // else if
-                else if (err.status == 420) {
+                else if (err.status == 420 || err.status == 500) {
                     console.log(err.responseJSON.message); // test
                     if (err.responseJSON.message === 'Invalid parameters.') {
                         $('#batchUp').addClass("is-invalid");
@@ -800,6 +800,66 @@ $(document).ready(function () {
 
     $('#printBtn').on('click', function (e) {
         e.preventDefault();
+
+        var sID = $("#sID").val();
+        var sendingISNArray = [];
+        var sendingISNNameArray = [];
+        var sendingISNSepCount = [];
+
+        var sendingLocArray = [];
+        var sendingLocSepCount = [];
+
+        if (sessionStorage.hasOwnProperty('isnCount')) {
+            sendingISNArray = JSON.parse(sessionStorage.getItem('isnArray'));
+            sendingISNNameArray = JSON.parse(sessionStorage.getItem('isnName'));
+            var isnCount = JSON.parse(sessionStorage.getItem('isnCount'));
+            sendingISNSepCount = JSON.parse(sessionStorage.getItem('isnSepCount'));
+
+            console.log(sendingISNNameArray); // test
+        } // if
+
+        if (sessionStorage.hasOwnProperty('locCount')) {
+            sendingLocArray = JSON.parse(sessionStorage.getItem('locArray'));
+            var locCount = JSON.parse(sessionStorage.getItem('locCount'));
+            sendingLocSepCount = JSON.parse(sessionStorage.getItem('locSepCount'));
+        } // if
+
+        $.ajax({
+            url: "/barcode/printBarcode",
+            type: 'post',
+            cache: false,
+            data: {
+                isnArray: sendingISNArray, isnNameArray: sendingISNNameArray, isnSepCount: sendingISNSepCount,
+                locArray: sendingLocArray, locSepCount: sendingLocSepCount, sID: sID
+            },
+            dataType: 'json', // let's set the expected response format
+            beforeSend: function () {
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+            },
+            success: function (response) {
+                window.location.href = '/barcode/printingPage';
+            },
+            error: function (err) {
+                console.log(err.responseJSON.message); // test
+                notyf.error({
+                    message: Lang.get('barcodeGenerator.temp_save_success'),
+                    duration: 5000,   //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
+            } // if error
+        }); // end of ajax
+
         sessionStorage.clear();
         localStorage.clear();
         UpdateTempField();
