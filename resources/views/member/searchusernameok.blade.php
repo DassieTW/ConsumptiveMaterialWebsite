@@ -18,10 +18,10 @@
                 <h3>{!! __('templateWords.UserInfo') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
                         <form action="{{ route('member.usernamechangeordel') }}" method="POST">
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th>{!! __('loginPageLang.delete') !!}</th>
@@ -44,10 +44,11 @@
                                 @endforeach
 
                             </table>
+                            </div>
+                            <br>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('loginPageLang.delete') !!}">
                         </form>
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('member.username')}}'">{!! __('loginPageLang.return') !!}</button>
             </div>
         </div>

@@ -22,7 +22,7 @@
             <div class="card-body">
                 <form id = "backadd">
                     @csrf
-                    <div class="row">
+                    <div class="table-responsive">
                         <table class="table" id = "test">
                             <tr id = "require">
                                 <th>{!! __('oboundpageLang.isn') !!}</th>
@@ -53,6 +53,7 @@
                         </table>
 
                     </div>
+                    <br>
                     <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.submit') !!}">
                 </form>
                 <br>

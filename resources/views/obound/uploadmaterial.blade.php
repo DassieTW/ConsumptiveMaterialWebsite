@@ -21,8 +21,7 @@
             </div>
 
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
                         <form method="post" enctype="multipart/form-data" action = "{{ route('obound.uploadmaterial') }}">
                             @csrf
                             <div class="col-6 ">
@@ -40,6 +39,7 @@
 
                         <form  action = "{{ route('obound.insertuploadmaterial') }}"method="POST">
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th><input type = "hidden" id = "title1" name = "title1" value = "料號">{!! __('oboundpageLang.isn') !!}</th>
@@ -58,10 +58,10 @@
                                 @endforeach
 
                             </table>
+                            </div>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.addtodatabase') !!}">
                         </form>
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.new')}}'">{!! __('oboundpageLang.return') !!}</button>
             </div>
         </div>

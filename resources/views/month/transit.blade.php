@@ -44,10 +44,9 @@
                                     <label class="form-label">{!! __('monthlyPRpageLang.senddep') !!}</label>
                                     <select class="form-control form-control-lg" id = "send" name="send">
                                     <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.entersenddep') !!}</option>
-                                    <option>IE備品室</option>
-                                    <option>ME備品室</option>
-                                    <option>設備備品室</option>
-                                    <option>備品室</option>
+                                    @foreach($send as $send)
+                                    <option>{{  $send->發料部門 }}</option>
+                                    @endforeach
                                     </select>
 
                                 </div>

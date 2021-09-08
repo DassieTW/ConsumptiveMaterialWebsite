@@ -18,10 +18,10 @@
                 <h3>{!! __('monthlyPRpageLang.isnConsumeUpdate') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
                         <form action="{{ route('month.consumechangeordelete') }}" method="POST">
                             @csrf
+                            <div class="table-responsisve">
                         <table class="table">
                             <tr>
                                 <th>{!! __('monthlyPRpageLang.delete') !!}</th>
@@ -46,18 +46,17 @@
                                     <td><input type = "hidden" id = "number{{$loop->index}}" name = "number{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
                                     <td>{{$name}}</td>
                                     <td>{{$format}}</td>
-                                    <td><input type = "number" id = "amount{{$loop->index}}" name = "amount{{$loop->index}}" value = "{{$data->單耗}}" step="0.01"></td>
+                                    <td><input style = "width: 80px;" type = "number" id = "amount{{$loop->index}}" name = "amount{{$loop->index}}" value = "{{$data->單耗}}" step="0.01"></td>
                                 </tr>
                                 <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                 @endforeach
 
                             </table>
+                        </div>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.delete') !!}">
                             <input type = "submit" id = "change" name = "change" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.change') !!}">
                         </form>
-
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.consume')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

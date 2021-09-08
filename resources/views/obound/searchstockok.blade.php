@@ -20,8 +20,7 @@
                 <h3>{!! __('oboundpageLang.searchstock') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+                <div class="table-responsive">
                         <table class="table" id = "inboundsearch">
                             <tr id = "require">
 
@@ -47,8 +46,8 @@
                                 @endforeach
 
                                 </table>
-                        </div>
-                    </div>
+                            </div>
+                        <br>
                     <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.searchstock')}}'">{!! __('oboundpageLang.return') !!}</button>
                 </div>
             </div>

@@ -30,7 +30,7 @@
                                     @foreach($client as $client)
                                     <option>{{  $client->客戶 }}</option>
                                     @endforeach
-                                    <option>所有客戶</option>
+                                    <option>{!! __('monthlyPRpageLang.allclient') !!}</option>
                                     </select>
                                     <label class="form-label">{!! __('monthlyPRpageLang.money') !!}</label>
                                     <select class="form-control form-control-lg" id = "money" name="money" required>
@@ -45,10 +45,9 @@
                                     <label class="form-label">{!! __('monthlyPRpageLang.senddep') !!}</label>
                                     <select class="form-control form-control-lg" id = "send" name="send">
                                     <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.entersenddep') !!}</option>
-                                    <option>IE備品室</option>
-                                    <option>ME備品室</option>
-                                    <option>設備備品室</option>
-                                    <option>備品室</option>
+                                    @foreach($send as $send)
+                                    <option>{{  $send->發料部門 }}</option>
+                                    @endforeach
                                     </select>
 
 

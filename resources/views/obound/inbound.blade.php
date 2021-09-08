@@ -43,7 +43,7 @@
                             <br>
                             <label class="form-label">{!! __('oboundpageLang.oisn') !!}</label>
                             <input class="form-control form-control-lg " type="text" id ="number" name="number" required>
-                            <div id = "numbererror">{!! __('oboundpageLang.noisn') !!}</div>
+                            <div id = "numbererror" style="display:none; color:red;">{!! __('oboundpageLang.noisn') !!}</div>
                         </div>
                     </div>
                     <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.add') !!}">

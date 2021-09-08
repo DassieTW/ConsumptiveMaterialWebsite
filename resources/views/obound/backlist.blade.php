@@ -23,8 +23,6 @@
             <div class="card-body">
                 <form id = "backlist">
                     @csrf
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
 
                             <select class=" form-control form-control-lg " id = "list" name="list"  required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('oboundpageLang.searchbacklist') !!}</option>
@@ -32,6 +30,7 @@
                             <option>{{  $number->退料單號 }}</option>
                             @endforeach
                             </select>
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr id = "require">
                                     <th>{!! __('oboundpageLang.client') !!}</th>
@@ -69,7 +68,9 @@
                                     @endforeach
 
                             </table>
-                            <div id = "reasonerror"><h3 style="color: red">{!! __('oboundpageLang.enterdiffreason') !!}</h3></div>
+                            </div>
+                            <br>
+                            <div id = "reasonerror" style="display:none; color:red;"><h3 style="color: red">{!! __('oboundpageLang.enterdiffreason') !!}</h3></div>
 
                             <label class="form-label">{!! __('oboundpageLang.receivepeople') !!}</label>
                             <select class="form-control form-control-lg" id = "pickpeople" name="pickpeople" required width="250" style="width: 250px">
@@ -100,13 +101,11 @@
                             <label class="form-label">{!! __('oboundpageLang.status') !!}</label>
                             <select class="form-control form-control-lg" id = "status" name="status" required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('oboundpageLang.enterstatus') !!}</option>
-                            <option>良品</option>
-                            <option>不良品</option>
+                            <option>{!! __('oboundpageLang.good') !!}</option>
+                            <option>{!! __('oboundpageLang.nogood') !!}</option>
                             </select>
 
-                            <br><br>
-                            </div>
-                        </div>
+                            <br>
                             <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.submit') !!}">
                             </form>
                         <br>

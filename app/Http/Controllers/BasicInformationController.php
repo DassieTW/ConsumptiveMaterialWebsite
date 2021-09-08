@@ -366,12 +366,26 @@ class BasicInformationController extends Controller
                     }
                     if($request->input('factorynew') !== null)
                     {
-                        DB::table('廠別')
-                        ->insert(['廠別' => $request->input('factorynew'),'created_at' => Carbon::now()]);
+                        $test = 廠別::onlyTrashed()
+                        ->where('廠別', $request->input('factorynew'))
+                        ->get();
+
+                        if(!$test->isEmpty())
+                        {
+                            DB::table('廠別')
+                            ->where('廠別', $request->input('factorynew'))
+                            ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                        }
+                        else
+                        {
+                            DB::table('廠別')
+                            ->insert(['廠別' => $request->input('factorynew'),'created_at' => Carbon::now()]);
+                        }
+
                     }
 
                     return view('basic.change')->with('choose' , 'factory')
-                    ->with(['factorys' => 廠別::cursor()->whereNull('deleted_at')]);
+                    ->with(['factorys' => 廠別::cursor()]);
 
                 }
                 //client
@@ -392,11 +406,27 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
+
                     if($request->input('clientnew') !== null)
                     {
-                        DB::table('客戶別')
-                        ->insert(['客戶' => $request->input('clientnew') , 'created_at' => Carbon::now()]);
+                        $test = 客戶別::onlyTrashed()
+                        ->where('客戶', $request->input('clientnew'))
+                        ->get();
+
+                        if(!$test->isEmpty())
+                        {
+                            DB::table('客戶別')
+                            ->where('客戶', $request->input('clientnew'))
+                            ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                        }
+                        else
+                        {
+                            DB::table('客戶別')
+                            ->insert(['客戶' => $request->input('clientnew'),'created_at' => Carbon::now()]);
+                        }
+
                     }
+
                     return view('basic.change')->with('choose' , 'client')
                     ->with(['clients' => 客戶別::cursor()]);
                 }
@@ -418,11 +448,22 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('machinenew') !== null)
+                    $test = 機種::onlyTrashed()
+                        ->where('機種', $request->input('machinenew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
+                    {
+                        DB::table('機種')
+                        ->where('機種', $request->input('machinenew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    else
                     {
                         DB::table('機種')
                         ->insert(['機種' => $request->input('machinenew'),'created_at' => Carbon::now()]);
                     }
+
                     return view('basic.change')->with('choose' , 'machine')
                     ->with(['machines' => 機種::cursor()]);
                 }
@@ -444,11 +485,23 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('productionnew') !== null)
+
+                    $test = 製程::onlyTrashed()
+                        ->where('製程', $request->input('productionnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
                     {
                         DB::table('製程')
-                        ->insert(['製程' => $request->input('productionnew') , 'created_at' => Carbon::now()]);
+                        ->where('製程', $request->input('productionnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
                     }
+                    else
+                    {
+                        DB::table('製程')
+                        ->insert(['製程' => $request->input('productionnew'),'created_at' => Carbon::now()]);
+                    }
+
                     return view('basic.change')->with('choose' , 'production')
                     ->with(['productions' => 製程::cursor()]);
                 }
@@ -470,10 +523,20 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('linenew') !== null)
+                    $test = 線別::onlyTrashed()
+                        ->where('線別', $request->input('linenew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
                     {
                         DB::table('線別')
-                        ->insert(['線別' => $request->input('linenew') , 'created_at' => Carbon::now()]);
+                        ->where('線別', $request->input('linenew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    else
+                    {
+                        DB::table('線別')
+                        ->insert(['線別' => $request->input('linenew'),'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'line')
                     ->with(['lines' => 線別::cursor()]);
@@ -496,10 +559,20 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('usenew') !== null)
+                    $test = 領用部門::onlyTrashed()
+                        ->where('領用部門', $request->input('usenew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
                     {
                         DB::table('領用部門')
-                        ->insert(['領用部門' => $request->input('usenew') , 'created_at' => Carbon::now()]);
+                        ->where('領用部門', $request->input('usenew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    else
+                    {
+                        DB::table('領用部門')
+                        ->insert(['領用部門' => $request->input('usenew'),'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'use')
                     ->with(['uses' => 領用部門::cursor()]);
@@ -522,10 +595,20 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('usereasonnew') !== null)
+                    $test = 領用原因::onlyTrashed()
+                        ->where('領用原因', $request->input('usereasonnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
                     {
                         DB::table('領用原因')
-                        ->insert(['領用原因' => $request->input('usereasonnew') ,'created_at' => Carbon::now()]);
+                        ->where('領用原因', $request->input('usereasonnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    else
+                    {
+                        DB::table('領用原因')
+                        ->insert(['領用原因' => $request->input('usereasonnew'),'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'usereason')
                     ->with(['usereasons' => 領用原因::cursor()]);
@@ -548,10 +631,20 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('inreasonnew') !== null)
+                    $test = 入庫原因::onlyTrashed()
+                        ->where('入庫原因', $request->input('inreasonnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
                     {
                         DB::table('入庫原因')
-                        ->insert(['入庫原因' => $request->input('inreasonnew') ,'created_at' => Carbon::now()]);
+                        ->where('入庫原因', $request->input('inreasonnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    else
+                    {
+                        DB::table('入庫原因')
+                        ->insert(['入庫原因' => $request->input('inreasonnew'),'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'inreason')
                     ->with(['inreasons' => 入庫原因::cursor()]);
@@ -574,10 +667,20 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('positionnew') !== null)
+                    $test = 儲位::onlyTrashed()
+                        ->where('儲存位置', $request->input('positionnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
                     {
                         DB::table('儲位')
-                        ->insert(['儲存位置' => $request->input('positionnew') ,'created_at' => Carbon::now()]);
+                        ->where('儲存位置', $request->input('positionnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    else
+                    {
+                        DB::table('儲位')
+                        ->insert(['儲存位置' => $request->input('positionnew'),'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'position')
                     ->with(['positions' => 儲位::cursor()]);
@@ -600,10 +703,20 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('sendnew') !== null)
+                    $test = 發料部門::onlyTrashed()
+                        ->where('發料部門', $request->input('sendnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
                     {
                         DB::table('發料部門')
-                        ->insert(['發料部門' => $request->input('sendnew') , 'created_at' => Carbon::now()]);
+                        ->where('發料部門', $request->input('sendnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    else
+                    {
+                        DB::table('發料部門')
+                        ->insert(['發料部門' => $request->input('sendnew'),'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'send')
                     ->with(['sends' => 發料部門::cursor()]);
@@ -626,10 +739,20 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('onew') !== null)
+                    $test = O庫::onlyTrashed()
+                        ->where('O庫', $request->input('onew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
                     {
                         DB::table('O庫')
-                        ->insert(['O庫' => $request->input('onew') , 'created_at' => Carbon::now()]);
+                        ->where('O庫', $request->input('onew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    else
+                    {
+                        DB::table('O庫')
+                        ->insert(['O庫' => $request->input('onew'),'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'o')
                     ->with(['os' => O庫::cursor()]);
@@ -652,10 +775,20 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-                    if($request->input('backnew') !== null)
+                    $test = 退回原因::onlyTrashed()
+                        ->where('退回原因', $request->input('backnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
                     {
                         DB::table('退回原因')
-                        ->insert(['退回原因' => $request->input('backnew') , 'created_at' => Carbon::now()]);
+                        ->where('退回原因', $request->input('backnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    else
+                    {
+                        DB::table('退回原因')
+                        ->insert(['退回原因' => $request->input('backnew'),'created_at' => Carbon::now()]);
                     }
                     return view('basic.change')->with('choose' , 'back')
                     ->with(['backs' => 退回原因::cursor()]);
@@ -1001,24 +1134,45 @@ class BasicInformationController extends Controller
             $send = $request->input('send');
             $safe = $request->input('safe');
             $numbers = DB::table('consumptive_material')->pluck('料號');
+
+            $delete = ConsumptiveMaterial::onlyTrashed()
+                            ->where('料號', $number)->get();
             //判斷料號是否重複
             for($i = 0 ; $i < count($numbers) ; $i ++)
             {
                 if(strcasecmp($number,$numbers[$i]) === 0 )
                 {
-                    $reDive->newerror[0] = true;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
-                    return;
-                    /*return back()->withErrors([
-                    'number' => '料號 is repeated , Please enter another 料號',
-                    ]);*/
+                    if(!$delete->isEmpty())
+                    {
+                        DB::table('consumptive_material')
+                        ->where('料號', $number)
+                        ->update(['品名' => $name , '規格' => $format , '單價' => $price , '幣別' => $money
+                        , '單位' => $unit , 'MPQ' => $mpq , 'MOQ' => $moq ,'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea
+                        , '耗材歸屬' => $belong , '發料部門' => $send , '安全庫存' => $safe , 'updated_at' => Carbon::now(),'deleted_at' => null]);
+
+
+                        $reDive->boolean = true;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
+                        return;
+                    }
+                    else
+                    {
+                        $reDive->newerror[0] = true;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
+                        return;
+                        /*return back()->withErrors([
+                        'number' => '料號 is repeated , Please enter another 料號',
+                        ]);*/
+                    }
                 }
                 else
                 {
                     continue;
                 }
             }
+
             if($request->input('number') !== null && $request->input('name') !== null)
             {
                 //長度是否為12
@@ -1059,7 +1213,7 @@ class BasicInformationController extends Controller
             }
             else
             {
-                return view('basic.new');
+                return view('basic.new')->with(['data' => 發料部門::cursor()]);
             }
         }
         else
@@ -1150,7 +1304,7 @@ class BasicInformationController extends Controller
             $sheetData = $spreadsheet->getActiveSheet()->toArray();
 
             unset($sheetData[0]);
-            return view('basic.newupload')->with(['data' => $sheetData]);
+            return view('basic.newupload')->with(['data' => $sheetData])->with(['data1' => 發料部門::cursor()]);;
         }
         else
         {
@@ -1216,6 +1370,7 @@ class BasicInformationController extends Controller
                         if(strcasecmp($number,$numbers[$j]) === 0)
                         {
                             $row = $i++;
+
                             $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnrepeat');
                             echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess');

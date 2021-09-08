@@ -120,7 +120,7 @@
                         </div>
 
 			            <div class="mb-3 col-md-4">
-                            <label class="form-label">{!! __('monthlyPRpageLang.safestock') !!}</label>
+                            <label class="form-label">{!! __('monthlyPRpageLang.safe') !!}</label>
                             <input class="form-control form-control-lg " type="number" id ="safe" name="safe" readonly value="0">
                         </div>
 

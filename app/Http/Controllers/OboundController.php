@@ -161,6 +161,7 @@ class OboundController extends Controller
         {
             $count = $request->input('count');
             $record = 0;
+            $row = 0;
             for($i = 0 ; $i < $count ; $i ++)
             {
                 $number =  $request->input('data0'. $i);
@@ -168,12 +169,13 @@ class OboundController extends Controller
                 $format =  $request->input('data2'. $i);
 
                 $numbers = DB::table('O庫_material')->pluck('料號');
+                $row = $i + 1;
                 //判斷料號是否重複
                 for($i = 0 ; $i < count($numbers) ; $i ++)
                 {
-                    if($number == $numbers[$i])
+                    if(strcasecmp($number,$numbers[$i]) === 0)
                     {
-                        $mess = trans('oboundpageLang.isnrepeat');
+                        $mess = trans('oboundpageLang.row').' : '.$row.' '.trans('oboundpageLang.isnrepeat');
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                         window.location.href='uploadmaterial';
@@ -197,7 +199,7 @@ class OboundController extends Controller
                     $record++;
                 }catch (\Exception $e) {
                     DB::rollback();
-                    $mess = trans('oboundpageLang.isnrepeat');
+                    $mess = $e->getmessage();
                     echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                     </script>");
@@ -206,13 +208,13 @@ class OboundController extends Controller
 
             }
 
-            $mess = trans('oboundpageLang.total').$record.trans('oboundpageLang.record')
-                .trans('oboundpageLang.isn').trans('oboundpageLang.upload1')
+            $mess = trans('oboundpageLang.total').' '.$record.trans('oboundpageLang.record').' '
+                .trans('oboundpageLang.isn').' '.trans('oboundpageLang.upload1').' '
                 .trans('oboundpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
+                window.location.href='/obound';
                 </script>");
-                return view("obound.uploadok");
         }
 
         else
@@ -557,7 +559,8 @@ class OboundController extends Controller
             else if($request->input('client') === null && $request->input('bound') === null && $request->input('number') === null && ($request->has('date')))
             {
                 $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+                $endDate = strtotime($request->input('end'));
+                $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
                 return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()->whereBetween('時間' , [$begin, $end])]);
             }
             //select client and bound
@@ -582,7 +585,8 @@ class OboundController extends Controller
             else if($request->input('client') !== null && $request->input('bound') === null && $request->input('number') === null && ($request->has('date')))
             {
                 $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+                $endDate = strtotime($request->input('end'));
+                $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
                 return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()
                 ->whereBetween('時間' , [$begin, $end])->where('客戶別' , $request->input('client'))]);
             }
@@ -600,16 +604,18 @@ class OboundController extends Controller
             //select bound and time
             else if($request->input('client') === null && $request->input('bound') !== null && $request->input('number') === null && ($request->has('date')))
             {
-                    $begin = date($request->input('begin'));
-                    $end = date($request->input('end'));
-                    return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()
-                    ->whereBetween('入庫時間' , [$begin, $end])->where('庫別' , $request->input('bound'))]);
+                $begin = date($request->input('begin'));
+                $endDate = strtotime($request->input('end'));
+                $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
+                return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()
+                ->whereBetween('入庫時間' , [$begin, $end])->where('庫別' , $request->input('bound'))]);
             }
             //select number and time
             else if($request->input('client') === null && $request->input('bound') === null && $request->input('number') !== null && ($request->has('date')))
             {
                 $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+                $endDate = strtotime($request->input('end'));
+                $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
                 $input = $request->input('number');
                 $datas = DB::table('O庫inbound')
                     ->where('料號', 'like', $input.'%')
@@ -635,7 +641,8 @@ class OboundController extends Controller
             {
 
                 $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+                $endDate = strtotime($request->input('end'));
+                $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
                 return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()
                 ->whereBetween('時間' , [$begin, $end])->where('庫別' , $request->input('bound'))
                 ->where('客戶別' , $request->input('client'))]);
@@ -644,7 +651,8 @@ class OboundController extends Controller
             else if($request->input('client') !== null && $request->input('bound') === null && $request->input('number') !== null && ($request->has('date')))
             {
                 $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+                $endDate = strtotime($request->input('end'));
+                $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
                 $input = $request->input('number');
                 $datas = DB::table('O庫inbound')
                     ->where('料號', 'like', $input.'%')
@@ -658,7 +666,8 @@ class OboundController extends Controller
             else if($request->input('client') === null && $request->input('bound') !== null && $request->input('number') !== null && ($request->has('date')))
             {
                 $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+                $endDate = strtotime($request->input('end'));
+                $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
                 $input = $request->input('number');
                 $datas = DB::table('O庫inbound')
                     ->where('料號', 'like', $input.'%')
@@ -672,7 +681,8 @@ class OboundController extends Controller
             else if($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') !== null && ($request->has('date')))
             {
                 $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+                $endDate = strtotime($request->input('end'));
+                $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
                 $input = $request->input('number');
                 $datas = DB::table('O庫inbound')
                     ->where('料號', 'like', $input.'%')
@@ -697,6 +707,7 @@ class OboundController extends Controller
         {
 
             $count = $request->input('count');
+            $sure = false;
             for($i = 0 ; $i < $count ; $i++)
             {
                 if($request->has('innumber' . $i))
@@ -710,7 +721,7 @@ class OboundController extends Controller
 
                     if($stock < $amount)
                     {
-                        $mess = trans('oboundpageLang.lessstock').trans('oboundpageLang.nowstock').' : '.$stock
+                        $mess = trans('oboundpageLang.lessstock').' '.trans('oboundpageLang.nowstock').' : '.$stock.' '
                         .trans('oboundpageLang.inboundnum').' : '.$amount;
                         echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess');
@@ -733,6 +744,7 @@ class OboundController extends Controller
                                 ->delete();
                                 $list = $request->input('number' . $i);
                                 DB::commit();
+                                $sure = true;
                         }catch (\Exception $e) {
                             DB::rollback();
                         }
@@ -744,12 +756,23 @@ class OboundController extends Controller
                     continue;
                 }
             }
-            $mess = trans('oboundpageLang.delete').trans('oboundpageLang.inlist'). ' : '.
-            $list.trans('oboundpageLang.success');
+            if($sure)
+            {
+                $mess = trans('oboundpageLang.delete').trans('oboundpageLang.inlist'). ' : '.
+                $list.trans('oboundpageLang.success');
+                    echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('$mess');
+                    window.location.href='inboundsearch';
+                    </script>");
+            }
+            else
+            {
+                $mess = trans('oboundpageLang.nocheck');
                 echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='inboundsearch';
-                </script>");
+                    window.alert('$mess');
+                    window.location.href='inboundsearch';
+                    </script>");
+            }
 
         }
         else
@@ -912,9 +935,15 @@ class OboundController extends Controller
             $client = $request->input('client');
             $bound = $request->input('bound');
             $number = $request->input('number');
+
             //不良品inventory
             if($request->has('nogood'))
             {
+                if ($request->input('number') !== null) {
+                    $datas = DB::table('O庫不良品inventory')
+                        ->where('料號', 'like', $request->input('number') . '%')
+                        ->get();
+                }
                 //all empty
                 if($request->input('client') === null && $request->input('bound') === null && $request->input('number') === null)
                 {
@@ -934,7 +963,7 @@ class OboundController extends Controller
                 //input material number
                 else if($request->input('client') === null && $request->input('bound') === null && $request->input('number') !== null)
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('料號' , $number)]);
+                    return view('obound.searchstockok')->with(['data' => $datas]);
                 }
                 //select client and bound
                 else if($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') === null )
@@ -945,24 +974,29 @@ class OboundController extends Controller
                 //select client and number
                 else if($request->input('client') !== null && $request->input('bound') === null && $request->input('number') !== null )
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('客戶別' , $client)->where('料號' , $number)]);
+                    return view('obound.searchstockok')->with(['data' => $datas->where('客戶別' , $client)]);
                 }
                 //select bound and number
                 else if($request->input('client') === null && $request->input('bound') !== null && $request->input('number') !== null )
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('料號' , $number)->where('庫別' , $bound)]);
+                    return view('obound.searchstockok')->with(['data' => $datas->where('庫別' , $bound)]);
                 }
                 //select all
                 else if($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') !== null)
                 {
 
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('客戶別' , $client)->where('庫別' , $bound)->where('料號' , $number)]);
+                    return view('obound.searchstockok')->with(['data' => $datas->where('客戶別' , $client)->where('庫別' , $bound)]);
 
                 }
             }
             //inventory
             else
             {
+                if ($request->input('number') !== null) {
+                    $datas = DB::table('O庫inventory')
+                        ->where('料號', 'like', $request->input('number') . '%')
+                        ->get();
+                }
                 //all empty
                 if($request->input('client') === null && $request->input('bound') === null && $request->input('number') === null)
                 {
@@ -982,7 +1016,7 @@ class OboundController extends Controller
                 //input material number
                 else if($request->input('client') === null && $request->input('bound') === null && $request->input('number') !== null)
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('料號' , $number)]);
+                    return view('obound.searchstockok')->with(['data' => $datas]);
                 }
                 //select client and bound
                 else if($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') === null )
@@ -993,18 +1027,18 @@ class OboundController extends Controller
                 //select client and number
                 else if($request->input('client') !== null && $request->input('bound') === null && $request->input('number') !== null )
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('客戶別' , $client)->where('料號' , $number)]);
+                    return view('obound.searchstockok')->with(['data' => $datas->where('料號' , $number)]);
                 }
                 //select bound and number
                 else if($request->input('client') === null && $request->input('bound') !== null && $request->input('number') !== null )
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('料號' , $number)->where('庫別' , $bound)]);
+                    return view('obound.searchstockok')->with(['data' => $datas->where('庫別' , $bound)]);
                 }
                 //select all
                 else if($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') !== null)
                 {
 
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('客戶別' , $client)->where('庫別' , $bound)->where('料號' , $number)]);
+                    return view('obound.searchstockok')->with(['data' => $datas->where('客戶別' , $client)->where('庫別' , $bound)]);
 
                 }
             }
@@ -1191,6 +1225,7 @@ class OboundController extends Controller
                 $time = Carbon::now();
                 $sendname = DB::table('人員信息')->where('工號', $sendpeople)->value('姓名');
                 $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
+                //沒填寫實領差異原因
                 if ($amount !== $advance && $reason === null)
                 {
                     $reDive->boolean = true;
@@ -1202,65 +1237,52 @@ class OboundController extends Controller
                 else
                 {
                     $stock = DB::table('O庫inventory')->where('客戶別', $client)->where('料號', $number)->where('庫別', $bound)->value('現有庫存');
-                    //該料號庫別沒有庫存,無法出庫
-                    if ($stock === null)
+                    //庫存小於實際領用數量,無法出庫
+                    if ($amount > $stock)
                     {
-                        $reDive->boolean = true;
+                        $reDive->boolean = false;
                         $reDive->passbool = true;
-                        $reDive->passstock = false;
-                        $reDive->number = $number;
-                        $reDive->position = $position;
+                        $reDive->passstock = true;
+                        $reDive->position = $bound;
+                        $reDive->nowstock = $stock;
                         $myJSON = json_encode($reDive);
                         echo $myJSON;
                     }
                     else
                     {
-                        //庫存小於實際領用數量,無法出庫
-                        if ($amount > $stock)
-                        {
+                        DB::beginTransaction();
+                        try {
+                            DB::table('O庫outbound')
+                                ->where('領料單號', $list)
+                                ->where('客戶別', $client)
+                                ->where('料號', $number)
+                                ->update([
+                                    '實際領用數量' => $amount, '實領差異原因' => $reason, '庫別' => $bound,
+                                    '領料人員' => $pickname, '領料人員工號' => $pickpeople, '發料人員' => $sendname, '發料人員工號' => $sendpeople,
+                                    '出庫時間' => $time
+                                ]);
+
+                            DB::table('O庫inventory')
+                                ->where('客戶別', $client)
+                                ->where('料號', $number)
+                                ->where('庫別', $bound)
+                                ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $time]);
+
+                            DB::commit();
+                        } catch (\Exception $e) {
+                            DB::rollback();
                             $reDive->boolean = false;
-                            $reDive->passbool = true;
-                            $reDive->passstock = true;
-                            $reDive->position = $bound;
-                            $reDive->nowstock = $stock;
-                            $myJSON = json_encode($reDive);
-                            echo $myJSON;
+                            $reDive->passbool = false;
+                            $reDive->passstock = false;
                         }
-                        else
-                        {
-                            DB::beginTransaction();
-                            try {
-                                DB::table('O庫outbound')
-                                    ->where('領料單號', $list)
-                                    ->where('客戶別', $client)
-                                    ->where('料號', $number)
-                                    ->update([
-                                        '實際領用數量' => $amount, '實領差異原因' => $reason, '庫別' => $bound,
-                                        '領料人員' => $pickname, '領料人員工號' => $pickpeople, '發料人員' => $sendname, '發料人員工號' => $sendpeople,
-                                        '出庫時間' => $time
-                                    ]);
 
-                                DB::table('O庫inventory')
-                                    ->where('客戶別', $client)
-                                    ->where('料號', $number)
-                                    ->where('庫別', $bound)
-                                    ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $time]);
-
-                                DB::commit();
-                            } catch (\Exception $e) {
-                                DB::rollback();
-                                $reDive->boolean = false;
-                                $reDive->passbool = false;
-                                $reDive->passstock = false;
-                            }
-
-                            $reDive->boolean = true;
-                            $reDive->passbool = true;
-                            $reDive->passstock = true;
-                            $myJSON = json_encode($reDive);
-                            echo $myJSON;
-                        }
+                        $reDive->boolean = true;
+                        $reDive->passbool = true;
+                        $reDive->passstock = true;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
                     }
+
                 }
             }
             else
@@ -1448,7 +1470,8 @@ class OboundController extends Controller
             $number =  $request->input('number');
             $production = $request->input('production');
             $begin = date($request->input('begin'));
-            $end = date($request->input('end'));
+            $endDate = strtotime($request->input('end'));
+            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
             //all empty
             if($client === null && $production === null && $number === null && !($request->has('date')))
             {
@@ -1592,7 +1615,8 @@ class OboundController extends Controller
             $number =  $request->input('number');
             $production = $request->input('production');
             $begin = date($request->input('begin'));
-            $end = date($request->input('end'));
+            $endDate = strtotime($request->input('end'));
+            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
             //all empty
             if($client === null && $production === null && $number === null && !($request->has('date')))
             {

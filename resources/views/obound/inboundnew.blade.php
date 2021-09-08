@@ -22,11 +22,11 @@
             </div>
 
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
 
                         <form  id='inboundnew'>
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('oboundpageLang.client') !!}</th>
@@ -51,7 +51,7 @@
                                     <td><input type = "text"  id = "remark" name = "remark" value = "" ></td>
                                     <td><input type = "hidden" id = "inreason" name = "inreason" value = "{{ Session::get('inreason') }}">{{ Session::get('inreason') }}</td>
                                     <td>
-                                    <select class="form-control form-control-lg " id = "bound" name="bound" required>
+                                    <select class="form-control form-control-lg " id = "bound" name="bound" required style="width : 150px;">
                                         <option style="display: none" disabled selected value = "">{!! __('oboundpageLang.enterbound') !!}</option>
                                         @foreach($positions as $position)
                                         <option>{{  $position }}</option>
@@ -61,7 +61,8 @@
                                 </tr>
 
                             </table>
-
+                        </div>
+                        <br>
                             <label class="form-label">{!! __('oboundpageLang.inpeople') !!}</label>
                             <select class="form-control form-control-lg" id = "inpeople" name="inpeople" required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('oboundpageLang.enterinpeople') !!}</option>
@@ -70,11 +71,11 @@
                             @endforeach
                             </select>
                             <br>
-                            <div id = "amounterror">{!! __('oboundpageLang.amountzero') !!}</div>
-                            <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.addtodatabase') !!}">
+
+                            <div id = "amounterror" style="display:none; color:red;">{!! __('oboundpageLang.amountzero') !!}</div>
+                            <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.submit') !!}">
                         </form>
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.inbound')}}'">{!! __('oboundpageLang.return') !!}</button>
             </div>
         </div>

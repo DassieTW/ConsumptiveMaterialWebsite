@@ -1,7 +1,4 @@
-document.getElementById("numbererror").style.display = "none";
-document.getElementById("numbererror").style.color = "red";
-document.getElementById("numbererror1").style.display = "none";
-document.getElementById("numbererror1").style.color = "red";
+
 
 $.ajaxSetup({
   headers: {
@@ -11,6 +8,11 @@ $.ajaxSetup({
 
 $('#standadd').on('submit', function (e) {
   e.preventDefault();
+
+  // clean up previous input results
+  $('.is-invalid').removeClass('is-invalid');
+  $(".invalid-feedback").remove();
+
   var client = $("#client").val();
   var number = $("#number").val();
   var production = $("#production").val();
@@ -42,11 +44,13 @@ $('#standadd').on('submit', function (e) {
         document.getElementById("numbererror").style.display = "block";
         document.getElementById('number').style.borderColor = "red";
         document.getElementById('number').value = '';
+        document.getElementById("numbererror1").style.display = "none";
       }
       else if (myObj.boolean === true && myObj.passbool === false && myObj.passstock === false) {
         document.getElementById("numbererror1").style.display = "block";
         document.getElementById('number').style.borderColor = "red";
         document.getElementById('number').value = '';
+        document.getElementById("numbererror").style.display = "none";
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {

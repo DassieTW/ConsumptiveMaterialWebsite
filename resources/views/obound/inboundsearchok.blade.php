@@ -22,11 +22,11 @@
                 <h3>{!! __('oboundpageLang.inboundsearch') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
                         <form action="{{ route('obound.delete') }}" method="POST">
                             @csrf
                             <input type = "hidden" id = "title" name = "title" value = "入庫查詢">
+                            <div class="table-responsive">
                         <table class="table" id = "inboundsearch">
                             <tr id = "require">
                                 <th>{!! __('oboundpageLang.delete') !!}</th>
@@ -62,10 +62,11 @@
                                 @endforeach
 
                             </table>
+                            </div>
+                            <br>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.delete') !!}">
                         </form>
-                    </div>
-                </div>
+                    <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.inboundsearch')}}'">{!! __('oboundpageLang.return') !!}</button>
             </div>
         </div>

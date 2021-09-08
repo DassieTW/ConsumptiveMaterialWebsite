@@ -41,7 +41,7 @@ $('#pickadd').on('submit', function (e) {
       var myObj = JSON.parse(data);
       console.log(myObj);
       if (myObj.boolean === true) {
-        var mess = Lang.get('oboundpageLang.add') + Lang.get('oboundpageLang.success') + '，' +
+        var mess = Lang.get('oboundpageLang.add') + Lang.get('oboundpageLang.success') + '，' +' '
           +Lang.get('oboundpageLang.picklistnum') + ' : ' + myObj.message;
         alert(mess);
         //alert("添加成功，領料單號: " + myObj.message);

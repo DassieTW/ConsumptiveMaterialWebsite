@@ -19,8 +19,6 @@
             </div>
 
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
                         <form method="post" enctype="multipart/form-data" action = "{{ route('month.uploadmonth') }}">
                             @csrf
                             <div class="col-6 col-sm-3">
@@ -38,6 +36,7 @@
 
                         <form  action = "{{ route('month.insertuploadmonth') }}"method="POST">
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th><input type = "hidden" id = "title1" name = "title1" value = "客戶別">{!! __('monthlyPRpageLang.client') !!}</th>
@@ -61,15 +60,16 @@
                                             $i = false;
                                             $j = false;
                                             $k = false;
-
+                                            $error = $loop->index +1;
                                             //判斷是否有這個客戶
                                             if(in_array($row[0],$clients)) $i = true;
 
                                             if($i === false)
                                             {
-                                                echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[0] ' + 'in 客戶別');
-                                                    window.location.href = 'uploadmonth';
+                                                $mess = trans('monthlyPRpageLang.noclient').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[0];
+                                                    echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadmonth';
                                                     </script>");
                                             }
 
@@ -78,9 +78,10 @@
 
                                             if($j === false)
                                             {
-                                                echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[1] ' + 'in 機種');
-                                                    window.location.href = 'uploadmonth';
+                                                $mess = trans('monthlyPRpageLang.nomachine').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[1];
+                                                    echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadmonth';
                                                     </script>");
                                             }
 
@@ -89,9 +90,10 @@
 
                                             if($k === false)
                                             {
-                                                echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[2] ' + 'in 製程');
-                                                    window.location.href = 'uploadmonth';
+                                                $mess = trans('monthlyPRpageLang.noproduction').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[2];
+                                                    echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadmonth';
                                                     </script>");
                                             }
 
@@ -111,10 +113,11 @@
                                 @endforeach
 
                             </table>
+                            </div>
+                            <br>
                             <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.addtodatabase') !!}">
                         </form>
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importmonth')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

@@ -18,10 +18,9 @@
             <div class="card-header">
                 <h3>{!! __('basicInfoLang.newMats') !!}</h3>
             </div>
-
+            <div class="card-body">
             <div class="table-responsive">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
                         <form method="post" enctype="multipart/form-data" action = "{{ route('basic.uploadmaterial') }}">
                             @csrf
                             <div class="col-6 col-sm-3">
@@ -64,7 +63,7 @@
                                         <td><input type = "text"  name = "data2a{{$loop->index}}" value = "{{$row[2]}}" required></td>
                                         <td><input style="width:70px" type = "number"  name = "data3a{{$loop->index}}" value = "{{$row[3]}}" step="0.00001" required></td>
                                         <td>
-                                            <select class="form-control form-control-lg " id = "data4a{{$loop->index}}" name="data4a{{$loop->index}}" required>
+                                            <select style="width:100px" class="form-control form-control-lg " id = "data4a{{$loop->index}}" name="data4a{{$loop->index}}" required>
                                             <option style="display: none" selected value = "{{$row[4]}}">{{$row[4]}}</option>
                                             <option>RMB</option>
                                             <option>USD</option>
@@ -78,33 +77,33 @@
                                         <td><input style="width:50px" type = "number"  name = "data7a{{$loop->index}}" value = "{{$row[7]}}" required></td>
                                         <td><input style="width:50px" type = "number"  name = "data8a{{$loop->index}}"  step = "0.00001" value = "{{$row[8]}}" required></td>
                                         <td>
-                                            <select class="form-control form-control-lg " id = "data9a{{$loop->index}}" name="data9a{{$loop->index}}" value = "{{$row[9]}}" required>
+                                            <select style="width:70px" class="form-control form-control-lg " id = "data9a{{$loop->index}}" name="data9a{{$loop->index}}" value = "{{$row[9]}}" required>
                                             <option style="display: none"  selected value = "{{$row[9]}}">{{$row[9]}}</option>
                                             <option>{!! __('basicInfoLang.yes') !!}</option>
                                             <option>{!! __('basicInfoLang.no') !!}</option>
                                             </select>
                                         </td>
+
                                         <td>
-                                            <select class="form-control form-control-lg " name="data10a{{$loop->index}}" value = "{{$row[10]}}" required>
+                                            <select style="width:70px" class="form-control form-control-lg " name="data10a{{$loop->index}}" value = "{{$row[10]}}" required>
                                             <option style="display: none"  selected value = "{{$row[10]}}">{{$row[10]}}</option>
                                             <option>{!! __('basicInfoLang.yes') !!}</option>
                                             <option>{!! __('basicInfoLang.no') !!}</option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control form-control-lg "  name="data11a{{$loop->index}}" value = "{{$row[11]}}" required>
+                                            <select style="width:100px" class="form-control form-control-lg "  name="data11a{{$loop->index}}" value = "{{$row[11]}}" required>
                                             <option style="display: none"  selected value = "{{$row[11]}}">{{$row[11]}}</option>
                                             <option>{!! __('basicInfoLang.consume') !!}</option>
                                             <option>{!! __('basicInfoLang.stand') !!}</option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control form-control-lg " name="data12a{{$loop->index}}" value = "{{$row[12]}}" required>
+                                            <select style="width:100px" class="form-control form-control-lg " name="data12a{{$loop->index}}" value = "{{$row[12]}}" required>
                                             <option style="display: none"  selected value = "{{$row[12]}}">{{$row[12]}}</option>
-                                            <option>{!! __('basicInfoLang.room') !!}</option>
-                                            <option>{!! __('basicInfoLang.ieroom') !!}</option>
-                                            <option>{!! __('basicInfoLang.meroom') !!}</option>
-                                            <option>{!! __('basicInfoLang.equiproom') !!}</option>
+                                            @foreach ($data1 as $data1)
+                                            <option>{{$data1->發料部門}}</option>
+                                            @endforeach
                                             </select>
                                         </td>
                                         <td><input style="width:70px" type = "number"  name = "data13a{{$loop->index}}" value = "{{$row[13]}}"></td>
@@ -114,10 +113,10 @@
                                 @endforeach
 
                             </table>
+                        </div>
+                        <br>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.add') !!}">
                         </form>
-                    </div>
-                </div>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('basic.new')}}'">{!! __('basicInfoLang.return') !!}</button>
             </div>
         </div>

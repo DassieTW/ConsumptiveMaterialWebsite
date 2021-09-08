@@ -19,8 +19,7 @@
             </div>
 
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
                         <form method="post" enctype="multipart/form-data" action = "{{ route('month.uploadnotmonth') }}">
                             @csrf
                             <div class="col-6 col-sm-3">
@@ -38,6 +37,7 @@
 
                         <form  action = "{{ route('month.insertuploadnotmonth') }}"method="POST">
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "SXB單號">{!! __('monthlyPRpageLang.sxb') !!}</th>
@@ -62,23 +62,26 @@
                                             $clients = DB::table('客戶別')->pluck('客戶')->toArray();
 
                                             $i = false;
+                                            $error = $loop->index +1;
 
                                             //判斷是否有料號
                                             if($name === null || $unit === null)
                                             {
-                                                echo ("<script LANGUAGE='JavaScript'>
-                                                window.alert('Material is not found , Please check Material number');
-                                                window.location.href = 'uploadnotmonth';
-                                                </script>");
+                                                $mess = trans('monthlyPRpageLang.noisn').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[2];
+                                                    echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadnotmonth';
+                                                    </script>");
                                             }
                                             //判斷是否有這個客戶
                                             if(in_array($row[1],$clients)) $i = true;
 
                                             if($i === false)
                                             {
-                                                echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[1] ' + 'in 客戶別');
-                                                    window.location.href = 'uploadnotmonth';
+                                                $mess = trans('monthlyPRpageLang.noclient').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[1];
+                                                    echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadnotmonth';
                                                     </script>");
                                             }
 
@@ -92,7 +95,7 @@
                                         <td><input type = "number" id = "data3{{$loop->index}}" name = "data3{{$loop->index}}" value = "{{$row[3]}}" required></td>
                                         <td><input type = "text" id = "data4{{$loop->index}}" name = "data4{{$loop->index}}" value = "{{$row[4]}}" ></td>
                                         <td>
-                                            <select class="form-control form-control-lg " id = "data5{{$loop->index}}" name="data5{{$loop->index}}">
+                                            <select style = "width: 150px;" class ="form-control form-control-lg " id = "data5{{$loop->index}}" name="data5{{$loop->index}}">
                                             <option></option>
                                             <option>品質問題</option>
                                             <option>MPS上升</option>
@@ -105,10 +108,11 @@
                                 @endforeach
 
                             </table>
+                        </div>
+                        <br>
                             <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.addtodatabase') !!}">
                         </form>
-                    </div>
-                </div>
+                    <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importnotmonth')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

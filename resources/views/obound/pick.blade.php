@@ -66,13 +66,13 @@
                             <option>其他</option>
                             </select>
                             <br>
-                            <input class="form-control form-control-lg " type="text" id ="reason" name="reason" placeholder="{!! __('oboundpageLang.inputusereason') !!}">
+                            <input class="form-control form-control-lg " style="display:none;" type="text" id ="reason" name="reason" placeholder="{!! __('oboundpageLang.inputusereason') !!}">
 
 
                             <label class="form-label">{!! __('oboundpageLang.isn') !!}</label>
                             <input class="form-control form-control-lg " type="text" id ="number" name="number" required>
-                            <div id = "numbererror1">{!! __('oboundpageLang.noisn') !!}</div>
-                            <div id = "nostock">{!! __('oboundpageLang.nostock') !!}</div>
+                            <div id = "numbererror1" style="display:none; color:red;">{!! __('oboundpageLang.noisn') !!}</div>
+                            <div id = "nostock" style="display:none; color:red;">{!! __('oboundpageLang.nostock') !!}</div>
                         </div>
                     </div>
                     <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.submit') !!}">

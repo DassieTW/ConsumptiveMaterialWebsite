@@ -18,8 +18,7 @@
                 <h3>{!! __('monthlyPRpageLang.on_the_way_search') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+                <div class="table-responsive">
 
                         <table class="table">
                             <tr>
@@ -41,7 +40,6 @@
 
                             </table>
                     </div>
-                </div>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.transit')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

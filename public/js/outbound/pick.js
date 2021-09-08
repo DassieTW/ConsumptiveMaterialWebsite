@@ -21,7 +21,7 @@ $('#pick').on('submit', function (e) {
     var production = $("#production").val();
     var line = $("#line").val();
     var usereason = $("#usereason").val();
-    if (usereason === "其他") {
+    if (usereason === "其他" || usereason === "other") {
         usereason = $('#reason').val();
     }
     var number = $('#number').val();

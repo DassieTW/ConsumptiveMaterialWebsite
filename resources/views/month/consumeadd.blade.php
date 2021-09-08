@@ -49,39 +49,28 @@
 
                             <label class="form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
                             <input class="form-control form-control-lg " type="text" id ="number" name="number" required>
-                            <div id = "numbererror">{!! __('monthlyPRpageLang.isnlength') !!}</div>
-                            <div id = "numbererror1">{!! __('monthlyPRpageLang.noisn') !!}</div>
+                            <div id = "numbererror" style="display:none; color:red;">{!! __('monthlyPRpageLang.isnlength') !!}</div>
+                            <div id = "numbererror1" style="display:none; color:red;">{!! __('monthlyPRpageLang.noisn') !!}</div>
 
 
                         </div>
                     </div>
-                    <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.search') !!}">
+                    <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
                 </form>
                 <br>
                 <a class="btn btn-lg btn-primary" href="{{asset('download/ConsumeExample.xlsx')}}" download>{!! __('monthlyPRpageLang.exampleExcel') !!}</a>
                 <br>
-                @if(count($errors) > 0)
-                <div class="alert alert-danger">
-                    Upload Validation Error<br><br>
-                    <ul>
-                    @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                    </ul>
-                </div>
-                @endif
 
-                @if($message = Session::get('success'))
-                <div class="alert alert-success alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>{{ $message }}</strong>
-                </div>
-                @endif
                 <form method="post" enctype="multipart/form-data" action = "{{ route('month.uploadconsume') }}">
                     @csrf
                     <div class="col-6 col-sm-3">
                         <label>{!! __('monthlyPRpageLang.plz_upload') !!}</label>
-                        <input  class="form-control"  type="file" name="select_file" />
+                        <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" name="select_file" />
+                        @error('select_file')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                         <br>
                         <input type="submit" name="upload" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.upload') !!}">
                     </div>

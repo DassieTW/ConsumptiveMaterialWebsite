@@ -20,8 +20,6 @@
             </div>
 
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
 
                         <form method="post" enctype="multipart/form-data" action = "{{ route('month.uploadconsume') }}">
                             @csrf
@@ -40,6 +38,7 @@
 
                         <form  action = "{{ route('month.insertuploadconsume') }}"method="POST">
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "料號">{!! __('monthlyPRpageLang.isn') !!}</th>
@@ -50,7 +49,7 @@
                                     <th><input type = "hidden" id = "title5" name = "title5" value = "單耗">{!! __('monthlyPRpageLang.consume') !!}</th>
                                     <th><input type = "hidden" id = "title6" name = "title6" value = "當月每日需求">{!! __('monthlyPRpageLang.nowdayneed') !!}</th>
                                     <th><input type = "hidden" id = "title7" name = "title7" value = "下月每日需求">{!! __('monthlyPRpageLang.nextdayneed') !!}</th>
-                                    <th><input type = "hidden" id = "title8" name = "title8" value = "安全庫存">{!! __('monthlyPRpageLang.safestock') !!}</th>
+                                    <th><input type = "hidden" id = "title8" name = "title8" value = "安全庫存">{!! __('monthlyPRpageLang.safe') !!}</th>
                                     <th><input type = "hidden" id = "title9" name = "title9" value = "客戶別">{!! __('monthlyPRpageLang.client') !!}</th>
                                     <th><input type = "hidden" id = "title10" name = "title10" value = "機種">{!! __('monthlyPRpageLang.machine') !!}</th>
                                     <th><input type = "hidden" id = "title11" name = "title11" value = "製程">{!! __('monthlyPRpageLang.process') !!}</th>
@@ -75,22 +74,25 @@
                                             $i = false;
                                             $j = false;
                                             $k = false;
+                                            $error = $loop->index +1;
                                             //判斷是否有料號
                                             if($name === null || $format === null || $month ==='否' || $belong !=='單耗')
                                             {
-                                                echo ("<script LANGUAGE='JavaScript'>
-                                                window.alert('Material is not found , Please check Material number');
-                                                window.location.href = 'uploadconsume';
-                                                </script>");
+                                                $mess = trans('monthlyPRpageLang.noisn').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[3];
+                                                    echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadconsume';
+                                                    </script>");
                                             }
                                             //判斷是否有這個客戶
                                             if(in_array($row[0],$clients)) $i = true;
 
                                             if($i === false)
                                             {
-                                                echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[0] ' + 'in 客戶別');
-                                                    window.location.href = 'uploadconsume';
+                                                $mess = trans('monthlyPRpageLang.noclient').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[0];
+                                                    echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadconsume';
                                                     </script>");
                                             }
 
@@ -99,9 +101,10 @@
 
                                             if($j === false)
                                             {
-                                                echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[1] ' + 'in 機種');
-                                                    window.location.href = 'uploadconsume';
+                                                $mess = trans('monthlyPRpageLang.nomachine').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[1];
+                                                    echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadconsume';
                                                     </script>");
                                             }
 
@@ -110,9 +113,10 @@
 
                                             if($k === false)
                                             {
-                                                echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[2] ' + 'in 製程');
-                                                    window.location.href = 'uploadconsume';
+                                                $mess = trans('monthlyPRpageLang.noproduction').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[2];
+                                                    echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadconsume';
                                                     </script>");
                                             }
                                         ?>
@@ -138,10 +142,11 @@
                                 @endforeach
 
                             </table>
+                        </div>
+                        <br>
                             <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.addtodatabase') !!}">
                         </form>
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.consumeadd')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

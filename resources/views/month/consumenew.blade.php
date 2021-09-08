@@ -21,6 +21,7 @@
             <div class="card-body">
                 <form id = "consumenew">
                     @csrf
+                    <div class="table-responsive">
                     <table class="table" id = "inboundsearch">
                         <tr id = "">
                             <th>{!! __('monthlyPRpageLang.isn') !!}</th>
@@ -41,18 +42,18 @@
                             <th>{!! __('monthlyPRpageLang.nextday') !!}</th>
                         </tr>
                         <tr>
-                            <td><input class="form-control form-control-lg" type="text" id ="number" name="number" readonly value = "{{ Session::get('number') }}"></td>
+                            <td><input style="width:150px" class="form-control form-control-lg" type="text" id ="number" name="number" readonly value = "{{ Session::get('number') }}"></td>
                             <td>{{ Session::get('name') }}</td>
                             <td>{{ Session::get('format') }}</td>
                             <td>{{ Session::get('unit') }}</td>
-                            <td><input style="width:100px" class="form-control form-control-lg " type="text" id ="lt" name="lt" readonly value = "{{ Session::get('lt') }}"></td>
+                            <td><input style="width:70px" class="form-control form-control-lg " type="text" id ="lt" name="lt" readonly value = "{{ Session::get('lt') }}"></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="amount" name="amount" value = "0" placeholder="請輸入單耗" step="0.01"></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="nowneed" name="nowneed" readonly></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="nextneed" name="nextneed" readonly></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="safe" name="safe" readonly ></td>
-                            <td><input class="form-control form-control-lg " type="text" id ="client" name="client" readonly value = "{{ Session::get('client') }}"></td>
-                            <td><input class="form-control form-control-lg " type="text" id ="machine" name="machine" readonly value = "{{ Session::get('machine') }}"></td>
-                            <td><input class="form-control form-control-lg " type="text" id ="production" name="production" readonly value = "{{ Session::get('production') }}"></td>
+                            <td><input style="width:150px" class="form-control form-control-lg " type="text" id ="client" name="client" readonly value = "{{ Session::get('client') }}"></td>
+                            <td><input style="width:150px" class="form-control form-control-lg " type="text" id ="machine" name="machine" readonly value = "{{ Session::get('machine') }}"></td>
+                            <td><input style="width:150px" class="form-control form-control-lg " type="text" id ="production" name="production" readonly value = "{{ Session::get('production') }}"></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="nowmps" name="nowmps" value = "{{ Session::get('nowmps') }}"></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="nowday" name="nowday" value = "{{ Session::get('nowday') }}"></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="nextmps" name="nextmps" value = "{{ Session::get('nextmps') }}"></td>
@@ -60,6 +61,8 @@
                         </tr>
 
                     </table>
+                    </div>
+                    <br>
                     <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}">
                 </form>
                 <br>

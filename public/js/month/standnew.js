@@ -32,6 +32,11 @@ $.ajaxSetup({
 
 $('#standnew').on('submit', function (e) {
   e.preventDefault();
+
+  // clean up previous input results
+  $('.is-invalid').removeClass('is-invalid');
+  $(".invalid-feedback").remove();
+
   var number = $("#number").val();
   var client = $("#client").val();
   var machine = $("#machine").val();
@@ -79,7 +84,7 @@ $('#standnew').on('submit', function (e) {
       else {
         var mess = Lang.get('monthlyPRpageLang.repeat');
         alert(mess);
-        window.location.href = "standadd";
+        return false;
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {

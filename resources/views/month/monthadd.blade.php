@@ -20,8 +20,7 @@
             <div class="card-body">
                 <form action="{{ route('month.monthadd') }}" method="POST">
                     @csrf
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+                    <div class="table-responsive">
                         <table class="table" id ="month">
                             <tr>
                                 <td>{!! __('monthlyPRpageLang.client') !!}</td>
@@ -46,7 +45,7 @@
                             @endforeach
                         </table>
                     </div>
-                </div>
+                    <br>
                 <input type = "submit" id = "add" name ="add" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
                 </form>
                 <br>

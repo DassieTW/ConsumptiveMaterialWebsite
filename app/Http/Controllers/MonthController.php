@@ -14,6 +14,7 @@ use App\Models\入庫原因;
 use App\Models\Outbound;
 use App\Models\出庫退料;
 use App\Models\人員信息;
+use App\Models\發料部門;
 use App\Models\儲位;
 use App\Models\在途量;
 use App\Models\Inventory;
@@ -73,7 +74,7 @@ class MonthController extends Controller
     {
         if(Session::has('username'))
         {
-            return view('month.srm')->with(['client' => 客戶別::cursor()]);
+            return view('month.srm')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
         }
         else
         {
@@ -129,7 +130,7 @@ class MonthController extends Controller
         if(Session::has('username'))
         {
             return view('month.consume')->with(['client' => 客戶別::cursor()])
-            ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()]);
+            ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);
         }
         else
         {
@@ -143,7 +144,7 @@ class MonthController extends Controller
         if(Session::has('username'))
         {
             return view('month.stand')->with(['client' => 客戶別::cursor()])
-            ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()]);
+            ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);;
         }
         else
         {
@@ -156,7 +157,7 @@ class MonthController extends Controller
     {
         if(Session::has('username'))
         {
-            return view('month.buylist')->with(['client' => 客戶別::cursor()]);
+            return view('month.buylist')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);;
         }
         else
         {
@@ -181,7 +182,8 @@ class MonthController extends Controller
                 {
                     $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
 
-                })->where('consumptive_material.料號','like', $number.'%')->get();
+                })->wherenull('月請購_單耗.deleted_at')
+                ->where('consumptive_material.料號','like', $number.'%')->get();
             }
             else
             {
@@ -190,7 +192,7 @@ class MonthController extends Controller
                 {
                     $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
 
-                })->get();
+                })->wherenull('月請購_單耗.deleted_at')->get();
             }
             //all empty
             if($client === null && $machine === null && $production === null && $number === null && $send === null)
@@ -419,7 +421,8 @@ class MonthController extends Controller
                 {
                     $join->on('月請購_站位.料號', '=', 'consumptive_material.料號');
 
-                })->where('consumptive_material.料號','like', $number.'%')->get();
+                })->wherenull('月請購_站位.deleted_at')
+                ->where('consumptive_material.料號','like', $number.'%')->get();
             }
             else
             {
@@ -428,7 +431,7 @@ class MonthController extends Controller
                 {
                     $join->on('月請購_站位.料號', '=', 'consumptive_material.料號');
 
-                })->get();
+                })->wherenull('月請購_站位.deleted_at')->get();
             }
 
             //all empty
@@ -621,9 +624,9 @@ class MonthController extends Controller
             {
 
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('製程' , $production)->where('發料部門' , $send)->where('客戶別' , $client)])
+                ->where('製程' , $production)->where('機種' , $machine)->where('客戶別' , $client)])
                 ->with(['data1' => $datas
-                ->where('製程' , $production)->where('發料部門' , $send)->where('客戶別' , $client)]);
+                ->where('製程' , $production)->where('機種' , $machine)->where('客戶別' , $client)]);
             }
             //select client and machine and production and send
             else if($client !== null && $machine !== null && $production !== null && $number === null && $send !== null)
@@ -689,8 +692,8 @@ class MonthController extends Controller
                 {
                     if($request->has('innumber' . $i))
                     {
-                        DB::table('月請購_單耗')
-                        ->where('客戶別', $request->input('client' . $i))
+                        月請購_單耗::
+                        where('客戶別', $request->input('client' . $i))
                         ->where('機種', $request->input('machine' . $i))
                         ->where('製程', $request->input('production' . $i))
                         ->where('料號', $request->input('number' . $i))
@@ -714,17 +717,26 @@ class MonthController extends Controller
             else if($request->has('change'))
             {
                 $count = $request->input('count');
+                $record = 0;
                 for($i = 0 ; $i < $count ; $i++)
                 {
-                    DB::table('月請購_單耗')
-                        ->where('客戶別', $request->input('client' . $i))
-                        ->where('機種', $request->input('machine' . $i))
-                        ->where('製程', $request->input('production' . $i))
-                        ->where('料號', $request->input('number' . $i))
-                        ->update(['單耗' => $request->input('amount' . $i)]);
+                    if($request->has('innumber' . $i))
+                    {
+                        DB::table('月請購_單耗')
+                            ->where('客戶別', $request->input('client' . $i))
+                            ->where('機種', $request->input('machine' . $i))
+                            ->where('製程', $request->input('production' . $i))
+                            ->where('料號', $request->input('number' . $i))
+                            ->update(['單耗' => $request->input('amount' . $i) , 'updated_at' => Carbon::now()]);
+                        $record ++;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
-
-                $mess = trans('monthlyPRpageLang.isn').trans('monthlyPRpageLang.consume')
+                $mess = trans('monthlyPRpageLang.total').' '.$record.' '.trans('monthlyPRpageLang.record').' '.
+                trans('monthlyPRpageLang.isn').trans('monthlyPRpageLang.consume')
                 .trans('monthlyPRpageLang.change').trans('monthlyPRpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
@@ -759,8 +771,8 @@ class MonthController extends Controller
                 {
                     if($request->has('innumber' . $i))
                     {
-                        DB::table('月請購_站位')
-                        ->where('客戶別', $request->input('client' . $i))
+                        月請購_站位::
+                        where('客戶別', $request->input('client' . $i))
                         ->where('機種', $request->input('machine' . $i))
                         ->where('製程', $request->input('production' . $i))
                         ->where('料號', $request->input('number' . $i))
@@ -772,7 +784,7 @@ class MonthController extends Controller
                         continue;
                     }
                 }
-                $mess = trans('monthlyPRpageLang.total').$record.trans('monthlyPRpageLang.record')
+                $mess = trans('monthlyPRpageLang.total').' '.$record.' '.trans('monthlyPRpageLang.record').' '
                 .trans('monthlyPRpageLang.stand').trans('monthlyPRpageLang.delete').trans('monthlyPRpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
@@ -783,25 +795,35 @@ class MonthController extends Controller
             else if($request->has('change'))
             {
                 $count = $request->input('count');
+                $record = 0;
                 for($i = 0 ; $i < $count ; $i++)
                 {
-                    DB::table('月請購_站位')
-                        ->where('客戶別', $request->input('client' . $i))
-                        ->where('機種', $request->input('machine' . $i))
-                        ->where('製程', $request->input('production' . $i))
-                        ->where('料號', $request->input('number' . $i))
-                        ->update(['當月站位人數' => $request->input('nowpeople' . $i)
-                        , '當月開線數' => $request->input('nowline' . $i)
-                        , '當月開班數' => $request->input('nowclass' . $i)
-                        , '當月每人每日需求量' => $request->input('nowuse' . $i)
-                        , '當月每日更換頻率' => $request->input('nowchange' . $i)
-                        , '下月站位人數' => $request->input('nextpeople' . $i)
-                        , '下月開線數' => $request->input('nextline' . $i)
-                        , '下月開班數' => $request->input('nextclass' . $i)
-                        , '下月每人每日需求量' => $request->input('nextuse' . $i)
-                        , '下月每日更換頻率' => $request->input('nextchange' . $i)]);
+                    if($request->has('innumber' . $i))
+                    {
+                        DB::table('月請購_站位')
+                            ->where('客戶別', $request->input('client' . $i))
+                            ->where('機種', $request->input('machine' . $i))
+                            ->where('製程', $request->input('production' . $i))
+                            ->where('料號', $request->input('number' . $i))
+                            ->update(['當月站位人數' => $request->input('nowpeople' . $i)
+                            , '當月開線數' => $request->input('nowline' . $i)
+                            , '當月開班數' => $request->input('nowclass' . $i)
+                            , '當月每人每日需求量' => $request->input('nowuse' . $i)
+                            , '當月每日更換頻率' => $request->input('nowchange' . $i)
+                            , '下月站位人數' => $request->input('nextpeople' . $i)
+                            , '下月開線數' => $request->input('nextline' . $i)
+                            , '下月開班數' => $request->input('nextclass' . $i)
+                            , '下月每人每日需求量' => $request->input('nextuse' . $i)
+                            , '下月每日更換頻率' => $request->input('nextchange' . $i)]);
+                            $record ++;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
-                $mess = trans('monthlyPRpageLang.stand')
+                $mess = trans('monthlyPRpageLang.total').' '.$record.' '.trans('monthlyPRpageLang.record'). ' '
+                .trans('monthlyPRpageLang.stand')
                 .trans('monthlyPRpageLang.change').trans('monthlyPRpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
@@ -1108,30 +1130,49 @@ class MonthController extends Controller
                 $test = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別',$client)
                 ->where('機種',$machine)->where('製程',$production)->value('單耗');
 
-                if($test === null)
-                {
-                    DB::beginTransaction();
-                    try {
-                        DB::table('月請購_單耗')
-                        ->insert(['料號' => $number , '客戶別' => $client , '機種' => $machine ,'製程' => $production , '單耗' => $amount]);
+                $delete = 月請購_單耗::onlyTrashed()
+                            ->where('料號', $number)->where('客戶別',$client)
+                            ->where('機種',$machine)->where('製程',$production)
+                            ->get();
 
-                        DB::commit();
-                    }catch (\Exception $e) {
-                        DB::rollback();
-                        $reDive->boolean = false;
-                        $reDive->message = $e->getmessage();
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                    }
+                if(!$delete->isEmpty())
+                {
+                    DB::table('月請購_單耗')
+                    ->where('料號', $number)->where('客戶別',$client)
+                    ->where('機種',$machine)->where('製程',$production)
+                    ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null , '單耗' => $amount]);
                     $reDive->boolean = true;
                     $myJSON = json_encode($reDive);
                     echo $myJSON;
+                    return;
                 }
                 else
                 {
-                    $reDive->boolean = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    if($test === null)
+                    {
+                        DB::beginTransaction();
+                        try {
+                            DB::table('月請購_單耗')
+                            ->insert(['料號' => $number , '客戶別' => $client , '機種' => $machine ,'製程' => $production
+                            , '單耗' => $amount , 'created_at' => Carbon::now()]);
+                            DB::commit();
+                        }catch (\Exception $e) {
+                            DB::rollback();
+                            $reDive->boolean = false;
+                            $reDive->message = $e->getmessage();
+                            $myJSON = json_encode($reDive);
+                            echo $myJSON;
+                        }
+                        $reDive->boolean = true;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
+                    }
+                    else
+                    {
+                        $reDive->boolean = false;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
+                    }
                 }
             }
             else
@@ -1171,32 +1212,56 @@ class MonthController extends Controller
                 $test = DB::table('月請購_站位')->where('料號', $number)->where('客戶別',$client)
                 ->where('機種',$machine)->where('製程',$production)->value('當月站位人數');
 
-                if($test === null)
+                $delete = 月請購_站位::onlyTrashed()
+                            ->where('料號', $number)->where('客戶別',$client)
+                            ->where('機種',$machine)->where('製程',$production)
+                            ->get();
+
+                if(!$delete->isEmpty())
                 {
-                    DB::beginTransaction();
-                    try {
-                        DB::table('月請購_站位')
-                        ->insert(['料號' => $number , '客戶別' => $client , '機種' => $machine ,'製程' => $production , '當月站位人數' => $nowpeople
-                        , '當月開線數' => $nowline , '當月開班數' => $nowclass , '當月每人每日需求量' => $nowuse , '當月每日更換頻率' => $nowchange
-                        , '下月站位人數' => $nextpeople , '下月開線數' => $nextline , '下月開班數' => $nextclass , '下月每人每日需求量' => $nextuse
-                        , '下月每日更換頻率' => $nextchange]);
-                        DB::commit();
-                    }catch (\Exception $e) {
-                        DB::rollback();
-                        $reDive->boolean = false;
-                        $reDive->message = $e->getmessage();
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                    }
+                    DB::table('月請購_站位')
+                    ->where('料號', $number)->where('客戶別',$client)
+                    ->where('機種',$machine)->where('製程',$production)
+                    ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null , '當月站位人數' => $nowpeople
+                    , '當月開線數' => $nowline , '當月開班數' => $nowclass , '當月每人每日需求量' => $nowuse , '當月每日更換頻率' => $nowchange
+                    , '下月站位人數' => $nextpeople , '下月開線數' => $nextline , '下月開班數' => $nextclass , '下月每人每日需求量' => $nextuse
+                    , '下月每日更換頻率' => $nextchange]);
                     $reDive->boolean = true;
                     $myJSON = json_encode($reDive);
                     echo $myJSON;
+                    return;
                 }
                 else
                 {
-                    $reDive->boolean = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+
+                    if($test === null)
+                    {
+                        DB::beginTransaction();
+                        try {
+                            DB::table('月請購_站位')
+                            ->insert(['料號' => $number , '客戶別' => $client , '機種' => $machine ,'製程' => $production , '當月站位人數' => $nowpeople
+                            , '當月開線數' => $nowline , '當月開班數' => $nowclass , '當月每人每日需求量' => $nowuse , '當月每日更換頻率' => $nowchange
+                            , '下月站位人數' => $nextpeople , '下月開線數' => $nextline , '下月開班數' => $nextclass , '下月每人每日需求量' => $nextuse
+                            , '下月每日更換頻率' => $nextchange , 'created_at' => Carbon::now()]);
+                            DB::commit();
+                        }catch (\Exception $e) {
+                            DB::rollback();
+                            $reDive->boolean = false;
+                            $reDive->message = $e->getmessage();
+                            $myJSON = json_encode($reDive);
+                            echo $myJSON;
+                        }
+                        $reDive->boolean = true;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
+
+                    }
+                    else
+                    {
+                        $reDive->boolean = false;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
+                    }
                 }
             }
             else
@@ -1219,30 +1284,46 @@ class MonthController extends Controller
             //search
             if($request->has('search'))
             {
+                $datas = DB::table('consumptive_material')
+                ->join('非月請購', function($join)
+                {
+                    $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+
+                })->select('非月請購.*','consumptive_material.品名')->get();
 
                 if($request->input('client') === null && $request->input('number') === null)
                 {
-                    return view('month.notmonthsearchok')->with(['data' => 非月請購::cursor()]);
+                    return view('month.notmonthsearchok')->with(['data' => $datas]);
                 }
                 else if($request->input('client') !== null && $request->input('number') === null)
                 {
 
-                    return view('month.notmonthsearchok')->with(['data' => 非月請購::cursor()->where('客戶別' ,$request->input('client'))]);
+                    return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別' ,$request->input('client'))]);
 
                 }
                 else if($request->input('client') === null && $request->input('number') !== null)
                 {
-                    $datas = DB::table('非月請購')
-                    ->where('料號', 'like', $request->input('number').'%')
-                    ->get();
+                    $datas = DB::table('consumptive_material')
+                    ->join('非月請購', function($join)
+                    {
+                        $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+
+                    })->select('非月請購.*','consumptive_material.品名')
+                    ->where('料號', 'like', $request->input('number').'%')->get();
+
 
                     return view('month.notmonthsearchok')->with(['data' => $datas]);
                 }
                 else if($request->input('client') !== null && $request->input('number') !== null)
                 {
-                    $datas = DB::table('非月請購')
-                    ->where('料號', 'like', $request->input('number').'%')
-                    ->get();
+                    $datas = DB::table('consumptive_material')
+                    ->join('非月請購', function($join)
+                    {
+                        $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+
+                    })->select('非月請購.*','consumptive_material.品名')
+                    ->where('料號', 'like', $request->input('number').'%')->get();
+
                     return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別' , $request->input('client'))]);
 
                 }
@@ -1655,7 +1736,7 @@ class MonthController extends Controller
     {
         if(Session::has('username'))
         {
-            return view('month.transit')->with(['client' => 客戶別::cursor()]);
+            return view('month.transit')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
         }
         else
         {
@@ -1668,7 +1749,7 @@ class MonthController extends Controller
     {
         if(Session::has('username'))
         {
-            return view('month.sxb')->with(['client' => 客戶別::cursor()]);
+            return view('month.sxb')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
         }
         else
         {
@@ -1768,7 +1849,8 @@ class MonthController extends Controller
             $send = $request->input('send');
             $sxb = $request->input('sxb');
             $begin = date($request->input('begin'));
-            $end = date($request->input('end'));
+            $endDate = strtotime($request->input('end'));
+            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
             if($number !== null)
             {
                 $datas = DB::table('consumptive_material')
@@ -2172,6 +2254,7 @@ class MonthController extends Controller
         if (Session::has('username'))
         {
             $count = $request->input('count');
+            $sure = 0;
             $record = 0;
             for($i = 0 ; $i < $count ; $i++)
             {
@@ -2179,30 +2262,58 @@ class MonthController extends Controller
                 $client = $request->input("client" . $i);
                 $number = $request->input("number" . $i);
                 $amount = $request->input("sxbamount" . $i);
-                $test = DB::table('在途量')->where('料號', $number)->where('客戶', $client)->value('請購數量');
-                if($test === null)
-                {
-                    DB::table('在途量')
-                    ->insert(['客戶' => $client , '料號' => $number , '請購數量' => $amount]);
+                $buyamount = $request->input("buyamount" . $i);
 
+                if($amount > $buyamount)
+                {
+                    $row = $i + 1;
+                    $mess = trans('monthlyPRpageLang.sxbamounterr').' ' .trans('monthlyPRpageLang.row').' : '.$row;
+                    echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('$mess');
+                    window.location.href='srm';
+                    </script>");
+                    $sure ++;
                 }
                 else
                 {
-                    DB::table('在途量')
-                    ->where('客戶', $request->input('client' . $i))
-                    ->where('料號', $request->input('number' . $i))
-                    ->update(['請購數量' => $test + $amount]);
-
+                    continue;
                 }
-                DB::table('請購單')
-                    ->where('客戶', $request->input('client' . $i))
-                    ->where('料號', $request->input('number' . $i))
-                    ->where('SRM單號', $request->input('srmnumber' . $i))
-                    ->update(['SXB單號' => $request->input('sxbnumber' . $i)
-                    , '本次請購數量' => $request->input('sxbamount' . $i)
-                    , '請購時間' => $time]);
-                    $record ++;
             }
+            if($sure == 0)
+            {
+                for($i = 0 ; $i < $count ; $i++)
+                {
+                    $time = Carbon::now();
+                    $client = $request->input("client" . $i);
+                    $number = $request->input("number" . $i);
+                    $amount = $request->input("sxbamount" . $i);
+                    $buyamount = $request->input("buyamount" . $i);
+
+                        $test = DB::table('在途量')->where('料號', $number)->where('客戶', $client)->value('請購數量');
+                        if($test === null)
+                        {
+                            DB::table('在途量')
+                            ->insert(['客戶' => $client , '料號' => $number , '請購數量' => $amount]);
+
+                        }
+                        else
+                        {
+                            DB::table('在途量')
+                            ->where('客戶', $request->input('client' . $i))
+                            ->where('料號', $request->input('number' . $i))
+                            ->update(['請購數量' => $test + $amount]);
+
+                        }
+                        DB::table('請購單')
+                            ->where('客戶', $request->input('client' . $i))
+                            ->where('料號', $request->input('number' . $i))
+                            ->where('SRM單號', $request->input('srmnumber' . $i))
+                            ->update(['SXB單號' => $request->input('sxbnumber' . $i)
+                            , '本次請購數量' => $request->input('sxbamount' . $i)
+                            , '請購時間' => $time]);
+                            $record ++;
+                    }
+                }
 
             $mess = trans('monthlyPRpageLang.total').$record.trans('monthlyPRpageLang.record')
             .trans('monthlyPRpageLang.SRM').trans('monthlyPRpageLang.submit')
@@ -2234,7 +2345,7 @@ class MonthController extends Controller
             $twd = $request->input('twd');
             $rmb = $request->input('rmb');
             $vnd = $request->input('vnd');
-            if($client == '所有客戶')
+            if($client == '所有客戶' || $client == 'ALL Clients')
             {
                 if($send === null)
                 {
@@ -2669,6 +2780,7 @@ class MonthController extends Controller
                 $now = Carbon::now();
                 $counta = $request->input('counta');
                 $countb = $request->input('countb');
+                $row = $counta + $countb;
                 $record = 0;
                 for($i = 0 ; $i < $counta ; $i++)
                 {
@@ -2695,8 +2807,8 @@ class MonthController extends Controller
                     {
                         if($srm === null || $srm == '')
                         {
-                            $i++;
-                            $mess = trans('monthlyPRpageLang.row').' :'.$i
+                            $row = $i +1;
+                            $mess = trans('monthlyPRpageLang.row').' :'.$row.' '
                             .trans('monthlyPRpageLang.nowrite').trans('monthlyPRpageLang.srm');
                             echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess');
@@ -2745,8 +2857,8 @@ class MonthController extends Controller
                     {
                         if($srm === null || $srm == '')
                         {
-                            $i++;
-                            $mess = trans('monthlyPRpageLang.row').' :'.$i
+                            $row = $i + 1 + $counta;
+                            $mess = trans('monthlyPRpageLang.row').' :'.$row.' '
                             .trans('monthlyPRpageLang.nowrite').trans('monthlyPRpageLang.srm');
                             echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess');

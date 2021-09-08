@@ -33,10 +33,9 @@
                             <label class="form-label">{!! __('outboundpageLang.senddep') !!}</label>
                                     <select class="form-control form-control-lg" id = "send" name="send">
                                     <option style="display: none" disabled selected>{!! __('outboundpageLang.entersenddep') !!}</option>
-                                    <option>IE備品室</option>
-                                    <option>ME備品室</option>
-                                    <option>設備備品室</option>
-                                    <option>備品室</option>
+                                    @foreach ($data1 as $data)
+                                    <option>{{$data->發料部門}}</option>
+                                    @endforeach
                                     </select>
                         </div>
                     </div>

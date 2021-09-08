@@ -258,7 +258,7 @@
                                             <ul id="monthly" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
                                                 <li
-                                                    class="sidebar-item {{ isActiveRoute(['month/consumeadd','month/consumenewok']) }}">
+                                                    class="sidebar-item {{ isActiveRoute(['month/consumeadd','month/consumenewok','month/uploadconsume','month/insertuploadconsume']) }}">
                                                     <a class="sidebar-link" href="{{route('month.consumeadd')}}">
                                                         {!! __('monthlyPRpageLang.isnConsumeAdd') !!}
                                                     </a>
@@ -269,7 +269,7 @@
                                                         {!! __('monthlyPRpageLang.isnConsumeUpdate') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['month/standadd']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['month/standadd','month/standnewok','month/uploadstand','month/insertuploadstand']) }}">
                                                     <a class="sidebar-link" href="{{route('month.standadd')}}">
                                                         {!! __('monthlyPRpageLang.standAdd') !!}
                                                     </a>
@@ -377,7 +377,7 @@
                                                 </li>
                                                 @endcan
                                                 @can('oboundPickup', App\Models\O庫::class )
-                                                <li class="sidebar-item {{ isActiveRoute(['obound.pick']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['obound.pick','obound/pickaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.pick')}}">
                                                         {!! __('oboundpageLang.pick') !!}
                                                     </a>
@@ -398,7 +398,7 @@
                                                 </li>
                                                 @endcan
                                                 @can('oboundReturn', App\Models\O庫::class )
-                                                <li class="sidebar-item {{ isActiveRoute(['obound.back']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['obound.back','obound/backaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.back')}}">
                                                         {!! __('oboundpageLang.back') !!}
                                                     </a>

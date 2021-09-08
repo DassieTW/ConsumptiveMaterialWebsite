@@ -43,10 +43,7 @@ $('#newmaterial').on('submit', function (e) {
     if (month === 'No') month = '否';
     if (belong === 'Unit consumption' || belong === '单耗') belong = '單耗';
     if (belong === 'Station') belong = '站位';
-    if (send === 'Spare parts room' || send === '备品室') send = '備品室';
-    else if (send === 'ME Spare parts room' || send === 'ME备品室') send = 'ME備品室';
-    else if (send === 'IE Spare parts room' || send === 'IE备品室') send = 'IE備品室';
-    else if (send === 'Equip Spare parts room' || send === '设备备品室') send = '設備備品室';
+
     $.ajax({
         type: 'POST',
         url: "new",

@@ -43,7 +43,7 @@ $('#backadd').on('submit', function (e) {
       console.log(myObj);
       if (myObj.boolean === true) {
 
-        var mess = Lang.get('oboundpageLang.add') + Lang.get('oboundpageLang.success') + '，' +
+        var mess = Lang.get('oboundpageLang.add') + Lang.get('oboundpageLang.success') + '，' +' '
           +Lang.get('oboundpageLang.backlistnum') + ' : ' + myObj.message;
         alert(mess);
         //alert("添加成功，退料單號: " + myObj.message);

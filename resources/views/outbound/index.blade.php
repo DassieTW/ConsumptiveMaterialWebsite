@@ -16,16 +16,23 @@
 ?>
 <br>
 <br>
+
+<div class="mb-4 col-md-2">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.pick')}}'">{!! __('outboundpageLang.pick') !!}</button>
-&emsp;
+</div>
+<div class="mb-4 col-md-2">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.picklistpage')}}'">{!! __('outboundpageLang.picklist') !!}</button>
-&emsp;
+</div>
+<div class="mb-4 col-md-2">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.pickrecord')}}'">{!! __('outboundpageLang.pickrecord') !!}</button>
-&emsp;
+</div>
+<div class="mb-4 col-md-2">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.back')}}'">{!! __('outboundpageLang.back') !!}</button>
-&emsp;
+</div>
+<div class="mb-4 col-md-2">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.backlistpage')}}'">{!! __('outboundpageLang.backlist') !!}</button>
-&emsp;
+</div>
+<div class="mb-4 col-md-2">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.backrecord')}}'">{!! __('outboundpageLang.backrecord') !!}</button>
-&emsp;
+</div>
 @endsection
