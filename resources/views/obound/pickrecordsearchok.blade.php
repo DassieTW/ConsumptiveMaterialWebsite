@@ -20,11 +20,11 @@
                 <h3>{!! __('oboundpageLang.pickrecord') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
                         <form action="{{ route('obound.download') }}" method="POST">
                             @csrf
                             <input type = "hidden" id = "title" name = "title" value = "領料記錄表">
+                            <div class="table-responsive">
                         <table class="table" id = "pickrecordlist">
                             <tr id = "require">
                                 <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('oboundpageLang.client') !!}</th>
@@ -76,10 +76,11 @@
                                     @endforeach
 
                                 </table>
+                            </div>
+                            <br>
                                 <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.download') !!}">
                             </form>
-                        </div>
-                    </div>
+                       <br>
                     <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.pickrecord')}}'">{!! __('oboundpageLang.return') !!}</button>
                 </div>
             </div>

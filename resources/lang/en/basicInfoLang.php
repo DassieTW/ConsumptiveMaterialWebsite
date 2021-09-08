@@ -77,4 +77,5 @@ return [
     'upload1' =>'Upload',
     'notmonth' =>'Non-monthly PR',
     'repeat' => 'The data has been stored in the database, please confirm.',
+    'uploaderror' => 'Not a format for upload of basic information',
 ];

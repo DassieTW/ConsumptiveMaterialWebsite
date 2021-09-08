@@ -19,10 +19,9 @@
                 <h3>{!! __('monthlyPRpageLang.PR') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
                         <form action="{{route('month.buylistsubmit')}}" method="POST" id="buylist" enctype="multipart/form-data">
                             @csrf
+                            <div class="table-responsive">
                         <table class="table">
                             <tr>
                                 <td><input type = "hidden" name = "title0" value = "SRM單號">{!! __('monthlyPRpageLang.srm') !!}</td>
@@ -74,10 +73,10 @@
                                 <td><input type = "hidden" id = "stocka{{$loop->index}}" name = "stocka{{$loop->index}}" value="{{$stocka}}">{{$stocka}}</td>
                                 <td><input type = "number" id = "buyamounta{{$loop->index}}" name = "buyamounta{{$loop->index}}" required style="width:60px" value="{{$real}}"></td>
                                 <td><input type = "hidden" id = "realneeda{{$loop->index}}" name = "realneeda{{$loop->index}}" value="{{$realneeda}}">{{$realneeda}}</td>
-                                <td><input id = "buymoneya{{$loop->index}}" name = "buymoneya{{$loop->index}}" style="width:60px" readonly></td>
-                                <td><input id = "buypera{{$loop->index}}" name = "buypera{{$loop->index}}" style="width:60px" readonly >%</td>
-                                <td><input id = "needmoneya{{$loop->index}}" name = "needmoneya{{$loop->index}}" style="width:60px" readonly></td></td>
-                                <td><input id = "needpera{{$loop->index}}" name = "needpera{{$loop->index}}" style="width:60px" readonly >%</td>
+                                <td><input id = "buymoneya{{$loop->index}}" name = "buymoneya{{$loop->index}}" style="width:70px" readonly></td>
+                                <td><input id = "buypera{{$loop->index}}" name = "buypera{{$loop->index}}" style="width:70px" readonly step="0.01"></td>
+                                <td><input id = "needmoneya{{$loop->index}}" name = "needmoneya{{$loop->index}}" style="width:70px" readonly></td>
+                                <td><input id = "needpera{{$loop->index}}" name = "needpera{{$loop->index}}"  style="width:70px" readonly step="0.01"></td>
                             </tr>
                             <input type = "hidden" id = "counta" name = "counta" value="{{$loop->count}}">
                             @endforeach
@@ -108,16 +107,17 @@
                                 <td><input type = "hidden" id = "rateb{{$loop->index}}" name = "rateb{{$loop->index}}" value="{{$rate2[$loop->index]}}">{{$rate2[$loop->index]}}</td>
                                 <td><input type = "hidden" id = "amountb{{$loop->index}}" name = "amountb{{$loop->index}}" value="{{$amountb}}">{{$amountb}}</td>
                                 <td><input type = "hidden" id = "stockb{{$loop->index}}" name = "stockb{{$loop->index}}" value="{{$stockb}}">{{$stockb}}</td>
-                                <td><input id = "buyamountb{{$loop->index}}" name = "buyamountb{{$loop->index}}" required style="width:60px" value="{{$real}}"></td>
+                                <td><input type = "number" id = "buyamountb{{$loop->index}}" name = "buyamountb{{$loop->index}}" required style="width:60px" value="{{$real}}"></td>
                                 <td><input type = "hidden" id = "realneedb{{$loop->index}}" name = "realneedb{{$loop->index}}" value="{{$realneedb}}">{{$realneedb}}</td>
-                                <td><input id = "buymoneyb{{$loop->index}}" name = "buymoneyb{{$loop->index}}" style="width:60px" readonly></td>
-                                <td><input id = "buyperb{{$loop->index}}" name = "buyperb{{$loop->index}}" style="width:60px" readonly >%</td>
-                                <td><input id = "needmoneyb{{$loop->index}}" name = "needmoneyb{{$loop->index}}" style="width:60px" readonly></td></td>
-                                <td><input id = "needperb{{$loop->index}}" name = "needperb{{$loop->index}}" style="width:60px" readonly >%</td>
+                                <td><input id = "buymoneyb{{$loop->index}}" name = "buymoneyb{{$loop->index}}" style="width:70px" readonly></td>
+                                <td><input id = "buyperb{{$loop->index}}" name = "buyperb{{$loop->index}}" style="width:70px"  readonly step="0.01"></td>
+                                <td><input id = "needmoneyb{{$loop->index}}" name = "needmoneyb{{$loop->index}}" style="width:70px" readonly></td>
+                                <td><input id = "needperb{{$loop->index}}" name = "needperb{{$loop->index}}" style="width:70px" readonly step="0.01"></td>
                             </tr>
                             <input type = "hidden" id = "countb" name = "countb" value="{{$loop->count}}">
                             @endforeach
                         </table>
+                            </div>
                         <!-- 單耗下載資料 -->
                         @foreach ($dow1 as $data )
                         <?php
@@ -186,13 +186,12 @@
                         <input type = "hidden" id="dataa18{{$loop->index}}" name = "dataa18{{$loop->index}}" value = "">
                         @endforeach
 
-
+                        <br>
                         <input type = "submit" id = "inser" name = "insert" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}">
                         <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.export') !!}">
                         <input type = "submit" id = "download1" name = "download1" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.export1') !!}">
                         </form>
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.buylist')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

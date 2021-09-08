@@ -17,7 +17,7 @@ return [
     'callsys' =>'Alarm system',
     'client' =>'Client',
     'isn' =>'Part Num.',
-    'pName' =>'MATL.',
+    'pName' =>'Description',
     'format' =>'Specification',
     'stock' =>'Stock',
     'days' =>'Sluggish days',

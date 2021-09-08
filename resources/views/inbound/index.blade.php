@@ -16,15 +16,21 @@
 ?>
 <br>
 <br>
+
+<div class="mb-4 col-md-4">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.add')}}'">{!! __('inboundpageLang.new') !!}</button>
-&emsp;
+</div>
+<div class="mb-4 col-md-4">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.search')}}'">{!! __('inboundpageLang.search') !!}</button>
-&emsp;
+</div>
+<div class="mb-4 col-md-4">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.searchstock')}}'">{!! __('inboundpageLang.searchstock') !!}</button>
-&emsp;
+</div>
+<div class="mb-4 col-md-4">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.positionchange')}}'">{!! __('inboundpageLang.locationchange') !!}</button>
-&emsp;
+</div>
+<div class="mb-4 col-md-4">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.upload')}}'">{!! __('inboundpageLang.stockupload') !!}</button>
-&emsp;
+</div>
 
 @endsection

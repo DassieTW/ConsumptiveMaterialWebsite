@@ -23,7 +23,7 @@ $('#back').on('submit', function (e) {
   var production = $("#production").val();
   var line = $("#line").val();
   var backreason = $("#backreason").val();
-  if (backreason === "其他") {
+  if (backreason === "其他" || backreason === "other") {
     backreason = $('#reason').val();
   }
   var number = $('#number').val();

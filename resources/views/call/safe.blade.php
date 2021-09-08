@@ -20,9 +20,6 @@
                 <h3>{!! __('callpageLang.safealert') !!}</h3>
             </div>
             <div class="card-body">
-
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
                         <div class="table-responsive">
                             <table class="table table-bordered" id = "test">
                                 <tr>
@@ -108,8 +105,7 @@
                             </table>
 
                         </div>
-                    </div>
-                </div>
+                        <br>
 
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('call.safe')}}'">{!! __('callpageLang.return') !!}</button>
             </div>

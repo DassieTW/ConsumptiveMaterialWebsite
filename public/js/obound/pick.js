@@ -1,8 +1,4 @@
-document.getElementById("numbererror1").style.display = "none";
-document.getElementById("numbererror1").style.color = "red";
-document.getElementById("reason").style.display = "none";
-document.getElementById("nostock").style.color = "red";
-document.getElementById("nostock").style.display = "none";
+
 
 $.ajaxSetup({
   headers: {
@@ -21,6 +17,11 @@ $("#usereason").on("change", function () {
 });
 $('#pick').on('submit', function (e) {
   e.preventDefault();
+
+  // clean up previous input results
+  $('.is-invalid').removeClass('is-invalid');
+  $(".invalid-feedback").remove();
+
   var client = $("#client").val();
   var machine = $("#machine").val();
   var production = $("#production").val();
@@ -58,6 +59,8 @@ $('#pick').on('submit', function (e) {
         document.getElementById("numbererror1").style.display = "block";
         document.getElementById('number').style.borderColor = "red";
         document.getElementById('number').value = '';
+        document.getElementById("nostock").style.display = "none";
+        document.getElementById('client').style.borderColor = "";
       }
       //沒有庫存
       else if (myObj.boolean === true && myObj.passbool === true && myObj.passstock === false) {
@@ -66,6 +69,7 @@ $('#pick').on('submit', function (e) {
         document.getElementById('client').style.borderColor = "red";
         document.getElementById('number').value = '';
         document.getElementById('client').value = '';
+        document.getElementById("numbererror1").style.display = "none";
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {

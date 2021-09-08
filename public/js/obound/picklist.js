@@ -1,5 +1,4 @@
-document.getElementById("reasonerror").style.display = "none";
-document.getElementById("lessstock").style.display = "none";
+
 
 
 //show select 領料單號
@@ -33,10 +32,20 @@ $('#picklist').on('submit', function (e) {
   pick = pick.split(' ');
   var pickpeople = pick[0];
   var bound = $("#bound" + list).val();
-  bound = bound.split(' ');
-  bound = bound[0];
-  bound = bound.split('庫別:');
-  bound = bound[1];
+  if(bound != null)
+  {
+    bound = bound.split(' ');
+    bound = bound[0];
+    bound = bound.split('庫別:');
+    bound = bound[1];
+  }
+  else
+  {
+    document.getElementById("bound" + list).style.borderColor = "red";
+    alert(Lang.get('oboundpageLang.enterbound'));
+    return false;
+  }
+
 
   $.ajax({
     type: 'POST',
@@ -70,26 +79,20 @@ $('#picklist').on('submit', function (e) {
 
         document.getElementById("reasonerror").style.display = "block";
         document.getElementById("reason" + list).style.borderColor = "red";
+        document.getElementById("lessstock").style.display = "none";
       }
-      //庫別沒有庫存
-      else if (myObj.boolean === true && myObj.passbool === true && myObj.passstock === false) {
 
-        document.getElementById("nostock").style.display = "block";
-        document.getElementById("position").style.borderColor = "red";
-        $("#nostock #number").html(Lang.get('oboundpageLang.isn') + ' : ' + myObj.number);
-        $("#nostock #position").html(Lang.get('oboundpageLang.bound') + ' : ' + myObj.position);
-      }
       //庫別庫存小於實際領用數量
       else if (myObj.boolean === false && myObj.passbool === true && myObj.passstock === true) {
 
         document.getElementById("lessstock").style.display = "block";
         document.getElementById("position").style.borderColor = "red";
-
         var mess = Lang.get('oboundpageLang.bound') + ' : ' + myObj.position + Lang.get('oboundpageLang.nostock1');
         var mess1 = Lang.get('oboundpageLang.nowstock') + ' : ' + myObj.nowstock;
         $("#lessstock #position").html(mess);
         $("#lessstock #nowstock").html(mess1);
         document.getElementById("amount" + list).style.borderColor = "red";
+        document.getElementById("reasonerror").style.display = "none";
       }
       else if (myObj.boolean === false && myObj.passbool === false && myObj.passstock === false) {
 

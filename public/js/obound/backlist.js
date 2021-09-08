@@ -1,5 +1,3 @@
-document.getElementById("reasonerror").style.display = "none";
-
 
 //show select 退料單號
 $("#list").on("change", function () {
@@ -33,6 +31,8 @@ $('#backlist').on('submit', function (e) {
   var backpeople = back[0];
   var bound = $("#bound").val();
   var status = $("#status").val();
+  if(status == 'Good product') status = "良品";
+  if(status == 'Flawed product') status = "不良品";
   $.ajax({
     type: 'POST',
     url: "backlistsubmit",

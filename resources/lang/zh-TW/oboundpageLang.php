@@ -40,6 +40,7 @@ return [
     'inboundnum' => '入庫數量',
     'enterloc' => '請選擇儲位',
     'stockmonth' => '庫存使用月數',
+    'good' => '良品',
     'nogood' => '不良品',
     'transit' => '在途量',
     'safestock' => '安全庫存',
@@ -93,7 +94,7 @@ return [
     'addtodatabase' => '新增至資料庫',
     'basicInfo' => '基礎信息',
     'newMats' => '新增料件',
-    'matsInfo' => '料件信息(查詢/修改)',
+    'matsInfo' => '料件信息(查詢)',
     'change' => '更新',
     'delete' => '刪除',
     'exampleExcel' => '範例格式下載',
@@ -267,6 +268,5 @@ return [
     'outpickok' => '出庫完成，領料單號: ',
     'outbackok' => '出庫完成，退料單號: ',
     'lessstock' => '目前庫存小於入庫數量，無法刪除此筆入庫。',
-
-
+    'nocheck' => '請勾選欲刪除/更新項目',
 ];

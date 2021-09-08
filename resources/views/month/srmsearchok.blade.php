@@ -18,10 +18,10 @@
                 <h3>{!! __('monthlyPRpageLang.SRM') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
                         <form action="{{ route('month.srmsubmit') }}" method="POST">
                             @csrf
+                            <div class="table-responsive">
                         <table class="table">
                             <tr>
                                 <th>{!! __('monthlyPRpageLang.sxb') !!}</th>
@@ -34,7 +34,7 @@
                                 <th>{!! __('monthlyPRpageLang.moq') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.nextneed') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.nowneed') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.safestock') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.safe') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.price') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.money') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.rate') !!}</th>
@@ -54,7 +54,7 @@
                                     <td><input type = "hidden" id = "client{{$loop->index}}" name = "client{{$loop->index}}" value = "{{$data->客戶}}">{{$data->客戶}}</td>
                                     <td><input type = "hidden" id = "number{{$loop->index}}" name = "number{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
                                     <td>{{$data->品名}}</td>
-                                    <td>{{$data->本次請購數量}}</td>
+                                    <td><input type = "hidden" id = "buyamount{{$loop->index}}" name = "buyamount{{$loop->index}}" value = "{{$data->本次請購數量}}">{{$data->本次請購數量}}</td>
                                     <td><input style="width:100px" type="number" id ="sxbamount{{$loop->index}}" name="sxbamount{{$loop->index}}" required value="{{$data->本次請購數量}}"></td>
                                     <td>{{$data->MOQ}}</td>
                                     <td>{{$data->下月需求}}</td>
@@ -75,11 +75,12 @@
                                 <input type = "hidden" id = "count" name = "count" value="{{$loop->count}}">
                             @endforeach
                         </table>
+                            </div>
+                        <br>
                         <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}">
                         </form>
-                            </table>
-                    </div>
-                </div>
+
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.srm')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

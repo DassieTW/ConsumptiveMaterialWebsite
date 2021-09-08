@@ -55,10 +55,13 @@ for(var i = 0 ; i < counta ; i++){
     var needmoneya = nextneeda * pricea * ratea ;
     var needpera = needmoneya / allneed * 100 ;
     var buypera = buymoneya / allbuy * 100 ;
-    $('#needpera'+i).val(needpera);
+    buypera = buypera.toFixed(2);
+    needpera = needpera.toFixed(2);
+    $('#needpera'+i).val(needpera + '%');
     $('#data18'+i).val(needpera);
-    $('#buypera'+i).val(buypera);
+    $('#buypera'+i).val(buypera + '%');
     $('#data16'+i).val(buypera);
+
 }
 
 for(var i = 0 ; i < countb ; i++){
@@ -70,9 +73,11 @@ for(var i = 0 ; i < countb ; i++){
     var needmoneyb = nextneedb * priceb * rateb ;
     var needperb = needmoneyb / allneed * 100 ;
     var buyperb = buymoneyb / allbuy * 100 ;
-    $('#needperb'+i).val(needperb);
+    buyperb = buyperb.toFixed(2);
+    needperb = needperb.toFixed(2);
+    $('#needperb'+i).val(needperb + '%');
     $('#dataa18'+i).val(needperb);
-    $('#buyperb'+i).val(buyperb);
+    $('#buyperb'+i).val(buyperb + '%');
     $('#dataa16'+i).val(buyperb);
 }
 
@@ -109,11 +114,13 @@ $(document).ready(function(){
             var buyamounta = $("#buyamounta"+i).val();
             var buymoneya = buyamounta * pricea * ratea ;
             var buypera = buymoneya / allbuy * 100 ;
-            $('#buypera'+i).val(buypera);
+            buypera = buypera.toFixed(2);
+            $('#buypera'+i).val(buypera + '%');
             $('#data16'+i).val(buypera);
             $('#data15'+i).val(buymoneya);
             $('#data13'+i).val(buyamounta);
             $('#data0'+i).val(srmnumbera);
+
         }
         for(var i = 0 ; i < countb ; i++){
             var srmnumberb = $("#srmnumberb"+i).val()
@@ -122,7 +129,8 @@ $(document).ready(function(){
             var buyamountb = $("#buyamountb"+i).val();
             var buymoneyb = buyamountb * priceb * rateb ;
             var buyperb = buymoneyb / allbuy * 100 ;
-            $('#buyperb'+i).val(buyperb);
+            buyperb = buyperb.toFixed(2);
+            $('#buyperb'+i).val(buyperb + '%');
             $('#dataa16'+i).val(buyperb);
             $('#dataa15'+i).val(buymoneyb);
             $('#dataa13'+i).val(buyamountb);

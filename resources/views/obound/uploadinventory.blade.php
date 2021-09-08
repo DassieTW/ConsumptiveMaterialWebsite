@@ -21,8 +21,6 @@
             </div>
 
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
 
                         <form method="post" enctype="multipart/form-data" action = "{{ route('obound.uploadinventory') }}">
                             @csrf
@@ -41,6 +39,7 @@
 
                         <form  action = "{{ route('obound.insertuploadinventory') }}"method="POST">
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('oboundpageLang.client') !!}</th>
@@ -58,23 +57,26 @@
                                         $clients = DB::table('客戶別')->pluck('客戶')->toArray();
                                         $i = false;
                                         $j = false;
+                                        $error = $loop->index + 1;
                                         //判斷是否有料號
                                         if($name === null || $format === null)
                                         {
+                                            $mess = trans('oboundpageLang.noisn').' '.trans('oboundpageLang.row').' : '.$error.' '.$row[1];
                                             echo ("<script LANGUAGE='JavaScript'>
-                                            window.alert('Material is not found , Please check Material number');
-                                            window.location.href = 'uploadinventory';
-                                            </script>");
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadinventory';
+                                                    </script>");
                                         }
                                         //判斷是否有這個客戶
                                         if(in_array($row[0],$clients)) $i = true;
 
                                         if($i === false)
                                         {
+                                            $mess = trans('oboundpageLang.noclient').' '.trans('oboundpageLang.row').' : '.$error.' '.$row[0];
                                             echo ("<script LANGUAGE='JavaScript'>
-                                                window.alert('Format Error,Not Found ' + '$row[0] ' + 'in 客戶別');
-                                                window.location.href = 'uploadinventory';
-                                                </script>");
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadinventory';
+                                                    </script>");
                                         }
 
                                     ?>
@@ -89,10 +91,11 @@
                                 @endforeach
 
                             </table>
+                        </div>
+                        <br>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.addtodatabase') !!}">
                         </form>
-                    </div>
-                </div>
+                    <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.upload')}}'">{!! __('oboundpageLang.return') !!}</button>
             </div>
         </div>

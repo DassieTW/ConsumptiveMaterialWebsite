@@ -23,15 +23,14 @@
             <div class="card-body">
                 <form id = "picklist">
                     @csrf
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
 
-                            <select class=" form-control form-control-lg " id = "list" name="list"  required width="250" style="width: 250px">
-                            <option style="display: none" disabled selected value = "">{!! __('oboundpageLang.searchpicklist') !!}</option>
-                            @foreach($number as $number)
-                            <option>{{  $number->領料單號 }}</option>
-                            @endforeach
-                            </select>
+                        <select class=" form-control form-control-lg " id = "list" name="list"  required width="250" style="width: 250px">
+                        <option style="display: none" disabled selected value = "">{!! __('oboundpageLang.searchpicklist') !!}</option>
+                        @foreach($number as $number)
+                        <option>{{  $number->領料單號 }}</option>
+                        @endforeach
+                        </select>
+                        <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr id = "require">
                                     <th>{!! __('oboundpageLang.client') !!}</th>
@@ -74,7 +73,7 @@
                                         <td>{{$data->領料單號}}</td>
                                         <td>{{$data->開單時間}}</td>
                                         <td>
-                                            <select class="form-control form-control-lg" name = "bound{{$data->領料單號}}" id = "bound{{$data->領料單號}}">
+                                            <select class="form-control form-control-lg" style = "width: 150px;" name = "bound{{$data->領料單號}}" id = "bound{{$data->領料單號}}">
                                                 <option style="display: none" disabled selected value = "">{!! __('oboundpageLang.enterbound') !!}</option>
                                                 @foreach ($test as $k=> $a)
                                                 <option>庫別:{{$k}} 現有庫存:{{$a}}</option>
@@ -85,7 +84,9 @@
                                     @endforeach
 
                             </table>
-                            <div id = "reasonerror"><h3 style="color: red">{!! __('oboundpageLang.enterdiffreason') !!}</h3></div>
+                        </div>
+                        <br>
+                        <div id = "reasonerror" style="display:none; color:red;"><h3 style="color: red">{!! __('oboundpageLang.enterdiffreason') !!}</h3></div>
 
                             <label class="form-label">{!! __('oboundpageLang.sendpeople') !!}</label>
                             <select class="form-control form-control-lg" id = "sendpeople" name="sendpeople" required width="250" style="width: 250px">
@@ -104,14 +105,11 @@
                             </select>
 
                             </select>
-                            <div id = "lessstock">
+                            <div id = "lessstock" style="display:none; color:red;">
                                 <h3 style="color: red" id = "position"></h3>
                                 <h3 style="color: red" id = "nowstock"></h3>
                             </div>
-
-                            <br><br>
-                            </div>
-                        </div>
+                            <br>
                             <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.submit') !!}">
                             </form>
                         <br>

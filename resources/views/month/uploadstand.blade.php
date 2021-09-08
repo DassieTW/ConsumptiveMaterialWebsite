@@ -20,9 +20,6 @@
             </div>
 
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
-
                         <form method="post" enctype="multipart/form-data" action = "{{ route('month.uploadstand') }}">
                             @csrf
                             <div class="col-6 col-sm-3">
@@ -40,6 +37,7 @@
 
                         <form  action = "{{ route('month.insertuploadstand') }}"method="POST">
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "料號">{!! __('monthlyPRpageLang.isn') !!}</th>
@@ -81,24 +79,27 @@
                                             $i = false;
                                             $j = false;
                                             $k = false;
-
+                                            $error = $loop->index + 1;
                                             //判斷是否有料號
                                             if($name === null || $unit === null || $month === '否' || $belong !== '站位')
                                             {
+                                                $mess = trans('monthlyPRpageLang.noisn').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[0];
                                                 echo ("<script LANGUAGE='JavaScript'>
-                                                window.alert('Material is not found , Please check Material number');
-                                                window.location.href = 'uploadstand';
+                                                window.alert('$mess');
+                                                window.location.href='uploadstand';
                                                 </script>");
+
                                             }
                                             //判斷是否有這個客戶
                                             if(in_array($row[1],$clients)) $i = true;
 
                                             if($i === false)
                                             {
+                                                $mess = trans('monthlyPRpageLang.noclient').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[1];
                                                 echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[1] ' + 'in 客戶別');
-                                                    window.location.href = 'uploadstand';
-                                                    </script>");
+                                                window.alert('$mess');
+                                                window.location.href='uploadstand';
+                                                </script>");
                                             }
 
                                             //判斷是否有這個機種
@@ -106,10 +107,11 @@
 
                                             if($j === false)
                                             {
+                                                $mess = trans('monthlyPRpageLang.nomachine').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[2];
                                                 echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[2] ' + 'in 機種');
-                                                    window.location.href = 'uploadstand';
-                                                    </script>");
+                                                window.alert('$mess');
+                                                window.location.href='uploadstand';
+                                                </script>");
                                             }
 
                                             //判斷是否有這個製程
@@ -117,10 +119,11 @@
 
                                             if($k === false)
                                             {
+                                                $mess = trans('monthlyPRpageLang.noproduction').' '.trans('monthlyPRpageLang.row').' : '.$error.' '.$row[3];
                                                 echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('Format Error,Not Found ' + '$row[3] ' + 'in 製程');
-                                                    window.location.href = 'uploadstand';
-                                                    </script>");
+                                                window.alert('$mess');
+                                                window.location.href='uploadstand';
+                                                </script>");
                                             }
                                         ?>
                                         <td><input type = "hidden" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$row[0]}}">{{$row[0]}}</td>
@@ -150,10 +153,11 @@
                                 @endforeach
 
                             </table>
+                        </div>
+                        <br>
                             <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.addtodatabase') !!}">
                         </form>
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.standadd')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

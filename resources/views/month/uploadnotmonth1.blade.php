@@ -40,7 +40,7 @@
 
                     </div>
                 </div>
-                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.consumeadd')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
+                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importnotmonth')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>
 </html>

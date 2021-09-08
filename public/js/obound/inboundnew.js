@@ -1,7 +1,4 @@
 
-document.getElementById("amounterror").style.display = "none";
-document.getElementById("amounterror").style.color = "red";
-
 $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -46,7 +43,7 @@ $('#inboundnew').on('submit', function (e) {
       console.log(myObj);
       if (myObj.boolean === true && myObj.passbool === true) {
 
-        var mess = Lang.get('oboundpageLang.add') + Lang.get('oboundpageLang.success') + '，' +
+        var mess = Lang.get('oboundpageLang.add') + Lang.get('oboundpageLang.success') + '，' +' '
           +Lang.get('oboundpageLang.inlist') + ' : ' + myObj.message;
         alert(mess);
         //alert("添加成功，入庫單號: " + myObj.message);

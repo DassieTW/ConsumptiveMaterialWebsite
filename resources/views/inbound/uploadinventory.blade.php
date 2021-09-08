@@ -63,20 +63,23 @@
                                         //判斷是否有料號
                                         if($name === null || $format === null)
                                         {
+                                            $mess = trans('inboundpageLang.noisn').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[1];
                                             echo ("<script LANGUAGE='JavaScript'>
-                                            window.alert('Material is not found In Row, +'$error'+'$row[1]'+,Please check Material number');
-                                            window.location.href = 'uploadinventory';
-                                            </script>");
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadinventory';
+                                                    </script>");
                                         }
                                         //判斷是否有這個客戶
                                         if(in_array($row[0],$clients)) $i = true;
 
                                         if($i === false)
                                         {
+
+                                            $mess = trans('inboundpageLang.noclient').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[0];
                                             echo ("<script LANGUAGE='JavaScript'>
-                                                window.alert('Format Error,Not Found In Row' +'$error'+ '$row[0] ' + 'in 客戶別');
-                                                window.location.href = 'uploadinventory';
-                                                </script>");
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadinventory';
+                                                    </script>");
                                         }
 
                                         //判斷是否有這個儲位
@@ -84,10 +87,12 @@
 
                                         if($j === false)
                                         {
+
+                                            $mess = trans('inboundpageLang.noloc').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[3];
                                             echo ("<script LANGUAGE='JavaScript'>
-                                                window.alert('Format Error,Not Found In Row' + '$error'+'$row[3] ' + 'in 儲位');
-                                                window.location.href = 'uploadinventory';
-                                                </script>");
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadinventory';
+                                                    </script>");
                                         }
                                     ?>
                                     <td><input type = "hidden"  name = "data0{{$loop->index}}" value = "{{$row[0]}}">{{$row[0]}}</td>

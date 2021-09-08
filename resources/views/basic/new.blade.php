@@ -99,10 +99,9 @@
                             <label class="form-label">{!! __('basicInfoLang.senddep') !!}</label>
                             <select class="form-control form-control-lg" id = "send" name="send" required>
                                 <option style="display: none" disabled selected value = "">{!! __('basicInfoLang.entersenddep') !!}</option>
-                                <option>{!! __('basicInfoLang.ieroom') !!}</option>
-                                <option>{!! __('basicInfoLang.meroom') !!}</option>
-                                <option>{!! __('basicInfoLang.equiproom') !!}</option>
-                                <option>{!! __('basicInfoLang.room') !!}</option>
+                                @foreach ($data as $data)
+                                <option>{{$data->發料部門}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-3 col-md-4">

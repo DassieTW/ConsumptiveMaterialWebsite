@@ -1,7 +1,5 @@
 
-document.getElementById("numbererror1").style.display = "none";
-document.getElementById("numbererror1").style.color = "red";
-document.getElementById("reason").style.display = "none";
+
 
 $.ajaxSetup({
   headers: {

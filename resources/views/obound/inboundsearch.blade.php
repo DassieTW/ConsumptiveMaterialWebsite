@@ -7,7 +7,7 @@
 
 <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
 <!--for notifications pop up -->
-<script src="{{ asset('js/inbound/search.js') }}"></script>
+
 @endsection
 @section('content')
 <!DOCTYPE html>

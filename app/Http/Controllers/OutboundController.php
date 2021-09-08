@@ -10,6 +10,7 @@ use App\Models\製程;
 use App\Models\線別;
 use App\Models\領用原因;
 use App\Models\退回原因;
+use App\Models\發料部門;
 use App\Models\Outbound;
 use App\Models\出庫退料;
 use App\Models\人員信息;
@@ -80,7 +81,7 @@ class OutboundController extends Controller
                 })->select('outbound.*','consumptive_material.發料部門')
                  ->get();
 
-            return view('outbound.picklistpage')->with(['data' => $datas]);
+            return view('outbound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
         } else {
             return redirect(route('member.login'));
         }
@@ -98,7 +99,7 @@ class OutboundController extends Controller
                 })->select('出庫退料.*','consumptive_material.發料部門')
                  ->get();
 
-            return view('outbound.backlistpage')->with(['data' => $datas]);
+            return view('outbound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
         } else {
             return redirect(route('member.login'));
         }

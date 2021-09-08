@@ -18,12 +18,12 @@
                 <h3>{!! __('monthlyPRpageLang.importNonMonthlyData') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+                <div class="table-responsive">
                         <table class="table">
                             <tr>
                                 <td>{!! __('monthlyPRpageLang.client') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.isn') !!}</td>
+                                <td>{!! __('monthlyPRpageLang.pName') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.buyamount') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.uploadtime') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.description') !!}</td>
@@ -33,6 +33,7 @@
                             <tr>
                                 <td>{{$data->客戶別}}</td>
                                 <td>{{$data->料號}}</td>
+                                <td>{{$data->品名}}</td>
                                 <td>{{$data->請購數量}}</td>
                                 <td>{{$data->上傳時間}}</td>
                                 <td>{{$data->說明}}</td>
@@ -41,7 +42,6 @@
                             @endforeach
                         </table>
                     </div>
-                </div>
                 <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importnotmonth')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>

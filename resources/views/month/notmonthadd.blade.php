@@ -21,8 +21,7 @@
             <div class="card-body">
                 <form id="notmonthadd">
                     @csrf
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+                <div class="table-responsive">
                         <table class="table" id ="notmonth">
                             <tr>
                                 <td>{!! __('monthlyPRpageLang.client') !!}</td>
@@ -45,7 +44,7 @@
                                 <td>{{ $unit }}</td>
                                 <td><input type="hidden" id ="month" name="month"  value="{{$month}}">{{ $month }}</td>
                                 <td>
-                                    <select class="form-control form-control-lg " id = "reason" name="reason" >
+                                    <select style = "width: 150px;" class = "form-control form-control-lg " id = "reason" name="reason" >
                                     <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.entercontrol') !!}</option>
                                     <option>品質問題</option>
                                     <option>MPS上升</option>
@@ -54,9 +53,10 @@
                                 </td>
                             </tr>
                         </table>
-                        <div id = "error">{!! __('monthlyPRpageLang.errormonth') !!}</div>
-                    </div>
                 </div>
+                        <div id = "error" style="display:none; color:red;">{!! __('monthlyPRpageLang.errormonth') !!}</div>
+
+                <br>
                 <input type = "submit" id = "add" name ="add" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
                 </form>
                 <br>

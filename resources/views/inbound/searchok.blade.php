@@ -28,7 +28,7 @@
                                 <th>{!! __('inboundpageLang.delete') !!}</th>
                                 <th><input type = "hidden" id = "title0" name = "title0" value = "入庫單號">{!! __('inboundpageLang.inlist') !!}</th>
                                 <th><input type = "hidden" id = "title1" name = "title1" value = "料號">{!! __('inboundpageLang.isn') !!}</th>
-                                <th><input type = "hidden" id = "title2" name = "title2" value = "入庫數量">{!! __('inboundpageLang.inamount') !!}</th>
+                                <th><input type = "hidden" id = "title2" name = "title2" value = "入庫數量">{!! __('inboundpageLang.inboundnum') !!}</th>
                                 <th><input type = "hidden" id = "title3" name = "title3" value = "儲位">{!! __('inboundpageLang.loc') !!}</th>
                                 <th><input type = "hidden" id = "title4" name = "title4" value = "入庫人員">{!! __('inboundpageLang.inpeople') !!}</th>
                                 <th><input type = "hidden" id = "title5" name = "title5" value = "客戶別">{!! __('inboundpageLang.client') !!}</th>

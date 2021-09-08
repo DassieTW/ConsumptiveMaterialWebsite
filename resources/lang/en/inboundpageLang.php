@@ -83,4 +83,6 @@ return [
     'record' => 'record',
     'nocheck' => 'Please tick the items you want to delete/update',
     'lessstock' => 'The current inventory is less than the inbound amount, can not delete this inbound list.',
+    'noclient' => 'Client does not exist',
+    'noloc' => 'Location does not exist',
 ];

@@ -20,9 +20,7 @@
                 <h3>{!! __('oboundpageLang.matsInfo') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
-
+                        <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
 
@@ -39,8 +37,8 @@
                                     </tr>
                                     @endforeach
                             </table>
-                    </div>
-                </div>
+                        </div>
+
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.material')}}'">{!! __('oboundpageLang.return') !!}</button>
             </div>
         </div>

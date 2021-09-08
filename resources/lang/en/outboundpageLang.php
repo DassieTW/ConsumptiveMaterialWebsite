@@ -12,7 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
     'pick' => 'Pick Material',
     'picklist' => 'Pick Material List',
     'pickrecord' => 'Pick Material Record',
@@ -87,7 +86,7 @@ return [
     'searchbacklist' =>'Search return list',
     'deletebacklist' =>'Delete return list',
     'enterstatus' =>'Please select the status',
-    'outpickok' =>'Outbound completed completed, Picklist number',
+    'outpickok' =>'Outbound completed, Picklist number',
     'outbackok' =>'Outbound completed, Backlist number',
     'nowloc' =>'current storage location',
     'stockless'=>'The inventory is less than the actual requisition quantity and cannot outbound',

@@ -19,11 +19,11 @@
                 <h3>{!! __('monthlyPRpageLang.standUpdate') !!}</h3>
             </div>
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-4">
+
                         <form action="{{ route('month.standchangeordelete') }}" method="POST">
                             @csrf
                             <input type = "hidden" id = "title" name = "title" value = "站位人力">
+                            <div class="table-responsive">
                         <table class="table">
                             <tr>
                                 <th>{!! __('monthlyPRpageLang.delete') !!}</th>
@@ -80,6 +80,7 @@
                                 @endforeach
 
                             </table>
+                        </div>
                             @foreach ($data1 as $data )
 
                                     <input type = "hidden" name = "data0{{$loop->index}}" value = "{{$data->料號}}">
@@ -104,13 +105,12 @@
                                     <input type = "hidden" id="data19{{$loop->index}}" name = "data19{{$loop->index}}" value = "">
                                     <input type = "hidden" id="data20{{$loop->index}}" name = "data20{{$loop->index}}" value = "">
                             @endforeach
+                            <br>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.delete') !!}">
                             <input type = "submit" id = "change" name = "change" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.change') !!}">
                             <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.download') !!}">
                         </form>
-
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.stand')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

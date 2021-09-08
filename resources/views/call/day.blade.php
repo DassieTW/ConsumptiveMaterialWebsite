@@ -21,8 +21,6 @@
             </div>
             <div class="card-body">
 
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
                         <div class="table-responsive">
                             <table class="table table-bordered" id = "test">
                                 <tr>
@@ -70,14 +68,9 @@
                                     @endif
                                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                     @endforeach
-
-
                             </table>
-
                             </div>
-                        </div>
-                </div>
-
+                            <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('call.day')}}'">{!! __('callpageLang.return') !!}</button>
             </div>
         </div>

@@ -61,7 +61,7 @@ Route::get('/monthaddok', [MonthController::class, 'monthaddok'])->middleware('c
 //請購單頁面
 Route::get('/buylist', [MonthController::class, 'buylist'])->name('month.buylist')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//Route::get('/buylistmake', [MonthController::class, 'buylistmake']);
+Route::get('/buylistmake', [MonthController::class, 'buylist'])->name('month.buylist')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/buylistmake', [MonthController::class, 'buylistmake'])->name('month.buylistmake')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 

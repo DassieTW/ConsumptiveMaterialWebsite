@@ -1,5 +1,4 @@
-document.getElementById("error").style.display = "none";
-document.getElementById("error").style.color = "red";
+
 
 $.ajaxSetup({
   headers: {
@@ -9,6 +8,12 @@ $.ajaxSetup({
 
 $('#notmonthadd').on('submit', function (e) {
   e.preventDefault();
+
+
+  // clean up previous input results
+  $('.is-invalid').removeClass('is-invalid');
+  $(".invalid-feedback").remove();
+
   var client = $("#client").val();
   var number = $("#number").val();
   var amount = $("#amount").val();
