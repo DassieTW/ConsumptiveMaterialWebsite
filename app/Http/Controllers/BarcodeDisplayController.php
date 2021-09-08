@@ -251,7 +251,8 @@ class BarcodeDisplayController extends Controller
             $request->session()->forget('isnArray');
             $request->session()->forget('isnNameArray');
         } // if
-        else if (\Session::has('locSepCount') && \Session::get('locSepCount') !== "" && count( \Session::get('locSepCount')) > 0) {
+        
+        if (\Session::has('locSepCount') && \Session::get('locSepCount') !== "" && count( \Session::get('locSepCount')) > 0) {
             for ( $a = 0 ; $a < count( \Session::get('locSepCount')) ; $a++) {
                 unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--loc--' . $a . '-2.png'));
             } // for
