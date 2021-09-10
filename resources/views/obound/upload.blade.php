@@ -23,7 +23,7 @@
 <br>
     <form method="post" enctype="multipart/form-data" action = "{{ route('obound.uploadinventory') }}">
         @csrf
-        <div class="col-6 col-sm-3">
+        <div class="col-6 col-sm-4">
             <label>{!! __('oboundpageLang.plz_upload') !!}</label>
             <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" name="select_file" />
             @error('select_file')

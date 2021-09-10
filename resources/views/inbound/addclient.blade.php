@@ -20,9 +20,7 @@
             <div class="card-body">
                 <form action="{{ route('inbound.addclientsubmit') }}" method="POST">
                     @csrf
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
-
+                <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr id = "require">
                                     <th>{!! __('inboundpageLang.client') !!}</th>
@@ -33,7 +31,7 @@
                                     <th>{!! __('inboundpageLang.transit') !!}</th>
                                     <th>{!! __('inboundpageLang.nowstock') !!}</th>
                                     <th>{!! __('inboundpageLang.safe') !!}</th>
-                                    <th>{!! __('inboundpageLang.inamount') !!}</th>
+                                    <th>{!! __('inboundpageLang.inboundnum') !!}</th>
                                     <th>{!! __('inboundpageLang.inreason') !!}</th>
                                     <th>{!! __('inboundpageLang.oldloc') !!}</th>
                                     <th>{!! __('inboundpageLang.newloc') !!}</th>
@@ -117,6 +115,8 @@
                                     @endforeach
 
                             </table>
+                        </div>
+                        <br>
                             <div class="mb-3 col-md-6">
                                 <label class="form-label">{!! __('inboundpageLang.inpeople') !!}</label>
                                 <select class="form-control form-control-lg" id = "inpeople" name="inpeople" required width="300" style="width: 300px">
@@ -126,10 +126,7 @@
                                 @endforeach
                                 </select>
                             </div>
-
-                            <br><br>
-                            </div>
-                        </div>
+                            <br>
                             <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.submit') !!}">
                         </form>
                         <br>

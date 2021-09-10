@@ -53,13 +53,13 @@
 
                         </table>
                         <?php
-                            $stock = DB::table('O庫inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->pluck('現有庫存')->toArray();
-                            $position = DB::table('O庫inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->pluck('庫別')->toArray();
+                            $stock = DB::table('O庫inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->where('現有庫存','>',0)->pluck('現有庫存')->toArray();
+                            $position = DB::table('O庫inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->where('現有庫存','>',0)->pluck('庫別')->toArray();
                             $test = array_combine($position, $stock);
                         ?>
 
                         @foreach ($test as $k=> $a)
-                            <p>庫別:{{$k}} 現有庫存:{{$a}}</p>
+                            <p>{!! __('oboundpageLang.bound') !!} : {{$k}} {!! __('oboundpageLang.nowstock') !!} : {{$a}}</p>
                         @endforeach
 
                     </div>

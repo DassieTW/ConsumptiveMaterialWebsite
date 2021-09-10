@@ -8,7 +8,7 @@ $.ajaxSetup({
 $("#usereason").on("change", function () {
 
   var value = $("#usereason").val();
-  if (value === "其他") {
+  if (value === "其他" || value === "other") {
     document.getElementById("reason").style.display = "block";
   }
   else {
@@ -27,7 +27,7 @@ $('#pick').on('submit', function (e) {
   var production = $("#production").val();
   var line = $("#line").val();
   var usereason = $("#usereason").val();
-  if (usereason === "其他") {
+  if (usereason === "其他" || usereason === "other") {
     usereason = $('#reason').val();
   }
   var number = $('#number').val();

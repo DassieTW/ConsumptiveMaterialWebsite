@@ -44,10 +44,10 @@
                                 <tr>
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('oboundpageLang.client') !!}</th>
                                     <th><input type = "hidden" id = "title1" name = "title1" value = "料號">{!! __('oboundpageLang.isn') !!}</th>
-                                    <th><input type = "hidden" id = "title1" name = "title1" value = "品名">{!! __('oboundpageLang.pName') !!}</th>
-                                    <th><input type = "hidden" id = "title1" name = "title1" value = "規格">{!! __('oboundpageLang.format') !!}</th>
-                                    <th><input type = "hidden" id = "title2" name = "title2" value = "數量">{!! __('oboundpageLang.amount') !!}</th>
-                                    <th><input type = "hidden" id = "title2" name = "title3" value = "庫別">{!! __('oboundpageLang.bound') !!}</th>
+                                    <th><input type = "hidden" id = "title2" name = "title2" value = "品名">{!! __('oboundpageLang.pName') !!}</th>
+                                    <th><input type = "hidden" id = "title3" name = "title3" value = "規格">{!! __('oboundpageLang.format') !!}</th>
+                                    <th><input type = "hidden" id = "title4" name = "title4" value = "數量">{!! __('oboundpageLang.amount') !!}</th>
+                                    <th><input type = "hidden" id = "title5" name = "title5" value = "庫別">{!! __('oboundpageLang.bound') !!}</th>
                                 </tr>
                                 @foreach($data as $row)
                                 <tr>
@@ -55,6 +55,7 @@
                                         $name = DB::table('O庫_material')->where('料號',$row[1])->value('品名');
                                         $format = DB::table('O庫_material')->where('料號',$row[1])->value('規格');
                                         $clients = DB::table('客戶別')->pluck('客戶')->toArray();
+                                        $bounds = DB::table('O庫')->pluck('O庫')->toArray();
                                         $i = false;
                                         $j = false;
                                         $error = $loop->index + 1;
@@ -65,7 +66,9 @@
                                             echo ("<script LANGUAGE='JavaScript'>
                                                     window.alert('$mess');
                                                     window.location.href='uploadinventory';
+
                                                     </script>");
+
                                         }
                                         //判斷是否有這個客戶
                                         if(in_array($row[0],$clients)) $i = true;
@@ -76,16 +79,40 @@
                                             echo ("<script LANGUAGE='JavaScript'>
                                                     window.alert('$mess');
                                                     window.location.href='uploadinventory';
+
                                                     </script>");
+
+
                                         }
 
+                                        //判斷是否有庫別
+                                        if(in_array($row[3],$bounds)) $j = true;
+
+                                        if($j === false)
+                                        {
+                                            $mess = trans('oboundpageLang.nobound').' '.trans('oboundpageLang.row').' : '.$error.' '.$row[3];
+                                            echo ("<script LANGUAGE='JavaScript'>
+                                                    window.alert('$mess');
+                                                    window.location.href='uploadinventory';
+
+                                                    </script>");
+
+
+                                        }
                                     ?>
                                     <td><input type = "hidden"  name = "data0{{$loop->index}}" value = "{{$row[0]}}">{{$row[0]}}</td>
                                     <td><input type = "hidden"  name = "data1{{$loop->index}}" value = "{{$row[1]}}">{{$row[1]}}</td>
                                     <td><input type = "hidden"  name = "data4{{$loop->index}}" value = "{{$name}}">{{$name}}</td>
                                     <td><input type = "hidden"  name = "data5{{$loop->index}}" value = "{{$format}}">{{$format}}</td>
                                     <td><input type = "number"  name = "data2{{$loop->index}}" value = "{{$row[2]}}"></td>
-                                    <td><input type = "text"  name = "data3{{$loop->index}}" value = "{{$row[3]}}"></td>
+                                    <td>
+                                        <select class="form-control form-control-lg" id = "data3{{$loop->index}}" name="data3{{$loop->index}}" >
+                                        <option style="display: none" selected value = "{{$row[3]}}">{{$row[3]}}</option>
+                                        @foreach($bounds as $bound)
+                                        <option>{{  $bound }}</option>
+                                        @endforeach
+                                        </select>
+                                    </td>
                                 </tr>
                                 <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                 @endforeach

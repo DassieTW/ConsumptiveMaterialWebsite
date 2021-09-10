@@ -63,7 +63,7 @@
                             @foreach($usereason as $usereason)
                             <option>{{  $usereason->領用原因 }}</option>
                             @endforeach
-                            <option>其他</option>
+                            <option>{!! __('oboundpageLang.other') !!}</option>
                             </select>
                             <br>
                             <input class="form-control form-control-lg " style="display:none;" type="text" id ="reason" name="reason" placeholder="{!! __('oboundpageLang.inputusereason') !!}">
