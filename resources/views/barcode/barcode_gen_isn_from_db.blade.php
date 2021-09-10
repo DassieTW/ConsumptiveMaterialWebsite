@@ -46,7 +46,7 @@
                             <div class="col col-auto p-0">
                                 <input type="text" name="searchIn" class="form-control p-1" id="searchIn" maxlength="12"
                                     style="width: 15ch; text-align: center;" placeholder="4010-..."
-                                    pattern="[a-zA-Z0-9._%+-]{1,12}" required>
+                                    pattern="[a-zA-Z0-9._%+-]{1,12}">
                             </div>
                         </div>
                         <div class="row justify-content-center align-items-center mt-3">

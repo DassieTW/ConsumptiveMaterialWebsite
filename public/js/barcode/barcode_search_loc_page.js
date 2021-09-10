@@ -99,6 +99,7 @@ function mergeTwoArrays(Array1, Array2) {
 $(document).ready(function () {
     $('#searchForm').on('submit', function (e) {
         e.preventDefault();
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -107,6 +108,8 @@ $(document).ready(function () {
         var searchIn = $("#searchIn").val();
         $("#searchIn").val("");
         // clean up previous input results
+        sessionStorage.clear();
+        localStorage.clear();
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 

@@ -136,6 +136,8 @@ $(document).ready(function () {
         var searchIn = $("#searchIn").val();
         $("#searchIn").val("");
         // clean up previous input results
+        sessionStorage.clear();
+        localStorage.clear();
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 

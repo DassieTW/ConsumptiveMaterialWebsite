@@ -270,11 +270,6 @@ class BarcodeDisplayController extends Controller
     {
         // We are collecting all data submitting via Ajax
 
-        $rules = [
-            'searchIn' => ['required', 'regex:/[a-zA-Z0-9._%+-]{1,12}/'],
-        ];
-
-        $this->validate($request, $rules);
         $fetchedData = $this->service->searchISNinDB($request);
         if (count($fetchedData) === 0) { // return 420 if the search result length is 0
             return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
@@ -288,12 +283,6 @@ class BarcodeDisplayController extends Controller
     public function searchLoc(Request $request)
     {
         // We are collecting all data submitting via Ajax
-
-        $rules = [
-            'searchIn' => ['required', 'regex:/[a-zA-Z0-9._%+-]{1,12}/'],
-        ];
-
-        $this->validate($request, $rules);
         $fetchedData = $this->service->searchLocinDB($request);
         if (count($fetchedData) === 0) { // return 420 if the search result length is 0
             return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
