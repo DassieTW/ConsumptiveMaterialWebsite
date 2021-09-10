@@ -1304,7 +1304,7 @@ class BasicInformationController extends Controller
             $sheetData = $spreadsheet->getActiveSheet()->toArray();
 
             unset($sheetData[0]);
-            return view('basic.newupload')->with(['data' => $sheetData])->with(['data1' => 發料部門::cursor()]);;
+            return view('basic.newupload')->with(['data' => $sheetData])->with(['senddata' => 發料部門::cursor()]);;
         }
         else
         {
@@ -1333,6 +1333,7 @@ class BasicInformationController extends Controller
             $count = $request->input('count');
             $record = 0;
             $row = 0;
+            $test = 0;
             for($i = 0 ; $i < $count ; $i ++)
             {
                 if($request->input('data0a'.$i) !== null && $request->input('data1a'.$i) !== null)
@@ -1369,7 +1370,7 @@ class BasicInformationController extends Controller
                     {
                         if(strcasecmp($number,$numbers[$j]) === 0)
                         {
-                            $row = $i++;
+                            $row = $i + 1;
 
                             $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnrepeat');
                             echo ("<script LANGUAGE='JavaScript'>
@@ -1389,7 +1390,7 @@ class BasicInformationController extends Controller
                     //長度是否為12
                     if(strlen($request->input('data0a'.$i)) !== 12)
                     {
-                        $row = $i++;
+                        $row = $i + 1;
                         $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnlength');
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
@@ -1404,7 +1405,7 @@ class BasicInformationController extends Controller
                         //check 非月請購是否有填安全庫存
                         if($month === '否' && $request->input('data13a'.$i) === null)
                         {
-                            $row = $i++;
+                            $row = $i + 1 ;
                             $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.safeerror');
                             echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess');
@@ -1416,23 +1417,45 @@ class BasicInformationController extends Controller
                         }
                         else
                         {
-                            DB::beginTransaction();
-                            try {
-                                DB::table('consumptive_material')
-                                    ->insert(['料號' => $number , '品名' => $name , '規格' => $format ,'單價' => $price , '幣別' => $money , '單位' => $unit
-                                    , 'MPQ' => $mpq , 'MOQ' => $moq , 'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea , '耗材歸屬' => $belong , '發料部門' => $send
-                                    , '安全庫存' => $safe ,'created_at' => Carbon::now()]);
-                                DB::commit();
-                                $record++;
-                            }catch (\Exception $e) {
-                                DB::rollback();
+                            $test ++;
+                        }
+                        if($test == $count)
+                        {
+                            for($i = 0 ; $i < $count ; $i ++)
+                            {
+                                $number =  $request->input('data0a'. $i);
+                                $name =  $request->input('data1a'. $i);
+                                $format =  $request->input('data2a'. $i);
+                                $price =  $request->input('data3a'. $i);
+                                $money =  $request->input('data4a'. $i);
+                                $unit =  $request->input('data5a'. $i);
+                                $mpq =  $request->input('data6a'. $i);
+                                $moq =  $request->input('data7a'. $i);
+                                $lt =  $request->input('data8a'. $i);
+                                $month =  $request->input('data9a'. $i);
+                                $gradea =  $request->input('data10a'. $i);
+                                $belong =  $request->input('data11a'. $i);
+                                $send =  $request->input('data12a'. $i);
+                                $safe =  $request->input('data13a'. $i);
 
-                                $mess = $e->getMessage();
-                                dd($mess);
-                                echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('$mess');
-                                window.location.href='/basic';
-                                </script>");
+                                DB::beginTransaction();
+                                try {
+                                    DB::table('consumptive_material')
+                                        ->insert(['料號' => $number , '品名' => $name , '規格' => $format ,'單價' => $price , '幣別' => $money , '單位' => $unit
+                                        , 'MPQ' => $mpq , 'MOQ' => $moq , 'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea , '耗材歸屬' => $belong , '發料部門' => $send
+                                        , '安全庫存' => $safe ,'created_at' => Carbon::now()]);
+                                    DB::commit();
+                                    $record++;
+                                }catch (\Exception $e) {
+                                    DB::rollback();
+
+                                    $mess = $e->getMessage();
+                                    dd($mess);
+                                    echo ("<script LANGUAGE='JavaScript'>
+                                    window.alert('$mess');
+                                    window.location.href='/basic';
+                                    </script>");
+                                }
                             }
                         }
                     }

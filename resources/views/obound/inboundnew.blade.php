@@ -47,7 +47,7 @@
                                     <td><input type = "hidden" id = "number" name = "number" value = "{{ Session::get('number') }}">{{ Session::get('number') }}</td>
                                     <td><input type = "hidden" id = "name" name = "name" value = "{{ Session::get('name') }}">{{ Session::get('name') }}</td>
                                     <td><input type = "hidden" id = "format" name = "format" value = "{{ Session::get('format') }}">{{ Session::get('format') }}</td>
-                                    <td><input type = "number"  id = "amount" name = "amount" value = "" required></td>
+                                    <td><input type = "number"  id = "amount" name = "amount" value = "" required placeholder="{!! __('oboundpageLang.enteramount') !!}"></td>
                                     <td><input type = "text"  id = "remark" name = "remark" value = "" ></td>
                                     <td><input type = "hidden" id = "inreason" name = "inreason" value = "{{ Session::get('inreason') }}">{{ Session::get('inreason') }}</td>
                                     <td>

@@ -93,7 +93,7 @@ class OboundController extends Controller
                 DB::beginTransaction();
                 try {
                 DB::table('O庫_material')
-                ->insert(['料號' => $number, '品名' => $name, '規格' => $format]);
+                ->insert(['料號' => $number, '品名' => $name, '規格' => $format , 'created_at' => Carbon::now()]);
                 DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -154,7 +154,7 @@ class OboundController extends Controller
         }
     }
 
-    //上傳資料新增至資料庫
+    //上傳資料新增至資料庫(料號)
     public function insertuploadmaterial(Request $request)
     {
         if (Session::has('username'))
@@ -162,6 +162,7 @@ class OboundController extends Controller
             $count = $request->input('count');
             $record = 0;
             $row = 0;
+            $test = 0;
             for($i = 0 ; $i < $count ; $i ++)
             {
                 $number =  $request->input('data0'. $i);
@@ -171,9 +172,9 @@ class OboundController extends Controller
                 $numbers = DB::table('O庫_material')->pluck('料號');
                 $row = $i + 1;
                 //判斷料號是否重複
-                for($i = 0 ; $i < count($numbers) ; $i ++)
+                for($j = 0 ; $j < count($numbers) ; $j ++)
                 {
-                    if(strcasecmp($number,$numbers[$i]) === 0)
+                    if(strcasecmp($number,$numbers[$j]) === 0)
                     {
                         $mess = trans('oboundpageLang.row').' : '.$row.' '.trans('oboundpageLang.isnrepeat');
                         echo ("<script LANGUAGE='JavaScript'>
@@ -190,27 +191,35 @@ class OboundController extends Controller
                         continue;
                     }
                 }
+                $test++;
+            }
+            if($test == $count)
+            {
+                for($i = 0 ; $i < $count ; $i ++)
+                {
+                    $number =  $request->input('data0'. $i);
+                    $name =  $request->input('data1'. $i);
+                    $format =  $request->input('data2'. $i);
 
-                DB::beginTransaction();
-                try {
-                    DB::table('O庫_material')
-                    ->insert(['料號' => $number, '品名' => $name, '規格' => $format]);
-                    DB::commit();
-                    $record++;
-                }catch (\Exception $e) {
-                    DB::rollback();
-                    $mess = $e->getmessage();
-                    echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                    </script>");
-                    return view('obound.uploadmaterial1');
+                    DB::beginTransaction();
+                    try {
+                        DB::table('O庫_material')
+                        ->insert(['料號' => $number, '品名' => $name, '規格' => $format,'created_at' => Carbon::now()]);
+                        DB::commit();
+                        $record++;
+                    }catch (\Exception $e) {
+                        DB::rollback();
+                        $mess = $e->getmessage();
+                        echo ("<script LANGUAGE='JavaScript'>
+                            window.alert('$mess');
+                        </script>");
+                        return view('obound.uploadmaterial1');
+                    }
                 }
-
             }
 
             $mess = trans('oboundpageLang.total').' '.$record.trans('oboundpageLang.record').' '
-                .trans('oboundpageLang.isn').' '.trans('oboundpageLang.upload1').' '
-                .trans('oboundpageLang.success');
+                .trans('oboundpageLang.newMats').' '.trans('oboundpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
                 window.location.href='/obound';
@@ -721,7 +730,7 @@ class OboundController extends Controller
 
                     if($stock < $amount)
                     {
-                        $mess = trans('oboundpageLang.lessstock').' '.trans('oboundpageLang.nowstock').' : '.$stock.' '
+                        $mess = trans('oboundpageLang.lessstock1').'\n'.trans('oboundpageLang.nowstock').' : '.$stock.' '
                         .trans('oboundpageLang.inboundnum').' : '.$amount;
                         echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess');
@@ -831,7 +840,7 @@ class OboundController extends Controller
         }
     }
 
-    //O庫-上傳資料新增至資料庫
+    //O庫-上傳資料新增至資料庫(庫存)
     public function insertuploadinventory(Request $request)
     {
         if (Session::has('username'))
@@ -942,22 +951,25 @@ class OboundController extends Controller
                 if ($request->input('number') !== null) {
                     $datas = DB::table('O庫不良品inventory')
                         ->where('料號', 'like', $request->input('number') . '%')
+                        ->where('現有庫存','>',0)
                         ->get();
                 }
                 //all empty
                 if($request->input('client') === null && $request->input('bound') === null && $request->input('number') === null)
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()]);
+                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('現有庫存','>',0)]);
                 }
                 //select client
                 else if($request->input('client') !== null && $request->input('bound') === null && $request->input('number') === null)
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('客戶別' , $client)]);
+                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('現有庫存','>',0)
+                    ->where('客戶別' , $client)]);
                 }
                 //select bound
                 else if($request->input('client') === null && $request->input('bound') !== null && $request->input('number') === null)
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('庫別' , $bound)]);
+                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('現有庫存','>',0)
+                    ->where('庫別' , $bound)]);
                 }
 
                 //input material number
@@ -968,7 +980,8 @@ class OboundController extends Controller
                 //select client and bound
                 else if($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') === null )
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('客戶別' , $client)->where('庫別' , $bound)]);
+                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('現有庫存','>',0)
+                    ->where('客戶別' , $client)->where('庫別' , $bound)]);
 
                 }
                 //select client and number
@@ -995,22 +1008,23 @@ class OboundController extends Controller
                 if ($request->input('number') !== null) {
                     $datas = DB::table('O庫inventory')
                         ->where('料號', 'like', $request->input('number') . '%')
+                        ->where('現有庫存','>',0)
                         ->get();
                 }
                 //all empty
                 if($request->input('client') === null && $request->input('bound') === null && $request->input('number') === null)
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()]);
+                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('現有庫存','>',0)]);
                 }
                 //select client
                 else if($request->input('client') !== null && $request->input('bound') === null && $request->input('number') === null)
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('客戶別' , $client)]);
+                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('客戶別' , $client)->where('現有庫存','>',0)]);
                 }
                 //select bound
                 else if($request->input('client') === null && $request->input('bound') !== null && $request->input('number') === null)
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('庫別' , $bound)]);
+                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('庫別' , $bound)->where('現有庫存','>',0)]);
                 }
 
                 //input material number
@@ -1021,7 +1035,8 @@ class OboundController extends Controller
                 //select client and bound
                 else if($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') === null )
                 {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('客戶別' , $client)->where('庫別' , $bound)]);
+                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('客戶別' , $client)
+                    ->where('庫別' , $bound)->where('現有庫存','>',0)]);
 
                 }
                 //select client and number

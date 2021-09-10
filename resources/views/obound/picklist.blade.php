@@ -105,9 +105,10 @@
                             </select>
 
                             </select>
-                            <div id = "lessstock" style="display:none; color:red;">
+                            <div id = "lessstock" style="display:none;">
                                 <h3 style="color: red" id = "position"></h3>
                                 <h3 style="color: red" id = "nowstock"></h3>
+                                <h3 style="color: red" id = "amount"></h3>
                             </div>
                             <br>
                             <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.submit') !!}">

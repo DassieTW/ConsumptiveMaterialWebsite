@@ -80,6 +80,8 @@ $('#picklist').on('submit', function (e) {
         document.getElementById("reasonerror").style.display = "block";
         document.getElementById("reason" + list).style.borderColor = "red";
         document.getElementById("lessstock").style.display = "none";
+        document.getElementById("amount" + list).style.borderColor = "";
+        document.getElementById("bound").style.borderColor = "";
       }
 
       //庫別庫存小於實際領用數量
@@ -87,10 +89,11 @@ $('#picklist').on('submit', function (e) {
 
         document.getElementById("lessstock").style.display = "block";
         document.getElementById("position").style.borderColor = "red";
-        var mess = Lang.get('oboundpageLang.bound') + ' : ' + myObj.position + Lang.get('oboundpageLang.nostock1');
+        var mess = Lang.get('oboundpageLang.nowbound') + ' : ' + myObj.position + '<br>' + Lang.get('oboundpageLang.stockless');
         var mess1 = Lang.get('oboundpageLang.nowstock') + ' : ' + myObj.nowstock;
         $("#lessstock #position").html(mess);
         $("#lessstock #nowstock").html(mess1);
+        $("#lessstock #amount").html(Lang.get('outboundpageLang.realpickamount') + ' : ' + amount);
         document.getElementById("amount" + list).style.borderColor = "red";
         document.getElementById("reasonerror").style.display = "none";
       }

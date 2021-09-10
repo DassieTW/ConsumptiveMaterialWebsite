@@ -101,8 +101,8 @@
                                         <td>
                                             <select style="width:100px" class="form-control form-control-lg " name="data12a{{$loop->index}}" value = "{{$row[12]}}" required>
                                             <option style="display: none"  selected value = "{{$row[12]}}">{{$row[12]}}</option>
-                                            @foreach ($data1 as $data1)
-                                            <option>{{$data1->發料部門}}</option>
+                                            @foreach ($senddata as $send)
+                                            <option>{{$send->發料部門}}</option>
                                             @endforeach
                                             </select>
                                         </td>

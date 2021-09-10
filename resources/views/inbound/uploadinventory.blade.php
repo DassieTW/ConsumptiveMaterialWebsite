@@ -20,8 +20,6 @@
             </div>
 
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
 
                         <form method="post" enctype="multipart/form-data" action = "{{ route('inbound.uploadinventory') }}">
                             @csrf
@@ -40,6 +38,7 @@
 
                         <form  action = "{{ route('inbound.insertuploadinventory') }}"method="POST">
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('inboundpageLang.client') !!}</th>
@@ -113,10 +112,11 @@
                                 @endforeach
 
                             </table>
+                            </div>
+                            <br>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.addtodatabase') !!}">
                         </form>
-                    </div>
-                </div>
+                        <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.upload')}}'">{!! __('inboundpageLang.return') !!}</button>
             </div>
         </div>

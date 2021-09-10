@@ -59,6 +59,7 @@
 
                             </table>
                             </div>
+                            <br>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.addtodatabase') !!}">
                         </form>
                         <br>

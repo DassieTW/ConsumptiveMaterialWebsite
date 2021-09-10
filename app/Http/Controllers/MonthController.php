@@ -3410,7 +3410,7 @@ class MonthController extends Controller
         {
             $count = $request->input('count');
             $now = Carbon::now();
-            $time = 0;
+            $record = 0;
             for($i = 0 ; $i < $count ; $i ++)
             {
                 $client =  $request->input('data0'. $i);
@@ -3431,7 +3431,7 @@ class MonthController extends Controller
                             ->insert(['機種' => $machine , '客戶別' => $client , '製程' => $production ,'本月MPS' => $nowmps
                             , '本月生產天數' => $nowday ,'下月MPS' => $nextmps ,'下月生產天數' => $nextday , '填寫時間' => $now]);
                         DB::commit();
-                        $time++;
+                        $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
                         $mess = trans('monthlyPRpageLang.repeat');

@@ -58,13 +58,13 @@
                     </div>
                     <br>
                         <?php
-                            $stock = DB::table('inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->pluck('現有庫存')->toArray();
-                            $position = DB::table('inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->pluck('儲位')->toArray();
+                            $stock = DB::table('inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->where('現有庫存','>',0)->pluck('現有庫存')->toArray();
+                            $position = DB::table('inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->where('現有庫存','>',0)->pluck('儲位')->toArray();
                             $test = array_combine($position, $stock);
                         ?>
 
                         @foreach ($test as $k=> $a)
-                            <p>{!! __('outboundpageLang.loc') !!}:{{$k}} {!! __('outboundpageLang.nowstock') !!}:{{$a}}</p>
+                            <p>{!! __('outboundpageLang.loc') !!} : {{$k}} {!! __('outboundpageLang.nowstock') !!} : {{$a}}</p>
                         @endforeach
 
 

@@ -30,7 +30,7 @@
                                 <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('oboundpageLang.client') !!}</th>
                                 <th><input type = "hidden" id = "title1" name = "title1" value = "機種">{!! __('oboundpageLang.machine') !!}</th>
                                 <th><input type = "hidden" id = "title2" name = "title2" value = "製程">{!! __('oboundpageLang.process') !!}</th>
-                                <th><input type = "hidden" id = "title3" name = "title3" value = "領用原因">{!! __('oboundpageLang.usereasno') !!}</th>
+                                <th><input type = "hidden" id = "title3" name = "title3" value = "領用原因">{!! __('oboundpageLang.usereason') !!}</th>
                                 <th><input type = "hidden" id = "title4" name = "title4" value = "線別">{!! __('oboundpageLang.line') !!}</th>
                                 <th><input type = "hidden" id = "title5" name = "title5" value = "料號">{!! __('oboundpageLang.isn') !!}</th>
                                 <th><input type = "hidden" id = "title6" name = "title6" value = "品名">{!! __('oboundpageLang.pName') !!}</th>

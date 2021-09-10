@@ -25,7 +25,7 @@
                     <form action = "{{ route('obound.searchmaterial') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">{!! __('oboundpageLang.matssearch') !!}</label>
+                            <label class="form-label">{!! __('oboundpageLang.matsInfo') !!}</label>
                             <input class="form-control form-control-lg @error('number') is-invalid @enderror" type="text" id ="number" name="number" placeholder="{!! __('oboundpageLang.enterisn') !!}"/>
                             @error('number')
                             <span class="invalid-feedback d-block" role="alert">

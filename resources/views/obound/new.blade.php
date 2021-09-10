@@ -26,15 +26,15 @@
                     <div class="mb-3">
 
                         <label class="form-label">{!! __('oboundpageLang.oisn') !!}</label>
-                        <input class="form-control form-control-lg @error('number') is-invalid @enderror" type="text" id ="number" name="number" style="width: 250px" required>
-                        <div id="numbererror">{!! __('oboundpageLang.isnrepeat') !!}</div>
+                        <input class="form-control form-control-lg @error('number') is-invalid @enderror" type="text" id ="number" name="number" style="width: 250px" required placeholder="{!! __('oboundpageLang.enterisn') !!}">
+                        <div id="numbererror" style="display:none; color:red;">{!! __('oboundpageLang.isnrepeat') !!}</div>
 
                         <label class="form-label">{!! __('oboundpageLang.pName') !!}</label>
-                        <input class="form-control form-control-lg @error('name') is-invalid @enderror" type="text" id ="name" name="name" style="width: 250px" required>
+                        <input class="form-control form-control-lg @error('name') is-invalid @enderror" type="text" id ="name" name="name" style="width: 250px" required placeholder="{!! __('oboundpageLang.enterpName') !!}">
 
 
                         <label class="form-label">{!! __('oboundpageLang.format') !!}</label>
-                        <input class="form-control form-control-lg @error('format') is-invalid @enderror" type="text" id ="format" name="format" style="width: 250px" required>
+                        <input class="form-control form-control-lg @error('format') is-invalid @enderror" type="text" id ="format" name="format" style="width: 250px" required placeholder="{!! __('oboundpageLang.enterformat') !!}">
 
                     </div>
                     <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.addtodatabase') !!}">

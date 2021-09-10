@@ -19,12 +19,11 @@
             </div>
 
             <div class="card-body">
-                <div class="d-flex w-100 h-100">
-                    <div class="mb-3">
+
 
                         <form method="post" enctype="multipart/form-data" action = "{{ route('member.uploadpeople') }}">
                             @csrf
-                            <div class="col-6 col-sm-3">
+                            <div class="col-6 col-sm-4">
                                 <label>{!! __('loginPageLang.plz_upload') !!}</label>
                                 <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" name="select_file" />
                                 @error('select_file')
@@ -39,6 +38,7 @@
 
                         <form  action = "{{ route('member.insertuploadpeople') }}"method="POST">
                             @csrf
+                            <div class="table-responsive">
                             <table class="table" id = "test">
                                 <tr>
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "工號">{!! __('loginPageLang.jobnumber') !!}</th>
@@ -56,10 +56,11 @@
                                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                 @endforeach
                             </table>
+                            </div>
+                            <br>
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('loginPageLang.addtodatabase') !!}">
                         </form>
-                    </div>
-                </div>
+                    <br>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('member.new')}}'">{!! __('loginPageLang.return') !!}</button>
             </div>
         </div>

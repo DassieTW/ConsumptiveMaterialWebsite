@@ -275,7 +275,8 @@ class OutboundController extends Controller
             $send = $request->input('send');
             $production = $request->input('production');
             $begin = date($request->input('begin'));
-            $end = date($request->input('end'));
+            $endDate = strtotime($request->input('end'));
+            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
             if($number !== null)
             {
                 $datas = DB::table('consumptive_material')
@@ -503,7 +504,8 @@ class OutboundController extends Controller
             $send = $request->input('send');
             $production = $request->input('production');
             $begin = date($request->input('begin'));
-            $end = date($request->input('end'));
+            $endDate = strtotime($request->input('end'));
+            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
             if($number !== null)
             {
                 $datas = DB::table('consumptive_material')
@@ -736,7 +738,7 @@ class OutboundController extends Controller
                     $unit = DB::table('consumptive_material')->where('料號', $number)->value('單位');
                     $send = DB::table('consumptive_material')->where('料號', $number)->value('發料部門');
 
-                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->value('現有庫存');
+                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->sum('現有庫存');
 
                     if ($name !== null && $format !== null) {
                         Session::put('number', $number);
