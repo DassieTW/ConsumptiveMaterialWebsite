@@ -125,13 +125,13 @@
                                                     <a class="sidebar-link" href="{{url('barcode')}}">
                                                         {!! __('templateWords.barcode_generator') !!}</a></li>
                                                 <li
-                                                    class="sidebar-item {{ isActiveRoute(['barcode/gen_isn_fromDB']) }}">
-                                                    <a class="sidebar-link" href="{{url('barcode/gen_isn_fromDB')}}">
-                                                        {!! __('templateWords.locBarcode') !!}</a></li>
-                                                <li
-                                                    class="sidebar-item {{ isActiveRoute(['barcode/gen_loc_fromDB']) }}">
-                                                    <a class="sidebar-link" href="{{url('barcode/gen_loc_fromDB')}}">
+                                                    class="sidebar-item {{ isActiveRoute(['barcode/isn_search']) }}">
+                                                    <a class="sidebar-link" href="{{url('barcode/isn_search')}}">
                                                         {!! __('templateWords.isnBarcode') !!}</a></li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['barcode/loc_search']) }}">
+                                                    <a class="sidebar-link" href="{{url('barcode/loc_search')}}">
+                                                        {!! __('templateWords.locBarcode') !!}</a></li>
                                             </ul>
                                         </li>
 

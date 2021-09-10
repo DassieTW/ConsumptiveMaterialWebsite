@@ -17,6 +17,17 @@ Route::get('/', function () {
     return view('barcode.barcode_gen_page');
 })->name('barcode.index');
 
+Route::get('/isn_search', function () {
+    return view('barcode.barcode_gen_isn_from_db');
+});
+
+Route::post('/search_isn', [BarcodeDisplayController::class, 'searchISN']);
+Route::post('/search_loc', [BarcodeDisplayController::class, 'searchLoc']);
+
+Route::get('/loc_search', function () {
+    return view('barcode.barcode_gen_loc_from_db');
+});
+
 Route::post('/barcode_isn', [BarcodeDisplayController::class, 'postBack'])->name('isn_barcode_gen');
 Route::post('/barcode_loc', [BarcodeDisplayController::class, 'postBack_loc'])->name('loc_barcode_gen');
 
