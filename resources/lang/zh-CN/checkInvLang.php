@@ -12,6 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => '盘点管理',
+    'check' => '盘点',
     'no_table_found' => '无近期盘点表',
     'create_new_table' => '建立新盘点表',
     'input_isn_barcode' => '输入 料号条码',
@@ -39,4 +41,8 @@ return [
     'update_success' => '更新成功',
     'update_failed' => '更新失败',
     'value_not_changed' => '盘点结果未改变，确定送出？',
+
+    //create new table lang
+    'create_new_table' => '建立新盘点表',
+    'plz_create'=> '无近期盘点表，请建立新盘点表',
 ];

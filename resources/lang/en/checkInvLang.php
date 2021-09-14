@@ -12,6 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'Checking Inv.',
+    'check' => 'Check',
     'no_table_found' => 'No table Found',
     'create_new_table' => 'Create New Table',
     'input_isn_barcode' => 'Scan In Part No. Barcode',
@@ -39,4 +41,8 @@ return [
     'update_success' => 'Update Success!',
     'update_failed' => 'Update Failed.',
     'value_not_changed' => 'Value has not changed, Are you sure?',
+
+    //create new table lang
+    'create_new_table' => 'Create New Sheet',
+    'plz_create'=> 'No recent sheets found, please create a new one.',
 ];

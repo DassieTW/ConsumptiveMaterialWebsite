@@ -87,7 +87,8 @@ function appenSVg() {
 } // appenSVg
 
 function UpdateTempField() {
-
+    // clean up previous
+    $('.barcodePreview').remove();
     var isnArray = JSON.parse(sessionStorage.getItem('isnArray'));
     var isnName = JSON.parse(sessionStorage.getItem('isnName'));
     var isnCount = JSON.parse(sessionStorage.getItem('isnCount'));

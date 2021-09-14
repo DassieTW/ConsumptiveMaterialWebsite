@@ -24,22 +24,22 @@ class Checking_inventory extends Model
      *
      * @var string
      */
-    // protected $primaryKey = '料號'; 
-    // since laravel model doesn't support Composite Primary Keys
+    // protected $primaryKey = ['id','單號'];
+    // laravel model doesn't support Composite Primary Keys
 
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = false;
+    public $incrementing = true;
 
     /**
      * The data type of the auto-incrementing ID.
      *
      * @var string
      */
-    protected $keyType = 'string';
+    protected $keyType = 'int';
 
     /**
      * The database connection that should be used by the model.

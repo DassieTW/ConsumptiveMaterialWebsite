@@ -15,7 +15,7 @@
 <div class="container-fluid p-0">
     <div class="row mb-2 mb-xl-3 justify-content-between">
         <div class="col-auto">
-            <h2 class="pb-3">{!! __('barcodeGenerator.barcode_gening') !!}</h2>
+            <h2 class="pb-3">{!! __('templateWords.barcode_generator') !!}</h2>
         </div>
 
         <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">

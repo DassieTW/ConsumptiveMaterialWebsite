@@ -28,7 +28,7 @@ return [
     'obound' => 'O庫',
     'callsys' => '報警系統',
     'basicInfo' => '基礎資料',
-    'checkIvent' => '盤點',
+    'checkIvent' => '盤點管理',
     'dashboard' => '功能表',
     'barcode_gen' => '條碼',
     'barcode_generator' => '條碼產生器',
