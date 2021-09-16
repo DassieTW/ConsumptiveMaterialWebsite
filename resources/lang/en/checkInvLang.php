@@ -45,4 +45,11 @@ return [
     //create new table lang
     'create_new_table' => 'Create New Sheet',
     'plz_create'=> 'No recent sheets found, please create a new one.',
+    'create_table_success' => 'New Sheet Created !',
+    'create_table_fail' => 'Process Failed', 
+    'serial_number' => 'Serial No.',
+    'created_time' => 'Created Time',
+    'created_by' => 'Created By',
+    'existed_tables' => 'There are existed sheets',
+    'continue_check' => 'Proceed',
 ];

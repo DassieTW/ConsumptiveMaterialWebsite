@@ -70,12 +70,44 @@ $(document).ready(function () {
     $('.serialNum').on('click', function (e) {
         $('.serialNum').removeClass('active'); // remove all active class name
         $('#continueT').text($(this).text());
+        var clickedTableName = $('#continueT').text();
         $('.serialNum').each(function (i, obj) {
             // console.log($(this).text()); // test
             if ($(this).text() === $('#continueT').text()) {
                 $(this).addClass('active'); // add the active class name
             } // if
         });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "post",
+            url: "/checking/set_wanted_table",
+            data: { tableName: clickedTableName },
+            dataType: 'json',              // let's set the expected response format
+            beforeSend: function () {
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+            },
+            success: function (response) {
+                // do nothing
+            },
+            error: function (err) {
+                if (err.status == 420) {  // if no result
+                    console.log('set session failed.') ;
+                } // else if
+                else {
+                    console.log(err.status); // test
+                } // else
+            } // error
+        }); // end of ajax
 
         $("#texBox").focus();
     }); // on drop down menu click
@@ -105,169 +137,6 @@ $(document).ready(function () {
         $isIsn = document.getElementById('toggle-state').checked;
         $isLoc = !$isIsn;
         // -------------------------------------- end------------------------------------------------------------- //
-
-        // -------------------------------------- for multiple condition search ---------------------------- //
-        //        var $temp = $('#texBox').val();
-        //        $isIsn = false;
-        //        $isLoc = false;
-        //        $('#texBox').val(''); // clear input box value
-        //        $isIsn = document.getElementById('toggle-state').checked;
-        //        $isLoc = !$isIsn;
-        //        if ($isLoc) {
-        //            var isAlready = false;
-        //            for (let i = 0; i < tempAll.length; i++) {
-        //                if ($temp.localeCompare(tempAll[i][0]) === 0) {
-        //                    isAlready = true;
-        //                } // if
-        //            } // for
-        //            if (isAlready === false) {
-        //                tempAll.push([$temp.toString(), 'loc']);  // a two dimentional array
-        //                tempLoc.push($temp.toString());
-        //            } // if
-        //
-        //        } else if ($isIsn) {
-        //            var isAlready = false;
-        //            for (let i = 0; i < tempAll.length; i++) { // check if already in the showing list
-        //                if ($temp.localeCompare(tempAll[i][0]) === 0) {
-        //                    isAlready = true;
-        //                } // if
-        //            } // for
-        //            if (isAlready === false) {
-        //                tempAll.push([$temp.toString(), 'isn']);  // a two dimentional array
-        //                tempIsn.push($temp.toString());
-        //            } // if
-        //        } // else
-        //
-        //
-        //        // analize the list
-        //        var re;
-        //        var s1 = 'loc';
-        //        var s2 = 'isn';
-        //        var locCount = 0;
-        //        var isnCount = 0;
-        //        var quForISN = "(";
-        //        var quForLOC = "(";
-        //        for (let i = 0; i < tempAll.length; i++) { // check if already in the showing list
-        //            if (s1.localeCompare(tempAll[i][1]) === 0) {
-        //                locCount++;
-        //            } // if
-        //            else {
-        //                isnCount++;
-        //            } // if else
-        //        } // for
-        //
-        //        var listLocCount = 0;
-        //        var listIsnCount = 0;
-        //        for (let i = 0; i < tempAll.length; i++) { // check if already in the showing list
-        //            if (s1.localeCompare(tempAll[i][1]) === 0) {
-        //                quForLOC += ("'" + tempAll[i][0] + "'");
-        //                listLocCount++;
-        //                if (listLocCount < locCount) {
-        //                    quForLOC += ", ";
-        //                } // if
-        //            } // if
-        //            else {
-        //                quForISN += ("'" + tempAll[i][0] + "'");
-        //                listIsnCount++;
-        //                if (listIsnCount < isnCount) {
-        //                    quForISN += ", ";
-        //                } // if
-        //            } // if else
-        //        } // for
-        //
-        //        quForISN += ")";
-        //        quForLOC += ")";
-        //        var wholeOptions = "";
-        //        if (tempAll[0][1] === 'isn') { // check the first element
-        //            if (tempIsn.length > 0) {
-        //                wholeOptions += '<div class="col-auto"><strong style="text-align: center;">這些料號 :</strong></div>';
-        //            } // if
-        //
-        //            for (let i = 0; i < tempIsn.length; i++) {
-        //                wholeOptions += '\
-        //                           <div class="col-auto">\n\
-        //                              <div class="input-group rounded-pill align-items-center" style="padding: 0px; border: 1px solid darkgray;">\n\
-        //                                     <input type="text" name="isn" class="form-control rounded-pill" readonly\n\
-        //                                       style="text-align: center; width: 15ch; padding: 1px; border: 0px;"\n\
-        //                                       value="' + tempIsn[i] + '">\n\
-        //                                       <button type="button" class="btn btn-sm rounded-pill p-0 m-0" value="' + tempIsn[i] + '">\n\
-        //                                         <i class="bi-x" style="color: red; vertical-align: middle;"></i></div>\n\
-        //                                       </button>\n\
-        //                                 </div>\n\
-        //                            </div>';
-        //            } // for
-        //
-        //            if (tempLoc.length > 0) {
-        //                wholeOptions += '<div class="col-auto"><strong style="text-align: center;">在&nbsp;&nbsp;儲位 :</strong></div>';
-        //            } // if
-        //
-        //            for (let i = 0; i < tempLoc.length; i++) {
-        //                wholeOptions += '\
-        //                           <div class="col-auto">\n\
-        //                              <div class="input-group rounded-pill align-items-center" style="padding: 0px; border: 1px solid darkgray;">\n\
-        //                                     <input type="text" name="isn" class="form-control rounded-pill" readonly\n\
-        //                                       style="text-align: center; width: 10ch; padding: 1px; border: 0px;"\n\
-        //                                       value="' + tempLoc[i] + '">\n\
-        //                                       <button type="button" class="btn btn-sm rounded-pill p-0 m-0" value="' + tempLoc[i] + '">\n\
-        //                                         <i class="bi-x" style="color: red; vertical-align: middle;"></i></div>\n\
-        //                                       </button>\n\
-        //                              </div>\n\
-        //                            </div>';
-        //            } // for
-        //
-        //            if (tempLoc.length === 0) {
-        //                wholeOptions += '<div class="col-auto"><strong style="text-align: center;">在所有儲位之狀態 :</strong></div>';
-        //            } else {
-        //                wholeOptions += '<div class="col-auto"><strong style="text-align: center;">之狀態 :</strong></div>';
-        //            } // if else
-        //
-        //
-        //        } else { // tempAll[0][1] == 'loc'
-        //            if (tempLoc.length > 0) {
-        //                wholeOptions += '<div class="col-auto"><strong style="text-align: center;">這些儲位中 :</strong></div>';
-        //            } // if
-        //
-        //            for (let i = 0; i < tempLoc.length; i++) {
-        //                wholeOptions += '\
-        //                           <div class="col-auto">\n\
-        //                              <div class="input-group rounded-pill align-items-center" style="padding: 0px; border: 1px solid darkgray;">\n\
-        //                                     <input type="text" name="isn" class="form-control rounded-pill" readonly\n\
-        //                                       style="text-align: center; width: 10ch; padding: 1px; border: 0px;"\n\
-        //                                       value="' + tempLoc[i] + '">\n\
-        //                                       <button type="button" class="btn btn-sm rounded-pill p-0 m-0" value="' + tempLoc[i] + '">\n\
-        //                                         <i class="bi-x" style="color: red; vertical-align: middle;"></i></div>\n\
-        //                                       </button>\n\
-        //                              </div>\n\
-        //                            </div>';
-        //            } // for
-        //
-        //            if (tempIsn.length > 0) {
-        //                wholeOptions += '<div class="col-auto"><strong style="text-align: center;">料號 :</strong></div>';
-        //            } // if
-        //
-        //            for (let i = 0; i < tempIsn.length; i++) {
-        //                wholeOptions += '\
-        //                           <div class="col-auto">\n\
-        //                              <div class="input-group rounded-pill align-items-center" style="padding: 0px; border: 1px solid darkgray;">\n\
-        //                                     <input type="text" name="isn" class="form-control rounded-pill" readonly\n\
-        //                                       style="text-align: center; width: 15ch; padding: 1px; border: 0px;"\n\
-        //                                       value="' + tempIsn[i] + '">\n\
-        //                                       <button type="button" class="btn btn-sm rounded-pill p-0 m-0" value="' + tempIsn[i] + '">\n\
-        //                                         <i class="bi-x" style="color: red; vertical-align: middle;"></i></div>\n\
-        //                                       </button>\n\
-        //                                 </div>\n\
-        //                            </div>';
-        //            } // for
-        //
-        //            if (tempIsn.length === 0) {
-        //                wholeOptions += '<div class="col-auto"><strong style="text-align: center;">所有料號之狀態 :</strong></div>';
-        //            } else {
-        //                wholeOptions += '<div class="col-auto"><strong style="text-align: center;">之狀態 :</strong></div>';
-        //
-        //            } // if else
-        //        } // if else
-        //        $(".options").html(wholeOptions);
-        // -------------------------------------- end ----------------------------------------------------------- //
 
         tablename = $('#continueT').text();
         // console.log(tablename); // test
@@ -908,102 +777,11 @@ $(document).ready(function () {
         });    // ajax
         //--------------------------------------   end               --------------------------------- //
 
-        //--------------------------------------   multiple conditions --------------------------------- //
-        //        $.ajax({
-        //            url: "dbSearch.php",
-        //            type: "POST",
-        //            async: false,
-        //            data: {tablename: tablename, all: JSON.stringify(tempAll), locCount: locCount, isnCount: isnCount,
-        //                queryIsn: quForISN, queryLoc: quForLOC},
-        //            success: function (response) {
-        //                var myObj = JSON.parse(response);
-        //                reIsnArray = JSON.parse(JSON.stringify(myObj.data.isn)); // deep copy
-        //                reLocArray = JSON.parse(JSON.stringify(myObj.data.loc));
-        //                reStockArray = JSON.parse(JSON.stringify(myObj.data.stock));
-        //                reCheckArray = JSON.parse(JSON.stringify(myObj.data.isCheck));
-        //                reTimeArray = JSON.parse(JSON.stringify(myObj.data.updateTime));// reTimeArray[0].date // the first date
-        //                reClientArray = JSON.parse(JSON.stringify(myObj.data.client));
-        ////                $(".message").append(reIsnArray[0]); // test
-        //                return false;
-        //            },
-        //            beforeSend: function () {
-        //                $('body').loadingModal({
-        //                    text: 'Loading...',
-        //                    animation: 'circle'
-        //                });
-        //            },
-        //            complete: function () {
-        //                $('body').loadingModal('hide');
-        //            },
-        //            error: function (jqXHR, textStatus, errorThrown) {
-        //                console.warn(jqXHR.responseText);
-        //                alert("Failed : " + errorThrown + "  請複製此訊息並連絡開發人員");
-        //            } // error
-        //        });    // ajax
-        //--------------------------------------   end   --------------------------------- //
-
-        //        $(".message").append("the value is : [" + reCheckArray[4] + "]<br>"); // test
-        //        if (reCheckArray[4] > 0) { // test
-        //            $(".message").append("true"); // test
-        //        } else { // test
-        //            $(".message").append("false"); // test
-        //        } // else
-
         $([document.documentElement, document.body]).animate({
             scrollTop: $("#carouselExampleSlidesOnly").offset().top
         }, 300);
         return false;
     }); // on submit
-
-    // $(".clearBtn").on("click", 'button', function (e) {
-    //     e.preventDefault();
-    //     // clear the list
-    //     // clear all the buttons with x
-    //     window.location.href = "swipeToCheck.php"; // test
-    //     $("#texBox").focus();
-    // });
-
-    // $(".options").on("click", 'button', function (e) {
-    //     e.preventDefault();
-    //     //        $(".message").html("before " + tempIsn + '<br>'); // test
-    //     let ta = $(this).val(); // to get what isn should we remove from tempAll
-    //     var arrResult = [];
-    //     let indexOfIsnInTempIsn = -1;
-    //     let indexOfLocInTempLoc = -1;
-    //     let a = 0;
-    //     let b = 0;
-    //     for (let y = 0; y < tempAll.length; y++) {
-    //         if (tempAll[y][1] === 'isn') {
-    //             a++;
-    //         } // if
-    //         else if (tempAll[y][1] === 'loc') {
-    //             b++;
-    //         } // if else
-
-    //         if (ta === tempAll[y][0] && tempAll[y][1] === 'isn') {  // suppose to set only once
-    //             indexOfIsnInTempIsn = a;
-    //         } // if
-    //         else if (ta === tempAll[y][0] && tempAll[y][1] === 'loc') { // suppose to set only once
-    //             indexOfLocInTempLoc = b;
-    //         } // else if
-
-    //         if (ta !== tempAll[y][0]) {
-    //             arrResult.push(tempAll[y]);
-    //         } // if
-    //     } // for
-
-    //     tempAll = arrResult.slice(0);
-    //     if (indexOfIsnInTempIsn > 0) {
-    //         tempIsn.splice(indexOfIsnInTempIsn - 1, 1);
-    //     } // if
-
-    //     if (indexOfLocInTempLoc > 0) {
-    //         tempLoc.splice(indexOfLocInTempLoc - 1, 1);
-    //     } // if
-
-    //     //        $(".message").append("after " + tempIsn); // test
-    //     $(this).parent().parent().remove(); // remove the x tagged things( and its parent div)
-    // });
 
     $('#carouselExampleSlidesOnly').on('slid.bs.carousel', function (e) {
         //        console.log("slid !"); // test

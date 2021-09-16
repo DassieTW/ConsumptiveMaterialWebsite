@@ -38,16 +38,27 @@
                         <div class="btn-group col col-auto">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="continueT"
                                 data-bs-toggle="dropdown" data-bs-auto-close="inside" aria-expanded="false" data-serial-no="">@php
-                                    if( $serialNums->first() !== null ){
+                                    if( \Session::has('tableName') ) {
+                                        echo \Session::get('tableName');
+                                    } // if
+                                    else if( $serialNums->first() !== null ){
                                         echo $serialNums->first()->單號 ;
                                     } // if
                                 @endphp</button>
                             <ul class="dropdown-menu" aria-labelledby="continueT" id="serialList">
                                 @foreach ($serialNums as $serialNum)
-                                @if ($serialNum->單號 === $serialNums->first()->單號)
-                                <li><a class="serialNum dropdown-item active" href="#">{{ $serialNum->單號 }}</a></li>
+                                @if ( \Session::has('tableName'))
+                                    @if ($serialNum->單號 === \Session::get('tableName'))
+                                        <li><a class="serialNum dropdown-item active" href="#">{{ $serialNum->單號 }}</a></li>
+                                    @else
+                                        <li><a class="serialNum dropdown-item" href="#">{{ $serialNum->單號 }}</a></li>
+                                    @endif
                                 @else
-                                <li><a class="serialNum dropdown-item" href="#">{{ $serialNum->單號 }}</a></li>
+                                    @if ($serialNum->單號 === $serialNums->first()->單號)
+                                        <li><a class="serialNum dropdown-item active" href="#">{{ $serialNum->單號 }}</a></li>
+                                    @else
+                                        <li><a class="serialNum dropdown-item" href="#">{{ $serialNum->單號 }}</a></li>
+                                    @endif
                                 @endif
                                 @endforeach
                             </ul>

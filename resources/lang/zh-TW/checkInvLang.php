@@ -45,4 +45,11 @@ return [
     //create new table lang
     'create_new_table' => '建立新盤點表',
     'plz_create'=> '無近期盤點表，請建立新盤點表',
+    'create_table_success' => '新盤點表建立成功 !',
+    'create_table_fail' => '建立失敗', 
+    'serial_number' => '單號',
+    'created_time' => '建立時間',
+    'created_by' => '建立者',
+    'existed_tables' => '已有近期盤點表',
+    'continue_check' => '續盤',
 ];

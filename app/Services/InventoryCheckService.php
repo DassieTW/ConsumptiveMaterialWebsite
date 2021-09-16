@@ -126,4 +126,25 @@ class InventoryCheckService
 
         return false;
     } // createTableService
+
+    public function fetchCreators(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $results = DB::table('login')
+                ->select('username', '姓名')
+                ->get();
+
+            // dd($results); // test
+
+            DB::commit();
+            // all good
+        } catch (\Exception $e) {
+            // DB::rollback(); // select statements dont need to roll back
+            // something went wrong
+        } // try catch
+
+        return $results;
+    } // fetchCreators
 } // InventoryCheckService

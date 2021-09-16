@@ -7,7 +7,7 @@ use App\Models\Checking_inventory;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes for checking Inventory Type
+| Web Routes for Checking Inventory Type
 |--------------------------------------------------------------------------
 |
 */
@@ -20,10 +20,13 @@ Route::get('/', function () {
     return view('checkInventory.checkingInvent', ['serialCount' => $serialNumsCount, 'serialNums' => $serialNums ]);
 })->name('checking.index');
 
+// fetch the wanted table (by serial no.) from db
 Route::post('/checkInentdbSearch', [CheckingInventoryController::class, 'dbSearch'])->name('checkInentdbSearch');
+
+// user fill in and update the checking
 Route::post('/updateChecking', [CheckingInventoryController::class, 'updateChecking'])->name('updateChecking');
 
-// Matches The "/checking/xxx" URL
+// create new table page
 Route::get('/create_new_table', function () {
     $month = Carbon::now()->subMonths(3);
     $serialNums = \DB::table('checking_inventory')->select('id', '單號', 'created_at')->latest('created_at')->groupBy('單號')->having('created_at', '>=', $month)->cursor();
@@ -31,4 +34,11 @@ Route::get('/create_new_table', function () {
     return view('checkInventory.newTable', ['serialCount' => $serialNumsCount, 'serialNums' => $serialNums ]);
 })->name('checking.create_new_table');
 
+// create new table
 Route::post('/create_new_table', [CheckingInventoryController::class, 'createTable'])->name('create_new_table');
+
+// get the table creators from login table
+Route::post('/get_creators', [CheckingInventoryController::class, 'getCreators']);
+
+// set the continue checking table to session
+Route::post('/set_wanted_table', [CheckingInventoryController::class, 'setContinue']);

@@ -85,5 +85,31 @@ class CheckingInventoryController extends Controller
 
     } // createTable
 
+    public function getCreators(Request $request)
+    {
+        $fetchedCreators = $this->service->fetchCreators($request);
+
+        if (count($fetchedCreators) === 0) { // return 420 if the search result length is 0
+            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+        } // if no results are found
+        else {
+            return \Response::json(['data' => $fetchedCreators]/* Status code here default is 200 ok*/);
+        } // else
+    } // getCreators
+    
+    public function setContinue(Request $request)
+    {
+        $fetchedCreators = $this->service->fetchCreators($request);
+
+        $request->session()->put('tableName', $request->tableName);
+        if ( ! $request->session()->has('tableName')) { // return 420 if not done
+            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+        } // if no results are found
+        else {
+            return \Response::json(['messgae' => 'put to session!']/* Status code here default is 200 ok*/);
+        } // else
+        
+    } // setContinue
+
 
 } // end of CheckingInventoryController class
