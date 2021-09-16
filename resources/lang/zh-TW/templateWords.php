@@ -27,6 +27,7 @@ return [
     'monthly' => '月請購',
     'obound' => 'O庫',
     'callsys' => '報警系統',
+    'bu' => 'BU耗材管理',
     'basicInfo' => '基礎資料',
     'checkIvent' => '盤點管理',
     'dashboard' => '功能表',

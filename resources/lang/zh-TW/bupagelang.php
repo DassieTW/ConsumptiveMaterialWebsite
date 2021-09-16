@@ -1,0 +1,83 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | All The Wordings on BU Page Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used during authentication for various
+    | messages that we need to display to the user. You are free to modify
+    | these language lines according to your application's requirements.
+    |
+    */
+    'bu' => 'BU耗材管理',
+    'sluggish' => '呆滯庫存',
+    'searchlist' => '調撥單查詢',
+    'outlist' => '調撥_撥出單',
+    'picklist' => '調撥_接收單',
+    'searchdetail' => '調撥明細查詢',
+    'check' => '勾選',
+    'factory' => '廠區',
+    'isn' => '料號',
+    'pName' => '品名',
+    'format' => '規格',
+    'unit' => '單位',
+    'days' => '呆滯天數',
+    'stock' => '庫存',
+    'transamount' => '撥出數量',
+    'buyrecord' => '近期請購紀錄',
+    'receivefac' => '接收廠區',
+    'senddep' => '發料部門',
+    'buytime' => '近期請購時間',
+    'enterfactory' => '請選擇廠區',
+    'return' => '返回',
+    'submit' => '提交',
+    'download' => '下載',
+    'nocheck' => '請勾選欲刪除/更新項目',
+    'amounterr' => '撥出數量小於庫存/撥出數量<=0',
+    'inventoryerr' => '庫存有異動，請重新整理',
+    'dbadd' => '調撥單新增',
+    'success' => '成功',
+    'dblist' => '調撥單號',
+    'begindate' => '起始日期',
+    'enddate' => '結束日期',
+    'search' => '查詢',
+    'outfactory' => '撥出廠區',
+    'status' => '狀態',
+    'tranamount' => '調撥數量',
+    'transpeople' => '撥出人',
+    'receivepeople' => '接收人',
+    'receiveamount' => '接收數量',
+    'opentime' => '開單時間',
+    'outboundtime' => '出庫時間',
+    'inboundtime' => '入庫時間',
+    'delete' => '刪除',
+    'nocheck1' => '請勾選欲提交項目',
+    'enteramount' => '請輸入數量',
+    'searchoutlist' => '搜尋撥出單',
+    'enteroutlist' => '請選擇撥出單',
+    'client' => '客戶別',
+    'preamount' => '預計撥出數量',
+    'nowstock' => '現有庫存',
+    'realamount' => '實際撥出數量',
+    'loc' => '儲位',
+    'outpeople' => '撥出人',
+    'enteroutpeople' => '請選擇撥出人',
+    'name' => '姓名',
+    'jobnum' => '工號',
+    'amounterr1' => '實際撥出數量>現有庫存',
+    'row' => '在列',
+    'checktrans' => '確認是否撥出',
+    'changeok' => '已順利更新',
+    'searchpicklist' => '搜尋接收單',
+    'enterpicklist' => '請選擇接收單',
+    'realpickamount' => '實際接收數量',
+    'client' => '客戶別',
+    'remark' => '備註',
+    'enterloc' => '請選擇儲位',
+    'enterclient' => '請選擇客戶別',
+    'enterreceivepeople' => '請選擇接收人',
+    'checkreceive' => '確認是否接收',
+];

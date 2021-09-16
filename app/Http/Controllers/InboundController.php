@@ -205,6 +205,9 @@ class InboundController extends Controller
     public function inquire(Request $request)
     {
         if (Session::has('username')) {
+            $begin = date($request->input('begin'));
+            $endDate = strtotime($request->input('end'));
+            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
             if ($request->input('number') !== null) {
                 $datas = DB::table('inbound')
                     ->where('料號', 'like', $request->input('number') . '%')
@@ -234,8 +237,7 @@ class InboundController extends Controller
             }
             //select date
             else if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') === null && ($request->has('date'))) {
-                $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+
                 return view('inbound.searchok')->with(['data' => Inbound::cursor()->whereBetween('入庫時間', [$begin, $end])]);
             }
             //select client and innumber
@@ -256,8 +258,7 @@ class InboundController extends Controller
             }
             //select client and time
             else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') === null && ($request->has('date'))) {
-                $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+
                 return view('inbound.searchok')->with(['data' => Inbound::cursor()
                     ->whereBetween('入庫時間', [$begin, $end])->where('客戶別', $request->input('client'))]);
             }
@@ -279,16 +280,14 @@ class InboundController extends Controller
                         'innumber' => trans('validation.regex'),
                     ]);
                 } else {
-                    $begin = date($request->input('begin'));
-                    $end = date($request->input('end'));
+
                     return view('inbound.searchok')->with(['data' => Inbound::cursor()
                         ->whereBetween('入庫時間', [$begin, $end])->where('入庫單號', $request->input('innumber'))]);
                 }
             }
             //select number and time
             else if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') !== null && ($request->has('date'))) {
-                $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+
                 return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])]);
             }
             //select client and innumber and number
@@ -310,8 +309,7 @@ class InboundController extends Controller
                         'innumber' => trans('validation.regex'),
                     ]);
                 } else {
-                    $begin = date($request->input('begin'));
-                    $end = date($request->input('end'));
+
                     return view('inbound.searchok')->with(['data' => Inbound::cursor()
                         ->whereBetween('入庫時間', [$begin, $end])->where('', $request->input('innumber'))
                         ->where('客戶別', $request->input('client'))]);
@@ -319,8 +317,7 @@ class InboundController extends Controller
             }
             //select client and number and time
             else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') !== null && ($request->has('date'))) {
-                $begin = date($request->input('begin'));
-                $end = date($request->input('end'));
+
                 return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
                     ->where('客戶別', $request->input('client'))]);
             }
@@ -331,8 +328,7 @@ class InboundController extends Controller
                         'innumber' => trans('validation.regex'),
                     ]);
                 } else {
-                    $begin = date($request->input('begin'));
-                    $end = date($request->input('end'));
+
                     return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
                         ->where('入庫單號', $request->input('innumber'))]);
                 }
@@ -344,8 +340,7 @@ class InboundController extends Controller
                         'innumber' => trans('validation.regex'),
                     ]);
                 } else {
-                    $begin = date($request->input('begin'));
-                    $end = date($request->input('end'));
+
                     return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
                         ->where('入庫單號', $request->input('innumber'))->where('客戶別', $request->input('client'))]);
                 }
