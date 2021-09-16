@@ -53,6 +53,7 @@ class LoginController extends Controller
     {
         session(['database' => $request->site]);
         // dd(session('database')); // test
+        $request->session()->get('database');
     } // authenticated
 
     //login

@@ -20,7 +20,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                        <form action="{{ route('inbound.changesubmit') }}" id = "change" method="POST">
+                        <form id = "change" method="POST">
                             @csrf
                         <table class="table" id = "inboundsearch">
                             <tr id = "require">

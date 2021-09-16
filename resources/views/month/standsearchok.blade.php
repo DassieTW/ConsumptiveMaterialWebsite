@@ -47,7 +47,7 @@
                                 <th><input type = "hidden" name = "title17" value = "下月每人每日需求量">{!! __('monthlyPRpageLang.nextuse') !!}</th>
                                 <th><input type = "hidden" name = "title18" value = "下月每日更換頻率">{!! __('monthlyPRpageLang.nextchange') !!}</th>
                                 <th><input type = "hidden" name = "title19" value = "下月每日需求">{!! __('monthlyPRpageLang.nextdayneed') !!}</th>
-                                <th><input type = "hidden" name = "title20" value = "安全庫存">{!! __('monthlyPRpageLang.safestock') !!}</th>
+                                <th><input type = "hidden" name = "title20" value = "安全庫存">{!! __('monthlyPRpageLang.safe') !!}</th>
                                 <input type = "hidden" name = "time" value = "21">
                             </tr>
                                 @foreach($data as $data)
