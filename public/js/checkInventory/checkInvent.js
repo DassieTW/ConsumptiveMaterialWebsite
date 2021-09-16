@@ -43,9 +43,14 @@ $(document).ready(function () {
 
         $("#texBox").focus();
 
-        if( $('#continueT').val().length===0 ) {
+        // console.log($('#serialList li').length); // test
+        if( $('#serialList li').length == 0 ) {
             $('#continueT').text(Lang.get('checkInvLang.no_table_found'));
-            $('#continueT').parent().find('ul').append('<li><a class="dropdown-item" href="">' + Lang.get('checkInvLang.create_new_table') + '</a></li>');
+            $('#continueT').parent().find('ul').append('<li><a class="dropdown-item" id="newTableLink" href="#">' + Lang.get('checkInvLang.create_new_table') + '</a></li>');
+            $('#newTableLink').on( 'click', function (e) {
+                e.preventDefault();
+                window.location.href = "/checking/create_new_table";
+            });
         } // if
     })();
 
@@ -452,9 +457,9 @@ $(document).ready(function () {
                 };
 
                 quickSort(reCheckResultArray, 0, reCheckResultArray.length - 1);
-                console.log(reCheckArray); // test
-                console.log(reStockArray); // test
-                console.log(reCheckResultArray); // test
+                // console.log(reCheckArray); // test
+                // console.log(reStockArray); // test
+                // console.log(reCheckResultArray); // test
 
                 try {
                     sessionStorage.setItem('isn', JSON.stringify(reIsnArray));
@@ -499,7 +504,7 @@ $(document).ready(function () {
                         if (reCheckResultArray[x] === -999) { // if 未盤點
                             $NotYetChecked++;
                             wholeThing += '\
-                    <form action="" class="updateForm mb-0" method="post">\n\
+                    <form action="" class="updateForm needs-validation mb-0" novalidate autocomplete="off" method="post">\n\
                             <div class="row row-cols-2 changeOnUpdate m-0 p-0" style="background-color: #B3E5FC;">\n\
                                 <div class="col col-8 d-flex flex-wrap align-items-stretch ps-2">\n\
                                     <div class="col-auto align-self-center">\n\
@@ -583,7 +588,7 @@ $(document).ready(function () {
                         } // if
                         else if (reCheckResultArray[x] === 0) { // if 已盤點 且盤正確
                             wholeThing += '\
-                    <form action="" class="updateForm mb-0" method="post">\n\
+                    <form action="" class="updateForm needs-validation mb-0" novalidate autocomplete="off" method="post">\n\
                             <div class="row row-cols-2 changeOnUpdate m-0 p-0" style="background-color: #C8E6C9;">\n\
                                 <div class="col col-8 d-flex flex-wrap align-items-stretch ps-2">\n\
                                     <div class="col-auto align-self-center">\n\
@@ -668,7 +673,7 @@ $(document).ready(function () {
                         } // else if
                         else if (reCheckResultArray[x] > 0) { // if 已盤點 且盤盈
                             wholeThing += '\
-                    <form action="" class="updateForm mb-0" method="post">\n\
+                    <form action="" class="updateForm needs-validation mb-0" novalidate autocomplete="off" method="post">\n\
                             <div class="row row-cols-2 changeOnUpdate m-0 p-0" style="background-color: #FFCDD2;">\n\
                                 <div class="col col-8 d-flex flex-wrap align-items-stretch ps-2">\n\
                                     <div class="col-auto align-self-center">\n\
@@ -753,7 +758,7 @@ $(document).ready(function () {
                         } // else if
                         else { // if 已盤點 且盤虧
                             wholeThing += '\
-                    <form action="" class="updateForm mb-0" method="post">\n\
+                    <form action="" class="updateForm needs-validation mb-0" novalidate autocomplete="off" method="post">\n\
                             <div class="row row-cols-2 changeOnUpdate m-0 p-0" style="background-color: #FFCDD2;">\n\
                                 <div class="col col-8 d-flex flex-wrap align-items-stretch ps-2">\n\
                                     <div class="col-auto align-self-center">\n\
@@ -1190,13 +1195,5 @@ $(document).ready(function () {
 
     $("#hidingClass").on('shown.bs.collapse', function (e) {
         $("#texBox").focus();
-    });
-
-    $("#sendTname").on('click', function (e) {
-        event.preventDefault();
-        tablename = $('#continueT').val();
-        sessionStorage.setItem('tname', JSON.stringify(tablename));
-        window.location.href = 'pageOfConsumMan.php';
-        return false;
     });
 }); // on document ready

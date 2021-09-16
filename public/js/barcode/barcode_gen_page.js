@@ -617,7 +617,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (toSess === 'true') {
                     if (isIsn === 'false' && sessionStorage.hasOwnProperty('locCount')) {
-                        // if we already got this isn
+                        // if we already got this loc
                         var keyy = $.inArray(barcode3, JSON.parse(sessionStorage.getItem('locArray')));
                         if (keyy !== -1) {
                             var tt = JSON.parse(sessionStorage.getItem('locSepCount'));
@@ -640,8 +640,8 @@ $(document).ready(function () {
                     } // if
                     else if (isIsn === 'false' && !sessionStorage.hasOwnProperty('locCount')) {
                         sessionStorage.setItem('locCount', 1);
-                        var iisn = barcode3;
-                        var e = [iisn,];
+                        var lloc = barcode3;
+                        var e = [lloc,];
                         sessionStorage.setItem('locArray', JSON.stringify(e));
                         e = [1,];
                         sessionStorage.setItem('locSepCount', JSON.stringify(e));

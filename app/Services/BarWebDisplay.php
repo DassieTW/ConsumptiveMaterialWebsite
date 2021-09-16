@@ -80,4 +80,24 @@ class BarWebDisplay
         return false;
     } // drawABunchofBarcodes
 
+    public function searchISNinDB(Request $request)
+    {
+        $target = $request->input('searchIn');
+        $results = \DB::table('consumptive_material')
+            ->select('料號', '品名', '規格')
+            ->where('料號', 'like', $target . '%')
+            ->get();
+
+        return $results;
+    } // searchISNinDB
+
+    public function searchLocinDB(Request $request)
+    {
+        $target = $request->input('searchIn');
+        $results = \DB::table('儲位')
+            ->where('儲存位置', 'like', $target . '%')
+            ->get();
+
+        return $results;
+    } // searchISNinDB
 } // BarWebDisplay

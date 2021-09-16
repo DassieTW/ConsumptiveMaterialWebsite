@@ -24,6 +24,7 @@ return [
     'plz_upload' => 'Upload an Excel File',
     'exampleExcel' => 'Example Template Download',
     'Temporary_Storage_Zone' => 'Temporary Storage Zone',
+    'Delete_Notice' => 'Deleting here only means the barcode will not be printed.',
     'print_amount' => 'Print Amount',
     'print' => 'Print',
     'upload_save_success' => 'Successfully Uploaded',
@@ -31,4 +32,10 @@ return [
     'temp_save_error' => 'Error :',
     'nothing_to_print' => 'Nothing to print',
     'leaving_page_alert' => 'Leaving the page will clean up all inputs, are you sure?',
+
+    // search isn/loc barcodes page lang
+    'search_isn' => 'Search Part No. ',
+    'search' => 'Search',
+    'spec' => 'Specification',
+    'search_loc' => 'Search Location ',
 ];

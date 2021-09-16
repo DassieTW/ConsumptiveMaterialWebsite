@@ -24,6 +24,7 @@ return [
     'plz_upload' => '请上传Excel档',
     'exampleExcel' => '示例格式下载',
     'Temporary_Storage_Zone' => '暂存区',
+    'Delete_Notice' => '此处之删除仅表示其条码不会被列印',
     'print_amount' => '列印数量',
     'print' => '列印',
     'upload_save_success' => '上传成功',
@@ -31,4 +32,10 @@ return [
     'temp_save_error' => '错误 :',
     'nothing_to_print' => '没有条码',
     'leaving_page_alert' => '离开页面将会清所有暂存资料，确认离开？',
+
+    // search isn barcodes page lang
+    'search_isn' => '料号查询 ',
+    'search' => '查询',
+    'spec' => '规格',
+    'search_loc' => '储位查询 ',
 ];

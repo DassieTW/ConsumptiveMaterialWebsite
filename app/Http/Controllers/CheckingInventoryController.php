@@ -72,5 +72,18 @@ class CheckingInventoryController extends Controller
 
     } // updateChecking
 
+    public function createTable(Request $request)
+    {
+        $createDone = $this->service->createTableService($request);
+
+        if ($createDone) { 
+            return \Response::json(['messgae' => 'Create Success !']/* Status code here default is 200 ok*/);
+        } // if no results are found
+        else { // return 420 if updated failed
+            return \Response::json(['messgae' => 'Create Failed !'], 420/* Status code here default is 200 ok*/);
+        } // else
+
+    } // createTable
+
 
 } // end of CheckingInventoryController class

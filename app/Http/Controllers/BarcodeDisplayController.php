@@ -40,7 +40,7 @@ class BarcodeDisplayController extends Controller
         // Sending json response to client
         return \Response::json(['message' => 'temp img delete successful !']); // Status code here
     }
-    
+
     /**
      * go back when post
      */
@@ -242,8 +242,8 @@ class BarcodeDisplayController extends Controller
     {
         // We are collecting all data submitting via Ajax
 
-        if (\Session::has('isnSepCount') && \Session::get('isnSepCount') !== "" && count( \Session::get('isnSepCount')) > 0) {
-            for ( $a = 0 ; $a < count( \Session::get('isnSepCount')) ; $a++) {
+        if (\Session::has('isnSepCount') && \Session::get('isnSepCount') !== "" && count(\Session::get('isnSepCount')) > 0) {
+            for ($a = 0; $a < count(\Session::get('isnSepCount')); $a++) {
                 unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--isn--' . $a . '.png'));
             } // for
 
@@ -251,9 +251,9 @@ class BarcodeDisplayController extends Controller
             $request->session()->forget('isnArray');
             $request->session()->forget('isnNameArray');
         } // if
-        
-        if (\Session::has('locSepCount') && \Session::get('locSepCount') !== "" && count( \Session::get('locSepCount')) > 0) {
-            for ( $a = 0 ; $a < count( \Session::get('locSepCount')) ; $a++) {
+
+        if (\Session::has('locSepCount') && \Session::get('locSepCount') !== "" && count(\Session::get('locSepCount')) > 0) {
+            for ($a = 0; $a < count(\Session::get('locSepCount')); $a++) {
                 unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--loc--' . $a . '-2.png'));
             } // for
 
@@ -265,5 +265,32 @@ class BarcodeDisplayController extends Controller
         // Sending json response to client
         return \Response::json(['message' => 'all temp img delete successful !']); // Status code here
     } // cleanupAllBarcodes
+
+    public function searchISN(Request $request)
+    {
+        // We are collecting all data submitting via Ajax
+
+        $fetchedData = $this->service->searchISNinDB($request);
+        if (count($fetchedData) === 0) { // return 420 if the search result length is 0
+            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+        } // if no results are found
+        else {
+            return \Response::json(['data' => $fetchedData]/* Status code here default is 200 ok*/);
+        } // else
+
+    } // searchISN
+
+    public function searchLoc(Request $request)
+    {
+        // We are collecting all data submitting via Ajax
+        $fetchedData = $this->service->searchLocinDB($request);
+        if (count($fetchedData) === 0) { // return 420 if the search result length is 0
+            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+        } // if no results are found
+        else {
+            return \Response::json(['data' => $fetchedData]/* Status code here default is 200 ok*/);
+        } // else
+
+    } // searchLoc
 
 } // end of class

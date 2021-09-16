@@ -1,18 +1,3 @@
-<?php
-if (isset($_SESSION['previous'])) { // check if coming back from barcodePrintingPage
-    if (basename($_SERVER['PHP_SELF']) != $_SESSION['previous']) {
-        unset($_SESSION['locCount']);
-        unset($_SESSION['locArray']);
-        unset($_SESSION['isnCount']);
-        unset($_SESSION['isnArray']);
-        unset($_SESSION['isnName']);
-        unset($_SESSION['previous']);
-    }
-}
-
-$_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
-?>
-
 @extends('layouts.adminTemplate')
 
 @section('css')
@@ -30,18 +15,17 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
 <div class="container-fluid p-0">
 
     <div class="row mb-2 mb-xl-3 justify-content-between">
-        <div class="col-auto d-none d-sm-block">
-            <h3><strong>Checking Inventory</strong> Dashboard</h3>
+        <div class="col-auto">
+            <h2 class="pb-3">{!! __('checkInvLang.check') !!}</h2>
         </div>
 
         {{-- this div will not be visible if screen is smaller than lg --}}
         <div class="col-auto ml-auto text-right mt-n1 d-none d-lg-block">
-
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                    <li class="breadcrumb-item"><a href="#">Consumables Management Website</a></li>
-                    <li class="breadcrumb-item"><a href="#">盤點管理</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">盤點</li>
+                    <li class="breadcrumb-item"><a href="#">{!! __('templateWords.websiteName') !!}</a></li>
+                    <li class="breadcrumb-item"><a href="#">{!! __('checkInvLang.page_name') !!}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{!! __('checkInvLang.check') !!}</li>
                 </ol>
             </nav>
         </div>
@@ -53,10 +37,12 @@ $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
                     <h1 class="card-title">{!! __('checkInvLang.serial_number') !!} :&nbsp;&nbsp;
                         <div class="btn-group col col-auto">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="continueT"
-                                data-bs-toggle="dropdown" data-bs-auto-close="inside" aria-expanded="false"><?php 
-                                if( $serialNums->first() !== null )
-                                $serialNums->first()->單號 ?></button>
-                            <ul class="dropdown-menu" aria-labelledby="continueT">
+                                data-bs-toggle="dropdown" data-bs-auto-close="inside" aria-expanded="false" data-serial-no="">@php
+                                    if( $serialNums->first() !== null ){
+                                        echo $serialNums->first()->單號 ;
+                                    } // if
+                                @endphp</button>
+                            <ul class="dropdown-menu" aria-labelledby="continueT" id="serialList">
                                 @foreach ($serialNums as $serialNum)
                                 @if ($serialNum->單號 === $serialNums->first()->單號)
                                 <li><a class="serialNum dropdown-item active" href="#">{{ $serialNum->單號 }}</a></li>

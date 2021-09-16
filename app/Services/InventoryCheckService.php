@@ -22,7 +22,7 @@ class InventoryCheckService
                 $results = DB::table('checking_inventory')
                     ->where([
                         ['checking_inventory.單號', '=', $serialNum],
-                        ['checking_inventory.料號', '=', $onlyCode],
+                        ['checking_inventory.料號', 'like', $onlyCode . '%'],
                     ])->join('consumptive_material', function ($join) {
                         $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
                     })
@@ -31,7 +31,7 @@ class InventoryCheckService
                 $results = DB::table('checking_inventory')
                     ->where([
                         ['checking_inventory.單號', '=', $serialNum],
-                        ['checking_inventory.儲位', '=', $onlyCode],
+                        ['checking_inventory.儲位', 'like', $onlyCode . '%'],
                     ])
                     ->join('consumptive_material', function ($join) {
                         $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
@@ -85,4 +85,45 @@ class InventoryCheckService
 
         return false;
     } // updateInventCheckRecord
+
+    public function createTableService(Request $request)
+    {
+        DB::beginTransaction();
+        $results = DB::table('inventory')
+            ->select('料號', '現有庫存', '儲位', '客戶別')
+            ->get();
+
+        $datetimeOfSerial = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+        $pieces = explode(" ", $datetimeOfSerial);
+        $serialNo = \Auth::user()->username . '_' .
+            $pieces[0] . '_' .
+            $pieces[1];
+
+        try {
+            $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+
+            foreach ($results as $result) {
+                DB::table('checking_inventory')
+                    ->insert([
+                        '單號' => $serialNo,
+                        '料號' => $result->料號,
+                        '現有庫存' => $result->現有庫存,
+                        '儲位' => $result->儲位,
+                        '客戶別' => $result->客戶別,
+                        'created_at' => $datetime,
+                        'updated_at' => $datetime,
+                    ]);
+            } // foreach
+            DB::commit();
+            return true;
+            // all good
+        } catch (\Exception $e) {
+            dd($serialNo);
+            DB::rollback();
+            return false;
+            // something went wrong
+        } // try catch
+
+        return false;
+    } // createTableService
 } // InventoryCheckService
