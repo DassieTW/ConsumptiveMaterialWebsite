@@ -784,9 +784,9 @@ class BUController extends Controller
             header('Content-Disposition: attachment;filename="' . $filename . '"');
             header('Cache-Control: max-age=0');
 
-            //$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $writer = \PhpOffice\PhpSpreadsheet\Shared\File::setUseUploadTempDirectory($spreadsheet, 'Xlsx');
-            //$writer->save('php://output');
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            //$writer = \PhpOffice\PhpSpreadsheet\Shared\File::setUseUploadTempDirectory($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
 
             $reDive->boolean = true;
 

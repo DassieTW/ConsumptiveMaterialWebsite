@@ -61,6 +61,7 @@ Route::post('/searchdetailsub', [BUController::class, 'searchdetailsub'])->name(
 Route::post('/download', [BUController::class, 'download'])->name('bu.download');
 
 
+
 /*//廠區庫存調撥頁面
 Route::get('/searchlist', [BUController::class, 'searchlist'])->name('bu.searchlist');
 

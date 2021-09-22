@@ -153,13 +153,13 @@ $('#sluggish').on('submit', function (e) {
             url:"download",
             data:{title : title , data0 : data0 , data1 : data1 , data2 : data2 ,data3 : data3 ,
                 data4:data4, data5 : data5 , data6 : data6 ,data7 : data7 , data8 : data8 , data9 : data9 , time:time},
-                //dataType: 'blob',
+                //dataType: 'json',
                 success:function(data){
             console.log(data);
             var myObj = JSON.parse(data);
             console.log(myObj);
             if(myObj.boolean === true){
-                //window.location('http://127.0.0.1/bu/download','_blank' );
+                window.open(this.url,'_blank' );
                 //alert(mess);
 
                 //window.location.href = "/bu";
