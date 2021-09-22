@@ -21,7 +21,7 @@
             </div>
             <div class="card-body">
                         <div class="table-responsive">
-                            <form  action="{{ route('bu.transsluggish') }}" id = "sluggish" method="POST">
+                            <form  id = "sluggish" method="POST">
                                 @csrf
                                 <input type = "hidden" id = "title" name = "title" value = "廠區呆滯庫存">
                             <table class="table table-bordered" id = "test">
@@ -39,7 +39,7 @@
                                     <th><input type = "hidden" id = "title9" name = "title9" value = "接收廠區">{!! __('bupagelang.receivefac') !!}</th>
                                 </tr>
 
-                                <?php $i = 0 ; $data = ''; $count=array(); $record = ' ';?>
+                                <?php $i = 0 ; $data = ''; $count=array(0,0,0,0,0); $record=array(0,0,0,0,0);?>
                                 @for($i = 0 ; $i < 5 ; $i++)
                                     @foreach($test[$i] as $data)
                                         <?php
@@ -78,7 +78,9 @@
                                                 }
                                             }
                                         ?>
+
                                         @if($stayday > 30 && $data->inventory現有庫存 > 0)
+                                        <?php $count[$i] ++; $record[$i] = $loop->index?>
                                         <tr>
                                             <td><input class ="basic" type="checkbox" id="check{{$i}}{{$loop->index}}" name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;" value="{{$i}}{{$loop->index}}"></td>
 
@@ -90,23 +92,18 @@
                                             <td><input type = "hidden"  id = "data5{{$i}}{{$loop->index}}" name = "data5{{$i}}{{$loop->index}}" value = {{$stayday}}>{{$stayday}}</td>
                                             <td><input type = "hidden"  id = "data6{{$i}}{{$loop->index}}" name = "data6{{$i}}{{$loop->index}}" value = {{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
                                             <td><input type = "number" id = "data7{{$i}}{{$loop->index}}" name = "data7{{$i}}{{$loop->index}}" value = "" style="width:100px;"></td>
-                                            <td>
-                                                @foreach ($buytime as $buytime)
+                                            <td id = "data8{{$i}}{{$loop->index}}" name = "data8{{$i}}{{$loop->index}}">@foreach ($buytime as $buytime)
                                                 @if( $buytime[2] != null)
-                                                {!! __('bupagelang.factory') !!} : {{$buytime[0]}} {!! __('bupagelang.senddep') !!} : {{$buytime[1]}} {!! __('bupagelang.buytime') !!} : {{$buytime[2]}}<br>
-
+                                                <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime[0]}} {!! __('bupagelang.senddep') !!} : {{$buytime[1]}} {!! __('bupagelang.buytime') !!} : {{$buytime[2]}}</span><br>
                                                 @endif
                                                 @endforeach
                                                 @foreach ($buytime1 as $buytime1)
                                                 @if( $buytime1[2] != null)
-                                                {!! __('bupagelang.factory') !!} : {{$buytime1[0]}} {!! __('bupagelang.senddep') !!} : {{$buytime1[1]}} {!! __('bupagelang.buytime') !!} : {{$buytime1[2]}}<br>
-
+                                                <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime1[0]}} {!! __('bupagelang.senddep') !!} : {{$buytime1[1]}} {!! __('bupagelang.buytime') !!} : {{$buytime1[2]}}</span><br>
                                                 @endif
-                                                @endforeach
-                                                <!--<input type = "hidden"  id = "data8{{$i}}{{$loop->index}}" name = "data8{{$i}}{{$loop->index}}" value = {{$record[0]}}>-->
-                                            </td>
+                                                @endforeach</td>
                                             <td>
-                                                <select class="form-control form-control-lg" id = "data8{{$i}}{{$loop->index}}" name="data8{{$i}}{{$loop->index}}" style = "width: 200px">
+                                                <select class="form-control form-control-lg" id = "data9{{$i}}{{$loop->index}}" name="data9{{$i}}{{$loop->index}}" style = "width: 200px">
                                                 <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory') !!}</option>
                                                 @foreach($buytimeco as $buytime)
                                                 @if( $buytime[2] != null)
@@ -121,17 +118,19 @@
                                                 </select>
                                             </td>
                                         </tr>
+                                        <input type = "hidden" id = "record{{$i}}" name = "record{{$i}}" value = "{{$i}}{{$loop->index}}" ></td>
                                         @endif
-                                        <?php $count[$i] = $loop->count;?>
-                                        <input type = "hidden" id="count{{$i}}" name = "count{{$i}}" value="{{$count[$i]}}">
+
                                     @endforeach
+                                    <input type = "hidden" id = "count{{$i}}" name = "count{{$i}}" value = "{{$count[$i]}}" ></td>
                                 @endfor
 
                             </table>
                             </div>
                             <br>
-                            <input type = "submit" onclick="buttonIndex=0;" id = "search" name = "search" class="btn btn-lg btn-primary" value="{!! __('bupagelang.submit') !!}">
-                            <input type = "submit" onclick="buttonIndex=1;" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('bupagelang.download') !!}">
+                            <input type = "submit" id = "submit"  name = "submit" class="btn btn-lg btn-primary" value="{!! __('bupagelang.submit') !!}">
+                            <input type = "submit" id = "download"  name = "download" class="btn btn-lg btn-primary" value="{!! __('bupagelang.download') !!}">
+
                         </form>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.index')}}'">{!! __('bupagelang.return') !!}</button>
             </div>

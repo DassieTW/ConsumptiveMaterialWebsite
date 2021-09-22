@@ -456,8 +456,8 @@
                                                         {!! __('bupagelang.picklist') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['inbound/upload']) }}">
-                                                    <a class="sidebar-link" href="{{route('inbound.upload')}}">
+                                                <li class="sidebar-item {{ isActiveRoute(['bu.searchdetail','bu/searchdetailsub']) }}">
+                                                    <a class="sidebar-link" href="{{route('bu.searchdetail')}}">
                                                         {!! __('bupagelang.searchdetail') !!}
                                                     </a>
                                                 </li>

@@ -47,3 +47,24 @@ Route::post('/picklistsub', [BUController::class, 'picklist'])->name('bu.picklis
 
 //調撥_接收單提交
 Route::post('/picklistsubmit', [BUController::class, 'picklistsubmit'])->name('bu.picklistsubmit');
+
+
+//調撥明細查詢頁面
+Route::get('/searchdetail', [BUController::class, 'searchdetail'])->name('bu.searchdetail');
+
+//調撥單查詢
+Route::get('/searchdetailsub', [BUController::class, 'searchdetailsub'])->name('bu.searchdetailsub');
+
+Route::post('/searchdetailsub', [BUController::class, 'searchdetailsub'])->name('bu.searchdetailsub');
+
+//呆滯庫存下載
+Route::post('/download', [BUController::class, 'download'])->name('bu.download');
+
+
+/*//廠區庫存調撥頁面
+Route::get('/searchlist', [BUController::class, 'searchlist'])->name('bu.searchlist');
+
+//廠區庫存調撥
+Route::get('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.searchlistsub');
+
+Route::post('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.searchlistsub');*/

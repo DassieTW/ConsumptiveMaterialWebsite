@@ -70,9 +70,10 @@ class BUController extends Controller
                     ->select('inventory.料號','品名','規格','單位',
                     DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
                     DB::raw('sum(inventory.現有庫存) as inventory現有庫存'))
-                    ->groupBy('inventory.客戶別','inventory.料號')
+                    ->groupBy('inventory.料號')
                     ->get();
             }
+
 
             //dd($datas[2]);
             return view('bu.sluggish')->with(['test' => $datas]);
@@ -156,6 +157,7 @@ class BUController extends Controller
             {
                 $reDive->boolean = true;
                 $reDive->passbool = false;
+                $reDive->message = $oldstock;
                 $myJSON = json_encode($reDive);
                 echo $myJSON;
             }
@@ -524,9 +526,9 @@ class BUController extends Controller
             \DB::purge(env("DB_CONNECTION"));
 
             $outclients = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('客戶別')->toarray();
-            $outlocs = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('儲位');
-            $outstock = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('現有庫存');
-            $outrealout = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('實際撥出數量');
+            $outlocs = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('儲位')->toarray();
+            $outstock = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('現有庫存')->toarray();
+            $outrealout = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('實際撥出數量')->toarray();
             $count = count($outclients);
             $outfactory = $request->input('outfactory');
 
@@ -550,62 +552,78 @@ class BUController extends Controller
                 }
             }
 
+            /*$reDive->boolean = true;
+            $reDive->passbool = false;
+            $reDive->message = $inventorysure;
+            $myJSON = json_encode($reDive);
+            echo $myJSON;*/
+
             DB::beginTransaction();
             try {
                 //庫存無異動，實際撥出
-                if($inventorysure)
+                if($inventorysure === true)
                 {
+                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $outfactory);
+                    \DB::purge(env("DB_CONNECTION"));
                     for($i = 0 ; $i < $count ; $i++)
                     {
+
                         DB::table('inventory')
                         ->where('料號', $number)
                         ->where('客戶別',$outclients[$i])
                         ->where('儲位',$outlocs[$i])
-                        ->update(['現有庫存' => (int)$nowoutstock[$i] - (int)$outrealout[$i] , '最後更新時間' => $now]);
+                        ->update(['現有庫存' => $nowoutstock[$i] - $outrealout[$i] , '最後更新時間' => $now]);
                     }
-                }
 
-                $receivefac = $request->input('receivefac');
+                    $receivefac = $request->input('receivefac');
 
-                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $receivefac);
-                \DB::purge(env("DB_CONNECTION"));
+                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $receivefac);
+                    \DB::purge(env("DB_CONNECTION"));
 
-                $pickstock = DB::table('inventory')->where('料號',$number)->where('客戶別',$client)->where('儲位',$position)->value('現有庫存');
+                    $pickstock = DB::table('inventory')->where('料號',$number)->where('客戶別',$client)->where('儲位',$position)->value('現有庫存');
 
-                if($pickstock !== null)
-                {
-                    DB::table('inventory')
-                    ->where('客戶別', $client)
-                    ->where('料號', $number)
-                    ->where('儲位', $position)
-                    ->update(['現有庫存' => $pickstock + $realpick, '最後更新時間' => $now]);
+                    if($pickstock !== null)
+                    {
+                        DB::table('inventory')
+                        ->where('客戶別', $client)
+                        ->where('料號', $number)
+                        ->where('儲位', $position)
+                        ->update(['現有庫存' => $pickstock + $realpick, '最後更新時間' => $now]);
+                    }
+                    else
+                    {
+                        DB::table('inventory')
+                        ->insert(['料號' => $number, '現有庫存' => $realpick, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $now]);
+
+                    }
+
+                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
+                    \DB::purge(env("DB_CONNECTION"));
+
+                    DB::table('接收明細')
+                        ->insert(['調撥單號' => $list, '客戶別' => $client, '撥出廠區' => $outfactory, '接收廠區' => $receivefac
+                        , '料號' => $number , '品名' => $name , '規格' => $format , '實際接收數量' => $realpick , '實際撥出數量' => $realout
+                        , '儲位' => $position , '接收人' => $pickpeople , '接收時間' => $now]);
+
+                    DB::table('調撥單')
+                        ->where('調撥單號', $list)
+                        ->whereNull('接收人')
+                        ->update(['接收人' => $pickpeople, '接收數量' => $realpick , '狀態' => '已完成' , '入庫時間' => $now]);
+
+                    DB::commit();
+                    $reDive->boolean = true;
+                    $reDive->passbool = true;
+                    $reDive->message = $list;
+                    $myJSON = json_encode($reDive);
+                    echo $myJSON;
                 }
                 else
                 {
-                    DB::table('inventory')
-                    ->insert(['料號' => $number, '現有庫存' => $realpick, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $now]);
-
+                    $reDive->boolean = true;
+                    $reDive->passbool = false;
+                    $myJSON = json_encode($reDive);
+                    echo $myJSON;
                 }
-
-                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
-                \DB::purge(env("DB_CONNECTION"));
-
-                DB::table('接收明細')
-                    ->insert(['調撥單號' => $list, '客戶別' => $client, '撥出廠區' => $outfactory, '接收廠區' => $receivefac
-                    , '料號' => $number , '品名' => $name , '規格' => $format , '實際接收數量' => $realpick , '實際撥出數量' => $realout
-                    , '儲位' => $position , '接收人' => $pickpeople , '接收時間' => $now]);
-
-                DB::table('調撥單')
-                    ->where('調撥單號', $list)
-                    ->whereNull('接收人')
-                    ->update(['接收人' => $pickpeople, '接收數量' => $realpick , '狀態' => '已完成' , '入庫時間' => $now]);
-
-                DB::commit();
-                $reDive->boolean = true;
-                $reDive->passbool = true;
-                $reDive->message = $list;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
             } catch (\Exception $e) {
                 DB::rollback();
                 $mess = $e->getMessage();
@@ -620,4 +638,168 @@ class BUController extends Controller
             return redirect(route('member.login'));
         }
     }
+
+
+
+
+    //調撥明細查詢頁面
+    public function searchdetail(Request $request)
+    {
+        if (Session::has('username')) {
+            return view('bu.searchdetail');
+        } else {
+            return redirect(route('member.login'));
+        }
+    }
+
+    //調撥明細查詢
+    public function searchdetailsub(Request $request)
+    {
+        if (Session::has('username')) {
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
+            \DB::purge(env("DB_CONNECTION"));
+            $begin = date($request->input('begin'));
+            $endDate = strtotime($request->input('end'));
+            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
+            $database = $request->session()->get('database');
+            $choose = 'out';
+
+            if ($request->has('outdetail'))
+            {
+                if($request->input('number') !== null)
+                {
+                    if($request->has('date'))
+                    {
+                        $datas = DB::table('撥出明細')
+                            ->where('料號', 'like', $request->input('number') . '%')
+                            ->where('撥出廠區', '=', $database)
+                            ->whereBetween('撥出時間', [$begin, $end])
+                            ->get();
+                    }
+                    else
+                    {
+                        $datas = DB::table('撥出明細')
+                        ->where('料號', 'like', $request->input('number') . '%')
+                        ->where('撥出廠區', '=', $database)
+                        ->get();
+                    }
+                }
+                else
+                {
+                    if($request->has('date'))
+                    {
+                        $datas = DB::table('撥出明細')
+                            ->where('撥出廠區', '=', $database)
+                            ->whereBetween('撥出時間', [$begin, $end])
+                            ->get();
+                    }
+                    else
+                    {
+                        $datas = DB::table('撥出明細')
+                            ->where('撥出廠區', '=', $database)
+                            ->get();
+                    }
+                }
+            }
+            else
+            {
+                if($request->input('number') !== null)
+                {
+                    if($request->has('date'))
+                    {
+                        $datas = DB::table('接收明細')
+                            ->where('料號', 'like', $request->input('number') . '%')
+                            ->where('接收廠區', '=', $database)
+                            ->whereBetween('接收時間', [$begin, $end])
+                            ->get();
+                    }
+                    else
+                    {
+                        $datas = DB::table('接收明細')
+                            ->where('料號', 'like', $request->input('number') . '%')
+                            ->where('接收廠區', '=', $database)
+                            ->get();
+                    }
+                }
+                else
+                {
+                    if($request->has('date'))
+                    {
+                        $datas = DB::table('接收明細')
+                            ->where('接收廠區', '=', $database)
+                            ->whereBetween('接收時間', [$begin, $end])
+                            ->get();
+                    }
+                    else
+                    {
+                        $datas = DB::table('接收明細')
+                        ->where('接收廠區', '=', $database)
+                        ->get();
+                    }
+                }
+                $choose = 'receive';
+                $datas = DB::table('撥出明細')
+                ->where('撥出廠區', '=', $database)
+                ->get();
+            }
+
+            $choose = 'out';
+            return view('bu.searchdetailok')->with(['data' => $datas])->with('choose' , $choose);
+
+        } else {
+            return redirect(route('member.login'));
+        }
+    }
+
+
+    //download
+    public function download(Request $request)
+    {
+        if (Session::has('username')) {
+            $reDive = new responseObj();
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            $title = $request->input('title');
+            //填寫表頭
+            for ($i = 0; $i < 10; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+            }
+            /*
+            //填寫內容
+            for ($i = 0; $i < 10; $i++) {
+                for ($j = 0; $j < 10; $j++) {
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
+                }
+            }*/
+
+
+            // 下載
+
+            $now = Carbon::now()->format('YmdHis');
+
+            $filename = $now . '.xlsx';
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $filename . '"');
+            header('Cache-Control: max-age=0');
+
+            //$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer = \PhpOffice\PhpSpreadsheet\Shared\File::setUseUploadTempDirectory($spreadsheet, 'Xlsx');
+            //$writer->save('php://output');
+
+            $reDive->boolean = true;
+
+            $reDive->message = $title;
+            $myJSON = json_encode($reDive);
+            echo $myJSON;
+        } else {
+            return redirect(route('member.login'));
+        }
+    }
+
+
+
+
+
 }
