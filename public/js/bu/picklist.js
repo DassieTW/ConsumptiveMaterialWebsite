@@ -43,10 +43,12 @@ $('#picklist').on('submit', function (e) {
         window.location.href = "/basic/new";
     }
 
-    var mess = Lang.get('bupagelang.realamount') + ' : ' + realout + ' ' + Lang.get('bupagelang.realpickamount') + ' : ' + realpick +
-        ' ' + Lang.get('bupagelang.dblist') + ' : ' + list + '\n' + Lang.get('bupagelang.checkreceive');
-    var confirm = window.confirm(mess);
-
+    else
+    {
+        var mess = Lang.get('bupagelang.realamount') + ' : ' + realout + ' ' + Lang.get('bupagelang.realpickamount') + ' : ' + realpick +
+            ' ' + Lang.get('bupagelang.dblist') + ' : ' + list + '\n' + Lang.get('bupagelang.checkreceive');
+        var confirm = window.confirm(mess);
+    }
 
     if (confirm !== true) {
         return false;

@@ -80,4 +80,9 @@ return [
     'enterclient' => '請選擇客戶別',
     'enterreceivepeople' => '請選擇接收人',
     'checkreceive' => '確認是否接收',
+    'noisn' => '料號不存在,請先維護此料件信息',
+    'outdetail' => '撥出明細',
+    'receivedetail' => '接收明細',
+    'outtime' => '撥出時間',
+    'receivetime' => '接收時間',
 ];

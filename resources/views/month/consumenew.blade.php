@@ -32,7 +32,7 @@
                             <th>{!! __('monthlyPRpageLang.consume') !!}</th>
                             <th>{!! __('monthlyPRpageLang.nowneed') !!}</th>
                             <th>{!! __('monthlyPRpageLang.nextneed') !!}</th>
-                            <th>{!! __('monthlyPRpageLang.safestock') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.safe') !!}</th>
                             <th>{!! __('monthlyPRpageLang.client') !!}</th>
                             <th>{!! __('monthlyPRpageLang.machine') !!}</th>
                             <th>{!! __('monthlyPRpageLang.process') !!}</th>
