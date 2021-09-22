@@ -52,4 +52,5 @@ return [
     'created_by' => '建立者',
     'existed_tables' => '已有近期盤點表',
     'continue_check' => '續盤',
+    'has_exist_sheet_confirm' => '已有近期盤點表，請確認是否仍須建立新盤點表？',
 ];

@@ -21,6 +21,7 @@ class Checking_inventoryTableSeeder extends Seeder
         '儲位'
         '客戶別'
         '盤點'
+        'updated_by'
         */
 
         $inventory = new Checking_inventory;
@@ -30,6 +31,7 @@ class Checking_inventoryTableSeeder extends Seeder
         $inventory->儲位 = '7-A019';
         $inventory->客戶別 = 'Fendi';
         $inventory->盤點 = 0;
+        $inventory->updated_by = '2';
         $inventory->save();
         //
         $inventory = new Checking_inventory;
@@ -39,6 +41,7 @@ class Checking_inventoryTableSeeder extends Seeder
         $inventory->儲位 = '1-2';
         $inventory->客戶別 = 'ARRIS';
         $inventory->盤點 = 50;
+        $inventory->updated_by = '2';
         $inventory->save();
         //
         $inventory = new Checking_inventory;
@@ -48,6 +51,7 @@ class Checking_inventoryTableSeeder extends Seeder
         $inventory->儲位 = '7-A05';
         $inventory->客戶別 = 'Omega';
         $inventory->盤點 = 18;
+        $inventory->updated_by = '1';
         $inventory->save();
         //-----------------------------------------------
         $inventory = new Checking_inventory;
@@ -57,6 +61,7 @@ class Checking_inventoryTableSeeder extends Seeder
         $inventory->儲位 = '7-A019';
         $inventory->客戶別 = 'Fendi';
         $inventory->盤點 = null;
+        $inventory->updated_by = null;
         $inventory->save();
         //
         $inventory = new Checking_inventory;
@@ -66,6 +71,7 @@ class Checking_inventoryTableSeeder extends Seeder
         $inventory->儲位 = '1-2';
         $inventory->客戶別 = 'ARRIS';
         $inventory->盤點 = null;
+        $inventory->updated_by = null;
         $inventory->save();
         //
         $inventory = new Checking_inventory;
@@ -75,6 +81,7 @@ class Checking_inventoryTableSeeder extends Seeder
         $inventory->儲位 = '7-A05';
         $inventory->客戶別 = 'Omega';
         $inventory->盤點 = null;
+        $inventory->updated_by = null;
         $inventory->save();
         //-----------------------------------------------
         $inventory = new Checking_inventory;
@@ -84,6 +91,7 @@ class Checking_inventoryTableSeeder extends Seeder
         $inventory->儲位 = '7-A019';
         $inventory->客戶別 = 'Fendi';
         $inventory->盤點 = null;
+        $inventory->updated_by = null;
         $inventory->save();
         //
         $inventory = new Checking_inventory;
@@ -93,6 +101,7 @@ class Checking_inventoryTableSeeder extends Seeder
         $inventory->儲位 = '1-2';
         $inventory->客戶別 = 'ARRIS';
         $inventory->盤點 = null;
+        $inventory->updated_by = null;
         $inventory->save();
         //
         $inventory = new Checking_inventory;
@@ -102,6 +111,7 @@ class Checking_inventoryTableSeeder extends Seeder
         $inventory->儲位 = '7-A05';
         $inventory->客戶別 = 'Omega';
         $inventory->盤點 = null;
+        $inventory->updated_by = null;
         $inventory->save();
     }
 }

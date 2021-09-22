@@ -52,4 +52,5 @@ return [
     'created_by' => 'Created By',
     'existed_tables' => 'There are existed sheets',
     'continue_check' => 'Proceed',
+    'has_exist_sheet_confirm' => 'Existing sheets found, do you still want to create a new sheet?',
 ];

@@ -60,6 +60,7 @@ class Checking_inventory extends Model
         '儲位',
         '客戶別',
         '盤點',
+        'updated_by',
     ];
 
 }
