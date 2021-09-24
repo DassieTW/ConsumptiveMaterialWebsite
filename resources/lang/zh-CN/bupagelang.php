@@ -74,7 +74,6 @@ return [
     'searchpicklist' => '搜寻接收单',
     'enterpicklist' => '请选择接收单',
     'realpickamount' => '实际接收数量',
-    'client' => '客户别',
     'remark' => '备注',
     'enterloc' => '请选择储位',
     'enterclient' => '请选择客户别',
@@ -85,4 +84,7 @@ return [
     'receivedetail' => '接收明细',
     'outtime' => '拨出时间',
     'receivetime' => '接收时间',
+    'factorychange' => '厂区库存调拨',
+    'enterisn' => '请输入料号',
+    'isnlength' => '料号长度不为12',
 ];

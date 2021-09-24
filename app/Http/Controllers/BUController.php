@@ -689,34 +689,66 @@ class BUController extends Controller
     }
 
 
-    //download
+    //呆滯庫存查詢下載
     public function download(Request $request)
     {
         if (Session::has('username')) {
             $reDive = new responseObj();
             $spreadsheet = new Spreadsheet();
-            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
+            //$spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+            foreach (range('A', 'Z') as $char) {
+                $spreadsheet->getActiveSheet()->getColumnDimension($char)->setWidth(20);
+            }
+            $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(60);
             $worksheet = $spreadsheet->getActiveSheet();
 
             $title = $request->input('title');
+            $data0 = $request->input('data0');
+            $test = "";
             //填寫表頭
             for ($i = 0; $i < 10; $i++) {
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
             }
-            /*
-            //填寫內容
-            for ($i = 0; $i < 10; $i++) {
-                for ($j = 0; $j < 10; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
+
+            for ($i = 0 ; $i < 8; $i++)
+            {
+                for($j = 0 ; $j < count($data0) ;$j ++)
+                {
+
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data'.$i)[$j]);
+
                 }
-            }*/
+
+            }
+
+            for ($i = 0 ; $i < 5; $i++)
+            {
+                if(isset($request->input('data8')[$i]) != 0)
+                {
+                    for ($j = 0 ; $j < count($request->input('data8')[$i]); $j++)
+                    {
+                        $test = $test . $request->input('data8')[$i][$j] . "\n";
+                    }
+                    $worksheet->setCellValueByColumnAndRow(9, $i + 2, $test);
+                    $test = "";
+                }
+            }
+
+            for($j = 0 ; $j < count($data0) ;$j ++)
+            {
+
+                $worksheet->setCellValueByColumnAndRow(10, $j + 2, $request->input('data9')[$j]);
+
+            }
+
+
 
 
             // 下載
 
             $now = Carbon::now()->format('YmdHis');
-
-            $filename = $now . '.xlsx';
+            //rawurlencode('呆滯庫存查詢');
+            $filename = rawurlencode('呆滯庫存查詢') . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="' . $filename . '"');
             header('Cache-Control: max-age=0');
@@ -733,5 +765,117 @@ class BUController extends Controller
         } else {
             return redirect(route('member.login'));
         } // if else
+    }
+
+    //調撥單查詢下載
+    public function downloadlist(Request $request)
+    {
+        if (Session::has('username')) {
+            $reDive = new responseObj();
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            $title = $request->input('title');
+            $data0 = $request->input('data0');
+
+            //填寫表頭
+            for ($i = 0; $i < 17; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+            }
+
+            for ($i = 0 ; $i < 17; $i++)
+            {
+                for($j = 0 ; $j < count($data0) ;$j ++)
+                {
+
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data'.$i)[$j]);
+
+                }
+            }
+
+
+
+
+            // 下載
+
+            $now = Carbon::now()->format('YmdHis');
+
+            $filename = rawurlencode('調撥單查詢') . $now . '.xlsx';
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\''.$filename.';');
+            header('Cache-Control: max-age=0');
+
+            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+            $callback = function () use ($writer) {
+                $file = fopen('php://output', 'r');
+                fclose($file);
+            };
+
+            return response()->stream($callback, 200, $headers);
+        } else {
+            return redirect(route('member.login'));
+        } // if else
+    }
+
+    //廠區庫存調撥頁面
+    public function material(Request $request)
+    {
+        if (Session::has('username')) {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
+        \DB::purge(env("DB_CONNECTION"));
+            return view('bu.material')->with(['factory' => 廠別::cursor()]);
+        } else {
+            return redirect(route('member.login'));
+        }
+    }
+
+
+    public function sluggishmaterial(Request $request)
+    {
+        //
+        if (Session::has('username')) {
+            $number = $request->input('number');
+            $table = $request->input('table');
+
+            if(strlen($number) !== 12)
+            {
+                return back()->withErrors([
+
+                    'number' => trans('bupagelang.isnlength'),
+                ]);
+            }
+            else
+            {
+                $database = ['default', 'testing', 'bb1', 'bb4', 'm1'];
+
+                foreach ($database as $key => $value) {
+                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
+                    \DB::purge(env("DB_CONNECTION"));
+                    $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
+                        ->select(
+                            'inventory.料號',
+                            '品名',
+                            '規格',
+                            '單位',
+                            DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                            DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                        )
+                        ->groupBy('inventory.料號')
+                        ->where('inventory.料號',$number)
+                        ->get();
+                }
+
+                return view('bu.sluggish1')->with(['test' => $datas])
+                ->with(['table' => $table]);
+
+
+            }
+        } else {
+            return redirect(route('member.login'));
+        }
     }
 }

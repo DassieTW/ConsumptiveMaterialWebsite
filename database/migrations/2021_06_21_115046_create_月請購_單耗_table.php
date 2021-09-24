@@ -20,6 +20,10 @@ class Create月請購單耗Table extends Migration
             $table->string('製程', 45);
             $table->primary(['料號','客戶別','機種','製程']);
             $table->float('單耗');
+            $table->string('狀態', 45);
+            $table->string('畫押工號', 45);
+            $table->string('畫押信箱', 45);
+            $table->dateTime('畫押時間')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

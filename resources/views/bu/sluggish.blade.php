@@ -39,7 +39,7 @@
                                     <th><input type = "hidden" id = "title9" name = "title9" value = "接收廠區">{!! __('bupagelang.receivefac') !!}</th>
                                 </tr>
 
-                                <?php $i = 0 ; $data = ''; $count=array(0,0,0,0,0); $record=array(0,0,0,0,0);?>
+                                <?php $i = 0 ; $data = ''; $count=array(0,0,0,0,0); $record = array(array());?>
                                 @for($i = 0 ; $i < 5 ; $i++)
                                     @foreach($test[$i] as $data)
                                         <?php
@@ -80,10 +80,13 @@
                                         ?>
 
                                         @if($stayday > 30 && $data->inventory現有庫存 > 0)
-                                        <?php $count[$i] ++; $record[$i] = $loop->index?>
+                                        <?php $count[$i] ++;
+
+
+
+                                        ?>
                                         <tr>
                                             <td><input class ="basic" type="checkbox" id="check{{$i}}{{$loop->index}}" name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;" value="{{$i}}{{$loop->index}}"></td>
-
                                             <td><input type = "hidden"  id = "data0{{$i}}{{$loop->index}}" name = "data0{{$i}}{{$loop->index}}" value = {{$database[$i]}}>{{$database[$i]}}</td>
                                             <td><input type = "hidden"  id = "data1{{$i}}{{$loop->index}}" name = "data1{{$i}}{{$loop->index}}" value = {{$data->料號}}>{{$data->料號}}</td>
                                             <td><input type = "hidden"  id = "data2{{$i}}{{$loop->index}}" name = "data2{{$i}}{{$loop->index}}" value = {{$data->品名}}>{{$data->品名}}</td>
@@ -118,9 +121,7 @@
                                                 </select>
                                             </td>
                                         </tr>
-                                        <input type = "hidden" id = "record{{$i}}" name = "record{{$i}}" value = "{{$i}}{{$loop->index}}" ></td>
                                         @endif
-
                                     @endforeach
                                     <input type = "hidden" id = "count{{$i}}" name = "count{{$i}}" value = "{{$count[$i]}}" ></td>
                                 @endfor

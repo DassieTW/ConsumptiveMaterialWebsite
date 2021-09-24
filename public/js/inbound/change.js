@@ -73,6 +73,19 @@ $.ajaxSetup({
             type:'POST',
             url:"changesubmit",
             data:{client:client, number:number , oldposition:oldposition , amount:amount ,newposition:newposition , stock:stock},
+
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+            },
+
             success:function(data){
              console.log(data);
                var myObj = JSON.parse(data);

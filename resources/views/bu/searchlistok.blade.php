@@ -46,7 +46,7 @@
                                 <input type = "hidden" id = "time" name = "time" value = "17">
                             </tr>
                                 @foreach($data as $data)
-                                <tr id= "{{$loop->index}}">
+                                <tr id= "list{{$loop->index}}">
                                     <td><input class ="basic" type="checkbox" id="check{{$loop->index}}" name="check{{$loop->index}}" style="width:20px;height:20px;"  value="{{$loop->index}}"></td>
                                     <td><input type = "hidden" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$data->調撥單號}}">{{$data->調撥單號}}</td>
                                     <td><input type = "hidden" id = "data1{{$loop->index}}" name = "data1{{$loop->index}}" value = "{{$data->狀態}}">{{$data->狀態}}</td>

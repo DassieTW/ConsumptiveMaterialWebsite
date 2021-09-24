@@ -435,9 +435,14 @@
                                             </a>
                                             <ul id="bu" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
-                                                <li class="sidebar-item {{ isActiveRoute(['bu/add','bu/sluggish']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['bu.sluggish']) }}">
                                                     <a class="sidebar-link" href="{{route('bu.sluggish')}}">
                                                         {!! __('bupagelang.sluggish') !!}
+                                                    </a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['bu/material','bu/sluggishmaterial']) }}">
+                                                    <a class="sidebar-link" href="{{route('bu.material')}}">
+                                                        {!! __('bupagelang.factorychange') !!}
                                                     </a>
                                                 </li>
                                                 <li class="sidebar-item {{ isActiveRoute(['bu.searchlist','bu/searchlistsub']) }}">

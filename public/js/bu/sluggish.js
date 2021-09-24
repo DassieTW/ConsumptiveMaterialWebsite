@@ -36,6 +36,16 @@ $('#sluggish').on('submit', function (e) {
     for (var k = 0; k < 10; k++) {
         title[k] = $("#title" + k).val();
     }
+
+    var record = [];
+    {
+      $('#sluggish :checkbox').each(function() {
+        //if(values.indexOf($(this).val()) === -1){
+        record.push($(this).val());
+        // }
+      });
+    }
+
     var data0 = [];
     var data1 = [];
     var data2 = [];
@@ -46,35 +56,33 @@ $('#sluggish').on('submit', function (e) {
     var data7 = [];
     var data8 = new Array();
     var data9 = [];
-    var time = [];
-    for (var j = 0; j < 5; j++) {
-        var count = $("#count" + j).val();
-        time.push(count);
-        console.log(count);
-        if (count != 0) {
-            k = k + 1;
-            data8[j] = new Array();
-            var record = $("#record" + j).val();
-            data0.push($("#data0" + record).val());
-            data1.push($("#data1" + record).val());
-            data2.push($("#data2" + record).val());
-            data3.push($("#data3" + record).val());
-            data4.push($("#data4" + record).val());
-            data5.push($("#data5" + record).val());
-            data6.push($("#data6" + record).val());
-            data7.push($("#data7" + record).val());
-            $("#data8" + record).children('span').each(function () {
-                data8[j].push($(this).text());
-            });
-            data9.push($("#data9" + record).val());
-        }
+
+    for(let k = 0 ; k < record.length ; k ++)
+    {
+        var a = new Array();
+        data8.push(a);
+        data0.push($("#data0" + record[k]).val());
+        data1.push($("#data1" + record[k]).val());
+        data2.push($("#data2" + record[k]).val());
+        data3.push($("#data3" + record[k]).val());
+        data4.push($("#data4" + record[k]).val());
+        data5.push($("#data5" + record[k]).val());
+        data6.push($("#data6" + record[k]).val());
+        data7.push($("#data7" + record[k]).val());
+        $("#data8" + record[k]).children('span').each(function () {
+            data8[data8.length-1].push($(this).text());
+        });
+        data9.push($("#data9" + record[k]).val());
     }
 
 
 
+    console.log(data6);
+    console.log(data8);
+
     checked = $("input[type=checkbox]:checked").length;
 
-    if (select == '提交') {
+    if (select == '提交' || select == 'Submit') {
         if (!checked) {
             alert(Lang.get('bupagelang.nocheck1'));
             return false;
@@ -87,7 +95,7 @@ $('#sluggish').on('submit', function (e) {
             return false;
         }
         if (receive === null) {
-            document.getElementById("data8" + i).style.borderColor = "red";
+            document.getElementById("data9" + i).style.borderColor = "red";
             alert(Lang.get('bupagelang.enterfactory'));
             return false;
         }
@@ -97,7 +105,7 @@ $('#sluggish').on('submit', function (e) {
             return false;
         }
     }
-    if (select == '提交') {
+    if (select == '提交'|| select == 'Submit') {
         $.ajax({
             type: 'POST',
 
@@ -105,6 +113,17 @@ $('#sluggish').on('submit', function (e) {
             data: {
                 factory: factory, number: number, name: name, format: format, unit: unit,
                 oldstock: oldstock, amount: amount, receive: receive
+            },
+
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
             },
 
             success: function (data) {
@@ -141,19 +160,34 @@ $('#sluggish').on('submit', function (e) {
         });
     }
     else {
+
         $.ajax({
             type: 'POST',
             url: "download",
             data: {
                 title: title, data0: data0, data1: data1, data2: data2, data3: data3,
-                data4: data4, data5: data5, data6: data6, data7: data7, data8: data8, data9: data9, time: time
+                data4: data4, data5: data5, data6: data6, data7: data7, data8: data8, data9: data9,
             },
             xhrFields: {
-                responseType: 'blob' // to avoid binary data being mangled on charset conversion
+                responseType: 'blob', // to avoid binary data being mangled on charset conversion
             },
+
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+            },
+
             success: function (blob, status, xhr) {
+
                 console.log(status); // test
                 // check for a filename
+
                 var filename = "";
                 var disposition = xhr.getResponseHeader('Content-Disposition');
                 if (disposition && disposition.indexOf('attachment') !== -1) {
@@ -177,7 +211,8 @@ $('#sluggish').on('submit', function (e) {
                             window.location.href = downloadUrl;
                         } else {
                             a.href = downloadUrl;
-                            a.download = filename;
+                            a.download = decodeURIComponent(filename);
+                            console.log(decodeURIComponent(filename));
                             document.body.appendChild(a);
                             a.click();
                         }
@@ -189,6 +224,7 @@ $('#sluggish').on('submit', function (e) {
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
+
                 console.warn(jqXHR.responseText);
                 alert(errorThrown);
             }

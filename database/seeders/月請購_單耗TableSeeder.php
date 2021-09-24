@@ -22,6 +22,9 @@ class 月請購_單耗TableSeeder extends Seeder
         $month->機種 = 'Vulcan';
         $month->製程 = 'FAE';
         $month->單耗 = 5;
+        $month->狀態 = '已完成';
+        $month->畫押工號 = 'LA2100001';
+        $month->畫押信箱 = 'test@pegatroncorp.com';
         $month->save();
         //
         $month = new 月請購_單耗;
@@ -30,6 +33,9 @@ class 月請購_單耗TableSeeder extends Seeder
         $month->機種 = 'EZ1K';
         $month->製程 = 'FATP';
         $month->單耗 = 0.0015;
+        $month->狀態 = '已完成';
+        $month->畫押工號 = 'LA2100002';
+        $month->畫押信箱 = 'test2@pegatroncorp.com';
         $month->save();
         //
         $month = new 月請購_單耗;
@@ -38,6 +44,9 @@ class 月請購_單耗TableSeeder extends Seeder
         $month->機種 = 'Atlas';
         $month->製程 = 'LCON';
         $month->單耗 = 0.003;
+        $month->狀態 = '已完成';
+        $month->畫押工號 = 'LA2100002';
+        $month->畫押信箱 = 'test2@pegatroncorp.com';
         $month->save();
     }
 }

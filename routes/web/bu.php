@@ -16,6 +16,9 @@ Route::get('/', [BUController::class, 'index'])->name('bu.index');
 //搜尋呆滯庫存
 Route::get('/sluggish', [BUController::class, 'sluggish'])->name('bu.sluggish');
 
+//廠區庫存調撥
+Route::post('/sluggishmaterial', [BUController::class, 'sluggishmaterial'])->name('bu.sluggishmaterial');
+
 //新增調撥單
 Route::post('/transsluggish', [BUController::class, 'transsluggish'])->name('bu.transsluggish');
 
@@ -60,12 +63,13 @@ Route::post('/searchdetailsub', [BUController::class, 'searchdetailsub'])->name(
 //呆滯庫存下載
 Route::post('/download', [BUController::class, 'download'])->name('bu.download');
 
+//調撥單查詢下載
+Route::post('/downloadlist', [BUController::class, 'downloadlist'])->name('bu.downloadlist');
 
+//廠區庫存調撥頁面
+Route::get('/material', [BUController::class, 'material'])->name('bu.material');
 
-/*//廠區庫存調撥頁面
-Route::get('/searchlist', [BUController::class, 'searchlist'])->name('bu.searchlist');
-
-//廠區庫存調撥
+/*//廠區庫存調撥
 Route::get('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.searchlistsub');
 
 Route::post('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.searchlistsub');*/
