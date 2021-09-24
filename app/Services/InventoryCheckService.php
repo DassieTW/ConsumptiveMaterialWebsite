@@ -71,7 +71,7 @@ class InventoryCheckService
                 ->where('料號', '=', $isn)
                 ->where('儲位', '=', $loc)
                 ->where('客戶別', '=', $client)
-                ->update(['盤點' => $checkUpdate, 'updated_at' => $datetime]);
+                ->update(['盤點' => $checkUpdate, 'updated_at' => $datetime, 'updated_by' => \Auth::user()->username]);
 
             DB::commit();
             return true;

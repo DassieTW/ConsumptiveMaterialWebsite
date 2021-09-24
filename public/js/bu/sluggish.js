@@ -177,7 +177,8 @@ $('#sluggish').on('submit', function (e) {
                             window.location.href = downloadUrl;
                         } else {
                             a.href = downloadUrl;
-                            a.download = filename;
+                            a.download = decodeURIComponent(filename);
+                            // console.log(decodeURIComponent(filename));
                             document.body.appendChild(a);
                             a.click();
                         }

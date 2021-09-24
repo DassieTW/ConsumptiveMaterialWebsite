@@ -716,9 +716,9 @@ class BUController extends Controller
 
             $now = Carbon::now()->format('YmdHis');
 
-            $filename = $now . '.xlsx';
+            $filename = '%E5%91%86%E6%BB%AF%E5%BA%AB%E5%AD%98' . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="' . $filename . '"');
+            header('Content-Disposition: attachment; filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
             header('Cache-Control: max-age=0');
 
             $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
