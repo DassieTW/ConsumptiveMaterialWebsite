@@ -74,7 +74,6 @@ return [
     'searchpicklist' => '搜尋接收單',
     'enterpicklist' => '請選擇接收單',
     'realpickamount' => '實際接收數量',
-    'client' => '客戶別',
     'remark' => '備註',
     'enterloc' => '請選擇儲位',
     'enterclient' => '請選擇客戶別',
@@ -85,4 +84,7 @@ return [
     'receivedetail' => '接收明細',
     'outtime' => '撥出時間',
     'receivetime' => '接收時間',
+    'factorychange' => '廠區庫存調撥',
+    'enterisn' => '請輸入料號',
+    'isnlength' => '料號長度不為12',
 ];
