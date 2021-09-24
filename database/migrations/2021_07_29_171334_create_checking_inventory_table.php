@@ -21,6 +21,7 @@ class CreateCheckingInventoryTable extends Migration
             $table->string('儲位', 45);
             $table->string('客戶別', 255);
             $table->bigInteger('盤點')->nullable();
+            $table->string('updated_by', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -105,7 +105,7 @@ $(document).ready(function () {
                     }
                 });
 
-                window.location.href = "/checking";
+                setTimeout(function() {window.location.href = "/checking";}, 1500);
             },
             error: function (err) {
                 if (err.status == 420) {  // if no result
@@ -192,5 +192,67 @@ $(document).ready(function () {
         }); // end of ajax
 
     })();
+
+    $('#stillNewBtn').on('click', function(e){
+        e.preventDefault();
+        var createSignal = true;
+        var sendNew = confirm(Lang.get('checkInvLang.has_exist_sheet_confirm'));
+        if (sendNew !== true) {
+            return false;
+        } else {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: "/checking/create_new_table",
+                data: { createSignal: createSignal },
+                dataType: 'json',              // let's set the expected response format
+                beforeSend: function () {
+                    $('body').loadingModal({
+                        text: 'Loading...',
+                        animation: 'circle'
+                    });
+                },
+                complete: function () {
+                    $('body').loadingModal('hide');
+                },
+                success: function (response) {
+                    notyf.success({
+                        message: Lang.get('checkInvLang.create_table_success'),
+                        duration: 3000,   //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom"
+                        }
+                    });
+    
+                    setTimeout(function() {window.location.href = "/checking";}, 1500);
+                },
+                error: function (err) {
+                    if (err.status == 420) {  // if no result
+                        notyf.error({
+                            message: Lang.get('checkInvLang.create_table_fail'),
+                            duration: 3000,   //miliseconds, use 0 for infinite duration
+                            ripple: true,
+                            dismissible: true,
+                            position: {
+                                x: "right",
+                                y: "bottom"
+                            }
+                        });
+                    } // else if
+                    else {
+                        console.log(err.status); // test
+                    } // else
+                } // error
+            }); // end of ajax
+
+        } // if else
+    });
 
 }); // on document ready

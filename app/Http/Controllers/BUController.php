@@ -44,12 +44,9 @@ class BUController extends Controller
     public function index()
     {
         //
-        if(Session::has('username'))
-        {
+        if (Session::has('username')) {
             return view('bu.index');
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -58,18 +55,21 @@ class BUController extends Controller
     public function sluggish()
     {
         //
-        if(Session::has('username'))
-        {
-            $database = ['default','testing','bb1','bb4','m1'];
+        if (Session::has('username')) {
+            $database = ['default', 'testing', 'bb1', 'bb4', 'm1'];
 
-            foreach($database as $key => $value)
-            {
+            foreach ($database as $key => $value) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
                 \DB::purge(env("DB_CONNECTION"));
-                $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號',"=", 'inventory.料號')
-                    ->select('inventory.料號','品名','規格','單位',
-                    DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
-                    DB::raw('sum(inventory.現有庫存) as inventory現有庫存'))
+                $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
+                    ->select(
+                        'inventory.料號',
+                        '品名',
+                        '規格',
+                        '單位',
+                        DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                        DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                    )
                     ->groupBy('inventory.料號')
                     ->get();
             }
@@ -79,9 +79,7 @@ class BUController extends Controller
             return view('bu.sluggish')->with(['test' => $datas]);
             /*return view('bu.sluggish')->with(['data0' => $datas[0]])->with(['data1' => $datas[1]])->with(['data2' => $datas[2]])
             ->with(['data3' => $datas[3]])->with(['data4' => $datas[4]]);*/
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -89,8 +87,7 @@ class BUController extends Controller
     //調撥單新增and提交
     public function transsluggish(Request $request)
     {
-        if(Session::has('username'))
-        {
+        if (Session::has('username')) {
             /*$count = $request->input('check'.'4'.'0');
             dd($count);*/
             $reDive = new  responseObj();
@@ -106,8 +103,7 @@ class BUController extends Controller
             $amount = $request->input('amount');
             $receive = $request->input('receive');
             $nowstock = DB::table('inventory')->where('料號', $number)->sum('現有庫存');
-            if($oldstock == $nowstock)
-            {
+            if ($oldstock == $nowstock) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
                 \DB::purge(env("DB_CONNECTION"));
                 $z = '0001';
@@ -117,25 +113,23 @@ class BUController extends Controller
                 $interval = date_diff($maxtime, $nowtime);
                 $interval = $interval->format('%R%a');
                 $interval = (int)($interval);
-                if ($interval > 0)
-                {
+                if ($interval > 0) {
                     $opentime = 'DB-' . Carbon::now()->format('Ymd') . $z;
-                }
-                else
-                {
+                } else {
                     $num = DB::table('調撥單')->max('調撥單號');
-                    $test = str_replace("DB-","",$num);
+                    $test = str_replace("DB-", "", $num);
                     $num = intval($test);
                     $num++;
                     $num = strval($num);
-                    $opentime = 'DB-'.$num;
+                    $opentime = 'DB-' . $num;
                 }
                 DB::beginTransaction();
                 try {
                     DB::table('調撥單')
-                            ->insert(['料號' => $number , '品名' => $name , '規格' => $format ,'單位' => $unit , '庫存' => $oldstock ,
-                            '調撥數量' => $amount , '撥出廠區' => $database , '接收廠區' => $receive
-                            ,'調撥單號' => $opentime , '開單時間' => Carbon::now() , '狀態' => '待撥出']);
+                        ->insert([
+                            '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '庫存' => $oldstock,
+                            '調撥數量' => $amount, '撥出廠區' => $database, '接收廠區' => $receive, '調撥單號' => $opentime, '開單時間' => Carbon::now(), '狀態' => '待撥出'
+                        ]);
 
                     DB::commit();
                     $reDive->boolean = true;
@@ -152,19 +146,14 @@ class BUController extends Controller
                     $myJSON = json_encode($reDive);
                     echo $myJSON;
                 }
-            }
-            else
-            {
+            } else {
                 $reDive->boolean = true;
                 $reDive->passbool = false;
                 $reDive->message = $oldstock;
                 $myJSON = json_encode($reDive);
                 echo $myJSON;
             }
-
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -333,8 +322,7 @@ class BUController extends Controller
     //調撥單刪除
     public function delete(Request $request)
     {
-        if (Session::has('username'))
-        {
+        if (Session::has('username')) {
             $reDive = new  responseObj();
 
             $list = $request->input('list');
@@ -362,10 +350,7 @@ class BUController extends Controller
                     window.location.href='/bu';
                     </script>");
             }
-        }
-
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -378,7 +363,7 @@ class BUController extends Controller
             $database = $request->session()->get('database');
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
             \DB::purge(env("DB_CONNECTION"));
-            return view('bu.outlistpage')->with(['data' => 調撥單::cursor()->where('撥出廠區',$database)->wherenull('調撥人')]);
+            return view('bu.outlistpage')->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')]);
         } else {
             return redirect(route('member.login'));
         }
@@ -387,18 +372,14 @@ class BUController extends Controller
     //調撥_撥出單
     public function outlist(Request $request)
     {
-        if (Session::has('username'))
-        {
+        if (Session::has('username')) {
             $list = $request->input('list');
 
             $database = $request->session()->get('database');
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
             \DB::purge(env("DB_CONNECTION"));
-            return view('bu.outlist')->with(['data' => 調撥單::cursor()->where('撥出廠區',$database)->wherenull('調撥人')->where('調撥單號',$list)]);
-
-        }
-        else
-        {
+            return view('bu.outlist')->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')->where('調撥單號', $list)]);
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -430,28 +411,24 @@ class BUController extends Controller
             DB::beginTransaction();
             try {
 
-                for($i = 0 ; $i < $count ; $i++)
-                {
+                for ($i = 0; $i < $count; $i++) {
                     DB::table('撥出明細')
-                        ->insert(['調撥單號' => $list, '客戶別' => $clients[$i], '撥出廠區' => $outfactory, '接收廠區' => $receivefac
-                        , '料號' => $number , '品名' => $name , '規格' => $format , '現有庫存' => $nowstocks[$i] , '預計撥出數量' => $preamount
-                        , '實際撥出數量' => $realamounts[$i] , '儲位' => $positions[$i] , '調撥人' => $outpeople , '撥出時間' => $now]);
+                        ->insert([
+                            '調撥單號' => $list, '客戶別' => $clients[$i], '撥出廠區' => $outfactory, '接收廠區' => $receivefac, '料號' => $number, '品名' => $name, '規格' => $format, '現有庫存' => $nowstocks[$i], '預計撥出數量' => $preamount, '實際撥出數量' => $realamounts[$i], '儲位' => $positions[$i], '調撥人' => $outpeople, '撥出時間' => $now
+                        ]);
                     $total = $total + $realamounts[$i];
                 }
 
-                if($total > 0)
-                {
+                if ($total > 0) {
                     DB::table('調撥單')
-                    ->where('調撥單號', $list)
-                    ->whereNull('調撥人')
-                    ->update(['調撥人' => $outpeople, '撥出數量' => $total , '狀態' => '待接收' , '出庫時間' => $now]);
-                }
-                else
-                {
+                        ->where('調撥單號', $list)
+                        ->whereNull('調撥人')
+                        ->update(['調撥人' => $outpeople, '撥出數量' => $total, '狀態' => '待接收', '出庫時間' => $now]);
+                } else {
                     DB::table('調撥單')
-                    ->where('調撥單號', $list)
-                    ->whereNull('調撥人')
-                    ->update(['調撥人' => $outpeople, '撥出數量' => $total , '狀態' => '已完成' , '出庫時間' => $now]);
+                        ->where('調撥單號', $list)
+                        ->whereNull('調撥人')
+                        ->update(['調撥人' => $outpeople, '撥出數量' => $total, '狀態' => '已完成', '出庫時間' => $now]);
                 }
 
                 DB::commit();
@@ -467,7 +444,6 @@ class BUController extends Controller
                 $myJSON = json_encode($reDive);
                 echo $myJSON;
             }
-
         } else {
             return redirect(route('member.login'));
         }
@@ -481,7 +457,7 @@ class BUController extends Controller
             $database = $request->session()->get('database');
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
             \DB::purge(env("DB_CONNECTION"));
-            return view('bu.picklistpage')->with(['data' => 調撥單::cursor()->where('接收廠區',$database)->where('狀態','待接收')]);
+            return view('bu.picklistpage')->with(['data' => 調撥單::cursor()->where('接收廠區', $database)->where('狀態', '待接收')]);
         } else {
             return redirect(route('member.login'));
         }
@@ -490,18 +466,14 @@ class BUController extends Controller
     //調撥_接收單
     public function picklist(Request $request)
     {
-        if (Session::has('username'))
-        {
+        if (Session::has('username')) {
             $list = $request->input('list');
 
             $database = $request->session()->get('database');
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
             \DB::purge(env("DB_CONNECTION"));
-            return view('bu.picklist')->with(['data' => 調撥單::cursor()->where('接收廠區',$database)->where('狀態','待接收')->where('調撥單號',$list)]);
-
-        }
-        else
-        {
+            return view('bu.picklist')->with(['data' => 調撥單::cursor()->where('接收廠區', $database)->where('狀態', '待接收')->where('調撥單號', $list)]);
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -525,10 +497,10 @@ class BUController extends Controller
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
             \DB::purge(env("DB_CONNECTION"));
 
-            $outclients = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('客戶別')->toarray();
-            $outlocs = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('儲位')->toarray();
-            $outstock = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('現有庫存')->toarray();
-            $outrealout = DB::table('撥出明細')->where('料號',$number)->where('調撥單號',$list)->pluck('實際撥出數量')->toarray();
+            $outclients = DB::table('撥出明細')->where('料號', $number)->where('調撥單號', $list)->pluck('客戶別')->toarray();
+            $outlocs = DB::table('撥出明細')->where('料號', $number)->where('調撥單號', $list)->pluck('儲位')->toarray();
+            $outstock = DB::table('撥出明細')->where('料號', $number)->where('調撥單號', $list)->pluck('現有庫存')->toarray();
+            $outrealout = DB::table('撥出明細')->where('料號', $number)->where('調撥單號', $list)->pluck('實際撥出數量')->toarray();
             $count = count($outclients);
             $outfactory = $request->input('outfactory');
 
@@ -537,17 +509,13 @@ class BUController extends Controller
 
             $inventorysure = false;
             //檢查撥出廠區之庫存是否有異動
-            for($i = 0 ; $i < $count ; $i++)
-            {
-                $nowoutstock[$i] = DB::table('inventory')->where('料號',$number)->where('客戶別',$outclients[$i])->where('儲位',$outlocs[$i])->value('現有庫存');
-                if($outstock[$i] != $nowoutstock[$i])
-                {
+            for ($i = 0; $i < $count; $i++) {
+                $nowoutstock[$i] = DB::table('inventory')->where('料號', $number)->where('客戶別', $outclients[$i])->where('儲位', $outlocs[$i])->value('現有庫存');
+                if ($outstock[$i] != $nowoutstock[$i]) {
                     $reDive->boolean = true;
                     $reDive->passbool = false;
                     $inventorysure = false;
-                }
-                else
-                {
+                } else {
                     $inventorysure = true;
                 }
             }
@@ -561,18 +529,16 @@ class BUController extends Controller
             DB::beginTransaction();
             try {
                 //庫存無異動，實際撥出
-                if($inventorysure === true)
-                {
+                if ($inventorysure === true) {
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $outfactory);
                     \DB::purge(env("DB_CONNECTION"));
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
+                    for ($i = 0; $i < $count; $i++) {
 
                         DB::table('inventory')
-                        ->where('料號', $number)
-                        ->where('客戶別',$outclients[$i])
-                        ->where('儲位',$outlocs[$i])
-                        ->update(['現有庫存' => $nowoutstock[$i] - $outrealout[$i] , '最後更新時間' => $now]);
+                            ->where('料號', $number)
+                            ->where('客戶別', $outclients[$i])
+                            ->where('儲位', $outlocs[$i])
+                            ->update(['現有庫存' => $nowoutstock[$i] - $outrealout[$i], '最後更新時間' => $now]);
                     }
 
                     $receivefac = $request->input('receivefac');
@@ -580,35 +546,31 @@ class BUController extends Controller
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $receivefac);
                     \DB::purge(env("DB_CONNECTION"));
 
-                    $pickstock = DB::table('inventory')->where('料號',$number)->where('客戶別',$client)->where('儲位',$position)->value('現有庫存');
+                    $pickstock = DB::table('inventory')->where('料號', $number)->where('客戶別', $client)->where('儲位', $position)->value('現有庫存');
 
-                    if($pickstock !== null)
-                    {
+                    if ($pickstock !== null) {
                         DB::table('inventory')
-                        ->where('客戶別', $client)
-                        ->where('料號', $number)
-                        ->where('儲位', $position)
-                        ->update(['現有庫存' => $pickstock + $realpick, '最後更新時間' => $now]);
-                    }
-                    else
-                    {
+                            ->where('客戶別', $client)
+                            ->where('料號', $number)
+                            ->where('儲位', $position)
+                            ->update(['現有庫存' => $pickstock + $realpick, '最後更新時間' => $now]);
+                    } else {
                         DB::table('inventory')
-                        ->insert(['料號' => $number, '現有庫存' => $realpick, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $now]);
-
+                            ->insert(['料號' => $number, '現有庫存' => $realpick, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $now]);
                     }
 
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
                     \DB::purge(env("DB_CONNECTION"));
 
                     DB::table('接收明細')
-                        ->insert(['調撥單號' => $list, '客戶別' => $client, '撥出廠區' => $outfactory, '接收廠區' => $receivefac
-                        , '料號' => $number , '品名' => $name , '規格' => $format , '實際接收數量' => $realpick , '實際撥出數量' => $realout
-                        , '儲位' => $position , '接收人' => $pickpeople , '接收時間' => $now]);
+                        ->insert([
+                            '調撥單號' => $list, '客戶別' => $client, '撥出廠區' => $outfactory, '接收廠區' => $receivefac, '料號' => $number, '品名' => $name, '規格' => $format, '實際接收數量' => $realpick, '實際撥出數量' => $realout, '儲位' => $position, '接收人' => $pickpeople, '接收時間' => $now
+                        ]);
 
                     DB::table('調撥單')
                         ->where('調撥單號', $list)
                         ->whereNull('接收人')
-                        ->update(['接收人' => $pickpeople, '接收數量' => $realpick , '狀態' => '已完成' , '入庫時間' => $now]);
+                        ->update(['接收人' => $pickpeople, '接收數量' => $realpick, '狀態' => '已完成', '入庫時間' => $now]);
 
                     DB::commit();
                     $reDive->boolean = true;
@@ -616,9 +578,7 @@ class BUController extends Controller
                     $reDive->message = $list;
                     $myJSON = json_encode($reDive);
                     echo $myJSON;
-                }
-                else
-                {
+                } else {
                     $reDive->boolean = true;
                     $reDive->passbool = false;
                     $myJSON = json_encode($reDive);
@@ -633,7 +593,6 @@ class BUController extends Controller
                 $myJSON = json_encode($reDive);
                 echo $myJSON;
             }
-
         } else {
             return redirect(route('member.login'));
         }
@@ -664,88 +623,66 @@ class BUController extends Controller
             $database = $request->session()->get('database');
             $choose = 'out';
 
-            if ($request->has('outdetail'))
-            {
-                if($request->input('number') !== null)
-                {
-                    if($request->has('date'))
-                    {
+            if ($request->has('outdetail')) {
+                if ($request->input('number') !== null) {
+                    if ($request->has('date')) {
                         $datas = DB::table('撥出明細')
                             ->where('料號', 'like', $request->input('number') . '%')
                             ->where('撥出廠區', '=', $database)
                             ->whereBetween('撥出時間', [$begin, $end])
                             ->get();
-                    }
-                    else
-                    {
+                    } else {
                         $datas = DB::table('撥出明細')
-                        ->where('料號', 'like', $request->input('number') . '%')
-                        ->where('撥出廠區', '=', $database)
-                        ->get();
+                            ->where('料號', 'like', $request->input('number') . '%')
+                            ->where('撥出廠區', '=', $database)
+                            ->get();
                     }
-                }
-                else
-                {
-                    if($request->has('date'))
-                    {
+                } else {
+                    if ($request->has('date')) {
                         $datas = DB::table('撥出明細')
                             ->where('撥出廠區', '=', $database)
                             ->whereBetween('撥出時間', [$begin, $end])
                             ->get();
-                    }
-                    else
-                    {
+                    } else {
                         $datas = DB::table('撥出明細')
                             ->where('撥出廠區', '=', $database)
                             ->get();
                     }
                 }
-            }
-            else
-            {
-                if($request->input('number') !== null)
-                {
-                    if($request->has('date'))
-                    {
+            } else {
+                if ($request->input('number') !== null) {
+                    if ($request->has('date')) {
                         $datas = DB::table('接收明細')
                             ->where('料號', 'like', $request->input('number') . '%')
                             ->where('接收廠區', '=', $database)
                             ->whereBetween('接收時間', [$begin, $end])
                             ->get();
-                    }
-                    else
-                    {
+                    } else {
                         $datas = DB::table('接收明細')
                             ->where('料號', 'like', $request->input('number') . '%')
                             ->where('接收廠區', '=', $database)
                             ->get();
                     }
-                }
-                else
-                {
-                    if($request->has('date'))
-                    {
+                } else {
+                    if ($request->has('date')) {
                         $datas = DB::table('接收明細')
                             ->where('接收廠區', '=', $database)
                             ->whereBetween('接收時間', [$begin, $end])
                             ->get();
-                    }
-                    else
-                    {
+                    } else {
                         $datas = DB::table('接收明細')
-                        ->where('接收廠區', '=', $database)
-                        ->get();
+                            ->where('接收廠區', '=', $database)
+                            ->get();
                     }
                 }
                 $choose = 'receive';
                 $datas = DB::table('撥出明細')
-                ->where('撥出廠區', '=', $database)
-                ->get();
+                    ->where('撥出廠區', '=', $database)
+                    ->get();
             }
 
             $choose = 'out';
-            return view('bu.searchdetailok')->with(['data' => $datas])->with('choose' , $choose);
-
+            return view('bu.searchdetailok')->with(['data' => $datas])->with('choose', $choose);
         } else {
             return redirect(route('member.login'));
         }
@@ -784,22 +721,17 @@ class BUController extends Controller
             header('Content-Disposition: attachment;filename="' . $filename . '"');
             header('Cache-Control: max-age=0');
 
+            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
             $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-            //$writer = \PhpOffice\PhpSpreadsheet\Shared\File::setUseUploadTempDirectory($spreadsheet, 'Xlsx');
             $writer->save('php://output');
+            $callback = function () use ($writer) {
+                $file = fopen('php://output', 'r');
+                fclose($file);
+            };
 
-            $reDive->boolean = true;
-
-            $reDive->message = $title;
-            $myJSON = json_encode($reDive);
-            echo $myJSON;
+            return response()->stream($callback, 200, $headers);
         } else {
             return redirect(route('member.login'));
-        }
+        } // if else
     }
-
-
-
-
-
 }
