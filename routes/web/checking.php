@@ -42,3 +42,8 @@ Route::post('/get_creators', [CheckingInventoryController::class, 'getCreators']
 
 // set the continue checking table to session
 Route::post('/set_wanted_table', [CheckingInventoryController::class, 'setContinue']);
+
+// get the record search page
+Route::get('/check_record', function () {
+    return view('checkInventory.checkRecord');
+})->name('checking.checkRecord');
