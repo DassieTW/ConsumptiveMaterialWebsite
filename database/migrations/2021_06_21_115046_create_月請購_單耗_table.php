@@ -24,6 +24,7 @@ class Create月請購單耗Table extends Migration
             $table->string('畫押工號', 45);
             $table->string('畫押信箱', 45);
             $table->dateTime('畫押時間')->nullable();
+            $table->string('紀錄',255)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

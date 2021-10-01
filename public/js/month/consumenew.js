@@ -33,11 +33,14 @@ $('#consumenew').on('submit', function (e) {
   var machine = $("#machine").val();
   var production = $("#production").val();
   var amount = $("#amount").val();
+  var jobnumber = $("#jobnumber").val();
+  var email = $("#email").val();
 
   $.ajax({
     type: 'POST',
     url: "consumenewsubmit",
-    data: { number: number, client: client, machine: machine, production: production, amount: amount },
+    data: { number: number, client: client, machine: machine, production: production, amount: amount,
+    jobnumber : jobnumber , email : email},
     beforeSend: function () {
       // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
       $('body').loadingModal({
@@ -54,10 +57,12 @@ $('#consumenew').on('submit', function (e) {
       console.log(myObj);
       if (myObj.boolean === true) {
         var mess = Lang.get('monthlyPRpageLang.isn') + Lang.get('monthlyPRpageLang.consume')
-          + Lang.get('monthlyPRpageLang.new') + Lang.get('monthlyPRpageLang.success');
+          + Lang.get('monthlyPRpageLang.new') + Lang.get('monthlyPRpageLang.submit') + Lang.get('monthlyPRpageLang.success');
         alert(mess);
 
-        window.location.href = "/month";
+        $("#consumebody").hide();
+        $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/testconsume?'+ myObj.database +'</a>');
+
         //window.location.href = "member.newok";
       }
       else {

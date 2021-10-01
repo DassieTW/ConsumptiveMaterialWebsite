@@ -31,7 +31,7 @@
                                 <td><input type = "hidden" name = "title4" value = "MOQ">{!! __('monthlyPRpageLang.moq') !!}</td>
                                 <td><input type = "hidden" name = "title5" value = "下月需求">{!! __('monthlyPRpageLang.nextneed') !!}</td>
                                 <td><input type = "hidden" name = "title6" value = "當月需求">{!! __('monthlyPRpageLang.nowneed') !!}</td>
-                                <td><input type = "hidden" name = "title7" value = "安全庫存">{!! __('monthlyPRpageLang.safestock') !!}</td>
+                                <td><input type = "hidden" name = "title7" value = "安全庫存">{!! __('monthlyPRpageLang.safe') !!}</td>
                                 <td><input type = "hidden" name = "title8" value = "單價">{!! __('monthlyPRpageLang.price') !!}</td>
                                 <td><input type = "hidden" name = "title9" value = "幣別">{!! __('monthlyPRpageLang.money') !!}</td>
                                 <td><input type = "hidden" name = "title10" value = "匯率">{!! __('monthlyPRpageLang.rate') !!}</td>
