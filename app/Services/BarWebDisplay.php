@@ -1,10 +1,6 @@
 <?php
 
 namespace App\Services;
-<<<<<<< HEAD
-
-=======
->>>>>>> abdb20fdd8063033b5a728bfd898e99af1e24a65
 use Illuminate\Http\Request;
 
 class BarWebDisplay

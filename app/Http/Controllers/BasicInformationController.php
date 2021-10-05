@@ -406,10 +406,6 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-<<<<<<< HEAD
-
-=======
->>>>>>> abdb20fdd8063033b5a728bfd898e99af1e24a65
                     if($request->input('clientnew') !== null)
                     {
                         $test = 客戶別::onlyTrashed()
