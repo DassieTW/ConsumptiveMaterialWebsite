@@ -91,7 +91,7 @@ $('#newmaterial').on('submit', function (e) {
                 document.getElementById('number').style.borderColor = "";
             }
             else if (myObj.boolean === true) {
-                var mess = Lang.get('oboundpageLang.newMats') + ' ' + Lang.get('oboundpageLang.success');
+                var mess = Lang.get('basicInfoLang.newMats') + ' ' + Lang.get('basicInfoLang.success');
                 alert(mess);
                 //alert('New Material successfully');
                 window.location.href = "/basic";

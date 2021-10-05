@@ -48,7 +48,7 @@ $(document).ready(function () {
       },
       success: function (data) {
         console.log(data.message); // test
-        notyf.success({
+        /*notyf.success({
           message: "LogIn Success.",
           duration: 3000,   //miliseconds, use 0 for infinite duration
           ripple: true,
@@ -57,8 +57,8 @@ $(document).ready(function () {
             x: "right",
             y: "bottom"
           }
-        });
-        
+        });*/
+
         window.location.href = "/member";
       },
       error: function (err) {
@@ -77,7 +77,7 @@ $(document).ready(function () {
             } // if
             else {
               el.after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
-            } // if else 
+            } // if else
           });
         } // if error 422
         else if (err.status == 420) { // when login failed

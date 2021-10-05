@@ -88,6 +88,7 @@ class CallController extends Controller
                     $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
 
                 })
+                ->where('月請購_單耗.狀態','=',"已完成")
                 ->get();
                 foreach($datas as $data)
                 {
@@ -153,6 +154,7 @@ class CallController extends Controller
                     $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
 
                 })->where('consumptive_material.發料部門',$send)
+                ->where('月請購_單耗.狀態','=',"已完成")
                 ->get();
 
                 foreach($datas as $data)

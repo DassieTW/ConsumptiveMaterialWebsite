@@ -15,9 +15,8 @@ Route::get('/', [BasicInformationController::class, 'index'])->name('basic.index
 
 //basic information change or delete
 
-Route::get('/inf', [BasicInformationController::class, 'changeordelete'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
-Route::post('/inf', [BasicInformationController::class, 'changeordelete'])->name('basic.changeordelete')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+Route::post('/changeordelete', [BasicInformationController::class, 'changeordelete'])->name('basic.changeordelete')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //新增料件
 Route::get('/new', [BasicInformationController::class, 'new'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
@@ -64,7 +63,7 @@ Route::post('/upload', [BasicInformationController::class, 'uploadmaterial'])->n
 Route::post('/uploadmaterial', [BasicInformationController::class, 'insertuploadmaterial'])->name('basic.insertuploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //基礎資料上傳
-Route::get('/uploadbasic', [BasicInformationController::class, 'uploadbasicpage'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+Route::get('/uploadbasic', [BasicInformationController::class, 'uploadbasic'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 Route::post('/uploadbasic', [BasicInformationController::class, 'uploadbasic'])->name('basic.uploadbasic')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 

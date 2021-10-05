@@ -63,287 +63,148 @@ class BasicInformationController extends Controller
     {
         if (Session::has('username'))
         {
-            //delete check items
-            if($request->has('delete'))
+            $reDive = new responseObj();
+            $now = Carbon::now();
+
+            $count = count($request->input('data'));
+            $names = $request->input('data');
+            $oldnames = $request->input('olddata');
+            $datanew = $request->input('datanew');
+            $choose;
+            $chooseindex;
+
+            //factory
+            if($request->input('dataname') == "factory")
             {
-                //factory
-                if($request->has('factory'))
+                $choose = "App\Models\廠別";
+                $chooseindex = "廠別";
+                $table = "廠別";
+                $reDive->message = "廠別";
+                $reDive->database = "FactoryExample";
+            }
+            //client
+            else if($request->input('dataname') == "client")
+            {
+                $choose = "App\Models\客戶別";
+                $chooseindex = '客戶';
+                $table = "客戶別";
+                $reDive->message = "客戶別";
+                $reDive->database = "ClientExample";
+            }
+            //machine
+            else if($request->input('dataname') == "machine")
+            {
+                $choose = "App\Models\機種";
+                $chooseindex = '機種';
+                $table = "機種";
+                $reDive->message = "機種";
+                $reDive->database = "MachineExample";
+            }
+            //production
+            else if($request->input('dataname') == "production")
+            {
+                $choose = "App\Models\製程";
+                $chooseindex = '製程';
+                $table = "製程";
+                $reDive->message = "製程";
+                $reDive->database = "ProductionExample";
+            }
+            //line
+            else if($request->input('dataname') == "line")
+            {
+                $choose = "App\Models\線別";
+                $chooseindex = '線別';
+                $table = "線別";
+                $reDive->message = "線別";
+                $reDive->database = "LineExample";
+            }
+            //use
+            else if($request->input('dataname') == "use")
+            {
+                $choose = "App\Models\領用部門";
+                $chooseindex = '領用部門';
+                $table = "領用部門";
+                $reDive->message = "領用部門";
+                $reDive->database = "UseExample";
+            }
+            //usereason
+            else if($request->input('dataname') == "usereason")
+            {
+                $choose = "App\Models\領用原因";
+                $chooseindex = '領用原因';
+                $table = "領用原因";
+                $reDive->message = "領用原因";
+                $reDive->database = "UseReasonExample";
+            }
+            //inreason
+            else if($request->input('dataname') == "inreason")
+            {
+                $choose = "App\Models\入庫原因";
+                $chooseindex = '入庫原因';
+                $table = "入庫原因";
+                $reDive->message = "入庫原因";
+                $reDive->database = "InReasonExample";
+            }
+            //position
+            else if($request->input('dataname') == "position")
+            {
+                $choose = "App\Models\儲位";
+                $chooseindex = '儲存位置';
+                $table = "儲位";
+                $reDive->message = "儲位";
+                $reDive->database = "PositionExample";
+            }
+            //send
+            else if($request->input('dataname') == "send")
+            {
+                $choose = "App\Models\發料部門";
+                $chooseindex = '發料部門';
+                $table = "發料部門";
+                $reDive->message = "發料部門";
+                $reDive->database = "SendExample";
+            }
+            //o庫
+            else if($request->input('dataname') == "o")
+            {
+                $choose = "App\Models\O庫";
+                $chooseindex = 'O庫';
+                $table = "O庫";
+                $reDive->message = "O庫";
+                $reDive->database = "OboundExample";
+            }
+            //退回原因
+            else if($request->input('dataname') == "back")
+            {
+                $choose = "App\Models\退回原因";
+                $chooseindex = '退回原因';
+                $table = "退回原因";
+                $reDive->message = "退回原因";
+                $reDive->database = "BackReasonExample";
+            }
+            if($request->input('select') == "刪除")
+            {
+                for($i = 0 ; $i < $count ; $i++)
                 {
-                    $count = $request->input('factorycount');
-                    $names = DB::table('廠別')->whereNull('deleted_at')->get();
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('factorycheck' . $i))
-                        {
-                            廠別::where('廠別', $names[$i]->廠別)->delete();
-                            /*DB::table('廠別')
-                            ->where('廠別', $names[$i])
-                            ->softdelete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
+                    DB::beginTransaction();
+                    try{
+                        $choose::where($chooseindex, $names[$i])->delete();
+                        DB::commit();
+                    }catch(\Exception $e){
+                        DB::rollback();
+                        $reDive->boolean = false;
+                        $reDive->passbool = false;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
                     }
-                    return view('basic.change')->with('choose' , 'factory')
-                    ->with(['factorys' => 廠別::cursor()]);
                 }
-                //client
-                else if($request->has('client'))
-                {
-
-                    $count = $request->input('clientcount');
-                    $names = DB::table('客戶別')->whereNull('deleted_at')->get();
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('clientcheck' . $i))
-                        {
-                            客戶別::where('客戶', $names[$i]->客戶)->delete();
-                            /*DB::table('客戶別')
-                            ->where('客戶', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'client')
-                    ->with(['clients' => 客戶別::cursor()]);
-                }
-                //machine
-                else if($request->has('machine'))
-                {
-                    $count = $request->input('machinecount');
-                    $names = DB::table('機種')->whereNull('deleted_at')->get();
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('machinecheck' . $i))
-                        {
-                            機種::where('機種', $names[$i]->機種)->delete();
-                            /*DB::table('機種')
-                            ->where('機種', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'machine')
-                    ->with(['machines' => 機種::cursor()]);
-                }
-                //production
-                else if($request->has('production'))
-                {
-                    $count = $request->input('productioncount');
-                    $names = DB::table('製程')->whereNull('deleted_at')->get();
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('productioncheck' . $i))
-                        {
-                            製程::where('製程', $names[$i]->製程)->delete();
-                            /*DB::table('製程')
-                            ->where('製程', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'production')
-                    ->with(['productions' => 製程::cursor()]);
-                }
-                //line
-                else if($request->has('line'))
-                {
-                    $count = $request->input('linecount');
-                    $names = DB::table('線別')->whereNull('deleted_at')->get();
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('linecheck' . $i))
-                        {
-                            線別::where('線別', $names[$i]->線別)->delete();
-                            /*DB::table('線別')
-                            ->where('線別', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'line')
-                    ->with(['lines' => 線別::cursor()]);
-                }
-                //use
-                else if($request->has('use'))
-                {
-                    $count = $request->input('usecount');
-                    $names = DB::table('領用部門')->whereNull('deleted_at')->get();('領用部門');
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('usecheck' . $i))
-                        {
-                            領用部門::where('領用部門', $names[$i]->領用部門)->delete();
-                            /*DB::table('領用部門')
-                            ->where('領用部門', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'use')
-                    ->with(['uses' => 領用部門::cursor()]);
-                }
-                //usereason
-                else if($request->has('usereason'))
-                {
-                    $count = $request->input('usereasoncount');
-                    $names = DB::table('領用原因')->whereNull('deleted_at')->get();
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('usereasoncheck' . $i))
-                        {
-                            領用原因::where('領用原因', $names[$i]->領用原因)->delete();
-                            /*DB::table('領用原因')
-                            ->where('領用原因', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'usereason')
-                    ->with(['usereasons' => 領用原因::cursor()]);
-                }
-                //inreason
-                else if($request->has('inreason'))
-                {
-                    $count = $request->input('inreasoncount');
-                    $names = DB::table('入庫原因')->whereNull('deleted_at')->get();
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('inreasoncheck' . $i))
-                        {
-                            入庫原因::where('入庫原因', $names[$i]->入庫原因)->delete();
-                            /*DB::table('入庫原因')
-                            ->where('入庫原因', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'inreason')
-                    ->with(['inreasons' => 入庫原因::cursor()]);
-                }
-                //position
-                else if($request->has('position'))
-                {
-                    $count = $request->input('positioncount');
-                    $names = DB::table('儲位')->whereNull('deleted_at')->get();
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('positioncheck' . $i))
-                        {
-                            儲位::where('儲存位置', $names[$i]->儲存位置)->delete();
-                            /*DB::table('儲位')
-                            ->where('儲存位置', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'position')
-                    ->with(['positions' => 儲位::cursor()]);
-                }
-                //send
-                else if($request->has('send'))
-                {
-                    $count = DB::table('發料部門')->count();
-                    $names = DB::table('發料部門')->whereNull('deleted_at')->get();
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('sendcheck' . $i))
-                        {
-                            發料部門::where('發料部門', $names[$i]->發料部門)->delete();
-                            /*DB::table('發料部門')
-                            ->where('發料部門', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'send')
-                    ->with(['sends' => 發料部門::cursor()]);
-                }
-                //o庫
-                else if($request->has('o'))
-                {
-                    $count = $request->input('ocount');
-                    $names = DB::table('O庫')->whereNull('deleted_at')->get();
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('ocheck' . $i))
-                        {
-                            O庫::where('O庫', $names[$i]->O庫)->delete();
-                            /*DB::table('O庫')
-                            ->where('O庫', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'o')
-                    ->with(['os' => O庫::cursor()]);
-                }
-                //退回原因
-                else if($request->has('back'))
-                {
-                    $count = $request->input('backcount');
-                    $names = DB::table('退回原因')->whereNull('deleted_at')->get();
-
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('backcheck' . $i))
-                        {
-                            退回原因::where('退回原因', $names[$i]->退回原因)->delete();
-                            /*DB::table('退回原因')
-                            ->where('退回原因', $names[$i])
-                            ->delete();*/
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return view('basic.change')->with('choose' , 'back')
-                    ->with(['backs' => 退回原因::cursor()]);
-                }
+                $request->session()->put('basic', $reDive->database);
+                $reDive->boolean = true;
+                $reDive->passbool = true;
+                $myJSON = json_encode($reDive);
+                echo $myJSON;
             }
             //change
-            else if($request->has('change'))
+            else if($request->input('select') == "更新")
             {
                 //factory
                 if($request->has('factory'))
@@ -406,10 +267,6 @@ class BasicInformationController extends Controller
                             continue;
                         }
                     }
-<<<<<<< HEAD
-
-=======
->>>>>>> abdb20fdd8063033b5a728bfd898e99af1e24a65
                     if($request->input('clientnew') !== null)
                     {
                         $test = 客戶別::onlyTrashed()
@@ -681,125 +538,57 @@ class BasicInformationController extends Controller
                     {
                         DB::table('儲位')
                         ->insert(['儲存位置' => $request->input('positionnew'),'created_at' => Carbon::now()]);
-                    }
-                    return view('basic.change')->with('choose' , 'position')
-                    ->with(['positions' => 儲位::cursor()]);
-                }
-                //send
-                else if($request->has('send'))
+                for($i = 0 ; $i < $count ; $i++)
                 {
-                    $count = $request->input('sendcount');
-                    $names = DB::table('發料部門')->whereNull('deleted_at')->get();
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('sendcheck' . $i))
+                    DB::beginTransaction();
+                    try{
+                        DB::table($table)
+                        ->where($chooseindex, $oldnames[$i])
+                        ->update([$chooseindex => $names[$i] , 'updated_at' => Carbon::now()]);
+                        DB::commit();
+                    }catch(\Exception $e){
+                        DB::rollback();
+                        $reDive->boolean = false;
+                        $reDive->passbool = false;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
+                    }
+                }
+
+                if($datanew !== null)
+                {
+                    $test = $choose::onlyTrashed()
+                    ->where($chooseindex, $datanew)
+                    ->get();
+
+                    DB::beginTransaction();
+                    try{
+                        if(!$test->isEmpty())
                         {
-                            DB::table('發料部門')
-                            ->where('發料部門', $names[$i]->發料部門)
-                            ->update(['發料部門' => $request->input('send' . $i) , 'updated_at' => Carbon::now()]);
+                            DB::table($table)
+                            ->where($chooseindex, $datanew)
+                            ->update(['updated_at' =>  null , 'deleted_at' => null , 'created_at' => Carbon::now()]);
                         }
                         else
                         {
-                            continue;
+                            DB::table($table)
+                            ->insert([$chooseindex => $datanew ,'created_at' => Carbon::now()]);
                         }
+                        DB::commit();
+                    }catch(\Exception $e){
+                        DB::rollback();
+                        $reDive->boolean = false;
+                        $reDive->passbool = false;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
                     }
-                    $test = 發料部門::onlyTrashed()
-                        ->where('發料部門', $request->input('sendnew'))
-                        ->get();
 
-                    if(!$test->isEmpty())
-                    {
-                        DB::table('發料部門')
-                        ->where('發料部門', $request->input('sendnew'))
-                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
-                    }
-                    if($request->input('sendnew') !== null)
-                    {
-                        DB::table('發料部門')
-                        ->insert(['發料部門' => $request->input('sendnew'),'created_at' => Carbon::now()]);
-                    }
-                    return view('basic.change')->with('choose' , 'send')
-                    ->with(['sends' => 發料部門::cursor()]);
                 }
-                //O庫
-                else if($request->has('o'))
-                {
-                    $count = $request->input('ocount');
-                    $names = DB::table('O庫')->whereNull('deleted_at')->get();
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('ocheck' . $i))
-                        {
-                            DB::table('O庫')
-                            ->where('O庫', $names[$i]->O庫)
-                            ->update(['O庫' => $request->input('o' . $i) , 'updated_at' => Carbon::now()]);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    $test = O庫::onlyTrashed()
-                        ->where('O庫', $request->input('onew'))
-                        ->get();
-
-                    if(!$test->isEmpty())
-                    {
-                        DB::table('O庫')
-                        ->where('O庫', $request->input('onew'))
-                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
-                    }
-                    else
-                    {
-                        DB::table('O庫')
-                        ->insert(['O庫' => $request->input('onew'),'created_at' => Carbon::now()]);
-                    }
-                    return view('basic.change')->with('choose' , 'o')
-                    ->with(['os' => O庫::cursor()]);
-                }
-                //退回原因
-                else if($request->has('back'))
-                {
-                    $count = $request->input('backcount');
-                    $names = DB::table('退回原因')->whereNull('deleted_at')->get();
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        if($request->has('backcheck' . $i))
-                        {
-                            DB::table('退回原因')
-                            ->where('退回原因', $names[$i]->退回原因)
-                            ->update(['退回原因' => $request->input('back' . $i) , 'updated_at' => Carbon::now()]);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    $test = 退回原因::onlyTrashed()
-                        ->where('退回原因', $request->input('backnew'))
-                        ->get();
-
-                    if(!$test->isEmpty())
-                    {
-                        DB::table('退回原因')
-                        ->where('退回原因', $request->input('backnew'))
-                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
-                    }
-                    else
-                    {
-                        DB::table('退回原因')
-                        ->insert(['退回原因' => $request->input('backnew'),'created_at' => Carbon::now()]);
-                    }
-                    return view('basic.change')->with('choose' , 'back')
-                    ->with(['backs' => 退回原因::cursor()]);
-                }
-
-
-            }
-
-            else
-            {
-                return redirect(route('basic.index'));
+                $request->session()->put('basic', $reDive->database);
+                $reDive->boolean = true;
+                $reDive->passbool = true;
+                $myJSON = json_encode($reDive);
+                echo $myJSON;
             }
         }
         else
@@ -1479,21 +1268,32 @@ class BasicInformationController extends Controller
 
             $choose = $sheetData[0][0];
 
-            unset($sheetData[0]);
-            return view('basic.uploadbasic')->with(['data' => $sheetData])->with('choose' , $choose);
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }
 
-    //基礎信息上傳頁面
-    public function uploadbasicpage(Request $request)
-    {
-        if (Session::has('username'))
-        {
-            return view('basic.uploadbasic1');
+            if($choose !== "廠別" && $choose !== "客戶別" && $choose !== "機種"  && $choose !== "製程" && $choose !== "線別" && $choose !== "領用部門"
+            && $choose !== "領用原因" && $choose !== "入庫原因" && $choose !== "儲位" && $choose !== "發料部門" && $choose !== "O庫" && $choose !== "退回原因")
+            {
+                $mess = trans('basicInfoLang.uploaderror');
+                    echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('$mess');
+                    </script>");
+                    return view('basic.index')->with(['factorys' => 廠別::cursor()])
+                    ->with(['clients' => 客戶別::cursor()])
+                    ->with(['machines' => 機種::cursor()])
+                    ->with(['productions' => 製程::cursor()])
+                    ->with(['lines' => 線別::cursor()])
+                    ->with(['uses' => 領用部門::cursor()])
+                    ->with(['usereasons' => 領用原因::cursor()])
+                    ->with(['inreasons' => 入庫原因::cursor()])
+                    ->with(['positions' => 儲位::cursor()])
+                    ->with(['sends' => 發料部門::cursor()])
+                    ->with(['os' => O庫::cursor()])
+                    ->with(['backs' => 退回原因::cursor()]);
+            }
+            else
+            {
+                unset($sheetData[0]);
+                return view('basic.uploadbasic')->with(['data' => $sheetData])->with('choose' , $choose);
+            }
         }
         else
         {
@@ -1527,7 +1327,7 @@ class BasicInformationController extends Controller
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                         </script>");
-                        return view('basic.uploadbasic1');
+                        return view('basic.index');
                     }
                 }
                 else if($choose === '儲位')
@@ -1545,7 +1345,7 @@ class BasicInformationController extends Controller
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                         </script>");
-                        return view('basic.uploadbasic1');
+                        return view('basic.index');
                     }
                 }
                 else
@@ -1563,7 +1363,7 @@ class BasicInformationController extends Controller
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
                         </script>");
-                        return view('basic.uploadbasic1');
+                        return view('basic.index');
                     }
                 }
 

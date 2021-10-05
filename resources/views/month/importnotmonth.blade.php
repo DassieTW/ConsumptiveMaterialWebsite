@@ -9,68 +9,117 @@
 @section('content')
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-    </head>
-        <h2>{!! __('templateWords.monthly') !!}</h2>
-        <div class="card">
-            <div class="card-header">
-                <h3>{!! __('monthlyPRpageLang.importNonMonthlyData') !!}</h3>
-            </div>
+
+<head>
+    <meta charset="utf-8">
+</head>
+<h2>{!! __('templateWords.monthly') !!}</h2>
+<div class="row justify-content-center">
+    <div class="card w-50">
+        <div class="card-header">
+            <h3>{!! __('monthlyPRpageLang.importNonMonthlyData') !!}</h3>
+        </div>
+        <div class="row justify-content-center">
             <div class="card-body">
-                <form action="{{ route('month.notmonthsearchoradd') }}" method="POST" >
-                    @csrf
-                    <div class="d-flex w-100 h-100">
-                        <div class="mb-3">
-                            <label class="form-label">{!! __('monthlyPRpageLang.client') !!}</label>
-                            <select class="form-control form-control-lg @error('client') is-invalid @enderror" id = "client" name="client">
-                            <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.enterclient') !!}</option>
-                            @foreach($client as $client)
-                            <option>{{  $client->客戶 }}</option>
-                            @endforeach
-                            </select>
-                            @error('client')
-                            <span class="invalid-feedback d-block" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            <label class="form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
-                            <input class="form-control form-control-lg @error('number') is-invalid @enderror" type="text" id ="number" name="number">
-                            @error('number')
-                            <span class="invalid-feedback d-block" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                <div class=" w-100">
+                    <form action="{{ route('month.notmonthsearchoradd') }}" method="POST">
+                        @csrf
+                        <div class="row w-100 justify-content-center mb-3">
+                            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <div class="col-lg-6  col-md-12 col-sm-12">
+                                <select class="form-select form-select-lg col col-auto @error('client') is-invalid
+                                    @enderror" id="client" name="client">
+                                    <option style="display: none" disabled selected>{!!
+                                        __('monthlyPRpageLang.enterclient') !!}</option>
+                                    @foreach($client as $client)
+                                    <option>{{  $client->客戶 }}</option>
+                                    @endforeach
+                                </select>
+                                @error('client')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+                            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <div class="col-lg-6  col-md-12 col-sm-12">
+                                <input class="form-control form-control-lg @error('number') is-invalid @enderror"
+                                    type="text" id="number" name="number"
+                                    placeholder="{!! __('monthlyPRpageLang.enterisn') !!}">
+                                @error('number')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         </div>
-                    </div>
-                    <input type = "submit" id = "search" name = "search" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.search') !!}">
-                    <input type = "submit" id = "add" name ="add" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
-                </form>
-                <br>
-                <a class="btn btn-lg btn-primary" href="{{asset('download/ImportNotmonthExample.xlsx')}}" download>{!! __('monthlyPRpageLang.exampleExcel') !!}</a>
-                <br>
-
-
-
-                <form method="post" enctype="multipart/form-data" action = "{{ route('month.uploadnotmonth') }}">
-                    @csrf
-                    <div class="col-6 col-sm-3">
-                        <label>{!! __('monthlyPRpageLang.plz_upload') !!}</label>
-                        <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" name="select_file" />
-                        @error('select_file')
-                            <span class="invalid-feedback d-block" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                        <br>
-                        <input type="submit" name="upload" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.upload') !!}">
-                    </div>
-                </form>
-
-
-                <br>
-                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.index')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
+                        <div class="row w-100 justify-content-center">
+                            <div class="col col-auto">
+                                <input type="submit" id="search" name="search" class="btn btn-lg btn-primary"
+                                    value="{!! __('monthlyPRpageLang.search') !!}">
+                                &emsp;
+                                <input type="submit" id="add" name="add" class="btn btn-lg btn-primary"
+                                    value="{!! __('monthlyPRpageLang.add') !!}">
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
+
+    </div>
+
+
+    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+    <div class="card w-50">
+        <div class="card-header">
+            <h3>{!! __('monthlyPRpageLang.upload') !!}</h3>
+        </div>
+        <div class="row justify-content-center">
+            <div class="card-body">
+                <div class=" w-100">
+                    <form method="post" enctype="multipart/form-data" action="{{ route('month.uploadnotmonth') }}">
+                        @csrf
+                        <div class="row w-100 justify-content-center mb-3">
+                            <div class="col col-auto ">
+                                <a href="{{asset('download/ImportNotmonthExample.xlsx')}}" download>{!!
+                                    __('monthlyPRpageLang.exampleExcel') !!}</a>
+                            </div>
+
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+                            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.plz_upload') !!}</label>
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <div class="col-lg-6  col-md-12 col-sm-12">
+                                <input class="form-control @error('select_file') is-invalid @enderror" type="file"
+                                    name="select_file" />
+                                @error('select_file')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <div class="row w-100 justify-content-center">
+                                <div class="col col-auto">
+                                    <input type="submit" name="upload" class="btn btn-lg btn-primary"
+                                        value="{!! __('monthlyPRpageLang.upload') !!}">
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </html>
 @endsection

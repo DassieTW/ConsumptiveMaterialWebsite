@@ -18,12 +18,13 @@
             <div class="card-header">
                 <h3>{!! __('monthlyPRpageLang.isnConsumeAdd') !!}</h3>
             </div>
-            <div class="card-body">
+            <div id = "url"></div>
+            <div class="card-body" id="consumebody">
                 <form id = "consumenew">
                     @csrf
                     <div class="table-responsive">
-                    <table class="table" id = "inboundsearch">
-                        <tr id = "">
+                    <table class="table">
+                        <tr>
                             <th>{!! __('monthlyPRpageLang.isn') !!}</th>
                             <th>{!! __('monthlyPRpageLang.pName') !!}</th>
                             <th>{!! __('monthlyPRpageLang.format') !!}</th>
@@ -47,7 +48,7 @@
                             <td>{{ Session::get('format') }}</td>
                             <td>{{ Session::get('unit') }}</td>
                             <td><input style="width:70px" class="form-control form-control-lg " type="text" id ="lt" name="lt" readonly value = "{{ Session::get('lt') }}"></td>
-                            <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="amount" name="amount" value = "0" placeholder="請輸入單耗" step="0.01"></td>
+                            <td><input style="width:200px" class="form-control form-control-lg " type="number" id ="amount" name="amount" value = "0" placeholder="請輸入單耗" step="0.000000000000001"></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="nowneed" name="nowneed" readonly></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="nextneed" name="nextneed" readonly></td>
                             <td><input style="width:100px" class="form-control form-control-lg " type="number" id ="safe" name="safe" readonly ></td>
@@ -62,6 +63,13 @@
 
                     </table>
                     </div>
+                    <br>
+                    <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
+                    <input type = "text" id = "jobnumber" name = "jobnumber" required>
+                    <br>
+                    <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
+                    <input type="email" id="email" name = "email" pattern=".+@pegatroncorp\.com" required placeholder="xxx@pegartoncorp.com">
+                    <br>
                     <br>
                     <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}">
                 </form>

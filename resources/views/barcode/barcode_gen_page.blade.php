@@ -30,8 +30,8 @@
             </nav>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-lg-6">
             <div class="card flex-fill w-100">
                 <div class="card-body pt-2 pb-3">
                     <div class="card-header mt-0">
@@ -136,8 +136,8 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-lg-6">
             <div class="card flex-fill w-100">
                 <div class="card-body pt-2 pb-3">
                     <div class="card-header mt-0">
