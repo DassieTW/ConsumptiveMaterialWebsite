@@ -91,11 +91,11 @@
                             <label class="form-label">{!! __('basicInfoLang.month') !!}</label>
                             <select class="form-control form-control-lg" id = "month" name="month" required>
                                 <option style="display: none" disabled selected value = "">{!! __('basicInfoLang.enteryorn') !!}</option>
-                                <option>{!! __('basicInfoLang.yes') !!}</option>
-                                <option>{!! __('basicInfoLang.no') !!}</option>
+                                <option>是</option>
+                                <option>否</option>
                             </select>
                         </div>
-                        <div class="mb-3 col-md-4">
+                        <div class="mb-3 col-md-6">
                             <label class="form-label">{!! __('basicInfoLang.senddep') !!}</label>
                             <select class="form-control form-control-lg" id = "send" name="send" required>
                                 <option style="display: none" disabled selected value = "">{!! __('basicInfoLang.entersenddep') !!}</option>

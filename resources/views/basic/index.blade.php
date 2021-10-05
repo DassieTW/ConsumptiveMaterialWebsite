@@ -62,7 +62,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "factorycount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="factory" type="text" id="factorynew" name="factorynew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="factory" type="text" id="factorynew" name="factorynew" value = "" >
                 <hr/>
 
             </div>
@@ -75,7 +75,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "clientcount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="client" type="text" id="clientnew" name="clientnew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="client" type="text" id="clientnew" name="clientnew" value = "" >
                 <hr/>
             </div>
 
@@ -87,7 +87,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "machinecount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="machine" type="text" id="machinenew" name="machinenew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="machine" type="text" id="machinenew" name="machinenew" value = "" >
                 <hr/>
             </div>
 
@@ -99,7 +99,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "productioncount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="production" type="text" id="productionnew" name="productionnew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="production" type="text" id="productionnew" name="productionnew" value = "" >
                 <hr/>
             </div>
 
@@ -111,7 +111,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "linecount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="line" type="text" id="linenew" name="linewnew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="line" type="text" id="linenew" name="linewnew" value = "" >
                 <hr/>
             </div>
 
@@ -123,7 +123,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "usecount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="use" type="text" id="usenew" name="usenew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="use" type="text" id="usenew" name="usenew" value = "" >
                 <hr/>
             </div>
 
@@ -135,7 +135,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "usereasoncount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="usereason" type="text" id="usereasonnew" name="usereasonnew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="usereason" type="text" id="usereasonnew" name="usereasonnew" value = "" >
                 <hr/>
             </div>
 
@@ -147,7 +147,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "inreasoncount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="inreason" type="text" id="inreasonnew" name="inreasonnew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="inreason" type="text" id="inreasonnew" name="inreasonnew" value = "" >
                 <hr/>
             </div>
 
@@ -159,7 +159,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "positioncount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="position" type="text" id="positionnew" name="positionnew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="position" type="text" id="positionnew" name="positionnew" value = "" >
                 <hr/>
             </div>
 
@@ -171,7 +171,7 @@
                 <input type =  "hidden" value="{{$loop->count}}" name = "sendcount">
                 <hr/>
                 @endforeach
-                {!! __('basicInfoLang.new') !!} :  <input class ="send" type="text" id="sendnew" name="sendnew" value = "" >
+                {!! __('basicInfoLang.new') !!} <input class ="send" type="text" id="sendnew" name="sendnew" value = "" >
                 <hr/>
             </div>
 
@@ -210,6 +210,16 @@
             </div>
         </form>
         <br>
+        @if(count($errors) > 0)
+        <div class="alert alert-danger">
+            Upload Validation Error<br><br>
+            <ul>
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+            </ul>
+        </div>
+        @endif
 
         <form method="post" enctype="multipart/form-data" action = "{{ route('basic.uploadbasic') }}">
             @csrf
