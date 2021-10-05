@@ -197,7 +197,7 @@ class BasicInformationController extends Controller
                         echo $myJSON;
                     }
                 }
-                $request->session()->put('basic', $reDive->database);
+
                 $reDive->boolean = true;
                 $reDive->passbool = true;
                 $myJSON = json_encode($reDive);
@@ -252,7 +252,7 @@ class BasicInformationController extends Controller
                     }
 
                 }
-                $request->session()->put('basic', $reDive->database);
+
                 $reDive->boolean = true;
                 $reDive->passbool = true;
                 $myJSON = json_encode($reDive);

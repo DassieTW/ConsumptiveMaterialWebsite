@@ -25,9 +25,8 @@
                     @csrf
                     <ul id="myTab" name="myTab" class="nav nav-tabs justify-content-center">
                         <li class="nav-item" id="FactoryExample">
-                            <a data-toggle="tab" class="nav-link active"
+                            <a data-toggle="tab" class="nav-link"
                                 href="#showfactory">{!!__('basicInfoLang.factory') !!}</a>
-
                         </li>
                         <li class="nav-item" id="ClientExample">
                             <a data-toggle="tab" class="nav-link" href="#showclient">{!! __('basicInfoLang.client')
