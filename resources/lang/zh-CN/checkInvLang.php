@@ -43,7 +43,6 @@ return [
     'value_not_changed' => '盘点结果未改变，确定送出？',
 
     //create new table lang
-    'create_new_table' => '建立新盘点表',
     'plz_create'=> '无近期盘点表，请建立新盘点表',
     'create_table_success' => '新盘点表建立成功 !',
     'create_table_fail' => '建立失败', 
