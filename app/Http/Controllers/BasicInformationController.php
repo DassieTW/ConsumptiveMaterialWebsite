@@ -206,6 +206,338 @@ class BasicInformationController extends Controller
             //change
             else if($request->input('select') == "更新")
             {
+                //factory
+                if($request->has('factory'))
+                {
+                    $count = $request->input('factorycount');
+                    $names = DB::table('廠別')->whereNull('deleted_at')->get();
+
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        if($request->has('factorycheck' . $i))
+                        {
+                            DB::table('廠別')
+                            ->where('廠別', $names[$i]->廠別)
+                            ->update(['廠別' => $request->input('factory' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    if($request->input('factorynew') !== null)
+                    {
+                        $test = 廠別::onlyTrashed()
+                        ->where('廠別', $request->input('factorynew'))
+                        ->get();
+
+                        if(!$test->isEmpty())
+                        {
+                            DB::table('廠別')
+                            ->where('廠別', $request->input('factorynew'))
+                            ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                        }
+                        else
+                        {
+                            DB::table('廠別')
+                            ->insert(['廠別' => $request->input('factorynew'),'created_at' => Carbon::now()]);
+                        }
+
+                    }
+
+                    return view('basic.change')->with('choose' , 'factory')
+                    ->with(['factorys' => 廠別::cursor()]);
+
+                }
+                //client
+                else if($request->has('client'))
+                {
+                    $count = $request->input('clientcount');
+                    $names = DB::table('客戶別')->whereNull('deleted_at')->get();
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        if($request->has('clientcheck' . $i))
+                        {
+                            DB::table('客戶別')
+                            ->where('客戶', $names[$i]->客戶)
+                            ->update(['客戶' => $request->input('client' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    if($request->input('clientnew') !== null)
+                    {
+                        $test = 客戶別::onlyTrashed()
+                        ->where('客戶', $request->input('clientnew'))
+                        ->get();
+
+                        if(!$test->isEmpty())
+                        {
+                            DB::table('客戶別')
+                            ->where('客戶', $request->input('clientnew'))
+                            ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                        }
+                        else
+                        {
+                            DB::table('客戶別')
+                            ->insert(['客戶' => $request->input('clientnew'),'created_at' => Carbon::now()]);
+                        }
+
+                    }
+                    return view('basic.change')->with('choose' , 'client')
+                    ->with(['clients' => 客戶別::cursor()]);
+                }
+                //machine
+                else if($request->has('machine'))
+                {
+                    $count = $request->input('machinecount');
+                    $names = DB::table('機種')->whereNull('deleted_at')->get();
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        if($request->has('machinecheck' . $i))
+                        {
+                            DB::table('機種')
+                            ->where('機種', $names[$i]->機種)
+                            ->update(['機種' => $request->input('machine' . $i),'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    $test = 機種::onlyTrashed()
+                        ->where('機種', $request->input('machinenew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
+                    {
+                        DB::table('機種')
+                        ->where('機種', $request->input('machinenew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    if($request->input('machinenew') !== null)
+                    {
+                        DB::table('機種')
+                        ->insert(['機種' => $request->input('machinenew'),'created_at' => Carbon::now()]);
+                    }
+                    return view('basic.change')->with('choose' , 'machine')
+                    ->with(['machines' => 機種::cursor()]);
+                }
+                //production
+                else if($request->has('production'))
+                {
+                    $count = $request->input('productioncount');
+                    $names = DB::table('製程')->whereNull('deleted_at')->get();
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        if($request->has('machinecheck' . $i))
+                        {
+                            DB::table('製程')
+                            ->where('製程', $names[$i]->製程)
+                            ->update(['製程' => $request->input('production' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    $test = 製程::onlyTrashed()
+                        ->where('製程', $request->input('productionnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
+                    {
+                        DB::table('製程')
+                        ->where('製程', $request->input('productionnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    if($request->input('productionnew') !== null)
+                    {
+                        DB::table('製程')
+                        ->insert(['製程' => $request->input('productionnew'),'created_at' => Carbon::now()]);
+                    }
+                    return view('basic.change')->with('choose' , 'production')
+                    ->with(['productions' => 製程::cursor()]);
+                }
+                //line
+                else if($request->has('line'))
+                {
+                    $count = $request->input('linecount');
+                    $names = DB::table('線別')->whereNull('deleted_at')->get();
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        if($request->has('linecheck' . $i))
+                        {
+                            DB::table('線別')
+                            ->where('線別', $names[$i]->線別)
+                            ->update(['線別' => $request->input('line' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    $test = 線別::onlyTrashed()
+                        ->where('線別', $request->input('linenew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
+                    {
+                        DB::table('線別')
+                        ->where('線別', $request->input('linenew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    if($request->input('linenew') !== null)
+                    {
+                        DB::table('線別')
+                        ->insert(['線別' => $request->input('linenew'),'created_at' => Carbon::now()]);
+                    }
+                    return view('basic.change')->with('choose' , 'line')
+                    ->with(['lines' => 線別::cursor()]);
+                }
+                //use
+                else if($request->has('use'))
+                {
+                    $count = $request->input('usecount');
+                    $names = DB::table('領用部門')->whereNull('deleted_at')->get();
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        if($request->has('usecheck' . $i))
+                        {
+                            DB::table('領用部門')
+                            ->where('領用部門', $names[$i]->領用部門)
+                            ->update(['領用部門' => $request->input('use' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    $test = 領用部門::onlyTrashed()
+                        ->where('領用部門', $request->input('usenew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
+                    {
+                        DB::table('領用部門')
+                        ->where('領用部門', $request->input('usenew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    if($request->input('usenew') !== null)
+                    {
+                        DB::table('領用部門')
+                        ->insert(['領用部門' => $request->input('usenew'),'created_at' => Carbon::now()]);
+                    }
+                    return view('basic.change')->with('choose' , 'use')
+                    ->with(['uses' => 領用部門::cursor()]);
+                }
+                //usereason
+                else if($request->has('usereason'))
+                {
+                    $count = $request->input('usereasoncount');
+                    $names = DB::table('領用原因')->whereNull('deleted_at')->get();
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        if($request->has('usereasoncheck' . $i))
+                        {
+                            DB::table('領用原因')
+                            ->where('領用原因', $names[$i]->領用原因)
+                            ->update(['領用原因' => $request->input('usereason' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    $test = 領用原因::onlyTrashed()
+                        ->where('領用原因', $request->input('usereasonnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
+                    {
+                        DB::table('領用原因')
+                        ->where('領用原因', $request->input('usereasonnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    if($request->input('usereasonnew') !== null)
+                    {
+                        DB::table('領用原因')
+                        ->insert(['領用原因' => $request->input('usereasonnew'),'created_at' => Carbon::now()]);
+                    }
+                    return view('basic.change')->with('choose' , 'usereason')
+                    ->with(['usereasons' => 領用原因::cursor()]);
+                }
+                //inreason
+                else if($request->has('inreason'))
+                {
+                    $count = $request_input('inreasoncount');
+                    $names = DB::table('入庫原因')->whereNull('deleted_at')->get();
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        if($request->has('inreasoncheck' . $i))
+                        {
+                            DB::table('入庫原因')
+                            ->where('入庫原因', $names[$i]->入庫原因)
+                            ->update(['入庫原因' => $request->input('inreason' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    $test = 入庫原因::onlyTrashed()
+                        ->where('入庫原因', $request->input('inreasonnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
+                    {
+                        DB::table('入庫原因')
+                        ->where('入庫原因', $request->input('inreasonnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    if($request->input('inreasonnew') !== null)
+                    {
+                        DB::table('入庫原因')
+                        ->insert(['入庫原因' => $request->input('inreasonnew'),'created_at' => Carbon::now()]);
+                    }
+                    return view('basic.change')->with('choose' , 'inreason')
+                    ->with(['inreasons' => 入庫原因::cursor()]);
+                }
+                //position
+                else if($request->has('position'))
+                {
+                    $count = $request->input('positioncount');
+                    $names = DB::table('儲位')->whereNull('deleted_at')->get();
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        if($request->has('positioncheck' . $i))
+                        {
+                            DB::table('儲位')
+                            ->where('儲存位置', $names[$i]->儲存位置)
+                            ->update(['儲存位置' => $request->input('position' . $i) , 'updated_at' => Carbon::now()]);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    $test = 儲位::onlyTrashed()
+                        ->where('儲存位置', $request->input('positionnew'))
+                        ->get();
+
+                    if(!$test->isEmpty())
+                    {
+                        DB::table('儲位')
+                        ->where('儲存位置', $request->input('positionnew'))
+                        ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null]);
+                    }
+                    if($request->input('positionnew') !== null)
+                    {
+                        DB::table('儲位')
+                        ->insert(['儲存位置' => $request->input('positionnew'),'created_at' => Carbon::now()]);
                 for($i = 0 ; $i < $count ; $i++)
                 {
                     DB::beginTransaction();
@@ -599,30 +931,13 @@ class BasicInformationController extends Controller
             {
                 if(strcasecmp($number,$numbers[$i]) === 0 )
                 {
-                    if(!$delete->isEmpty())
-                    {
-                        DB::table('consumptive_material')
-                        ->where('料號', $number)
-                        ->update(['品名' => $name , '規格' => $format , '單價' => $price , '幣別' => $money
-                        , '單位' => $unit , 'MPQ' => $mpq , 'MOQ' => $moq ,'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea
-                        , '耗材歸屬' => $belong , '發料部門' => $send , '安全庫存' => $safe , 'updated_at' => Carbon::now(),'deleted_at' => null]);
-
-
-                        $reDive->boolean = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                        return;
-                    }
-                    else
-                    {
-                        $reDive->newerror[0] = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                        return;
-                        /*return back()->withErrors([
-                        'number' => '料號 is repeated , Please enter another 料號',
-                        ]);*/
-                    }
+                    $reDive->newerror[0] = true;
+                    $myJSON = json_encode($reDive);
+                    echo $myJSON;
+                    return;
+                    /*return back()->withErrors([
+                    'number' => '料號 is repeated , Please enter another 料號',
+                    ]);*/
                 }
                 else
                 {

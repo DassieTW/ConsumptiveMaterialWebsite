@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Services;
+<<<<<<< HEAD
 
+=======
+>>>>>>> abdb20fdd8063033b5a728bfd898e99af1e24a65
 use Illuminate\Http\Request;
 
 class BarWebDisplay
@@ -11,7 +14,7 @@ class BarWebDisplay
      */
     public function drawBarcode(Request $request)
     {
-        if (filter_input(INPUT_POST, 'isIsn', FILTER_VALIDATE_BOOLEAN) === true) { // isn pic
+        if ( filter_input(INPUT_POST, 'isIsn', FILTER_VALIDATE_BOOLEAN) === true) { // isn pic
             // set Barcode39 object
             $barcode1 = trim(filter_input(INPUT_POST, 'barcode1', FILTER_SANITIZE_STRING));
             if (null !== filter_input(INPUT_POST, 'barcode2', FILTER_SANITIZE_STRING)) {
@@ -57,9 +60,11 @@ class BarWebDisplay
 
         for ($a = 0; $isnArray !== "" && $a < count($isnArray); $a++) {
             // set Barcode39 object
-            $barcodeCom = $isnArray[$a];
-            $productName = $isnNameArray[$a];
-            $fName = $_POST['sID'] . '--isn--' . $a;
+            $barcodeCom = filter_input(INPUT_GET, 'barComplete', FILTER_SANITIZE_STRING);
+            $productName = filter_input(INPUT_GET, 'pName', FILTER_SANITIZE_STRING);
+            $isThisIsn = filter_input(INPUT_GET, 'isIsn', FILTER_SANITIZE_STRING);
+            $toSession = filter_input(INPUT_GET, 'toSess', FILTER_SANITIZE_STRING);
+            $fName = $_POST['fName'];
             $bc = new Barcode39($barcodeCom);
             $bc->setUseSession('false');
             $bc->setMaterialName($productName);

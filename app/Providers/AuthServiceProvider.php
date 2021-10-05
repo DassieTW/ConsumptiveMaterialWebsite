@@ -38,13 +38,6 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Login::class => LoginPolicy::class,
-        月請購_單耗::class => MonthlyPRPolicy::class,
-        ConsumptiveMaterial::class => BasicInfoPolicy::class,
-        Inbound::class => InboundPolicy::class,
-        O庫::class => OboundPolicy::class,
-        Outbound::class => OutboundPolicy::class,
-        Inventory::class => AlarmPolicy::class,
-        Checking_inventory::class => CheckInventPolicy::class,
     ];
 
     /**

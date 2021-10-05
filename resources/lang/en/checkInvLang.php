@@ -15,7 +15,7 @@ return [
     'page_name' => 'Checking Inv.',
     'check' => 'Check',
     'no_table_found' => 'No table Found',
-    'create_new_table' => 'Create New Table',
+    'create_new_table' => 'Create New Sheet',
     'input_isn_barcode' => 'Scan In Part No. Barcode',
     'input_loc_barcode' => 'Scan In Loc. Barcode',
     'isn' => 'Part No.',
@@ -43,7 +43,6 @@ return [
     'value_not_changed' => 'Value has not changed, Are you sure?',
 
     //create new table lang
-    'create_new_table' => 'Create New Sheet',
     'plz_create'=> 'No recent sheets found, please create a new one.',
     'create_table_success' => 'New Sheet Created !',
     'create_table_fail' => 'Process Failed', 
