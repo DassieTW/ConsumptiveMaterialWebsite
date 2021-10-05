@@ -29,6 +29,7 @@ $.ajaxSetup({
         check.push($(this).val());
     });
 
+
     var count = check.length;
 
     for(let i = 0 ; i < count ; i++)

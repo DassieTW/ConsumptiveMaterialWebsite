@@ -77,14 +77,7 @@
 
                                     @elseif($choose === '退回原因')
                                     <th><input type = "hidden" id = "title0" name = "title0" value = "退回原因">{!! __('basicInfoLang.returnreason') !!}</th>
-                                    @else
-                                    <?php
-                                    $mess = trans('basicInfoLang.uploaderror');
-                                        echo ("<script LANGUAGE='JavaScript'>
-                                        window.alert('$mess');
-                                        window.location.href = 'uploadbasic';
-                                        </script>");
-                                    ?>
+
                                     @endif
 
                                 </tr>
