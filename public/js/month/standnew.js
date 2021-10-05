@@ -51,6 +51,8 @@ $('#standnew').on('submit', function (e) {
   var nextclass = $("#nextclass").val();
   var nextuse = $("#nextuse").val();
   var nextchange = $("#nextchange").val();
+  var email = $("#email").val();
+  var jobnumber = $("#jobnumber").val();
 
   $.ajax({
     type: 'POST',
@@ -58,7 +60,7 @@ $('#standnew').on('submit', function (e) {
     data: {
       number: number, client: client, machine: machine, production: production, nowpeople: nowpeople,
       nowline: nowline, nowclass: nowclass, nowuse: nowuse, nowchange: nowchange, nextpeople: nextpeople,
-      nextline: nextline, nextclass: nextclass, nextuse: nextuse, nextchange: nextchange
+      nextline: nextline, nextclass: nextclass, nextuse: nextuse, nextchange: nextchange , email:email , jobnumber : jobnumber
     },
     beforeSend: function () {
       // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
@@ -76,9 +78,11 @@ $('#standnew').on('submit', function (e) {
       console.log(myObj);
       if (myObj.boolean === true) {
         var mess = Lang.get('monthlyPRpageLang.stand')
-          + Lang.get('monthlyPRpageLang.new') + Lang.get('monthlyPRpageLang.success');
+          + Lang.get('monthlyPRpageLang.new') + Lang.get('monthlyPRpageLang.submit') + Lang.get('monthlyPRpageLang.success');
         alert(mess);
-        window.location.href = "/month";
+
+        $("#standbody").hide();
+        $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/teststand?'+ myObj.database +'</a>');
         //window.location.href = "member.newok";
       }
       else {

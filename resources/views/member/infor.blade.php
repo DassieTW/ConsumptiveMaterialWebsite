@@ -11,8 +11,9 @@
 <hr />
 
 <?php
-    $username = Session::get('username');
-    echo __('templateWords.nowuser') .' '. $username;
+    $username = session('username');
+    $database = session('database');
+    echo __('templateWords.nowuser') .' '. $username.'<br>'.$database;
 ?>
 
 

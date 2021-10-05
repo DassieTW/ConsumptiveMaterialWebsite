@@ -47,5 +47,8 @@
 <div class="mb-4 col-md-2">
 <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('month.transit')}}'">{!! __('monthlyPRpageLang.on_the_way_search') !!}</button>
 </div>
+<div class="mb-4 col-md-2">
+    <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('month.testconsume')}}'">Test</button>
+    </div>
 </div>
 @endsection

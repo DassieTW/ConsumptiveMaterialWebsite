@@ -183,7 +183,8 @@ class MonthController extends Controller
                     $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
 
                 })->wherenull('月請購_單耗.deleted_at')
-                ->where('consumptive_material.料號','like', $number.'%')->get();
+                ->where('consumptive_material.料號','like', $number.'%')
+                ->where('狀態' , '已完成')->get();
             }
             else
             {
@@ -192,7 +193,8 @@ class MonthController extends Controller
                 {
                     $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
 
-                })->wherenull('月請購_單耗.deleted_at')->get();
+                })->wherenull('月請購_單耗.deleted_at')
+                ->where('狀態' , '已完成')->get();
             }
             //all empty
             if($client === null && $machine === null && $production === null && $number === null && $send === null)
@@ -422,7 +424,8 @@ class MonthController extends Controller
                     $join->on('月請購_站位.料號', '=', 'consumptive_material.料號');
 
                 })->wherenull('月請購_站位.deleted_at')
-                ->where('consumptive_material.料號','like', $number.'%')->get();
+                ->where('consumptive_material.料號','like', $number.'%')
+                ->where('狀態' , '已完成')->get();
             }
             else
             {
@@ -431,114 +434,95 @@ class MonthController extends Controller
                 {
                     $join->on('月請購_站位.料號', '=', 'consumptive_material.料號');
 
-                })->wherenull('月請購_站位.deleted_at')->get();
+                })->wherenull('月請購_站位.deleted_at')
+                ->where('狀態' , '已完成')->get();
             }
 
             //all empty
             if($client === null && $machine === null && $production === null && $number === null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas])->with(['data1' => $datas]);
+                return view('month.standsearchok')->with(['data' => $datas]);
             }
             //select client
             else if($client !== null && $machine === null && $production === null && $number === null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)])
-                ->with(['data1' => $datas->where('客戶別' , $client)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)]);
             }
             //select machine
             else if($client === null && $machine !== null && $production === null && $number === null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('機種' , $machine)])
-                ->with(['data1' => $datas->where('機種' , $machine)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('機種' , $machine)]);
             }
             //select production
             else if($client === null && $machine === null && $production !== null && $number === null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('製程' , $production)])
-                ->with(['data1' => $datas->where('製程' , $production)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('製程' , $production)]);
             }
             //input material number
             else if($client === null && $machine === null && $production === null && $number !== null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas])
-                ->with(['data1' => $datas]);
+                return view('month.standsearchok')->with(['data' => $datas]);
             }
             //select send
             else if($client === null && $machine === null && $production === null && $number === null && $send !== null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('發料部門' , $send)])
-                ->with(['data1' => $datas->where('發料部門' , $send)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('發料部門' , $send)]);
             }
             //select client and machine
             else if($client !== null && $machine !== null && $production === null && $number === null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('機種' , $machine)])
-                ->with(['data1' => $datas->where('客戶別' , $client)->where('機種' , $machine)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('機種' , $machine)]);
             }
             //select client and production
             else if($client !== null && $machine === null && $production !== null && $number === null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('製程' , $production)])
-                ->with(['data1' => $datas->where('客戶別' , $client)->where('製程' , $production)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('製程' , $production)]);
             }
             //select client and number
             else if($client !== null && $machine === null && $production === null && $number !== null && $send === null)
             {
 
-                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)])
-                ->with(['data1' => $datas->where('客戶別' , $client)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)]);
             }
             //select client and send
             else if($client !== null && $machine === null && $production === null && $number === null && $send !== null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('發料部門' , $send)])
-                ->with(['data1' => $datas->where('客戶別' , $client)->where('發料部門' , $send)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('發料部門' , $send)]);
             }
             //select machine and production
             else if($client === null && $machine !== null && $production !== null && $number === null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('機種' , $machine)->where('製程' , $production)])
-                ->with(['data1' => $datas->where('機種' , $machine)->where('製程' , $production)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('機種' , $machine)->where('製程' , $production)]);
             }
             //select machine and number
             else if($client === null && $machine !== null && $production === null && $number !== null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('機種' , $number)])
-                ->with(['data1' => $datas->where('機種' , $number)]);
-
+                return view('month.standsearchok')->with(['data' => $datas->where('機種' , $number)]);
             }
             //select machine and send
             else if($client === null && $machine !== null && $production === null && $number === null && $send !== null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('機種' , $machine)->where('發料部門' , $send)])
-                ->with(['data1' => $datas->where('機種' , $machine)->where('發料部門' , $send)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('機種' , $machine)->where('發料部門' , $send)]);
             }
             //select production and number
             else if($client === null && $machine === null && $production !== null && $number !== null && $send === null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('製程' , $production)])
-                ->with(['data1' => $datas->where('製程' , $production)]);
-
+                return view('month.standsearchok')->with(['data' => $datas->where('製程' , $production)]);
             }
             //select production and send
             else if($client === null && $machine === null && $production !== null && $number === null && $send !== null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('製程' , $production)->where('發料部門' , $send)])
-                ->with(['data1' => $datas->where('製程' , $production)->where('發料部門' , $send)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('製程' , $production)->where('發料部門' , $send)]);
             }
             //select number and send
             else if($client === null && $machine === null && $production === null && $number !== null && $send !== null)
             {
-                return view('month.standsearchok')->with(['data' => $datas->where('發料部門' , $send)])
-                ->with(['data1' => $datas->where('發料部門' , $send)]);
+                return view('month.standsearchok')->with(['data' => $datas->where('發料部門' , $send)]);
             }
             //select client and machine and production
             else if($client !== null && $machine !== null && $production !== null && $number === null && $send === null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                    ->where('機種' , $machine)->where('製程' , $production)
-                    ->where('客戶別' , $client)])
-                    ->with(['data1' => $datas
                     ->where('機種' , $machine)->where('製程' , $production)
                     ->where('客戶別' , $client)]);
             }
@@ -546,8 +530,6 @@ class MonthController extends Controller
             else if($client !== null && $machine !== null && $production === null && $number !== null && $send === null)
             {
                     return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)
-                    ->where('機種' , $machine)])
-                    ->with(['data1' => $datas->where('客戶別' , $client)
                     ->where('機種' , $machine)]);
             }
             //select client and machine and send
@@ -555,18 +537,12 @@ class MonthController extends Controller
             {
                 return view('month.standsearchok')->with(['data' => $datas
                     ->where('機種' , $machine)->where('發料部門' , $send)
-                    ->where('客戶別' , $client)])
-                    ->with(['data1' => $datas
-                    ->where('機種' , $machine)->where('發料部門' , $send)
                     ->where('客戶別' , $client)]);
             }
             //select client and production and number
             else if($client !== null && $machine === null && $production !== null && $number !== null && $send === null)
             {
-
                 return view('month.standsearchok')->with(['data' => $datas->where('客戶別' , $client)
-                ->where('製程' , $production)])
-                ->with(['data1' => $datas->where('客戶別' , $client)
                 ->where('製程' , $production)]);
             }
             //select client and production and send
@@ -574,49 +550,36 @@ class MonthController extends Controller
             {
                 return view('month.standsearchok')->with(['data' => $datas
                     ->where('製程' , $production)->where('發料部門' , $send)
-                    ->where('客戶別' , $client)])
-                    ->with(['data1' => $datas
-                    ->where('製程' , $production)->where('發料部門' , $send)
                     ->where('客戶別' , $client)]);
             }
             //select client and number and send
             else if($client !== null && $machine === null && $production === null && $number !== null && $send !== null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                    ->where('發料部門' , $send)->where('客戶別' , $client)])
-                    ->with(['data1' => $datas->where('發料部門' , $send)
-                    ->where('客戶別' , $client)]);
+                    ->where('發料部門' , $send)->where('客戶別' , $client)]);
             }
             //select machine and production and number
             else if($client === null && $machine !== null && $production !== null && $number !== null && $send === null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('機種' , $machine)->where('製程' , $production)])
-                ->with(['data1' => $datas
                 ->where('機種' , $machine)->where('製程' , $production)]);
             }
             //select machine and production and send
             else if($client === null && $machine !== null && $production !== null && $number === null && $send !== null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('發料部門' , $send)->where('機種' , $machine)->where('製程' , $production)])
-                ->with(['data1' => $datas
                 ->where('發料部門' , $send)->where('機種' , $machine)->where('製程' , $production)]);
             }
             //select machine and number and send
             else if($client === null && $machine !== null && $production === null && $number !== null && $send !== null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('機種' , $machine)->where('發料部門' , $send)])
-                ->with(['data1' => $datas
                 ->where('機種' , $machine)->where('發料部門' , $send)]);
             }
             //select production and number and send
             else if($client === null && $machine === null && $production !== null && $number !== null && $send !== null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('製程' , $production)->where('發料部門' , $send)])
-                ->with(['data1' => $datas
                 ->where('製程' , $production)->where('發料部門' , $send)]);
             }
             //select client and machine and production and number
@@ -624,49 +587,36 @@ class MonthController extends Controller
             {
 
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('製程' , $production)->where('機種' , $machine)->where('客戶別' , $client)])
-                ->with(['data1' => $datas
                 ->where('製程' , $production)->where('機種' , $machine)->where('客戶別' , $client)]);
             }
             //select client and machine and production and send
             else if($client !== null && $machine !== null && $production !== null && $number === null && $send !== null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('機種' , $machine)->where('製程' , $production)->where('發料部門' , $send)->where('客戶別' , $client)])
-                ->with(['data1' => $datas
                 ->where('機種' , $machine)->where('製程' , $production)->where('發料部門' , $send)->where('客戶別' , $client)]);
             }
             //select client and machine and number and send
             else if($client !== null && $machine !== null && $production === null && $number !== null && $send !== null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('機種' , $machine)->where('發料部門' , $send)->where('客戶別' , $client)])
-                ->with(['data1' => $datas
                 ->where('機種' , $machine)->where('發料部門' , $send)->where('客戶別' , $client)]);
             }
             //select client and production and number and send
             else if($client !== null && $machine === null && $production !== null && $number !== null && $send !== null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('製程' , $production)->where('發料部門' , $send)->where('客戶別' , $client)])
-                ->with(['data1' => $datas
                 ->where('製程' , $production)->where('發料部門' , $send)->where('客戶別' , $client)]);
             }
             //select machine and production and number and send
             else if($client === null && $machine !== null && $production !== null && $number !== null && $send !== null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('製程' , $production)->where('發料部門' , $send)->where('機種' , $machine)])
-                ->with(['data1' => $datas
                 ->where('製程' , $production)->where('發料部門' , $send)->where('機種' , $machine)]);
             }
             //select all
             else if($client !== null && $machine !== null && $production !== null && $number !== null && $send !== null)
             {
                 return view('month.standsearchok')->with(['data' => $datas
-                ->where('機種' , $machine)->where('製程' , $production)
-                ->where('客戶別' , $client)->where('發料部門' , $send)])
-                ->with(['data1' => $datas
                 ->where('機種' , $machine)->where('製程' , $production)
                 ->where('客戶別' , $client)->where('發料部門' , $send)]);
             }
@@ -683,71 +633,83 @@ class MonthController extends Controller
     {
         if (Session::has('username'))
         {
+            $select = $request->input('select');
+            $reDive = new responseObj();
+            $now = Carbon::now();
+            $count = $request->input('count');
+            $client = $request->input('client');
+            $machine = $request->input('machine');
+            $production = $request->input('production');
+            $number = $request->input('number');
+            $amount = $request->input('amount');
+            $jobnumber = $request->input('jobnumber');
+            $email = $request->input('email');
+            $database = $request->session()->get('database');
+            $database = Hash::make($database);
             //delete
-            if($request->has('delete'))
+            if($select == "刪除")
             {
-                $record = 0;
-                $count = $request->input('count');
                 for($i = 0 ; $i < $count ; $i++)
                 {
-                    if($request->has('innumber' . $i))
-                    {
+                    DB::beginTransaction();
+                    try{
                         月請購_單耗::
-                        where('客戶別', $request->input('client' . $i))
-                        ->where('機種', $request->input('machine' . $i))
-                        ->where('製程', $request->input('production' . $i))
-                        ->where('料號', $request->input('number' . $i))
+                        where('客戶別', $client[$i])
+                        ->where('機種', $machine[$i])
+                        ->where('製程', $production[$i])
+                        ->where('料號', $number[$i])
                         ->delete();
-                        $record ++;
+                        DB::commit();
+                    }catch(\Exception $e){
+                        DB::rollback();
+                        $reDive->boolean = false;
+                        $reDive->passbool = false;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
                     }
-                    else
-                    {
-                        continue;
-                    }
+
                 }
-                $mess = trans('monthlyPRpageLang.total').$record.trans('monthlyPRpageLang.record')
-                .trans('monthlyPRpageLang.isn').trans('monthlyPRpageLang.consume')
-                .trans('monthlyPRpageLang.delete').trans('monthlyPRpageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/month';
-                </script>");
+                $reDive->boolean = true;
+                $reDive->passbool = true;
+                $reDive->message = $count;
+                $reDive->database = $database;
+                $myJSON = json_encode($reDive);
+                echo $myJSON;
             }
             //change
-            else if($request->has('change'))
+            if($select == "更新")
             {
-                $count = $request->input('count');
-                $record = 0;
                 for($i = 0 ; $i < $count ; $i++)
                 {
-                    if($request->has('innumber' . $i))
-                    {
-                        DB::table('月請購_單耗')
-                            ->where('客戶別', $request->input('client' . $i))
-                            ->where('機種', $request->input('machine' . $i))
-                            ->where('製程', $request->input('production' . $i))
-                            ->where('料號', $request->input('number' . $i))
-                            ->update(['單耗' => $request->input('amount' . $i) , 'updated_at' => Carbon::now()]);
-                        $record ++;
+                    DB::beginTransaction();
+                    try{
+                        月請購_單耗::
+                        where('客戶別', $client[$i])
+                        ->where('機種', $machine[$i])
+                        ->where('製程', $production[$i])
+                        ->where('料號', $number[$i])
+                        ->update(['狀態' => "待畫押" , '畫押工號' => $jobnumber ,
+                        '畫押信箱' => $email , 'updated_at' => $now , '單耗' => $amount[$i]]);
+                        DB::commit();
+                    }catch(\Exception $e){
+                        DB::rollback();
+                        $reDive->boolean = false;
+                        $reDive->passbool = false;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
                     }
-                    else
-                    {
-                        continue;
-                    }
-                }
-                $mess = trans('monthlyPRpageLang.total').' '.$record.' '.trans('monthlyPRpageLang.record').' '.
-                trans('monthlyPRpageLang.isn').trans('monthlyPRpageLang.consume')
-                .trans('monthlyPRpageLang.change').trans('monthlyPRpageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/month';
-                </script>");
 
+                }
+                $reDive->boolean = true;
+                $reDive->passbool = false;
+                $reDive->message = $count;
+                $reDive->database = $database;
+                $myJSON = json_encode($reDive);
+                echo $myJSON;
             }
-            else
-            {
-                return redirect(route('month.consume'));
-            }
+
+
+
         }
         else
         {
@@ -761,116 +723,91 @@ class MonthController extends Controller
     {
         if (Session::has('username'))
         {
+            $select = $request->input('select');
+            $reDive = new responseObj();
+            $now = Carbon::now();
+            $count = $request->input('count');
+            $client = $request->input('data5');
+            $machine = $request->input('data6');
+            $production = $request->input('data7');
+            $number = $request->input('data0');
+            $nowpeople = $request->input('data8');
+            $nowline = $request->input('data9');
+            $nowclass = $request->input('data10');
+            $nowdayneed = $request->input('data11');
+            $nowchange = $request->input('data12');
+            $nextpeople = $request->input('data14');
+            $nextline = $request->input('data15');
+            $nextclass = $request->input('data16');
+            $nextdayneed = $request->input('data17');
+            $nextchange = $request->input('data18');
+            $jobnumber = $request->input('jobnumber');
+            $email = $request->input('email');
+            $database = $request->session()->get('database');
+            $database = Hash::make($database);
             //delete
-            if($request->has('delete'))
+            if($select == "刪除")
             {
-
-                $count = $request->input('count');
-                $record = 0;
                 for($i = 0 ; $i < $count ; $i++)
                 {
-                    if($request->has('innumber' . $i))
-                    {
+                    DB::beginTransaction();
+                    try{
                         月請購_站位::
-                        where('客戶別', $request->input('client' . $i))
-                        ->where('機種', $request->input('machine' . $i))
-                        ->where('製程', $request->input('production' . $i))
-                        ->where('料號', $request->input('number' . $i))
+                        where('客戶別', $client[$i])
+                        ->where('機種', $machine[$i])
+                        ->where('製程', $production[$i])
+                        ->where('料號', $number[$i])
                         ->delete();
-                        $record ++;
+                        DB::commit();
+                    }catch(\Exception $e){
+                        DB::rollback();
+                        $reDive->boolean = false;
+                        $reDive->passbool = false;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
                     }
-                    else
-                    {
-                        continue;
-                    }
+
                 }
-                $mess = trans('monthlyPRpageLang.total').' '.$record.' '.trans('monthlyPRpageLang.record').' '
-                .trans('monthlyPRpageLang.stand').trans('monthlyPRpageLang.delete').trans('monthlyPRpageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/month';
-                </script>");
+                $reDive->boolean = true;
+                $reDive->passbool = true;
+                $reDive->message = $count;
+                $reDive->database = $database;
+                $myJSON = json_encode($reDive);
+                echo $myJSON;
             }
             //change
-            else if($request->has('change'))
+            else if($select == "更新")
             {
-                $count = $request->input('count');
-                $record = 0;
                 for($i = 0 ; $i < $count ; $i++)
                 {
-                    if($request->has('innumber' . $i))
-                    {
-                        DB::table('月請購_站位')
-                            ->where('客戶別', $request->input('client' . $i))
-                            ->where('機種', $request->input('machine' . $i))
-                            ->where('製程', $request->input('production' . $i))
-                            ->where('料號', $request->input('number' . $i))
-                            ->update(['當月站位人數' => $request->input('nowpeople' . $i)
-                            , '當月開線數' => $request->input('nowline' . $i)
-                            , '當月開班數' => $request->input('nowclass' . $i)
-                            , '當月每人每日需求量' => $request->input('nowuse' . $i)
-                            , '當月每日更換頻率' => $request->input('nowchange' . $i)
-                            , '下月站位人數' => $request->input('nextpeople' . $i)
-                            , '下月開線數' => $request->input('nextline' . $i)
-                            , '下月開班數' => $request->input('nextclass' . $i)
-                            , '下月每人每日需求量' => $request->input('nextuse' . $i)
-                            , '下月每日更換頻率' => $request->input('nextchange' . $i)]);
-                            $record ++;
+                    DB::beginTransaction();
+                    try{
+                        月請購_站位::
+                        where('客戶別', $client[$i])
+                        ->where('機種', $machine[$i])
+                        ->where('製程', $production[$i])
+                        ->where('料號', $number[$i])
+                        ->update(['狀態' => "待畫押" , '畫押工號' => $jobnumber ,
+                        '畫押信箱' => $email , 'updated_at' => $now , '當月站位人數' => $nowpeople[$i] , '當月開線數' => $nowpeople[$i] ,
+                        '當月開班數' => $nowpeople[$i] , '當月每人每日需求量' => $nowpeople[$i] , '下月站位人數' => $nowpeople[$i] ,
+                        '下月開線數' => $nowpeople[$i] , '下月開班數' => $nowpeople[$i] , '下月每人每日需求量' => $nowpeople[$i] ,
+                        '當月每日更換頻率' => $nowpeople[$i] , '下月每日更換頻率' => $nowpeople[$i]]);
+                        DB::commit();
+                    }catch(\Exception $e){
+                        DB::rollback();
+                        $reDive->boolean = false;
+                        $reDive->passbool = false;
+                        $myJSON = json_encode($reDive);
+                        echo $myJSON;
                     }
-                    else
-                    {
-                        continue;
-                    }
+
                 }
-                $mess = trans('monthlyPRpageLang.total').' '.$record.' '.trans('monthlyPRpageLang.record'). ' '
-                .trans('monthlyPRpageLang.stand')
-                .trans('monthlyPRpageLang.change').trans('monthlyPRpageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/month';
-                </script>");
-            }
-            //download
-            else if($request->has('download'))
-            {
-
-                $spreadsheet = new Spreadsheet();
-                foreach (range('A','T') as $col) {
-                    $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-                }
-                $worksheet = $spreadsheet->getActiveSheet();
-                $time = $request->input('time');
-                $count = $request->input('count');
-                //填寫表頭
-                for($i = 0 ; $i < $time ; $i ++)
-                {
-                    $worksheet->setCellValueByColumnAndRow($i+1 , 1 , $request->input('title'.$i));
-                }
-
-                //填寫內容
-                for($i = 0 ; $i < $time ; $i ++)
-                {
-                    for($j = 0 ; $j < $count ; $j++)
-                    {
-                        $worksheet->setCellValueByColumnAndRow($i+1 , $j+2 , $request->input('data'.$i.$j));
-                    }
-                }
-
-
-                // 下載
-                $now = Carbon::now()->format('YmdHis');
-                $filename = '站位人力'. $now . '.xlsx';
-                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment;filename="'.$filename.'"');
-                header('Cache-Control: max-age=0');
-
-                $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-                $writer->save('php://output');
-
-            }
-            else
-            {
-                return redirect(route('month.stand'));
+                $reDive->boolean = true;
+                $reDive->passbool = false;
+                $reDive->message = $count;
+                $reDive->database = $database;
+                $myJSON = json_encode($reDive);
+                echo $myJSON;
             }
         }
         else
@@ -1126,7 +1063,10 @@ class MonthController extends Controller
                 $machine = $request->input('machine');
                 $production = $request->input('production');
                 $amount = $request->input('amount');
-
+                $jobnumber = $request->input('jobnumber');
+                $email = $request->input('email');
+                $database = $request->session()->get('database');
+                $database = Hash::make($database);
                 $test = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別',$client)
                 ->where('機種',$machine)->where('製程',$production)->value('單耗');
 
@@ -1140,8 +1080,10 @@ class MonthController extends Controller
                     DB::table('月請購_單耗')
                     ->where('料號', $number)->where('客戶別',$client)
                     ->where('機種',$machine)->where('製程',$production)
-                    ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null , '單耗' => $amount]);
+                    ->update(['created_at' =>  Carbon::now() , 'deleted_at' => null , 'updated_at' => null , '單耗' => $amount , '畫押工號' => $jobnumber , '畫押信箱' => $email
+                    , '狀態' => "待畫押"]);
                     $reDive->boolean = true;
+                    $reDive->database = $database;
                     $myJSON = json_encode($reDive);
                     echo $myJSON;
                     return;
@@ -1154,7 +1096,8 @@ class MonthController extends Controller
                         try {
                             DB::table('月請購_單耗')
                             ->insert(['料號' => $number , '客戶別' => $client , '機種' => $machine ,'製程' => $production
-                            , '單耗' => $amount , 'created_at' => Carbon::now()]);
+                            , '單耗' => $amount , 'created_at' => Carbon::now() , '畫押工號' => $jobnumber , '畫押信箱' => $email
+                            , '狀態' => "待畫押"]);
                             DB::commit();
                         }catch (\Exception $e) {
                             DB::rollback();
@@ -1164,6 +1107,7 @@ class MonthController extends Controller
                             echo $myJSON;
                         }
                         $reDive->boolean = true;
+                        $reDive->database = $database;
                         $myJSON = json_encode($reDive);
                         echo $myJSON;
                     }
@@ -1209,6 +1153,11 @@ class MonthController extends Controller
                 $nextclass = $request->input('nextclass');
                 $nextuse = $request->input('nextuse');
                 $nextchange = $request->input('nextchange');
+                $email = $request->input('email');
+                $jobnumber = $request->input('jobnumber');
+                $database = $request->session()->get('database');
+                $database = Hash::make($database);
+
                 $test = DB::table('月請購_站位')->where('料號', $number)->where('客戶別',$client)
                 ->where('機種',$machine)->where('製程',$production)->value('當月站位人數');
 
@@ -1222,11 +1171,12 @@ class MonthController extends Controller
                     DB::table('月請購_站位')
                     ->where('料號', $number)->where('客戶別',$client)
                     ->where('機種',$machine)->where('製程',$production)
-                    ->update(['updated_at' =>  Carbon::now() , 'deleted_at' => null , '當月站位人數' => $nowpeople
+                    ->update(['created_at' =>  Carbon::now() , 'deleted_at' => null , 'updated_at' => null, '當月站位人數' => $nowpeople
                     , '當月開線數' => $nowline , '當月開班數' => $nowclass , '當月每人每日需求量' => $nowuse , '當月每日更換頻率' => $nowchange
                     , '下月站位人數' => $nextpeople , '下月開線數' => $nextline , '下月開班數' => $nextclass , '下月每人每日需求量' => $nextuse
-                    , '下月每日更換頻率' => $nextchange]);
+                    , '下月每日更換頻率' => $nextchange , '狀態' => "待畫押" , '畫押工號' => $jobnumber , '畫押信箱' => $email]);
                     $reDive->boolean = true;
+                    $reDive->database = $database;
                     $myJSON = json_encode($reDive);
                     echo $myJSON;
                     return;
@@ -1242,7 +1192,7 @@ class MonthController extends Controller
                             ->insert(['料號' => $number , '客戶別' => $client , '機種' => $machine ,'製程' => $production , '當月站位人數' => $nowpeople
                             , '當月開線數' => $nowline , '當月開班數' => $nowclass , '當月每人每日需求量' => $nowuse , '當月每日更換頻率' => $nowchange
                             , '下月站位人數' => $nextpeople , '下月開線數' => $nextline , '下月開班數' => $nextclass , '下月每人每日需求量' => $nextuse
-                            , '下月每日更換頻率' => $nextchange , 'created_at' => Carbon::now()]);
+                            , '下月每日更換頻率' => $nextchange , 'created_at' => Carbon::now() , '狀態' => "待畫押" , '畫押工號' => $jobnumber , '畫押信箱' => $email]);
                             DB::commit();
                         }catch (\Exception $e) {
                             DB::rollback();
@@ -1252,6 +1202,7 @@ class MonthController extends Controller
                             echo $myJSON;
                         }
                         $reDive->boolean = true;
+                        $reDive->database = $database;
                         $myJSON = json_encode($reDive);
                         echo $myJSON;
 
@@ -2345,13 +2296,14 @@ class MonthController extends Controller
             $twd = $request->input('twd');
             $rmb = $request->input('rmb');
             $vnd = $request->input('vnd');
-            if($client == '所有客戶' || $client == 'ALL Clients')
+            if($client == '所有客戶' || $client == 'ALL Client')
             {
                 if($send === null)
                 {
                     $datas = DB::table('月請購_單耗')
                     ->join('MPS', function($join)
                     {
+
                         $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
                         ->on('MPS.機種', '=', '月請購_單耗.機種')
                         ->on('MPS.製程', '=', '月請購_單耗.製程');
@@ -2360,7 +2312,7 @@ class MonthController extends Controller
                     {
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
 
-                    })->get();
+                    })->where('月請購_單耗.狀態','=',"已完成")->get();
                 }
                 else
                 {
@@ -2376,7 +2328,7 @@ class MonthController extends Controller
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
 
                     })->where('consumptive_material.發料部門',$send)
-                    ->get();
+                    ->where('月請購_單耗.狀態','=',"已完成")->get();
 
                 }
 
@@ -2568,6 +2520,7 @@ class MonthController extends Controller
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
 
                     })->where('月請購_單耗.客戶別',$client)
+                    ->where('月請購_單耗.狀態','=',"已完成")
                     ->get();
                 }
                 else
@@ -2585,6 +2538,7 @@ class MonthController extends Controller
 
                     })->where('月請購_單耗.客戶別',$client)
                     ->where('consumptive_material.發料部門',$send)
+                    ->where('月請購_單耗.狀態','=',"已完成")
                     ->get();
                 }
 
@@ -3085,40 +3039,42 @@ class MonthController extends Controller
     {
         if (Session::has('username'))
         {
+            $reDive = new responseObj();
             $count = $request->input('count');
-            $record = 0;
+            $jobnumber = $request->input('jobnumber');
+            $email = $request->input('email');
+            $client =  $request->input('client');
+            $number =  $request->input('number');
+            $amount =  $request->input('amount');
+            $machine = $request->input('machine');
+            $production = $request->input('production');
+            $database = $request->session()->get('database');
+            $database = Hash::make($database);
             for($i = 0 ; $i < $count ; $i ++)
             {
-                $client =  $request->input('data5'. $i);
-                $number =  $request->input('data0'. $i);
-                $amount =  $request->input('data1'. $i);
-                $machine = $request->input('data6'. $i);
-                $production = $request->input('data7'. $i);
 
                 DB::beginTransaction();
                 try {
                     DB::table('月請購_單耗')
-                        ->insert(['料號' => $number , '客戶別' => $client , '機種' => $machine ,'製程' => $production , '單耗' => $amount]);
+                        ->insert(['料號' => $number[$i] , '客戶別' => $client[$i] , '機種' => $machine[$i] ,'製程' => $production[$i] , '單耗' => $amount[$i]
+                        , 'created_at' => Carbon::now() , '畫押工號' => $jobnumber , '畫押信箱' => $email , '狀態' => '待畫押']);
                     DB::commit();
-                    $record++;
                 }catch (\Exception $e) {
                     DB::rollback();
-                    $mess = trans('monthlyPRpageLang.repeat');
-                    echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    </script>");
-                    return view('month.uploadconsume1');
+                    $reDive->boolean = false;
+                    $reDive->message = $e->getmessage();
+                    $reDive->database = $database;
+                    $myJSON = json_encode($reDive);
+                    echo $myJSON;
+                    return;
                 }
 
             }
-            $mess = trans('monthlyPRpageLang.total').$record.trans('monthlyPRpageLang.record')
-            .trans('monthlyPRpageLang.isn').trans('monthlyPRpageLang.consume')
-            .trans('monthlyPRpageLang.upload1').trans('monthlyPRpageLang.success');
-
-            echo ("<script LANGUAGE='JavaScript'>
-            window.alert('$mess');
-            window.location.href='/month';
-            </script>");
+            $reDive->boolean = true;
+            $reDive->message = $count;
+            $reDive->database = $database;
+            $myJSON = json_encode($reDive);
+            echo $myJSON;
 
         }
 
@@ -3477,5 +3433,156 @@ class MonthController extends Controller
             return redirect(route('member.login'));
         }
 
+    }
+
+
+
+
+    //test單耗畫押
+    public function testconsume(Request $request)
+    {
+        if(Session::has('username'))
+        {
+            return view('month.testconsume')->with(['data' => 月請購_單耗::cursor()->where('狀態',"待畫押")]);
+        }
+        else
+        {
+            return redirect(route('member.login'));
+        }
+    }
+
+    //test站位畫押
+    public function testsand(Request $request)
+    {
+        if(Session::has('username'))
+        {
+            return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態',"待畫押")]);
+        }
+        else
+        {
+            return redirect(route('member.login'));
+        }
+    }
+
+    //test畫押提交
+    public function testsubmit(Request $request)
+    {
+        if(Session::has('username'))
+        {
+            $reDive = new responseObj();
+            $now = Carbon::now();
+            $count = $request->input('count');
+            $client = $request->input('client');
+            $machine = $request->input('machine');
+            $production = $request->input('production');
+            $number = $request->input('number');
+            $amount = $request->input('amount');
+            $jobnumber = $request->input('jobnumber');
+            $email = $request->input('email');
+            $check = $request->input('check');
+
+            for($i = 0 ; $i < $count ; $i++)
+            {
+                DB::beginTransaction();
+                try{
+                    $update = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別',$client)
+                    ->where('機種',$machine)->where('製程',$production)->value('updated_at');
+                    $record = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別',$client)
+                    ->where('機種',$machine)->where('製程',$production)->value('紀錄');
+                    if($check[$i] == 1)
+                    {
+
+                        if($record == "畫押完成")
+                        {
+                            $record = ' 工號: '.$jobnumber .' 時間: '. $now.' 修改此筆單耗 '.';';
+                        }
+                        else
+                        {
+                            $record = $record .' 工號: '.$jobnumber .' 時間: '. $now.' 修改此筆單耗 '.';';
+                        }
+                    }
+                    else
+                    {
+                        $record = '畫押完成';
+                    }
+                    月請購_單耗::
+                        where('客戶別', $client[$i])
+                        ->where('機種', $machine[$i])
+                        ->where('製程', $production[$i])
+                        ->where('料號', $number[$i])
+                        ->update(['狀態' => "已完成" , '畫押工號' => $jobnumber ,
+                        '畫押信箱' => $email , '畫押時間' => $now , '單耗' => $amount[$i] ,'updated_at' => $update , '紀錄' => $record]);
+                    DB::commit();
+                }catch(\Exception $e){
+                    DB::rollback();
+                    $reDive->boolean = false;
+                    $reDive->passbool = false;
+                    $myJSON = json_encode($reDive);
+                    echo $myJSON;
+                }
+
+            }
+
+            $reDive->boolean = true;
+            $reDive->passbool = true;
+            $reDive->message = $count;
+            $myJSON = json_encode($reDive);
+            echo $myJSON;
+
+        }
+        else
+        {
+            return redirect(route('member.login'));
+        }
+    }
+
+    //站位人力查詢下載
+    public function standdownload(Request $request)
+    {
+        if (Session::has('username')) {
+            $reDive = new responseObj();
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            $title = $request->input('title');
+            $count = $request->input('count');
+
+            //填寫表頭
+            for ($i = 0; $i < 22; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+            }
+
+            // 下載
+            for ($i = 0 ; $i < 22; $i++)
+            {
+                for($j = 0 ; $j < $count ;$j ++)
+                {
+
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data'.$i)[$j]);
+
+                }
+            }
+
+            $now = Carbon::now()->format('YmdHis');
+
+            $filename = rawurlencode($request->input('titlename')) . $now . '.xlsx';
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\''.$filename.';');
+            header('Cache-Control: max-age=0');
+
+            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+            $callback = function () use ($writer) {
+                $file = fopen('php://output', 'r');
+                fclose($file);
+            };
+
+            return response()->stream($callback, 200, $headers);
+        } else {
+            return redirect(route('member.login'));
+        } // if else
     }
 }

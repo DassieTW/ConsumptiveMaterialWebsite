@@ -170,3 +170,20 @@ Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('mont
 
 //月請購上傳資料新增至資料庫
 Route::post('/insertuploadmonth', [MonthController::class, 'insertuploadmonth'])->name('month.insertuploadmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+
+//test單耗畫押
+Route::get('/testconsume' , [MonthController::class, 'testconsume'])->name('month.testconsume')->withoutMiddleware('auth');
+
+//test單耗畫押提交
+Route::post('/testsubmit' , [MonthController::class, 'testsubmit'])->name('month.testsubmit')->withoutMiddleware('auth');
+
+//test站位畫押
+Route::get('/teststand' , [MonthController::class, 'teststand'])->name('month.teststand')->withoutMiddleware('auth');
+
+//test站位畫押提交
+Route::post('/teststandsubmit' , [MonthController::class, 'teststandsubmit'])->name('month.teststandsubmit')->withoutMiddleware('auth');
+
+
+
+//站位人力下載
+Route::post('/standdownload' , [MonthController::class, 'standdownload'])->name('month.standdownload');

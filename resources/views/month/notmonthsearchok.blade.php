@@ -24,7 +24,7 @@
                                 <td>{!! __('monthlyPRpageLang.client') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.isn') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.pName') !!}</td>
-                                <td>{!! __('monthlyPRpageLang.buyamount') !!}</td>
+                                <td>{!! __('monthlyPRpageLang.buyamount1') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.uploadtime') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.description') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.sxb') !!}</td>

@@ -34,6 +34,28 @@ class LoginController extends Controller
         attemptLogin as baseAttemptLogin;
     }
 
+    protected $redirectTo = RouteServiceProvider::HOME;
+
+    protected function attemptLogin(Request $request)
+    {
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password,
+        ];
+
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->site);
+        \DB::purge(env("DB_CONNECTION"));
+        // dd($request->site) ; // test
+        return \Auth::attempt($credentials);
+    } // attemptLogin
+
+    protected function authenticated(Request $request, $user)
+    {
+        session(['database' => $request->site]);
+        // dd(session('database')); // test
+        $request->session()->get('database');
+    } // authenticated
+
     //login
     public function login(Request $request)
     {
@@ -535,11 +557,5 @@ class LoginController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-
-
-
-
-
-
-
-} // end of controller
+    }
+}

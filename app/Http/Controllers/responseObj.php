@@ -13,6 +13,7 @@ class responseObj {
     public $passstock;
     public $message;
     public $newerror = array(10);
+    public $database;
 
     public function __construct() {
 

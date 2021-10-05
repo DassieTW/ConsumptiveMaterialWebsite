@@ -75,6 +75,7 @@ return array(
     'App\\Models\\在途量' => $baseDir . '/app/Models/在途量.php',
     'App\\Models\\客戶別' => $baseDir . '/app/Models/客戶別.php',
     'App\\Models\\廠別' => $baseDir . '/app/Models/廠別.php',
+    'App\\Models\\接收明細' => $baseDir . '/app/Models/接收明細.php',
     'App\\Models\\撥出明細' => $baseDir . '/app/Models/撥出明細.php',
     'App\\Models\\月請購_單耗' => $baseDir . '/app/Models/月請購_單耗.php',
     'App\\Models\\月請購_站位' => $baseDir . '/app/Models/月請購_站位.php',
