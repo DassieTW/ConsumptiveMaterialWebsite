@@ -1,15 +1,11 @@
+var table = $.session.get('basic');
 
-//var choose = sessionStorage.setItem('basic', 'FactoryExample');
-//var choose = "FactoryExample";
-//var choose = sessionStorage.getItem('basic');
-
+var choose = "FactoryExample";
 $(document).ready(function() {
     $("#download").attr("href","../download/FactoryExample.xlsx");
     $('.nav-item').on('click', function() {
         choose = this.id;
         $("#download").attr("href","../download/"+choose+".xlsx");
-        sessionStorage.setItem('basic', choose);
-        console.log(sessionStorage.getItem('basic'));
     });
 });
 
@@ -129,7 +125,7 @@ $('#basicdata').on('submit', function (e) {
     checked = $("input:checkbox[name="+datacheck+"]:checked").length;
 
     if(!checked) {
-        alert(Lang.get('basicInfoLang.nocheck'));
+        alert(Lang.get('monthlyPRpageLang.nocheck'));
         return false;
     }
     console.log(olddata);
@@ -160,7 +156,7 @@ $('#basicdata').on('submit', function (e) {
             if (myObj.boolean === true) {
                 var mess = Lang.get('basicInfoLang.change') + ' / ' + Lang.get('basicInfoLang.delete') + ' ' + Lang.get('basicInfoLang.success');
                 alert(mess);
-                window.location.reload();
+                window.location.href('/basic?tabname=' + myObj.database);
             }
 
         },

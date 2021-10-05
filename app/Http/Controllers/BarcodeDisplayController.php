@@ -16,6 +16,36 @@ class BarcodeDisplayController extends Controller
 
     public function delTempImg(Request $request)
     {
+        // We are collecting all data submitting via Ajax
+        $input = $request->all();
+
+        /*
+          $post = new Post;  // using model to save data to db
+          $post->name = $input['name'];
+          $post->description = $input['description'];
+          $post->status = $input['status'];
+          $post->save();
+        */
+
+        if ($request->boolean('DelorNot') && $request->boolean('isISN')) { // DelorNot is true and isISN is true
+            unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '.png'));
+            $request->session()->forget('imgg');
+        } // if
+        else if ($request->boolean('DelorNot') && !$request->boolean('isISN')) { // DelorNot is true and it is a loc pic
+            unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '-2.png'));
+            $request->session()->forget('imgg2');
+        } // if else if
+
+
+        // Sending json response to client
+        return \Response::json(['message' => 'temp img delete successful !']); // Status code here
+    }
+
+    /**
+     * go back when post
+     */
+    public function postBack(Request $request)
+    {
         $rules = [
             'barcode1' => ['required', 'regex:/[0-9A-Za-z]{4,4}/'],
             'barcode2' => ['required', 'regex:/[a-zA-Z0-9]{7,7}/'],
@@ -193,5 +223,74 @@ class BarcodeDisplayController extends Controller
             'locSheet' => $spreadsheetBarcodesArray['loc']
         ]/* Status code here default is 200 ok*/);
     } // decompose
+
+    public function printBarcode(Request $request)
+    {
+        // dd($_POST['isnArray']); // test
+        $request->session()->put('isnArray', $_POST['isnArray']);
+        $request->session()->put('isnNameArray', $_POST['isnNameArray']);
+        $request->session()->put('isnSepCount', $_POST['isnSepCount']);
+
+        $request->session()->put('locArray', $_POST['locArray']);
+        $request->session()->put('locSepCount', $_POST['locSepCount']);
+
+        $this->service->drawABunchofBarcodes($request);
+        return \Response::json(['message' => 'loc barcode generated successful !']); // Status code here
+    } // printBarcode
+
+    public function cleanupAllBarcodes(Request $request)
+    {
+        // We are collecting all data submitting via Ajax
+
+        if (\Session::has('isnSepCount') && \Session::get('isnSepCount') !== "" && count(\Session::get('isnSepCount')) > 0) {
+            for ($a = 0; $a < count(\Session::get('isnSepCount')); $a++) {
+                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--isn--' . $a . '.png'));
+            } // for
+
+            $request->session()->forget('isnSepCount');
+            $request->session()->forget('isnArray');
+            $request->session()->forget('isnNameArray');
+        } // if
+
+        if (\Session::has('locSepCount') && \Session::get('locSepCount') !== "" && count(\Session::get('locSepCount')) > 0) {
+            for ($a = 0; $a < count(\Session::get('locSepCount')); $a++) {
+                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--loc--' . $a . '-2.png'));
+            } // for
+
+            $request->session()->forget('locSepCount');
+            $request->session()->forget('locArray');
+        } // if else if
+
+
+        // Sending json response to client
+        return \Response::json(['message' => 'all temp img delete successful !']); // Status code here
+    } // cleanupAllBarcodes
+
+    public function searchISN(Request $request)
+    {
+        // We are collecting all data submitting via Ajax
+
+        $fetchedData = $this->service->searchISNinDB($request);
+        if (count($fetchedData) === 0) { // return 420 if the search result length is 0
+            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+        } // if no results are found
+        else {
+            return \Response::json(['data' => $fetchedData]/* Status code here default is 200 ok*/);
+        } // else
+
+    } // searchISN
+
+    public function searchLoc(Request $request)
+    {
+        // We are collecting all data submitting via Ajax
+        $fetchedData = $this->service->searchLocinDB($request);
+        if (count($fetchedData) === 0) { // return 420 if the search result length is 0
+            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+        } // if no results are found
+        else {
+            return \Response::json(['data' => $fetchedData]/* Status code here default is 200 ok*/);
+        } // else
+
+    } // searchLoc
 
 } // end of class

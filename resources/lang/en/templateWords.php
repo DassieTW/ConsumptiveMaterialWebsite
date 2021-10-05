@@ -27,7 +27,7 @@ return [
     'monthly' => 'Monthly PR',
     'obound' => 'Vendor Stock',
     'callsys' => 'Alarm System',
-    'bu' => 'BU CM',
+    'bu' => 'BU Consumable Management',
     'basicInfo' => 'Basic Info.',
     'checkIvent' => 'Check Inv.',
     'dashboard' => 'Dashboards',

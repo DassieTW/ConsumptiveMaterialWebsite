@@ -31,6 +31,9 @@ class 月請購_站位TableSeeder extends Seeder
         $month->下月開班數 = 1;
         $month->下月每人每日需求量 = 2;
         $month->下月每日更換頻率 = 1;
+        $month->狀態 = '已完成';
+        $month->畫押工號 = 'LA2100001';
+        $month->畫押信箱 = 'test@pegatroncorp.com';
         $month->save();
         //
         $month = new 月請購_站位;
@@ -48,6 +51,9 @@ class 月請購_站位TableSeeder extends Seeder
         $month->下月開班數 = 5;
         $month->下月每人每日需求量 = 5;
         $month->下月每日更換頻率 = 5;
+        $month->狀態 = '已完成';
+        $month->畫押工號 = 'LA2100001';
+        $month->畫押信箱 = 'test@pegatroncorp.com';
         $month->save();
         //
         $month = new 月請購_站位;
@@ -65,6 +71,9 @@ class 月請購_站位TableSeeder extends Seeder
         $month->下月開班數 = 1;
         $month->下月每人每日需求量 = 1;
         $month->下月每日更換頻率 = 0.1428571;
+        $month->狀態 = '已完成';
+        $month->畫押工號 = 'LA2100001';
+        $month->畫押信箱 = 'test@pegatroncorp.com';
         $month->save();
     }
 }
