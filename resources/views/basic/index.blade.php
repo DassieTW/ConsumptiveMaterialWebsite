@@ -25,53 +25,62 @@
                     @csrf
                     <ul id="myTab" name="myTab" class="nav nav-tabs justify-content-center">
                         <li class="nav-item" id="FactoryExample">
-                            <a data-toggle="tab" class="nav-link"
-                                id = "FactoryExamplea" href="#showfactory">{!!__('basicInfoLang.factory') !!}</a>
+                            <a data-toggle="tab" class="nav-link" id="FactoryExamplea"
+                                href="#showfactory">{!!__('basicInfoLang.factory') !!}</a>
 
                         </li>
                         <li class="nav-item" id="ClientExample">
-                            <a id = "ClientExamplea" data-toggle="tab" class="nav-link" href="#showclient">{!! __('basicInfoLang.client')
+                            <a id="ClientExamplea" data-toggle="tab" class="nav-link" href="#showclient">{!!
+                                __('basicInfoLang.client')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="MachineExample">
-                            <a id = "MachineExamplea" data-toggle="tab" class="nav-link" href="#showmachine">{!! __('basicInfoLang.machine')
+                            <a id="MachineExamplea" data-toggle="tab" class="nav-link" href="#showmachine">{!!
+                                __('basicInfoLang.machine')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="ProductionExample">
-                            <a id = "ProductionExamplea" data-toggle="tab" class="nav-link" href="#showprocess">{!! __('basicInfoLang.process')
+                            <a id="ProductionExamplea" data-toggle="tab" class="nav-link" href="#showprocess">{!!
+                                __('basicInfoLang.process')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="LineExample">
-                            <a id = "LineExamplea" data-toggle="tab" class="nav-link" href="#showline">{!! __('basicInfoLang.line')
+                            <a id="LineExamplea" data-toggle="tab" class="nav-link" href="#showline">{!!
+                                __('basicInfoLang.line')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="UseExample">
-                            <a id = "UseExamplea" data-toggle="tab" class="nav-link" href="#showusedep">{!! __('basicInfoLang.usedep')
+                            <a id="UseExamplea" data-toggle="tab" class="nav-link" href="#showusedep">{!!
+                                __('basicInfoLang.usedep')
                                 !!}</a>
                         </li>
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <li class="nav-item" id="UseReasonExample">
-                            <a id = "UseReasonExamplea" data-toggle="tab" class="nav-link" href="#showusereason">{!!
+                            <a id="UseReasonExamplea" data-toggle="tab" class="nav-link" href="#showusereason">{!!
                                 __('basicInfoLang.usereason')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="InReasonExample">
-                            <a id = "InReasonExamplea" data-toggle="tab" class="nav-link" href="#showinreason">{!! __('basicInfoLang.inreason')
+                            <a id="InReasonExamplea" data-toggle="tab" class="nav-link" href="#showinreason">{!!
+                                __('basicInfoLang.inreason')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="PositionExample">
-                            <a id = "PositionExamplea" data-toggle="tab" class="nav-link" href="#showloc">{!! __('basicInfoLang.loc') !!}</a>
+                            <a id="PositionExamplea" data-toggle="tab" class="nav-link" href="#showloc">{!!
+                                __('basicInfoLang.loc') !!}</a>
                         </li>
                         <li class="nav-item" id="SendExample">
-                            <a id = "SendExamplea" data-toggle="tab" class="nav-link" href="#showsenddep">{!! __('basicInfoLang.senddep')
+                            <a id="SendExamplea" data-toggle="tab" class="nav-link" href="#showsenddep">{!!
+                                __('basicInfoLang.senddep')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="OboundExample">
-                            <a id = "OboundExamplea" data-toggle="tab" class="nav-link" href="#showobound">{!! __('basicInfoLang.obound')
+                            <a id="OboundExamplea" data-toggle="tab" class="nav-link" href="#showobound">{!!
+                                __('basicInfoLang.obound')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="BackReasonExample">
-                            <a id = "BackReasonExamplea" data-toggle="tab" class="nav-link" href="#showreturnreason">{!!
+                            <a id="BackReasonExamplea" data-toggle="tab" class="nav-link" href="#showreturnreason">{!!
                                 __('basicInfoLang.returnreason') !!}</a>
                         </li>
                     </ul>
@@ -86,8 +95,8 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="factory" type="text" id="factory{{ $loop->index }}"
                                 name="factory{{ $loop->index }}" value="{{ $factory->廠別 }}">
-                            <input type="hidden" id="oldfactory{{ $loop->index }}"
-                            name="oldfactory{{ $loop->index }}" value="{{ $factory->廠別 }}">
+                            <input type="hidden" id="oldfactory{{ $loop->index }}" name="oldfactory{{ $loop->index }}"
+                                value="{{ $factory->廠別 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="factory" type="text" id="factorynew"
@@ -105,8 +114,8 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="client" type="text" id="client{{ $loop->index }}"
                                 name="client{{ $loop->index }}" value="{{ $client->客戶 }}">
-                                <input type="hidden" id="oldclient{{ $loop->index }}"
-                                name="oldclient{{ $loop->index }}" value="{{ $client->客戶 }}">
+                            <input type="hidden" id="oldclient{{ $loop->index }}" name="oldclient{{ $loop->index }}"
+                                value="{{ $client->客戶 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="client" type="text" id="clientnew"
@@ -124,8 +133,8 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="machine" type="text" id="machine{{ $loop->index }}"
                                 name="machine{{ $loop->index }}" value="{{ $machine->機種 }}">
-                                <input type="hidden" id="oldmachine{{ $loop->index }}"
-                                name="oldmachine{{ $loop->index }}" value="{{ $machine->機種 }}">
+                            <input type="hidden" id="oldmachine{{ $loop->index }}" name="oldmachine{{ $loop->index }}"
+                                value="{{ $machine->機種 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="machine" type="text" id="machinenew"
@@ -143,7 +152,7 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="production" type="text" id="production{{ $loop->index }}"
                                 name="production{{ $loop->index }}" value="{{ $production->製程 }}">
-                                <input type="hidden" id="oldproduction{{ $loop->index }}"
+                            <input type="hidden" id="oldproduction{{ $loop->index }}"
                                 name="oldproduction{{ $loop->index }}" value="{{ $production->製程 }}">
                             <hr />
                             @endforeach
@@ -162,8 +171,8 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="line" type="text" id="line{{ $loop->index }}" name="line{{ $loop->index }}"
                                 value="{{ $line->線別 }}">
-                                <input type="hidden" id="oldline{{ $loop->index }}"
-                                name="oldline{{ $loop->index }}" value="{{ $line->線別 }}">
+                            <input type="hidden" id="oldline{{ $loop->index }}" name="oldline{{ $loop->index }}"
+                                value="{{ $line->線別 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="line" type="text" id="linenew"
@@ -181,8 +190,8 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="use" type="text" id="use{{ $loop->index }}" name="use{{ $loop->index }}"
                                 value="{{ $use->領用部門 }}">
-                                <input type="hidden" id="olduse{{ $loop->index }}"
-                                name="olduse{{ $loop->index }}" value="{{ $use->領用部門 }}">
+                            <input type="hidden" id="olduse{{ $loop->index }}" name="olduse{{ $loop->index }}"
+                                value="{{ $use->領用部門 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="use" type="text" id="usenew" name="usenew"
@@ -200,7 +209,7 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="usereason" type="text" id="usereason{{ $loop->index }}"
                                 name="usereason{{ $loop->index }}" value="{{ $usereason->領用原因 }}">
-                                <input type="hidden" id="oldusereason{{ $loop->index }}"
+                            <input type="hidden" id="oldusereason{{ $loop->index }}"
                                 name="oldusereason{{ $loop->index }}" value="{{ $usereason->領用原因 }}">
                             <hr />
                             @endforeach
@@ -219,8 +228,8 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="inreason" type="text" id="inreason{{ $loop->index }}"
                                 name="inreason{{ $loop->index }}" value="{{ $inreason->入庫原因 }}">
-                                <input type="hidden" id="oldinreason{{ $loop->index }}"
-                                name="oldinreason{{ $loop->index }}" value="{{ $inreason->入庫原因 }}">
+                            <input type="hidden" id="oldinreason{{ $loop->index }}" name="oldinreason{{ $loop->index }}"
+                                value="{{ $inreason->入庫原因 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="inreason" type="text" id="inreasonnew"
@@ -238,8 +247,8 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="position" type="text" id="position{{ $loop->index }}"
                                 name="position{{ $loop->index }}" value="{{ $position->儲存位置 }}">
-                                <input type="hidden" id="oldposition{{ $loop->index }}"
-                                name="oldposition{{ $loop->index }}" value="{{ $position->儲存位置 }}">
+                            <input type="hidden" id="oldposition{{ $loop->index }}" name="oldposition{{ $loop->index }}"
+                                value="{{ $position->儲存位置 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="position" type="text" id="positionnew"
@@ -257,8 +266,8 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="send" type="text" id="send{{ $loop->index }}" name="send{{ $loop->index }}"
                                 value="{{ $send->發料部門 }}">
-                                <input type="hidden" id="oldsend{{ $loop->index }}"
-                                name="oldsend{{ $loop->index }}" value="{{ $send->發料部門 }}">
+                            <input type="hidden" id="oldsend{{ $loop->index }}" name="oldsend{{ $loop->index }}"
+                                value="{{ $send->發料部門 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="send" type="text" id="sendnew"
@@ -276,8 +285,8 @@
                                 value="{{$loop->index}}">
                             <input class="o" type="text" id="o{{ $loop->index }}" name="o{{ $loop->index }}"
                                 value="{{ $o->O庫 }}">
-                                <input type="hidden" id="oldo{{ $loop->index }}"
-                                name="oldo{{ $loop->index }}" value="{{ $o->O庫 }}">
+                            <input type="hidden" id="oldo{{ $loop->index }}" name="oldo{{ $loop->index }}"
+                                value="{{ $o->O庫 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="o" type="text" id="onew" name="onew"
@@ -295,8 +304,8 @@
                                 style="width:20px;height:20px;" value="{{$loop->index}}">
                             <input class="back" type="text" id="back{{ $loop->index }}" name="back{{ $loop->index }}"
                                 value="{{ $back->退回原因 }}">
-                                <input type="hidden" id="oldback{{ $loop->index }}"
-                                name="oldback{{ $loop->index }}" value="{{ $back->退回原因 }}">
+                            <input type="hidden" id="oldback{{ $loop->index }}" name="oldback{{ $loop->index }}"
+                                value="{{ $back->退回原因 }}">
                             <hr />
                             @endforeach
                             {!! __('basicInfoLang.new') !!} : <input class="back" type="text" id="backnew"

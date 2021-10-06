@@ -53,8 +53,14 @@ $('#' + tab + 'a').addClass('active');
 $('#' + tab1).addClass('active');
 
 $(document).ready(function () {
+    // var perfEntries = performance.getEntriesByType("navigation");
+    // var p = perfEntries[perfEntries.length-1];    
+    // console.log("type = " + p.type); // test 
+    // sessionStorage.setItem('type', p.type); // test
+    // sessionStorage.setItem('end_time', p.domContentLoadedEventEnd); // test
+
     $("#download").attr("href", "../download/FactoryExample.xlsx");
-    sessionStorage.clear();
+    // sessionStorage.clear();
 
     $('.nav-item').on('click', function () {
         choose = this.id;
@@ -174,7 +180,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "basic/changeordelete",
+            url: "/basic/changeordelete",
             data: {
                 select: select, data: data, datanew: datanew, dataname: dataname, olddata: olddata
             },
@@ -211,29 +217,14 @@ $(document).ready(function () {
     });
 });
 
-/*$(window).on('unload', function() {
-    var a_n = window.event.screenX - window.screenLeft;
-    var a_b = a_n > document.documentElement.scrollWidth-20;
-    if(a_b && window.event.clientY< 0 || window.event.altKey){
+// window.onunload = function () {
+//     var perfEntries = performance.getEntriesByType("navigation");
+//     var p = perfEntries[perfEntries.length-1];
+//     if( p.type ) {
 
-    }else{
-        sessionStorage.clear();
-    }
-});*/
-window.onbeforeunload = function () {
-
-    var n = window.event.screenX - window.screenLeft;
-
-    var b = n > document.documentElement.scrollWidth - 20;
-
-    if (!(b && window.event.clientY < 0 || window.event.altKey)) {
-        //window.event.returnValue = "真的要刷新页面么？";
-
-        //这里放置我想执行缓存的代码
-        //sessionStorage.clear();
-
-    }
-    else {
-        sessionStorage.clear();
-    }
-}
+//     } // if
+    
+//     console.log("type = " + p.type); // test 
+//     sessionStorage.setItem('type', p.type); // test
+//     sessionStorage.setItem('end_time', p.domContentLoadedEventEnd);
+// }
