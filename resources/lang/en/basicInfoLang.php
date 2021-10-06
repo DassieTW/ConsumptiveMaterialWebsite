@@ -31,7 +31,7 @@ return [
     'obound' =>'Vendor Stock',
     'returnreason' =>'Return Reasons',
     'upload' =>'Batch Upload',
-    'new' => 'New :',
+    'new' => 'New',
     'plz_upload' => 'Upload an Excel File',
     'changeok' =>'Update Successfully',
     'return' =>'Return',

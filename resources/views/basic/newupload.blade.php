@@ -21,21 +21,6 @@
             <div class="card-body">
             <div class="table-responsive">
 
-                        <form method="post" enctype="multipart/form-data" action = "{{ route('basic.uploadmaterial') }}">
-                            @csrf
-                            <div class="col-6 col-sm-3">
-                                <label>{!! __('basicInfoLang.plz_upload') !!}</label>
-                                <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" name="select_file" />
-                                @error('select_file')
-                                    <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                                <br>
-                                <input type="submit" name="upload" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.upload') !!}">
-                            </div>
-                        </form>
-
                         <form  action = "{{ route('basic.insertuploadmaterial') }}"method="POST">
                             @csrf
                             <table class="table" id = "test">

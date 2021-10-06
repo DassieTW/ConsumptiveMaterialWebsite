@@ -82,4 +82,5 @@ return [
     'ieroom' =>'IE備品室',
     'meroom' => 'ME備品室',
     'equiproom' => '設備備品室',
+    'upload1' => '上傳',
 ];

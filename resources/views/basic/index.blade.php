@@ -25,60 +25,60 @@
                     @csrf
                     <ul id="myTab" name="myTab" class="nav nav-tabs justify-content-center">
                         <li class="nav-item" id="FactoryExample">
-                            <a data-toggle="tab" class="nav-link active"
-                                href="#showfactory">{!!__('basicInfoLang.factory') !!}</a>
+                            <a data-toggle="tab" class="nav-link"
+                                id = "FactoryExamplea" href="#showfactory">{!!__('basicInfoLang.factory') !!}</a>
 
                         </li>
                         <li class="nav-item" id="ClientExample">
-                            <a data-toggle="tab" class="nav-link" href="#showclient">{!! __('basicInfoLang.client')
+                            <a id = "ClientExamplea" data-toggle="tab" class="nav-link" href="#showclient">{!! __('basicInfoLang.client')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="MachineExample">
-                            <a data-toggle="tab" class="nav-link" href="#showmachine">{!! __('basicInfoLang.machine')
+                            <a id = "MachineExamplea" data-toggle="tab" class="nav-link" href="#showmachine">{!! __('basicInfoLang.machine')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="ProductionExample">
-                            <a data-toggle="tab" class="nav-link" href="#showprocess">{!! __('basicInfoLang.process')
+                            <a id = "ProductionExamplea" data-toggle="tab" class="nav-link" href="#showprocess">{!! __('basicInfoLang.process')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="LineExample">
-                            <a data-toggle="tab" class="nav-link" href="#showline">{!! __('basicInfoLang.line')
+                            <a id = "LineExamplea" data-toggle="tab" class="nav-link" href="#showline">{!! __('basicInfoLang.line')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="UseExample">
-                            <a data-toggle="tab" class="nav-link" href="#showusedep">{!! __('basicInfoLang.usedep')
+                            <a id = "UseExamplea" data-toggle="tab" class="nav-link" href="#showusedep">{!! __('basicInfoLang.usedep')
                                 !!}</a>
                         </li>
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <li class="nav-item" id="UseReasonExample">
-                            <a data-toggle="tab" class="nav-link" href="#showusereason">{!!
+                            <a id = "UseReasonExamplea" data-toggle="tab" class="nav-link" href="#showusereason">{!!
                                 __('basicInfoLang.usereason')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="InReasonExample">
-                            <a data-toggle="tab" class="nav-link" href="#showinreason">{!! __('basicInfoLang.inreason')
+                            <a id = "InReasonExamplea" data-toggle="tab" class="nav-link" href="#showinreason">{!! __('basicInfoLang.inreason')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="PositionExample">
-                            <a data-toggle="tab" class="nav-link" href="#showloc">{!! __('basicInfoLang.loc') !!}</a>
+                            <a id = "PositionExamplea" data-toggle="tab" class="nav-link" href="#showloc">{!! __('basicInfoLang.loc') !!}</a>
                         </li>
                         <li class="nav-item" id="SendExample">
-                            <a data-toggle="tab" class="nav-link" href="#showsenddep">{!! __('basicInfoLang.senddep')
+                            <a id = "SendExamplea" data-toggle="tab" class="nav-link" href="#showsenddep">{!! __('basicInfoLang.senddep')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="OboundExample">
-                            <a data-toggle="tab" class="nav-link" href="#showobound">{!! __('basicInfoLang.obound')
+                            <a id = "OboundExamplea" data-toggle="tab" class="nav-link" href="#showobound">{!! __('basicInfoLang.obound')
                                 !!}</a>
                         </li>
                         <li class="nav-item" id="BackReasonExample">
-                            <a data-toggle="tab" class="nav-link" href="#showreturnreason">{!!
+                            <a id = "BackReasonExamplea" data-toggle="tab" class="nav-link" href="#showreturnreason">{!!
                                 __('basicInfoLang.returnreason') !!}</a>
                         </li>
                     </ul>
             </div>
 
             <div class="tab-content">
-                <div class="tab-pane show active" id="showfactory">
+                <div class="tab-pane" id="showfactory">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($factorys as $factory)
@@ -97,7 +97,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showclient">
+                <div class="tab-pane" id="showclient">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($clients as $client)
@@ -116,7 +116,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showmachine">
+                <div class="tab-pane" id="showmachine">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($machines as $machine)
@@ -135,7 +135,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showprocess">
+                <div class="tab-pane" id="showprocess">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($productions as $production)
@@ -154,7 +154,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showline">
+                <div class="tab-pane" id="showline">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($lines as $line)
@@ -173,7 +173,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showusedep">
+                <div class="tab-pane" id="showusedep">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($uses as $use)
@@ -192,7 +192,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showusereason">
+                <div class="tab-pane" id="showusereason">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($usereasons as $usereason)
@@ -211,7 +211,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showinreason">
+                <div class="tab-pane" id="showinreason">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($inreasons as $inreason)
@@ -230,7 +230,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showloc">
+                <div class="tab-pane" id="showloc">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($positions as $position)
@@ -249,7 +249,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showsenddep">
+                <div class="tab-pane" id="showsenddep">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($sends as $send)
@@ -268,7 +268,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showobound">
+                <div class="tab-pane" id="showobound">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($os as $o)
@@ -287,7 +287,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="showreturnreason">
+                <div class="tab-pane" id="showreturnreason">
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             @foreach($backs as $back)

@@ -55,7 +55,7 @@ Route::post('/download', [BasicInformationController::class, 'download'])->name(
 
 
 //新增料件上傳
-Route::get('/upload', [BasicInformationController::class, 'uploadmaterialpage'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+Route::get('/upload', [BasicInformationController::class, 'uploadmaterial'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 Route::post('/upload', [BasicInformationController::class, 'uploadmaterial'])->name('basic.uploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 

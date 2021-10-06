@@ -66,7 +66,16 @@ class BasicInformationController extends Controller
             $reDive = new responseObj();
             $now = Carbon::now();
 
-            $count = count($request->input('data'));
+            if(is_array($request->input('data')))
+            {
+                $count = count($request->input('data'));
+            }
+            else
+            {
+                $count = '0';
+
+            }
+
             $names = $request->input('data');
             $oldnames = $request->input('olddata');
             $datanew = $request->input('datanew');
