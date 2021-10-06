@@ -16,7 +16,7 @@
         <h2>{!! __('templateWords.monthly') !!}</h2>
         <div class="card">
             <div class="card-header">
-                <h3>Test</h3>
+                <h3>TestStand</h3>
             </div>
             <div class="card-body">
                 <form id = "test" method="POST">

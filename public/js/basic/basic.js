@@ -51,6 +51,7 @@ if (!tab1) {
 }
 $('#' + tab + 'a').addClass('active');
 $('#' + tab1).addClass('active');
+$('#' + tab1).removeClass('fade');
 
 $(document).ready(function () {
     $("#download").attr("href", "../download/FactoryExample.xlsx");
@@ -174,11 +175,11 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "basic/changeordelete",
+            url: "/basic/changeordelete",
             data: {
                 select: select, data: data, datanew: datanew, dataname: dataname, olddata: olddata
             },
-            async: false,
+            //async: false,
 
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test

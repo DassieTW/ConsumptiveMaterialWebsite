@@ -20,21 +20,6 @@
 
             <div class="card-body">
 
-                        <form method="post" enctype="multipart/form-data" action = "{{ route('month.uploadnotmonth') }}">
-                            @csrf
-                            <div class="col-6 col-sm-3">
-                                <label>{!! __('monthlyPRpageLang.plz_upload') !!}</label>
-                                <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" name="select_file" />
-                                @error('select_file')
-                                    <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                                <br>
-                                <input type="submit" name="upload" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.upload') !!}">
-                            </div>
-                        </form>
-
                         <form  action = "{{ route('month.insertuploadnotmonth') }}"method="POST">
                             @csrf
                             <div class="table-responsive">

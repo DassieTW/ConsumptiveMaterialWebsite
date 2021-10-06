@@ -130,7 +130,7 @@
                             <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.submit') !!}">
                         </form>
                         <br>
-                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.index')}}'">{!! __('inboundpageLang.return') !!}</button>
+                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.add')}}'">{!! __('inboundpageLang.return') !!}</button>
             </div>
         </div>
 </html>
