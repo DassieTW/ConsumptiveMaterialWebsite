@@ -51,6 +51,7 @@ if (!tab1) {
 }
 $('#' + tab + 'a').addClass('active');
 $('#' + tab1).addClass('active');
+$('#' + tab1).removeClass('fade');
 
 $(document).ready(function () {
     // var perfEntries = performance.getEntriesByType("navigation");
@@ -184,7 +185,7 @@ $(document).ready(function () {
             data: {
                 select: select, data: data, datanew: datanew, dataname: dataname, olddata: olddata
             },
-            async: false,
+            //async: false,
 
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test

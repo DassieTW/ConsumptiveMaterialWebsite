@@ -15,7 +15,7 @@
 </head>
 <h2>{!! __('templateWords.monthly') !!}</h2>
 <div class="row justify-content-center">
-    <div class="card w-50">
+    <div class="card w-75">
         <div class="card-header">
             <h3>{!! __('monthlyPRpageLang.on_the_way_search') !!}</h3>
         </div>

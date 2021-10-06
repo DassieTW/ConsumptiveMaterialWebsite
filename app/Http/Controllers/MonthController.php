@@ -3021,18 +3021,6 @@ class MonthController extends Controller
         }
     }
 
-    //單耗上傳頁面
-    function uploadconsumepage(Request $request)
-    {
-        if (Session::has('username'))
-        {
-            return view('month.uploadconsume1');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }
 
     //單耗上傳資料新增至資料庫
     public function insertuploadconsume(Request $request)
@@ -3108,18 +3096,6 @@ class MonthController extends Controller
         }
     }
 
-    //站位上傳頁面
-    function uploadstandpage(Request $request)
-    {
-        if (Session::has('username'))
-        {
-            return view('month.uploadstand1');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }
 
     //站位上傳資料新增至資料庫
     public function insertuploadstand(Request $request)
@@ -3196,19 +3172,6 @@ class MonthController extends Controller
 
             unset($sheetData[0]);
             return view('month.uploadnotmonth')->with(['data' => $sheetData]);
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //非月請購上傳頁面
-    function uploadnotmonthpage(Request $request)
-    {
-        if (Session::has('username'))
-        {
-            return view('month.uploadnotmonth1');
         }
         else
         {
@@ -3346,19 +3309,6 @@ class MonthController extends Controller
         }
     }
 
-    //月請購上傳頁面
-    function uploadmonthpage(Request $request)
-    {
-        if (Session::has('username'))
-        {
-            return view('month.uploadmonth1');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }
-
     //月請購上傳資料新增至資料庫
     public function insertuploadmonth(Request $request)
     {
@@ -3434,8 +3384,6 @@ class MonthController extends Controller
         }
 
     }
-
-
 
 
     //test單耗畫押

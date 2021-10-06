@@ -139,7 +139,7 @@ Route::post('/consumechangeordelete', [MonthController::class, 'consumechangeord
 Route::post('/standchangeordelete', [MonthController::class, 'standchangeordelete'])->name('month.standchangeordelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //新增單耗上傳
-Route::get('/uploadconsume', [MonthController::class, 'uploadconsumepage'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+Route::get('/uploadconsume', [MonthController::class, 'consumeadd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/uploadconsume', [MonthController::class, 'uploadconsume'])->name('month.uploadconsume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
@@ -147,7 +147,7 @@ Route::post('/uploadconsume', [MonthController::class, 'uploadconsume'])->name('
 Route::post('/insertuploadconsume', [MonthController::class, 'insertuploadconsume'])->name('month.insertuploadconsume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //新增站位上傳
-Route::get('/uploadstand', [MonthController::class, 'uploadstandpage'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+Route::get('/uploadstand', [MonthController::class, 'standadd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/uploadstand', [MonthController::class, 'uploadstand'])->name('month.uploadstand')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
@@ -156,7 +156,7 @@ Route::post('/insertuploadstand', [MonthController::class, 'insertuploadstand'])
 
 
 //非月請購上傳
-Route::get('/uploadnotmonth', [MonthController::class, 'uploadnotmonthpage'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+Route::get('/uploadnotmonth', [MonthController::class, 'importnotmonth'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/uploadnotmonth', [MonthController::class, 'uploadnotmonth'])->name('month.uploadnotmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
@@ -164,7 +164,7 @@ Route::post('/uploadnotmonth', [MonthController::class, 'uploadnotmonth'])->name
 Route::post('/insertuploadnotmonth', [MonthController::class, 'insertuploadnotmonth'])->name('month.insertuploadnotmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //月請購上傳
-Route::get('/uploadmonth', [MonthController::class, 'uploadmonthpage'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+Route::get('/uploadmonth', [MonthController::class, 'importmonth'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('month.uploadmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 

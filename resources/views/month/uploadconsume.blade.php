@@ -18,7 +18,7 @@
 <div id="url"></div>
 <div id="consumebody">
     <div class="row justify-content-center">
-        <div class="card w-50">
+        <div class="card w-75">
             <div class="card-header">
                 <h3>{!! __('monthlyPRpageLang.isnConsumeAdd') !!}</h3>
             </div>

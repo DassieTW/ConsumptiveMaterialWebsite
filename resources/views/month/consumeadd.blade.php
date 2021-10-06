@@ -16,7 +16,7 @@
 </head>
 <h2>{!! __('templateWords.monthly') !!}</h2>
 <div class="row justify-content-center">
-    <div class="card w-50">
+    <div class="card w-75">
         <div class="card-header">
             <h3>{!! __('monthlyPRpageLang.isnConsumeAdd') !!}</h3>
         </div>
@@ -101,7 +101,7 @@
 <div class="row justify-content-center">
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-    <div class="card w-50">
+    <div class="card w-75">
         <div class="card-header">
             <h3>{!! __('monthlyPRpageLang.upload') !!}</h3>
         </div>

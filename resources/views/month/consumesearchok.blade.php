@@ -20,7 +20,7 @@
         <h3>{!! __('monthlyPRpageLang.isnConsumeUpdate') !!}</h3>
     </div>
     <div id="url"></div>
-    <div class="card-body w-6" id="consumebody">
+    <div class="card-body" id="consumebody">
         <form id="consume" method="POST">
             @csrf
             <div class="table-responsive">

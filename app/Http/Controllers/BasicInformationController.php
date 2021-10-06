@@ -206,7 +206,6 @@ class BasicInformationController extends Controller
                         echo $myJSON;
                     }
                 }
-                $request->session()->put('basic', $reDive->database);
                 $reDive->boolean = true;
                 $reDive->passbool = true;
                 $myJSON = json_encode($reDive);
@@ -261,7 +260,6 @@ class BasicInformationController extends Controller
                     }
 
                 }
-                $request->session()->put('basic', $reDive->database);
                 $reDive->boolean = true;
                 $reDive->passbool = true;
                 $myJSON = json_encode($reDive);
@@ -778,18 +776,6 @@ class BasicInformationController extends Controller
         }
     }
 
-    //新增料件上傳頁面
-    public function uploadmaterialpage(Request $request)
-    {
-        if (Session::has('username'))
-        {
-            return view('basic.newupload1');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }
 
     //上傳資料新增至資料庫
     public function insertuploadmaterial(Request $request)
@@ -969,19 +955,8 @@ class BasicInformationController extends Controller
                 $mess = trans('basicInfoLang.uploaderror');
                     echo ("<script LANGUAGE='JavaScript'>
                     window.alert('$mess');
+                    window.location.href='/basic';
                     </script>");
-                    return view('basic.index')->with(['factorys' => 廠別::cursor()])
-                    ->with(['clients' => 客戶別::cursor()])
-                    ->with(['machines' => 機種::cursor()])
-                    ->with(['productions' => 製程::cursor()])
-                    ->with(['lines' => 線別::cursor()])
-                    ->with(['uses' => 領用部門::cursor()])
-                    ->with(['usereasons' => 領用原因::cursor()])
-                    ->with(['inreasons' => 入庫原因::cursor()])
-                    ->with(['positions' => 儲位::cursor()])
-                    ->with(['sends' => 發料部門::cursor()])
-                    ->with(['os' => O庫::cursor()])
-                    ->with(['backs' => 退回原因::cursor()]);
             }
             else
             {
