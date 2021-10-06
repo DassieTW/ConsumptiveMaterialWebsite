@@ -29,6 +29,21 @@
 </head>
 
 <body>
+    {{-- 使用asset時，須注意Laravel是抓http header裡面的Host作為base url，
+        所以若域名不是ip而有經過轉換時要進到Nginx裡面的proxy_set_header裡面確認Host設定值，
+        否則會抓到錯誤的Host導致找不到資源 --}}
+
+    <script src="{{ asset('/js/app.js') }}"></script>
+    <script src="{{ asset('/admin/js/app.js') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
+
+    <script>
+        //place your code to be executed early here
+        $('body').loadingModal({
+          text: 'Loading...',
+          animation: 'circle'
+        });
+    </script>
     <nav class="navbar navbar-expand fixed-top navbar-light navbar-bg p-0 m-0">
         <a class="nav-icon d-inline-block d-sm-none" href="{{ route('welcome') }}">
             <i class="align-middle" data-feather="home"></i>
@@ -86,7 +101,8 @@
                 <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                     <div class="d-table-cell align-middle">
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="w-100 d-none d-sm-inline-block" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                        <div class="w-100 d-none d-sm-inline-block" style="height: 2ch;"></div>
+                        <!-- </div>breaks cols to a new line-->
                         <div class="text-center mt-4">
                             <h1 class="h2 d-none d-sm-inline-block">
                                 {{ __('loginPageLang.welcome')}}
@@ -110,7 +126,8 @@
                                         <div class="mb-3">
                                             <label class="form-label">{{ __('loginPageLang.site')}}</label>
                                             <select class="form-select form-select-lg" id="site" name="site" required>
-                                                <option value="" selected>{{ __('loginPageLang.site_placeholder')}}</option>
+                                                <option value="" selected>{{ __('loginPageLang.site_placeholder')}}
+                                                </option>
                                                 <option value="testing">TEST</option>
                                                 <option value="default">Default</option>
                                                 {{-- <option value="BB1">BB1</option>
@@ -165,9 +182,6 @@
         </div>
     </main>
 
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <script src="{{ asset('/admin/js/app.js') }}"></script>
-    <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
     <script src="{{ asset('/messages.js') }}"></script>
     <script src="{{ asset('js/popupNotice.js') }}"></script>
     <script src="{{ asset('/js/login/login.js') }}"></script>
