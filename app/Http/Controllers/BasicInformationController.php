@@ -79,8 +79,8 @@ class BasicInformationController extends Controller
             $names = $request->input('data');
             $oldnames = $request->input('olddata');
             $datanew = $request->input('datanew');
-            $choose;
-            $chooseindex;
+            $choose = "";
+            $chooseindex = "";
 
             //factory
             if($request->input('dataname') == "factory")

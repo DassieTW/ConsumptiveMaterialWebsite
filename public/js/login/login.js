@@ -88,10 +88,15 @@ $(document).ready(function () {
           $('#password').addClass("is-invalid");
           $('#password').siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('auth.failed') + '</strong></span>'));
         } // else if error 418
-      }
+      } // error
     }); // end of ajax
   });
 
-});
+}); // on document ready
 
+$(window).on('load', function() {
+  // PAGE IS FULLY LOADED  
+  // FADE OUT YOUR OVERLAYING DIV
+  $('body').loadingModal('hide');
+});
 
