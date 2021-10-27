@@ -502,7 +502,7 @@
                                         </li>
                                         @endcan
                                         @can('viewCheckInvent', App\Models\Checking_inventory::class )
-                                        <li class="sidebar-item {{ isActiveRoute(['checking/']) }}">
+                                        <li class="sidebar-item {{ isActiveRoute(['checking/', 'checking.index']) }}">
                                             <a data-bs-target="#checking" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-clipboard-check align-middle me-2"
@@ -520,9 +520,9 @@
                                             <ul id="checking" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
                                                 <li
-                                                    class="sidebar-item {{ isActiveRoute(['obound/new' , 'obound/uploadmaterial']) }}">
-                                                    <a class="sidebar-link" href="{{route('obound.new')}}">
-                                                        {!! __('oboundpageLang.newMats') !!}
+                                                    class="sidebar-item {{ isActiveRoute(['checking/create_new_table']) }}">
+                                                    <a class="sidebar-link" href="{{route('checking.create_new_table')}}">
+                                                        {!! __('templateWords.checkIvent_create_new_table') !!}
                                                     </a>
                                                 </li>
                                                 <li
@@ -535,37 +535,6 @@
                                                     class="sidebar-item {{ isActiveRoute(['obound.inbound' , 'obound/inboundnewok']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.inbound')}}">
                                                         {!! __('oboundpageLang.inbound') !!}
-                                                    </a>
-                                                </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['obound/inboundsearch']) }}">
-                                                    <a class="sidebar-link" href="{{route('obound.inboundsearch')}}">
-                                                        {!! __('oboundpageLang.inboundsearch') !!}
-                                                    </a>
-                                                </li>
-                                                <li
-                                                    class="sidebar-item {{ isActiveRoute(['obound.upload','obound/uploadinventory']) }}">
-                                                    <a class="sidebar-link" href="{{route('obound.upload')}}">
-                                                        {!! __('oboundpageLang.stockupload') !!}
-                                                    </a>
-                                                </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['obound/searchstock']) }}">
-                                                    <a class="sidebar-link" href="{{route('obound.searchstock')}}">
-                                                        {!! __('oboundpageLang.searchstock') !!}
-                                                    </a>
-                                                </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['obound.pick','obound/pickaddok']) }}">
-                                                    <a class="sidebar-link" href="{{route('obound.pick')}}">
-                                                        {!! __('oboundpageLang.pick') !!}
-                                                    </a>
-                                                </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['obound/picklist']) }}">
-                                                    <a class="sidebar-link" href="{{route('obound.picklistpage')}}">
-                                                        {!! __('oboundpageLang.picklist') !!}
-                                                    </a>
-                                                </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['obound/pickrecord']) }}">
-                                                    <a class="sidebar-link" href="{{route('obound.pickrecord')}}">
-                                                        {!! __('oboundpageLang.pickrecord') !!}
                                                     </a>
                                                 </li>
                                             </ul>
