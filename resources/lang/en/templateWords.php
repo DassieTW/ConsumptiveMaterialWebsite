@@ -27,7 +27,7 @@ return [
     'monthly' => 'Monthly PR',
     'obound' => 'Vendor Stock',
     'callsys' => 'Alarm System',
-    'bu' => 'BU Consumable Management',
+    'bu' => 'BU C.M.',
     'basicInfo' => 'Basic Info.',
     'checkIvent' => 'Check Inv.',
     'dashboard' => 'Dashboards',
@@ -35,5 +35,6 @@ return [
     'barcode_generator' => 'Barcode Generator',
     'locBarcode' => 'Find Loc. Barcode',
     'isnBarcode' => 'Find Part No. Barcode',
-    'nowuser' => 'Now login user is:'
+    'nowuser' => 'Now login user is:',
+    'checkIvent_create_new_table' => 'Create New Sheet',
 ];

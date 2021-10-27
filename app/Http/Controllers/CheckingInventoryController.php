@@ -46,7 +46,7 @@ class CheckingInventoryController extends Controller
         $fetchedData = $this->service->fetchInventCheckRecord($request);
 
         if (count($fetchedData) === 0) { // return 420 if the search result length is 0
-            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
         } // if no results are found
         else {
             return \Response::json(['data' => $fetchedData]/* Status code here default is 200 ok*/);
@@ -64,10 +64,10 @@ class CheckingInventoryController extends Controller
         $updateDone = $this->service->updateInventCheckRecord($request);
 
         if ($updateDone) { 
-            return \Response::json(['messgae' => 'Update Success !']/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => 'Update Success !']/* Status code here default is 200 ok*/);
         } // if no results are found
         else { // return 420 if updated failed
-            return \Response::json(['messgae' => 'Update Failed !'], 420/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => 'Update Failed !'], 420/* Status code here default is 200 ok*/);
         } // else
 
     } // updateChecking
@@ -77,10 +77,10 @@ class CheckingInventoryController extends Controller
         $createDone = $this->service->createTableService($request);
 
         if ($createDone) { 
-            return \Response::json(['messgae' => 'Create Success !']/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => 'Create Success !']/* Status code here default is 200 ok*/);
         } // if no results are found
         else { // return 420 if updated failed
-            return \Response::json(['messgae' => 'Create Failed !'], 420/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => 'Create Failed !'], 420/* Status code here default is 200 ok*/);
         } // else
 
     } // createTable
@@ -90,7 +90,7 @@ class CheckingInventoryController extends Controller
         $fetchedCreators = $this->service->fetchCreators($request);
 
         if (count($fetchedCreators) === 0) { // return 420 if the search result length is 0
-            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
         } // if no results are found
         else {
             return \Response::json(['data' => $fetchedCreators]/* Status code here default is 200 ok*/);
@@ -103,10 +103,10 @@ class CheckingInventoryController extends Controller
 
         $request->session()->put('tableName', $request->tableName);
         if ( ! $request->session()->has('tableName')) { // return 420 if not done
-            return \Response::json(['messgae' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
         } // if no results are found
         else {
-            return \Response::json(['messgae' => 'put to session!']/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => 'put to session!']/* Status code here default is 200 ok*/);
         } // else
         
     } // setContinue

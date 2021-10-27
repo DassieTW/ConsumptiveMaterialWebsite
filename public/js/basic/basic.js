@@ -54,6 +54,12 @@ $('#' + tab1).addClass('active');
 $('#' + tab1).removeClass('fade');
 
 $(document).ready(function () {
+    // var perfEntries = performance.getEntriesByType("navigation");
+    // var p = perfEntries[perfEntries.length-1];
+    // console.log("type = " + p.type); // test
+    // sessionStorage.setItem('type', p.type); // test
+    // sessionStorage.setItem('end_time', p.domContentLoadedEventEnd); // test
+
     $("#download").attr("href", "../download/FactoryExample.xlsx");
 
     $('.nav-item').on('click', function () {

@@ -502,8 +502,8 @@
                                         </li>
                                         @endcan
                                         @can('viewCheckInvent', App\Models\Checking_inventory::class )
-                                        <li class="sidebar-item {{ isActiveRoute(['checking/']) }}">
-                                            <a class="sidebar-link" href="{{route('checking.index')}}">
+                                        <li class="sidebar-item {{ isActiveRoute(['checking/', 'checking.index']) }}">
+                                            <a data-bs-target="#checking" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-clipboard-check align-middle me-2"
                                                     viewBox="0 0 16 16">
@@ -517,6 +517,27 @@
                                                 <span class="align-middle">{!! __('templateWords.checkIvent') !!}</span>
                                                 {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
                                             </a>
+                                            <ul id="checking" class="sidebar-dropdown list-unstyled collapse"
+                                                data-bs-parent="#sidebar" style="">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['checking/create_new_table']) }}">
+                                                    <a class="sidebar-link" href="{{route('checking.create_new_table')}}">
+                                                        {!! __('templateWords.checkIvent_create_new_table') !!}
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['obound.material' , 'obound/material']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.material')}}">
+                                                        {!! __('oboundpageLang.matsInfo') !!}
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['obound.inbound' , 'obound/inboundnewok']) }}">
+                                                    <a class="sidebar-link" href="{{route('obound.inbound')}}">
+                                                        {!! __('oboundpageLang.inbound') !!}
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
                                         @endcan
                                         <li class="sidebar-item {{ isActiveRoute(['member/', 'member.index']) }}">
