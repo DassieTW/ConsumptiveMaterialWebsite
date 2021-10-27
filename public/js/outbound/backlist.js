@@ -50,32 +50,26 @@ $('#backlist').on('submit', function (e) {
           complete: function () {
             $('body').loadingModal('hide');
           },
-       success:function(data){
-        console.log(data);
-          var myObj = JSON.parse(data);
-          console.log(myObj);
-          if(myObj.boolean === true && myObj.passbool === true){
+          success: function (data) {
+            console.log(data);
             var mess = Lang.get('outboundpageLang.outbackok')+list;
             alert(mess);
             //alert("出庫完成，退料單號: " + list);
             window.location.href = "/outbound";
             //window.location.href = "member.newok";
-          }
-          //no reason
-          else if(myObj.boolean === true && myObj.passbool === false){
+          },
+        error: function (err) {
+            //noreason
+            if (err.status == 420) {
+                document.getElementById("reasonerror").style.display = "block";
+                document.getElementById("reason" + list).style.borderColor = "red";
+            }
+            //transaction error
+            else if (err.status == 421) {
+                console.log(err.status);
+            }
+          },
 
-        document.getElementById("reasonerror").style.display = "block";
-        document.getElementById("reason" + list).style.borderColor = "red";
-      }
-      else if (myObj.boolean === false && myObj.passbool === false) {
-
-        window.location.reload();
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.warn(jqXHR.responseText);
-      alert(errorThrown);
-    }
   });
 });
 

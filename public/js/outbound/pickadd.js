@@ -37,24 +37,19 @@ $('#pickadd').on('submit', function (e) {
       $('body').loadingModal('hide');
     },
     success: function (data) {
-      console.log(data);
-      var myObj = JSON.parse(data);
-      console.log(myObj);
-      if (myObj.boolean === true) {
+        console.log(data.boolean);
+
         var mess = Lang.get('outboundpageLang.add') + Lang.get('outboundpageLang.success') + ' ， ' +
-          Lang.get('outboundpageLang.picklistnum') + ' : ' + myObj.message;
+          Lang.get('outboundpageLang.picklistnum') + ' : ' + data.message;
         alert(mess);
-        //alert("添加成功，領料單號: " + myObj.message);
         window.location.href = "/outbound";
-        //window.location.href = "member.newok";
-      }
-      else {
-        window.location.reload();
-      }
+
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.warn(jqXHR.responseText);
-      alert(errorThrown);
-    }
+    error: function (err) {
+        //transaction error
+        if (err.status == 420) {
+            window.location.reload();
+        }
+      },
   });
 });

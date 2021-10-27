@@ -96,4 +96,5 @@ return [
     'other' => '其他',
     'good' => '良品',
     'nogood' => '不良品',
+    'timepart' => '时间段',
 ];

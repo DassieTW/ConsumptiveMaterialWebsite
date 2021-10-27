@@ -9,9 +9,11 @@ $("#usereason").on("change", function () {
     var value = $("#usereason").val();
     if (value === "其他" || value === "other") {
         document.getElementById("reason").style.display = "block";
+        document.getElementById("reason").required = true;
     }
     else {
         document.getElementById("reason").style.display = "none";
+        document.getElementById("reason").required = false;
     }
 });
 $('#pick').on('submit', function (e) {
@@ -40,34 +42,11 @@ $('#pick').on('submit', function (e) {
             $('body').loadingModal('hide');
         },
         success: function (data) {
-            console.log(data);
-            var myObj = JSON.parse(data);
-            console.log(myObj);
-            if (myObj.boolean === true && myObj.passbool === true && myObj.passstock === true) {
-
-                window.location.href = "pickaddok";
-                //window.location.href = "member.newok";
-            }
-            //料號長度不為12
-            else if (myObj.boolean === false && myObj.passbool === true && myObj.passstock === false) {
-                document.getElementById("numbererror").style.display = "block";
-                document.getElementById('number').style.borderColor = "red";
-                document.getElementById('number').value = '';
-                document.getElementById("nostock").style.display = "none";
-                document.getElementById("client").style.borderColor = "";
-                document.getElementById("numbererror1").style.display = "none";
-            }
-            //沒有料號
-            else if (myObj.boolean === true && myObj.passbool === false && myObj.passstock === false) {
-                document.getElementById("numbererror1").style.display = "block";
-                document.getElementById('number').style.borderColor = "red";
-                document.getElementById('number').value = '';
-                document.getElementById("nostock").style.display = "none";
-                document.getElementById("client").style.borderColor = "";
-                document.getElementById("numbererror").style.display = "none";
-            }
+            window.location.href = "pickaddok";
+        },
+        error: function (err) {
             //沒有庫存
-            else if (myObj.boolean === true && myObj.passbool === true && myObj.passstock === false) {
+            if (err.status == 420) {
                 document.getElementById("nostock").style.display = "block";
                 document.getElementById('number').style.borderColor = "red";
                 document.getElementById('client').style.borderColor = "red";
@@ -76,11 +55,24 @@ $('#pick').on('submit', function (e) {
                 document.getElementById("numbererror1").style.display = "none";
                 document.getElementById("numbererror").style.display = "none";
             }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.warn(jqXHR.responseText);
-            alert(errorThrown);
+            //沒有料號
+            else if (err.status == 421) {
+                document.getElementById("numbererror1").style.display = "block";
+                document.getElementById('number').style.borderColor = "red";
+                document.getElementById('number').value = '';
+                document.getElementById("nostock").style.display = "none";
+                document.getElementById("client").style.borderColor = "";
+                document.getElementById("numbererror").style.display = "none";
+            }
+            //料號長度不為12
+            else if (err.status == 422) {
+                document.getElementById("numbererror").style.display = "block";
+                document.getElementById('number').style.borderColor = "red";
+                document.getElementById('number').value = '';
+                document.getElementById("nostock").style.display = "none";
+                document.getElementById("client").style.borderColor = "";
+                document.getElementById("numbererror1").style.display = "none";
+            }
         }
-
     });
 });

@@ -96,4 +96,5 @@ return [
     'other' =>'other',
     'good' =>'good product',
     'nogood' =>'bad product',
+    'timepart' => 'Period',
 ];

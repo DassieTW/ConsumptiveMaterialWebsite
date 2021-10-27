@@ -38,10 +38,10 @@
                     </tr>
                     @foreach($data as $data)
                     <?php
-                                        $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
-                                        $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
-                                        $test = str_replace(";","<br>",$data->紀錄) ;
-                                    ?>
+                        $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
+                        $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
+                        $test = str_replace(";","<br>",$data->紀錄) ;
+                    ?>
                     <tr id="{{$loop->index}}">
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                 style="width:20px;height:20px;" value="{{$loop->index}}"></td>
@@ -58,9 +58,11 @@
                         <td><input style="width: 200px;" class="form-control form-control-lg " type="number"
                                 id="amount{{$loop->index}}" name="amount{{$loop->index}}" value="{{$data->單耗}}"
                                 step="0.000000000000001"></td>
-                        <td><?php
-                                            echo $test;
-                                        ?></td>
+                        <td>
+                            <?php
+                                echo $test;
+                            ?>
+                        </td>
                     </tr>
                     @endforeach
 

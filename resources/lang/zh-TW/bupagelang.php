@@ -87,4 +87,5 @@ return [
     'factorychange' => '廠區庫存調撥',
     'enterisn' => '請輸入料號',
     'isnlength' => '料號長度不為12',
+    'timepart' => '時間段',
 ];

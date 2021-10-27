@@ -125,4 +125,7 @@ return [
     'nobound' => '庫別不存在',
     'new' => '新增',
     'lessstock1' => '目前庫存小於入庫數量，無法刪除此筆入庫。',
+    'upload1' => '上傳',
+    'timepart' => '時間段',
+    'amount' => '數量',
 ];

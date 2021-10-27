@@ -60,7 +60,7 @@
                     <input type = "submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}">
                 </form>
                 <br>
-                <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.index')}}'">{!! __('outboundpageLang.return') !!}</button>
+                <button type = "submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.back')}}'">{!! __('outboundpageLang.return') !!}</button>
             </div>
         </div>
 </html>

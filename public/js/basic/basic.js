@@ -55,7 +55,6 @@ $('#' + tab1).removeClass('fade');
 
 $(document).ready(function () {
     $("#download").attr("href", "../download/FactoryExample.xlsx");
-    sessionStorage.clear();
 
     $('.nav-item').on('click', function () {
         choose = this.id;
@@ -179,6 +178,7 @@ $(document).ready(function () {
             data: {
                 select: select, data: data, datanew: datanew, dataname: dataname, olddata: olddata
             },
+            dataType: 'json', // expected respose datatype from server
             //async: false,
 
             beforeSend: function () {
@@ -192,19 +192,19 @@ $(document).ready(function () {
                 $('body').loadingModal('hide');
             },
             success: function (data) {
-                console.log(data);
-                var myObj = JSON.parse(data);
-                console.log(myObj);
-                if (myObj.boolean === true) {
-                    var mess = Lang.get('basicInfoLang.change') + ' / ' + Lang.get('basicInfoLang.delete') + ' ' + Lang.get('basicInfoLang.success');
-                    alert(mess);
-                    window.location.reload();
-                }
+                console.log(data.boolean);
+
+                var mess = Lang.get('basicInfoLang.change') + ' / ' + Lang.get('basicInfoLang.delete') + ' ' + Lang.get('basicInfoLang.success');
+                alert(mess);
+                window.location.reload();
 
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.warn(jqXHR.responseText);
-                alert(errorThrown);
+            error: function (err) {
+                var mess = Lang.get('basicInfoLang.repeat');
+                alert(mess);
+                $("#" + err.responseJSON.message).css("borderColor", "red");
+                console.log(err.responseJSON.message);
+                console.log(err.status);
             }
 
         });
@@ -221,7 +221,7 @@ $(document).ready(function () {
         sessionStorage.clear();
     }
 });*/
-window.onbeforeunload = function () {
+/*window.onbeforeunload = function () {
 
     var n = window.event.screenX - window.screenLeft;
 
@@ -237,4 +237,4 @@ window.onbeforeunload = function () {
     else {
         sessionStorage.clear();
     }
-}
+}*/

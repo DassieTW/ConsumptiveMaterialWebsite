@@ -1,5 +1,17 @@
 <?php
-
+use App\Models\入庫原因;
+use App\Models\客戶別;
+use App\Models\發料部門;
+use App\Models\製程;
+use App\Models\領用原因;
+use App\Models\領用部門;
+use App\Models\廠別;
+use App\Models\線別;
+use App\Models\機種;
+use App\Models\儲位;
+use App\Models\退回原因;
+use App\Models\O庫;
+use App\Models\ConsumptiveMaterial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BasicInformationController;
 
@@ -10,8 +22,25 @@ use App\Http\Controllers\BasicInformationController;
 |
 */
 
-// Root domain route
-Route::get('/', [BasicInformationController::class, 'index'])->name('basic.index')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+Route::get('/', function () {
+    return view('basic.index')->with(['factorys' => 廠別::cursor()])
+        ->with(['clients' => 客戶別::cursor()])
+        ->with(['machines' => 機種::cursor()])
+        ->with(['productions' => 製程::cursor()])
+        ->with(['lines' => 線別::cursor()])
+        ->with(['uses' => 領用部門::cursor()])
+        ->with(['usereasons' => 領用原因::cursor()])
+        ->with(['inreasons' => 入庫原因::cursor()])
+        ->with(['positions' => 儲位::cursor()])
+        ->with(['sends' => 發料部門::cursor()])
+        ->with(['os' => O庫::cursor()])
+        ->with(['backs' => 退回原因::cursor()]);
+        //return view('basic.index', ['factorys' => 廠別::cursor(), 'clients' => 客戶別::cursor() ]);
+
+})->name('basic.index')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+
+
+
 
 //basic information change or delete
 
@@ -23,24 +52,13 @@ Route::get('/new', [BasicInformationController::class, 'new'])->middleware('can:
 
 Route::post('/new', [BasicInformationController::class, 'new'])->name('basic.new')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
-//新增料件成功
-Route::get('/newok', [BasicInformationController::class, 'newok'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
-
-//儲位條碼查詢頁面
-Route::get('/position', [BasicInformationController::class, 'position'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
-Route::post('/position', [BasicInformationController::class, 'position'])->name('basic.position')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
-//料號條碼查詢頁面
-Route::get('/number', [BasicInformationController::class, 'number'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
-Route::post('/number', [BasicInformationController::class, 'number'])->name('basic.number')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //料件信息查詢頁面
-Route::get('/material', [BasicInformationController::class, 'material'])->name('basic.material')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+Route::get('/material', function () {
+    return view('basic.searchmaterial');
 
-//Route::post('/material', [BasicInformationController::class, 'material'])->name('basic.material');
+})->name('basic.material')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+
 
 //料件信息查詢
 Route::get('/materialsearch', [BasicInformationController::class, 'searchmaterial'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
@@ -53,18 +71,13 @@ Route::post('/materialchangeordel', [BasicInformationController::class, 'materia
 //資料下載
 Route::post('/download', [BasicInformationController::class, 'download'])->name('basic.download')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
-
 //新增料件上傳
-Route::get('/upload', [BasicInformationController::class, 'uploadmaterial'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
 Route::post('/upload', [BasicInformationController::class, 'uploadmaterial'])->name('basic.uploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //上傳資料新增至資料庫
 Route::post('/uploadmaterial', [BasicInformationController::class, 'insertuploadmaterial'])->name('basic.insertuploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //基礎資料上傳
-Route::get('/uploadbasic', [BasicInformationController::class, 'uploadbasic'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
 Route::post('/uploadbasic', [BasicInformationController::class, 'uploadbasic'])->name('basic.uploadbasic')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //基礎資料上傳新增至資料庫

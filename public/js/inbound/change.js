@@ -57,6 +57,7 @@ $.ajaxSetup({
         if(parseInt(amount)>parseInt(stock))
         {
             alert(Lang.get('inboundpageLang.locchangeerr'));
+            document.getElementById("amount"+i).style.borderColor = "red";
             return false;
         }
         else
@@ -86,22 +87,12 @@ $.ajaxSetup({
                 $('body').loadingModal('hide');
             },
 
-            success:function(data){
-             console.log(data);
-               var myObj = JSON.parse(data);
-               console.log(myObj);
-               if(myObj.boolean === true){
+            success: function (data) {
+                console.log(data.boolean);
                 var mess = Lang.get('inboundpageLang.locationchange') + ' ' + Lang.get('inboundpageLang.success');
                 alert(mess);
-
-                window.location.href = "/inbound";
-
-              }
-
-              else if(myObj.boolean === false){
-
                 window.location.reload();
-              }
+
             },
            error : function(jqXHR,textStatus,errorThrown){
             console.warn(jqXHR.responseText);

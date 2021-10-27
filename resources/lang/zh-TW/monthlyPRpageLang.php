@@ -126,4 +126,5 @@ return [
     'enterisn' => '請輸入料號',
     'entersrm' => '請輸入SRM單號',
     'timepart' => '時間段',
+    'stand' => '站位',
 ];

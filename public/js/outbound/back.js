@@ -11,9 +11,11 @@ $("#backreason").on("change", function () {
     if(value === "其他" || value === "other")
     {
         document.getElementById("reason").style.display = "block";
+        document.getElementById("reason").required = true;
     }
     else{
         document.getElementById("reason").style.display = "none";
+        document.getElementById("reason").required = false;
     }
 });
 $('#back').on('submit', function (e) {
@@ -42,28 +44,23 @@ $('#back').on('submit', function (e) {
       $('body').loadingModal('hide');
     },
     success: function (data) {
-      console.log(data);
-      var myObj = JSON.parse(data);
-      console.log(myObj);
-      if (myObj.boolean === true && myObj.passbool === true) {
-
         window.location.href = "backaddok";
-        //window.location.href = "member.newok";
-      }
-      else if (myObj.boolean === false && myObj.passbool === true) {
-        document.getElementById("numbererror").style.display = "block";
-        document.getElementById('number').style.borderColor = "red";
-        document.getElementById('number').value = '';
-      }
-      else if (myObj.boolean === true && myObj.passbool === false) {
-        document.getElementById("numbererror1").style.display = "block";
-        document.getElementById('number').style.borderColor = "red";
-        document.getElementById('number').value = '';
-      }
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.warn(jqXHR.responseText);
-      alert(errorThrown);
-    }
+    error: function (err) {
+        //料號不存在
+        if (err.status == 420) {
+            document.getElementById("numbererror1").style.display = "block";
+            document.getElementById('number').style.borderColor = "red";
+            document.getElementById('number').value = '';
+            document.getElementById("numbererror").style.display = "none";
+        }
+        //料號長度不為12
+        else if (err.status == 421) {
+            document.getElementById("numbererror").style.display = "block";
+            document.getElementById('number').style.borderColor = "red";
+            document.getElementById('number').value = '';
+            document.getElementById("numbererror1").style.display = "none";
+        }
+      },
   });
 });

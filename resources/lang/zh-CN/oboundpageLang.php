@@ -125,4 +125,7 @@ return [
     'nobound' => '库别不存在',
     'new' => '新增',
     'lessstock1' => '目前库存小于入库数量，无法删除此笔入库。',
+    'upload1' => '上传',
+    'timepart' => '时间段',
+    'amount' => '数量',
 ];

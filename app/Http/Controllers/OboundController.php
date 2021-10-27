@@ -141,19 +141,6 @@ class OboundController extends Controller
         }
     }
 
-    //庫存上傳頁面
-    function uploadmaterialpage(Request $request)
-    {
-        if (Session::has('username'))
-        {
-            return view('obound.uploadmaterial1');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }
-
     //上傳資料新增至資料庫(料號)
     public function insertuploadmaterial(Request $request)
     {
@@ -179,7 +166,7 @@ class OboundController extends Controller
                         $mess = trans('oboundpageLang.row').' : '.$row.' '.trans('oboundpageLang.isnrepeat');
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
-                        window.location.href='uploadmaterial';
+                        window.location.href='new';
                         </script>");
                         return;
                         /*return back()->withErrors([
@@ -213,7 +200,7 @@ class OboundController extends Controller
                         echo ("<script LANGUAGE='JavaScript'>
                             window.alert('$mess');
                         </script>");
-                        return view('obound.uploadmaterial1');
+                        return view('obound.new');
                     }
                 }
             }
@@ -827,18 +814,7 @@ class OboundController extends Controller
         }
     }
 
-    //O庫-庫存上傳頁面
-    function uploadinventorypage(Request $request)
-    {
-        if (Session::has('username'))
-        {
-            return view('obound.uploadinventory1');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }
+
 
     //O庫-上傳資料新增至資料庫(庫存)
     public function insertuploadinventory(Request $request)
@@ -879,8 +855,9 @@ class OboundController extends Controller
                         $mess = $e->getmessage();
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
+                        window.location.href='/obound';
                         </script>");
-                        return view('obound.uploadinventory1');
+
                     }
                 }
                 else
@@ -899,8 +876,9 @@ class OboundController extends Controller
                         $mess = $e->getmessage();
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
+                        window.location.href='/obound';
                         </script>");
-                        return view('obound.uploadinventory1');
+
                     }
                 }
             }

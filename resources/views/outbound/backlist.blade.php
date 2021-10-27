@@ -23,7 +23,7 @@
                     @csrf
                 <div class="table-responsive">
 
-                            <select class=" form-control form-control-lg " id = "list" name="list"  required width="250" style="width: 250px">
+                            <select class=" form-select form-select-lg " id = "list" name="list"  required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.searchbacklist') !!}</option>
                             @foreach($number as $number)
                             <option>{{  $number->退料單號 }}</option>
@@ -70,46 +70,51 @@
 
                             </table>
                 </div>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div id = "reasonerror" style="display:none;"><h3 style="color: red">{!! __('outboundpageLang.enterdiffreason') !!}</h3></div>
 
-                            <br>
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <label class="form-label">{!! __('outboundpageLang.receivepeople') !!}</label>
-                            <select class="form-control form-control-lg" id = "pickpeople" name="pickpeople" required width="250" style="width: 250px">
+                            <select class="form-select form-select-lg" id = "pickpeople" name="pickpeople" required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.enterreceivepeople') !!}</option>
                             @foreach($people as $people)
                             <option>{{  $people->工號 .'  '. $people->姓名 }}</option>
                             @endforeach
                             </select>
 
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                             <label class="form-label">{!! __('outboundpageLang.backpeople') !!}</label>
-                            <select class="form-control form-control-lg" id = "backpeople" name="backpeople" required width="250" style="width: 250px">
+                            <select class="form-select form-select-lg" id = "backpeople" name="backpeople" required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.enterbackpeople') !!}</option>
                             @foreach($people1 as $people)
                             <option>{{  $people->工號 .'  '. $people->姓名 }}</option>
                             @endforeach
                             </select>
 
-
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                             <label class="form-label">{!! __('outboundpageLang.loc') !!}</label>
-                            <select class="form-control form-control-lg" id = "position" name="position" required width="250" style="width: 250px">
+                            <select class="form-select form-select-lg" id = "position" name="position" required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.enterloc') !!}</option>
                             @foreach($position as $position)
                             <option>{{  $position->儲存位置 }}</option>
                             @endforeach
                             </select>
 
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                             <label class="form-label">{!! __('outboundpageLang.status') !!}</label>
-                            <select class="form-control form-control-lg" id = "status" name="status" required width="250" style="width: 250px">
+                            <select class="form-select form-select-lg" id = "status" name="status" required width="250" style="width: 250px">
                             <option style="display: none" disabled selected value = "">{!! __('outboundpageLang.enterstatus') !!}</option>
                             <option>{!! __('outboundpageLang.good') !!}</option>
                             <option>{!! __('outboundpageLang.nogood') !!}</option>
                             </select>
 
-                            <br>
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}">
                             </form>
-                        <br>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.backlistpage')}}'">{!! __('outboundpageLang.return') !!}</button>
             </div>
         </div>

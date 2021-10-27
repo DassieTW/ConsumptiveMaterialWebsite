@@ -87,4 +87,5 @@ return [
     'factorychange' =>'Factory transfer',
     'enterisn' =>'Please enter the Part Num.',
     'isnlength' =>'Part Num. length is not 12',
+    'timepart' => 'Period',
 ];

@@ -126,5 +126,5 @@ return [
     'enterisn' => 'Please enter the Part Num.',
     'entersrm' => 'Please enter the SRM Num.',
     'timepart' => 'Period',
-
+    'stand' => 'Station Manpower',
 ];

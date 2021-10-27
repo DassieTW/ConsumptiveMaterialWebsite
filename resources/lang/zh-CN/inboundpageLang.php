@@ -85,4 +85,8 @@ return [
     'lessstock' => '目前库存小于入库数量，无法删除此笔入库。',
     'noclient' => '客户不存在',
     'noloc' => '储位不存在',
+    'enterisn' => '请输入料号',
+    'enterinlist' => '请输入入库单号',
+    'timepart' => '时间段',
+    'upload1' => '上传',
 ];

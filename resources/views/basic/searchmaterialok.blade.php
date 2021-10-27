@@ -4,6 +4,7 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('js/basic/material.js') }}"></script>
 <!--for this page's sepcified js -->
 @endsection
 @section('content')
@@ -19,12 +20,12 @@
             </div>
             <div class="card-body">
 
-                <form action="{{ route('basic.materialchangeordel') }}" method="POST">
+                <form id="materialsearch" method="POST">
                     @csrf
                     <div class="table-responsive">
                         <table class="table " id = "test">
                             <tr>
-                                <th></th>
+                                <th>{!! __('basicInfoLang.check') !!}</th>
                                 <th><input type = "hidden" id = "title0" name = "title0" value = "料號">{!! __('basicInfoLang.isn') !!}</th>
                                 <th><input type = "hidden" id = "title1" name = "title1" value = "品名">{!! __('basicInfoLang.pName') !!}</th>
                                 <th><input type = "hidden" id = "title2" name = "title2" value = "規格">{!! __('basicInfoLang.format') !!}</th>
@@ -39,11 +40,11 @@
                                 <th><input type = "hidden" id = "title11" name = "title11" value = "MOQ">{!! __('basicInfoLang.moq') !!}</th>
                                 <th><input type = "hidden" id = "title12" name = "title12" value = "LT">{!! __('basicInfoLang.lt') !!}</th>
                                 <th><input type = "hidden" id = "title13" name = "title13" value = "安全庫存">{!! __('basicInfoLang.safe') !!}</th>
-                                <input type = "hidden" id = "time" name = "time" value = "13">
+                                <input type = "hidden" id = "time" name = "time" value = "14">
                             </tr>
                             @foreach($data as $data)
                             <tr>
-                                <td><input class ="innumber" type="checkbox" id="innumber{{$loop->index}}" name="innumber{{$loop->index}}" style="width:25px;height:25px;" ></td>
+                                <td><input class ="innumber" type="checkbox" id="innumber" name="innumber" style="width:25px;height:25px;" value="{{$loop->index}}"></td>
                                 <td><input type = "hidden" id = "number{{$loop->index}}" name = "number{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
                                 <td>{{$data->品名}}</td>
                                 <td>{{$data->規格}}</td>
@@ -62,12 +63,11 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select style="width:70px" class="form-control form-control-lg " id = "send{{$loop->index}}" name="send{{$loop->index}}">
-                                    <option>{{$data->發料部門}}</option>
-                                    <option>{!! __('basicInfoLang.room') !!}</option>
-                                    <option>{!! __('basicInfoLang.ieroom') !!}</option>
-                                    <option>{!! __('basicInfoLang.meroom') !!}</option>
-                                    <option>{!! __('basicInfoLang.equiproom') !!}</option>
+                                    <select style="width:100px" class="form-control form-control-lg " id = "send{{$loop->index}}" name="send{{$loop->index}}">
+                                    <option>{{$data -> 發料部門}}</option>
+                                    @foreach ($sends as $send)
+                                    <option>{{$send -> 發料部門}}</option>
+                                    @endforeach
                                     </select>
                                 </td>
                                 <td>

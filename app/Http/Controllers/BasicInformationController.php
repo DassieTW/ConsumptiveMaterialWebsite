@@ -34,7 +34,7 @@ class BasicInformationController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    /*public function index()
     {
         //
         if (Session::has('username'))
@@ -56,14 +56,14 @@ class BasicInformationController extends Controller
         {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //基礎信息更新或刪除
     public function changeordelete(Request $request)
     {
         if (Session::has('username'))
         {
-            $reDive = new responseObj();
+
             $now = Carbon::now();
 
             if(is_array($request->input('data')))
@@ -81,6 +81,7 @@ class BasicInformationController extends Controller
             $datanew = $request->input('datanew');
             $choose = "";
             $chooseindex = "";
+            $errnew = "";
 
             //factory
             if($request->input('dataname') == "factory")
@@ -88,8 +89,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\廠別";
                 $chooseindex = "廠別";
                 $table = "廠別";
-                $reDive->message = "廠別";
-                $reDive->database = "FactoryExample";
+                $errnew = "factorynew";
             }
             //client
             else if($request->input('dataname') == "client")
@@ -97,8 +97,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\客戶別";
                 $chooseindex = '客戶';
                 $table = "客戶別";
-                $reDive->message = "客戶別";
-                $reDive->database = "ClientExample";
+                $errnew = "clientnew";
             }
             //machine
             else if($request->input('dataname') == "machine")
@@ -106,8 +105,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\機種";
                 $chooseindex = '機種';
                 $table = "機種";
-                $reDive->message = "機種";
-                $reDive->database = "MachineExample";
+                $errnew = "machinenew";
             }
             //production
             else if($request->input('dataname') == "production")
@@ -115,8 +113,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\製程";
                 $chooseindex = '製程';
                 $table = "製程";
-                $reDive->message = "製程";
-                $reDive->database = "ProductionExample";
+                $errnew = "productionnew";
             }
             //line
             else if($request->input('dataname') == "line")
@@ -124,8 +121,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\線別";
                 $chooseindex = '線別';
                 $table = "線別";
-                $reDive->message = "線別";
-                $reDive->database = "LineExample";
+                $errnew = "linenew";
             }
             //use
             else if($request->input('dataname') == "use")
@@ -133,8 +129,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\領用部門";
                 $chooseindex = '領用部門';
                 $table = "領用部門";
-                $reDive->message = "領用部門";
-                $reDive->database = "UseExample";
+                $errnew = "usenew";
             }
             //usereason
             else if($request->input('dataname') == "usereason")
@@ -142,8 +137,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\領用原因";
                 $chooseindex = '領用原因';
                 $table = "領用原因";
-                $reDive->message = "領用原因";
-                $reDive->database = "UseReasonExample";
+                $errnew = "usereasonnew";
             }
             //inreason
             else if($request->input('dataname') == "inreason")
@@ -151,8 +145,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\入庫原因";
                 $chooseindex = '入庫原因';
                 $table = "入庫原因";
-                $reDive->message = "入庫原因";
-                $reDive->database = "InReasonExample";
+                $errnew = "inreasonnew";
             }
             //position
             else if($request->input('dataname') == "position")
@@ -160,8 +153,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\儲位";
                 $chooseindex = '儲存位置';
                 $table = "儲位";
-                $reDive->message = "儲位";
-                $reDive->database = "PositionExample";
+                $errnew = "positionnew";
             }
             //send
             else if($request->input('dataname') == "send")
@@ -169,8 +161,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\發料部門";
                 $chooseindex = '發料部門';
                 $table = "發料部門";
-                $reDive->message = "發料部門";
-                $reDive->database = "SendExample";
+                $errnew = "sendnew";
             }
             //o庫
             else if($request->input('dataname') == "o")
@@ -178,8 +169,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\O庫";
                 $chooseindex = 'O庫';
                 $table = "O庫";
-                $reDive->message = "O庫";
-                $reDive->database = "OboundExample";
+                $errnew = "onew";
             }
             //退回原因
             else if($request->input('dataname') == "back")
@@ -187,8 +177,7 @@ class BasicInformationController extends Controller
                 $choose = "App\Models\退回原因";
                 $chooseindex = '退回原因';
                 $table = "退回原因";
-                $reDive->message = "退回原因";
-                $reDive->database = "BackReasonExample";
+                $errnew = "backnew";
             }
             if($request->input('select') == "刪除")
             {
@@ -200,16 +189,11 @@ class BasicInformationController extends Controller
                         DB::commit();
                     }catch(\Exception $e){
                         DB::rollback();
-                        $reDive->boolean = false;
-                        $reDive->passbool = false;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                    return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+
                     }
                 }
-                $reDive->boolean = true;
-                $reDive->passbool = true;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
             }
             //change
             else if($request->input('select') == "更新")
@@ -224,10 +208,8 @@ class BasicInformationController extends Controller
                         DB::commit();
                     }catch(\Exception $e){
                         DB::rollback();
-                        $reDive->boolean = false;
-                        $reDive->passbool = false;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                    return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+
                     }
                 }
 
@@ -253,17 +235,11 @@ class BasicInformationController extends Controller
                         DB::commit();
                     }catch(\Exception $e){
                         DB::rollback();
-                        $reDive->boolean = false;
-                        $reDive->passbool = false;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json(['message' => $errnew], 420/* Status code here default is 200 ok*/);
                     }
 
                 }
-                $reDive->boolean = true;
-                $reDive->passbool = true;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
             }
         }
         else
@@ -278,150 +254,126 @@ class BasicInformationController extends Controller
         if (Session::has('username'))
         {
             //delete
-            if($request->has('delete'))
+            if($request->input('select') == "刪除")
             {
-                $record = 0;
-                $count = $request->input('count');
-                for($i = 0 ; $i < $count ; $i++)
+                for($i = 0 ; $i < $request->input('count') ; $i++)
                 {
-                    if($request->has('innumber' . $i))
-                    {
-                        ConsumptiveMaterial::where('料號', $request->input('number' . $i))->delete();
-                        /*DB::table('consumptive_material')
-                        ->where('料號', $request->input('number' . $i))
-                        ->delete();*/
-                        $record ++;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    ConsumptiveMaterial::where('料號', $request->input('number')[$i])->delete();
+                    /*DB::table('consumptive_material')
+                    ->where('料號', $request->input('number' . $i))
+                    ->delete();*/
                 }
-                $mess = trans('basicInfoLang.total').' '.$record.' '.trans('basicInfoLang.record').' '
-                .trans('basicInfoLang.isn').' '.trans('basicInfoLang.delete').' '
-                .trans('basicInfoLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/basic';
-                </script>");
+            return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
             }
             //change
-            else if($request->has('change'))
+            else if($request->input('select') == "更新")
             {
                 $count = $request->input('count');
                 $record = 0;
                 for($i = 0 ; $i < $count ; $i++)
                 {
-                    if($request->has('innumber' . $i))
+
+                    $month = $request->input('month');
+                    $safe = $request->input('safe');
+                    $check = $request->input('check');
+                    if($month[$i] === '否' && $safe[$i] === null || $safe[$i] === '')
                     {
-                        $gradea = $request->input('gradea' . $i);
-                        $month = $request->input('month' . $i);
-                        $send = $request->input('send' . $i);
-                        $belong = $request->input('belong' . $i);
-                        $price = $request->input('price' . $i);
-                        $money = $request->input('money' . $i);
-                        $unit = $request->input('unit' . $i);
-                        $mpq = $request->input('mpq' . $i);
-                        $moq = $request->input('moq' . $i);
-                        $lt = $request->input('lt' . $i);
-                        $safe = $request->input('safe' . $i);
-                        $number = $request->input('number' . $i);
-
-                        if($gradea === 'Yes') $gradea = '是';
-                        if($gradea === 'No') $gradea = '否';
-                        if($month === 'Yes') $month = '是';
-                        if($month === 'No') $month = '否';
-                        if($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
-                        if($belong === 'Station') $belong = '站位';
-                        if($send === 'Spare parts room' || $send === '备品室') $send = '備品室';
-                        else if($send === 'ME Spare parts room' || $send === 'ME备品室') $send = 'ME備品室';
-                        else if($send === 'IE Spare parts room' || $send === 'IE备品室') $send = 'IE備品室';
-                        else if($send === 'Equip Spare parts room' || $send === '设备备品室') $send = '設備備品室';
-
-                        $row = $i + 1;
-                        if($month === '否' && $safe === null || $safe === '')
-                        {
-                            $mess = trans('basicInfoLang.row').' : '.$row.trans('basicInfoLang.isn').' '.$number.' '
-                            .trans('basicInfoLang.notmonthsafe');
-                            echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href = 'material';
-                            </script>");
-
-                        }
-                        else
-                        {
-
-                            DB::beginTransaction();
-                            try {
-                                DB::table('consumptive_material')
-                                    ->where('料號', $request->input('number' . $i))
-                                    ->update(['A級資材' => $gradea , '月請購' => $month , '發料部門' => $send , '耗材歸屬' => $belong ,
-                                '單價' => $price , '幣別' => $money , '單位' => $unit , 'MPQ' => $mpq ,
-                                'MOQ' => $moq , 'LT' => $lt , '安全庫存' => $safe , 'updated_at' => Carbon::now()]);
-                                $record++;
-                                DB::commit();
-
-                            }catch (\Exception $e) {
-                                DB::rollback();
-                                $mess = $e->getMessage();
-                                echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('$mess');
-                                window.location.href='/inbound';
-                                </script>");
-                            }
-                        }
+                        $row = $check[$i];
+                        $row = trans('basicInfoLang.row') . ' '. $row ;
+                        return \Response::json(['message' => trans('basicInfoLang.safeerror') ,
+                        'row' => $row], 420/* Status code here default is 200 ok*/);
                     }
                     else
                     {
-                        continue;
+                        $record ++;
                     }
                 }
+                if($record == $count)
+                {
+                    for($i = 0 ; $i < $count ; $i++)
+                    {
+                        $gradea = $request->input('gradea');
+                        $month = $request->input('month');
+                        $send = $request->input('send');
+                        $belong = $request->input('belong');
+                        $price = $request->input('price');
+                        $money = $request->input('money');
+                        $unit = $request->input('unit');
+                        $mpq = $request->input('mpq');
+                        $moq = $request->input('moq');
+                        $lt = $request->input('lt');
+                        $safe = $request->input('safe');
+                        $number = $request->input('number');
+                        $check = $request->input('check');
 
-                $mess = trans('basicInfoLang.total').' '.$record.' '.trans('basicInfoLang.record').' '
-                .trans('basicInfoLang.isn').' '.trans('basicInfoLang.change').' '
-                .trans('basicInfoLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/basic';
-                </script>");
+                        if($gradea[$i] === 'Yes') $gradea[$i] = '是';
+                        if($gradea[$i] === 'No') $gradea[$i] = '否';
+                        if($month[$i] === 'Yes') $month[$i] = '是';
+                        if($month[$i] === 'No') $month[$i] = '否';
+                        if($belong[$i] === 'Unit consumption' || $belong[$i] === '单耗') $belong = '單耗';
+                        if($belong[$i] === 'Station') $belong[$i] = '站位';
 
+
+                        DB::beginTransaction();
+                        try {
+                            DB::table('consumptive_material')
+                                ->where('料號', $number[$i])
+                                ->update(['A級資材' => $gradea[$i] , '月請購' => $month[$i] , '發料部門' => $send[$i] , '耗材歸屬' => $belong[$i] ,
+                            '單價' => $price[$i] , '幣別' => $money[$i] , '單位' => $unit[$i] , 'MPQ' => $mpq[$i] ,
+                            'MOQ' => $moq[$i] , 'LT' => $lt[$i] , '安全庫存' => $safe[$i] , 'updated_at' => Carbon::now()]);
+                            DB::commit();
+
+                        }catch (\Exception $e) {
+                            DB::rollback();
+                            $mess = $e->getMessage();
+                            return \Response::json(['message' => $e->getMessage() ,
+                            'row' => $row], 409/* Status code here default is 200 ok*/);
+                        }
+                    }
+                    return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+                }
             }
             //download
-            else if($request->has('download'))
+            else if($request->input('select') == "下載")
             {
 
                 $spreadsheet = new Spreadsheet();
                 $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
                 $worksheet = $spreadsheet->getActiveSheet();
                 $time = $request->input('time');
-                $count = $request->input('count');
                 //填寫表頭
-                for($i = 0 ; $i < $time ; $i ++)
+                for($i = 0 ; $i < 14 ; $i ++)
                 {
-                    $worksheet->setCellValueByColumnAndRow($i+1 , 1 , $request->input('title'.$i));
+                    $worksheet->setCellValueByColumnAndRow($i+1 , 1 , $request->input('title')[$i]);
                 }
 
                 //填寫內容
-                for($i = 0 ; $i < $time ; $i ++)
+                for($i = 0 ; $i < 14 ; $i ++)
                 {
-                    for($j = 0 ; $j < $count ; $j++)
+                    for($j = 0 ; $j < $time ; $j++)
                     {
-                        $worksheet->setCellValueByColumnAndRow($i+1 , $j+2 , $request->input('data'.$i.$j));
+                        $worksheet->setCellValueByColumnAndRow($i+1 , $j+2 , $request->input('data'.$i)[$j]);
                     }
                 }
 
 
                 // 下載
                 $now = Carbon::now()->format('YmdHis');
-                $filename = '料件信息'. $now . '.xlsx';
+                //rawurlencode('呆滯庫存查詢');
+                $filename = rawurlencode('料件查詢') . $now . '.xlsx';
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 header('Content-Disposition: attachment;filename="'.$filename.'"');
                 header('Cache-Control: max-age=0');
 
+                $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
                 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
                 $writer->save('php://output');
+                $callback = function () use ($writer) {
+                $file = fopen('php://output', 'r');
+                fclose($file);
+                };
 
+                return response()->stream($callback, 200, $headers);
             }
 
             else
@@ -436,7 +388,7 @@ class BasicInformationController extends Controller
 
     }
 
-    //料件信息查詢頁面
+    /*//料件信息查詢頁面
     public function material(Request $request)
     {
         if(Session::has('username'))
@@ -447,7 +399,7 @@ class BasicInformationController extends Controller
         {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     /*
     //儲位條碼查詢頁面
@@ -547,7 +499,7 @@ class BasicInformationController extends Controller
             if($request->input('number') === null)
             {
                 return view('basic.searchmaterialok')->with(['data' => ConsumptiveMaterial::cursor()])
-                ->with(['data1' => ConsumptiveMaterial::cursor()]);
+                ->with(['data1' => ConsumptiveMaterial::cursor()])->with(['sends' => 發料部門::cursor()]);
             }
             else if($request->input('number') !== null && strlen($request->input('number')) <= 12)
             {
@@ -559,7 +511,8 @@ class BasicInformationController extends Controller
 
                 return view("basic.searchmaterialok")
                 ->with(['data' => $datas])
-                ->with(['data1' => $datas]);
+                ->with(['data1' => $datas])
+                ->with(['sends' => 發料部門::cursor()]);
 
             }
             else
@@ -580,7 +533,7 @@ class BasicInformationController extends Controller
     //新增料件
     public function new(Request $request)
     {
-        $reDive = new responseObj();
+
         if(Session::has('username'))
         {
             $number = $request->input('number');
@@ -615,17 +568,11 @@ class BasicInformationController extends Controller
                         , '耗材歸屬' => $belong , '發料部門' => $send , '安全庫存' => $safe , 'updated_at' => Carbon::now(),'deleted_at' => null]);
 
 
-                        $reDive->boolean = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                        return;
+                        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
                     }
                     else
                     {
-                        $reDive->newerror[0] = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                        return;
+                        return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
                         /*return back()->withErrors([
                         'number' => '料號 is repeated , Please enter another 料號',
                         ]);*/
@@ -643,10 +590,8 @@ class BasicInformationController extends Controller
                 if(strlen($request->input('number')) !== 12)
                 {
 
-                    $reDive->newerror[1] = true;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
-                    return;
+                    return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
+
                     /*return back()->withErrors([
                         'number' => '料號長度不為12 , Please enter again',
                         ]);*/
@@ -655,10 +600,7 @@ class BasicInformationController extends Controller
                 //check 非月請購是否有填安全庫存
                 if($request->input('month') === '否' && $request->input('safe') === null)
                 {
-                    $reDive->newerror[2] = true;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
-                    return;
+                    return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
                     /*return back()->withErrors([
                         'safe' => '非月請購之安全庫存為必填項目',
                     ]);*/
@@ -669,10 +611,7 @@ class BasicInformationController extends Controller
                 , '單位' => $unit , 'MPQ' => $mpq , 'MOQ' => $moq ,'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea
                 , '耗材歸屬' => $belong , '發料部門' => $send , '安全庫存' => $safe , 'created_at' => Carbon::now()]);
 
-                $reDive->boolean = true;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
-                return;
+                return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
                 //return view('basic.newok');
             }
             else
@@ -786,9 +725,88 @@ class BasicInformationController extends Controller
             $record = 0;
             $row = 0;
             $test = 0;
+            $test1 = array();
+            $bool = true;
             for($i = 0 ; $i < $count ; $i ++)
             {
-                if($request->input('data0a'.$i) !== null && $request->input('data1a'.$i) !== null)
+                $test1[$i] = 0;
+                $number =  $request->input('data0a'. $i);
+                $month =  $request->input('data9a'. $i);
+                $safe =  $request->input('data13a'. $i);
+
+                if($month === 'Yes') $month = '是';
+                if($month === 'No') $month = '否';
+
+                $numbers = DB::table('consumptive_material')->pluck('料號');
+                $delete = ConsumptiveMaterial::onlyTrashed()
+                        ->where('料號', $number)->get();
+                //判斷料號是否重複
+                for($j = 0 ; $j < count($numbers) ; $j ++)
+                {
+                    if(strcasecmp($number,$numbers[$j]) === 0)
+                    {
+                        if(!$delete->isEmpty())
+                        {
+                            $test1[$i] = 1;
+                        }
+                        else
+                        {
+                            $bool = false;
+                            $row = $i + 1;
+                            $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnrepeat');
+                            echo ("<script LANGUAGE='JavaScript'>
+                            window.alert('$mess');
+                            window.location.href = 'new';
+                            </script>");
+                            /*return back()->withErrors([
+                            'number' => '料號 is repeated , Please enter another 料號',
+                            ]);*/
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                //長度是否為12
+                if(strlen($request->input('data0a'.$i)) !== 12)
+                {
+                    $row = $i + 1;
+                    $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnlength');
+                    echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('$mess');
+                    window.location.href = 'new';
+                    </script>");
+                    /*return back()->withErrors([
+                        'number' => '料號長度不為12 , Please enter again',
+                        ]);*/
+                }
+                else
+                {
+                    //check 非月請購是否有填安全庫存
+                    if($month === '否' && $request->input('data13a'.$i) === null)
+                    {
+                        $row = $i + 1 ;
+                        $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.safeerror');
+                        echo ("<script LANGUAGE='JavaScript'>
+                        window.alert('$mess');
+                        window.location.href = 'new';
+                        </script>");
+                        /*return back()->withErrors([
+                            'safe' => '非月請購之安全庫存為必填項目',
+                        ]);*/
+                    }
+                    else
+                    {
+                        $test++;
+                    }
+                }
+            }
+
+            if($test == $count && $bool == true)
+            {
+                for($i = 0 ; $i < $count ; $i ++)
                 {
                     $number =  $request->input('data0a'. $i);
                     $name =  $request->input('data1a'. $i);
@@ -807,117 +825,46 @@ class BasicInformationController extends Controller
 
                     if($gradea === 'Yes') $gradea = '是';
                     if($gradea === 'No') $gradea = '否';
+
                     if($month === 'Yes') $month = '是';
                     if($month === 'No') $month = '否';
+
                     if($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
                     if($belong === 'Station') $belong = '站位';
-                    if($send === 'Spare parts room' || $send === '备品室') $send = '備品室';
-                    else if($send === 'ME Spare parts room' || $send === 'ME备品室') $send = 'ME備品室';
-                    else if($send === 'IE Spare parts room' || $send === 'IE备品室') $send = 'IE備品室';
-                    else if($send === 'Equip Spare parts room' || $send === '设备备品室') $send = '設備備品室';
 
-                    $numbers = DB::table('consumptive_material')->pluck('料號');
-                    //判斷料號是否重複
-                    for($j = 0 ; $j < count($numbers) ; $j ++)
-                    {
-                        if(strcasecmp($number,$numbers[$j]) === 0)
+                    DB::beginTransaction();
+                    try {
+                        if($test1[$i] != 0)
                         {
-                            $row = $i + 1;
+                            DB::table('consumptive_material')
+                            ->where('料號', $number)
+                            ->update(['品名' => $name , '規格' => $format , '單價' => $price , '幣別' => $money
+                            , '單位' => $unit , 'MPQ' => $mpq , 'MOQ' => $moq ,'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea
+                            , '耗材歸屬' => $belong , '發料部門' => $send , '安全庫存' => $safe , 'updated_at' => Carbon::now(),'deleted_at' => null]);
 
-                            $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnrepeat');
-                            echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href = 'upload';
-                            </script>");
-                            /*return back()->withErrors([
-                            'number' => '料號 is repeated , Please enter another 料號',
-                            ]);*/
                         }
-                        else
-                        {
-                            continue;
+                        else{
+                            DB::table('consumptive_material')
+                            ->insert(['料號' => $number , '品名' => $name , '規格' => $format ,'單價' => $price , '幣別' => $money , '單位' => $unit
+                            , 'MPQ' => $mpq , 'MOQ' => $moq , 'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea , '耗材歸屬' => $belong , '發料部門' => $send
+                            , '安全庫存' => $safe ,'created_at' => Carbon::now()]);
                         }
-                    }
 
-                    //長度是否為12
-                    if(strlen($request->input('data0a'.$i)) !== 12)
-                    {
-                        $row = $i + 1;
-                        $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnlength');
+                        DB::commit();
+                        $record++;
+                    }catch (\Exception $e) {
+                        DB::rollback();
+
+                        $mess = $e->getMessage();
+
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
-                        window.location.href = 'upload';
+                        window.location.href='/basic';
                         </script>");
-                        /*return back()->withErrors([
-                            'number' => '料號長度不為12 , Please enter again',
-                            ]);*/
-                    }
-                    else
-                    {
-                        //check 非月請購是否有填安全庫存
-                        if($month === '否' && $request->input('data13a'.$i) === null)
-                        {
-                            $row = $i + 1 ;
-                            $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.safeerror');
-                            echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href = 'upload';
-                            </script>");
-                            /*return back()->withErrors([
-                                'safe' => '非月請購之安全庫存為必填項目',
-                            ]);*/
-                        }
-                        else
-                        {
-                            $test ++;
-                        }
-                        if($test == $count)
-                        {
-                            for($i = 0 ; $i < $count ; $i ++)
-                            {
-                                $number =  $request->input('data0a'. $i);
-                                $name =  $request->input('data1a'. $i);
-                                $format =  $request->input('data2a'. $i);
-                                $price =  $request->input('data3a'. $i);
-                                $money =  $request->input('data4a'. $i);
-                                $unit =  $request->input('data5a'. $i);
-                                $mpq =  $request->input('data6a'. $i);
-                                $moq =  $request->input('data7a'. $i);
-                                $lt =  $request->input('data8a'. $i);
-                                $month =  $request->input('data9a'. $i);
-                                $gradea =  $request->input('data10a'. $i);
-                                $belong =  $request->input('data11a'. $i);
-                                $send =  $request->input('data12a'. $i);
-                                $safe =  $request->input('data13a'. $i);
-
-                                DB::beginTransaction();
-                                try {
-                                    DB::table('consumptive_material')
-                                        ->insert(['料號' => $number , '品名' => $name , '規格' => $format ,'單價' => $price , '幣別' => $money , '單位' => $unit
-                                        , 'MPQ' => $mpq , 'MOQ' => $moq , 'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea , '耗材歸屬' => $belong , '發料部門' => $send
-                                        , '安全庫存' => $safe ,'created_at' => Carbon::now()]);
-                                    DB::commit();
-                                    $record++;
-                                }catch (\Exception $e) {
-                                    DB::rollback();
-
-                                    $mess = $e->getMessage();
-                                    dd($mess);
-                                    echo ("<script LANGUAGE='JavaScript'>
-                                    window.alert('$mess');
-                                    window.location.href='/basic';
-                                    </script>");
-                                }
-                            }
-                        }
                     }
                 }
-                else
-                {
-                    continue;
-                }
-
             }
+
             $mess = trans('basicInfoLang.total').' '.$record.trans('basicInfoLang.record').' '
             .trans('basicInfoLang.newMats').' '.trans('basicInfoLang.success');
             echo("<script LANGUAGE='JavaScript'>
@@ -955,8 +902,9 @@ class BasicInformationController extends Controller
                 $mess = trans('basicInfoLang.uploaderror');
                     echo ("<script LANGUAGE='JavaScript'>
                     window.alert('$mess');
-                    window.location.href='/basic';
+                    window.location.href = '/basic';
                     </script>");
+
             }
             else
             {
@@ -977,67 +925,104 @@ class BasicInformationController extends Controller
         {
             $count = $request->input('count');
             $choose = $request->input('title0');
+            $table = "";
             $record = 0;
+            $test = 0;
+            $test1 = array();
+            $row = 0;
+            $bool = true;
+
+            if($choose == '客戶別')
+            {
+                $chooseindex = '客戶';
+                $table = "App\Models\客戶別";
+            }
+            else if($choose == '儲位')
+            {
+                $chooseindex = '儲存位置';
+                $table = "App\Models\儲位";
+            }
+            else
+            {
+                $chooseindex = $choose;
+                $table = "App\Models"."\\".$choose;
+            }
+
+
             for($i = 0 ; $i < $count ; $i ++)
             {
+                $test1[$i] = 0;
                 $data =  $request->input('data0'. $i);
-                if($choose === '客戶別')
+
+                $datas = DB::table($choose)->pluck($chooseindex);
+
+                $delete = $table::onlyTrashed()
+                ->where($chooseindex, $data)->get();
+
+                //判斷data是否重複
+                for($j = 0 ; $j < count($datas) ; $j ++)
                 {
+                    if(strcasecmp($data,$datas[$j]) === 0)
+                    {
+                        if(!$delete->isEmpty())
+                        {
+                            $test1[$i] = 1;
+                        }
+                        else
+                        {
+                            $bool = false;
+                            $row = $i + 1;
+                            $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.repeat');
+                            echo ("<script LANGUAGE='JavaScript'>
+                            window.alert('$mess');
+                            window.location.href = '/basic';
+                            </script>");
+                        }
+                    }
+                    else
+                    {
+
+                        continue;
+                    }
+                }
+                $test++;
+
+            }
+
+
+            if($test == $count && $bool == true)
+            {
+                for($i = 0 ; $i < $count ; $i ++)
+                {
+                    $data =  $request->input('data0'. $i);
+
                     DB::beginTransaction();
                     try {
-                        DB::table('客戶別')
-                        ->insert(['客戶' => $data , 'created_at' => Carbon::now()]);
+                        if($test1[$i] != 0)
+                        {
+                            DB::table($choose)
+                            ->where($chooseindex, $data)
+                            ->update([$chooseindex => $data , 'updated_at' => Carbon::now(),'deleted_at' => null]);
+
+                        }
+                        else{
+                            DB::table($choose)
+                            ->insert([$chooseindex => $data ,'created_at' => Carbon::now()]);
+                        }
+
                         DB::commit();
                         $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
-                        $i ++ ;
-                        $mess = trans('basicInfoLang.row').' : '.$i.' '.trans('basicInfoLang.repeat');
+
+                        $mess = $e->getMessage();
+
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
+                        window.location.href='/basic';
                         </script>");
-                        return view('basic.index');
                     }
                 }
-                else if($choose === '儲位')
-                {
-                    DB::beginTransaction();
-                    try {
-                        DB::table('儲位')
-                        ->insert(['儲存位置' => $data , 'created_at' => Carbon::now()]);
-                        DB::commit();
-                        $record++;
-                    }catch (\Exception $e) {
-                        DB::rollback();
-                        $i ++ ;
-                        $mess = trans('basicInfoLang.row').' : '.$i.' '.trans('basicInfoLang.repeat');
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        </script>");
-                        return view('basic.index');
-                    }
-                }
-                else
-                {
-                    DB::beginTransaction();
-                    try {
-                        DB::table($choose)
-                        ->insert([$choose => $data , 'created_at' => Carbon::now()]);
-                        DB::commit();
-                        $record++;
-                    }catch (\Exception $e) {
-                        DB::rollback();
-                        $i ++ ;
-                        $mess = trans('basicInfoLang.row').' : '.$i.' '.trans('basicInfoLang.repeat');
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        </script>");
-                        return view('basic.index');
-                    }
-                }
-
-
-
             }
             $mess = trans('basicInfoLang.total').' '.$record.trans('basicInfoLang.record').' '
             .$choose.' '.trans('basicInfoLang.new').' '.trans('basicInfoLang.success');

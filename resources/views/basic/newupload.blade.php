@@ -99,9 +99,10 @@
 
                             </table>
                         </div>
-                        <br>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.add') !!}">
                         </form>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('basic.new')}}'">{!! __('basicInfoLang.return') !!}</button>
             </div>
         </div>
