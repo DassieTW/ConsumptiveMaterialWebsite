@@ -36,7 +36,7 @@
                                     <td><input type = "hidden" id = "client{{$loop->index}}" name = "client{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
                                     <td><input type = "hidden" id = "machine{{$loop->index}}" name = "machine{{$loop->index}}" value = "{{$data->機種}}">{{$data->機種}}</td>
                                     <td><input type = "hidden" id = "production{{$loop->index}}" name = "production{{$loop->index}}" value = "{{$data->製程}}">{{$data->製程}}</td>
-                                    <td><input style = "width: 200px;" class="form-control form-control-lg " type = "number" id = "amount{{$loop->index}}" name = "amount{{$loop->index}}" value = "{{$data->單耗}}" step="0.000000000000001"></td>
+                                    <td><input style = "width: 200px;" class="form-control form-control-lg " type = "number" id = "amount{{$loop->index}}" name = "amount{{$loop->index}}" value = "{{$data->單耗}}" step="0.0000000001"></td>
                                     <td><input type = "hidden" id = "compare{{$loop->index}}" name = "compare{{$loop->index}}" value = "{{$data->單耗}}"></td>
                                 </tr>
                                 <input type = "hidden" id = "count" name = "count" value = "{{$loop->count}}"></td>
