@@ -46,23 +46,24 @@
                                         <td><input type = "text"  name = "data0a{{$loop->index}}" value = "{{$row[0]}}" required></td>
                                         <td><input type = "text"  name = "data1a{{$loop->index}}" value = "{{$row[1]}}" required></td>
                                         <td><input type = "text"  name = "data2a{{$loop->index}}" value = "{{$row[2]}}" required></td>
-                                        <td><input style="width:70px" type = "number"  name = "data3a{{$loop->index}}" value = "{{$row[3]}}" step="0.00001" required></td>
+                                        <td><input style="width:80px" type = "number"  name = "data3a{{$loop->index}}" value = "{{$row[3]}}" step="0.00001" required></td>
                                         <td>
-                                            <select style="width:100px" class="form-control form-control-lg " id = "data4a{{$loop->index}}" name="data4a{{$loop->index}}" required>
+                                            <select style="width:100px" class="form-select form-select-lg " id = "data4a{{$loop->index}}" name="data4a{{$loop->index}}" required>
                                             <option style="display: none" selected value = "{{$row[4]}}">{{$row[4]}}</option>
                                             <option>RMB</option>
                                             <option>USD</option>
                                             <option>TWD</option>
                                             <option>VND</option>
                                             <option>JPY</option>
+                                            <option>IDR</option>
                                             </select>
                                         </td>
-                                        <td><input style="width:50px" type = "text"  name = "data5a{{$loop->index}}" value = "{{$row[5]}}" required></td>
-                                        <td><input style="width:50px" type = "number"  name = "data6a{{$loop->index}}" value = "{{$row[6]}}" required></td>
-                                        <td><input style="width:50px" type = "number"  name = "data7a{{$loop->index}}" value = "{{$row[7]}}" required></td>
-                                        <td><input style="width:50px" type = "number"  name = "data8a{{$loop->index}}"  step = "0.00001" value = "{{$row[8]}}" required></td>
+                                        <td><input style="width:100px" type = "text"  name = "data5a{{$loop->index}}" value = "{{$row[5]}}" required></td>
+                                        <td><input style="width:100px" type = "number"  name = "data6a{{$loop->index}}" value = "{{$row[6]}}" required></td>
+                                        <td><input style="width:100px" type = "number"  name = "data7a{{$loop->index}}" value = "{{$row[7]}}" required></td>
+                                        <td><input style="width:100px" type = "number"  name = "data8a{{$loop->index}}"  step = "0.00001" value = "{{$row[8]}}" required></td>
                                         <td>
-                                            <select style="width:70px" class="form-control form-control-lg " id = "data9a{{$loop->index}}" name="data9a{{$loop->index}}" value = "{{$row[9]}}" required>
+                                            <select style="width:100px" class="form-select form-select-lg " id = "data9a{{$loop->index}}" name="data9a{{$loop->index}}" value = "{{$row[9]}}" required>
                                             <option style="display: none"  selected value = "{{$row[9]}}">{{$row[9]}}</option>
                                             <option>{!! __('basicInfoLang.yes') !!}</option>
                                             <option>{!! __('basicInfoLang.no') !!}</option>
@@ -70,28 +71,28 @@
                                         </td>
 
                                         <td>
-                                            <select style="width:70px" class="form-control form-control-lg " name="data10a{{$loop->index}}" value = "{{$row[10]}}" required>
+                                            <select style="width:100px" class="form-select form-select-lg " name="data10a{{$loop->index}}" value = "{{$row[10]}}" required>
                                             <option style="display: none"  selected value = "{{$row[10]}}">{{$row[10]}}</option>
                                             <option>{!! __('basicInfoLang.yes') !!}</option>
                                             <option>{!! __('basicInfoLang.no') !!}</option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select style="width:100px" class="form-control form-control-lg "  name="data11a{{$loop->index}}" value = "{{$row[11]}}" required>
+                                            <select style="width:100px" class="form-select form-select-lg "  name="data11a{{$loop->index}}" value = "{{$row[11]}}" required>
                                             <option style="display: none"  selected value = "{{$row[11]}}">{{$row[11]}}</option>
                                             <option>{!! __('basicInfoLang.consume') !!}</option>
                                             <option>{!! __('basicInfoLang.stand') !!}</option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select style="width:100px" class="form-control form-control-lg " name="data12a{{$loop->index}}" value = "{{$row[12]}}" required>
+                                            <select style="width:150px" class="form-select form-select-lg " name="data12a{{$loop->index}}" value = "{{$row[12]}}" required>
                                             <option style="display: none"  selected value = "{{$row[12]}}">{{$row[12]}}</option>
                                             @foreach ($senddata as $send)
                                             <option>{{$send->發料部門}}</option>
                                             @endforeach
                                             </select>
                                         </td>
-                                        <td><input style="width:70px" type = "number"  name = "data13a{{$loop->index}}" value = "{{$row[13]}}"></td>
+                                        <td><input style="width:100px" type = "number"  name = "data13a{{$loop->index}}" value = "{{$row[13]}}"></td>
 
                                     </tr>
                                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
