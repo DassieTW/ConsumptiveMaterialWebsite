@@ -57,7 +57,7 @@
                         <td>{{$format}}</td>
                         <td><input style="width: 200px;" class="form-control form-control-lg " type="number"
                                 id="amount{{$loop->index}}" name="amount{{$loop->index}}" value="{{$data->單耗}}"
-                                step="0.000000000000001"></td>
+                                step="0.0000000001" oninput="if(value.length>12)value=value.slice(0,12)"></td>
                         <td>
                             <?php
                                 echo $test;

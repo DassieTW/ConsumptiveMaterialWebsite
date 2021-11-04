@@ -82,8 +82,6 @@
                                         @if($stayday > 30 && $data->inventory現有庫存 > 0)
                                         <?php $count[$i] ++;
 
-
-
                                         ?>
                                         <tr>
                                             <td><input class ="basic" type="checkbox" id="check{{$i}}{{$loop->index}}" name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;" value="{{$i}}{{$loop->index}}"></td>

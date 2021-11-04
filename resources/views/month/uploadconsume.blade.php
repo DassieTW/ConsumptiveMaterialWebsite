@@ -138,8 +138,8 @@
                                 <td><input type="hidden" id="data12{{$loop->index}}" name="data12{{$loop->index}}"
                                         value="{{$lt}}">{{$lt}}</td>
                                 <td><input style="width:200px" type="number" id="data1{{$loop->index}}"
-                                        name="data1{{$loop->index}}" step="0.0000001" required value="{{$row[4]}}"
-                                        oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                        name="data1{{$loop->index}}" step="0.0000000001" required value="{{$row[4]}}"
+                                        oninput="if(value.length>12)value=value.slice(0,12)"></td>
                                 <td><input style="width:120px" type="number" id="data2{{$loop->index}}"
                                         name="data2{{$loop->index}}" readonly step="0.0000001" >
                                 </td>
