@@ -18,10 +18,10 @@ class CreateMPSTable extends Migration
             $table->string('機種', 45);
             $table->string('製程', 45);
             $table->primary(['客戶別','機種','製程']);
-            $table->float('下月MPS');
-            $table->float('下月生產天數');
-            $table->float('本月MPS');
-            $table->float('本月生產天數');
+            $table->double('下月MPS');
+            $table->double('下月生產天數');
+            $table->double('本月MPS');
+            $table->double('本月生產天數');
             $table->dateTime('填寫時間');
             $table->timestamps();
             $table->softDeletes();

@@ -46,7 +46,7 @@
                                         <td><input type = "text"  name = "data0a{{$loop->index}}" value = "{{$row[0]}}" required></td>
                                         <td><input type = "text"  name = "data1a{{$loop->index}}" value = "{{$row[1]}}" required></td>
                                         <td><input type = "text"  name = "data2a{{$loop->index}}" value = "{{$row[2]}}" required></td>
-                                        <td><input style="width:80px" type = "number"  name = "data3a{{$loop->index}}" value = "{{$row[3]}}" step="0.00001" required></td>
+                                        <td><input style="width:100px" type = "number"  name = "data3a{{$loop->index}}" value = "{{$row[3]}}" step="0.00001" required></td>
                                         <td>
                                             <select style="width:100px" class="form-select form-select-lg " id = "data4a{{$loop->index}}" name="data4a{{$loop->index}}" required>
                                             <option style="display: none" selected value = "{{$row[4]}}">{{$row[4]}}</option>

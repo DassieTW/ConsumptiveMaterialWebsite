@@ -18,12 +18,12 @@ class CreateConsumptiveMaterialTable extends Migration
             $table->primary('料號');
             $table->string('品名', 100);
             $table->string('規格', 100);
-            $table->float('單價');
+            $table->double('單價');
             $table->string('幣別', 45);
             $table->string('單位', 45);
             $table->integer('MPQ');
             $table->integer('MOQ');
-            $table->float('LT');
+            $table->double('LT');
             $table->string('月請購', 4);
             $table->string('A級資材', 4);
             $table->string('耗材歸屬', 45);
