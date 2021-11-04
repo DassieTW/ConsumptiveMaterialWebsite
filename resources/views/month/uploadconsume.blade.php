@@ -129,7 +129,14 @@
                             </tr>
                             @foreach($data as $row)
                             <tr>
-
+                                <?php
+                                    $name = DB::table('consumptive_material')->where('料號',$row[3])->value('品名');
+                                    $format = DB::table('consumptive_material')->where('料號',$row[3])->value('規格');
+                                    $unit = DB::table('consumptive_material')->where('料號',$row[3])->value('單位');
+                                    $lt = DB::table('consumptive_material')->where('料號',$row[3])->value('LT');
+                                    $month = DB::table('consumptive_material')->where('料號',$row[3])->value('月請購');
+                                    $belong = DB::table('consumptive_material')->where('料號',$row[3])->value('耗材歸屬');
+                                ?>
                                 <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
                                         value="{{$row[3]}}">{{$row[3]}}</td>
                                 <td>{{$name}}</td>

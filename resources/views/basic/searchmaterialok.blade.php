@@ -98,7 +98,7 @@
                                 <option>{!! __('basicInfoLang.stand') !!}</option>
                             </select>
                         </td>
-                        <td><input style="width:80px" type="number" id="price{{$loop->index}}"
+                        <td><input style="width:100px" type="number" id="price{{$loop->index}}"
                                 name="price{{$loop->index}}" value="{{$data->單價}}" step="0.00001"></td>
                         <td>
                             <select style="width:100px" class="form-select form-select-lg " id="money{{$loop->index}}"
