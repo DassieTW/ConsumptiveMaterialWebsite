@@ -7103,6 +7103,7 @@ fieldset:disabled .btn {
 }
 
 .sticky-top {
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1020;
@@ -7110,6 +7111,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 576px) {
   .sticky-sm-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -7118,6 +7120,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 768px) {
   .sticky-md-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -7126,6 +7129,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 992px) {
   .sticky-lg-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -7134,6 +7138,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 1200px) {
   .sticky-xl-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -7142,6 +7147,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 1440px) {
   .sticky-xxl-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -7302,6 +7308,7 @@ fieldset:disabled .btn {
 }
 
 .position-sticky {
+  position: -webkit-sticky !important;
   position: sticky !important;
 }
 
@@ -19392,6 +19399,7 @@ fieldset:disabled .btn {
 }
 
 .sticky-top {
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1020;
@@ -19399,6 +19407,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 576px) {
   .sticky-sm-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -19407,6 +19416,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 768px) {
   .sticky-md-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -19415,6 +19425,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 992px) {
   .sticky-lg-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -19423,6 +19434,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 1200px) {
   .sticky-xl-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -19431,6 +19443,7 @@ fieldset:disabled .btn {
 
 @media (min-width: 1440px) {
   .sticky-xxl-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -19591,6 +19604,7 @@ fieldset:disabled .btn {
 }
 
 .position-sticky {
+  position: -webkit-sticky !important;
   position: sticky !important;
 }
 
@@ -28832,6 +28846,7 @@ span.flatpickr-weekday {
 }
 
 [data-simplebar] {
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   left: 0;
