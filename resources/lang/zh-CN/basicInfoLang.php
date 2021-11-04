@@ -82,4 +82,7 @@ return [
     'ieroom' =>'IE备品室',
     'meroom' => 'ME备品室',
     'equiproom' => '设备备品室',
+    'upload1' => '上传',
+    'nocheck' => '请勾选欲提交项目',
+    'check' => '勾选',
 ];

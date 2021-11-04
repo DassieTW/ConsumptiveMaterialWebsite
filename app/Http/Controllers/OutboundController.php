@@ -34,12 +34,12 @@ class OutboundController extends Controller
      */
 
 
-    public function index()
+    /*public function index()
     {
         return view('outbound.index');
-    }
+    }*/
 
-    //領料
+    /*//領料
     public function pick(Request $request)
     {
         if (Session::has('username')) {
@@ -67,9 +67,9 @@ class OutboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
-    //領料單頁面
+    /*//領料單頁面
     public function picklistpage(Request $request)
     {
         if (Session::has('username')) {
@@ -103,7 +103,7 @@ class OutboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //領料單
     public function picklist(Request $request)
@@ -113,17 +113,27 @@ class OutboundController extends Controller
             //刪除領料單
             if($request->has('delete'))
             {
-                $list =  $request->input('list');
-                DB::table('outbound')
-                ->where('領料單號', $request->input('list'))
-                ->delete();
+                if($request->input('list') !== null)
+                {
+                    $list =  $request->input('list');
+                    DB::table('outbound')
+                    ->where('領料單號', $request->input('list'))
+                    ->delete();
 
-                $mess = trans('outboundpageLang.delete').' : '.trans('outboundpageLang.picklistnum')
-                .$list.trans('outboundpageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess' );
-                window.location.href='/outbound';
-                        </script>");
+                    $mess = trans('outboundpageLang.delete').' : '.trans('outboundpageLang.picklistnum')
+                    .$list.trans('outboundpageLang.success');
+                    echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('$mess' );
+                    window.location.href='/outbound';
+                            </script>");
+                }
+                else
+                {
+                    return back()->withErrors([
+                    'list' => trans('outboundpageLang.enterpicklist'),
+
+                    ]);
+                }
 
             }
             else
@@ -158,14 +168,16 @@ class OutboundController extends Controller
                     return view('outbound.picklist')->with(['number' => $datas])
                         ->with(['data' => $datas])
                         ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()]);
+                        ->with(['people1' => 人員信息::cursor()])
+                        ->with(['check' => 人員信息::cursor()]);
                 }
                 else
                 {
                     return view('outbound.picklist')->with(['number' => $datas->where('領料單號',$list)])
                         ->with(['data' => $datas->where('領料單號',$list)])
                         ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()]);
+                        ->with(['people1' => 人員信息::cursor()])
+                        ->with(['check' => 人員信息::cursor()]);
                 }
             }
         }
@@ -183,16 +195,26 @@ class OutboundController extends Controller
             //刪除退料單
             if($request->has('delete'))
             {
-                $list =  $request->input('list');
-                DB::table('出庫退料')
-                ->where('退料單號', $request->input('list'))
-                ->delete();
-                $mess = trans('outboundpageLang.delete').' : '.trans('outboundpageLang.backlistnum')
-                .$list.trans('outboundpageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess' );
-                window.location.href='/outbound';
-                        </script>");
+                if($request->input('list') !== null)
+                {
+                    $list =  $request->input('list');
+                    DB::table('出庫退料')
+                    ->where('退料單號', $request->input('list'))
+                    ->delete();
+                    $mess = trans('outboundpageLang.delete').' : '.trans('outboundpageLang.backlistnum')
+                    .$list.trans('outboundpageLang.success');
+                    echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('$mess' );
+                    window.location.href='/outbound';
+                            </script>");
+                }
+                else
+                {
+                    return back()->withErrors([
+                        'list' => trans('outboundpageLang.enterbacklist'),
+
+                        ]);
+                }
             }
             else
             {
@@ -225,7 +247,8 @@ class OutboundController extends Controller
                         ->with(['data' => $datas])
                         ->with(['people' => 人員信息::cursor()])
                         ->with(['people1' => 人員信息::cursor()])
-                        ->with(['position' => 儲位::cursor()]);
+                        ->with(['position' => 儲位::cursor()])
+                        ->with(['check' => 人員信息::cursor()]);
                 }
                 else
                 {
@@ -233,7 +256,8 @@ class OutboundController extends Controller
                         ->with(['data' => $datas->where('退料單號',$list)])
                         ->with(['people' => 人員信息::cursor()])
                         ->with(['people1' => 人員信息::cursor()])
-                        ->with(['position' => 儲位::cursor()]);
+                        ->with(['position' => 儲位::cursor()])
+                        ->with(['check' => 人員信息::cursor()]);
                 }
             }
         }
@@ -243,12 +267,12 @@ class OutboundController extends Controller
         }
     }
 
-    //領料記錄表
+    /*//領料記錄表
     public function pickrecord(Request $request)
     {
         if (Session::has('username')) {
             return view('outbound.pickrecord')->with(['client' => 客戶別::cursor()])
-                ->with(['production' => 製程::cursor()]);
+                ->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);
         } else {
             return redirect(route('member.login'));
         }
@@ -259,11 +283,11 @@ class OutboundController extends Controller
     {
         if (Session::has('username')) {
             return view('outbound.backrecord')->with(['client' => 客戶別::cursor()])
-                ->with(['production' => 製程::cursor()]);
+                ->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //領料記錄表查詢
     public function pickrecordsearch(Request $request)
@@ -722,7 +746,7 @@ class OutboundController extends Controller
         Session::forget('unit');
         Session::forget('send');
         Session::forget('number');
-        $reDive = new responseObj();
+
         if (Session::has('username')) {
             if ($request->input('client') !== null && $request->input('number') !== null) {
 
@@ -753,34 +777,21 @@ class OutboundController extends Controller
                         Session::put('send', $send);
                         Session::put('pick', $client);
                         if ($stock > 0) {
-                            $reDive->boolean = true;
-                            $reDive->passbool = true;
-                            $reDive->passstock = true;
-                            $myJSON = json_encode($reDive);
-                            echo $myJSON;
+                            return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
                         }
                         //沒有庫存
                         else {
-                            $reDive->boolean = true;
-                            $reDive->passbool = true;
-                            $reDive->passstock = false;
-                            $myJSON = json_encode($reDive);
-                            echo $myJSON;
+                            return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
                         }
-                    } else {
-                        $reDive->boolean = true;
-                        $reDive->passbool = false;
-                        $reDive->passstock = false;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
                     }
-                } else {
-                    $reDive->boolean = false;
-                    $reDive->passbool = true;
-                    $reDive->passstock = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
-                    return;
+                    //沒有料號
+                    else {
+                        return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
+                    }
+                }
+                //料號長度不為12
+                else {
+                    return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
                 }
             } else {
                 return view('outbound.pick');
@@ -803,7 +814,6 @@ class OutboundController extends Controller
         Session::forget('unit');
         Session::forget('send');
         SessION::forget('number');
-        $reDive = new responseObj();
         if (Session::has('username')) {
             if ($request->input('client') !== null && $request->input('number') !== null) {
 
@@ -831,22 +841,16 @@ class OutboundController extends Controller
                         Session::put('unit', $unit);
                         Session::put('send', $send);
                         Session::put('back', $client);
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                    } else {
-                        $reDive->boolean = true;
-                        $reDive->passbool = false;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
                     }
-                } else {
-                    $reDive->boolean = false;
-                    $reDive->passbool = true;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
-                    return;
+                    //料號不存在
+                    else {
+                        return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+                    }
+                }
+                //料號長度不為12
+                else {
+                    return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
                 }
             } else {
                 return view('outbound.back');
@@ -859,7 +863,6 @@ class OutboundController extends Controller
     //提交領料添加
     public function pickaddsubmit(Request $request)
     {
-        $reDive = new  responseObj();
         if (Session::has('username')) {
             if ($request->input('amount') !== null) {
                 $number = $request->input('number');
@@ -894,25 +897,17 @@ class OutboundController extends Controller
                 DB::beginTransaction();
                 try {
                     DB::table('outbound')
-                            ->insert(['客戶別' => $client , '機種' => $machine , '製程' => $production ,'領用原因' => $usereason , '線別' => $line ,
-                            '料號' => $number , '品名' => $name , '規格' => $format ,'單位' => $unit , '預領數量' => $amount ,
-                            '實際領用數量' => $amount , '備註' => $remark , '領料單號' => $opentime ,'開單時間' => Carbon::now()]);
+                        ->insert(['客戶別' => $client , '機種' => $machine , '製程' => $production ,'領用原因' => $usereason , '線別' => $line ,
+                        '料號' => $number , '品名' => $name , '規格' => $format ,'單位' => $unit , '預領數量' => $amount ,
+                        '實際領用數量' => $amount , '備註' => $remark , '領料單號' => $opentime ,'開單時間' => Carbon::now()]);
 
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();
-                    $reDive->boolean = false;
-                    $mess = $e->getMessage();
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='/outbound';
-                        </script>");
+                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                 }
 
-                $reDive->boolean = true;
-                $reDive->message = $opentime;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
             } else {
                 return redirect(route('outbound.pick'));
             }
@@ -924,7 +919,6 @@ class OutboundController extends Controller
     //提交退料添加
     public function backaddsubmit(Request $request)
     {
-        $reDive = new responseObj();
         if (Session::has('username')) {
             if ($request->input('amount') !== null) {
                 $number = $request->input('number');
@@ -956,7 +950,6 @@ class OutboundController extends Controller
                     $num = strval($num);
                     $opentime = $num;
                 }
-                if ($remark === 'zero') $remark = '';
                 DB::beginTransaction();
                 try {
                     DB::table('出庫退料')
@@ -966,18 +959,9 @@ class OutboundController extends Controller
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();
-                    $reDive->boolean = false;
-                    $mess = $e->getMessage();
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='/outbound';
-                        </script>");
+                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                 }
-
-                $reDive->boolean = true;
-                $reDive->message = $opentime;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
             } else {
                 return redirect(route('outbound.back'));
             }
@@ -989,8 +973,6 @@ class OutboundController extends Controller
     //提交領料單
     public function picklistsubmit(Request $request)
     {
-
-        $reDive = new responseObj();
         if (Session::has('username'))
         {
             if ($request->input('amount') !== null && $request->input('position') !== null)
@@ -1011,24 +993,14 @@ class OutboundController extends Controller
                 //沒填寫實領差異原因
                 if ($amount !== $advance && $reason === null)
                 {
-                    $reDive->boolean = true;
-                    $reDive->passbool = false;
-                    $reDive->passstock = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
                 }
                 else
                 {
                     //庫存小於實際領用數量,無法出庫
                     if ($amount > $stock)
                     {
-                        $reDive->boolean = false;
-                        $reDive->passbool = true;
-                        $reDive->passstock = true;
-                        $reDive->position = $position;
-                        $reDive->nowstock = $stock;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json(['position' => $position , 'nowstock' => $stock], 421/* Status code here default is 200 ok*/);
                     }
                     else
                     {
@@ -1053,18 +1025,10 @@ class OutboundController extends Controller
                             DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
-                            $reDive->boolean = false;
-                            $reDive->passbool = false;
-                            $reDive->passstock = false;
-                            $myJSON = json_encode($reDive);
-                            echo $myJSON;
+                            return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
                         }
 
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $reDive->passstock = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
                     }
                 }
             }
@@ -1082,8 +1046,6 @@ class OutboundController extends Controller
     //提交退料單
     public function backlistsubmit(Request $request)
     {
-
-        $reDive = new responseObj();
         if (Session::has('username')) {
             if ($request->input('amount') !== null && $request->input('position') !== null) {
                 $list = $request->input('list');
@@ -1099,12 +1061,10 @@ class OutboundController extends Controller
                 $time = Carbon::now();
                 $backname = DB::table('人員信息')->where('工號', $backpeople)->value('姓名');
                 $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
+                //沒填寫原因
                 if ($amount !== $advance && $reason === null)
                 {
-                    $reDive->boolean = true;
-                    $reDive->passbool = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
                 }
                 else
                 {
@@ -1144,14 +1104,11 @@ class OutboundController extends Controller
                             DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
-                            $reDive->boolean = false;
-                            $reDive->passbool = false;
+                            return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
                         }
 
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                    return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+
                     }
                     else
                     {
@@ -1186,14 +1143,10 @@ class OutboundController extends Controller
                             DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
-                            $reDive->boolean = false;
-                            $reDive->passbool = false;
+                            return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
                         }
 
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
                     }
                 }
             }
@@ -1208,7 +1161,7 @@ class OutboundController extends Controller
         }
     }
 
-    //領料添加頁面
+    /*//領料添加頁面
     public function pickaddok()
     {
         if (Session::has('username')) {
@@ -1236,7 +1189,7 @@ class OutboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //download
     public function download(Request $request)

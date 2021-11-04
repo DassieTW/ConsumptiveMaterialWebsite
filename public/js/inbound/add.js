@@ -8,11 +8,13 @@ $.ajaxSetup({
 $("#inreason").on("change", function () {
 
     var value = $("#inreason").val();
-    if (value === "其他") {
+    if (value === "其他" || value === "other") {
         document.getElementById("reason").style.display = "block";
+        document.getElementById("reason").required = true;
     }
     else {
         document.getElementById("reason").style.display = "none";
+        document.getElementById("reason").required = false;
     }
 });
 
@@ -49,16 +51,20 @@ $('#add').on('submit', function (e) {
         },
 
         success: function (data) {
-            console.log(data);
-            var myObj = JSON.parse(data);
-            console.log(myObj);
-            if (myObj.boolean === true && myObj.passbool === true && myObj.passstock === true) {
+            console.log(data.boolean);
 
+            if (data.boolean == 'true') {
                 window.location.href = "addnewok";
-                //window.location.href = "member.newok";
             }
+            else if(data.boolean == 'false') {
+                window.location.href = "/inbound/addclient";
+            }
+
+        },
+        error: function (err) {
+            console.log(err);
             //不等於12
-            else if (myObj.boolean === true && myObj.passbool === false && myObj.passstock === false) {
+            if (err.status == 420) {
                 document.getElementById("numbererror").style.display = "block";
                 document.getElementById('number').style.borderColor = "red";
                 document.getElementById('number').value = '';
@@ -66,7 +72,7 @@ $('#add').on('submit', function (e) {
                 document.getElementById("notransit").style.display = "none";
             }
             //無料號
-            else if (myObj.boolean === true && myObj.passbool === true && myObj.passstock === false) {
+            else if (err.status == 421) {
                 document.getElementById("numbererror1").style.display = "block";
                 document.getElementById('number').style.borderColor = "red";
                 document.getElementById('number').value = '';
@@ -74,7 +80,7 @@ $('#add').on('submit', function (e) {
                 document.getElementById("notransit").style.display = "none";
             }
             //在途量為0
-            else if (myObj.boolean === true && myObj.passbool === false && myObj.passstock === true) {
+            else if (err.status == 422) {
                 document.getElementById("notransit").style.display = "block";
                 document.getElementById('number').style.borderColor = "red";
                 document.getElementById('client').style.borderColor = "red";
@@ -85,15 +91,6 @@ $('#add').on('submit', function (e) {
                 document.getElementById("numbererror1").style.display = "none";
                 document.getElementById("numbererror").style.display = "none";
             }
-
-            //添加By客戶別
-            else if (myObj.boolean === false && myObj.passbool === true && myObj.passstock === false) {
-                window.location.href = "/inbound/addclient";
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.warn(jqXHR.responseText);
-            alert(errorThrown);
         }
     });
 });

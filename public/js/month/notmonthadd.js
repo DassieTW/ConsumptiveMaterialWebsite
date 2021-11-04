@@ -36,28 +36,25 @@ $('#notmonthadd').on('submit', function (e) {
       $('body').loadingModal('hide');
     },
     success: function (data) {
-      console.log(data);
-      var myObj = JSON.parse(data);
-      console.log(myObj);
-      if (myObj.boolean === true) {
+
         var mess = Lang.get('monthlyPRpageLang.notmonth') + Lang.get('monthlyPRpageLang.add')
           + Lang.get('monthlyPRpageLang.success');
         alert(mess);
         window.location.href = "/month";
         //window.location.href = "member.newok";
-      }
-      else if (myObj.message !== null) {
-        alert(myObj.message);
-      }
-      else {
-        document.getElementById("error").style.display = "block";
-        document.getElementById("say").style.borderColor = "red";
-        document.getElementById("reason").style.borderColor = "red";
-      }
+
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.warn(jqXHR.responseText);
-      alert(errorThrown);
-    }
+    error: function (err) {
+        //repeat
+        if (err.status == 420) {
+            document.getElementById("error").style.display = "block";
+            document.getElementById("say").style.borderColor = "red";
+            document.getElementById("reason").style.borderColor = "red";
+        }
+        //transaction error
+        else if (err.status == 421) {
+            console.log(err.status);
+        }
+      },
   });
 });

@@ -44,11 +44,11 @@
 
                             </table>
                         </div>
-                        <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
+                        <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
                         <input type = "text" id = "jobnumber" name = "jobnumber" required>
                         <br>
-                        <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
-                        <input type="email" id="email" name = "email" pattern=".+@pegatroncorp\.com" required placeholder="xxx@pegartoncorp.com">
+                        <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
+                        <input type="email" id="email" name = "email" pattern=".+@pegatroncorp\.com" required placeholder="xxx@pegatroncorp.com">
                         <br><br>
                         <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}">
                     </form>

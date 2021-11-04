@@ -63,4 +63,6 @@ return [
     'upload1' =>'Upload',
     'usernamerepeat' =>'The account is repeated, please enter again.',
     'row' => 'In Row',
+    'check' => 'Check',
+    'nocheck' => 'Please tick the items you want to submit',
 ];

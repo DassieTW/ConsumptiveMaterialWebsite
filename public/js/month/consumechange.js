@@ -82,32 +82,34 @@ $.ajaxSetup({
         $('body').loadingModal('hide');
       },
       success: function (data) {
+
         console.log(data);
-        var myObj = JSON.parse(data);
-        console.log(myObj);
-        if (myObj.boolean === true && myObj.passbool === true ) {
-
-            var mess = Lang.get('monthlyPRpageLang.total')+(myObj.message)+Lang.get('monthlyPRpageLang.record')
-                + Lang.get('monthlyPRpageLang.isn')+Lang.get('monthlyPRpageLang.consume')
-                + Lang.get('monthlyPRpageLang.delete')+Lang.get('monthlyPRpageLang.success');
-            alert(mess);
-            window.location.href = "/month";
-        }
-        else if (myObj.boolean === true && myObj.passbool === false ) {
-
-            var mess = Lang.get('monthlyPRpageLang.total')+(myObj.message)+Lang.get('monthlyPRpageLang.record')
+        if(data.status == 201)
+        {
+            var mess = Lang.get('monthlyPRpageLang.total')+(data.message)+Lang.get('monthlyPRpageLang.record')
                 + Lang.get('monthlyPRpageLang.isn')+Lang.get('monthlyPRpageLang.consume')
                 + Lang.get('monthlyPRpageLang.change')+Lang.get('monthlyPRpageLang.submit')+Lang.get('monthlyPRpageLang.success');
             alert(mess);
             $("#consumebody").hide();
-            $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/testconsume?'+ myObj.database +'</a>');
-
+            $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/testconsume?'+ data.database +'</a>');
 
         }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.warn(jqXHR.responseText);
-        alert(errorThrown);
-      }
+        else{
+            var mess = Lang.get('monthlyPRpageLang.total')+(data.message)+Lang.get('monthlyPRpageLang.record')
+            + Lang.get('monthlyPRpageLang.isn')+Lang.get('monthlyPRpageLang.consume')
+            + Lang.get('monthlyPRpageLang.delete')+Lang.get('monthlyPRpageLang.success');
+            alert(mess);
+            window.location.href = "/month";
+
+        }
+
+        },
+        error: function (err) {
+            console.log(err);
+
+            var mess =  err.responseJSON.message;
+            alert(mess);
+
+        },
     });
   });

@@ -55,13 +55,12 @@ $('#' + tab1).removeClass('fade');
 
 $(document).ready(function () {
     // var perfEntries = performance.getEntriesByType("navigation");
-    // var p = perfEntries[perfEntries.length-1];    
-    // console.log("type = " + p.type); // test 
+    // var p = perfEntries[perfEntries.length-1];
+    // console.log("type = " + p.type); // test
     // sessionStorage.setItem('type', p.type); // test
     // sessionStorage.setItem('end_time', p.domContentLoadedEventEnd); // test
 
     $("#download").attr("href", "../download/FactoryExample.xlsx");
-    // sessionStorage.clear();
 
     $('.nav-item').on('click', function () {
         choose = this.id;
@@ -185,6 +184,7 @@ $(document).ready(function () {
             data: {
                 select: select, data: data, datanew: datanew, dataname: dataname, olddata: olddata
             },
+            dataType: 'json', // expected respose datatype from server
             //async: false,
 
             beforeSend: function () {
@@ -198,19 +198,19 @@ $(document).ready(function () {
                 $('body').loadingModal('hide');
             },
             success: function (data) {
-                console.log(data);
-                var myObj = JSON.parse(data);
-                console.log(myObj);
-                if (myObj.boolean === true) {
-                    var mess = Lang.get('basicInfoLang.change') + ' / ' + Lang.get('basicInfoLang.delete') + ' ' + Lang.get('basicInfoLang.success');
-                    alert(mess);
-                    window.location.reload();
-                }
+                console.log(data.boolean);
+
+                var mess = Lang.get('basicInfoLang.change') + ' / ' + Lang.get('basicInfoLang.delete') + ' ' + Lang.get('basicInfoLang.success');
+                alert(mess);
+                window.location.reload();
 
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.warn(jqXHR.responseText);
-                alert(errorThrown);
+            error: function (err) {
+                var mess = Lang.get('basicInfoLang.repeat');
+                alert(mess);
+                $("#" + err.responseJSON.message).css("borderColor", "red");
+                console.log(err.responseJSON.message);
+                console.log(err.status);
             }
 
         });
@@ -218,14 +218,29 @@ $(document).ready(function () {
     });
 });
 
-// window.onunload = function () {
-//     var perfEntries = performance.getEntriesByType("navigation");
-//     var p = perfEntries[perfEntries.length-1];
-//     if( p.type ) {
+/*$(window).on('unload', function() {
+    var a_n = window.event.screenX - window.screenLeft;
+    var a_b = a_n > document.documentElement.scrollWidth-20;
+    if(a_b && window.event.clientY< 0 || window.event.altKey){
 
-//     } // if
-    
-//     console.log("type = " + p.type); // test 
-//     sessionStorage.setItem('type', p.type); // test
-//     sessionStorage.setItem('end_time', p.domContentLoadedEventEnd);
-// }
+    }else{
+        sessionStorage.clear();
+    }
+});*/
+/*window.onbeforeunload = function () {
+
+    var n = window.event.screenX - window.screenLeft;
+
+    var b = n > document.documentElement.scrollWidth - 20;
+
+    if (!(b && window.event.clientY < 0 || window.event.altKey)) {
+        //window.event.returnValue = "真的要刷新页面么？";
+
+        //这里放置我想执行缓存的代码
+        //sessionStorage.clear();
+
+    }
+    else {
+        sessionStorage.clear();
+    }
+}*/

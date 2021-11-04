@@ -22,20 +22,7 @@
 
             <div class="card-body">
 
-                        <form method="post" enctype="multipart/form-data" action = "{{ route('obound.uploadinventory') }}">
-                            @csrf
-                            <div class="col-6 ">
-                                <label>{!! __('oboundpageLang.plz_upload') !!}</label>
-                                <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" name="select_file" />
-                                @error('select_file')
-                                    <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                                <br>
-                                <input type="submit" name="upload" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.upload') !!}">
-                            </div>
-                        </form>
+
 
                         <form  action = "{{ route('obound.insertuploadinventory') }}"method="POST">
                             @csrf
@@ -65,7 +52,7 @@
                                             $mess = trans('oboundpageLang.noisn').' '.trans('oboundpageLang.row').' : '.$error.' '.$row[1];
                                             echo ("<script LANGUAGE='JavaScript'>
                                                     window.alert('$mess');
-                                                    window.location.href='uploadinventory';
+                                                    window.location.href='upload';
 
                                                     </script>");
 
@@ -78,7 +65,7 @@
                                             $mess = trans('oboundpageLang.noclient').' '.trans('oboundpageLang.row').' : '.$error.' '.$row[0];
                                             echo ("<script LANGUAGE='JavaScript'>
                                                     window.alert('$mess');
-                                                    window.location.href='uploadinventory';
+                                                    window.location.href='upload';
 
                                                     </script>");
 
@@ -93,7 +80,7 @@
                                             $mess = trans('oboundpageLang.nobound').' '.trans('oboundpageLang.row').' : '.$error.' '.$row[3];
                                             echo ("<script LANGUAGE='JavaScript'>
                                                     window.alert('$mess');
-                                                    window.location.href='uploadinventory';
+                                                    window.location.href='upload';
 
                                                     </script>");
 
@@ -106,7 +93,7 @@
                                     <td><input type = "hidden"  name = "data5{{$loop->index}}" value = "{{$format}}">{{$format}}</td>
                                     <td><input type = "number"  name = "data2{{$loop->index}}" value = "{{$row[2]}}"></td>
                                     <td>
-                                        <select class="form-control form-control-lg" id = "data3{{$loop->index}}" name="data3{{$loop->index}}" >
+                                        <select class="form-select form-select-lg" id = "data3{{$loop->index}}" name="data3{{$loop->index}}" >
                                         <option style="display: none" selected value = "{{$row[3]}}">{{$row[3]}}</option>
                                         @foreach($bounds as $bound)
                                         <option>{{  $bound }}</option>

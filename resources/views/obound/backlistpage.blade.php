@@ -11,35 +11,54 @@
 @section('content')
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-    </head>
-        <h2>{!! __('templateWords.obound') !!}</h2>
-        <div class="card">
-            <div class="card-header">
-                <h3>{!! __('oboundpageLang.backlist') !!}</h3>
-            </div>
+
+<head>
+    <meta charset="utf-8">
+</head>
+<h2>{!! __('templateWords.obound') !!}</h2>
+<div class="row justify-content-center">
+    <div class="card w-75">
+        <div class="card-header">
+            <h3>{!! __('oboundpageLang.backlist') !!}</h3>
+        </div>
+        <div class="row justify-content-center">
             <div class="card-body">
                 <form action="{{ route('obound.backlist') }}" method="POST">
                     @csrf
-                    <div class="d-flex w-100 h-100">
-                        <div class="mb-3">
-                            <label class="form-label">{!! __('oboundpageLang.backlist') !!}</label>
-                            <select class="form-control form-control-lg" id = "list" name="list">
-                            <option style="display: none" disabled selected value = "">{!! __('oboundpageLang.enterbacklist') !!}</option>
-                            @foreach($data as $data)
-                            <option>{{  $data->退料單號 }}</option>
-                            @endforeach
+                    <div class="row w-100 justify-content-center mb-3">
+
+                        <label class="col col-auto form-label">{!! __('oboundpageLang.backlist') !!}</label>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <div class="col-lg-6  col-md-12 col-sm-12">
+
+                            <select class="form-select form-select-lg" id="list" name="list">
+                                <option style="display: none" disabled selected value="">{!!
+                                    __('oboundpageLang.enterbacklist') !!}</option>
+                                @foreach($data as $data)
+                                <option>{{ $data->退料單號 }}</option>
+                                @endforeach
                             </select>
 
+                            @error('list')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
                     </div>
-                    <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.searchbacklist') !!}">
-                    <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.deletebacklist') !!}">
+                    <div class="row w-100 justify-content-center">
+                        <div class="col col-auto">
+                            <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
+                                value="{!! __('oboundpageLang.searchbacklist') !!}">
+                            &emsp;
+                            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                                value="{!! __('oboundpageLang.deletebacklist') !!}">
+                        </div>
+                    </div>
                 </form>
-                <br>
-                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.index')}}'">{!! __('oboundpageLang.return') !!}</button>
+
             </div>
         </div>
+
 </html>
 @endsection

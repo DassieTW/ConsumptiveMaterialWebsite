@@ -15,6 +15,9 @@ for(var i = 0 ; i < count ; i++){
     var now = (nowpeople * nowclass * nowline * nowuse * nowchange ) / mpq;
     var next = (nextpeople * nextclass * nextline * nextuse * nextchange ) / mpq;
     var safe = next * lt ;
+    now = now.toFixed(2);
+    next = next.toFixed(2);
+    safe = safe.toFixed(2);
     $('#data13'+i).val(now);
     $('#data19'+i).val(next);
     $('#data20'+i).val(safe);
@@ -39,6 +42,9 @@ $(document).ready(function(){
             var now = (nowpeople * nowclass * nowline * nowuse * nowchange ) / mpq;
             var next = (nextpeople * nextclass * nextline * nextuse * nextchange ) / mpq;
             var safe = next * lt ;
+            now = now.toFixed(2);
+            next = next.toFixed(2);
+            safe = safe.toFixed(2);
             $('#data13'+i).val(now);
             $('#data19'+i).val(next);
             $('#data20'+i).val(safe);
@@ -223,33 +229,32 @@ $.ajaxSetup({
             $('body').loadingModal('hide');
         },
         success: function (data) {
-            console.log(data);
-            var myObj = JSON.parse(data);
-            console.log(myObj);
-            if (myObj.boolean === true && myObj.passbool === true ) {
 
+            console.log(data);
+            if(data.status == 201)
+            {
+                var mess = Lang.get('monthlyPRpageLang.total')+(myObj.message)+Lang.get('monthlyPRpageLang.record')
+                + Lang.get('monthlyPRpageLang.stand')
+                + Lang.get('monthlyPRpageLang.change')+Lang.get('monthlyPRpageLang.submit')+Lang.get('monthlyPRpageLang.success');
+                alert(mess);
+                $("#standbody").hide();
+                $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/teststand?'+ myObj.database +'</a>');
+            }
+            else{
                 var mess = Lang.get('monthlyPRpageLang.total')+(myObj.message)+Lang.get('monthlyPRpageLang.record')
                     + Lang.get('monthlyPRpageLang.stand')
                     + Lang.get('monthlyPRpageLang.delete')+Lang.get('monthlyPRpageLang.success');
                 alert(mess);
                 window.location.href = "/month";
             }
-            else if (myObj.boolean === true && myObj.passbool === false ) {
+            },
+            error: function (err) {
+                console.log(err);
 
-                var mess = Lang.get('monthlyPRpageLang.total')+(myObj.message)+Lang.get('monthlyPRpageLang.record')
-                    + Lang.get('monthlyPRpageLang.stand')
-                    + Lang.get('monthlyPRpageLang.change')+Lang.get('monthlyPRpageLang.submit')+Lang.get('monthlyPRpageLang.success');
+                var mess =  err.responseJSON.message;
                 alert(mess);
-                $("#standbody").hide();
-                $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/teststand?'+ myObj.database +'</a>');
 
-
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.warn(jqXHR.responseText);
-            alert(errorThrown);
-        }
+            },
         });
 
     }

@@ -9,6 +9,9 @@ $(document).ready(function () {
     var nowneed = (nowmps * amount) / nowday;
     var nextneed = (nextmps * amount) / nextday;
     var safe = nextneed * lt;
+    nowneed = nowneed.toFixed(7);
+    nextneed = nextneed.toFixed(7);
+    safe = safe.toFixed(7);
     $('#nowneed').val(nowneed);
     $('#nextneed').val(nextneed);
     $('#safe').val(safe);
@@ -52,28 +55,27 @@ $('#consumenew').on('submit', function (e) {
       $('body').loadingModal('hide');
     },
     success: function (data) {
-      console.log(data);
-      var myObj = JSON.parse(data);
-      console.log(myObj);
-      if (myObj.boolean === true) {
+
         var mess = Lang.get('monthlyPRpageLang.isn') + Lang.get('monthlyPRpageLang.consume')
           + Lang.get('monthlyPRpageLang.new') + Lang.get('monthlyPRpageLang.submit') + Lang.get('monthlyPRpageLang.success');
         alert(mess);
 
         $("#consumebody").hide();
-        $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/testconsume?'+ myObj.database +'</a>');
+        $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/testconsume?'+ data.database +'</a>');
 
-        //window.location.href = "member.newok";
-      }
-      else {
-        var mess = Lang.get('monthlyPRpageLang.repeat');
-        alert(mess);
-        return false;
-      }
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.warn(jqXHR.responseText);
-      alert(errorThrown);
-    }
+    error: function (err) {
+        //repeat
+        if (err.status == 420) {
+            var mess = Lang.get('monthlyPRpageLang.repeat');
+            alert(mess);
+            return false;
+
+        }
+        //transaction error
+        else if (err.status == 421) {
+            console.log(err.status);
+        }
+      },
   });
 });

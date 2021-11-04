@@ -126,4 +126,7 @@ return [
     'enterisn' => '请输入料号',
     'entersrm' => '请输入SRM单号',
     'timepart' => '时间段',
+    'stand' => '站位',
+    'nopeople' => '请输入画押人员',
+    'noemail' => '请输入画押人员信箱',
 ];

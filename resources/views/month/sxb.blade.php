@@ -32,7 +32,7 @@
                                     <option style="display: none" disabled selected>{!!
                                         __('monthlyPRpageLang.enterclient') !!}</option>
                                     @foreach($client as $client)
-                                    <option>{{  $client->客戶 }}</option>
+                                    <option>{{ $client->客戶 }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -71,7 +71,7 @@
                                     <option style="display: none" disabled selected>{!!
                                         __('monthlyPRpageLang.entersenddep') !!}</option>
                                     @foreach($send as $send)
-                                    <option>{{  $send->發料部門 }}</option>
+                                    <option>{{ $send->發料部門 }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -86,20 +86,22 @@
                                 </div>
                             </div>
 
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-
-                            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.begindate') !!}</label>
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
+                                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.begindate')
+                                        !!}</label>:
                                     <input type="date" id="begin" name="begin" value="<?php echo date('Y-m-d'); ?>" />
                                 </div>
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.enddate') !!}</label>
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
+                                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.enddate')
+                                        !!}</label>:
                                     <input type="date" id="end" name="end" value="<?php echo date('Y-m-d'); ?>" />
                                 </div>
                             </div>

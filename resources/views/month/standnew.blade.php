@@ -62,68 +62,69 @@
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nowpeople') !!}</label>
-                    <input class="form-control form-control-lg " type="number" id="nowpeople" name="nowpeople"
-                        value="0">
+                    <input class="form-control form-control-lg " type="number" id="nowpeople" name="nowpeople" value="0"
+                        step="0.0000001"
+                        oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nowline') !!}</label>
-                    <input class="form-control form-control-lg " type="number" id="nowline" name="nowline" value="0">
+                    <input class="form-control form-control-lg " type="number" id="nowline" name="nowline" value="0" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nowclass') !!}</label>
-                    <input class="form-control form-control-lg " type="number" id="nowclass" name="nowclass" value="0">
+                    <input class="form-control form-control-lg " type="number" id="nowclass" name="nowclass" value="0" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nowuse') !!}</label>
-                    <input class="form-control form-control-lg " type="number" id="nowuse" name="nowuse" value="0">
+                    <input class="form-control form-control-lg " type="number" id="nowuse" name="nowuse" value="0" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nowchange') !!}</label>
                     <input class="form-control form-control-lg " type="number" id="nowchange" name="nowchange"
-                        value="0">
+                        value="0" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nowdayneed') !!}</label>
-                    <input class="form-control form-control-lg " type="number" id="nowneed" name="nowneed" readonly>
+                    <input class="form-control form-control-lg " type="number" id="nowneed" name="nowneed" readonly step="0.01">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nextpeople') !!}</label>
                     <input class="form-control form-control-lg " type="number" id="nextpeople" name="nextpeople"
-                        value="0">
+                        value="0" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nextline') !!}</label>
-                    <input class="form-control form-control-lg " type="number" id="nextline" name="nextline" value="0">
+                    <input class="form-control form-control-lg " type="number" id="nextline" name="nextline" value="0" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nextclass') !!}</label>
                     <input class="form-control form-control-lg " type="number" id="nextclass" name="nextclass"
-                        value="0">
+                        value="0" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nextuse') !!}</label>
-                    <input class="form-control form-control-lg " type="number" id="nextuse" name="nextuse" value="0">
+                    <input class="form-control form-control-lg " type="number" id="nextuse" name="nextuse" value="0" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nextchange') !!}</label>
                     <input class="form-control form-control-lg " type="number" id="nextchange" name="nextchange"
-                        value="0">
+                        value="0"vstep="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
 
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nextdayneed') !!}</label>
-                    <input class="form-control form-control-lg " type="number" id="nextneed" name="nextneed" readonly>
+                    <input class="form-control form-control-lg " type="number" id="nextneed" name="nextneed" readonly step="0.01">
                 </div>
 
 

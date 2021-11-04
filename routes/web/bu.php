@@ -1,5 +1,17 @@
 <?php
-
+use App\Models\入庫原因;
+use App\Models\客戶別;
+use App\Models\發料部門;
+use App\Models\製程;
+use App\Models\領用原因;
+use App\Models\領用部門;
+use App\Models\廠別;
+use App\Models\線別;
+use App\Models\機種;
+use App\Models\儲位;
+use App\Models\退回原因;
+use App\Models\O庫;
+use App\Models\ConsumptiveMaterial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BUController;
 
@@ -11,7 +23,9 @@ use App\Http\Controllers\BUController;
 */
 
 //index
-Route::get('/', [BUController::class, 'index'])->name('bu.index');
+Route::get('/',function () {
+    return view('bu.index');
+})->name('bu.index');
 
 //搜尋呆滯庫存
 Route::get('/sluggish', [BUController::class, 'sluggish'])->name('bu.sluggish');
@@ -23,7 +37,9 @@ Route::post('/sluggishmaterial', [BUController::class, 'sluggishmaterial'])->nam
 Route::post('/transsluggish', [BUController::class, 'transsluggish'])->name('bu.transsluggish');
 
 //調撥單查詢頁面
-Route::get('/searchlist', [BUController::class, 'searchlist'])->name('bu.searchlist');
+Route::get('/searchlist', function () {
+return view('bu.searchlist')->with(['factory' => 廠別::cursor()])->with(['factory1' => 廠別::cursor()]);
+})->name('bu.searchlist');
 
 //調撥單查詢
 Route::get('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.searchlistsub');

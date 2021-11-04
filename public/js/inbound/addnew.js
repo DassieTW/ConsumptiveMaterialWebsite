@@ -1,7 +1,3 @@
-document.getElementById("showposition").style.display = "none";
-document.getElementById("showname").style.display = "none";
-document.getElementById("nostock").style.display = "none";
-document.getElementById("nostock").style.color = "red";
 
 $.ajaxSetup({
   headers: {
@@ -45,32 +41,21 @@ $('#addnew').on('submit', function (e) {
       $('body').loadingModal('hide');
     },
     success: function (data) {
-      console.log(data);
-      var myObj = JSON.parse(data);
-      console.log(myObj);
-      if (myObj.boolean === true && myObj.passbool === true) {
         var mess = Lang.get('inboundpageLang.add') + Lang.get('inboundpageLang.success') + ' : ' +
-          Lang.get('inboundpageLang.inlist') + ' : ' + myObj.message;
+          Lang.get('inboundpageLang.inlist') + ' : ' + data.message;
         alert(mess);
-        //alert("添加成功，入庫單號: " + myObj.message);
-        window.location.href = "/inbound";
-        //window.location.href = "member.newok";
-      }
-      //入庫數量大於庫存量
-      else if (myObj.boolean === true && myObj.passbool === false) {
+        window.location.href = "/inbound/add";
 
-        document.getElementById("nostock").style.display = "block";
-        document.getElementById("inamount").style.borderColor = "red";
-      }
-
-      else if (myObj.boolean === false && myObj.passbool === false) {
-
-        window.location.reload();
-      }
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.warn(jqXHR.responseText);
-      alert(errorThrown);
+    error: function (err) {
+        if (err.status == 420) {
+            document.getElementById("nostock").style.display = "block";
+            document.getElementById("inamount").style.borderColor = "red";
+
+            //transaction error
+          } else if (err.status == 421) {
+            window.location.reload();
+          }
     }
   });
 });

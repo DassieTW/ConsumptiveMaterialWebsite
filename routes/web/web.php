@@ -78,3 +78,4 @@ Route::get('/lang/{type}', function (Request $request, $type) {
     \App::setLocale($type);
     return Redirect::back();
 })->withoutMiddleware('auth');
+

@@ -64,20 +64,18 @@ $.ajaxSetup({
         $('body').loadingModal('hide');
       },
       success: function (data) {
-        console.log(data);
-        var myObj = JSON.parse(data);
-        console.log(myObj);
-        if (myObj.boolean === true && myObj.passbool === true ) {
-
-            var mess = Lang.get('monthlyPRpageLang.total')+(myObj.message)+Lang.get('monthlyPRpageLang.record')
+        var mess = Lang.get('monthlyPRpageLang.total')+(data.message)+Lang.get('monthlyPRpageLang.record')
                +Lang.get('monthlyPRpageLang.success');
             alert(mess);
             window.location.href = "/month";
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.warn(jqXHR.responseText);
-        alert(errorThrown);
-      }
+
+        },
+        error: function (err) {
+            //transaction error
+            console.log(err.status);
+            var mess = err.responseJSON.message;
+            alert(mess);
+        },
+
     });
   });

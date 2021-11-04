@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\發料部門;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CallController;
 
@@ -10,11 +11,15 @@ use App\Http\Controllers\CallController;
 |
 */
 
-//index
+/*//index
 Route::get('/', [CallController::class, 'index'])->name('call.index')->middleware('can:viewAlarm,App\Models\Inventory');
+*/
 
 //安全庫存警報頁面
-Route::get('/safe', [CallController::class, 'safe'])->name('call.safe')->middleware('can:viewAlarm,App\Models\Inventory');
+Route::get('/safe', function () {
+    return view('call.safepage')->with(['sends' => 發料部門::cursor()]);
+
+})->name('call.safe')->middleware('can:viewAlarm,App\Models\Inventory');
 
 //安全庫存警報
 Route::get('/safesubmit', [CallController::class, 'safesubmit'])->middleware('can:viewAlarm,App\Models\Inventory');
@@ -22,7 +27,9 @@ Route::get('/safesubmit', [CallController::class, 'safesubmit'])->middleware('ca
 Route::post('/safesubmit', [CallController::class, 'safesubmit'])->name('call.safesubmit')->middleware('can:viewAlarm,App\Models\Inventory');
 
 //呆滯天數警報頁面
-Route::get('/day', [CallController::class, 'day'])->name('call.day')->middleware('can:viewAlarm,App\Models\Inventory');
+Route::get('/day', function () {
+    return view('call.daypage')->with(['sends' => 發料部門::cursor()]);
+})->name('call.day')->middleware('can:viewAlarm,App\Models\Inventory');
 
 //呆滯天數警報
 Route::get('/daysubmit', [CallController::class, 'daysubmit'])->middleware('can:viewAlarm,App\Models\Inventory');

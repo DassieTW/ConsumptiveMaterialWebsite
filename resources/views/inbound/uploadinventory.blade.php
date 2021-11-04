@@ -1,3 +1,49 @@
+@foreach($data as $row)
+<?php
+$name = DB::table('consumptive_material')->where('料號',$row[1])->value('品名');
+$format = DB::table('consumptive_material')->where('料號',$row[1])->value('規格');
+$position = DB::table('儲位')->pluck('儲存位置');
+$clients = DB::table('客戶別')->pluck('客戶')->toArray();
+$positions = DB::table('儲位')->pluck('儲存位置')->toArray();
+$i = false;
+$j = false;
+$error = $loop->index +1;
+//判斷是否有料號
+if($name === null || $format === null)
+{
+    $mess = trans('inboundpageLang.noisn').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[1];
+    echo ("<script LANGUAGE='JavaScript'>
+            window.alert('$mess');
+            window.location.href='upload';
+            </script>");
+}
+//判斷是否有這個客戶
+if(in_array($row[0],$clients)) $i = true;
+
+if($i === false)
+{
+
+    $mess = trans('inboundpageLang.noclient').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[0];
+    echo ("<script LANGUAGE='JavaScript'>
+            window.alert('$mess');
+            window.location.href='upload';
+            </script>");
+}
+
+//判斷是否有這個儲位
+if(in_array($row[3],$positions)) $j = true;
+
+if($j === false)
+{
+
+    $mess = trans('inboundpageLang.noloc').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[3];
+    echo ("<script LANGUAGE='JavaScript'>
+            window.alert('$mess');
+            window.location.href='upload';
+            </script>");
+}
+?>
+@endforeach
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
@@ -21,21 +67,6 @@
 
             <div class="card-body">
 
-                        <form method="post" enctype="multipart/form-data" action = "{{ route('inbound.uploadinventory') }}">
-                            @csrf
-                            <div class="col-6 ">
-                                <label>{!! __('inboundpageLang.plz_upload') !!}</label>
-                                <input  class="form-control @error('select_file') is-invalid @enderror"  type="file" name="select_file" />
-                                @error('select_file')
-                                    <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                                <br>
-                                <input type="submit" name="upload" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.upload') !!}">
-                            </div>
-                        </form>
-
                         <form  action = "{{ route('inbound.insertuploadinventory') }}"method="POST">
                             @csrf
                             <div class="table-responsive">
@@ -50,50 +81,6 @@
                                 </tr>
                                 @foreach($data as $row)
                                 <tr>
-                                    <?php
-                                        $name = DB::table('consumptive_material')->where('料號',$row[1])->value('品名');
-                                        $format = DB::table('consumptive_material')->where('料號',$row[1])->value('規格');
-                                        $position = DB::table('儲位')->pluck('儲存位置');
-                                        $clients = DB::table('客戶別')->pluck('客戶')->toArray();
-                                        $positions = DB::table('儲位')->pluck('儲存位置')->toArray();
-                                        $i = false;
-                                        $j = false;
-                                        $error = $loop->index +1;
-                                        //判斷是否有料號
-                                        if($name === null || $format === null)
-                                        {
-                                            $mess = trans('inboundpageLang.noisn').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[1];
-                                            echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('$mess');
-                                                    window.location.href='uploadinventory';
-                                                    </script>");
-                                        }
-                                        //判斷是否有這個客戶
-                                        if(in_array($row[0],$clients)) $i = true;
-
-                                        if($i === false)
-                                        {
-
-                                            $mess = trans('inboundpageLang.noclient').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[0];
-                                            echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('$mess');
-                                                    window.location.href='uploadinventory';
-                                                    </script>");
-                                        }
-
-                                        //判斷是否有這個儲位
-                                        if(in_array($row[3],$positions)) $j = true;
-
-                                        if($j === false)
-                                        {
-
-                                            $mess = trans('inboundpageLang.noloc').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[3];
-                                            echo ("<script LANGUAGE='JavaScript'>
-                                                    window.alert('$mess');
-                                                    window.location.href='uploadinventory';
-                                                    </script>");
-                                        }
-                                    ?>
                                     <td><input type = "hidden"  name = "data0{{$loop->index}}" value = "{{$row[0]}}">{{$row[0]}}</td>
                                     <td><input type = "hidden"  name = "data1{{$loop->index}}" value = "{{$row[1]}}">{{$row[1]}}</td>
                                     <td>{{$name}}</td>

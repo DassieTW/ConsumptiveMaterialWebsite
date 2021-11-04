@@ -83,4 +83,6 @@ return [
     'meroom' => 'ME備品室',
     'equiproom' => '設備備品室',
     'upload1' => '上傳',
+    'nocheck' => '請勾選欲提交項目',
+    'check' => '勾選',
 ];

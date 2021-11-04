@@ -11,6 +11,7 @@ use App\Models\線別;
 use App\Models\領用原因;
 use App\Models\退回原因;
 use App\Models\入庫原因;
+use App\Models\發料部門;
 use App\Models\Outbound;
 use App\Models\出庫退料;
 use App\Models\人員信息;
@@ -38,7 +39,7 @@ class InboundController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    /*public function index()
     {
         //
         if (Session::has('username')) {
@@ -46,9 +47,9 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
-    //入庫-查詢頁面
+    /*//入庫-查詢頁面
     public function search(Request $request)
     {
         if (Session::has('username')) {
@@ -56,20 +57,21 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
-    //入庫-庫存查詢頁面
+    /*//入庫-庫存查詢頁面
     public function searchstock(Request $request)
     {
         if (Session::has('username')) {
             return view('inbound.searchstock')->with(['client' => 客戶別::cursor()])
-                ->with(['position' => 儲位::cursor()]);
+                ->with(['position' => 儲位::cursor()])
+                ->with(['senddep' => 發料部門::cursor()]);
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
-    //入庫-儲位調撥頁面
+    /*//入庫-儲位調撥頁面
     public function positionchange(Request $request)
     {
         if (Session::has('username')) {
@@ -78,9 +80,9 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
-    //入庫-庫存上傳頁面
+    /*//入庫-庫存上傳頁面
     public function upload(Request $request)
     {
         if (Session::has('username')) {
@@ -88,7 +90,7 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //入庫-儲位調撥
     public function change(Request $request)
@@ -144,7 +146,7 @@ class InboundController extends Controller
     public function changesubmit(Request $request)
     {
         if (Session::has('username')) {
-            $reDive = new responseObj();
+
             $number = $request->input('number');
             $oldposition = $request->input('oldposition');
             $client = $request->input('client');
@@ -193,9 +195,8 @@ class InboundController extends Controller
                     </script>");
             }
 
-            $reDive->boolean = true;
-            $myJSON = json_encode($reDive);
-            echo $myJSON;
+            return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+
         } else {
             return redirect(route('member.login'));
         }
@@ -518,7 +519,7 @@ class InboundController extends Controller
     }
 
 
-    //入庫-新增頁面
+    /*//入庫-新增頁面
     public function add(Request $request)
     {
         if (Session::has('username')) {
@@ -528,7 +529,7 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //入庫-新增
     public function addnew(Request $request)
@@ -544,7 +545,7 @@ class InboundController extends Controller
         Session::forget('inreason');
         Session::forget('positions');
         Session::forget('inboundadd');
-        $reDive = new responseObj();
+
         if (Session::has('username')) {
             if ($request->input('submit') === '0') {
                 if ($request->input('client') !== null && $request->input('inreason') !== null) {
@@ -552,12 +553,9 @@ class InboundController extends Controller
                     $inreason = $request->input('inreason');
                     $number = $request->input('number');
 
+                    //不等於12
                     if ($number !== ' ' && $number !== null && strlen($number) !== 12) {
-                        $reDive->boolean = true;
-                        $reDive->passbool = false;
-                        $reDive->passstock = false;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
                     } else {
                         $name = DB::table('consumptive_material')->where('料號', $number)->value('品名');
                         $format = DB::table('consumptive_material')->where('料號', $number)->value('規格');
@@ -568,69 +566,62 @@ class InboundController extends Controller
                         $belong = DB::table('consumptive_material')->where('料號', $number)->value('耗材歸屬');
                         $lt = DB::table('consumptive_material')->where('料號', $number)->value('LT');
                         $month = DB::table('consumptive_material')->where('料號', $number)->value('月請購');
-                        //dd($name);
-                        //return;
+
+                        //無料號
                         if ($name === null || $format === null) {
-                            $reDive->boolean = true;
-                            $reDive->passbool = true;
-                            $reDive->passstock = false;
-                            $myJSON = json_encode($reDive);
-                            echo $myJSON;
+                            return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
                         } else {
+                            //在途量為0
                             if ($amount === 0 && $inreason !== '調撥' &&  $inreason !== '退庫') {
-                                $reDive->boolean = true;
-                                $reDive->passbool = false;
-                                $reDive->passstock = true;
-                                $myJSON = json_encode($reDive);
-                                echo $myJSON;
-                            } else {
-                                $reDive->boolean = true;
-                                $reDive->passbool = true;
-                                $reDive->passstock = true;
-                                $myJSON = json_encode($reDive);
-                                echo $myJSON;
+                                return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
+
                             }
-                            if ($month === '否') {
-                                $safe = DB::table('consumptive_material')->where('料號', $number)->value('安全庫存');
-                            } else {
-                                if ($belong === '單耗') {
-                                    $machine = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)->value('機種');
-                                    $production = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)->value('製程');
-                                    $consume = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)->value('單耗');
-                                    $nextmps = DB::table('MPS')->where('機種', $machine)->where('客戶別', $client)->where('製程', $production)->value('下月MPS');
-                                    $nextday = DB::table('MPS')->where('機種', $machine)->where('客戶別', $client)->where('製程', $production)->value('下月生產天數');
-                                    if ($nextday == 0) {
-                                        $safe = 0;
-                                    } else {
-                                        $safe = $lt * $consume * $nextmps / $nextday;
-                                    }
+                            else {
+
+                                if ($month === '否') {
+                                    $safe = DB::table('consumptive_material')->where('料號', $number)->value('安全庫存');
                                 } else {
-                                    $machine = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('機種');
-                                    $production = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('製程');
-                                    $nextstand = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月站位人數');
-                                    $nextline = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月開線數');
-                                    $nextclass = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月開班數');
-                                    $nextuse = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月每人每日需求量');
-                                    $nextchange = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月每日更換頻率');
-                                    $mpq = DB::table('consumptive_material')->where('料號', $number)->value('MPQ');
-                                    if ($mpq == 0) {
-                                        $safe = 0;
+                                    if ($belong === '單耗') {
+                                        $machine = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)->value('機種');
+                                        $production = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)->value('製程');
+                                        $consume = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)->value('單耗');
+                                        $nextmps = DB::table('MPS')->where('機種', $machine)->where('客戶別', $client)->where('製程', $production)->value('下月MPS');
+                                        $nextday = DB::table('MPS')->where('機種', $machine)->where('客戶別', $client)->where('製程', $production)->value('下月生產天數');
+                                        if ($nextday == 0) {
+                                            $safe = 0;
+                                        } else {
+                                            $safe = $lt * $consume * $nextmps / $nextday;
+                                        }
                                     } else {
-                                        $safe = $lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange / $mpq;
+                                        $machine = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('機種');
+                                        $production = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('製程');
+                                        $nextstand = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月站位人數');
+                                        $nextline = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月開線數');
+                                        $nextclass = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月開班數');
+                                        $nextuse = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月每人每日需求量');
+                                        $nextchange = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月每日更換頻率');
+                                        $mpq = DB::table('consumptive_material')->where('料號', $number)->value('MPQ');
+                                        if ($mpq == 0) {
+                                            $safe = 0;
+                                        } else {
+                                            $safe = $lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange / $mpq;
+                                        }
                                     }
                                 }
+                                Session::put('client', $client);
+                                Session::put('inreason', $inreason);
+                                Session::put('number', $number);
+                                Session::put('name', $name);
+                                Session::put('format', $format);
+                                Session::put('unit', $unit);
+                                Session::put('amount', $amount);
+                                Session::put('stock', $stock);
+                                Session::put('safe', $safe);
+                                Session::put('positions', $positions);
+                                Session::put('inboundadd', $number);
+                                return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+
                             }
-                            Session::put('client', $client);
-                            Session::put('inreason', $inreason);
-                            Session::put('number', $number);
-                            Session::put('name', $name);
-                            Session::put('format', $format);
-                            Session::put('unit', $unit);
-                            Session::put('amount', $amount);
-                            Session::put('stock', $stock);
-                            Session::put('safe', $safe);
-                            Session::put('positions', $positions);
-                            Session::put('inboundadd', $number);
                         }
                     }
                 } else {
@@ -640,11 +631,8 @@ class InboundController extends Controller
                 Session::put('addclient', $request->input('client'));
                 Session::put('client', $request->input('client'));
                 Session::put('inreason', $request->input('inreason'));
-                $reDive->boolean = false;
-                $reDive->passbool = true;
-                $reDive->passstock = false;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['boolean' => 'false']/* Status code here default is 200 ok*/);
+
             }
         } else {
             return redirect(route('member.login'));
@@ -652,7 +640,7 @@ class InboundController extends Controller
     }
 
 
-    //入庫-新增頁面
+    /*//入庫-新增頁面
     public function addnewok(Request $request)
     {
         if (Session::has('username')) {
@@ -665,12 +653,12 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //入庫-新增提交
     public function addnewsubmit(Request $request)
     {
-        $reDive = new  responseObj();
+
         if (Session::has('username')) {
             if ($request->input('inamount') !== null) {
                 $number = $request->input('number');
@@ -689,10 +677,7 @@ class InboundController extends Controller
                 $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
                 //入庫>在途量
                 if ($inamount > $amount && $inreason !== '調撥' && $inreason !== '退庫') {
-                    $reDive->boolean = true;
-                    $reDive->passbool = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
                 } else {
                     if ($stock !== null) {
                         $i = '0001';
@@ -734,15 +719,10 @@ class InboundController extends Controller
                             DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
-                            $reDive->boolean = false;
-                            $reDive->passbool = false;
+                        return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
                         }
 
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $reDive->message = $opentime;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
                     } else {
                         $i = '0001';
                         $max = DB::table('inbound')->max('入庫時間');
@@ -779,14 +759,9 @@ class InboundController extends Controller
                             DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
-                            $reDive->boolean = false;
-                            $reDive->passbool = false;
+                            return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
                         }
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $reDive->message = $opentime;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
                     }
                 }
             } else {
@@ -820,7 +795,7 @@ class InboundController extends Controller
         }
     }*/
 
-    //入庫-新增(By客戶別)頁面
+    /*//入庫-新增(By客戶別)頁面
     public function addclient(Request $request)
     {
         if (Session::has('username')) {
@@ -838,7 +813,7 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //入庫-新增(By客戶別)提交
     public function addclientsubmit(Request $request)
@@ -942,7 +917,7 @@ class InboundController extends Controller
                             $mess = $e->getMessage();
                             echo ("<script LANGUAGE='JavaScript'>
                                 window.alert('$mess');
-                                window.location.href='/inbound';
+                                window.location.href='/inbound/add';
                                 </script>");
                         }
                     } else {
@@ -971,7 +946,7 @@ class InboundController extends Controller
                             $mess = $e->getMessage();
                             echo ("<script LANGUAGE='JavaScript'>
                                 window.alert('$mess');
-                                window.location.href='/inbound';
+                                window.location.href='/inbound/add';
                                 </script>");
                         }
                     }
@@ -982,7 +957,7 @@ class InboundController extends Controller
                 . trans('inboundpageLang.inlist') . ' : ' . $opentime;
             echo ("<script LANGUAGE='JavaScript'>
             window.alert('$mess');
-            window.location.href='/inbound';
+            window.location.href='/inbound/add';
             </script>");
         } else {
             return redirect(route('member.login'));
@@ -1173,7 +1148,7 @@ class InboundController extends Controller
         }
     }
 
-    //庫存上傳頁面
+    /*//庫存上傳頁面
     function uploadinventorypage(Request $request)
     {
         if (Session::has('username')) {
@@ -1181,7 +1156,7 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //上傳資料新增至資料庫
     public function insertuploadinventory(Request $request)
@@ -1210,8 +1185,9 @@ class InboundController extends Controller
                         $mess = $e->getmessage();
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
+                        window.location.href='upload';
                         </script>");
-                        return view('inbound.uploadinventory1');
+
                     }
                 } else {
                     DB::beginTransaction();
@@ -1228,8 +1204,9 @@ class InboundController extends Controller
                         $mess = $e->getmessage();
                         echo ("<script LANGUAGE='JavaScript'>
                         window.alert('$mess');
+                        window.location.href='upload';
                         </script>");
-                        return view('inbound.uploadinventory1');
+
                     }
                 }
             }

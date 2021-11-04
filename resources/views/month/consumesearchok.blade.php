@@ -38,10 +38,10 @@
                     </tr>
                     @foreach($data as $data)
                     <?php
-                                        $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
-                                        $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
-                                        $test = str_replace(";","<br>",$data->紀錄) ;
-                                    ?>
+                        $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
+                        $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
+                        $test = str_replace(";","<br>",$data->紀錄) ;
+                    ?>
                     <tr id="{{$loop->index}}">
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                 style="width:20px;height:20px;" value="{{$loop->index}}"></td>
@@ -58,31 +58,34 @@
                         <td><input style="width: 200px;" class="form-control form-control-lg " type="number"
                                 id="amount{{$loop->index}}" name="amount{{$loop->index}}" value="{{$data->單耗}}"
                                 step="0.000000000000001"></td>
-                        <td><?php
-                                            echo $test;
-                                        ?></td>
+                        <td>
+                            <?php
+                                echo $test;
+                            ?>
+                        </td>
                     </tr>
                     @endforeach
 
                 </table>
             </div>
 
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
             <input type="text" id="jobnumber" name="jobnumber">
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
             <input type="email" id="email" name="email" pattern=".+@pegatroncorp\.com"
                 placeholder="xxx@pegartoncorp.com">
 
-            <br>
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.delete') !!}">
+            &emsp;
             <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.change') !!}">
         </form>
-        <br>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.consume')}}'">{!!
             __('monthlyPRpageLang.return') !!}</button>
     </div>

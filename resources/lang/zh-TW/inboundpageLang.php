@@ -85,4 +85,9 @@ return [
     'lessstock' => '目前庫存小於入庫數量，無法刪除此筆入庫。',
     'noclient' => '客戶不存在',
     'noloc' => '儲位不存在',
+    'enterisn' => '請輸入料號',
+    'enterinlist' => '請輸入入庫單號',
+    'timepart' => '時間段',
+    'upload1' => '上傳',
+
 ];

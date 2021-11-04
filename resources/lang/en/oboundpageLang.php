@@ -124,5 +124,8 @@ return [
     'inboundnum' => 'Inbound Amount',
     'nobound' => 'Library does not exist',
     'new' => 'New',
-    'lessstock1' => 'The current stock is less than the stock-in quantity, this stock-in cannot be deleted.'
+    'lessstock1' => 'The current stock is less than the stock-in quantity, this stock-in cannot be deleted.',
+    'upload1' => 'Upload',
+    'timepart' => 'Period',
+    'amount' => 'Amount',
 ];

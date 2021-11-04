@@ -95,7 +95,7 @@ $(document).ready(function () {
 }); // on document ready
 
 $(window).on('load', function() {
-  // PAGE IS FULLY LOADED  
+  // PAGE IS FULLY LOADED
   // FADE OUT YOUR OVERLAYING DIV
   $('body').loadingModal('hide');
 });
