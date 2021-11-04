@@ -5,6 +5,14 @@ $.ajaxSetup({
   }
 });
 
+$('#amount').hover(
+    function() {
+      $( this ).append( $( "<span> ***</span>" ) );
+    }, function() {
+      $( this ).find( "span" ).last().remove();
+    }
+  );
+
 $('#pickadd').on('submit', function (e) {
   e.preventDefault();
   var number = $("#number").val();

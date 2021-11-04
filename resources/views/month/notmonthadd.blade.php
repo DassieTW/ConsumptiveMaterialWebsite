@@ -54,12 +54,13 @@
                             </tr>
                         </table>
                 </div>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <div id = "error" style="display:none; color:red;">{!! __('monthlyPRpageLang.errormonth') !!}</div>
 
-                <br>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <input type = "submit" id = "add" name ="add" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
                 </form>
-                <br>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importnotmonth')}}'">{!! __('monthlyPRpageLang.return') !!}</button>
             </div>
         </div>

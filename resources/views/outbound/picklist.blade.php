@@ -56,10 +56,10 @@
                     @foreach($data as $data)
                     <tr id="{{$data->領料單號}}">
                         <?php
-                                            $stock = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('現有庫存')->toArray();
-                                            $position = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('儲位')->toArray();
-                                            $test = array_combine($position, $stock);
-                                        ?>
+                            $stock = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('現有庫存')->toArray();
+                            $position = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('儲位')->toArray();
+                            $test = array_combine($position, $stock);
+                        ?>
 
                         <td id="client{{$data->領料單號}}">{{$data->客戶別}}</td>
                         <td>{{$data->機種}}</td>
@@ -93,6 +93,7 @@
 
                 </table>
             </div>
+
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div id="reasonerror" style="display:none;">
                 <h3 style="color: red">{!! __('outboundpageLang.enterdiffreason') !!}</h3>
@@ -102,24 +103,44 @@
             <label class="form-label">{!! __('outboundpageLang.sendpeople') !!}</label>
             <select class="form-select form-select-lg" id="sendpeople" name="sendpeople" required width="250"
                 style="width: 250px">
-                <option style="display: none" disabled selected value="">{!! __('outboundpageLang.entersendpeople') !!}
-                </option>
+                <option style="display: none" disabled selected value="">{!! __('outboundpageLang.entersendpeople')
+                    !!}</option>
                 @foreach($people as $people)
                 <option>{{ $people->工號 .' '. $people->姓名 }}</option>
                 @endforeach
+                <option>{!! __('outboundpageLang.other') !!}</option>
             </select>
+
+            @foreach($check as $people)
+            <input type="hidden" id="checkpeople{{$loop->index}}" name="checkpeople{{$loop->index}}"
+                value="{{$people->工號}}">
+            <input type="hidden" id="count" name="count" value="{{$loop->count}}">
+            @endforeach
+
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+            <input class="form-control form-control-lg " style="display:none;  width: 250px;" type="text"
+                id="inputsendpeople" name="inputsendpeople"
+                placeholder="{!! __('outboundpageLang.inputsendpeople') !!}">
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             <label class="form-label">{!! __('outboundpageLang.pickpeople') !!}</label>
             <select class="form-select form-select-lg" id="pickpeople" name="pickpeople" required width="250"
                 style="width: 250px">
-                <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterpickpeople') !!}
-                </option>
+                <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterpickpeople')
+                    !!}</option>
                 @foreach($people1 as $people)
                 <option>{{ $people->工號 .' '. $people->姓名 }}</option>
                 @endforeach
+                <option>{!! __('outboundpageLang.other') !!}</option>
             </select>
+
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+            <input class="form-control form-control-lg " style="display:none; width: 250px;" type="text"
+                id="inputpickpeople" name="inputpickpeople"
+                placeholder="{!! __('outboundpageLang.inputpickpeople') !!}">
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div id="lessstock" style="display:none;">
@@ -129,6 +150,8 @@
             </div>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
             <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
                 value="{!! __('outboundpageLang.submit') !!}">
         </form>

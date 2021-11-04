@@ -16,6 +16,9 @@ $(document).ready(function () {
     var now = (nowpeople * nowclass * nowline * nowuse * nowchange) / mpq;
     var next = (nextpeople * nextclass * nextline * nextuse * nextchange) / mpq;
     var safe = next * lt;
+    now = now.toFixed(2);
+    next = next.toFixed(2);
+    safe = safe.toFixed(2);
     $('#nowneed').val(now);
     $('#nextneed').val(next);
     $('#safe').val(safe);
@@ -73,28 +76,28 @@ $('#standnew').on('submit', function (e) {
       $('body').loadingModal('hide');
     },
     success: function (data) {
-      console.log(data);
-      var myObj = JSON.parse(data);
-      console.log(myObj);
-      if (myObj.boolean === true) {
+
         var mess = Lang.get('monthlyPRpageLang.stand')
           + Lang.get('monthlyPRpageLang.new') + Lang.get('monthlyPRpageLang.submit') + Lang.get('monthlyPRpageLang.success');
         alert(mess);
 
         $("#standbody").hide();
-        $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/teststand?'+ myObj.database +'</a>');
-        //window.location.href = "member.newok";
-      }
-      else {
-        var mess = Lang.get('monthlyPRpageLang.repeat');
-        alert(mess);
-        return false;
-      }
+        $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/teststand?'+ data.database +'</a>');
+
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.warn(jqXHR.responseText);
-      alert(errorThrown);
-    }
+    error: function (err) {
+        //repeat
+        if (err.status == 420) {
+            var mess = Lang.get('monthlyPRpageLang.repeat');
+            alert(mess);
+            return false;
+
+        }
+        //transaction error
+        else if (err.status == 421) {
+            console.log(err.status);
+        }
+      },
   });
 });
 

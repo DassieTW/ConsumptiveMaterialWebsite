@@ -248,7 +248,7 @@ Route::post('/testsubmit' , [MonthController::class, 'testsubmit'])->name('month
 
 //test站位畫押
 Route::get('/teststand' , function () {
-    return view('month.teststand')->with(['data' => 月請購_單耗::cursor()->where('狀態',"待畫押")]);
+    return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態',"待畫押")]);
 })->name('month.teststand')->withoutMiddleware('auth');
 
 //test站位畫押提交

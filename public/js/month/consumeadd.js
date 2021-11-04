@@ -34,29 +34,25 @@ $('#consumeadd').on('submit', function (e) {
     },
     success: function (data) {
       console.log(data);
-      var myObj = JSON.parse(data);
-      console.log(myObj);
-      if (myObj.boolean === true && myObj.passbool === true && myObj.passstock === true) {
+      window.location.href = "consumenewok";
 
-        window.location.href = "consumenewok";
-
-      }
-      else if (myObj.boolean === false && myObj.passbool === true && myObj.passstock === false) {
-        document.getElementById("numbererror").style.display = "block";
-        document.getElementById('number').style.borderColor = "red";
-        document.getElementById('number').value = '';
-        document.getElementById("numbererror1").style.display = "none";
-      }
-      else if (myObj.boolean === true && myObj.passbool === false && myObj.passstock === false) {
-        document.getElementById("numbererror1").style.display = "block";
-        document.getElementById('number').style.borderColor = "red";
-        document.getElementById('number').value = '';
-        document.getElementById("numbererror").style.display = "none";
-      }
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.warn(jqXHR.responseText);
-      alert(errorThrown);
-    }
+    error: function (err) {
+        //料號長度不為12
+        if (err.status == 421) {
+            document.getElementById("numbererror").style.display = "block";
+            document.getElementById('number').style.borderColor = "red";
+            document.getElementById('number').value = '';
+            document.getElementById("numbererror1").style.display = "none";
+
+        }
+        //料號不存在
+        else if (err.status == 420) {
+            document.getElementById("numbererror1").style.display = "block";
+            document.getElementById('number').style.borderColor = "red";
+            document.getElementById('number').value = '';
+            document.getElementById("numbererror").style.display = "none";
+        }
+      },
   });
 });

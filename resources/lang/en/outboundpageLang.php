@@ -97,4 +97,12 @@ return [
     'good' =>'good product',
     'nogood' =>'bad product',
     'timepart' => 'Period',
+    'nosendpeople' =>'The job number of the sender does not exist, please go to User Management-Maintenance of New Person Information',
+    'nopickpeople' =>'The job number of the picker does not exist, please go to User Management-Maintenance of New Person Information',
+    'nobackpeople' => 'The job number of the return people does not exist, please go to User Management-Maintenance of New Person Information',
+    'noreceivepeople' => 'The job number of the Receiver does not exist, please go to User Management-Maintenance of New Person Information',
+    'inputsendpeople' => 'Please input Send people',
+    'inputpickpeople' => 'Please input Pickup person',
+    'inputbackpeople' => 'Please input Return person',
+    'inputreceivepeople' => 'Please input Receiver',
 ];

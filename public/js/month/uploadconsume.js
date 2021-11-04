@@ -11,9 +11,9 @@ for(var i = 0 ; i < count ; i++){
     var nowneed = (nowmps * amount ) / nowday;
     var nextneed = (nextmps * amount ) / nextday;
     var safe = nextneed * lt ;
-    nowneed.toFixed(2);
-    nextneed.toFixed(2);
-    safe.toFixed(2);
+    nowneed = nowneed.toFixed(7);
+    nextneed = nextneed.toFixed(7);
+    safe = safe.toFixed(7);
     $('#data2'+i).val(nowneed);
     $('#data3'+i).val(nextneed);
     $('#data4'+i).val(safe);
@@ -31,9 +31,9 @@ $(document).ready(function(){
             var nowneed = (nowmps * amount ) / nowday;
             var nextneed = (nextmps * amount ) / nextday;
             var safe = nextneed * lt ;
-            nowneed.toFixed(2);
-            nextneed.toFixed(2);
-            safe.toFixed(2);
+            nowneed = nowneed.toFixed(7);
+            nextneed = nextneed.toFixed(7);
+            safe = safe.toFixed(7);
             $('#data2'+i).val(nowneed);
             $('#data3'+i).val(nextneed);
             $('#data4'+i).val(safe);
@@ -96,29 +96,23 @@ $.ajaxSetup({
         $('body').loadingModal('hide');
       },
       success: function (data) {
-        console.log(data);
-        var myObj = JSON.parse(data);
-        console.log(myObj);
-        if (myObj.boolean === true) {
+        console.log(number);
+        var mess = Lang.get('monthlyPRpageLang.total')+(data.message)+Lang.get('monthlyPRpageLang.record')
+        + Lang.get('monthlyPRpageLang.isn')+Lang.get('monthlyPRpageLang.consume')
+        +Lang.get('monthlyPRpageLang.submit')+Lang.get('monthlyPRpageLang.success');
+    alert(mess);
+    $("#consumebody").hide();
+    $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/testconsume?'+ data.database +'</a>');
 
-            var mess = Lang.get('monthlyPRpageLang.total')+(myObj.message)+Lang.get('monthlyPRpageLang.record')
-                + Lang.get('monthlyPRpageLang.isn')+Lang.get('monthlyPRpageLang.consume')
-                +Lang.get('monthlyPRpageLang.submit')+Lang.get('monthlyPRpageLang.success');
-            alert(mess);
-            $("#consumebody").hide();
-            $('#url').append('  URL : ' + '<a>http://127.0.0.1/month/testconsume?'+ myObj.database +'</a>');
-        }
-        else{
-            console.log(myObj.message);
-            var mess =Lang.get('monthlyPRpageLang.repeat');
-            alert(mess);
-            window.location.href='uploadconsume';
-
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.warn(jqXHR.responseText);
-        alert(errorThrown);
+  },
+  error: function (err) {
+      console.log(err);
+      //repeat
+      if (err.status == 420) {
+          var mess = Lang.get('monthlyPRpageLang.row') + err.responseJSON.message + Lang.get('monthlyPRpageLang.repeat');
+          alert(mess);
+          window.location.href='uploadconsume';
+      }
       }
     });
   });

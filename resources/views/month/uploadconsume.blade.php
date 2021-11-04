@@ -83,8 +83,6 @@
             <div class="card-header">
                 <h3>{!! __('monthlyPRpageLang.isnConsumeAdd') !!}</h3>
             </div>
-
-
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             <div class="card w-100">
@@ -139,16 +137,17 @@
                                 <td>{{$unit}}</td>
                                 <td><input type="hidden" id="data12{{$loop->index}}" name="data12{{$loop->index}}"
                                         value="{{$lt}}">{{$lt}}</td>
-                                <td><input style="width:60px" type="number" id="data1{{$loop->index}}"
-                                        name="data1{{$loop->index}}" step="0.01" required value="{{$row[4]}}"></td>
-                                <td><input style="width:80px" type="number" id="data2{{$loop->index}}"
-                                        name="data2{{$loop->index}}" readonly>
+                                <td><input style="width:200px" type="number" id="data1{{$loop->index}}"
+                                        name="data1{{$loop->index}}" step="0.0000001" required value="{{$row[4]}}"
+                                        oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                <td><input style="width:120px" type="number" id="data2{{$loop->index}}"
+                                        name="data2{{$loop->index}}" readonly step="0.0000001" >
                                 </td>
-                                <td><input style="width:80px" type="number" id="data3{{$loop->index}}"
-                                        name="data3{{$loop->index}}" readonly>
+                                <td><input style="width:120px" type="number" id="data3{{$loop->index}}"
+                                        name="data3{{$loop->index}}" readonly step="0.0000001">
                                 </td>
-                                <td><input style="width:80px" type="number" id="data4{{$loop->index}}"
-                                        name="data4{{$loop->index}}" readonly>
+                                <td><input style="width:120px" type="number" id="data4{{$loop->index}}"
+                                        name="data4{{$loop->index}}" readonly step="0.0000001">
                                 </td>
                                 <td><input type="hidden" id="data5{{$loop->index}}" name="data5{{$loop->index}}"
                                         value="{{$row[0]}}">{{$row[0]}}</td>
@@ -156,14 +155,14 @@
                                         value="{{$row[1]}}">{{$row[1]}}</td>
                                 <td><input type="hidden" id="data7{{$loop->index}}" name="data7{{$loop->index}}"
                                         value="{{$row[2]}}">{{$row[2]}}</td>
-                                <td><input style="width:70px" type="number" id="data8{{$loop->index}}"
-                                        name="data8{{$loop->index}}" step="0.01"></td>
-                                <td><input style="width:70px" type="number" id="data9{{$loop->index}}"
-                                        name="data9{{$loop->index}}" step="0.01"></td>
-                                <td><input style="width:70px" type="number" id="data10{{$loop->index}}"
-                                        name="data10{{$loop->index}}" step="0.01"></td>
-                                <td><input style="width:70px" type="number" id="data11{{$loop->index}}"
-                                        name="data11{{$loop->index}}" step="0.01"></td>
+                                <td><input style="width:80px" type="number" id="data8{{$loop->index}}"
+                                        name="data8{{$loop->index}}" step="0.01" oninput="if(value.length>4)value=value.slice(0,4)"></td>
+                                <td><input style="width:80px" type="number" id="data9{{$loop->index}}"
+                                        name="data9{{$loop->index}}" step="0.01" oninput="if(value.length>4)value=value.slice(0,4)"></td>
+                                <td><input style="width:80px" type="number" id="data10{{$loop->index}}"
+                                        name="data10{{$loop->index}}" step="0.01" oninput="if(value.length>4)value=value.slice(0,4)"></td>
+                                <td><input style="width:80px" type="number" id="data11{{$loop->index}}"
+                                        name="data11{{$loop->index}}" step="0.01" oninput="if(value.length>4)value=value.slice(0,4)"></td>
 
                             </tr>
                             <input type="hidden" id="count" name="count" value="{{$loop->count}}">

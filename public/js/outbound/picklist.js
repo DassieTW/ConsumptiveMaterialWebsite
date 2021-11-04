@@ -1,6 +1,4 @@
 
-
-
 //show select 領料單號
 $("#list").on("change", function () {
     var value = $("#list").val();
@@ -16,9 +14,41 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+var othersend;
+var otherpick;
+$("#sendpeople").on("change", function () {
+
+    var value = $("#sendpeople").val();
+    if (value === "其他" || value === "other") {
+        document.getElementById("inputsendpeople").style.display = "block";
+        document.getElementById("inputsendpeople").required = true;
+        othersend = true;
+    }
+    else {
+        document.getElementById("inputsendpeople").style.display = "none";
+        document.getElementById("inputsendpeople").required = false;
+        othersend = false;
+    }
+});
+
+$("#pickpeople").on("change", function () {
+
+    var value = $("#pickpeople").val();
+    if (value === "其他" || value === "other") {
+        document.getElementById("inputpickpeople").style.display = "block";
+        document.getElementById("inputpickpeople").required = true;
+        otherpick = true;
+    }
+    else {
+        document.getElementById("inputpickpeople").style.display = "none";
+        document.getElementById("inputpickpeople").required = false;
+        otherpick = false;
+    }
+});
 
 $('#picklist').on('submit', function (e) {
     e.preventDefault();
+    var count = $("#count").val();
     var list = $("#list").val();
     var advance = $("#advance" + list).html();
     var number = $("#number" + list).html();
@@ -26,11 +56,49 @@ $('#picklist').on('submit', function (e) {
     var amount = $("#amount" + list).val();
     var reason = $("#reason" + list).val();
     var send = $("#sendpeople").val();
+    var checkpeople = [];
+
+    for(let i = 0 ; i < count ; i++)
+    {
+        checkpeople.push($("#checkpeople" + i).val());
+    }
+    console.log(checkpeople);
+    var inputsendpeople = $("#inputsendpeople").val();
+    var check1 = checkpeople.indexOf(inputsendpeople);
+    var inputpickpeople = $("#inputpickpeople").val();
+    var check2 = checkpeople.indexOf(inputpickpeople);
+
     send = send.split(' ');
     var sendpeople = send[0];
     var pick = $("#pickpeople").val();
     pick = pick.split(' ');
     var pickpeople = pick[0];
+
+    if(othersend)
+    {
+        if(check1 == -1)
+        {
+            alert(Lang.get('outboundpageLang.nosendpeople'));
+            return false;
+        }
+        else
+        {
+            sendpeople = ("#inputsendpeople").val();
+        }
+    }
+    if(otherpick)
+    {
+        if(check2 == -1)
+        {
+            alert(Lang.get('outboundpageLang.nopickpeople'));
+            return false;
+        }
+        else
+        {
+            pickpeople = ("#inputpickpeople").val();
+        }
+    }
+
     var position = $("#position" + list).val();
     if (position != null) {
         position = position.split(' ');

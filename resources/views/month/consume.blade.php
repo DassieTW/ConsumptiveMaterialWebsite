@@ -21,7 +21,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="card-body">
-                <div class="d-flex w-100">
+                <div class="w-100">
                     <form action="{{ route('month.consumesearch') }}" method="POST" novalidate>
                         @csrf
                         <div class="row w-100 justify-content-center mb-3">

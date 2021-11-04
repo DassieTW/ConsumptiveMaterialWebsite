@@ -69,22 +69,23 @@
                 </table>
             </div>
 
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
             <input type="text" id="jobnumber" name="jobnumber">
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
             <input type="email" id="email" name="email" pattern=".+@pegatroncorp\.com"
                 placeholder="xxx@pegartoncorp.com">
 
-            <br>
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.delete') !!}">
+            &emsp;
             <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.change') !!}">
         </form>
-        <br>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.consume')}}'">{!!
             __('monthlyPRpageLang.return') !!}</button>
     </div>

@@ -5,7 +5,7 @@
 
 @section('js')
 <!--for this page's sepcified js -->
-<script src="{{ asset('js/month/testconsume.js') }}"></script>
+<script src="{{ asset('js/month/teststand.js') }}"></script>
 @endsection
 @section('content')
 <!DOCTYPE html>
@@ -28,7 +28,16 @@
                                 <th>{!! __('monthlyPRpageLang.client') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.machine') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.process') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.consume') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nowpeople') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nowline') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nowclass') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nowuse') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nowchange') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nextpeople') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nextline') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nextclass') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nextuse') !!}</th>
+                                <th>{!! __('monthlyPRpageLang.nextchange') !!}</th>
                             </tr>
                                 @foreach($data as $data)
                                 <tr>
@@ -36,23 +45,44 @@
                                     <td><input type = "hidden" id = "client{{$loop->index}}" name = "client{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
                                     <td><input type = "hidden" id = "machine{{$loop->index}}" name = "machine{{$loop->index}}" value = "{{$data->機種}}">{{$data->機種}}</td>
                                     <td><input type = "hidden" id = "production{{$loop->index}}" name = "production{{$loop->index}}" value = "{{$data->製程}}">{{$data->製程}}</td>
-                                    <td><input style = "width: 200px;" class="form-control form-control-lg " type = "number" id = "amount{{$loop->index}}" name = "amount{{$loop->index}}" value = "{{$data->單耗}}" step="0.000000000000001"></td>
-                                    <td><input type = "hidden" id = "compare{{$loop->index}}" name = "compare{{$loop->index}}" value = "{{$data->單耗}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nowpeople{{$loop->index}}" name = "nowpeople{{$loop->index}}" value = "{{$data->當月站位人數}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nowline{{$loop->index}}" name = "nowline{{$loop->index}}" value = "{{$data->當月開線數}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nowclass{{$loop->index}}" name = "nowclass{{$loop->index}}" value = "{{$data->當月開班數}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nowuse{{$loop->index}}" name = "nowuse{{$loop->index}}" value = "{{$data->當月每人每日需求量}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nowchange{{$loop->index}}" name = "nowchange{{$loop->index}}" value = "{{$data->當月每日更換頻率}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nextpeople{{$loop->index}}" name = "nextpeople{{$loop->index}}" value = "{{$data->下月站位人數}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nextline{{$loop->index}}" name = "nextline{{$loop->index}}" value = "{{$data->下月開線數}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nextclass{{$loop->index}}" name = "nextclass{{$loop->index}}" value = "{{$data->下月開班數}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nextuse{{$loop->index}}" name = "nextuse{{$loop->index}}" value = "{{$data->下月每人每日需求量}}"></td>
+                                    <td><input style="width: 80px" type = "number" id = "nextchange{{$loop->index}}" name = "nextchange{{$loop->index}}" value = "{{$data->下月每日更換頻率}}"></td>
+
+                                    <input  type = "hidden" id = "comnowpeople{{$loop->index}}" name = "comnowpeople{{$loop->index}}" value = "{{$data->當月站位人數}}">
+                                    <input  type = "hidden" id = "comnowline{{$loop->index}}" name = "comnowline{{$loop->index}}" value = "{{$data->當月開線數}}">
+                                    <input  type = "hidden" id = "comnowclass{{$loop->index}}" name = "comnowclass{{$loop->index}}" value = "{{$data->當月開班數}}">
+                                    <input  type = "hidden" id = "comnowuse{{$loop->index}}" name = "comnowuse{{$loop->index}}" value = "{{$data->當月每人每日需求量}}">
+                                    <input  type = "hidden" id = "comnowchange{{$loop->index}}" name = "comnowchange{{$loop->index}}" value = "{{$data->當月每日更換頻率}}">
+                                    <input  type = "hidden" id = "comnextpeople{{$loop->index}}" name = "comnextpeople{{$loop->index}}" value = "{{$data->下月站位人數}}">
+                                    <input  type = "hidden" id = "comnextline{{$loop->index}}" name = "comnextline{{$loop->index}}" value = "{{$data->下月開線數}}">
+                                    <input  type = "hidden" id = "comnextclass{{$loop->index}}" name = "comnextclass{{$loop->index}}" value = "{{$data->下月開班數}}">
+                                    <input  type = "hidden" id = "comnextuse{{$loop->index}}" name = "comnextuse{{$loop->index}}" value = "{{$data->下月每人每日需求量}}">
+                                    <input  type = "hidden" id = "comnextchange{{$loop->index}}" name = "comnextchange{{$loop->index}}" value = "{{$data->下月每日更換頻率}}">
                                 </tr>
                                 <input type = "hidden" id = "count" name = "count" value = "{{$loop->count}}"></td>
                                 @endforeach
 
                             </table>
                         </div>
-                        <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
                         <input type = "text" id = "jobnumber" name = "jobnumber" required>
-                        <br>
-                        <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
                         <input type="email" id="email" name = "email" pattern=".+@pegatroncorp\.com" required placeholder="xxx@pegartoncorp.com">
-                        <br><br>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--><div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}">
                     </form>
-                    <br>
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             </div>
         </div>
 </html>

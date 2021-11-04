@@ -64,4 +64,7 @@ return [
     'total' => '共',
     'record' => '筆',
     'usernamerepeat' => '帳號重複，請重新輸入。',
+    'row' => '在列',
+    'check' => '勾選',
+    'nocheck' => '請勾選欲提交項目',
 ];

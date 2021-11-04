@@ -64,4 +64,7 @@ return [
     'total' => '共',
     'record' => '笔',
     'usernamerepeat' => '帐号重复，请重新输入。',
+    'row' => '在列',
+    'check' => '勾选',
+    'nocheck' => '请勾选欲提交项目',
 ];

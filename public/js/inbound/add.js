@@ -8,11 +8,13 @@ $.ajaxSetup({
 $("#inreason").on("change", function () {
 
     var value = $("#inreason").val();
-    if (value === "其他") {
+    if (value === "其他" || value === "other") {
         document.getElementById("reason").style.display = "block";
+        document.getElementById("reason").required = true;
     }
     else {
         document.getElementById("reason").style.display = "none";
+        document.getElementById("reason").required = false;
     }
 });
 

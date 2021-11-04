@@ -49,21 +49,21 @@
                                 <td>{{$data->品名}}</td>
                                 <td>{{$data->規格}}</td>
                                 <td>
-                                    <select style="width:50px" class="form-control form-control-lg " id = "gradea{{$loop->index}}" name="gradea{{$loop->index}}">
+                                    <select style="width:100px" class="form-select form-select-lg " id = "gradea{{$loop->index}}" name="gradea{{$loop->index}}">
                                     <option>{{$data->A級資材}}</option>
                                     <option>{!! __('basicInfoLang.yes') !!}</option>
                                     <option>{!! __('basicInfoLang.no') !!}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select style="width:50px" class="form-control form-control-lg " id = "month{{$loop->index}}" name="month{{$loop->index}}">
+                                    <select style="width:100px" class="form-select form-select-lg " id = "month{{$loop->index}}" name="month{{$loop->index}}">
                                     <option>{{$data->月請購}}</option>
                                     <option>{!! __('basicInfoLang.yes') !!}</option>
                                     <option>{!! __('basicInfoLang.no') !!}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select style="width:100px" class="form-control form-control-lg " id = "send{{$loop->index}}" name="send{{$loop->index}}">
+                                    <select style="width:150px" class="form-select form-select-lg " id = "send{{$loop->index}}" name="send{{$loop->index}}">
                                     <option>{{$data -> 發料部門}}</option>
                                     @foreach ($sends as $send)
                                     <option>{{$send -> 發料部門}}</option>
@@ -71,7 +71,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select style="width:70px" class="form-control form-control-lg " id = "belong{{$loop->index}}" name="belong{{$loop->index}}">
+                                    <select style="width:100px" class="form-select form-select-lg " id = "belong{{$loop->index}}" name="belong{{$loop->index}}">
                                     <option>{{$data->耗材歸屬}}</option>
                                     <option>{!! __('basicInfoLang.consume') !!}</option>
                                     <option>{!! __('basicInfoLang.stand') !!}</option>
@@ -79,13 +79,14 @@
                                 </td>
                                 <td><input style="width:80px" type = "number" id = "price{{$loop->index}}" name = "price{{$loop->index}}" value = "{{$data->單價}}"></td>
                                 <td>
-                                    <select style="width:70px" class="form-control form-control-lg " id = "money{{$loop->index}}" name="money{{$loop->index}}">
+                                    <select style="width:100px" class="form-select form-select-lg " id = "money{{$loop->index}}" name="money{{$loop->index}}">
                                         <option>{{$data->幣別}}</option>
                                         <option>RMB</option>
                                         <option>USD</option>
                                         <option>JPY</option>
                                         <option>TWD</option>
                                         <option>VND</option>
+                                        <option>IDR</option>
                                     </select>
                                 </td>
                                 <td><input style="width:100px" type = "text" id = "unit{{$loop->index}}" name = "unit{{$loop->index}}" value = "{{$data->單位}}"></td>

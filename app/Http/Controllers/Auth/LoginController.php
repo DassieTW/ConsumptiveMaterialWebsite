@@ -177,40 +177,23 @@ class LoginController extends Controller
     //change password
     public function change(Request $request)
     {
-        $reDive = new responseObj();
         if (Session::has('username')) {
-            if ($request->input('password') !== null && $request->input('newpassword') !== null) {
-                if ($request->input('newpassword') === $request->input('surepassword')) {
-                    $username = Session::get('username');
-                    $password = DB::table('login')->where('username', $username)->value('password');
-                    if (Hash::check($request->input('password'), $password)) {
-                        DB::table('login')
-                            ->where('username', $username)
-                            ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
+            if ($request->input('newpassword') === $request->input('surepassword')) {
+                $username = Session::get('username');
+                $password = DB::table('login')->where('username', $username)->value('password');
+                if (Hash::check($request->input('password'), $password)) {
+                    DB::table('login')
+                        ->where('username', $username)
+                        ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
 
-                        $request->session()->flush();
+                    $request->session()->flush();
 
-                        Session::put('change', $username);
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                    } else {
-                        $reDive->boolean = true;
-                        $reDive->passbool = false;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                        return;
-                    }
+                    return \Response::json([]/* Status code here default is 200 ok*/);
                 } else {
-                    $reDive->boolean = false;
-                    $reDive->passbool = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
-                    return;
+                    return \Response::json(['message' => 'password no same'], 420/* Status code here default is 200 ok*/);
                 }
             } else {
-                return view('member.change');
+                return \Response::json(['message' => 'old password wrong'], 421/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
@@ -266,7 +249,7 @@ class LoginController extends Controller
         }
     }
 
-    //update people information
+    /*//update people information
     public function update(Request $request)
     {
         if (Session::has('username')) {
@@ -290,59 +273,53 @@ class LoginController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //人員信息更新或刪除
     public function numberchangeordel(Request $request)
     {
         if (Session::has('username')) {
+
+            $select = $request->input('select');
+            $now = Carbon::now();
+            $count = $request->input('count');
+            $name = $request->input('name');
+            $number = $request->input('number');
+            $department = $request->input('department');
             //delete
-            if ($request->has('delete')) {
-                $record = 0;
-                $count = $request->input('count');
+            if ($select == "刪除") {
                 for ($i = 0; $i < $count; $i++) {
-                    if ($request->has('innumber' . $i)) {
-                        人員信息::where('工號', $request->input('number' . $i))
+                    DB::beginTransaction();
+                    try {
+                        DB::table('人員信息')
+                            ->where('工號', $number[$i])
                             ->delete();
-                        $record++;
-                    } else {
-                        continue;
+                        DB::commit();
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                     }
                 }
 
-                $mess = trans('loginPageLang.total') . ' ' . $record . ' ' . trans('loginPageLang.record') . ' '
-                    . trans('loginPageLang.pinf') . ' ' . trans('loginPageLang.delete') . ' '
-                    . trans('loginPageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/member';
-                </script>");
+                return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
             }
             //change
-            else if ($request->has('change')) {
-                $count = $request->input('count');
-                $record = 0;
+            if ($select == "更新") {
                 for ($i = 0; $i < $count; $i++) {
-                    if ($request->has('innumber' . $i)) {
-                        $name = $request->input('name' . $i);
-                        $department = $request->input('department' . $i);
-                        DB::table('人員信息')
-                            ->where('工號', $request->input('number' . $i))
-                            ->update(['姓名' => $name, '部門' => $department, 'updated_at' => Carbon::now()]);
-                        $record++;
-                    } else {
-                        continue;
+                    DB::beginTransaction();
+                    try {
+                        人員信息::where('工號', $number[$i])
+                            ->update([
+                                '姓名' => $name[$i], '部門' => $department[$i],
+                                'updated_at' => Carbon::now()
+                            ]);
+                        DB::commit();
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                     }
                 }
-                $mess = trans('loginPageLang.total') . ' ' . $record . ' ' . trans('loginPageLang.record') . ' '
-                    . trans('loginPageLang.pinf') . ' ' . trans('loginPageLang.change') . ' '
-                    . trans('loginPageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/member';
-                </script>");
-            } else {
-                return redirect(route('member.number'));
+                return \Response::json(['message' => $count, 'status' => 201]/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
@@ -380,43 +357,15 @@ class LoginController extends Controller
     {
         if (Session::has('username')) {
             //delete
-            if ($request->has('delete')) {
-                $record = 0;
-                $count = $request->input('count');
-                for ($i = 0; $i < $count; $i++) {
-                    if ($request->has('innumber' . $i)) {
-                        DB::table('login')
-                            ->where('username', $request->input('username' . $i))
-                            ->delete();
-                        $record++;
-                    } else {
-                        continue;
-                    }
-                }
-                $mess = trans('loginPageLang.total') . ' ' . $record . trans('loginPageLang.record') . ' '
-                    . trans('loginPageLang.user') . ' ' . trans('loginPageLang.delete') . ' '
-                    . trans('loginPageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/member';
-                </script>");
+            $count = $request->input('count');
+            $username = $request->input('username');
+            for ($i = 0; $i < $count; $i++) {
+
+                DB::table('login')
+                    ->where('username', $username[$i])
+                    ->delete();
             }
-            //change
-            /*else if($request->has('change'))
-                {
-                    $count = $request->input('count');
-                    for($i = 0 ; $i < $count ; $i++)
-                    {
-                        $name = $request->input('name' . $i);
-                        $department = $request->input('department' . $i);
-                        DB::table('人員信息')
-                            ->where('工號', $request->input('number' . $i))
-                            ->update(['姓名' => $name , '部門' => $department]);
-                    }
-                    return view('member.changeok');
-                }*/ else {
-                return redirect(route('member.username'));
-            }
+            return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
         }
@@ -442,9 +391,6 @@ class LoginController extends Controller
             return redirect(route('member.login'));
         }
     }
-
-
-
 
     //logout
     public function logout(Request $request)
@@ -481,79 +427,76 @@ class LoginController extends Controller
         }
     }
 
-    //人員信息上傳頁面
-    function uploadpeoplepage(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('member.uploadpeople1');
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
     //人員信息上傳資料新增至資料庫
     public function insertuploadpeople(Request $request)
     {
         if (Session::has('username')) {
             $count = $request->input('count');
-            $numbers = DB::table('人員信息')->pluck('工號');
-            $record = 0;
-            for ($i = 0; $i < $count; $i++) {
-
-                $number =  $request->input('data0' . $i);
-                $name =  $request->input('data1' . $i);
-                $department = $request->input('data2' . $i);
-                if (strlen($number) !== 9) {
-                    $i++;
-                    $mess = trans('loginPageLang.row') . ' ' . $i . ' ' . trans('loginPageLang.joblength');
-                    echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='uploadpeople';
-                    </script>");
-                    //return view('member.uploadpeople1');
-                } else {
-
-                    //判斷工號是否重複
-                    for ($j = 0; $j < count($numbers); $j++) {
-                        if (strcasecmp($number, $numbers[$j]) === 0) {
-                            $i++;
-                            $mess = trans('loginPageLang.row') . ' ' . $i . ' ' . trans('loginPageLang.jobrepeat');
-                            echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href='uploadpeople';
-                            </script>");
-                            return;
-                            /*return back()->withErrors([
-                                'number' => '料號 is repeated , Please enter another 料號',
-                                ]);*/
-                        } else {
-                            continue;
-                        }
+            $number = $request->input('number');
+            $name = $request->input('name');
+            $department =  $request->input('department');
+            $bool = true;
+            $record =  0;
+            for($i = 0 ; $i < $count ; $i ++)
+            {
+                if(strlen($number[$i]) === 9)
+                {
+                    $test = DB::table('人員信息')->where('工號', $number[$i])->value('姓名');
+                    //new data
+                    if($test === null)
+                    {
                         DB::beginTransaction();
                         try {
                             DB::table('人員信息')
-                                ->insert(['工號' => $number, '姓名' => $name, '部門' => $department, 'created_at' => Carbon::now()]);
-                            DB::commit();
-                            $record++;
-                        } catch (\Exception $e) {
+                            ->insert(['工號' => $number[$i] , '姓名' => $name[$i] , '部門' => $department[$i] ,'created_at' => Carbon::now()]);
+
+                        }catch (\Exception $e) {
                             DB::rollback();
-                            $mess = trans('loginPageLang.repeat');
-                            echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('$mess'');
-                            window.location.href='uploadpeople';
-                            </script>");
-                            //return view('member.uploadpeople1');
+                            $bool = false;
+                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+
                         }
+                        DB::rollback();
+                        $record++;
+                    }
+                    //data repeat
+                    else
+                    {
+                        $bool = false;
+                        $i = $i + 1;
+                        return \Response::json(['message' => $i], 420/* Status code here default is 200 ok*/);
                     }
                 }
+                else
+                {
+                    $bool = false;
+                    $i = $i + 1;
+                    return \Response::json(['message' => $i], 421/* Status code here default is 200 ok*/);
+                }
             }
-            $mess = trans('loginPageLang.total') . ' ' . $record . ' ' . trans('loginPageLang.record') . ' '
-                . trans('loginPageLang.pinf') . ' ' . trans('loginPageLang.upload1') . ' '
-                . trans('loginPageLang.success');
-            echo ("<script LANGUAGE='JavaScript'>
-            window.alert('$mess');
-            window.location.href='/member';
-            </script>");
+            if($record == $count && $bool == true)
+            {
+                $record = 0;
+                for($i = 0 ; $i < $count ; $i ++)
+                {
+                    $test = DB::table('人員信息')->where('工號', $number[$i])->value('姓名');
+
+                    DB::beginTransaction();
+                    try {
+                        DB::table('人員信息')
+                        ->insert(['工號' => $number[$i] , '姓名' => $name[$i] , '部門' => $department[$i] ,'created_at' => Carbon::now()]);
+                        $record++;
+                        DB::commit();
+                    }catch (\Exception $e) {
+                        DB::rollback();
+                        $bool = false;
+                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+                    }
+                }
+                return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
+
+            }
+
         } else {
             return redirect(route('member.login'));
         }

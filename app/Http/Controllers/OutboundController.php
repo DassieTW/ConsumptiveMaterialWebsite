@@ -168,14 +168,16 @@ class OutboundController extends Controller
                     return view('outbound.picklist')->with(['number' => $datas])
                         ->with(['data' => $datas])
                         ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()]);
+                        ->with(['people1' => 人員信息::cursor()])
+                        ->with(['check' => 人員信息::cursor()]);
                 }
                 else
                 {
                     return view('outbound.picklist')->with(['number' => $datas->where('領料單號',$list)])
                         ->with(['data' => $datas->where('領料單號',$list)])
                         ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()]);
+                        ->with(['people1' => 人員信息::cursor()])
+                        ->with(['check' => 人員信息::cursor()]);
                 }
             }
         }
@@ -245,7 +247,8 @@ class OutboundController extends Controller
                         ->with(['data' => $datas])
                         ->with(['people' => 人員信息::cursor()])
                         ->with(['people1' => 人員信息::cursor()])
-                        ->with(['position' => 儲位::cursor()]);
+                        ->with(['position' => 儲位::cursor()])
+                        ->with(['check' => 人員信息::cursor()]);
                 }
                 else
                 {
@@ -253,7 +256,8 @@ class OutboundController extends Controller
                         ->with(['data' => $datas->where('退料單號',$list)])
                         ->with(['people' => 人員信息::cursor()])
                         ->with(['people1' => 人員信息::cursor()])
-                        ->with(['position' => 儲位::cursor()]);
+                        ->with(['position' => 儲位::cursor()])
+                        ->with(['check' => 人員信息::cursor()]);
                 }
             }
         }
