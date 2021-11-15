@@ -1,6 +1,7 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<link rel="stylesheet" href="{{ asset('css/outbound/picklist.css') }}">
 @endsection
 
 @section('js')
@@ -24,8 +25,7 @@
             @csrf
             <div class="table-responsive">
 
-                <select class=" form-select form-select-lg " id="list" name="list" required width="250"
-                    style="width: 250px">
+                <select class=" form-select form-select-lg " id="list" name="list" width="250" style="width: 250px" required>
                     <option style="display: none" disabled selected value="">{!! __('outboundpageLang.searchpicklist')
                         !!}</option>
                     @foreach($number as $number)
@@ -101,15 +101,15 @@
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.sendpeople') !!}</label>
-            <select class="form-select form-select-lg" id="sendpeople" name="sendpeople" required width="250"
-                style="width: 250px">
-                <option style="display: none" disabled selected value="">{!! __('outboundpageLang.entersendpeople')
-                    !!}</option>
+            <input class="form-control form-control-lg" id="sendpeople" name="sendpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputsendpeople') !!}"
+                oninput="myFunction()" required>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <ul id="sendmenu">
                 @foreach($people as $people)
-                <option>{{ $people->工號 .' '. $people->姓名 }}</option>
+                <li class="sendli" style="display: none;"><a href="#">{{ $people->工號 .' '. $people->姓名 }}</a></li>
                 @endforeach
-                <option>{!! __('outboundpageLang.other') !!}</option>
-            </select>
+            </ul>
 
             @foreach($check as $people)
             <input type="hidden" id="checkpeople{{$loop->index}}" name="checkpeople{{$loop->index}}"
@@ -119,22 +119,16 @@
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-            <input class="form-control form-control-lg " style="display:none;  width: 250px;" type="text"
-                id="inputsendpeople" name="inputsendpeople"
-                placeholder="{!! __('outboundpageLang.inputsendpeople') !!}">
-
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
             <label class="form-label">{!! __('outboundpageLang.pickpeople') !!}</label>
-            <select class="form-select form-select-lg" id="pickpeople" name="pickpeople" required width="250"
-                style="width: 250px">
-                <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterpickpeople')
-                    !!}</option>
+            <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" required width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputpickpeople')
+                !!}" oninput="myFunction2()">
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <ul id="pickmenu">
                 @foreach($people1 as $people)
-                <option>{{ $people->工號 .' '. $people->姓名 }}</option>
+                <li class="pickli" style="display: none;"><a href="#">{{ $people->工號 .' '. $people->姓名 }}</a></li>
                 @endforeach
-                <option>{!! __('outboundpageLang.other') !!}</option>
-            </select>
+            </ul>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

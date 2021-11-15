@@ -260,7 +260,7 @@ class BasicInformationController extends Controller
                 {
                     ConsumptiveMaterial::where('料號', $request->input('number')[$i])->delete();
                     /*DB::table('consumptive_material')
-                    ->where('料號', $request->input('number' . $i))
+                    ->where('料號', $request->input('number' )[$i])
                     ->delete();*/
                 }
             return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
@@ -310,7 +310,7 @@ class BasicInformationController extends Controller
                         if($gradea[$i] === 'No') $gradea[$i] = '否';
                         if($month[$i] === 'Yes') $month[$i] = '是';
                         if($month[$i] === 'No') $month[$i] = '否';
-                        if($belong[$i] === 'Unit consumption' || $belong[$i] === '单耗') $belong = '單耗';
+                        if($belong[$i] === 'Unit consumption' || $belong[$i] === '单耗') $belong[$i] = '單耗';
                         if($belong[$i] === 'Station') $belong[$i] = '站位';
 
 
@@ -324,9 +324,10 @@ class BasicInformationController extends Controller
                             DB::commit();
 
                         }catch (\Exception $e) {
+                            $row = $check[$i];
                             DB::rollback();
                             $mess = $e->getMessage();
-                            return \Response::json(['message' => $e->getMessage() ,
+                            return \Response::json(['message' => $mess ,
                             'row' => $row], 409/* Status code here default is 200 ok*/);
                         }
                     }
@@ -721,6 +722,7 @@ class BasicInformationController extends Controller
     {
         if (Session::has('username'))
         {
+
             $count = $request->input('count');
             $record = 0;
             $row = 0;
@@ -730,9 +732,9 @@ class BasicInformationController extends Controller
             for($i = 0 ; $i < $count ; $i ++)
             {
                 $test1[$i] = 0;
-                $number =  $request->input('data0a'. $i);
-                $month =  $request->input('data9a'. $i);
-                $safe =  $request->input('data13a'. $i);
+                $number =  $request->input('number')[$i];
+                $month =  $request->input('month')[$i];
+                $safe =  $request->input('safe')[$i];
 
                 if($month === 'Yes') $month = '是';
                 if($month === 'No') $month = '否';
@@ -751,16 +753,11 @@ class BasicInformationController extends Controller
                         }
                         else
                         {
+                            //料號重複
                             $bool = false;
                             $row = $i + 1;
-                            $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnrepeat');
-                            echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href = 'new';
-                            </script>");
-                            /*return back()->withErrors([
-                            'number' => '料號 is repeated , Please enter another 料號',
-                            ]);*/
+                            return \Response::json(['message' => $row], 420/* Status code here default is 200 ok*/);
+
                         }
                     }
                     else
@@ -770,32 +767,19 @@ class BasicInformationController extends Controller
                 }
 
                 //長度是否為12
-                if(strlen($request->input('data0a'.$i)) !== 12)
+                if(strlen($request->input('number')[$i]) !== 12)
                 {
                     $row = $i + 1;
-                    $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.isnlength');
-                    echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href = 'new';
-                    </script>");
-                    /*return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                        ]);*/
+                    return \Response::json(['message' => $row], 421/* Status code here default is 200 ok*/);
+
                 }
                 else
                 {
                     //check 非月請購是否有填安全庫存
-                    if($month === '否' && $request->input('data13a'.$i) === null)
+                    if($month === '否' && $request->input('safe')[$i] === null)
                     {
                         $row = $i + 1 ;
-                        $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.safeerror');
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href = 'new';
-                        </script>");
-                        /*return back()->withErrors([
-                            'safe' => '非月請購之安全庫存為必填項目',
-                        ]);*/
+                        return \Response::json(['message' => $row], 422/* Status code here default is 200 ok*/);
                     }
                     else
                     {
@@ -808,20 +792,20 @@ class BasicInformationController extends Controller
             {
                 for($i = 0 ; $i < $count ; $i ++)
                 {
-                    $number =  $request->input('data0a'. $i);
-                    $name =  $request->input('data1a'. $i);
-                    $format =  $request->input('data2a'. $i);
-                    $price =  $request->input('data3a'. $i);
-                    $money =  $request->input('data4a'. $i);
-                    $unit =  $request->input('data5a'. $i);
-                    $mpq =  $request->input('data6a'. $i);
-                    $moq =  $request->input('data7a'. $i);
-                    $lt =  $request->input('data8a'. $i);
-                    $month =  $request->input('data9a'. $i);
-                    $gradea =  $request->input('data10a'. $i);
-                    $belong =  $request->input('data11a'. $i);
-                    $send =  $request->input('data12a'. $i);
-                    $safe =  $request->input('data13a'. $i);
+                    $number =  $request->input('number')[$i];
+                    $name =  $request->input('name')[$i];
+                    $format =  $request->input('format')[$i];
+                    $price =  $request->input('price')[$i];
+                    $money =  $request->input('money')[$i];
+                    $unit =  $request->input('unit')[$i];
+                    $mpq =  $request->input('mpq')[$i];
+                    $moq =  $request->input('moq')[$i];
+                    $lt =  $request->input('lt')[$i];
+                    $month =  $request->input('month')[$i];
+                    $gradea =  $request->input('gradea')[$i];
+                    $belong =  $request->input('belong')[$i];
+                    $send =  $request->input('send')[$i];
+                    $safe =  $request->input('safe')[$i];
 
                     if($gradea === 'Yes') $gradea = '是';
                     if($gradea === 'No') $gradea = '否';
@@ -849,28 +833,73 @@ class BasicInformationController extends Controller
                             , 'MPQ' => $mpq , 'MOQ' => $moq , 'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea , '耗材歸屬' => $belong , '發料部門' => $send
                             , '安全庫存' => $safe ,'created_at' => Carbon::now()]);
                         }
+                        $record++;
+                    }catch (\Exception $e) {
+                        DB::rollback();
+                        $mess = $e->getMessage();
+                        return \Response::json(['message' => $mess], 423/* Status code here default is 200 ok*/);
 
+                    }
+                }
+                DB::rollback();
+            }
+            //all success really into database
+            if($record == $count)
+            {
+                $record = 0;
+                for($i = 0 ; $i < $count ; $i ++)
+                {
+                    $number =  $request->input('number')[$i];
+                    $name =  $request->input('name')[$i];
+                    $format =  $request->input('format')[$i];
+                    $price =  $request->input('price')[$i];
+                    $money =  $request->input('money')[$i];
+                    $unit =  $request->input('unit')[$i];
+                    $mpq =  $request->input('mpq')[$i];
+                    $moq =  $request->input('moq')[$i];
+                    $lt =  $request->input('lt')[$i];
+                    $month =  $request->input('month')[$i];
+                    $gradea =  $request->input('gradea')[$i];
+                    $belong =  $request->input('belong')[$i];
+                    $send =  $request->input('send')[$i];
+                    $safe =  $request->input('safe')[$i];
+
+                    if($gradea === 'Yes') $gradea = '是';
+                    if($gradea === 'No') $gradea = '否';
+
+                    if($month === 'Yes') $month = '是';
+                    if($month === 'No') $month = '否';
+
+                    if($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
+                    if($belong === 'Station') $belong = '站位';
+
+                    DB::beginTransaction();
+                    try {
+                        if($test1[$i] != 0)
+                        {
+                            DB::table('consumptive_material')
+                            ->where('料號', $number)
+                            ->update(['品名' => $name , '規格' => $format , '單價' => $price , '幣別' => $money
+                            , '單位' => $unit , 'MPQ' => $mpq , 'MOQ' => $moq ,'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea
+                            , '耗材歸屬' => $belong , '發料部門' => $send , '安全庫存' => $safe , 'updated_at' => Carbon::now(),'deleted_at' => null]);
+
+                        }
+                        else{
+                            DB::table('consumptive_material')
+                            ->insert(['料號' => $number , '品名' => $name , '規格' => $format ,'單價' => $price , '幣別' => $money , '單位' => $unit
+                            , 'MPQ' => $mpq , 'MOQ' => $moq , 'LT' => $lt , '月請購' => $month , 'A級資材' => $gradea , '耗材歸屬' => $belong , '發料部門' => $send
+                            , '安全庫存' => $safe ,'created_at' => Carbon::now()]);
+                        }
                         DB::commit();
                         $record++;
                     }catch (\Exception $e) {
                         DB::rollback();
-
                         $mess = $e->getMessage();
-
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='/basic';
-                        </script>");
+                        return \Response::json(['message' => $mess], 423/* Status code here default is 200 ok*/);
                     }
                 }
+                return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
             }
-
-            $mess = trans('basicInfoLang.total').' '.$record.trans('basicInfoLang.record').' '
-            .trans('basicInfoLang.newMats').' '.trans('basicInfoLang.success');
-            echo("<script LANGUAGE='JavaScript'>
-            window.alert('$mess');
-            window.location.href = '/basic';
-            </script>");
 
         }
         else
@@ -952,7 +981,7 @@ class BasicInformationController extends Controller
             for($i = 0 ; $i < $count ; $i ++)
             {
                 $test1[$i] = 0;
-                $data =  $request->input('data0'. $i);
+                $data =  $request->input('data0')[$i];
 
                 $datas = DB::table($choose)->pluck($chooseindex);
 
@@ -994,7 +1023,7 @@ class BasicInformationController extends Controller
             {
                 for($i = 0 ; $i < $count ; $i ++)
                 {
-                    $data =  $request->input('data0'. $i);
+                    $data =  $request->input('data0')[$i];
 
                     DB::beginTransaction();
                     try {

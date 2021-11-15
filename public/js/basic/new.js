@@ -86,6 +86,7 @@ $("#newmaterial").on("submit", function (e) {
 
     },
     error: function (err) {
+        //料號重複
         if (err.status == 420) {
             document.getElementById("numbererror").style.display = "block";
             document.getElementById('number').style.borderColor = "red";
@@ -93,6 +94,7 @@ $("#newmaterial").on("submit", function (e) {
             document.getElementById("numbererror1").style.display = "none";
             document.getElementById("safeerror").style.display = "none";
         }
+        //料號長度不為12
         else if (err.status == 421) {
             document.getElementById("numbererror1").style.display = "block";
                 document.getElementById('number').style.borderColor = "red";
@@ -100,6 +102,7 @@ $("#newmaterial").on("submit", function (e) {
                 document.getElementById("numbererror").style.display = "none";
                 document.getElementById("safeerror").style.display = "none";
         }
+        //非月請購沒安全庫存
         else if(err.status == 422) {
             document.getElementById("safeerror").style.display = "block";
                 document.getElementById('safe').style.borderColor = "red";
@@ -108,7 +111,6 @@ $("#newmaterial").on("submit", function (e) {
                 document.getElementById("numbererror").style.display = "none";
                 document.getElementById('number').style.borderColor = "";
         }
-
     }
   });
 });

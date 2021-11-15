@@ -6,6 +6,8 @@
 @section('js')
 
 <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
+<script src="{{ asset('js/basic/uploadbasic.js') }}"></script>
+
 <!--for notifications pop up -->
 @endsection
 @section('content')
@@ -24,7 +26,7 @@
                 <div class="d-flex w-100 h-100">
                     <div class="mb-3">
 
-                        <form  action = "{{ route('basic.insertuploadbasic') }}" method="POST">
+                        <form id="uploadbasic" method="POST">
                             @csrf
                             <table class="table" id = "test">
                                 <tr>
@@ -76,7 +78,7 @@
                                 @endforeach
 
                             </table>
-                            <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.add') !!}">
+                            <input type = "submit" id = "submit" name = "submit" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.add') !!}">
                         </form>
                     </div>
                 </div>

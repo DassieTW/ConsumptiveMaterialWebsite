@@ -16,8 +16,8 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
-
+    'default' => env('DB_CONNECTION', 'sqlsrv'),
+    //'default' => env('DB_CONNECTION', 'odbc-connection-name'),
     /*
     |--------------------------------------------------------------------------
     | Database Connections
@@ -99,6 +99,14 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+        /*'odbc-connection-name' => [
+            'driver' => 'odbc',
+            'dsn' => 'OdbcConnectionName',
+            'database' => env('DB_DATABASE', 'forge'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+        ],*/
 
     ],
 
@@ -157,5 +165,7 @@ return [
         ],
 
     ],
+
+
 
 ];

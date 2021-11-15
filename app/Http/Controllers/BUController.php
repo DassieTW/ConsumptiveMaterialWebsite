@@ -56,7 +56,7 @@ class BUController extends Controller
     {
         //
         if (Session::has('username')) {
-            $database = ['default', 'testing', 'bb1', 'bb4', 'm1'];
+            $database = ['default'];
 
             foreach ($database as $key => $value) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);

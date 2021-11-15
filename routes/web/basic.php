@@ -59,6 +59,8 @@ Route::get('/material', function () {
 
 })->name('basic.material')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
+Route::get('/upload', [BasicInformationController::class, 'new'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+
 
 //料件信息查詢
 Route::get('/materialsearch', [BasicInformationController::class, 'searchmaterial'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
@@ -75,7 +77,7 @@ Route::post('/download', [BasicInformationController::class, 'download'])->name(
 Route::post('/upload', [BasicInformationController::class, 'uploadmaterial'])->name('basic.uploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //上傳資料新增至資料庫
-Route::post('/uploadmaterial', [BasicInformationController::class, 'insertuploadmaterial'])->name('basic.insertuploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+Route::post('/insertuploadmaterial', [BasicInformationController::class, 'insertuploadmaterial'])->name('basic.insertuploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //基礎資料上傳
 Route::post('/uploadbasic', [BasicInformationController::class, 'uploadbasic'])->name('basic.uploadbasic')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');

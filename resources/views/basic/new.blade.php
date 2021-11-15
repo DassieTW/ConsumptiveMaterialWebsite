@@ -69,6 +69,7 @@
                                     <option>JPY</option>
                                     <option>TWD</option>
                                     <option>VND</option>
+                                    <option>IDR</option>
                                 </select>
                             </div>
                             <div class="mb-3 col-md-4">

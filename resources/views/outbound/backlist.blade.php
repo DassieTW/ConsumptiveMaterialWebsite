@@ -1,6 +1,7 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<link rel="stylesheet" href="{{ asset('css/outbound/backlist.css') }}">
 @endsection
 
 @section('js')
@@ -82,33 +83,32 @@
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.receivepeople') !!}</label>
-            <select class="form-select form-select-lg" id="pickpeople" name="pickpeople" required
-                width="250" style="width: 250px">
-                <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterreceivepeople') !!}</option>
-                @foreach($people as $people)
-                <option>{{ $people->工號 .' '. $people->姓名 }}</option>
-                @endforeach
-                <option>{!! __('outboundpageLang.other') !!}</option>
-            </select>
-
+            <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" required width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputreceivepeople') !!}"
+                oninput="myFunction()">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-            <input class="form-control form-control-lg " style="display:none; width: 250px;" type="text"
-                id="inputpickpeople" name="inputpickpeople"
-                placeholder="{!! __('outboundpageLang.inputreceivepeople') !!}">
+            <ul id="receivemenu">
+                @foreach($people as $people)
+                <li class="receiveli" style="display: none;"><a href="#">{{ $people->工號 .' '. $people->姓名 }}</a></li>
+                @endforeach
+            </ul>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             <label class="form-label">{!! __('outboundpageLang.backpeople') !!}</label>
-            <select class="form-select form-select-lg" id="backpeople" name="backpeople" required
-                width="250" style="width: 250px" >
-                <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterbackpeople')
-                    !!}</option>
-                    @foreach($people1 as $people)
-                    <option>{{ $people->工號 .' '. $people->姓名 }}</option>
-                    @endforeach
-                    <option>{!! __('outboundpageLang.other') !!}</option>
-            </select>
+            <input class="form-control form-control-lg" id="backpeople" name="backpeople" required width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputbackpeople') !!}"
+                oninput="myFunction2()">
+            <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterbackpeople')
+                !!}</option>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+            <ul id="backmenu">
+                @foreach($people1 as $people)
+                <li class="backli" style="display: none;"><a href="#">{{ $people->工號 .' '. $people->姓名 }}</a></li>
+                @endforeach
+            </ul>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
@@ -117,10 +117,6 @@
                 value="{{$people->工號}}">
             <input type="hidden" id="count" name="count" value="{{$loop->count}}">
             @endforeach
-
-            <input class="form-control form-control-lg " style="display:none; width: 250px;" type="text"
-                id="inputbackpeople" name="inputbackpeople"
-                placeholder="{!! __('outboundpageLang.inputbackpeople') !!}">
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
@@ -145,6 +141,7 @@
                 <option>{!! __('outboundpageLang.nogood') !!}</option>
             </select>
 
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
                 value="{!! __('outboundpageLang.submit') !!}">
