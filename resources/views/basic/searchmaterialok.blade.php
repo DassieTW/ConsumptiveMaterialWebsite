@@ -58,6 +58,9 @@
                         <input type="hidden" id="time" name="time" value="14">
                     </tr>
                     @foreach($data as $data)
+                    <?php
+                        $data->單價 = round($data->單價 , 3);
+                    ?>
                     <tr>
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                 style="width:25px;height:25px;" value="{{$loop->index}}"></td>

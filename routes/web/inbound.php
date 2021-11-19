@@ -31,7 +31,9 @@ use App\Models\ConsumptiveMaterial;
 
 
 //入庫
-Route::get('/', [InboundController::class, 'index'])->name('inbound.index')->middleware('can:viewInbound,App\Models\Inbound');
+Route::get('/', function(){
+    return view('inbound.index');
+})->name('inbound.index')->middleware('can:viewInbound,App\Models\Inbound');
 
 //入庫-查詢頁面
 Route::get('/search',  function () {
@@ -61,11 +63,11 @@ Route::get('/addclient', function () {
     if (Session::has('addclient')) {
         Session::forget('addclient');
         $client = Session::get('client');
-        $number = DB::table('在途量')->where('客戶', Session::get('client'))->where('請購數量', '>', 0)->value('料號');
         return view("inbound.addclient")->with(['data' => 在途量::cursor()->where('請購數量', '>', 0)->where('客戶', $client)])
             ->with(['inreason' => Session::get('inreason')])
             ->with(['positions' => 儲位::cursor()])
-            ->with(['peopleinf' => 人員信息::cursor()]);
+            ->with(['peopleinf' => 人員信息::cursor()])
+            ->with(['check' => 人員信息::cursor()]);
     } else {
         return redirect(route('inbound.add'));
     }
@@ -77,7 +79,8 @@ Route::post('/addclient', [InboundController::class, 'addclient'])->name('inboun
 Route::get('/addnewok', function () {
     if (Session::has('inboundadd')) {
         Session::forget('inboundadd');
-        return view("inbound.addnew");
+        return view("inbound.addnew")->with(['check' => 人員信息::cursor()]);
+
     } else {
         return redirect(route('inbound.add'));
     }
@@ -135,6 +138,11 @@ Route::get('/upload', function () {
     return view('inbound.upload');
 })->name('inbound.upload')->middleware('can:viewInbound,App\Models\Inbound');
 
+Route::get('/uploadinventory', function() {
+    return view('inbound.upload');
+})->name('inbound.uploadinventory')->middleware('can:viewInbound,App\Models\Inbound');
+
 Route::post('/uploadinventory', [InboundController::class, 'uploadinventory'])->name('inbound.uploadinventory')->middleware('can:viewInbound,App\Models\Inbound');
+
 //上傳資料新增至資料庫
 Route::post('/insertuploadinventory', [InboundController::class, 'insertuploadinventory'])->name('inbound.insertuploadinventory')->middleware('can:viewInbound,App\Models\Inbound');

@@ -1,7 +1,6 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
-<link rel="stylesheet" href="{{ asset('css/outbound/backlist.css') }}">
 @endsection
 
 @section('js')
@@ -84,13 +83,15 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.receivepeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" required width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.inputreceivepeople') !!}"
-                oninput="myFunction()">
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputreceivepeople') !!}">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-            <ul id="receivemenu">
+            <ul id="receivemenu" style="display: none;" class="list-group">
                 @foreach($people as $people)
-                <li class="receiveli" style="display: none;"><a href="#">{{ $people->工號 .' '. $people->姓名 }}</a></li>
+                <a class="receivelist list-group-item list-group-item-action"
+                    href="#">{{ $people->工號 .' '. $people->姓名 }}</a>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                 @endforeach
             </ul>
 
@@ -98,15 +99,16 @@
 
             <label class="form-label">{!! __('outboundpageLang.backpeople') !!}</label>
             <input class="form-control form-control-lg" id="backpeople" name="backpeople" required width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.inputbackpeople') !!}"
-                oninput="myFunction2()">
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputbackpeople') !!}">
             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterbackpeople')
                 !!}</option>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-            <ul id="backmenu">
+            <ul id="backmenu" style="display: none;" class="list-group">
                 @foreach($people1 as $people)
-                <li class="backli" style="display: none;"><a href="#">{{ $people->工號 .' '. $people->姓名 }}</a></li>
+                <a class="backlist list-group-item list-group-item-action"
+                    href="#">{{ $people->工號 .' '. $people->姓名 }}</a>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 @endforeach
             </ul>
 

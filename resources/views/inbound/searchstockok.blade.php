@@ -56,6 +56,7 @@
                                         $month = $data->月請購;
                                         $belong = $data->耗材歸屬;
                                         $lt = $data->LT;
+                                        $price = round($price , 3);
 
                                         if($belong === '單耗')
                                             {

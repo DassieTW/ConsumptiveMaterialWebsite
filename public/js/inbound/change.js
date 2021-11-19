@@ -97,6 +97,7 @@ $.ajaxSetup({
            error : function(jqXHR,textStatus,errorThrown){
             console.warn(jqXHR.responseText);
             alert(errorThrown);
+            window.location.reload();
           }
         });
         }

@@ -44,7 +44,7 @@
                                     <td>{{$data->最後更新時間}}</td>
                                     <td><input type="number" style = "width: 220px" id = "amount{{$loop->index}}" name="amount{{$loop->index}}" placeholder="{!! __('inboundpageLang.enteramount') !!}"></td>
                                     <td>
-                                        <select class="form-control form-control-lg" id = "newposition{{$loop->index}}" name="newposition{{$loop->index}}" style = "width: 200px">
+                                        <select class="form-select form-select-lg" id = "newposition{{$loop->index}}" name="newposition{{$loop->index}}" style = "width: 200px">
                                         <option style="display: none" disabled selected>{!! __('inboundpageLang.enterloc') !!}</option>
                                         @foreach($position as $position)
                                         <option>{{  $position }}</option>

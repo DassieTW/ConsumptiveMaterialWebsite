@@ -38,7 +38,10 @@ $.ajaxSetup({
 
     for(let i = 0 ; i < count ; i++)
     {
-        if(parseInt(amount[i]) != parseInt(compare[i]))
+        console.log(typeof (amount[i]));
+        console.log(typeof (compare[i]));
+
+        if(parseFloat(amount[i]) != parseFloat(compare[i]))
         {
             check[i] = 1;
         }

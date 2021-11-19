@@ -101,8 +101,8 @@ if($i === false)
                         <td><input type="text" id="data4{{$loop->index}}" name="data4{{$loop->index}}"
                                 value="{{$row[4]}}"></td>
                         <td>
-                            <select style="width: 150px;" class="form-control form-control-lg "
-                                id="data5{{$loop->index}}" name="data5{{$loop->index}}">
+                            <select style="width: 150px;" class="form-select form-select-lg " id="data5{{$loop->index}}"
+                                name="data5{{$loop->index}}">
                                 <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.entercontrol')
                                     !!}</option>
                                 <option>品質問題</option>

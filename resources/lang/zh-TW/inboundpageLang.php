@@ -89,5 +89,5 @@ return [
     'enterinlist' => '請輸入入庫單號',
     'timepart' => '時間段',
     'upload1' => '上傳',
-
+    'noinpeople' => '入庫人員之工號不存在，請先到用戶管理-新增人員訊息維護',
 ];

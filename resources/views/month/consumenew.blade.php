@@ -52,7 +52,7 @@
                         <td><input style="width:70px" class="form-control form-control-lg " type="text" id="lt"
                                 name="lt" readonly value="{{ Session::get('lt') }}"></td>
                         <td><input style="width:200px" class="form-control form-control-lg " type="number" id="amount"
-                                name="amount" value="0" placeholder="請輸入單耗" step="0.0000000001" ></td>
+                                name="amount" value="0" placeholder="請輸入單耗" step="0.0000000001" oninput="if(value.length>12)value=value.slice(0,12)"></td>
                         <td><input style="width:200px" class="form-control form-control-lg " type="number" id="nowneed"
                                 name="nowneed" readonly></td>
                         <td><input style="width:200px" class="form-control form-control-lg " type="number" id="nextneed"

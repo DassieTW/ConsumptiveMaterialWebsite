@@ -256,3 +256,12 @@ Route::post('/teststandsubmit' , [MonthController::class, 'teststandsubmit'])->n
 
 //站位人力下載
 Route::post('/standdownload' , [MonthController::class, 'standdownload'])->name('month.standdownload');
+
+//非月請購下載
+Route::post('/download' , [MonthController::class, 'download'])->name('month.download');
+
+//請購單下載
+Route::post('/buylistdownload' , [MonthController::class, 'buylistdownload'])->name('month.buylistdownload');
+
+
+

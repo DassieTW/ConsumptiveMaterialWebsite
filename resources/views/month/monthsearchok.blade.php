@@ -5,6 +5,7 @@
 
 @section('js')
 <!--for this page's sepcified js -->
+<script src="{{ asset('/js/month/monthsearch.js') }}"></script>
 @endsection
 @section('content')
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
                 <h3>{!! __('monthlyPRpageLang.importMonthlyData') !!}</h3>
             </div>
             <div class="card-body">
-                        <form action="{{ route('month.monthdelete') }}" method="POST">
+                        <form id ="monthsearch" method="POST">
                             @csrf
                             <div class = "table-responsive">
                         <table class="table">
@@ -35,7 +36,7 @@
                             </tr>
                             @foreach($data as $data)
                             <tr>
-                                <td><input class ="innumber" type="checkbox" id="innumber{{$loop->index}}" name="innumber{{$loop->index}}" style="width:20px;height:20px;" ></td>
+                                <td><input class ="innumber" type="checkbox" id="innumber" name="innumber" style="width:20px;height:20px;" value="{{$loop->index}}"></td>
                                 <td><input type = "hidden" id = "client{{$loop->index}}" name = "client{{$loop->index}}" value="{{$data->客戶別}}">{{$data->客戶別}}</td>
                                 <td><input type = "hidden" id = "machine{{$loop->index}}" name = "machine{{$loop->index}}" value="{{$data->機種}}">{{$data->機種}}</td>
                                 <td><input type = "hidden" id = "production{{$loop->index}}" name = "production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}</td>

@@ -80,7 +80,23 @@ Route::post('/upload', [BasicInformationController::class, 'uploadmaterial'])->n
 Route::post('/insertuploadmaterial', [BasicInformationController::class, 'insertuploadmaterial'])->name('basic.insertuploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //基礎資料上傳
+Route::get('/uploadbasic', function(){
+    return view('basic.index')->with(['factorys' => 廠別::cursor()])
+        ->with(['clients' => 客戶別::cursor()])
+        ->with(['machines' => 機種::cursor()])
+        ->with(['productions' => 製程::cursor()])
+        ->with(['lines' => 線別::cursor()])
+        ->with(['uses' => 領用部門::cursor()])
+        ->with(['usereasons' => 領用原因::cursor()])
+        ->with(['inreasons' => 入庫原因::cursor()])
+        ->with(['positions' => 儲位::cursor()])
+        ->with(['sends' => 發料部門::cursor()])
+        ->with(['os' => O庫::cursor()])
+        ->with(['backs' => 退回原因::cursor()]);
+})->name('basic.insertuploadbasic')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+
 Route::post('/uploadbasic', [BasicInformationController::class, 'uploadbasic'])->name('basic.uploadbasic')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //基礎資料上傳新增至資料庫
+
 Route::post('/insertuploadbasic', [BasicInformationController::class, 'insertuploadbasic'])->name('basic.insertuploadbasic')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');

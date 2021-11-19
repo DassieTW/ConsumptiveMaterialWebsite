@@ -5,7 +5,6 @@ $.ajaxSetup({
 });
 
 $("#uploadnew").on("submit", function (e) {
-    console.log(12);
 
   e.preventDefault();
 

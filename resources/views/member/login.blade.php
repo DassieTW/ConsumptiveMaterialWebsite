@@ -30,8 +30,8 @@
 
 <body>
     {{-- 使用asset時，須注意Laravel是抓http header裡面的Host作為base url，
-        所以若域名不是ip而有經過轉換時要進到Nginx裡面的proxy_set_header裡面確認Host設定值，
-        否則會抓到錯誤的Host導致找不到資源 --}}
+    所以若域名不是ip而有經過轉換時要進到Nginx裡面的proxy_set_header裡面確認Host設定值，
+    否則會抓到錯誤的Host導致找不到資源 --}}
 
     <script src="{{ asset('/js/app.js') }}"></script>
     <script src="{{ asset('/admin/js/app.js') }}"></script>
@@ -66,8 +66,8 @@
                         data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
                         aria-expanded="false">
                         <i class="align-middle text-dark" data-feather="settings"></i>
-                        <u class="text-dark"><span
-                                class="align-middle text-dark">{{ __('loginPageLang.settings')}}</span></u>
+                        <u class="text-dark"><span class="align-middle text-dark">{{
+                                __('loginPageLang.settings')}}</span></u>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end">
@@ -128,9 +128,11 @@
                                             <select class="form-select form-select-lg" id="site" name="site" required>
                                                 <option value="" selected>{{ __('loginPageLang.site_placeholder')}}
                                                 </option>
+                                                <option value="M2-TEST-1112">M2-TEST</option>
+                                                {{--
                                                 <option value="testing">TEST</option>
                                                 <option value="default">Default</option>
-                                                {{-- <option value="BB1">BB1</option>
+                                                <option value="BB1">BB1</option>
                                                 <option value="BB4">BB4</option>
                                                 <option value="M1">M1</option>
                                                 <option value="M2">M2</option>

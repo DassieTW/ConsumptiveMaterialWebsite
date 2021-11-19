@@ -64,7 +64,6 @@ class BasicInformationController extends Controller
         if (Session::has('username'))
         {
 
-            $now = Carbon::now();
 
             if(is_array($request->input('data')))
             {
@@ -953,7 +952,8 @@ class BasicInformationController extends Controller
         if (Session::has('username'))
         {
             $count = $request->input('count');
-            $choose = $request->input('title0');
+            $choose = $request->input('title');
+            $dataarray =  $request->input('data');
             $table = "";
             $record = 0;
             $test = 0;
@@ -981,8 +981,8 @@ class BasicInformationController extends Controller
             for($i = 0 ; $i < $count ; $i ++)
             {
                 $test1[$i] = 0;
-                $data =  $request->input('data0')[$i];
 
+                $data = $dataarray[$i];
                 $datas = DB::table($choose)->pluck($chooseindex);
 
                 $delete = $table::onlyTrashed()
@@ -1001,11 +1001,9 @@ class BasicInformationController extends Controller
                         {
                             $bool = false;
                             $row = $i + 1;
-                            $mess = trans('basicInfoLang.row').' : '.$row.' '.trans('basicInfoLang.repeat');
-                            echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href = '/basic';
-                            </script>");
+                            //data repeat
+                            return \Response::json(['message' => $row], 420/* Status code here default is 200 ok*/);
+
                         }
                     }
                     else
@@ -1023,7 +1021,8 @@ class BasicInformationController extends Controller
             {
                 for($i = 0 ; $i < $count ; $i ++)
                 {
-                    $data =  $request->input('data0')[$i];
+                    $data = $dataarray[$i];
+
 
                     DB::beginTransaction();
                     try {
@@ -1046,19 +1045,12 @@ class BasicInformationController extends Controller
 
                         $mess = $e->getMessage();
 
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='/basic';
-                        </script>");
+                        return \Response::json(['message' => $mess], 421/* Status code here default is 200 ok*/);
+
                     }
                 }
+                return \Response::json(['message' => $record , 'choose' => $choose]/* Status code here default is 200 ok*/);
             }
-            $mess = trans('basicInfoLang.total').' '.$record.trans('basicInfoLang.record').' '
-            .$choose.' '.trans('basicInfoLang.new').' '.trans('basicInfoLang.success');
-            echo("<script LANGUAGE='JavaScript'>
-            window.alert('$mess');
-            window.location.href = '/basic';
-            </script>");
 
         }
         else

@@ -44,7 +44,7 @@
                         <td><input style="width:100px" type="number" id="nextday{{$loop->index}}"
                                 name="nextday{{$loop->index}}" required value="{{$nextday}}" step="0.001"
                                 oninput="if(value.length>5)value=value.slice(0,5)"></td>
-                        <td><input style="width:10px" type="number" id="nowmps{{$loop->index}}"
+                        <td><input style="width:100px" type="number" id="nowmps{{$loop->index}}"
                                 name="nowmps{{$loop->index}}" required value="{{$nowmps}}" step="0.001"
                                 oninput="if(value.length>5)value=value.slice(0,5)"></td>
                         <td><input style="width:100px" type="number" id="nowday{{$loop->index}}"

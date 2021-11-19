@@ -20,11 +20,11 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                        <form action="{{ route('inbound.delete') }}" method="POST" id = "test">
+                        <form method="POST" id = "inboundsearch">
                             @csrf
-                            <input type = "hidden" id = "title" name = "title" value = "入庫查詢">
-                        <table class="table" id = "inboundsearch">
-                            <tr id = "require">
+                            <input type = "hidden" id = "titlename" name = "titlename" value = "入庫查詢">
+                        <table class="table" >
+                            <tr>
                                 <th>{!! __('inboundpageLang.delete') !!}</th>
                                 <th><input type = "hidden" id = "title0" name = "title0" value = "入庫單號">{!! __('inboundpageLang.inlist') !!}</th>
                                 <th><input type = "hidden" id = "title1" name = "title1" value = "料號">{!! __('inboundpageLang.isn') !!}</th>
@@ -35,21 +35,20 @@
                                 <th><input type = "hidden" id = "title6" name = "title6" value = "入庫原因">{!! __('inboundpageLang.inreason') !!}</th>
                                 <th><input type = "hidden" id = "title7" name = "title7" value = "入庫時間">{!! __('inboundpageLang.inboundtime') !!}</th>
                                 <th><input type = "hidden" id = "title8" name = "title8" value = "備註">{!! __('inboundpageLang.mark') !!}</th>
-                                <input type = "hidden" id = "time" name = "time" value = "9">
+                                <input type = "hidden" id = "title" name = "title" value = "9">
                             </tr>
                                 @foreach($data as $data)
                                 <tr id= "{{$loop->index}}">
-                                    <td><input class ="innumber" type="checkbox" id="innumber{{$loop->index}}" name="innumber{{$loop->index}}" style="width:20px;height:20px;" ></td>
-                                    <td><input type = "hidden" id = "number{{$loop->index}}" name = "number{{$loop->index}}" value = "{{$data->入庫單號}}">{{$data->入庫單號}}</td>
-                                    <input type = "hidden"  name = "data0{{$loop->index}}" value = "{{$data->入庫單號}}">
-                                    <td><input type = "hidden"  name = "data1{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
-                                    <td><input type = "hidden"  name = "data2{{$loop->index}}" value = "{{$data->入庫數量}}">{{$data->入庫數量}}</td>
-                                    <td><input type = "hidden"  name = "data3{{$loop->index}}" value = "{{$data->儲位}}">{{$data->儲位}}</td>
-                                    <td><input type = "hidden"  name = "data4{{$loop->index}}" value = "{{$data->入庫人員}}">{{$data->入庫人員}}</td>
-                                    <td><input type = "hidden"  name = "data5{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
-                                    <td><input type = "hidden"  name = "data6{{$loop->index}}" value = "{{$data->入庫原因}}">{{$data->入庫原因}}</td>
-                                    <td><input type = "hidden"  name = "data7{{$loop->index}}" value = "{{$data->入庫時間}}">{{$data->入庫時間}}</td>
-                                    <td><input type = "hidden"  name = "data8{{$loop->index}}" value = "{{$data->備註}}">{{$data->備註}}</td>
+                                    <td><input class ="innumber" type="checkbox" id="innumber" name="innumber" style="width:20px;height:20px;" value="{{$loop->index}}"></td>
+                                    <td><input type = "hidden" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$data->入庫單號}}">{{$data->入庫單號}}</td>
+                                    <td><input type = "hidden" id = "data1{{$loop->index}}" name = "data1{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
+                                    <td><input type = "hidden" id = "data2{{$loop->index}}" name = "data2{{$loop->index}}" value = "{{$data->入庫數量}}">{{$data->入庫數量}}</td>
+                                    <td><input type = "hidden" id = "data3{{$loop->index}}" name = "data3{{$loop->index}}" value = "{{$data->儲位}}">{{$data->儲位}}</td>
+                                    <td><input type = "hidden" id = "data4{{$loop->index}}" name = "data4{{$loop->index}}" value = "{{$data->入庫人員}}">{{$data->入庫人員}}</td>
+                                    <td><input type = "hidden" id = "data5{{$loop->index}}" name = "data5{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
+                                    <td><input type = "hidden" id = "data6{{$loop->index}}" name = "data6{{$loop->index}}" value = "{{$data->入庫原因}}">{{$data->入庫原因}}</td>
+                                    <td><input type = "hidden" id = "data7{{$loop->index}}" name = "data7{{$loop->index}}" value = "{{$data->入庫時間}}">{{$data->入庫時間}}</td>
+                                    <td><input type = "hidden" id = "data8{{$loop->index}}" name = "data8{{$loop->index}}" value = "{{$data->備註}}">{{$data->備註}}</td>
                                 </tr>
                                 <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                 @endforeach

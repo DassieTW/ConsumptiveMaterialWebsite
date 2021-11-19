@@ -1,7 +1,6 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
-<link rel="stylesheet" href="{{ asset('css/outbound/picklist.css') }}">
 @endsection
 
 @section('js')
@@ -25,7 +24,8 @@
             @csrf
             <div class="table-responsive">
 
-                <select class=" form-select form-select-lg " id="list" name="list" width="250" style="width: 250px" required>
+                <select class=" form-select form-select-lg " id="list" name="list" width="250" style="width: 250px"
+                    required>
                     <option style="display: none" disabled selected value="">{!! __('outboundpageLang.searchpicklist')
                         !!}</option>
                     @foreach($number as $number)
@@ -102,12 +102,15 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.sendpeople') !!}</label>
             <input class="form-control form-control-lg" id="sendpeople" name="sendpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.inputsendpeople') !!}"
-                oninput="myFunction()" required>
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputsendpeople') !!}" required>
+
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <ul id="sendmenu">
+
+            <ul id="sendmenu" style="display: none;" class="list-group">
                 @foreach($people as $people)
-                <li class="sendli" style="display: none;"><a href="#">{{ $people->工號 .' '. $people->姓名 }}</a></li>
+                <a class="sendlist list-group-item list-group-item-action"
+                    href="#">{{ $people->工號 .' '. $people->姓名 }}</a>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 @endforeach
             </ul>
 
@@ -122,11 +125,13 @@
             <label class="form-label">{!! __('outboundpageLang.pickpeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" required width="250"
                 style="width: 250px" placeholder="{!! __('outboundpageLang.inputpickpeople')
-                !!}" oninput="myFunction2()">
+                !!}">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <ul id="pickmenu">
+            <ul id="pickmenu" style="display: none;" class="list-group">
                 @foreach($people1 as $people)
-                <li class="pickli" style="display: none;"><a href="#">{{ $people->工號 .' '. $people->姓名 }}</a></li>
+                <a class="picklist list-group-item list-group-item-action"
+                    href="#">{{ $people->工號 .' '. $people->姓名 }}</a>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 @endforeach
             </ul>
 

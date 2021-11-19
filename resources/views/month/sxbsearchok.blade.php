@@ -32,6 +32,9 @@
                             </tr>
                                 @foreach($data as $data)
                                 <tr>
+                                    <?php
+                                    $data->本次請購數量 = round($data->本次請購數量);
+                                    ?>
                                     <td>{{$data->SXB單號}}</td>
                                     <td>{{$data->SRM單號}}</td>
                                     <td>{{$data->客戶}}</td>
@@ -45,10 +48,11 @@
                                 @foreach($data1 as $data)
                                 <?php
                                     $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
+                                    $data->請購數量 = round($data->請購數量);
                                 ?>
                                 <tr>
                                     <td>{{$data->SXB單號}}</td>
-                                    <td>非月請購</td>
+                                    <td>{!! __('monthlyPRpageLang.notmonth') !!}</td>
                                     <td>{{$data->客戶別}}</td>
                                     <td>{{$data->料號}}</td>
                                     <td>{{$name}}</td>

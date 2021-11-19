@@ -40,6 +40,7 @@
                     <?php
                         $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
                         $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
+                        $data->單耗 = round($data->單耗 , 10);
                         $test = str_replace(";","<br>",$data->紀錄) ;
                     ?>
                     <tr id="{{$loop->index}}">
