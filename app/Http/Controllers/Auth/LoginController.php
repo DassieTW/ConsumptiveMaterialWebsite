@@ -46,8 +46,21 @@ class LoginController extends Controller
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->site);
         \DB::purge(env("DB_CONNECTION"));
         // dd($request->site) ; // test
-        return \Auth::login($credentials);
         // return \Auth::attempt($credentials);
+
+        // login without hashed password
+        $user = Login::where([
+            'username' => $request->username,
+            'password' => $request->password,
+        ])->first();
+
+        if ($user) {
+            \Auth::login($user);
+            return true;
+        } // if
+        else {
+            return false;
+        } // else
     } // attemptLogin
 
     protected function authenticated(Request $request, $user)
@@ -438,66 +451,54 @@ class LoginController extends Controller
             $department =  $request->input('department');
             $bool = true;
             $record =  0;
-            for($i = 0 ; $i < $count ; $i ++)
-            {
-                if(strlen($number[$i]) === 9)
-                {
+            for ($i = 0; $i < $count; $i++) {
+                if (strlen($number[$i]) === 9) {
                     $test = DB::table('人員信息')->where('工號', $number[$i])->value('姓名');
                     //new data
-                    if($test === null)
-                    {
+                    if ($test === null) {
                         DB::beginTransaction();
                         try {
                             DB::table('人員信息')
-                            ->insert(['工號' => $number[$i] , '姓名' => $name[$i] , '部門' => $department[$i] ,'created_at' => Carbon::now()]);
-
-                        }catch (\Exception $e) {
+                                ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i], 'created_at' => Carbon::now()]);
+                        } catch (\Exception $e) {
                             DB::rollback();
                             $bool = false;
                             return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-
                         }
                         DB::rollback();
                         $record++;
                     }
                     //data repeat
-                    else
-                    {
+                    else {
                         $bool = false;
                         $i = $i + 1;
                         return \Response::json(['message' => $i], 420/* Status code here default is 200 ok*/);
                     }
-                }
-                else
-                {
+                } else {
                     $bool = false;
                     $i = $i + 1;
                     return \Response::json(['message' => $i], 421/* Status code here default is 200 ok*/);
                 }
             }
-            if($record == $count && $bool == true)
-            {
+            if ($record == $count && $bool == true) {
                 $record = 0;
-                for($i = 0 ; $i < $count ; $i ++)
-                {
+                for ($i = 0; $i < $count; $i++) {
                     $test = DB::table('人員信息')->where('工號', $number[$i])->value('姓名');
 
                     DB::beginTransaction();
                     try {
                         DB::table('人員信息')
-                        ->insert(['工號' => $number[$i] , '姓名' => $name[$i] , '部門' => $department[$i] ,'created_at' => Carbon::now()]);
+                            ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i], 'created_at' => Carbon::now()]);
                         $record++;
                         DB::commit();
-                    }catch (\Exception $e) {
+                    } catch (\Exception $e) {
                         DB::rollback();
                         $bool = false;
                         return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                     }
                 }
                 return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
-
             }
-
         } else {
             return redirect(route('member.login'));
         }
