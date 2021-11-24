@@ -31,7 +31,6 @@ use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-
 class BUController extends Controller
 {
     //
@@ -40,6 +39,7 @@ class BUController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
 
     public function index()
     {
@@ -56,7 +56,8 @@ class BUController extends Controller
     {
         //
         if (Session::has('username')) {
-            $database = ['default'];
+
+            $database = ['default' , 'M2-TEST-1112' , 'M2_TEST_1112'];
 
             foreach ($database as $key => $value) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
@@ -64,9 +65,6 @@ class BUController extends Controller
                 $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
                     ->select(
                         'inventory.料號',
-                        '品名',
-                        '規格',
-                        '單位',
                         DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
                         DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
                     )
@@ -90,7 +88,6 @@ class BUController extends Controller
         if (Session::has('username')) {
             /*$count = $request->input('check'.'4'.'0');
             dd($count);*/
-            $reDive = new  responseObj();
             $database = $request->input('factory');
 
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
@@ -132,26 +129,15 @@ class BUController extends Controller
                         ]);
 
                     DB::commit();
-                    $reDive->boolean = true;
-                    $reDive->passbool = true;
-                    $reDive->message = $opentime;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
+
                 } catch (\Exception $e) {
                     DB::rollback();
-                    $reDive->boolean = false;
-                    $reDive->passbool = false;
-                    $mess = $e->getMessage();
-                    $reDive->message = $mess;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                 }
             } else {
-                $reDive->boolean = true;
-                $reDive->passbool = false;
-                $reDive->message = $oldstock;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['message' => $oldstock], 421/* Status code here default is 200 ok*/);
+
             }
         } else {
             return redirect(route('member.login'));
@@ -850,7 +836,7 @@ class BUController extends Controller
             }
             else
             {
-                $database = ['default', 'testing', 'bb1', 'bb4', 'm1'];
+                $database = ['default' , 'M2-TEST-1112' , 'M2_TEST_1112'];
 
                 foreach ($database as $key => $value) {
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
@@ -858,9 +844,6 @@ class BUController extends Controller
                     $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
                         ->select(
                             'inventory.料號',
-                            '品名',
-                            '規格',
-                            '單位',
                             DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
                             DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
                         )

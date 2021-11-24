@@ -517,7 +517,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.priority') !!}</label>
 
-                                            <select class="form-control form-control-lg" id="priority" name="priority"
+                                            <select class="form-select form-select-lg" id="priority" name="priority"
                                                 required>
                                                 <option style="display: none" disabled selected value="">{!! __('loginPageLang.enterpriority') !!}</option>
                                                 <option>1</option>

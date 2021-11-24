@@ -153,9 +153,9 @@
                                     <input class="production" type="checkbox" id="productioncheck"
                                         name="productioncheck" style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="production" type="text" id="production{{ $loop->index }}"
-                                        name="production{{ $loop->index }}" value="{{ $production->製程 }}">
+                                        name="production{{ $loop->index }}" value="{{ $production->制程 }}">
                                     <input type="hidden" id="oldproduction{{ $loop->index }}"
-                                        name="oldproduction{{ $loop->index }}" value="{{ $production->製程 }}">
+                                        name="oldproduction{{ $loop->index }}" value="{{ $production->制程 }}">
                                     <hr />
                                     @endforeach
                                     {!! __('basicInfoLang.new') !!} : <input class="production" type="text"

@@ -130,7 +130,8 @@ class LoginController extends Controller
         if ($request->input('username') !== null && $request->input('password2') !== null) {
             if ($request->input('password') === $request->input('password2')) {
                 $username = $request->input('username');
-                $password = Hash::make($request->input('password'));
+                //$password = Hash::make($request->input('password'));
+                $password = $request->input('password');
                 $priority = $request->input('priority');
                 $name = $request->input('name');
                 $department = $request->input('department');

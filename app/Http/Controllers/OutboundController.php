@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class OutboundController extends Controller
 {
     //
@@ -108,81 +109,63 @@ class OutboundController extends Controller
     //領料單
     public function picklist(Request $request)
     {
-        if (Session::has('username'))
-        {
+        if (Session::has('username')) {
             //刪除領料單
-            if($request->has('delete'))
-            {
-                if($request->input('list') !== null)
-                {
+            if ($request->has('delete')) {
+                if ($request->input('list') !== null) {
                     $list =  $request->input('list');
                     DB::table('outbound')
-                    ->where('領料單號', $request->input('list'))
-                    ->delete();
+                        ->where('領料單號', $request->input('list'))
+                        ->delete();
 
-                    $mess = trans('outboundpageLang.delete').' : '.trans('outboundpageLang.picklistnum')
-                    .$list.trans('outboundpageLang.success');
+                    $mess = trans('outboundpageLang.delete') . ' : ' . trans('outboundpageLang.picklistnum')
+                        . $list . trans('outboundpageLang.success');
                     echo ("<script LANGUAGE='JavaScript'>
                     window.alert('$mess' );
                     window.location.href='/outbound';
                             </script>");
-                }
-                else
-                {
+                } else {
                     return back()->withErrors([
-                    'list' => trans('outboundpageLang.enterpicklist'),
+                        'list' => trans('outboundpageLang.enterpicklist'),
 
                     ]);
                 }
-
-            }
-            else
-            {
+            } else {
                 $list = $request->input('list');
-                if($request->input('send') === null)
-                {
+                if ($request->input('send') === null) {
 
                     $datas =  DB::table('outbound')
                         ->join('consumptive_material', function ($join) {
                             $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                            ->where('outbound.發料人員', '=', null);
-
-                        })->select('outbound.*','consumptive_material.發料部門')
+                                ->where('outbound.發料人員', '=', null);
+                        })->select('outbound.*', 'consumptive_material.發料部門')
+                        ->get();
+                } else {
+                    $datas =  DB::table('outbound')
+                        ->join('consumptive_material', function ($join) {
+                            $join->on('outbound.料號', '=', 'consumptive_material.料號')
+                                ->where('outbound.發料人員', '=', null);
+                        })
+                        ->where('consumptive_material.發料部門', '=', $request->input('send'))
+                        ->select('outbound.*', 'consumptive_material.發料部門')
                         ->get();
                 }
-                else
-                {
-                    $datas =  DB::table('outbound')
-                    ->join('consumptive_material', function ($join) {
-                        $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                        ->where('outbound.發料人員', '=', null);
 
-                    })
-                    ->where('consumptive_material.發料部門', '=', $request->input('send'))
-                    ->select('outbound.*','consumptive_material.發料部門')
-                    ->get();
-                }
-
-                if($request->input('list') === null)
-                {
+                if ($request->input('list') === null) {
                     return view('outbound.picklist')->with(['number' => $datas])
                         ->with(['data' => $datas])
                         ->with(['people' => 人員信息::cursor()])
                         ->with(['people1' => 人員信息::cursor()])
                         ->with(['check' => 人員信息::cursor()]);
-                }
-                else
-                {
-                    return view('outbound.picklist')->with(['number' => $datas->where('領料單號',$list)])
-                        ->with(['data' => $datas->where('領料單號',$list)])
+                } else {
+                    return view('outbound.picklist')->with(['number' => $datas->where('領料單號', $list)])
+                        ->with(['data' => $datas->where('領料單號', $list)])
                         ->with(['people' => 人員信息::cursor()])
                         ->with(['people1' => 人員信息::cursor()])
                         ->with(['check' => 人員信息::cursor()]);
                 }
             }
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -190,79 +173,61 @@ class OutboundController extends Controller
     //退料單
     public function backlist(Request $request)
     {
-        if (Session::has('username'))
-        {
+        if (Session::has('username')) {
             //刪除退料單
-            if($request->has('delete'))
-            {
-                if($request->input('list') !== null)
-                {
+            if ($request->has('delete')) {
+                if ($request->input('list') !== null) {
                     $list =  $request->input('list');
                     DB::table('出庫退料')
-                    ->where('退料單號', $request->input('list'))
-                    ->delete();
-                    $mess = trans('outboundpageLang.delete').' : '.trans('outboundpageLang.backlistnum')
-                    .$list.trans('outboundpageLang.success');
+                        ->where('退料單號', $request->input('list'))
+                        ->delete();
+                    $mess = trans('outboundpageLang.delete') . ' : ' . trans('outboundpageLang.backlistnum')
+                        . $list . trans('outboundpageLang.success');
                     echo ("<script LANGUAGE='JavaScript'>
                     window.alert('$mess' );
                     window.location.href='/outbound';
                             </script>");
-                }
-                else
-                {
+                } else {
                     return back()->withErrors([
                         'list' => trans('outboundpageLang.enterbacklist'),
 
-                        ]);
+                    ]);
                 }
-            }
-            else
-            {
+            } else {
                 $list = $request->input('list');
-                if($request->input('send') === null)
-                {
+                if ($request->input('send') === null) {
 
                     $datas =  DB::table('出庫退料')
-                    ->join('consumptive_material', function ($join) {
-                        $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                        ->where('出庫退料.收料人員', '=', null);
-
-                    })->select('出庫退料.*','consumptive_material.發料部門')
-                    ->get();
-
-                }
-                else
-                {
+                        ->join('consumptive_material', function ($join) {
+                            $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
+                                ->where('出庫退料.收料人員', '=', null);
+                        })->select('出庫退料.*', 'consumptive_material.發料部門')
+                        ->get();
+                } else {
                     $datas =  DB::table('出庫退料')
-                    ->join('consumptive_material', function ($join) {
-                        $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                        ->where('出庫退料.收料人員', '=', null);
-
-                    })->select('出庫退料.*','consumptive_material.發料部門')
-                    ->get();
+                        ->join('consumptive_material', function ($join) {
+                            $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
+                                ->where('出庫退料.收料人員', '=', null);
+                        })->select('出庫退料.*', 'consumptive_material.發料部門')
+                        ->get();
                 }
-                if($request->input('list') === null)
-                {
+                if ($request->input('list') === null) {
                     return view('outbound.backlist')->with(['number' => $datas])
                         ->with(['data' => $datas])
                         ->with(['people' => 人員信息::cursor()])
                         ->with(['people1' => 人員信息::cursor()])
                         ->with(['position' => 儲位::cursor()])
                         ->with(['check' => 人員信息::cursor()]);
-                }
-                else
-                {
-                    return view('outbound.backlist')->with(['number' => $datas->where('退料單號',$list)])
-                        ->with(['data' => $datas->where('退料單號',$list)])
+                } else {
+                    return view('outbound.backlist')->with(['number' => $datas->where('退料單號', $list)])
+                        ->with(['data' => $datas->where('退料單號', $list)])
                         ->with(['people' => 人員信息::cursor()])
                         ->with(['people1' => 人員信息::cursor()])
                         ->with(['position' => 儲位::cursor()])
                         ->with(['check' => 人員信息::cursor()]);
                 }
             }
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -292,8 +257,7 @@ class OutboundController extends Controller
     //領料記錄表查詢
     public function pickrecordsearch(Request $request)
     {
-        if(Session::has('username'))
-        {
+        if (Session::has('username')) {
             $client = $request->input('client');
             $number =  $request->input('number');
             $send = $request->input('send');
@@ -301,219 +265,172 @@ class OutboundController extends Controller
             $begin = date($request->input('begin'));
             $endDate = strtotime($request->input('end'));
             $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
-            if($number !== null)
-            {
+            if ($number !== null) {
                 $datas = DB::table('consumptive_material')
-                    ->join('outbound', function($join)
-                    {
+                    ->join('outbound', function ($join) {
                         $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                        ->whereNotNull('領料人員');
-                    })->where('consumptive_material.料號','like', $number.'%')->get();
-
-            }
-            else
-            {
+                            ->whereNotNull('領料人員');
+                    })->where('consumptive_material.料號', 'like', $number . '%')->get();
+            } else {
                 $datas = DB::table('consumptive_material')
-                    ->join('outbound', function($join)
-                    {
+                    ->join('outbound', function ($join) {
                         $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                        ->whereNotNull('領料人員');
+                            ->whereNotNull('領料人員');
                     })->get();
             }
 
             //all empty
-            if($client === null && $production === null && $number === null  && $send === null && !($request->has('date')))
-            {
+            if ($client === null && $production === null && $number === null  && $send === null && !($request->has('date'))) {
                 return view('outbound.pickrecordsearchok')->with(['data' => $datas]);
             }
             //select client
-            else if($client !== null && $production === null && $number === null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)]);
+            else if ($client !== null && $production === null && $number === null && $send === null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('客戶別', $client)]);
             }
             //select production
-            else if($client === null && $production !== null && $number === null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)]);
+            else if ($client === null && $production !== null && $number === null && $send === null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程', $production)]);
             }
             //input material number
-            else if($client === null && $production === null && $number !== null && $send === null && !($request->has('date')))
-            {
+            else if ($client === null && $production === null && $number !== null && $send === null && !($request->has('date'))) {
                 return view('outbound.pickrecordsearchok')->with(['data' => $datas]);
             }
             //select send
-            else if($client === null && $production === null && $number === null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)]);
+            else if ($client === null && $production === null && $number === null && $send !== null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門', $send)]);
             }
             //select date
-            else if($client === null && $production === null && $number === null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])]);
+            else if ($client === null && $production === null && $number === null && $send === null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])]);
             }
             //select client and production
-            else if($client !== null && $production !== null && $number === null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('製程' , $production)]);
+            else if ($client !== null && $production !== null && $number === null && $send === null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('客戶別', $client)->where('製程', $production)]);
             }
             //select client and number
-            else if($client !== null && $production === null && $number !== null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)]);
+            else if ($client !== null && $production === null && $number !== null && $send === null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('客戶別', $client)]);
             }
             //select client and time
-            else if($client !== null && $production === null && $number === null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('客戶別' , $client)]);
+            else if ($client !== null && $production === null && $number === null && $send === null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])->where('客戶別', $client)]);
             }
             //select production and number
-            else if($client === null && $production !== null && $number !== null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)]);
+            else if ($client === null && $production !== null && $number !== null && $send === null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程', $production)]);
             }
             //select production and time
-            else if($client === null && $production !== null && $number === null && $send === null && ($request->has('date')))
-            {
+            else if ($client === null && $production !== null && $number === null && $send === null && ($request->has('date'))) {
 
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('製程' , $production)]);
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])->where('製程', $production)]);
             }
             //select number and time
-            else if($client === null && $production === null && $number !== null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])]);
-
+            else if ($client === null && $production === null && $number !== null && $send === null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])]);
             }
             //select client and send
-            else if($client !== null && $production === null && $number === null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('發料部門' , $send)]);
+            else if ($client !== null && $production === null && $number === null && $send !== null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('客戶別', $client)->where('發料部門', $send)]);
             }
             //select production and send
-            else if($client === null && $production !== null && $number === null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)->where('發料部門' , $send)]);
+            else if ($client === null && $production !== null && $number === null && $send !== null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程', $production)->where('發料部門', $send)]);
             }
             //select number and send
-            else if($client === null && $production === null && $number !== null && $send !== null && !($request->has('date')))
-            {
+            else if ($client === null && $production === null && $number !== null && $send !== null && !($request->has('date'))) {
 
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)]);
-
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門', $send)]);
             }
             //select time and send
-            else if($client === null && $production === null && $number === null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('發料部門' , $send)]);
+            else if ($client === null && $production === null && $number === null && $send !== null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])->where('發料部門', $send)]);
             }
             //select client and production and number
-            else if($client !== null && $production !== null && $number !== null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)
-                ->where('客戶別' , $client)]);
+            else if ($client !== null && $production !== null && $number !== null && $send === null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程', $production)
+                    ->where('客戶別', $client)]);
             }
             //select client and production and time
-            else if($client !== null && $production !== null && $number === null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('製程' , $production)
-                ->where('客戶別' , $client)]);
+            else if ($client !== null && $production !== null && $number === null && $send === null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])->where('製程', $production)
+                    ->where('客戶別', $client)]);
             }
             //select client and number and time
-            else if($client !== null && $production === null && $number !== null && $send === null && ($request->has('date')))
-            {
+            else if ($client !== null && $production === null && $number !== null && $send === null && ($request->has('date'))) {
 
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])
-                ->where('客戶別' , $client)]);
-
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])
+                    ->where('客戶別', $client)]);
             }
             //select production and number and time
-            else if($client === null && $production !== null && $number !== null && $send === null && ($request->has('date')))
-            {
+            else if ($client === null && $production !== null && $number !== null && $send === null && ($request->has('date'))) {
 
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])
-                ->where('製程' , $production)]);
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])
+                    ->where('製程', $production)]);
             }
 
             //select client and production and send
-            else if($client !== null && $production !== null && $number === null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                ->where('客戶別' , $client)]);
+            else if ($client !== null && $production !== null && $number === null && $send !== null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門', $send)->where('製程', $production)
+                    ->where('客戶別', $client)]);
             }
             //select client and number and send
-            else if($client !== null && $production === null && $number !== null && $send !== null && !($request->has('date')))
-            {
+            else if ($client !== null && $production === null && $number !== null && $send !== null && !($request->has('date'))) {
 
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)
-                ->where('客戶別' , $client)]);
-
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門', $send)
+                    ->where('客戶別', $client)]);
             }
             //select client and time and send
-            else if($client !== null && $production === null && $number === null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('客戶別' , $client)
-                    ->where('發料部門' , $send)]);
+            else if ($client !== null && $production === null && $number === null && $send !== null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])->where('客戶別', $client)
+                    ->where('發料部門', $send)]);
             }
             //select number and production and send
-            else if($client === null && $production !== null && $number !== null && $send !== null && !($request->has('date')))
-            {
+            else if ($client === null && $production !== null && $number !== null && $send !== null && !($request->has('date'))) {
 
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)]);
-
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門', $send)->where('製程', $production)]);
             }
             //select production and time and send
-            else if($client === null && $production !== null && $number === null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])->where('製程' , $production)
-                    ->where('發料部門' , $send)]);
+            else if ($client === null && $production !== null && $number === null && $send !== null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])->where('製程', $production)
+                    ->where('發料部門', $send)]);
             }
             //select number and time and send
-            else if($client === null && $production === null && $number !== null && $send !== null && ($request->has('date')))
-            {
+            else if ($client === null && $production === null && $number !== null && $send !== null && ($request->has('date'))) {
 
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])
-                ->where('發料部門' , $send)]);
-
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])
+                    ->where('發料部門', $send)]);
             }
             //select client and production and number and time
-            else if($client !== null && $production !== null && $number !== null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)
-                ->where('客戶別' , $client)->whereBetween('出庫時間' , [$begin, $end])]);
+            else if ($client !== null && $production !== null && $number !== null && $send === null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程', $production)
+                    ->where('客戶別', $client)->whereBetween('出庫時間', [$begin, $end])]);
             }
             //select client and send and number and time
-            else if($client !== null && $production === null && $number !== null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)
-                ->where('客戶別' , $client)->whereBetween('出庫時間' , [$begin, $end])]);
+            else if ($client !== null && $production === null && $number !== null && $send !== null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門', $send)
+                    ->where('客戶別', $client)->whereBetween('出庫時間', [$begin, $end])]);
             }
             //select client and production and number and send
-            else if($client !== null && $production !== null && $number !== null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程' , $production)
-                ->where('客戶別' , $client)->where('發料部門' , $send)]);
+            else if ($client !== null && $production !== null && $number !== null && $send !== null && !($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('製程', $production)
+                    ->where('客戶別', $client)->where('發料部門', $send)]);
             }
             //select client and production and send and time
-            else if($client !== null && $production !== null && $number === null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                ->where('客戶別' , $client)->whereBetween('出庫時間' , [$begin, $end])]);
-
+            else if ($client !== null && $production !== null && $number === null && $send !== null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門', $send)->where('製程', $production)
+                    ->where('客戶別', $client)->whereBetween('出庫時間', [$begin, $end])]);
             }
             //select number and production and send and time
-            else if($client === null && $production !== null && $number !== null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                ->whereBetween('出庫時間' , [$begin, $end])]);
+            else if ($client === null && $production !== null && $number !== null && $send !== null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->where('發料部門', $send)->where('製程', $production)
+                    ->whereBetween('出庫時間', [$begin, $end])]);
             }
             //select all
-            else if($client !== null && $production !== null && $number !== null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間' , [$begin, $end])
-                ->where('製程' , $production)->where('客戶別' , $client)->where('發料部門',$send)]);
+            else if ($client !== null && $production !== null && $number !== null && $send !== null && ($request->has('date'))) {
+                return view('outbound.pickrecordsearchok')->with(['data' => $datas->whereBetween('出庫時間', [$begin, $end])
+                    ->where('製程', $production)->where('客戶別', $client)->where('發料部門', $send)]);
             }
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -521,8 +438,7 @@ class OutboundController extends Controller
     //退料記錄表查詢
     public function backrecordsearch(Request $request)
     {
-        if(Session::has('username'))
-        {
+        if (Session::has('username')) {
             $client = $request->input('client');
             $number =  $request->input('number');
             $send = $request->input('send');
@@ -530,205 +446,165 @@ class OutboundController extends Controller
             $begin = date($request->input('begin'));
             $endDate = strtotime($request->input('end'));
             $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
-            if($number !== null)
-            {
+            if ($number !== null) {
                 $datas = DB::table('consumptive_material')
-                    ->join('出庫退料', function($join)
-                    {
+                    ->join('出庫退料', function ($join) {
                         $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                        ->whereNotNull('收料人員');
-                    })->where('consumptive_material.料號','like', $number.'%')->get();
-            }
-            else
-            {
+                            ->whereNotNull('收料人員');
+                    })->where('consumptive_material.料號', 'like', $number . '%')->get();
+            } else {
                 $datas = DB::table('consumptive_material')
-                    ->join('出庫退料', function($join)
-                    {
+                    ->join('出庫退料', function ($join) {
                         $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                        ->whereNotNull('收料人員');
+                            ->whereNotNull('收料人員');
                     })->get();
             }
             //all empty
-            if($client === null && $production === null && $number === null  && $send === null && !($request->has('date')))
-            {
+            if ($client === null && $production === null && $number === null  && $send === null && !($request->has('date'))) {
                 return view('outbound.backrecordsearchok')->with(['data' => $datas]);
             }
             //select client
-            else if($client !== null && $production === null && $number === null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)]);
+            else if ($client !== null && $production === null && $number === null && $send === null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('客戶別', $client)]);
             }
             //select production
-            else if($client === null && $production !== null && $number === null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)]);
+            else if ($client === null && $production !== null && $number === null && $send === null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程', $production)]);
             }
             //input material number
-            else if($client === null && $production === null && $number !== null && $send === null && !($request->has('date')))
-            {
+            else if ($client === null && $production === null && $number !== null && $send === null && !($request->has('date'))) {
                 return view('outbound.backrecordsearchok')->with(['data' => $datas]);
             }
             //select send
-            else if($client === null && $production === null && $number === null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)]);
+            else if ($client === null && $production === null && $number === null && $send !== null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門', $send)]);
             }
             //select date
-            else if($client === null && $production === null && $number === null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])]);
+            else if ($client === null && $production === null && $number === null && $send === null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])]);
             }
             //select client and production
-            else if($client !== null && $production !== null && $number === null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('製程' , $production)]);
+            else if ($client !== null && $production !== null && $number === null && $send === null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('客戶別', $client)->where('製程', $production)]);
             }
             //select client and number
-            else if($client !== null && $production === null && $number !== null && $send === null && !($request->has('date')))
-            {
+            else if ($client !== null && $production === null && $number !== null && $send === null && !($request->has('date'))) {
 
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)]);
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('客戶別', $client)]);
             }
             //select client and time
-            else if($client !== null && $production === null && $number === null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('客戶別' , $client)]);
+            else if ($client !== null && $production === null && $number === null && $send === null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])->where('客戶別', $client)]);
             }
             //select production and number
-            else if($client === null && $production !== null && $number !== null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)]);
+            else if ($client === null && $production !== null && $number !== null && $send === null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程', $production)]);
             }
             //select production and time
-            else if($client === null && $production !== null && $number === null && $send === null && ($request->has('date')))
-            {
+            else if ($client === null && $production !== null && $number === null && $send === null && ($request->has('date'))) {
 
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('製程' , $production)]);
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])->where('製程', $production)]);
             }
             //select number and time
-            else if($client === null && $production === null && $number !== null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])]);
+            else if ($client === null && $production === null && $number !== null && $send === null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])]);
             }
             //select client and send
-            else if($client !== null && $production === null && $number === null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('客戶別' , $client)->where('發料部門' , $send)]);
+            else if ($client !== null && $production === null && $number === null && $send !== null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('客戶別', $client)->where('發料部門', $send)]);
             }
             //select production and send
-            else if($client === null && $production !== null && $number === null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)->where('發料部門' , $send)]);
+            else if ($client === null && $production !== null && $number === null && $send !== null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程', $production)->where('發料部門', $send)]);
             }
             //select number and send
-            else if($client === null && $production === null && $number !== null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)]);
+            else if ($client === null && $production === null && $number !== null && $send !== null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門', $send)]);
             }
             //select time and send
-            else if($client === null && $production === null && $number === null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('發料部門' , $send)]);
+            else if ($client === null && $production === null && $number === null && $send !== null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])->where('發料部門', $send)]);
             }
             //select client and production and number
-            else if($client !== null && $production !== null && $number !== null && $send === null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)
-                ->where('客戶別' , $client)]);
+            else if ($client !== null && $production !== null && $number !== null && $send === null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程', $production)
+                    ->where('客戶別', $client)]);
             }
             //select client and production and time
-            else if($client !== null && $production !== null && $number === null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('製程' , $production)
-                ->where('客戶別' , $client)]);
+            else if ($client !== null && $production !== null && $number === null && $send === null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])->where('製程', $production)
+                    ->where('客戶別', $client)]);
             }
             //select client and number and time
-            else if($client !== null && $production === null && $number !== null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])
-                ->where('客戶別' , $client)]);
+            else if ($client !== null && $production === null && $number !== null && $send === null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
+                    ->where('客戶別', $client)]);
             }
             //select production and number and time
-            else if($client === null && $production !== null && $number !== null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])
-                ->where('製程' , $production)]);
+            else if ($client === null && $production !== null && $number !== null && $send === null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
+                    ->where('製程', $production)]);
             }
             //select client and production and send
-            else if($client !== null && $production !== null && $number === null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                ->where('客戶別' , $client)]);
+            else if ($client !== null && $production !== null && $number === null && $send !== null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門', $send)->where('製程', $production)
+                    ->where('客戶別', $client)]);
             }
             //select client and number and send
-            else if($client !== null && $production === null && $number !== null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)
-                ->where('客戶別' , $client)]);
+            else if ($client !== null && $production === null && $number !== null && $send !== null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門', $send)
+                    ->where('客戶別', $client)]);
             }
             //select client and time and send
-            else if($client !== null && $production === null && $number === null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('客戶別' , $client)
-                    ->where('發料部門' , $send)]);
+            else if ($client !== null && $production === null && $number === null && $send !== null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])->where('客戶別', $client)
+                    ->where('發料部門', $send)]);
             }
             //select number and production and send
-            else if($client === null && $production !== null && $number !== null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)]);
+            else if ($client === null && $production !== null && $number !== null && $send !== null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門', $send)->where('製程', $production)]);
             }
             //select production and time and send
-            else if($client === null && $production !== null && $number === null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])->where('製程' , $production)
-                    ->where('發料部門' , $send)]);
+            else if ($client === null && $production !== null && $number === null && $send !== null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])->where('製程', $production)
+                    ->where('發料部門', $send)]);
             }
             //select number and time and send
-            else if($client === null && $production === null && $number !== null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])
-                ->where('發料部門' , $send)]);
+            else if ($client === null && $production === null && $number !== null && $send !== null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
+                    ->where('發料部門', $send)]);
             }
             //select client and production and number and time
-            else if($client !== null && $production !== null && $number !== null && $send === null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)
-                ->where('客戶別' , $client)->whereBetween('入庫時間' , [$begin, $end])]);
+            else if ($client !== null && $production !== null && $number !== null && $send === null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程', $production)
+                    ->where('客戶別', $client)->whereBetween('入庫時間', [$begin, $end])]);
             }
             //select client and send and number and time
-            else if($client !== null && $production === null && $number !== null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)
-                ->where('客戶別' , $client)->whereBetween('入庫時間' , [$begin, $end])]);
+            else if ($client !== null && $production === null && $number !== null && $send !== null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門', $send)
+                    ->where('客戶別', $client)->whereBetween('入庫時間', [$begin, $end])]);
             }
             //select client and production and number and send
-            else if($client !== null && $production !== null && $number !== null && $send !== null && !($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程' , $production)
-                ->where('客戶別' , $client)->where('發料部門' , $send)]);
+            else if ($client !== null && $production !== null && $number !== null && $send !== null && !($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('製程', $production)
+                    ->where('客戶別', $client)->where('發料部門', $send)]);
             }
             //select client and production and send and time
-            else if($client !== null && $production !== null && $number === null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                ->where('客戶別' , $client)->whereBetween('入庫時間' , [$begin, $end])]);
-
+            else if ($client !== null && $production !== null && $number === null && $send !== null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門', $send)->where('製程', $production)
+                    ->where('客戶別', $client)->whereBetween('入庫時間', [$begin, $end])]);
             }
             //select number and production and send and time
-            else if($client === null && $production !== null && $number !== null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門' , $send)->where('製程' , $production)
-                ->whereBetween('入庫時間' , [$begin, $end])]);
+            else if ($client === null && $production !== null && $number !== null && $send !== null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->where('發料部門', $send)->where('製程', $production)
+                    ->whereBetween('入庫時間', [$begin, $end])]);
             }
             //select all
-            else if($client !== null && $production !== null && $number !== null && $send !== null && ($request->has('date')))
-            {
-                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間' , [$begin, $end])
-                ->where('製程' , $production)->where('客戶別' , $client)->where('發料部門',$send)]);
+            else if ($client !== null && $production !== null && $number !== null && $send !== null && ($request->has('date'))) {
+                return view('outbound.backrecordsearchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
+                    ->where('製程', $production)->where('客戶別', $client)->where('發料部門', $send)]);
             }
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -736,7 +612,7 @@ class OutboundController extends Controller
     //領料添加
     public function pickadd(Request $request)
     {
-        Session::forget('client');
+        /*Session::forget('client');
         Session::forget('machine');
         Session::forget('production');
         Session::forget('line');
@@ -745,11 +621,10 @@ class OutboundController extends Controller
         Session::forget('format');
         Session::forget('unit');
         Session::forget('send');
-        Session::forget('number');
+        Session::forget('number');*/
 
         if (Session::has('username')) {
             if ($request->input('client') !== null && $request->input('number') !== null) {
-
                 if (strlen($request->input('number')) === 12) {
                     $client = $request->input('client');
                     $machine = $request->input('machine');
@@ -765,7 +640,8 @@ class OutboundController extends Controller
                     $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->sum('現有庫存');
 
                     if ($name !== null && $format !== null) {
-                        Session::put('number', $number);
+
+                        /*Session::put('number', $number);
                         Session::put('client', $client);
                         Session::put('machine', $machine);
                         Session::put('production', $production);
@@ -774,10 +650,17 @@ class OutboundController extends Controller
                         Session::put('name', $name);
                         Session::put('format', $format);
                         Session::put('unit', $unit);
-                        Session::put('send', $send);
-                        Session::put('pick', $client);
+                        Session::put('send', $send);*/
+
+
                         if ($stock > 0) {
-                            return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+                            Session::put('pick', $number);
+                            Session::put('pickcount', $number);
+                            return \Response::json([
+                                'number' => $number, 'client' => $client, 'machine' => $machine,
+                                'production' => $production, 'line' => $line, 'usereason' => $usereason, 'name' => $name,
+                                'format' => $format, 'unit' => $unit, 'send' => $send
+                            ]/* Status code here default is 200 ok*/);
                         }
                         //沒有庫存
                         else {
@@ -872,7 +755,7 @@ class OutboundController extends Controller
                 $send = $request->input('send');
                 $amount = $request->input('amount');
                 $remark = $request->input('remark');
-                if($remark === null) $remark = '';
+                if ($remark === null) $remark = '';
                 $client = $request->input('client');
                 $machine = $request->input('machine');
                 $production = $request->input('production');
@@ -897,9 +780,11 @@ class OutboundController extends Controller
                 DB::beginTransaction();
                 try {
                     DB::table('outbound')
-                        ->insert(['客戶別' => $client , '機種' => $machine , '製程' => $production ,'領用原因' => $usereason , '線別' => $line ,
-                        '料號' => $number , '品名' => $name , '規格' => $format ,'單位' => $unit , '預領數量' => $amount ,
-                        '實際領用數量' => $amount , '備註' => $remark , '領料單號' => $opentime ,'開單時間' => Carbon::now()]);
+                        ->insert([
+                            '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
+                            '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預領數量' => $amount,
+                            '實際領用數量' => $amount, '備註' => $remark, '領料單號' => $opentime, '開單時間' => Carbon::now()
+                        ]);
 
                     DB::commit();
                 } catch (\Exception $e) {
@@ -928,7 +813,7 @@ class OutboundController extends Controller
                 $send = $request->input('send');
                 $amount = $request->input('amount');
                 $remark = $request->input('remark');
-                if($remark === null) $remark = '';
+                if ($remark === null) $remark = '';
                 $client = $request->input('client');
                 $machine = $request->input('machine');
                 $production = $request->input('production');
@@ -953,9 +838,11 @@ class OutboundController extends Controller
                 DB::beginTransaction();
                 try {
                     DB::table('出庫退料')
-                            ->insert(['客戶別' => $client , '機種' => $machine , '製程' => $production ,'退回原因' => $backreason , '線別' => $line ,
-                            '料號' => $number , '品名' => $name , '規格' => $format ,'單位' => $unit , '預退數量' => $amount ,
-                            '實際退回數量' => $amount , '備註' => $remark , '退料單號' => $opentime ,'開單時間' => Carbon::now()]);
+                        ->insert([
+                            '客戶別' => $client, '機種' => $machine, '製程' => $production, '退回原因' => $backreason, '線別' => $line,
+                            '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預退數量' => $amount,
+                            '實際退回數量' => $amount, '備註' => $remark, '退料單號' => $opentime, '開單時間' => Carbon::now()
+                        ]);
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -973,10 +860,8 @@ class OutboundController extends Controller
     //提交領料單
     public function picklistsubmit(Request $request)
     {
-        if (Session::has('username'))
-        {
-            if ($request->input('amount') !== null && $request->input('position') !== null)
-            {
+        if (Session::has('username')) {
+            if ($request->input('amount') !== null && $request->input('position') !== null) {
                 $list = $request->input('list');
                 $amount = $request->input('amount');
                 $advance = $request->input('advance');
@@ -991,19 +876,13 @@ class OutboundController extends Controller
                 $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
                 $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
                 //沒填寫實領差異原因
-                if ($amount !== $advance && $reason === null)
-                {
+                if ($amount !== $advance && $reason === null) {
                     return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
-                }
-                else
-                {
+                } else {
                     //庫存小於實際領用數量,無法出庫
-                    if ($amount > $stock)
-                    {
-                        return \Response::json(['position' => $position , 'nowstock' => $stock], 421/* Status code here default is 200 ok*/);
-                    }
-                    else
-                    {
+                    if ($amount > $stock) {
+                        return \Response::json(['position' => $position, 'nowstock' => $stock], 421/* Status code here default is 200 ok*/);
+                    } else {
                         DB::beginTransaction();
                         try {
                             DB::table('outbound')
@@ -1031,14 +910,10 @@ class OutboundController extends Controller
                         return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 return view('outbound.picklist');
             }
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }
@@ -1062,23 +937,16 @@ class OutboundController extends Controller
                 $backname = DB::table('人員信息')->where('工號', $backpeople)->value('姓名');
                 $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
                 //沒填寫原因
-                if ($amount !== $advance && $reason === null)
-                {
+                if ($amount !== $advance && $reason === null) {
                     return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
-                }
-                else
-                {
-                    if($status === '良品')
-                    {
+                } else {
+                    if ($status === '良品') {
                         $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
-                    }
-                    else
-                    {
+                    } else {
                         $stock = DB::table('不良品inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
                     }
 
-                    if ($stock === null)
-                    {
+                    if ($stock === null) {
                         DB::beginTransaction();
                         try {
                             DB::table('出庫退料')
@@ -1091,27 +959,21 @@ class OutboundController extends Controller
                                     '入庫時間' => $time, '功能狀況' => $status
                                 ]);
 
-                                if($status === '良品')
-                                {
-                                    DB::table('inventory')
+                            if ($status === '良品') {
+                                DB::table('inventory')
                                     ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $time]);
-                                }
-                                else
-                                {
-                                    DB::table('不良品inventory')
+                            } else {
+                                DB::table('不良品inventory')
                                     ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $time]);
-                                }
+                            }
                             DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
                             return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
                         }
 
-                    return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
-
-                    }
-                    else
-                    {
+                        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+                    } else {
                         DB::beginTransaction();
                         try {
                             DB::table('出庫退料')
@@ -1123,16 +985,13 @@ class OutboundController extends Controller
                                     '收料人員' => $pickname, '收料人員工號' => $pickpeople, '退料人員' => $backname, '退料人員工號' => $backpeople,
                                     '入庫時間' => $time, '功能狀況' => $status
                                 ]);
-                            if($status === '良品')
-                            {
+                            if ($status === '良品') {
                                 DB::table('inventory')
                                     ->where('客戶別', $client)
                                     ->where('料號', $number)
                                     ->where('儲位', $position)
                                     ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $time]);
-                            }
-                            else
-                            {
+                            } else {
                                 DB::table('不良品inventory')
                                     ->where('客戶別', $client)
                                     ->where('料號', $number)
@@ -1149,34 +1008,29 @@ class OutboundController extends Controller
                         return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
                     }
                 }
-            }
-            else
-            {
-                return view('outbound.backlist');
-            }
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }
-
-    /*//領料添加頁面
-    public function pickaddok()
-    {
-        if (Session::has('username')) {
-            if (Session::has('pick')) {
-                Session::forget('pick');
-                return view("outbound.pickadd");
             } else {
-                return redirect(route('outbound.pick'));
+                return view('outbound.backlist');
             }
         } else {
             return redirect(route('member.login'));
         }
     }
 
-    //退料添加頁面
+
+    //領料添加頁面
+    public function pickaddok(Request $request)
+    {
+        if (Session::has('username')) {
+            $pickcount = $request->input('pickcount');
+            $request->session()->put('pickcount', $pickcount);
+            return \Response::json(['message' => $pickcount]/* Status code here default is 200 ok*/);
+
+        } else {
+            return redirect(route('member.login'));
+        }
+    }
+
+    /*//退料添加頁面
     public function backaddok()
     {
         if (Session::has('username')) {
@@ -1194,8 +1048,7 @@ class OutboundController extends Controller
     //download
     public function download(Request $request)
     {
-        if (Session::has('username'))
-        {
+        if (Session::has('username')) {
 
             $spreadsheet = new Spreadsheet();
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
@@ -1203,17 +1056,14 @@ class OutboundController extends Controller
             $time = $request->input('time');
             $count = $request->input('count');
             //填寫表頭
-            for($i = 0 ; $i < $time ; $i ++)
-            {
-                $worksheet->setCellValueByColumnAndRow($i+1 , 1 , $request->input('title'.$i));
+            for ($i = 0; $i < $time; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title' . $i));
             }
 
             //填寫內容
-            for($i = 0 ; $i < $time ; $i ++)
-            {
-                for($j = 0 ; $j < $count ; $j++)
-                {
-                    $worksheet->setCellValueByColumnAndRow($i+1 , $j+2 , $request->input('data'.$i.$j));
+            for ($i = 0; $i < $time; $i++) {
+                for ($j = 0; $j < $count; $j++) {
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
                 }
             }
 
@@ -1223,14 +1073,12 @@ class OutboundController extends Controller
             $title = $request->input('title');
             $filename = $title . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="'.$filename.'"');
+            header('Content-Disposition: attachment;filename="' . $filename . '"');
             header('Cache-Control: max-age=0');
 
             $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
             $writer->save('php://output');
-        }
-        else
-        {
+        } else {
             return redirect(route('member.login'));
         }
     }

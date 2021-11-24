@@ -128,7 +128,9 @@
                                             <select class="form-select form-select-lg" id="site" name="site" required>
                                                 <option value="" selected>{{ __('loginPageLang.site_placeholder')}}
                                                 </option>
-                                                <option value="M2_TEST_1112">M2-TEST</option>
+                                                <option value="M2_TEST_1112">M2_TEST</option>
+                                                <option value="M2-TEST-1112">M2-TEST</option>
+                                                <option value="default">Default</option>
                                                 {{--
                                                 <option value="testing">TEST</option>
                                                 <option value="default">Default</option>

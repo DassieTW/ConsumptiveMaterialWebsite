@@ -42,7 +42,7 @@
                                 <?php $i = 0 ; $data = ''; $count=array(0,0,0,0,0); $record = array(array());
 
                                 ?>
-                                @for($i = 0 ; $i < 5 ; $i++)
+                                @for($i = 0 ; $i < 3 ; $i++)
                                     @foreach($test[$i] as $data)
                                         <?php
                                             $maxtime = date_create(date('Y-m-d',strtotime($data->inventory最後更新時間)));
@@ -54,7 +54,7 @@
                                             $buytime1 = array();
                                             $buytimeco = array();
                                             $buytimeco1 = array();
-                                            $database = ['default','testing','bb1','bb4','m1'];
+                                            $database = ['default','M2-TEST-1112','M2_TEST_1112'];
                                             foreach ($database as $key => $value) {
                                                 if($value != $database[$i])
                                                 {
@@ -77,6 +77,11 @@
 
                                                     $buytimeco[$key][2] = DB::table('請購單')->where('料號', $data->料號)->max('請購時間');
                                                     $buytimeco1[$key][2] = DB::table('非月請購')->where('料號', $data->料號)->max('上傳時間');
+
+                                                    $name = DB::table('consumptive_material')->where('料號', $data->料號)->value('品名');
+                                                    $format = DB::table('consumptive_material')->where('料號', $data->料號)->value('規格');
+                                                    $unit = DB::table('consumptive_material')->where('料號', $data->料號)->value('單位');
+
                                                 }
                                             }
                                         ?>
@@ -91,9 +96,9 @@
                                                 <td><input class ="basic" type="checkbox" id="check{{$i}}{{$loop->index}}" name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;" value="{{$i}}{{$loop->index}}"></td>
                                                 <td><input type = "hidden"  id = "data0{{$i}}{{$loop->index}}" name = "data0{{$i}}{{$loop->index}}" value = {{$database[$i]}}>{{$database[$i]}}</td>
                                                 <td><input type = "hidden"  id = "data1{{$i}}{{$loop->index}}" name = "data1{{$i}}{{$loop->index}}" value = {{$data->料號}}>{{$data->料號}}</td>
-                                                <td><input type = "hidden"  id = "data2{{$i}}{{$loop->index}}" name = "data2{{$i}}{{$loop->index}}" value = {{$data->品名}}>{{$data->品名}}</td>
-                                                <td><input type = "hidden"  id = "data3{{$i}}{{$loop->index}}" name = "data3{{$i}}{{$loop->index}}" value = {{$data->規格}}>{{$data->規格}}</td>
-                                                <td><input type = "hidden"  id = "data4{{$i}}{{$loop->index}}" name = "data4{{$i}}{{$loop->index}}" value = {{$data->單位}}>{{$data->單位}}</td>
+                                                <td><input type = "hidden"  id = "data2{{$i}}{{$loop->index}}" name = "data2{{$i}}{{$loop->index}}" value = {{$name}}>{{$name}}</td>
+                                                <td><input type = "hidden"  id = "data3{{$i}}{{$loop->index}}" name = "data3{{$i}}{{$loop->index}}" value = {{$format}}>{{$format}}</td>
+                                                <td><input type = "hidden"  id = "data4{{$i}}{{$loop->index}}" name = "data4{{$i}}{{$loop->index}}" value = {{$unit}}>{{$unit}}</td>
                                                 <td><input type = "hidden"  id = "data5{{$i}}{{$loop->index}}" name = "data5{{$i}}{{$loop->index}}" value = {{$stayday}}>{{$stayday}}</td>
                                                 <td><input type = "hidden"  id = "data6{{$i}}{{$loop->index}}" name = "data6{{$i}}{{$loop->index}}" value = {{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
                                                 <td><input type = "number" id = "data7{{$i}}{{$loop->index}}" name = "data7{{$i}}{{$loop->index}}" value = "" style="width:100px;"></td>
@@ -131,9 +136,9 @@
                                                 <td><input class ="basic" type="checkbox" id="check{{$i}}{{$loop->index}}" name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;" value="{{$i}}{{$loop->index}}"></td>
                                                 <td><input type = "hidden"  id = "data0{{$i}}{{$loop->index}}" name = "data0{{$i}}{{$loop->index}}" value = {{$database[$i]}}>{{$database[$i]}}</td>
                                                 <td><input type = "hidden"  id = "data1{{$i}}{{$loop->index}}" name = "data1{{$i}}{{$loop->index}}" value = {{$data->料號}}>{{$data->料號}}</td>
-                                                <td><input type = "hidden"  id = "data2{{$i}}{{$loop->index}}" name = "data2{{$i}}{{$loop->index}}" value = {{$data->品名}}>{{$data->品名}}</td>
-                                                <td><input type = "hidden"  id = "data3{{$i}}{{$loop->index}}" name = "data3{{$i}}{{$loop->index}}" value = {{$data->規格}}>{{$data->規格}}</td>
-                                                <td><input type = "hidden"  id = "data4{{$i}}{{$loop->index}}" name = "data4{{$i}}{{$loop->index}}" value = {{$data->單位}}>{{$data->單位}}</td>
+                                                <td><input type = "hidden"  id = "data2{{$i}}{{$loop->index}}" name = "data2{{$i}}{{$loop->index}}" value = {{$name}}>{{$name}}</td>
+                                                <td><input type = "hidden"  id = "data3{{$i}}{{$loop->index}}" name = "data3{{$i}}{{$loop->index}}" value = {{$format}}>{{$format}}</td>
+                                                <td><input type = "hidden"  id = "data4{{$i}}{{$loop->index}}" name = "data4{{$i}}{{$loop->index}}" value = {{$unit}}>{{$unit}}</td>
                                                 <td><input type = "hidden"  id = "data5{{$i}}{{$loop->index}}" name = "data5{{$i}}{{$loop->index}}" value = {{$stayday}}>{{$stayday}}</td>
                                                 <td><input type = "hidden"  id = "data6{{$i}}{{$loop->index}}" name = "data6{{$i}}{{$loop->index}}" value = {{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
                                                 <td><input type = "number" id = "data7{{$i}}{{$loop->index}}" name = "data7{{$i}}{{$loop->index}}" value = "" style="width:100px;"></td>

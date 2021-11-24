@@ -39,55 +39,31 @@
                         <th>{!! __('outboundpageLang.usereason') !!}</th>
                     </tr>
 
+
+                    @for ($i = 0 ; $i < $request->session()->get('pickcount') ; $i++)
                     <tr>
-                        <?php
-                            $i = 0;
-                            $showstock  = '';
-                            $stock = DB::table('inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->where('現有庫存','>',0)->pluck('現有庫存')->toArray();
-                            $position = DB::table('inventory')->where('料號',Session::get('number'))->where('客戶別',Session::get('client'))->where('現有庫存','>',0)->pluck('儲位')->toArray();
-                            $test = array_combine($position, $stock);
-                            foreach ($test as $k=> $a) {
-                            $show[$i] = __('outboundpageLang.loc') . ':' . $k .' '. __('outboundpageLang.nowstock') . ':' . $a ;
-                            $i++;
-                            }
-                            for($j = 0 ; $j < $i ; $j ++){
-                            $showstock = $showstock . $show[$j] . "\n" ; }
-                        ?>
-
-                        <td><input type="hidden" id="number" name="number" value="{{ Session::get('number') }}">{{
-                            Session::get('number') }}</td>
-                        <td><input type="hidden" id="name" name="name" value="{{ Session::get('name') }}">{{
-                            Session::get('name') }}</td>
-                        <td><input type="hidden" id="format" name="format" value="{{ Session::get('format') }}">{{
-                            Session::get('format') }}</td>
-                        <td><input type="hidden" id="unit" name="unit" value="{{ Session::get('unit') }}">{{
-                            Session::get('unit') }}</td>
-                        <td><input type="hidden" id="send" name="send" value="{{ Session::get('send') }}">{{
-                            Session::get('send') }}</td>
-                        <td><input type="number" id="amount" name="amount" required
-                                placeholder="{!! __('outboundpageLang.enteramount') !!}" title="{{$showstock}}"></td>
-                        <td><input type="text" id="remark" name="remark"></td>
-                        <td><input type="hidden" id="client" name="client" value="{{ Session::get('client') }}">{{
-                            Session::get('client') }}</td>
-                        <td><input type="hidden" id="machine" name="machine" value="{{ Session::get('machine') }}">{{
-                            Session::get('machine') }}</td>
-                        <td><input type="hidden" id="production" name="production"
-                                value="{{ Session::get('production') }}">{{ Session::get('production') }}</td>
-                        <td><input type="hidden" id="line" name="line" value="{{ Session::get('line') }}">{{
-                            Session::get('line') }}</td>
-                        <td><input type="hidden" id="usereason" name="usereason"
-                                value="{{ Session::get('usereason') }}">{{ Session::get('usereason') }}</td>
+                        <td><input type="text" id="number{{$i}}" name="number{{$i}}" value=""></td>
+                        <td><input type="text" id="name{{$i}}" name="name{{$i}}" value=""></td>
+                        <td><input type="text" id="format{{$i}}" name="format{{$i}}" value=""></td>
+                        <td><input type="text" id="unit{{$i}}" name="unit{{$i}}" value=""></td>
+                        <td><input type="text" id="send{{$i}}" name="send{{$i}}" value=""></td>
+                        <td><input type="text" id="amount{{$i}}" name="amount{{$i}}" value=""></td>
+                        <td><input type="text" id="remark{{$i}}" name="remark{{$i}}" value=""></td>
+                        <td><input type="text" id="client{{$i}}" name="client{{$i}}" value=""></td>
+                        <td><input type="text" id="machine{{$i}}" name="machine{{$i}}" value=""></td>
+                        <td><input type="text" id="production{{$i}}" name="production{{$i}}" value=""></td>
+                        <td><input type="text" id="line{{$i}}" name="line{{$i}}" value=""></td>
+                        <td><input type="text" id="usereason{{$i}}" name="usereason{{$i}}" value=""></td>
+                        <td><input type="text" id="count" name="count" value="{{$pickcount}}"></td>
                     </tr>
-
+                    @endfor
 
                 </table>
             </div>
             <br>
 
 
-            @foreach ($test as $k=> $a)
-            <p>{!! __('outboundpageLang.loc') !!} : {{$k}} {!! __('outboundpageLang.nowstock') !!} : {{$a}}</p>
-            @endforeach
+
 
 
             <input type="submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}">

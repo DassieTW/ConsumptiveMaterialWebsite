@@ -15,113 +15,119 @@
     <meta charset="utf-8">
 </head>
 <h2>{!! __('templateWords.outbound') !!}</h2>
-<div class="row justify-content-center">
-    <div class="card w-75">
-        <div class="card-header">
-            <h3>{!! __('outboundpageLang.pick') !!}</h3>
-        </div>
-        <div class="row justify-content-center">
-            <div class="card-body">
-                <form id="pick">
-                    @csrf
-                    <div class="row w-100 justify-content-center mb-3">
-
-                        <label class="col col-auto form-label">{!! __('outboundpageLang.client') !!}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="col-lg-6  col-md-12 col-sm-12">
-                            <select class="form-select form-select-lg" id="client" name="client" required>
-                                <option style="display: none" disabled selected value="">{!!
-                                    __('outboundpageLang.enterclient') !!}</option>
-                                @foreach($client as $client)
-                                <option>{{ $client->客戶 }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                        <label class="col col-auto form-label">{!! __('outboundpageLang.machine') !!}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="col-lg-6  col-md-12 col-sm-12">
-                            <select class="form-select form-select-lg" id="machine" name="machine" required>
-                                <option style="display: none" disabled selected value="">{!!
-                                    __('outboundpageLang.entermachine') !!}</option>
-                                @foreach($machine as $machine)
-                                <option>{{ $machine->機種 }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                        <label class="col col-auto form-label">{!! __('outboundpageLang.process') !!}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="col-lg-6  col-md-12 col-sm-12">
-                            <select class="form-select form-select-lg " id="production" name="production" required>
-                                <option style="display: none" disabled selected value="">{!!
-                                    __('outboundpageLang.enterprocess') !!}</option>
-                                @foreach($production as $production)
-                                <option>{{ $production->製程 }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                        <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="col-lg-6  col-md-12 col-sm-12">
-                            <select class="form-select form-select-lg " id="line" name="line" required>
-                                <option style="display: none" disabled selected value="">{!!
-                                    __('outboundpageLang.enterline') !!}</option>
-                                @foreach($line as $line)
-                                <option>{{ $line->線別 }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                        <label class="col col-auto form-label">{!! __('outboundpageLang.usereason') !!}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="col-lg-6  col-md-12 col-sm-12">
-                            <select class="form-select form-select-lg " id="usereason" name="usereason" required>
-                                <option style="display: none" disabled selected value="">{!!
-                                    __('outboundpageLang.enterusereason') !!}</option>
-                                @foreach($usereason as $usereason)
-                                <option>{{ $usereason->領用原因 }}</option>
-                                @endforeach
-                                <option>{!! __('outboundpageLang.other') !!}</option>
-                            </select>
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                            <input style="display:none;" class="form-control form-control-lg " type="text" id="reason"
-                                name="reason" placeholder="{!! __('outboundpageLang.inputusereason') !!}">
-                        </div>
-
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-
-                        <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="col-lg-6  col-md-12 col-sm-12">
-                            <input class="form-control form-control-lg " type="text" id="number" name="number" required placeholder="{!! __('outboundpageLang.enterisn') !!}">
-                            <div id="numbererror" style="display:none; color:red;">{!! __('outboundpageLang.isnlength')!!}</div>
-                            <div id="numbererror1" style="display:none; color:red;">{!! __('outboundpageLang.noisn') !!}
-                            </div>
-                            <div id="nostock" style="display:none; color:red;">{!! __('outboundpageLang.nostock') !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row w-100 justify-content-center">
-                        <div class="col col-auto">
-                            <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
-                                value="{!! __('outboundpageLang.submit') !!}">
-                        </div>
-                    </div>
-                </form>
+<div class="card w-100">
+    <div class="card-header">
+        <h3>{!! __('outboundpageLang.pick') !!}</h3>
+    </div>
+    <div class="card-body">
+        <form id="pick" class="row gx-6 gy-1 align-items-center">
+            @csrf
+            <div class="col-auto">
+                <label class="col col-lg-12 form-label">{!! __('outboundpageLang.client') !!}</label>
+                <select class="form-select form-select-lg" id="client" name="client" required>
+                    <option style="display: none" disabled selected value="">{!!
+                        __('outboundpageLang.enterclient') !!}</option>
+                    @foreach($client as $client)
+                    <option>{{ $client->客戶 }}</option>
+                    @endforeach
+                </select>
             </div>
-        </div>
+            <div class="col-auto">
+                <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
+                <select class="form-select form-select-lg" id="machine" name="machine" required>
+                    <option style="display: none" disabled selected value="">{!!
+                        __('outboundpageLang.entermachine') !!}</option>
+                    @foreach($machine as $machine)
+                    <option>{{ $machine->機種 }}</option>
+                    @endforeach
+                </select>
+
+            </div>
+            <div class="col-auto">
+                <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
+                <select class="form-select form-select-lg " id="production" name="production" required>
+                    <option style="display: none" disabled selected value="">{!!
+                        __('outboundpageLang.enterprocess') !!}</option>
+                    @foreach($production as $production)
+                    <option>{{ $production->製程 }}</option>
+                    @endforeach
+                </select>
+
+            </div>
+            <div class="col-auto">
+                <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>
+                <select class="form-select form-select-lg " id="line" name="line" required>
+                    <option style="display: none" disabled selected value="">{!!
+                        __('outboundpageLang.enterline') !!}</option>
+                    @foreach($line as $line)
+                    <option>{{ $line->線別 }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="col col-auto form-label">{!! __('outboundpageLang.usereason') !!}</label>
+                <select class="form-select form-select-lg " id="usereason" name="usereason" required>
+                    <option style="display: none" disabled selected value="">{!!
+                        __('outboundpageLang.enterusereason') !!}</option>
+                    @foreach($usereason as $usereason)
+                    <option>{{ $usereason->領用原因 }}</option>
+                    @endforeach
+                    <option>{!! __('outboundpageLang.other') !!}</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
+                <input class="form-control form-control-lg " type="text" id="number" name="number" required
+                    placeholder="{!! __('outboundpageLang.enterisn') !!}"
+                    oninput="if(value.length>12)value=value.slice(0,12)">
+                <div id="numbererror" style="display:none; color:red;">{!!
+                    __('outboundpageLang.isnlength')!!}</div>
+                <div id="numbererror1" style="display:none; color:red;">{!! __('outboundpageLang.noisn') !!}
+                </div>
+                <div id="nostock" style="display:none; color:red;">{!! __('outboundpageLang.nostock') !!}
+                </div>
+            </div>
+            <div class="col-auto">
+                <label class="col col-auto form-label"></label>
+                <input type="submit" id="add" name="add" class="form-control form-control-lg btn btn-lg btn-primary"
+                    value="{!! __('outboundpageLang.add') !!}">
+            </div>
+            <div class="col-auto">
+                <label class="col col-auto form-label"></label>
+                <input style="display:none;" class="form-control form-control-lg " type="text" id="reason" name="reason"
+                    placeholder="{!! __('outboundpageLang.inputusereason') !!}">
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card w-100">
+    <div class="card-body">
+        <form id="pickadd">
+            @csrf
+            <div class="table-responsive">
+                <table class="table" id="pickaddtable">
+                    <tr id="require">
+                        <th>{!! __('outboundpageLang.isn') !!}</th>
+                        <th>{!! __('outboundpageLang.pName') !!}</th>
+                        <th>{!! __('outboundpageLang.format') !!}</th>
+                        <th>{!! __('outboundpageLang.unit') !!}</th>
+                        <th>{!! __('outboundpageLang.senddep') !!}</th>
+                        <th>{!! __('outboundpageLang.pickamount') !!}</th>
+                        <th>{!! __('outboundpageLang.mark') !!}</th>
+                        <th>{!! __('outboundpageLang.client') !!}</th>
+                        <th>{!! __('outboundpageLang.machine') !!}</th>
+                        <th>{!! __('outboundpageLang.process') !!}</th>
+                        <th>{!! __('outboundpageLang.line') !!}</th>
+                        <th>{!! __('outboundpageLang.usereason') !!}</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="row w-100 justify-content-center">
+                <div class="col col-auto">
+                    <input type="submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}">
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 

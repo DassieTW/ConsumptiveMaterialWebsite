@@ -28,7 +28,7 @@
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <div class="col-lg-6  col-md-12 col-sm-12">
                             <select class="form-select form-select-lg" id="list" name="list" required>
-                                <option style="display: none" disabled="disabled" selected="true">{!!
+                                <option style="display: none" disabled selected value="">{!!
                                     __('bupagelang.enteroutlist') !!}</option>
                                 @foreach($data as $data)
                                 <option>{{ $data->調撥單號 }}</option>

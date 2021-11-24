@@ -14,6 +14,7 @@ use App\Models\O庫;
 use App\Models\ConsumptiveMaterial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OutboundController;
+use Illuminate\Support\Facades\Cookie;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,14 +124,9 @@ Route::post('/backrecordsearch', [OutboundController::class, 'backrecordsearch']
 Route::post('/pickadd', [OutboundController::class, 'pickadd'])->name('outbound.pickadd')->middleware('can:outboundPickup,App\Models\Outbound');
 
 //領料添加頁面
-Route::get('/pickaddok', function () {
-    if (Session::has('pick')) {
-        Session::forget('pick');
-        return view("outbound.pickadd");
-    } else {
-        return redirect(route('outbound.pick'));
-    }
-})->middleware('can:outboundPickup,App\Models\Outbound');
+Route::post('/pickaddok', [OutboundController::class, 'pickaddok'])->middleware('can:outboundReturnRecord,App\Models\Outbound');
+
+Route::get('/pickaddok', [OutboundController::class, 'pickaddok'])->name('outbound.pickaddok')->middleware('can:outboundReturnRecord,App\Models\Outbound');
 
 //退料添加
 Route::post('/backadd', [OutboundController::class, 'backadd'])->name('outbound.backadd')->middleware('can:outboundReturn,App\Models\Outbound');

@@ -52,7 +52,6 @@
                         <th>{!! __('outboundpageLang.opentime') !!}</th>
                         <th>{!! __('outboundpageLang.loc') !!}</th>
                     </tr>
-                    </tr>
                     @foreach($data as $data)
                     <tr id="{{$data->領料單號}}">
                         <?php

@@ -131,33 +131,25 @@ $('#sluggish').on('submit', function (e) {
             },
 
             success: function (data) {
-
-                console.log(data);
-                var myObj = JSON.parse(data);
-                console.log(myObj);
-                if (myObj.boolean === true && myObj.passbool === true) {
-                    var mess = Lang.get('bupagelang.dbadd') + ' ' + Lang.get('bupagelang.success') + ' ' +
-                        Lang.get('bupagelang.dblist') + ' : ' + myObj.message;
-                    alert(mess);
-
-                    window.location.href = "/bu";
-
-                } else if (myObj.boolean === true && myObj.passbool === false) {
-                    var mess = Lang.get('bupagelang.inventoryerr') + ' ' + myObj.message;
-
-                    alert(mess);
-                    //window.location.reload();
-
-                } else {
+                var mess = Lang.get('bupagelang.dbadd') + ' ' + Lang.get('bupagelang.success') + ' ' +
+                    Lang.get('bupagelang.dblist') + ' : ' + data.message;
+                alert(mess);
+                window.location.href = "/bu";
+            },
+            error: function (err) {
+                //transaction error
+                if (err.status == 420) {
                     var mess = myObj.message;
                     alert(mess);
-                    //window.location.reload();
+                    window.location.reload();
+                }
+                //庫存異動
+                else if (err.status == 421) {
+                    var mess = Lang.get('bupagelang.inventoryerr') + ' ' + err.responseJSON.message;
+                    alert(mess);
+                    return false;
                 }
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.warn(jqXHR.responseText);
-                alert(errorThrown);
-            }
         });
     } else {
 

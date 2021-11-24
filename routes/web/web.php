@@ -81,8 +81,8 @@ Route::get('/lang/{type}', function (Request $request, $type) {
 
 
 //update data(test)
-Route::get('/updatedata' , function() {
-    DB::table('inventory')
-    ->where('客戶別', 'Fendi')->where('料號', '4017-01HL000')->where('儲位', '1-2')
-    ->update(['最後更新時間' => '2021-08-30 13:24:29.000']);
-});
+// Route::get('/updatedata' , function() {
+//     DB::table('inventory')
+//     ->where('客戶別', 'Fendi')->where('料號', '4017-01HL000')->where('儲位', '1-2')
+//     ->update(['最後更新時間' => '2021-08-30 13:24:29.000']);
+// });
