@@ -51,61 +51,73 @@ if($j === false)
 
 @section('js')
 <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
+<script src="{{ asset('js/inbound/upload.js') }}"></script>
 <!--for notifications pop up -->
 @endsection
 @section('content')
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-    </head>
-        <h2>{!! __('templateWords.inbound') !!}</h2>
-        <div class="card">
-            <div class="card-header">
-                <h3>{!! __('inboundpageLang.stockupload') !!}</h3>
-            </div>
 
-            <div class="card-body">
-
-                        <form  action = "{{ route('inbound.insertuploadinventory') }}"method="POST">
-                            @csrf
-                            <div class="table-responsive">
-                            <table class="table" id = "test">
-                                <tr>
-                                    <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('inboundpageLang.client') !!}</th>
-                                    <th><input type = "hidden" id = "title1" name = "title1" value = "料號">{!! __('inboundpageLang.isn') !!}</th>
-                                    <th><input type = "hidden" id = "title1" name = "title1" value = "品名">{!! __('inboundpageLang.pName') !!}</th>
-                                    <th><input type = "hidden" id = "title1" name = "title1" value = "規格">{!! __('inboundpageLang.format') !!}</th>
-                                    <th><input type = "hidden" id = "title2" name = "title2" value = "數量">{!! __('inboundpageLang.amount') !!}</th>
-                                    <th><input type = "hidden" id = "title2" name = "title3" value = "儲位">{!! __('inboundpageLang.loc') !!}</th>
-                                </tr>
-                                @foreach($data as $row)
-                                <tr>
-                                    <td><input type = "hidden"  name = "data0{{$loop->index}}" value = "{{$row[0]}}">{{$row[0]}}</td>
-                                    <td><input type = "hidden"  name = "data1{{$loop->index}}" value = "{{$row[1]}}">{{$row[1]}}</td>
-                                    <td>{{$name}}</td>
-                                    <td>{{$format}}</td>
-                                    <td><input type = "number"  name = "data2{{$loop->index}}" value = "{{$row[2]}}"></td>
-                                    <td>
-                                    <select class="form-control form-control-lg" id = "data3{{$loop->index}}" name="data3{{$loop->index}}" >
-                                    <option style="display: none" selected value = "{{$row[3]}}">{{$row[3]}}</option>
-                                    @foreach($positions as $position)
-                                    <option>{{  $position }}</option>
-                                    @endforeach
-                                    </select>
-                                    </td>
-                                </tr>
-                                <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
+<head>
+    <meta charset="utf-8">
+</head>
+<h2>{!! __('templateWords.inbound') !!}</h2>
+<div class="card">
+    <div class="card-header">
+        <h3>{!! __('inboundpageLang.stockupload') !!}</h3>
+    </div>
+    <div class="card-body">
+        <form id="uploadinventory" method="POST">
+            @csrf
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th><input type="hidden" id="title0" name="title0" value="客戶別">{!! __('inboundpageLang.client')
+                            !!}</th>
+                        <th><input type="hidden" id="title1" name="title1" value="料號">{!! __('inboundpageLang.isn') !!}
+                        </th>
+                        <th><input type="hidden" id="title1" name="title1" value="品名">{!! __('inboundpageLang.pName')
+                            !!}</th>
+                        <th><input type="hidden" id="title1" name="title1" value="規格">{!! __('inboundpageLang.format')
+                            !!}</th>
+                        <th><input type="hidden" id="title2" name="title2" value="數量">{!! __('inboundpageLang.amount')
+                            !!}</th>
+                        <th><input type="hidden" id="title2" name="title3" value="儲位">{!! __('inboundpageLang.loc') !!}
+                        </th>
+                    </tr>
+                    @foreach($data as $row)
+                    <tr>
+                        <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
+                                value="{{$row[0]}}">{{$row[0]}}</td>
+                        <td><input type="hidden" id="data1{{$loop->index}}" name="data1{{$loop->index}}"
+                                value="{{$row[1]}}">{{$row[1]}}</td>
+                        <td>{{$name}}</td>
+                        <td>{{$format}}</td>
+                        <td><input type="number" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
+                                value="{{$row[2]}}" required></td>
+                        <td>
+                            <select class="form-select form-select-lg" id="data3{{$loop->index}}"
+                                name="data3{{$loop->index}}">
+                                <option style="display: none" selected value="{{$row[3]}}">{{$row[3]}}</option>
+                                @foreach($positions as $position)
+                                <option>{{ $position }}</option>
                                 @endforeach
+                            </select>
+                        </td>
+                    </tr>
+                    <input type="hidden" id="count" name="count" value="{{$loop->count}}">
+                    @endforeach
 
-                            </table>
-                            </div>
-                            <br>
-                            <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.addtodatabase') !!}">
-                        </form>
-                        <br>
-                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.upload')}}'">{!! __('inboundpageLang.return') !!}</button>
+                </table>
             </div>
-        </div>
+            <br>
+            <input type="submit" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.addtodatabase') !!}">
+        </form>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.upload')}}'">{!!
+            __('inboundpageLang.return') !!}</button>
+    </div>
+</div>
+
 </html>
 @endsection

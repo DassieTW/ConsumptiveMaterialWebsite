@@ -11,11 +11,8 @@ $("#materialsearch").on("submit", function (e) {
   $(".is-invalid").removeClass("is-invalid");
   $(".invalid-feedback").remove();
 
-  var select = $(document.activeElement).val();
-  var time = $("#count").val();
-  // clean up previous input results
-  $(".is-invalid").removeClass("is-invalid");
-  $(".invalid-feedback").remove();
+  var select = ($(document.activeElement).val());
+  var time = ($("#count").val());
 
   var check = [];
   var number = [];
@@ -101,7 +98,17 @@ $("#materialsearch").on("submit", function (e) {
     safe.push($("#safe" + check[i]).val());
   }
 
-  checked = $("input[type=checkbox]:checked").length;
+  for (let i = 0; i < count; i++) {
+    if(gradea[i] === 'Yes') gradea[i] = '是';
+    if(gradea[i] === 'No') gradea[i] = '否';
+    if(month[i] === 'Yes') month[i] = '是';
+    if(month[i] === 'No') month[i] = '否';
+    if(belong[i] === 'Unit consumption' || belong[i] === '单耗') belong[i] = '單耗';
+    if(belong[i] === 'Station') belong[i] = '站位';
+  }
+
+  checked = ("input[type=checkbox]:checked").length;
+
 
   if (!checked && select != "下載") {
     alert(Lang.get("basicInfoLang.nocheck"));
@@ -112,6 +119,7 @@ $("#materialsearch").on("submit", function (e) {
   console.log(check);
 
   console.log(number);
+  console.log(belong);
 
   if (select != "下載") {
     $.ajax({

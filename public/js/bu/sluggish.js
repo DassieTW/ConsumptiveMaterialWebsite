@@ -37,13 +37,12 @@ $('#sluggish').on('submit', function (e) {
         title[k] = $("#title" + k).val();
     }
 
-    var record = [];
-    {
-      $('#sluggish :checkbox').each(function() {
-        //if(values.indexOf($(this).val()) === -1){
-        record.push($(this).val());
-        // }
-      });
+    var record = []; {
+        $('#sluggish :checkbox').each(function () {
+            //if(values.indexOf($(this).val()) === -1){
+            record.push($(this).val());
+            // }
+        });
     }
 
     var data0 = [];
@@ -57,8 +56,7 @@ $('#sluggish').on('submit', function (e) {
     var data8 = new Array();
     var data9 = [];
 
-    for(let k = 0 ; k < record.length ; k ++)
-    {
+    for (let k = 0; k < record.length; k++) {
         var a = new Array();
         data8.push(a);
         data0.push($("#data0" + record[k]).val());
@@ -70,7 +68,7 @@ $('#sluggish').on('submit', function (e) {
         data6.push($("#data6" + record[k]).val());
         data7.push($("#data7" + record[k]).val());
         $("#data8" + record[k]).children('span').each(function () {
-            data8[data8.length-1].push($(this).text());
+            data8[data8.length - 1].push($(this).text());
         });
         data9.push($("#data9" + record[k]).val());
     }
@@ -105,14 +103,20 @@ $('#sluggish').on('submit', function (e) {
             return false;
         }
     }
-    if (select == '提交'|| select == 'Submit') {
+    if (select == '提交' || select == 'Submit') {
         $.ajax({
             type: 'POST',
 
             url: "transsluggish",
             data: {
-                factory: factory, number: number, name: name, format: format, unit: unit,
-                oldstock: oldstock, amount: amount, receive: receive
+                factory: factory,
+                number: number,
+                name: name,
+                format: format,
+                unit: unit,
+                oldstock: oldstock,
+                amount: amount,
+                receive: receive
             },
 
             beforeSend: function () {
@@ -138,16 +142,13 @@ $('#sluggish').on('submit', function (e) {
 
                     window.location.href = "/bu";
 
-                }
-
-                else if (myObj.boolean === true && myObj.passbool === false) {
+                } else if (myObj.boolean === true && myObj.passbool === false) {
                     var mess = Lang.get('bupagelang.inventoryerr') + ' ' + myObj.message;
 
                     alert(mess);
                     //window.location.reload();
 
-                }
-                else {
+                } else {
                     var mess = myObj.message;
                     alert(mess);
                     //window.location.reload();
@@ -158,15 +159,23 @@ $('#sluggish').on('submit', function (e) {
                 alert(errorThrown);
             }
         });
-    }
-    else {
+    } else {
 
         $.ajax({
             type: 'POST',
             url: "download",
             data: {
-                title: title, data0: data0, data1: data1, data2: data2, data3: data3,
-                data4: data4, data5: data5, data6: data6, data7: data7, data8: data8, data9: data9,
+                title: title,
+                data0: data0,
+                data1: data1,
+                data2: data2,
+                data3: data3,
+                data4: data4,
+                data5: data5,
+                data6: data6,
+                data7: data7,
+                data8: data8,
+                data9: data9,
             },
             xhrFields: {
                 responseType: 'blob', // to avoid binary data being mangled on charset conversion
@@ -220,7 +229,9 @@ $('#sluggish').on('submit', function (e) {
                         window.location.href = downloadUrl;
                     }
 
-                    setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                    setTimeout(function () {
+                        URL.revokeObjectURL(downloadUrl);
+                    }, 100); // cleanup
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -231,5 +242,3 @@ $('#sluggish').on('submit', function (e) {
         });
     }
 });
-
-

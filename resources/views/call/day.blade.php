@@ -38,6 +38,8 @@
                                     <?php
                                         $maxtime = date_create(date('Y-m-d',strtotime($data->inventory最後更新時間)));
                                         $nowtime = date_create(date('Y-m-d',strtotime(\Carbon\Carbon::now())));
+                                        $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
+                                        $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
                                         $interval = date_diff($maxtime ,$nowtime);
                                         $interval = $interval->format('%R%a');
                                         $stayday = (int)($interval);
@@ -50,8 +52,8 @@
                                     <tr id = "data1{{$loop->index}}">
                                         <td>{{$data->客戶別}}</td>
                                         <td>{{$data->料號}}</td>
-                                        <td>{{$data->品名}}</td>
-                                        <td>{{$data->規格}}</td>
+                                        <td>{{$name}}</td>
+                                        <td>{{$format}}</td>
                                         <td id = "stocka{{$loop->index}}">{{$stock}}</td>
                                         <td id = "staydaya{{$loop->index}}">{{$stayday}}</td>
                                         @if($stock === 0 || $stock === null)

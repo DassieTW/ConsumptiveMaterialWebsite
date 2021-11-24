@@ -118,7 +118,7 @@
                 <div class="mb-3 col-md-4">
                     <label class="form-label">{!! __('monthlyPRpageLang.nextchange') !!}</label>
                     <input class="form-control form-control-lg " type="number" id="nextchange" name="nextchange"
-                        value="0"vstep="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
+                        value="0" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">
                 </div>
 
 

@@ -5,6 +5,7 @@
 
 @section('js')
 <!--for this page's sepcified js -->
+<script src="{{ asset('js/inbound/addclient.js') }}"></script>
 @endsection
 @section('content')
 <!DOCTYPE html>
@@ -19,10 +20,10 @@
         <h3>{!! __('inboundpageLang.addclient') !!}</h3>
     </div>
     <div class="card-body">
-        <form action="{{ route('inbound.addclientsubmit') }}" method="POST">
+        <form id="addclient" method="POST">
             @csrf
             <div class="table-responsive">
-                <table class="table" id="test">
+                <table class="table">
                     <tr id="require">
                         <th>{!! __('inboundpageLang.client') !!}</th>
                         <th>{!! __('inboundpageLang.isn') !!}</th>
@@ -38,8 +39,9 @@
                         <th>{!! __('inboundpageLang.newloc') !!}</th>
                     </tr>
                     @foreach($data as $data)
-                    <tr id="{{$loop->index}}">
+                    <tr>
                         <?php
+                            $data->請購數量 = round($data->請購數量,0);
                             $stock = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶)->sum('現有庫存');
                             $posit = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶)->where('現有庫存','>',0)->pluck('儲位');
                             $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
@@ -83,8 +85,6 @@
                                     $safe = $lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange / $mpq;
                                 }
                             }
-
-
                         ?>
                         <td><input type="hidden" id="client{{$loop->index}}" name="client{{$loop->index}}"
                                 value="{{$data->客戶}}">{{$data->客戶}}</td>
@@ -102,20 +102,20 @@
                                 value="{{$stock}}">{{$stock}}</td>
                         <td>{{$safe}}</td>
                         <td><input type="number" id="amount{{$loop->index}}" name="amount{{$loop->index}}" required
-                                placeholder="{!! __('inboundpageLang.enteramount') !!}"></td>
+                                placeholder="{!! __('inboundpageLang.enteramount') !!}" min="0"></td>
                         <td><input type="hidden" id="inreason{{$loop->index}}" name="inreason{{$loop->index}}"
                                 value="{{$inreason}}">{{$inreason}}</td>
-                        <td >
+                        <td>
                             <input type="hidden" id="oldposition{{$loop->index}}" name="oldposition{{$loop->index}}"
-                                value="{{$posit}}" >
+                                value="{{$posit}}">
                             @foreach($posit as $oldloc)
                             <span style="width: 100px; display: inline-block;">
-                            {{ $oldloc }}</span>
+                                {{ $oldloc }}</span>
                             @endforeach
                         </td>
                         <td>
-                            <select class="form-select form-select-lg" id="newposition{{$loop->index}}"
-                                name="newposition{{$loop->index}}" width="250" style="width: 250px" required>
+                            <select class="form-select form-select-lg" id="position{{$loop->index}}"
+                                name="position{{$loop->index}}" width="250" style="width: 250px" required>
                                 <option style="display: none" disabled selected value="">{!!
                                     __('inboundpageLang.enterloc') !!}</option>
                                 @foreach($positions as $position)
@@ -129,23 +129,32 @@
 
                 </table>
             </div>
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="mb-3 col-md-6">
                 <label class="form-label">{!! __('inboundpageLang.inpeople') !!}</label>
-                <select class="form-select form-select-lg" id="inpeople" name="inpeople" required width="300"
-                    style="width: 300px">
-                    <option style="display: none" disabled selected value="">{!! __('inboundpageLang.enterinpeople') !!}
-                    </option>
-                    @foreach($peopleinf as $peopleinf)
-                    <option>{{ $peopleinf->工號 .' '. $peopleinf->姓名 }}</option>
+                <input class="form-control form-control-lg" id="inpeople" name="inpeople" required width="250"
+                    style="width: 250px" placeholder="{!! __('inboundpageLang.enterinpeople') !!}">
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+                <ul id="inboundmenu" style="display: none;" class="list-group">
+                    @foreach($peopleinf as $peopleinf )
+                    <a class="inboundlist list-group-item list-group-item-action" href="#">{{ $peopleinf ->工號 .' '.
+                        $peopleinf ->姓名 }}</a>
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                     @endforeach
-                </select>
+                </ul>
+                @foreach($check as $people)
+                <input type="hidden" id="checkpeople{{$loop->index}}" name="checkpeople{{$loop->index}}"
+                    value="{{$people->工號}}">
+                <input type="hidden" id="checkcount" name="checkcount" value="{{$loop->count}}">
+                @endforeach
             </div>
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
                 value="{!! __('inboundpageLang.submit') !!}">
         </form>
-        <br>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.add')}}'">{!!
             __('inboundpageLang.return') !!}</button>
     </div>

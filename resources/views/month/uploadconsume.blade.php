@@ -129,7 +129,14 @@
                             </tr>
                             @foreach($data as $row)
                             <tr>
-
+                                <?php
+                                    $name = DB::table('consumptive_material')->where('料號',$row[3])->value('品名');
+                                    $format = DB::table('consumptive_material')->where('料號',$row[3])->value('規格');
+                                    $unit = DB::table('consumptive_material')->where('料號',$row[3])->value('單位');
+                                    $lt = DB::table('consumptive_material')->where('料號',$row[3])->value('LT');
+                                    $month = DB::table('consumptive_material')->where('料號',$row[3])->value('月請購');
+                                    $belong = DB::table('consumptive_material')->where('料號',$row[3])->value('耗材歸屬');
+                                ?>
                                 <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
                                         value="{{$row[3]}}">{{$row[3]}}</td>
                                 <td>{{$name}}</td>
@@ -138,8 +145,8 @@
                                 <td><input type="hidden" id="data12{{$loop->index}}" name="data12{{$loop->index}}"
                                         value="{{$lt}}">{{$lt}}</td>
                                 <td><input style="width:200px" type="number" id="data1{{$loop->index}}"
-                                        name="data1{{$loop->index}}" step="0.0000001" required value="{{$row[4]}}"
-                                        oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                        name="data1{{$loop->index}}" step="0.0000000001" required value="{{$row[4]}}"
+                                        oninput="if(value.length>12)value=value.slice(0,12)"></td>
                                 <td><input style="width:120px" type="number" id="data2{{$loop->index}}"
                                         name="data2{{$loop->index}}" readonly step="0.0000001" >
                                 </td>

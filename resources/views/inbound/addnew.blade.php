@@ -20,7 +20,7 @@
         <h3>{!! __('inboundpageLang.new') !!}</h3>
     </div>
     <div class="card-body">
-        <form id="addnew">
+        <form id="addnew" method="POST">
             @csrf
             <div class="table-responsive">
                 <table class="table" id="inboundsearch">
@@ -57,21 +57,22 @@
                         <td><input type="hidden" id="safe" name="safe" value="{{ Session::get('safe') }}">{{
                             Session::get('safe') }}</td>
                         <td><input type="number" id="inamount" name="inamount"
-                                placeholder="{!! __('inboundpageLang.enteramount') !!}" required></td>
+                                placeholder="{!! __('inboundpageLang.enteramount') !!}" required min="0"></td>
                         <td><input type="hidden" id="inreason" name="inreason" value="{{ Session::get('inreason') }}">{{
                             Session::get('inreason') }}</td>
                         <td><input type="hidden" id="oldposition" name="oldposition"
                                 value="{{ Session::get('positions') }}">
                             @foreach(Session::get('positions') as $oldloc)
                             {{ $oldloc }}
-                            <br>
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             @endforeach
 
                         </td>
                         <div style="display: none" id="showposition">{{ $position = App\Models\儲位::all() }}</div>
                         <div style="display: none" id="showname">{{ $name = App\Models\人員信息::all() }}</div>
                         <td>
-                            <select class="form-select form-select-lg" id="newposition" name="newposition" style="width: 250px" required>
+                            <select class="form-select form-select-lg" id="newposition" name="newposition"
+                                style="width: 250px" required>
                                 <option style="display: none" disabled selected value="">{!!
                                     __('inboundpageLang.enterloc') !!}</option>
                                 @foreach($position as $position)
@@ -82,22 +83,34 @@
                     </tr>
                 </table>
             </div>
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="mb-3 col-md-6">
                 <label class="form-label">{!! __('inboundpageLang.inpeople') !!}</label>
-                <select class="form-select form-select-lg" id="inpeople" name="inpeople" required width="300"
-                    style="width: 300px">
-                    <option style="display: none" disabled selected value="">{!! __('inboundpageLang.enterinpeople') !!}
-                    </option>
+                <input class="form-control form-control-lg" id="inpeople" name="inpeople" required width="250"
+                    style="width: 250px" placeholder="{!! __('inboundpageLang.enterinpeople') !!}">
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+                <ul id="inboundmenu" style="display: none;" class="list-group">
                     @foreach($name as $name)
-                    <option>{{ $name->工號 .' '. $name->姓名 }}</option>
+                    <a class="inboundlist list-group-item list-group-item-action" href="#">{{ $name->工號 .' '.
+                        $name->姓名 }}</a>
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                     @endforeach
-                </select>
+                </ul>
+
+                @foreach($check as $people)
+                <input type="hidden" id="checkpeople{{$loop->index}}" name="checkpeople{{$loop->index}}"
+                    value="{{$people->工號}}">
+                <input type="hidden" id="count" name="count" value="{{$loop->count}}">
+                @endforeach
+
             </div>
             <div style="display: none ; color:red;" id="nostock">{!! __('inboundpageLang.transiterror') !!}</div>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <input type="submit" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.submit') !!}">
         </form>
-        <br>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <button type="submit" class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.add')}}'">{!!
             __('inboundpageLang.return') !!}</button>
     </div>

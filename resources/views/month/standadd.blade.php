@@ -23,7 +23,7 @@
         <div class="row justify-content-center">
             <div class="card-body">
                 <div class=" w-100">
-                    <form id="standadd">
+                    <form id="standadd" method="POST">
                         @csrf
                         <div class="row w-100 justify-content-center mb-3">
                             <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>

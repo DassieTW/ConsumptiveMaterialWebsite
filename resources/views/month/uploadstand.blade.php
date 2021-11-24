@@ -100,29 +100,41 @@ if($k === false)
                             !!}</th>
                         <th><input type="hidden" id="title4" name="title4" value="LT">{!! __('monthlyPRpageLang.lt') !!}
                         </th>
-                        <th><input type="hidden" id="title5" name="title5" value="當月站位人數" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title5" name="title5" value="當月站位人數" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nowpeople') !!}</th>
-                        <th><input type="hidden" id="title6" name="title6" value="當月開線數" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title6" name="title6" value="當月開線數" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nowline') !!}</th>
-                        <th><input type="hidden" id="title7" name="title7" value="當月開班數" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title7" name="title7" value="當月開班數" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nowclass') !!}</th>
-                        <th><input type="hidden" id="title8" name="title8" value="當月每人每日需求量" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title8" name="title8" value="當月每人每日需求量" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nowuse') !!}</th>
-                        <th><input type="hidden" id="title9" name="title9" value="當月每日更換頻率" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title9" name="title9" value="當月每日更換頻率" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nowchange') !!}</th>
-                        <th><input type="hidden" id="title10" name="title10" value="當月每日需求" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title10" name="title10" value="當月每日需求" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nowdayneed') !!}</th>
-                        <th><input type="hidden" id="title11" name="title11" value="下月站位人數" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title11" name="title11" value="下月站位人數" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nextpeople') !!}</th>
-                        <th><input type="hidden" id="title12" name="title12" value="下月開線數" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title12" name="title12" value="下月開線數" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nextline') !!}</th>
-                        <th><input type="hidden" id="title13" name="title13" value="下月開班數" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title13" name="title13" value="下月開班數" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nextclass') !!}</th>
-                        <th><input type="hidden" id="title14" name="title14" value="下月每人每日需求量" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title14" name="title14" value="下月每人每日需求量" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nextuse') !!}</th>
-                        <th><input type="hidden" id="title15" name="title15" value="下月每日更換頻率" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title15" name="title15" value="下月每日更換頻率" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nextchange') !!}</th>
-                        <th><input type="hidden" id="title16" name="title16" value="下月每日需求" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)">{!!
+                        <th><input type="hidden" id="title16" name="title16" value="下月每日需求" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)">{!!
                             __('monthlyPRpageLang.nextdayneed') !!}</th>
                         <th><input type="hidden" id="title17" name="title17" value="安全庫存">{!!
                             __('monthlyPRpageLang.safe') !!}</th>
@@ -137,6 +149,14 @@ if($k === false)
                     </tr>
                     @foreach($data as $row)
                     <tr>
+                        <?php
+                            $name = DB::table('consumptive_material')->where('料號',$row[0])->value('品名');
+                            $unit = DB::table('consumptive_material')->where('料號',$row[0])->value('單位');
+                            $mpq = DB::table('consumptive_material')->where('料號',$row[0])->value('MPQ');
+                            $lt = DB::table('consumptive_material')->where('料號',$row[0])->value('LT');
+                            $month = DB::table('consumptive_material')->where('料號',$row[0])->value('月請購');
+                            $belong = DB::table('consumptive_material')->where('料號',$row[0])->value('耗材歸屬');
+                        ?>
                         <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
                                 value="{{$row[0]}}">{{$row[0]}}</td>
                         <td>{{$name}}</td>
@@ -146,31 +166,44 @@ if($k === false)
                         <td><input type="hidden" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
                                 value="{{$lt}}">{{$lt}}</td>
                         <td><input style="width:120px" type="number" id="data3{{$loop->index}}"
-                                name="data3{{$loop->index}}" value="{{$row[4]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data3{{$loop->index}}" value="{{$row[4]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:120px" type="number" id="data4{{$loop->index}}"
-                                name="data4{{$loop->index}}" value="{{$row[5]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data4{{$loop->index}}" value="{{$row[5]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:120px" type="number" id="data5{{$loop->index}}"
-                                name="data5{{$loop->index}}" value="{{$row[6]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data5{{$loop->index}}" value="{{$row[6]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:120px" type="number" id="data6{{$loop->index}}"
-                                name="data6{{$loop->index}}" value="{{$row[7]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data6{{$loop->index}}" value="{{$row[7]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:120px" type="number" id="data7{{$loop->index}}"
-                                name="data7{{$loop->index}}" value="{{$row[8]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data7{{$loop->index}}" value="{{$row[8]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:150px" type="number" id="data8{{$loop->index}}"
-                                name="data8{{$loop->index}}" readonly step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data8{{$loop->index}}" readonly step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:120px" type="number" id="data9{{$loop->index}}"
-                                name="data9{{$loop->index}}" value="{{$row[9]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data9{{$loop->index}}" value="{{$row[9]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:120px" type="number" id="data10{{$loop->index}}"
-                                name="data10{{$loop->index}}" value="{{$row[10]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data10{{$loop->index}}" value="{{$row[10]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:120px" type="number" id="data11{{$loop->index}}"
-                                name="data11{{$loop->index}}" value="{{$row[11]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data11{{$loop->index}}" value="{{$row[11]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:120px" type="number" id="data12{{$loop->index}}"
-                                name="data12{{$loop->index}}" value="{{$row[12]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data12{{$loop->index}}" value="{{$row[12]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:120px" type="number" id="data13{{$loop->index}}"
-                                name="data13{{$loop->index}}" value="{{$row[13]}}" step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data13{{$loop->index}}" value="{{$row[13]}}" step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:150px" type="number" id="data14{{$loop->index}}"
-                                name="data14{{$loop->index}}" readonly step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data14{{$loop->index}}" readonly step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input style="width:150px" type="number" id="data15{{$loop->index}}"
-                                name="data15{{$loop->index}}" readonly step="0.0000001" oninput="if(value.length>9)value=value.slice(0,9)"></td>
+                                name="data15{{$loop->index}}" readonly step="0.0000001"
+                                oninput="if(value.length>9)value=value.slice(0,9)"></td>
                         <td><input type="hidden" id="data16{{$loop->index}}" name="data16{{$loop->index}}"
                                 value="{{$row[1]}}">{{$row[1]}}</td>
                         <td><input type="hidden" id="data17{{$loop->index}}" name="data17{{$loop->index}}"

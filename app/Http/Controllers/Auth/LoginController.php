@@ -46,7 +46,8 @@ class LoginController extends Controller
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->site);
         \DB::purge(env("DB_CONNECTION"));
         // dd($request->site) ; // test
-        return \Auth::attempt($credentials);
+        return \Auth::login($credentials);
+        // return \Auth::attempt($credentials);
     } // attemptLogin
 
     protected function authenticated(Request $request, $user)

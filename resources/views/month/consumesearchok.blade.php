@@ -40,6 +40,7 @@
                     <?php
                         $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
                         $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
+                        $data->單耗 = round($data->單耗 , 10);
                         $test = str_replace(";","<br>",$data->紀錄) ;
                     ?>
                     <tr id="{{$loop->index}}">
@@ -57,7 +58,7 @@
                         <td>{{$format}}</td>
                         <td><input style="width: 200px;" class="form-control form-control-lg " type="number"
                                 id="amount{{$loop->index}}" name="amount{{$loop->index}}" value="{{$data->單耗}}"
-                                step="0.000000000000001"></td>
+                                step="0.0000000001" oninput="if(value.length>12)value=value.slice(0,12)"></td>
                         <td>
                             <?php
                                 echo $test;

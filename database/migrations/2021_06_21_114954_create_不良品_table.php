@@ -19,7 +19,7 @@ class Create不良品Table extends Migration
             $table->string('客戶別',45);
             $table->primary(['料號','客戶別']);
             $table->string('入庫原因',45);
-            $table->float('入庫數量');;
+            $table->double('入庫數量');;
             $table->timestamps();
             $table->softDeletes();
         });

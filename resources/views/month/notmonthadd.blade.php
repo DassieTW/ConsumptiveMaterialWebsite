@@ -44,7 +44,7 @@
                                 <td>{{ $unit }}</td>
                                 <td><input type="hidden" id ="month" name="month"  value="{{$month}}">{{ $month }}</td>
                                 <td>
-                                    <select style = "width: 150px;" class = "form-control form-control-lg " id = "reason" name="reason" >
+                                    <select style = "width: 150px;" class = "form-select form-select-lg " id = "reason" name="reason" >
                                     <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.entercontrol') !!}</option>
                                     <option>品質問題</option>
                                     <option>MPS上升</option>

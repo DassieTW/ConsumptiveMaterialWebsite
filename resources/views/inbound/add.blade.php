@@ -53,14 +53,11 @@
                             </select>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                            <input class="form-control form-control-lg " style="display:none;" type="text"
-                            id="reason" name="reason" placeholder="{!! __('inboundpageLang.inputinreason') !!}">
+                            <input class="form-control form-control-lg " style="display:none;" type="text" id="reason"
+                                name="reason" placeholder="{!! __('inboundpageLang.inputinreason') !!}">
 
                         </div>
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-
-
 
                         <label class="col col-auto form-label">{!! __('inboundpageLang.isn') !!}</label>
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

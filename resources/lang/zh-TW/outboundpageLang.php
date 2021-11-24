@@ -101,8 +101,8 @@ return [
     'nopickpeople' => '領料人員之工號不存在，請先到用戶管理-新增人員訊息維護',
     'nobackpeople' => '退料人員之工號不存在，請先到用戶管理-新增人員訊息維護',
     'noreceivepeople' => '收料人員之工號不存在，請先到用戶管理-新增人員訊息維護',
-    'inputsendpeople' => '請輸入發料人員',
-    'inputpickpeople' => '請輸入領料人員',
-    'inputbackpeople' => '請輸入退料人員',
-    'inputreceivepeople' => '請輸入收料人員',
+    'inputsendpeople' => '請輸入發料人員工號',
+    'inputpickpeople' => '請輸入領料人員工號',
+    'inputbackpeople' => '請輸入退料人員工號',
+    'inputreceivepeople' => '請輸入收料人員工號',
 ];

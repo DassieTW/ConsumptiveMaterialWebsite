@@ -40,7 +40,7 @@ class CallController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    /*public function index()
     {
         //
         if(Session::has('username'))
@@ -51,9 +51,9 @@ class CallController extends Controller
         {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
-    //安全庫存警報頁面
+    /*//安全庫存警報頁面
     public function safe()
     {
         //
@@ -65,7 +65,7 @@ class CallController extends Controller
         {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //安全庫存警報
     public function safesubmit(Request $request)
@@ -92,9 +92,6 @@ class CallController extends Controller
                 ->get();
                 foreach($datas as $data)
                 {
-                    $client = $data->客戶別;
-                    $number = $data->料號;
-                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->sum('現有庫存');
 
                     if($data->月請購 === '否')
                     {
@@ -123,9 +120,6 @@ class CallController extends Controller
 
                 foreach($datas1 as $data)
                 {
-                    $client = $data->客戶別;
-                    $number = $data->料號;
-                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->sum('現有庫存');
 
                     if($data->月請購 === '否')
                     {
@@ -159,9 +153,6 @@ class CallController extends Controller
 
                 foreach($datas as $data)
                 {
-                    $client = $data->客戶別;
-                    $number = $data->料號;
-                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->sum('現有庫存');
 
                     if($data->月請購 === '否')
                     {
@@ -191,9 +182,6 @@ class CallController extends Controller
 
                 foreach($datas1 as $data)
                 {
-                    $client = $data->客戶別;
-                    $number = $data->料號;
-                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->sum('現有庫存');
 
                     if($data->月請購 === '否')
                     {
@@ -215,7 +203,7 @@ class CallController extends Controller
         }
     }
 
-    //呆滯天數警報頁面
+    /*//呆滯天數警報頁面
     public function day()
     {
         //
@@ -227,7 +215,7 @@ class CallController extends Controller
         {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //呆滯天數警報
     public function daysubmit(Request $request)
@@ -239,22 +227,14 @@ class CallController extends Controller
             if($send === null)
             {
                 $datas = Inventory::join('consumptive_material', 'consumptive_material.料號',"=", 'inventory.料號')
-                    ->select('客戶別','inventory.料號','品名','規格',DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'))
+                    ->select('inventory.客戶別','inventory.料號',DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'))
                     ->groupBy('inventory.客戶別','inventory.料號')
                     ->get();
-                /*$datas = DB::table('inventory')
-                ->join('consumptive_material', function($join)
-                {
-                    $join->on('consumptive_material.料號', '=', 'inventory.料號');
-
-                })->where()
-                ->get();*/
-                //dd($datas);
             }
             else
             {
                 $datas = Inventory::join('consumptive_material', 'consumptive_material.料號',"=", 'inventory.料號')
-                    ->select('客戶別','inventory.料號','發料部門','品名','規格',DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'))
+                    ->select('客戶別','inventory.料號',DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'))
                     ->groupBy('inventory.客戶別','inventory.料號')
                     ->where('consumptive_material.發料部門',$send)
                     ->get();

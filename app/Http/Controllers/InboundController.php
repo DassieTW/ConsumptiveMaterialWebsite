@@ -189,14 +189,10 @@ class InboundController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 $mess = $e->getMessage();
-                echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='/inbound';
-                    </script>");
+                return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
             }
 
             return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
-
         } else {
             return redirect(route('member.login'));
         }
@@ -574,9 +570,7 @@ class InboundController extends Controller
                             //在途量為0
                             if ($amount === 0 && $inreason !== '調撥' &&  $inreason !== '退庫') {
                                 return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
-
-                            }
-                            else {
+                            } else {
 
                                 if ($month === '否') {
                                     $safe = DB::table('consumptive_material')->where('料號', $number)->value('安全庫存');
@@ -608,6 +602,7 @@ class InboundController extends Controller
                                         }
                                     }
                                 }
+                                $amount = round($amount);
                                 Session::put('client', $client);
                                 Session::put('inreason', $inreason);
                                 Session::put('number', $number);
@@ -620,7 +615,6 @@ class InboundController extends Controller
                                 Session::put('positions', $positions);
                                 Session::put('inboundadd', $number);
                                 return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
-
                             }
                         }
                     }
@@ -632,7 +626,6 @@ class InboundController extends Controller
                 Session::put('client', $request->input('client'));
                 Session::put('inreason', $request->input('inreason'));
                 return \Response::json(['boolean' => 'false']/* Status code here default is 200 ok*/);
-
             }
         } else {
             return redirect(route('member.login'));
@@ -662,14 +655,10 @@ class InboundController extends Controller
         if (Session::has('username')) {
             if ($request->input('inamount') !== null) {
                 $number = $request->input('number');
-                $name = $request->input('name');
-                $format = $request->input('format');
-                $unit = $request->input('unit');
                 $client = $request->input('client');
                 $amount = $request->input('amount');
                 $inamount = $request->input('inamount');
                 $inreason = $request->input('inreason');
-                $oldposition = $request->input('oldposition');
                 $newposition = $request->input('newposition');
                 $inpeople = $request->input('inpeople');
                 $time = Carbon::now();
@@ -719,7 +708,7 @@ class InboundController extends Controller
                             DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
-                        return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
+                            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
                         }
 
                         return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
@@ -759,7 +748,7 @@ class InboundController extends Controller
                             DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
-                            return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
+                            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
                         }
                         return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
                     }
@@ -821,7 +810,6 @@ class InboundController extends Controller
         if (Session::has('username')) {
             $count = $request->input('count');
             $record = 0;
-            $test = 0;
             //入庫單號
             $i = '0001';
             $max = DB::table('inbound')->max('入庫時間');
@@ -840,52 +828,79 @@ class InboundController extends Controller
                 $opentime = $num;
             }
             for ($i = 0; $i < $count; $i++) {
-                $number = $request->input('number' . $i);
-                $name = $request->input('name' . $i);
-                $format = $request->input('format' . $i);
-                $unit = $request->input('unit' . $i);
-                $client = $request->input('client' . $i);
-                $amount = $request->input('amount' . $i);
-                $inreason = Session::get('inreason');
-                $newposition = $request->input('newposition' . $i);
-                $inpeo = $request->input('inpeople');
-                $inpeoples = explode(" ", $inpeo);
-                $inpeople = $inpeoples[0];
-
+                $number = $request->input('number')[$i];
+                $client = $request->input('client')[$i];
+                $amount = $request->input('amount')[$i];
+                $inreason = $request->input('inreason')[$i];
+                $position = $request->input('position')[$i];
+                $inpeople = $request->input('inpeople');
                 $time = Carbon::now();
-                $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $newposition)->value('現有庫存');
+                $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
                 $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
-                //入庫 > 在途量
-                if ($amount > $buy && $inreason !== '調撥' && $inreason !== '退庫') {
-                    $i++;
-                    $row = $i;
-                    $mess = trans('inboundpageLang.transiterror') . ' ， ' . trans('inboundpageLang.row') . ' : ' . $row . '\\n' .
-                        trans('inboundpageLang.client') . ' : ' . ' ' . $client . ' ' . trans('inboundpageLang.isn') . ' : ' . $number;
-                    echo ("<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href='add';
-                            </script>");
-                    return;
-                } else {
-                    $test++;
-                }
-            }
-            if ($test == $count) {
-                for ($i = 0; $i < $count; $i++) {
-                    $number = $request->input('number' . $i);
-                    $name = $request->input('name' . $i);
-                    $format = $request->input('format' . $i);
-                    $unit = $request->input('unit' . $i);
-                    $client = $request->input('client' . $i);
-                    $amount = $request->input('amount' . $i);
-                    $inreason = Session::get('inreason');
-                    $newposition = $request->input('newposition' . $i);
-                    $inpeo = $request->input('inpeople');
-                    $inpeoples = explode(" ", $inpeo);
-                    $inpeople = $inpeoples[0];
+                if ($stock !== null) {
 
+                    DB::beginTransaction();
+                    try {
+
+                        DB::table('inbound')
+                            ->insert([
+                                '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $position,
+                                '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
+                            ]);
+
+                        DB::table('inventory')
+                            ->where('客戶別', $client)
+                            ->where('料號', $number)
+                            ->where('儲位', $position)
+                            ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $time]);
+                        if ($inreason !== '調撥' && $inreason !== '退庫') {
+                            DB::table('在途量')
+                                ->where('客戶', $client)
+                                ->where('料號', $number)
+                                ->update(['請購數量' => $buy - $amount]);
+                        }
+                        $record++;
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+                    }
+                } else {
+                    DB::beginTransaction();
+                    try {
+                        DB::table('inbound')
+                            ->insert([
+                                '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $position,
+                                '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
+                            ]);
+
+                        DB::table('inventory')
+                            ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => Carbon::now()]);
+
+                        if ($inreason !== '調撥' && $inreason !== '退庫') {
+                            DB::table('在途量')
+                                ->where('客戶', $client)
+                                ->where('料號', $number)
+                                ->update(['請購數量' => $buy - $amount]);
+                        }
+                        $record++;
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+                    }
+                }
+                DB::rollBack();
+            }
+            if ($record == $count) {
+                $record = 0;
+                for ($i = 0; $i < $count; $i++) {
+                    $number = $request->input('number')[$i];
+                    $client = $request->input('client')[$i];
+                    $amount = $request->input('amount')[$i];
+                    $inreason = $request->input('inreason')[$i];
+                    $position = $request->input('position')[$i];
+                    $inpeople = $request->input('inpeople');
                     $time = Carbon::now();
-                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $newposition)->value('現有庫存');
+                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
                     $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
                     if ($stock !== null) {
 
@@ -894,14 +909,14 @@ class InboundController extends Controller
 
                             DB::table('inbound')
                                 ->insert([
-                                    '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $newposition,
+                                    '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $position,
                                     '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
                                 ]);
 
                             DB::table('inventory')
                                 ->where('客戶別', $client)
                                 ->where('料號', $number)
-                                ->where('儲位', $newposition)
+                                ->where('儲位', $position)
                                 ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $time]);
                             if ($inreason !== '調撥' && $inreason !== '退庫') {
                                 DB::table('在途量')
@@ -909,29 +924,23 @@ class InboundController extends Controller
                                     ->where('料號', $number)
                                     ->update(['請購數量' => $buy - $amount]);
                             }
-
-                            DB::commit();
                             $record++;
+                            DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
-                            $mess = $e->getMessage();
-                            echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('$mess');
-                                window.location.href='/inbound/add';
-                                </script>");
+                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                         }
                     } else {
-
                         DB::beginTransaction();
                         try {
                             DB::table('inbound')
                                 ->insert([
-                                    '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $newposition,
+                                    '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $position,
                                     '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
                                 ]);
 
                             DB::table('inventory')
-                                ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $newposition, '客戶別' => $client, '最後更新時間' => Carbon::now()]);
+                                ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => Carbon::now()]);
 
                             if ($inreason !== '調撥' && $inreason !== '退庫') {
                                 DB::table('在途量')
@@ -939,26 +948,16 @@ class InboundController extends Controller
                                     ->where('料號', $number)
                                     ->update(['請購數量' => $buy - $amount]);
                             }
-                            DB::commit();
                             $record++;
+                            DB::commit();
                         } catch (\Exception $e) {
                             DB::rollback();
-                            $mess = $e->getMessage();
-                            echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('$mess');
-                                window.location.href='/inbound/add';
-                                </script>");
+                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                         }
                     }
                 }
+                return \Response::json(['message' => $record , 'opentime' => $opentime]/* Status code here default is 200 ok*/);
             }
-            $mess = trans('inboundpageLang.total') . ' ' . $record . ' ' . trans('inboundpageLang.record') . ' '
-                . trans('inboundpageLang.change') . ' ' . trans('inboundpageLang.success') . ' , '
-                . trans('inboundpageLang.inlist') . ' : ' . $opentime;
-            echo ("<script LANGUAGE='JavaScript'>
-            window.alert('$mess');
-            window.location.href='/inbound/add';
-            </script>");
         } else {
             return redirect(route('member.login'));
         }
@@ -968,121 +967,50 @@ class InboundController extends Controller
     public function delete(Request $request)
     {
         if (Session::has('username')) {
-            if ($request->has('delete')) {
-                $count = $request->input('count');
-                $sure = false;
-                for ($i = 0; $i < $count; $i++) {
-                    if ($request->has('innumber' . $i)) {
-                        $time = Carbon::now();
-                        $list = $request->input('data0' . $i);
-                        $number = $request->input('data1' . $i);
-                        $amount = $request->input('data2' . $i);
-                        $position = $request->input('data3' . $i);
-                        $inpeople = $request->input('data4' . $i);
-                        $client = $request->input('data5' . $i);
-                        $inreason = $request->input('data6' . $i);
-                        $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
-                        $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
+            $now = Carbon::now();
+            $list = $request->input('list');
+            $number = $request->input('number');
+            $amount = $request->input('amount');
+            $position = $request->input('position');
+            $inpeople = $request->input('inpeople');
+            $client = $request->input('client');
+            $inreason = $request->input('inreason');
+            $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
+            $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
+            DB::beginTransaction();
+            try {
+                if ($stock < $amount) {
+                    if ($stock === null) $stock = 0;
 
-
-                        DB::beginTransaction();
-                        try {
-                            if ($stock < $amount) {
-                                if ($stock === null) $stock = 0;
-
-                                $mess = trans('inboundpageLang.lessstock') . '\\n' . trans('inboundpageLang.nowstock') . ' : ' . $stock . ' '
-                                    . trans('inboundpageLang.inboundnum') . ' : ' . $amount;
-
-                                echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('$mess');
-                                window.location.href='search';
-                                </script>");
-                                return;
-                            }
-                            if ($inreason !== '調撥' && $inreason !== '退庫') {
-                                DB::table('在途量')
-                                    ->where('客戶', $client)
-                                    ->where('料號', $number)
-                                    ->update(['請購數量' => $buy + $amount]);
-                            }
-                            DB::table('inventory')
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->where('儲位', $position)
-                                ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $time]);
-
-                            DB::table('inbound')
-                                ->where('入庫單號', $list)
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->where('入庫數量', $amount)
-                                ->where('入庫人員', $inpeople)
-                                ->where('入庫原因', $inreason)
-                                ->where('儲位', $position)
-                                ->delete();
-                            DB::commit();
-                            $sure = true;
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            $mess = $e->getMessage();
-                            echo ("<script LANGUAGE='JavaScript'>
-                                window.alert('$mess');
-                                window.location.href='/inbound';
-                                </script>");
-                        }
-                    } else {
-                        continue;
-                    }
+                    return \Response::json(['stock' => $stock, 'amount' => $amount], 420/* Status code here default is 200 ok*/);
                 }
-
-                if ($sure) {
-                    $mess = trans('inboundpageLang.delete') . trans('inboundpageLang.success') . ' ， '
-                        . trans('inboundpageLang.inlist') . ' : ' . $list . '\\n' . trans('inboundpageLang.client') . ' : ' . $client . ' '
-                        . trans('inboundpageLang.isn') . ' : ' . $number;
-                    echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='/inbound';
-                    </script>");
-                } else {
-                    $mess = trans('inboundpageLang.nocheck');
-                    echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='search';
-                        </script>");
+                if ($inreason !== '調撥' && $inreason !== '退庫') {
+                    DB::table('在途量')
+                        ->where('客戶', $client)
+                        ->where('料號', $number)
+                        ->update(['請購數量' => $buy + $amount]);
                 }
-            } else if ($request->has('download')) {
+                DB::table('inventory')
+                    ->where('客戶別', $client)
+                    ->where('料號', $number)
+                    ->where('儲位', $position)
+                    ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
 
-                $spreadsheet = new Spreadsheet();
-                $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
-                $worksheet = $spreadsheet->getActiveSheet();
-                $time = $request->input('time');
-                $count = $request->input('count');
-
-                //填寫表頭
-                for ($i = 0; $i < $time; $i++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title' . $i));
-                }
-
-                //填寫內容
-                for ($i = 0; $i < $time; $i++) {
-                    for ($j = 0; $j < $count; $j++) {
-                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
-                    }
-                }
-
-
-                // 下載
-                $now = Carbon::now()->format('YmdHis');
-                $filename = '入庫查詢' . $now . '.xlsx';
-                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment;filename="' . $filename . '"');
-                header('Cache-Control: max-age=0');
-
-                $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-                $writer->save('php://output');
-            } else {
-                return redirect(route('inbound.search'));
+                DB::table('inbound')
+                    ->where('入庫單號', $list)
+                    ->where('客戶別', $client)
+                    ->where('料號', $number)
+                    ->where('入庫數量', $amount)
+                    ->where('入庫人員', $inpeople)
+                    ->where('入庫原因', $inreason)
+                    ->where('儲位', $position)
+                    ->delete();
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
             }
+            return \Response::json(['list' => $list, 'client' => $client, 'number' => $number]/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
         }
@@ -1094,33 +1022,39 @@ class InboundController extends Controller
         if (Session::has('username')) {
 
             $spreadsheet = new Spreadsheet();
-            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
+            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
             $worksheet = $spreadsheet->getActiveSheet();
-            $time = $request->input('time');
+            $titlecount = $request->input('titlecount');
             $count = $request->input('count');
             //填寫表頭
-            for ($i = 0; $i < $time; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title' . $i));
+            for ($i = 0; $i < $titlecount; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
             }
 
             //填寫內容
-            for ($i = 0; $i < $time; $i++) {
+            for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
                 }
             }
 
-
             // 下載
             $now = Carbon::now()->format('YmdHis');
-            $title = $request->input('title');
-            $filename = $title . $now . '.xlsx';
+            $titlename = $request->input('titlename');
+            $filename = rawurlencode($titlename) . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="' . $filename . '"');
+            header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
             header('Cache-Control: max-age=0');
 
+            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
             $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
             $writer->save('php://output');
+            $callback = function () use ($writer) {
+                $file = fopen('php://output', 'r');
+                fclose($file);
+            };
+
+            return response()->stream($callback, 200, $headers);
         } else {
             return redirect(route('member.login'));
         }
@@ -1165,58 +1099,44 @@ class InboundController extends Controller
             $count = $request->input('count');
             $record = 0;
             $now = Carbon::now();
-            $in = false;
+            $clients =  $request->input('client');
+            $numbers =  $request->input('number');
+            $amounts =  $request->input('amount');
+            $positions =  $request->input('position');
             for ($i = 0; $i < $count; $i++) {
-                $client =  $request->input('data0' . $i);
-                $number =  $request->input('data1' . $i);
-                $amount =  $request->input('data2' . $i);
-                $position =  $request->input('data3' . $i);
-                $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
+
+                $stock = DB::table('inventory')->where('客戶別', $clients[$i])->where('料號', $numbers[$i])->where('儲位', $positions[$i])->value('現有庫存');
 
                 if ($stock === null) {
                     DB::beginTransaction();
                     try {
                         DB::table('inventory')
-                            ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $now]);
+                            ->insert(['料號' => $numbers[$i], '現有庫存' => $amounts[$i], '儲位' => $positions[$i], '客戶別' => $clients[$i], '最後更新時間' => $now]);
                         DB::commit();
                         $record++;
                     } catch (\Exception $e) {
                         DB::rollback();
                         $mess = $e->getmessage();
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='upload';
-                        </script>");
-
+                        return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
                     }
                 } else {
                     DB::beginTransaction();
                     try {
                         DB::table('inventory')
-                            ->where('客戶別', $client)
-                            ->where('料號', $number)
-                            ->where('儲位', $position)
-                            ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $now]);
+                            ->where('客戶別', $clients[$i])
+                            ->where('料號', $numbers[$i])
+                            ->where('儲位', $positions[$i])
+                            ->update(['現有庫存' => $stock + $amounts[$i], '最後更新時間' => $now]);
                         DB::commit();
                         $record++;
                     } catch (\Exception $e) {
                         DB::rollback();
                         $mess = $e->getmessage();
-                        echo ("<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='upload';
-                        </script>");
-
+                        return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
                     }
                 }
             }
-
-            $mess = trans('inboundpageLang.total') . $record . trans('inboundpageLang.record')
-                . trans('inboundpageLang.stockupload') . trans('inboundpageLang.success');
-            echo ("<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='/inbound';
-                </script>");
+            return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
         }

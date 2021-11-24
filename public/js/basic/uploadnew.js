@@ -1,0 +1,119 @@
+$.ajaxSetup({
+  headers: {
+    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+  },
+});
+
+$("#uploadnew").on("submit", function (e) {
+
+  e.preventDefault();
+
+  // clean up previous input results
+  $(".is-invalid").removeClass("is-invalid");
+  $(".invalid-feedback").remove();
+
+  var number = [];
+  var name = [];
+  var format = [];
+  var price = [];
+  var money = [];
+  var unit = [];
+  var mpq = [];
+  var moq = [];
+  var lt = [];
+  var month = [];
+  var gradea = [];
+  var belong = [];
+  var send = [];
+  var safe = [];
+
+  var count = $("#count").val();
+
+  for (let i = 0; i < count; i++) {
+    number.push($("#data0a" + i).val());
+    name.push($("#data1a" + i).val());
+    format.push($("#data2a" + i).val());
+    price.push($("#data3a" + i).val());
+    money.push($("#data4a" + i).val());
+    unit.push($("#data5a" + i).val());
+    mpq.push($("#data6a" + i).val());
+    moq.push($("#data7a" + i).val());
+    lt.push($("#data8a" + i).val());
+    month.push($("#data9a" + i).val());
+    gradea.push($("#data10a" + i).val());
+    belong.push($("#data11a" + i).val());
+    send.push($("#data12a" + i).val());
+    safe.push($("#data13a" + i).val());
+  }
+
+  $.ajax({
+    type: "POST",
+    url: "insertuploadmaterial",
+    data: {
+      number: number,
+      name: name,
+      format: format,
+      price: price,
+      money: money,
+      unit: unit,
+      mpq: mpq,
+      moq: moq,
+      lt: lt,
+      month: month,
+      gradea: gradea,
+      belong: belong,
+      send: send,
+      safe: safe,
+      count: count,
+    },
+    beforeSend: function () {
+      // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+      $("body").loadingModal({
+        text: "Loading...",
+        animation: "circle",
+      });
+    },
+    complete: function () {
+      $("body").loadingModal("hide");
+    },
+    success: function (data) {
+      console.log(number);
+      var mess =
+        Lang.get("basicInfoLang.total") +
+        " " +
+        data.message +
+        " " +
+        Lang.get("basicInfoLang.record") +
+        Lang.get("basicInfoLang.newMats") +
+        Lang.get("basicInfoLang.success");
+      alert(mess);
+      window.location.href = "/basic";
+    },
+    error: function (err) {
+      console.log(err.status);
+      //料號重複
+      if (err.status == 420) {
+        var mess = Lang.get('basicInfoLang.row') + ' : '+err.responseJSON.message+' '+Lang.get('basicInfoLang.isnrepeat');
+        window.alert(mess);
+        window.location.href = 'new';
+      }
+      //料號長度不為12
+      else if (err.status == 421) {
+        var mess = Lang.get('basicInfoLang.row') + ' : '+err.responseJSON.message+' '+Lang.get('basicInfoLang.isnlength');
+        window.alert(mess);
+        window.location.href = 'new';
+      }
+      //非月請購沒安全庫存
+      else if (err.status == 422) {
+        var mess = Lang.get('basicInfoLang.row') + ' : '+err.responseJSON.message+' '+Lang.get('basicInfoLang.safeerror');
+        window.alert(mess);
+        window.location.href = 'new';
+      }
+      else{
+        var mess = err.responseJSON.message;
+        window.alert(mess);
+        window.location.reload();
+      }
+    },
+  });
+});

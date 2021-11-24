@@ -24,6 +24,8 @@ $(document).ready(function () {
     var name = $("#username").val();
     var pass = $("#password").val();
     var site = $('#site').children("option:selected").val();
+    //TEST DATABASE
+    //site = 'M2-TEST-1112';
     console.log(site); // test
 
     // clean up previous input results

@@ -89,4 +89,5 @@ return [
     'enterinlist' => 'Please enter the Inbound list No.',
     'timepart' => 'Period',
     'upload1' => 'Upload',
+    'noinpeople' => 'The job number of the inbound people does not exist, please go to User Management-Maintenance of New Person Information',
 ];

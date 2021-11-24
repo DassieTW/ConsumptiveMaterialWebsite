@@ -1,133 +1,169 @@
-
-
-
 //show select 退料單號
 $("#list").on("change", function () {
-  var value = $("#list").val();
-  $('#test').find('tr').not('#require').hide();
-  var result_style = document.getElementById(value).style;
-  result_style.display = 'table-row';
-  //document.getElementById("test").style.display = "block";
+    var value = $("#list").val();
+    $("#test").find("tr").not("#require").hide();
+    var result_style = document.getElementById(value).style;
+    result_style.display = "table-row";
+    //document.getElementById("test").style.display = "block";
 });
 
 
 $.ajaxSetup({
-  headers: {
-    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  }
-});
-var otherback;
-var otherpick;
-
-$("#backpeople").on("change", function () {
-
-    var value = $("#backpeople").val();
-    if (value === "其他" || value === "other") {
-        document.getElementById("inputbackpeople").style.display = "block";
-        document.getElementById("inputbackpeople").required = true;
-        otherback = true;
-    }
-    else {
-        document.getElementById("inputbackpeople").style.display = "none";
-        document.getElementById("inputbackpeople").required = false;
-        otherback = false;
-    }
+    headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
 });
 
-$("#pickpeople").on("change", function () {
-
-    var value = $("#pickpeople").val();
-    if (value === "其他" || value === "other") {
-        document.getElementById("inputpickpeople").style.display = "block";
-        document.getElementById("inputpickpeople").required = true;
-        otherpick = true;
-    }
-    else {
-        document.getElementById("inputpickpeople").style.display = "none";
-        document.getElementById("inputpickpeople").required = false;
-        otherpick = false;
-    }
-});
-
-$('#backlist').on('submit', function (e) {
+$(".receivelist").mouseover(function (e) {
     e.preventDefault();
-      var count = $("#count").val();
-      var list = $("#list").val();
-      var advance = $("#advance"+list).html();
-      var number = $("#number"+list).html();
-      var client = $("#client"+list).html();
-      var amount = $("#amount"+list).val();
-      var reason = $("#reason"+list).val();
-      var checkpeople = [];
+    var ename = $(this).text();
+    $("#pickpeople").val(ename);
+});
+$(".receivelist").on("click", function (e) {
+    e.preventDefault();
+    var ename = $(this).text();
+    $("#pickpeople").val(ename);
+});
 
-      for(let i = 0 ; i < count ; i++)
-      {
+$(".backlist").mouseover(function (e) {
+    e.preventDefault();
+    var ename = $(this).text();
+    $("#backpeople").val(ename);
+});
+$(".backlist").on("click", function (e) {
+    e.preventDefault();
+    var ename = $(this).text();
+    $("#backpeople").val(ename);
+});
+
+function myFunction() {
+    var input, filter, ul, li, a, i;
+    ul = document.getElementById("receivemenu");
+    li = ul.getElementsByTagName("a");
+    input = document.getElementById("pickpeople");
+    filter = input.value.toUpperCase();
+    for (i = 0; i < li.length; i++) {
+        a = li[i];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+
+function myFunction2() {
+    var input, filter, ul, li, a, i;
+    ul = document.getElementById("backmenu");
+    li = ul.getElementsByTagName("a");
+    input = document.getElementById("backpeople");
+    filter = input.value.toUpperCase();
+    for (i = 0; i < li.length; i++) {
+        a = li[i];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+
+$("#pickpeople").on("focus", function () {
+    $("#receivemenu").show();
+});
+$("#pickpeople").on("input", function () {
+    $("#receivemenu").show();
+    myFunction();
+});
+$("#pickpeople").on("blur", function () {
+    $("#receivemenu").hide();
+});
+$("#backpeople").on("focus", function () {
+    $("#backmenu").show();
+});
+$("#backpeople").on("input", function () {
+    $("#backmenu").show();
+    myFunction2();
+});
+$("#backpeople").on("blur", function () {
+    $("#backmenu").hide();
+});
+
+$("#backlist").on("submit", function (e) {
+    e.preventDefault();
+    var count = $("#count").val();
+    var list = $("#list").val();
+    var advance = $("#advance" + list).html();
+    var number = $("#number" + list).html();
+    var client = $("#client" + list).html();
+    var amount = $("#amount" + list).val();
+    var reason = $("#reason" + list).val();
+    var pick = $("#pickpeople").val();
+    var back = $("#backpeople").val();
+    var checkpeople = [];
+
+    for (let i = 0; i < count; i++) {
         checkpeople.push($("#checkpeople" + i).val());
-      }
-      console.log(checkpeople);
-      var inputbackpeople = $("#inputbackpeople").val();
-      var check1 = checkpeople.indexOf(inputbackpeople);
-      var inputpickpeople = $("#inputpickpeople").val();
-      var check2 = checkpeople.indexOf(inputpickpeople);
+    }
+    console.log(checkpeople);
 
-      var pick = $("#pickpeople").val();
-      pick = pick.split(' ');
-      var pickpeople = pick[0];
-      var back = $("#backpeople").val();
-      back = back.split(' ');
-      var backpeople = back[0];
-      var position = $("#position").val();
-      var status = $("#status").val();
-      if(status === "good product") status = '良品';
-      if(status === "bad product") status = '不良品';
-      if(otherback)
-      {
-        if(check1 == -1)
-        {
-            alert(Lang.get('outboundpageLang.nobackpeople'));
-            return false;
-        }
-        else
-        {
-            backpeople = $("#inputbackpeople").val();
-        }
-      }
-      if(otherpick)
-      {
-        if(check2 == -1)
-        {
-            alert(Lang.get('outboundpageLang.noreceivepeople'));
-            return false;
-        }
-        else
-        {
-            pickpeople = $("#inputpickpeople").val();
-        }
-      }
+    pick = pick.split(" ");
+    var pickpeople = pick[0];
+    back = back.split(" ");
+    var backpeople = back[0];
+    var check1 = checkpeople.indexOf(pickpeople);
+    var check2 = checkpeople.indexOf(backpeople);
+
+    var position = $("#position").val();
+    var status = $("#status").val();
+    if (status === "good product") status = "良品";
+    if (status === "bad product") status = "不良品";
+
+    if (check1 == -1) {
+        alert(Lang.get("outboundpageLang.noreceivepeople"));
+        $("#pickpeople").css("border-color", "red");
+        return false;
+    }
+
+    if (check2 == -1) {
+        alert(Lang.get("outboundpageLang.nobackpeople"));
+        $("#backpeople").css("border-color", "red");
+        return false;
+    }
 
     $.ajax({
-       type:'POST',
-       url:"backlistsubmit",
-       data:{list:list, advance:advance , amount:amount , reason:reason , backpeople:backpeople
-        , pickpeople:pickpeople , position:position , number:number , client:client , status:status},
+        type: "POST",
+        url: "backlistsubmit",
+        data: {
+            list: list,
+            advance: advance,
+            amount: amount,
+            reason: reason,
+            backpeople: backpeople,
+            pickpeople: pickpeople,
+            position: position,
+            number: number,
+            client: client,
+            status: status,
+        },
         beforeSend: function () {
             // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-            $('body').loadingModal({
-              text: 'Loading...',
-              animation: 'circle'
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
             });
-          },
-          complete: function () {
-            $('body').loadingModal('hide');
-          },
-          success: function (data) {
+        },
+        complete: function () {
+            $("body").loadingModal("hide");
+        },
+        success: function (data) {
             console.log(data);
-            var mess = Lang.get('outboundpageLang.outbackok')+list;
+            var mess = Lang.get("outboundpageLang.outbackok") + list;
             alert(mess);
             //alert("出庫完成，退料單號: " + list);
             window.location.href = "/outbound";
             //window.location.href = "member.newok";
-          },
+        },
         error: function (err) {
             //noreason
             if (err.status == 420) {
@@ -138,9 +174,6 @@ $('#backlist').on('submit', function (e) {
             else if (err.status == 421) {
                 console.log(err.status);
             }
-          },
-
-  });
+        },
+    });
 });
-
-
