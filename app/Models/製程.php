@@ -13,7 +13,7 @@ class 製程 extends Model
 
     protected $table = "製程";
 
-    protected $primaryKey = '製程';
+    protected $primaryKey = '制程';
 
     protected $keyType = 'string';
 
@@ -21,6 +21,6 @@ class 製程 extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        '製程',
+        '制程',
     ];
 }

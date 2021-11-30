@@ -44,7 +44,7 @@
                                     <td><input type = "hidden" id = "number{{$loop->index}}" name = "number{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
                                     <td><input type = "hidden" id = "client{{$loop->index}}" name = "client{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
                                     <td><input type = "hidden" id = "machine{{$loop->index}}" name = "machine{{$loop->index}}" value = "{{$data->機種}}">{{$data->機種}}</td>
-                                    <td><input type = "hidden" id = "production{{$loop->index}}" name = "production{{$loop->index}}" value = "{{$data->製程}}">{{$data->製程}}</td>
+                                    <td><input type = "hidden" id = "production{{$loop->index}}" name = "production{{$loop->index}}" value = "{{$data->制程}}">{{$data->制程}}</td>
                                     <td><input style="width: 80px" type = "number" id = "nowpeople{{$loop->index}}" name = "nowpeople{{$loop->index}}" value = "{{$data->當月站位人數}}"></td>
                                     <td><input style="width: 80px" type = "number" id = "nowline{{$loop->index}}" name = "nowline{{$loop->index}}" value = "{{$data->當月開線數}}"></td>
                                     <td><input style="width: 80px" type = "number" id = "nowclass{{$loop->index}}" name = "nowclass{{$loop->index}}" value = "{{$data->當月開班數}}"></td>

@@ -44,12 +44,12 @@
 
             </div>
             <div class="col-auto">
-                <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
+                <label class="col col-lg-12 form-label">{!! __('outboundpageLang.process') !!}</label>
                 <select class="form-select form-select-lg " id="production" name="production" required>
                     <option style="display: none" disabled selected value="">{!!
                         __('outboundpageLang.enterprocess') !!}</option>
                     @foreach($production as $production)
-                    <option>{{ $production->製程 }}</option>
+                    <option>{{ $production->制程 }}</option>
                     @endforeach
                 </select>
 
@@ -102,29 +102,34 @@
 </div>
 <div class="card w-100">
     <div class="card-body">
-        <form id="pickadd">
+        <form id="pickadd" style="display: none">
             @csrf
             <div class="table-responsive">
                 <table class="table" id="pickaddtable">
-                    <tr id="require">
-                        <th>{!! __('outboundpageLang.isn') !!}</th>
-                        <th>{!! __('outboundpageLang.pName') !!}</th>
-                        <th>{!! __('outboundpageLang.format') !!}</th>
-                        <th>{!! __('outboundpageLang.unit') !!}</th>
-                        <th>{!! __('outboundpageLang.senddep') !!}</th>
-                        <th>{!! __('outboundpageLang.pickamount') !!}</th>
-                        <th>{!! __('outboundpageLang.mark') !!}</th>
-                        <th>{!! __('outboundpageLang.client') !!}</th>
-                        <th>{!! __('outboundpageLang.machine') !!}</th>
-                        <th>{!! __('outboundpageLang.process') !!}</th>
-                        <th>{!! __('outboundpageLang.line') !!}</th>
-                        <th>{!! __('outboundpageLang.usereason') !!}</th>
-                    </tr>
+                    <tbody id="pickaddbody">
+                        <tr>
+                            <th>{!! __('outboundpageLang.delete') !!}</th>
+                            <th>{!! __('outboundpageLang.isn') !!}</th>
+                            <th>{!! __('outboundpageLang.pName') !!}</th>
+                            <th>{!! __('outboundpageLang.format') !!}</th>
+                            <th>{!! __('outboundpageLang.unit') !!}</th>
+                            <th>{!! __('outboundpageLang.senddep') !!}</th>
+                            <th>{!! __('outboundpageLang.pickamount') !!}</th>
+                            <th>{!! __('outboundpageLang.mark') !!}</th>
+                            <th>{!! __('outboundpageLang.client') !!}</th>
+                            <th>{!! __('outboundpageLang.machine') !!}</th>
+                            <th>{!! __('outboundpageLang.process') !!}</th>
+                            <th>{!! __('outboundpageLang.line') !!}</th>
+                            <th>{!! __('outboundpageLang.usereason') !!}</th>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
-                    <input type="submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}">
+                    <input type="submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}"
+                        style="width: 80px">
                 </div>
             </div>
         </form>

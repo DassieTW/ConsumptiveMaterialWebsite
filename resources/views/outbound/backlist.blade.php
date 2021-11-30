@@ -55,7 +55,7 @@
                     <tr id="{{$data->退料單號}}">
                         <td id="client{{$data->退料單號}}">{{$data->客戶別}}</td>
                         <td>{{$data->機種}}</td>
-                        <td>{{$data->製程}}</td>
+                        <td>{{$data->制程}}</td>
                         <td>{{$data->退回原因}}</td>
                         <td>{{$data->線別}}</td>
                         <td id="number{{$data->退料單號}}">{{$data->料號}}</td>

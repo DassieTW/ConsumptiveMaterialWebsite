@@ -30,7 +30,7 @@
                         <div class="col-lg-6  col-md-12 col-sm-12">
 
                             <select class="form-select form-select-lg @error('list') is-invalid @enderror" id="list"
-                                name="list">
+                                name="list" required>
                                 <option style="display: none" disabled selected value="">{!!
                                     __('outboundpageLang.enterpicklist') !!}</option>
                                 @foreach($data as $data)
@@ -66,8 +66,10 @@
                             <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
                                 value="{!! __('outboundpageLang.searchpicklist') !!}">
                             &emsp;
+                            @can('deletepicklist', App\Models\Outbound::class )
                             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
                                 value="{!! __('outboundpageLang.deletepicklist') !!}">
+                            @endcan
                         </div>
                     </div>
                 </form>

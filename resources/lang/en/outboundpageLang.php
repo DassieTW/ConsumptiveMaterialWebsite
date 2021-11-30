@@ -105,4 +105,7 @@ return [
     'inputpickpeople' => 'Please input Pickup person job number',
     'inputbackpeople' => 'Please input Return person job number',
     'inputreceivepeople' => 'Please input Receiver job number',
+    'row' => 'In Row',
+    'total' => 'Total',
+    'record' => 'record',
 ];

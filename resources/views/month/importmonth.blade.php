@@ -125,7 +125,7 @@
                 <td><input class="innumber" type="checkbox" id="innumber{{$loop->index}}"
                         name="innumber{{$loop->index}}" style="width:20px;height:20px;"></td>
                 <td>
-                    <h4>{{$production->製程}}
+                    <h4>{{$production->制程}}
                 </td>
             </tr>
             <input type="hidden" id="count" name="count" value="{{$loop->count}}">

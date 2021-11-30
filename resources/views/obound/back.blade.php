@@ -63,7 +63,7 @@
                                 __('oboundpageLang.enterprocess')
                                 !!}</option>
                             @foreach($production as $production)
-                            <option>{{ $production->製程 }}</option>
+                            <option>{{ $production->制程 }}</option>
                             @endforeach
                         </select>
                     </div>

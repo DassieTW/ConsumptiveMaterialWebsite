@@ -17,19 +17,19 @@ class 製程TableSeeder extends Seeder
     {
         //
         $production = new 製程;
-        $production->製程 = 'FAE';
+        $production->制程 = 'FAE';
         $production->save();
         //
         $production = new 製程;
-        $production->製程 = 'LCON';
+        $production->制程 = 'LCON';
         $production->save();
         //
         $production = new 製程;
-        $production->製程 = 'PD';
+        $production->制程 = 'PD';
         $production->save();
         //
         $production = new 製程;
-        $production->製程 = '包裝';
+        $production->制程 = '包裝';
         $production->save();
     }
 }

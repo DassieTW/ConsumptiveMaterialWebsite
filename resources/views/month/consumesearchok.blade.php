@@ -51,7 +51,7 @@
                         <td><input type="hidden" id="machine{{$loop->index}}" name="machine{{$loop->index}}"
                                 value="{{$data->機種}}">{{$data->機種}}</td>
                         <td><input type="hidden" id="production{{$loop->index}}" name="production{{$loop->index}}"
-                                value="{{$data->製程}}">{{$data->製程}}</td>
+                                value="{{$data->制程}}">{{$data->制程}}</td>
                         <td><input type="hidden" id="number{{$loop->index}}" name="number{{$loop->index}}"
                                 value="{{$data->料號}}">{{$data->料號}}</td>
                         <td>{{$name}}</td>

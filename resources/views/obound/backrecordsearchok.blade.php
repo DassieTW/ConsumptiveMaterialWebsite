@@ -54,7 +54,7 @@
                                 <tr id = "{{$data->退料單號}}">
                                     <td><input type = "hidden" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
                                     <td><input type = "hidden" id = "data1{{$loop->index}}" name = "data1{{$loop->index}}" value = "{{$data->機種}}">{{$data->機種}}</td>
-                                    <td><input type = "hidden" id = "data2{{$loop->index}}" name = "data2{{$loop->index}}" value = "{{$data->製程}}">{{$data->製程}}</td>
+                                    <td><input type = "hidden" id = "data2{{$loop->index}}" name = "data2{{$loop->index}}" value = "{{$data->制程}}">{{$data->制程}}</td>
                                     <td><input type = "hidden" id = "data3{{$loop->index}}" name = "data3{{$loop->index}}" value = "{{$data->退回原因}}">{{$data->退回原因}}</td>
                                     <td><input type = "hidden" id = "data4{{$loop->index}}" name = "data4{{$loop->index}}" value = "{{$data->線別}}">{{$data->線別}}</td>
                                     <td><input type = "hidden" id = "data5{{$loop->index}}" name = "data5{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>

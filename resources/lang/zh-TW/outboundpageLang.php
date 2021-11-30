@@ -105,4 +105,7 @@ return [
     'inputpickpeople' => '請輸入領料人員工號',
     'inputbackpeople' => '請輸入退料人員工號',
     'inputreceivepeople' => '請輸入收料人員工號',
+    'row' => '在列',
+    'total' => '共',
+    'record' => '筆',
 ];

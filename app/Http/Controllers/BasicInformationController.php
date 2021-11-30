@@ -110,7 +110,7 @@ class BasicInformationController extends Controller
             else if($request->input('dataname') == "production")
             {
                 $choose = "App\Models\製程";
-                $chooseindex = '製程';
+                $chooseindex = '制程';
                 $table = "製程";
                 $errnew = "productionnew";
             }
@@ -970,6 +970,11 @@ class BasicInformationController extends Controller
             {
                 $chooseindex = '儲存位置';
                 $table = "App\Models\儲位";
+            }
+            else if($choose == '製程')
+            {
+                $chooseindex = '制程';
+                $table = "App\Models\製程";
             }
             else
             {

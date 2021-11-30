@@ -80,7 +80,7 @@
                         <td><input type="hidden" id="data1{{$loop->index}}" name="data1{{$loop->index}}"
                                 value="{{$data->機種}}">{{$data->機種}}</td>
                         <td><input type="hidden" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
-                                value="{{$data->製程}}">{{$data->製程}}</td>
+                                value="{{$data->制程}}">{{$data->制程}}</td>
                         <td><input type="hidden" id="data3{{$loop->index}}" name="data3{{$loop->index}}"
                                 value="{{$data->退回原因}}">{{$data->退回原因}}</td>
                         <td><input type="hidden" id="data4{{$loop->index}}" name="data4{{$loop->index}}"

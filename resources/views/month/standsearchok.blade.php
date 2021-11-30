@@ -95,7 +95,7 @@
                         <td><input type="hidden" id="data6{{$loop->index}}" name="data6{{$loop->index}}"
                                 value="{{$data->機種}}">{{$data->機種}}</td>
                         <td><input type="hidden" id="data7{{$loop->index}}" name="data7{{$loop->index}}"
-                                value="{{$data->製程}}">{{$data->製程}}</td>
+                                value="{{$data->制程}}">{{$data->制程}}</td>
                         <td><input style="width:150px" class="form-control form-control-lg" type="number"
                                 id="data8{{$loop->index}}" name="data8{{$loop->index}}" value="{{$data->當月站位人數}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)"></td>

@@ -39,7 +39,7 @@
                                 <td><input class ="innumber" type="checkbox" id="innumber" name="innumber" style="width:20px;height:20px;" value="{{$loop->index}}"></td>
                                 <td><input type = "hidden" id = "client{{$loop->index}}" name = "client{{$loop->index}}" value="{{$data->客戶別}}">{{$data->客戶別}}</td>
                                 <td><input type = "hidden" id = "machine{{$loop->index}}" name = "machine{{$loop->index}}" value="{{$data->機種}}">{{$data->機種}}</td>
-                                <td><input type = "hidden" id = "production{{$loop->index}}" name = "production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}</td>
+                                <td><input type = "hidden" id = "production{{$loop->index}}" name = "production{{$loop->index}}" value="{{$data->制程}}">{{$data->制程}}</td>
                                 <td>{{$data->本月MPS}}</td>
                                 <td>{{$data->本月生產天數}}</td>
                                 <td>{{$data->下月MPS}}</td>

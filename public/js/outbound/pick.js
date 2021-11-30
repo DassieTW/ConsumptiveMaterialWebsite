@@ -17,22 +17,39 @@ $("#usereason").on("change", function () {
 });
 
 var index = 0;
+var count = 0;
 
-$('#pick').on('submit', function (e) {
-    e.preventDefault();
+function appenSVg(index) {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    path.setAttribute('d', "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z");
+    svg.setAttribute("width", "16");
+    svg.setAttribute("height", "16");
+    svg.setAttribute("fill", "#c94466");
+    svg.setAttribute("class", "bi bi-x-circle-fill");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    svg.appendChild(path);
+    $('#deleteBtn' + index).append(svg);
+    $('#deleteBtn' + index).on('click', function (e) {
+        e.preventDefault();
+        count = count - 1;
+        $(this).parent().parent().remove();
+    }); // on delete btn click
+} // appenSVg
 
-    var select = ($(document.activeElement).val());
-    var client = $("#client").val();
-    var machine = $("#machine").val();
-    var production = $("#production").val();
-    var line = $("#line").val();
-    var usereason = $("#usereason").val();
-    if (usereason === "其他" || usereason === "other") {
-        usereason = $('#reason').val();
-    }
-    var number = $('#number').val();
+$(document).ready(function () {
+    $('#pick').on('submit', function (e) {
+        e.preventDefault();
 
-    if (select == '添加' || select == 'Add') {
+        var client = $("#client").val();
+        var machine = $("#machine").val();
+        var production = $("#production").val();
+        var line = $("#line").val();
+        var usereason = $("#usereason").val();
+        if (usereason === "其他" || usereason === "other") {
+            usereason = $('#reason').val();
+        }
+        var number = $('#number').val();
 
         $.ajax({
             type: 'POST',
@@ -57,18 +74,7 @@ $('#pick').on('submit', function (e) {
             },
             success: function (data) {
 
-                sessionStorage.setItem('number' + index, data.number);
-                sessionStorage.setItem('name' + index, data.name);
-                sessionStorage.setItem('format' + index, data.format);
-                sessionStorage.setItem('unit' + index, data.unit);
-                sessionStorage.setItem('send' + index, data.send);
-                sessionStorage.setItem('client' + index, data.client);
-                sessionStorage.setItem('machine' + index, data.machine);
-                sessionStorage.setItem('production' + index, data.production);
-                sessionStorage.setItem('line' + index, data.line);
-                sessionStorage.setItem('usereason' + index, data.usereason);
-                index = index + 1;
-                sessionStorage.setItem('pickcount', index);
+                sessionStorage.setItem('pickcount', index + 1);
                 document.getElementById("nostock").style.display = "none";
                 document.getElementById('client').style.borderColor = "";
                 document.getElementById('number').style.borderColor = "";
@@ -77,7 +83,7 @@ $('#pick').on('submit', function (e) {
 
                 notyf.success({
                     message: Lang.get("outboundpageLang.add") + Lang.get("outboundpageLang.success"),
-                    duration: 5000,   //miliseconds, use 0 for infinite duration
+                    duration: 5000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
                     position: {
@@ -86,6 +92,70 @@ $('#pick').on('submit', function (e) {
                     }
                 });
 
+                document.getElementById('pickadd').style.display = "block";
+                var tbl = document.getElementById("pickaddtable");
+                var body = document.getElementById("pickaddbody");
+                var row = document.createElement("tr");
+
+                let rowdelete = document.createElement('td');
+                rowdelete.innerHTML = "<a id=" + "deleteBtn" + index + "></a>";
+
+                let rownumber = document.createElement('td');
+                rownumber.innerHTML = "<span id=" + "number" + index + ">" + data.number + "</span>";
+
+                let rowname = document.createElement('td');
+                rowname.innerHTML = "<span id=" + "name" + index + ">" + data.name + "</span>";
+
+                let rowformat = document.createElement('td');
+                rowformat.innerHTML = "<span id=" + "format" + index + ">" + data.format + "</span>";
+
+                let rowunit = document.createElement('td');
+                rowunit.innerHTML = "<span id=" + "unit" + index + ">" + data.unit + "</span>";
+
+                let rowsend = document.createElement('td');
+                rowsend.innerHTML = "<span id=" + "send" + index + ">" + data.send + "</span>";
+
+                let rowamount = document.createElement('td');
+                rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control"' + 'min = "1"' + 'value = "1"' + 'style="width: 100px"' + '>';
+
+                let rowremark = document.createElement('td');
+                rowremark.innerHTML = '<input id="remark' + index + '"' + 'type = "text"' + 'class = "form-control"' + 'style="width: 100px"' + '>';
+
+                let rowclient = document.createElement('td');
+                rowclient.innerHTML = "<span id=" + "client" + index + ">" + data.client + "</span>";
+
+                let rowmachine = document.createElement('td');
+                rowmachine.innerHTML = "<span id=" + "machine" + index + ">" + data.machine + "</span>";
+
+                let rowproduction = document.createElement('td');
+                rowproduction.innerHTML = "<span id=" + "production" + index + ">" + data.production + "</span>";
+
+                let rowline = document.createElement('td');
+                rowline.innerHTML = "<span id=" + "line" + index + ">" + data.line + "</span>";
+
+                let rowusereason = document.createElement('td');
+                rowusereason.innerHTML = "<span id=" + "usereason" + index + ">" + data.usereason + "</span>";
+
+                row.appendChild(rowdelete);
+                row.appendChild(rownumber);
+                row.appendChild(rowname);
+                row.appendChild(rowformat);
+                row.appendChild(rowunit);
+                row.appendChild(rowsend);
+                row.appendChild(rowamount);
+                row.appendChild(rowremark);
+                row.appendChild(rowclient);
+                row.appendChild(rowmachine);
+                row.appendChild(rowproduction);
+                row.appendChild(rowline);
+                row.appendChild(rowusereason);
+
+                body.appendChild(row);
+                tbl.appendChild(body);
+                appenSVg(index);
+
+                index = index + 1;
+                count = count + 1;
 
             },
             error: function (err) {
@@ -119,51 +189,84 @@ $('#pick').on('submit', function (e) {
                 }
             }
         });
-    } else {
+    });
+    $('#pickadd').on('submit', function (e) {
         e.preventDefault();
+        if (count == 0) {
+            alert('no data');
+            return false;
+        }
 
-        var pickcount = sessionStorage.getItem('pickcount');
-        if (pickcount > 0) {
-            $.ajax({
-                url: "pickaddok",
-                type: "post",
-                data: {
-                    pickcount: pickcount
-                },
-                beforeSend: function () {
-                    // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                    $('body').loadingModal({
-                        text: 'Loading...',
-                        animation: 'circle'
-                    });
-                },
-                complete: function () {
-                    $('body').loadingModal('hide');
-                },
-                success: function (data) {
-                    window.location.href = "outbound/pickaddok";
+        console.log(sessionStorage.getItem('pickcount'));
+        var client = [];
+        var machine = [];
+        var production = [];
+        var line = [];
+        var usereason = [];
+        var number = [];
+        var name = [];
+        var format = [];
+        var unit = [];
+        var amount = [];
+        var remark = [];
 
-                },
-                error: function (err) {
-                    //非月請購沒填安全庫存
-                    if (err.status == 420) {
-                      var mess = err.responseJSON.row +' '+ err.responseJSON.message;
-                      alert(mess);
-
-                      console.log(err.responseJSON.message);
-                      console.log(err.status);
-                      //transaction error
-                    } else if (err.status == 409) {
-                        console.log(err.status);
-                    }
-                  },
-
-            });
+        for (let i = 0; i < sessionStorage.getItem('pickcount'); i++) {
+            if ($("#client" + i).text() !== null && $("#client" + i).text() !== '') {
+                client.push($("#client" + i).text());
+                machine.push($("#machine" + i).text());
+                production.push($("#production" + i).text());
+                line.push($("#line" + i).text());
+                usereason.push($("#usereason" + i).text());
+                number.push($("#number" + i).text());
+                name.push($("#name" + i).text());
+                format.push($("#format" + i).text());
+                unit.push($("#unit" + i).text());
+                amount.push($("#amount" + i).val());
+                remark.push($("#remark" + i).text());
+            }
 
         }
-        else{
-            var mess = 'please add first'
-            alert(mess);
-        }
-    }
+
+        $.ajax({
+            type: 'POST',
+            url: "pickaddsubmit",
+            data: {
+                client: client,
+                machine: machine,
+                production: production,
+                line: line,
+                usereason: usereason,
+                number: number,
+                name: name,
+                format: format,
+                unit: unit,
+                amount: amount,
+                remark: remark,
+                count: count,
+            },
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+            },
+            success: function (data) {
+                var mess = Lang.get('outboundpageLang.total') + ':' + data.record + Lang.get('outboundpageLang.record') + Lang.get('outboundpageLang.add') + Lang.get('outboundpageLang.success') + ' ， ' +
+                    Lang.get('outboundpageLang.picklistnum') + ' : ' + data.message;
+                alert(mess);
+                window.location.reload();
+            },
+            error: function (err) {
+                //transaction error
+                if (err.status == 420) {
+                    alert(err.responseJSON.message);
+                    window.location.reload();
+                }
+            },
+        });
+    });
 });

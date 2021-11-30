@@ -196,11 +196,12 @@ class LoginController extends Controller
             if ($request->input('newpassword') === $request->input('surepassword')) {
                 $username = Session::get('username');
                 $password = DB::table('login')->where('username', $username)->value('password');
-                if (Hash::check($request->input('password'), $password)) {
+                // if (Hash::check($request->input('password'), $password)) {
+                    if ($request->input('password') === $password) {
                     DB::table('login')
                         ->where('username', $username)
-                        ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
-
+                        // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
+                        ->update(['password' => $request->input('newpassword'), 'updated_at' => Carbon::now()]);
                     $request->session()->flush();
 
                     return \Response::json([]/* Status code here default is 200 ok*/);
