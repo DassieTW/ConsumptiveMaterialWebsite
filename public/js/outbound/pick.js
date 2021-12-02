@@ -1,4 +1,10 @@
 sessionStorage.clear();
+
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -16,10 +22,16 @@ $("#usereason").on("change", function () {
     }
 });
 
+
+
 var index = 0;
 var count = 0;
 
 function appenSVg(index) {
+    $(".amount").hover(function () {
+        $(this).tooltip();
+    });
+
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
     path.setAttribute('d', "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z");
@@ -36,6 +48,7 @@ function appenSVg(index) {
         $(this).parent().parent().remove();
     }); // on delete btn click
 } // appenSVg
+
 
 $(document).ready(function () {
     $('#pick').on('submit', function (e) {
@@ -83,7 +96,7 @@ $(document).ready(function () {
 
                 notyf.success({
                     message: Lang.get("outboundpageLang.add") + Lang.get("outboundpageLang.success"),
-                    duration: 5000, //miliseconds, use 0 for infinite duration
+                    duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
                     position: {
@@ -116,7 +129,9 @@ $(document).ready(function () {
                 rowsend.innerHTML = "<span id=" + "send" + index + ">" + data.send + "</span>";
 
                 let rowamount = document.createElement('td');
-                rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control"' + 'min = "1"' + 'value = "1"' + 'style="width: 100px"' + '>';
+
+                rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control amount"' +
+                    'min = "1"' + 'value = "1"' + 'style="width: 100px"' + 'title="' + data.showstock + '">';
 
                 let rowremark = document.createElement('td');
                 rowremark.innerHTML = '<input id="remark' + index + '"' + 'type = "text"' + 'class = "form-control"' + 'style="width: 100px"' + '>';
@@ -190,6 +205,7 @@ $(document).ready(function () {
             }
         });
     });
+
     $('#pickadd').on('submit', function (e) {
         e.preventDefault();
         if (count == 0) {

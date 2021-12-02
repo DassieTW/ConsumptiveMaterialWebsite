@@ -29,7 +29,8 @@
                             <div class="mb-3 col-md-4">
                                 <label class="form-label">{!! __('basicInfoLang.isn') !!}</label>
                                 <input class="form-control form-control-lg" type="text" id="number" name="number"
-                                    placeholder="{!! __('basicInfoLang.enterisn') !!}" required />
+                                    placeholder="{!! __('basicInfoLang.enterisn') !!}" required
+                                    oninput="if(value.length>12)value=value.slice(0,12)" />
                                 <div id="numbererror" style="display:none; color:red;">{!! __('basicInfoLang.isnrepeat')
                                     !!}</div>
                                 <div id="numbererror1" style="display:none; color:red;">{!!
@@ -159,7 +160,7 @@
             <div class="row justify-content-center">
                 <div class="card-body">
                     <div class=" w-100">
-                        <form method="post" enctype="multipart/form-data" action = "{{ route('basic.uploadmaterial') }}">
+                        <form method="post" enctype="multipart/form-data" action="{{ route('basic.uploadmaterial') }}">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
                                 <div class="col col-auto ">

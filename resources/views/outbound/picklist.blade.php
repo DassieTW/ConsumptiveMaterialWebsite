@@ -98,6 +98,7 @@
                                         @endif
                                         @endforeach
                                     </div>
+                                </select>
                             </td>
                             <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                         </tr>
@@ -129,7 +130,7 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.pickpeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
-            style="width: 250px" placeholder="{!! __('outboundpageLang.inputpickpeople') !!}" required>
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputpickpeople') !!}" required>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="pickmenu" style="display: none;" class="list-group">
                 @foreach($people1 as $people)

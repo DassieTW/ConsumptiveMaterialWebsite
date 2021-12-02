@@ -1,4 +1,5 @@
 
+
 var tab = sessionStorage.getItem('basic');
 var choose = sessionStorage.getItem('basic');
 if (!tab) {
@@ -182,7 +183,11 @@ $(document).ready(function () {
             type: 'POST',
             url: "/basic/changeordelete",
             data: {
-                select: select, data: data, datanew: datanew, dataname: dataname, olddata: olddata
+                select: select,
+                data: data,
+                datanew: datanew,
+                dataname: dataname,
+                olddata: olddata
             },
             dataType: 'json', // expected respose datatype from server
             //async: false,
@@ -206,9 +211,9 @@ $(document).ready(function () {
 
             },
             error: function (err) {
+                document.getElementById(err.responseJSON.message).classList.add("is-invalid");
                 var mess = Lang.get('basicInfoLang.repeat');
                 alert(mess);
-                $("#" + err.responseJSON.message).css("borderColor", "red");
                 console.log(err.responseJSON.message);
                 console.log(err.status);
             }

@@ -96,146 +96,62 @@ function addBtn(index) {
     var row = document.createElement("tr");
 
     let rowdelete = document.createElement("td");
-    rowdelete.innerHTML =
-        "<a id=" +
-        "deleteBtn" +
-        count +
-        " href=javascript:deleteBtn(" +
-        count +
-        ")></a>";
+    rowdelete.innerHTML = "<a id=" + "deleteBtn" + count + " href=javascript:deleteBtn(" + count + ")></a>";
 
     let rowadd = document.createElement("td");
     rowadd.innerHTML =
         "<a id=" + "addBtn" + count + " href=javascript:addBtn(" + count + ")></a>";
 
     let rowclient = document.createElement("td");
-    rowclient.innerHTML =
-        "<span id=" +
-        "client" +
-        count +
-        ">" +
-        $("#client" + index).text() +
-        "</span>";
+    rowclient.innerHTML = "<span id=" + "client" + count + ">" + $("#client" + index).text() + "</span>";
 
     let rowmachine = document.createElement("td");
-    rowmachine.innerHTML =
-        "<span id=" +
-        "machine" +
-        count +
-        ">" +
-        $("#machine" + index).text() +
-        "</span>";
+    rowmachine.innerHTML = "<span id=" + "machine" + count + ">" + $("#machine" + index).text() + "</span>";
 
     let rowproduction = document.createElement("td");
-    rowproduction.innerHTML =
-        "<span id=" +
-        "production" +
-        count +
-        ">" +
-        $("#production" + index).text() +
-        "</span>";
+    rowproduction.innerHTML = "<span id=" + "production" + count + ">" + $("#production" + index).text() + "</span>";
 
     let rowusereason = document.createElement("td");
-    rowusereason.innerHTML =
-        "<span id=" +
-        "usereason" +
-        count +
-        ">" +
-        $("#usereason" + index).text() +
-        "</span>";
+    rowusereason.innerHTML = "<span id=" + "usereason" + count + ">" + $("#usereason" + index).text() + "</span>";
 
     let rowline = document.createElement("td");
-    rowline.innerHTML =
-        "<span id=" + "line" + count + ">" + $("#line" + index).text() + "</span>";
+    rowline.innerHTML = "<span id=" + "line" + count + ">" + $("#line" + index).text() + "</span>";
 
     let rownumber = document.createElement("td");
-    rownumber.innerHTML =
-        "<span id=" +
-        "number" +
-        count +
-        ">" +
-        $("#number" + index).text() +
-        "</span>";
+    rownumber.innerHTML = "<span id=" + "number" + count + ">" + $("#number" + index).text() + "</span>";
 
     let rowname = document.createElement("td");
-    rowname.innerHTML =
-        "<span id=" + "name" + count + ">" + $("#name" + index).text() + "</span>";
+    rowname.innerHTML = "<span id=" + "name" + count + ">" + $("#name" + index).text() + "</span>";
 
     let rowformat = document.createElement("td");
-    rowformat.innerHTML =
-        "<span id=" +
-        "format" +
-        count +
-        ">" +
-        $("#format" + index).text() +
-        "</span>";
+    rowformat.innerHTML = "<span id=" + "format" + count + ">" + $("#format" + index).text() + "</span>";
 
     let rowunit = document.createElement("td");
-    rowunit.innerHTML =
-        "<span id=" + "unit" + count + ">" + $("#unit" + index).text() + "</span>";
+    rowunit.innerHTML = "<span id=" + "unit" + count + ">" + $("#unit" + index).text() + "</span>";
 
     let rowadvance = document.createElement("td");
-    rowadvance.innerHTML =
-        "<span id=" +
-        "advance" +
-        count +
-        ">" +
-        $("#advance" + index).text() +
-        "</span>";
+    rowadvance.innerHTML = "<span id=" + "advance" + count + ">" + $("#advance" + index).text() + "</span>";
 
     let rowamount = document.createElement("td");
-    rowamount.innerHTML =
-        '<input id="amount' +
-        count +
-        '"' +
-        'type = "number"' +
-        'class = "form-control"' +
-        'min = "1"' +
-        'value = "' +
-        $("#amount" + index).val() +
-        '"style="width: 100px"' +
-        ">";
+    rowamount.innerHTML = '<input id="amount' + count + '"' + 'type = "number"' + 'class = "form-control"' + 'min = "1"' +
+        'value = "' + $("#amount" + index).val() + '"style="width: 100px"' + ">";
 
     let rowremark = document.createElement("td");
-    rowremark.innerHTML =
-        "<span id=" +
-        "remark" +
-        count +
-        ">" +
-        $("#remark" + index).text() +
-        "</span>";
+    rowremark.innerHTML = "<span id=" + "remark" + count + ">" + $("#remark" + index).text() + "</span>";
 
     let rowreason = document.createElement("td");
-    rowreason.innerHTML =
-        '<input id="reason' +
-        count +
-        '"' +
-        'type = "text"' +
-        'class = "form-control"' +
+    rowreason.innerHTML = '<input id="reason' + count + '"' + 'type = "text"' + 'class = "form-control"' +
         'style="width: 100px"' +
         ">";
 
     let rowlist = document.createElement("td");
-    rowlist.innerHTML =
-        "<span id=" + "list" + count + ">" + $("#list" + index).text() + "</span>";
+    rowlist.innerHTML = "<span id=" + "list" + count + ">" + $("#list" + index).text() + "</span>";
 
     let rowopentime = document.createElement("td");
-    rowopentime.innerHTML =
-        "<span id=" +
-        "opentime" +
-        count +
-        ">" +
-        $("#opentime" + index).text() +
-        "</span>";
+    rowopentime.innerHTML = "<span id=" + "opentime" + count + ">" + $("#opentime" + index).text() + "</span>";
 
     let rowlocation = document.createElement("td");
-    rowlocation.innerHTML =
-        '<select id="position' +
-        count +
-        '"' +
-        'class = "form-select form-select-lg"' +
-        'style="width: 150px"' +
-        "required>";
+    rowlocation.innerHTML = '<select id="position' + count + '"' + 'class = "form-select form-select-lg"' + 'style="width: 150px"' + "required>";
 
     row.appendChild(rowdelete);
     row.appendChild(rowadd);

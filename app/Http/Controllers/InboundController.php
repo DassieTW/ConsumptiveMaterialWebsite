@@ -530,16 +530,6 @@ class InboundController extends Controller
     //入庫-新增
     public function addnew(Request $request)
     {
-        Session::forget('number');
-        Session::forget('client');
-        Session::forget('name');
-        Session::forget('format');
-        Session::forget('unit');
-        Session::forget('amount');
-        Session::forget('stock');
-        Session::forget('safe');
-        Session::forget('inreason');
-        Session::forget('positions');
         Session::forget('inboundadd');
 
         if (Session::has('username')) {
@@ -603,18 +593,12 @@ class InboundController extends Controller
                                     }
                                 }
                                 $amount = round($amount);
-                                Session::put('client', $client);
-                                Session::put('inreason', $inreason);
-                                Session::put('number', $number);
-                                Session::put('name', $name);
-                                Session::put('format', $format);
-                                Session::put('unit', $unit);
-                                Session::put('amount', $amount);
-                                Session::put('stock', $stock);
-                                Session::put('safe', $safe);
-                                Session::put('positions', $positions);
                                 Session::put('inboundadd', $number);
-                                return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+                                return \Response::json(['boolean' => 'true',
+                                    'number' => $number, 'client' => $client, 'inreason' => $inreason,
+                                    'transit' => $amount, 'stock' => $stock, 'safe' => $safe, 'name' => $name,
+                                    'format' => $format, 'unit' => $unit, 'positions' => $positions
+                                ]/* Status code here default is 200 ok*/);
                             }
                         }
                     }

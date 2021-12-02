@@ -63,8 +63,9 @@ Route::get('/addclient', function () {
     if (Session::has('addclient')) {
         Session::forget('addclient');
         $client = Session::get('client');
+        $inreason = Session::get('inreason');
         return view("inbound.addclient")->with(['data' => 在途量::cursor()->where('請購數量', '>', 0)->where('客戶', $client)])
-            ->with(['inreason' => Session::get('inreason')])
+            ->with(['inreason' => $inreason])
             ->with(['positions' => 儲位::cursor()])
             ->with(['peopleinf' => 人員信息::cursor()])
             ->with(['check' => 人員信息::cursor()]);

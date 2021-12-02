@@ -26,7 +26,6 @@ function myFunction() {
     }
 }
 
-
 $("#inpeople").on("focus", function () {
     $("#inboundmenu").show();
 });
@@ -117,7 +116,7 @@ $('#addnew').on('submit', function (e) {
             //入庫數量大於在途量
             if (err.status == 420) {
                 document.getElementById("nostock").style.display = "block";
-                document.getElementById("inamount").style.borderColor = "red";
+                document.getElementById("inamount").classList.add("is-invalid");
                 $("#inpeople").css("border-color", "");
                 return false;
                 //transaction error

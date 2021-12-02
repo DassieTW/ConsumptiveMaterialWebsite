@@ -22,7 +22,7 @@
         <div class="card w-75">
             <div class="card-body">
 
-                <form id="basicdata" method="POST">
+                <form id="basicdata">
                     @csrf
                     <ul id="myTab" name="myTab" class="nav nav-tabs justify-content-center">
                         <li class="nav-item" id="FactoryExample">
@@ -101,7 +101,7 @@
                                         name="oldfactory{{ $loop->index }}" value="{{ $factory->廠別 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="factory" type="text" id="factorynew"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="factorynew"
                                         name="factorynew" value="">
                                     <hr />
                                 </div>
@@ -120,7 +120,7 @@
                                         name="oldclient{{ $loop->index }}" value="{{ $client->客戶 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="client" type="text" id="clientnew"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="clientnew"
                                         name="clientnew" value="">
                                     <hr />
                                 </div>
@@ -139,7 +139,7 @@
                                         name="oldmachine{{ $loop->index }}" value="{{ $machine->機種 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="machine" type="text" id="machinenew"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="machinenew"
                                         name="machinenew" value="">
                                     <hr />
                                 </div>
@@ -158,7 +158,7 @@
                                         name="oldproduction{{ $loop->index }}" value="{{ $production->制程 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="production" type="text"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text"
                                         id="productionnew" name="productionnew" value="">
                                     <hr />
                                 </div>
@@ -177,7 +177,7 @@
                                         value="{{ $line->線別 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="line" type="text" id="linenew"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="linenew"
                                         name="linewnew" value="">
                                     <hr />
                                 </div>
@@ -196,7 +196,7 @@
                                         value="{{ $use->領用部門 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="use" type="text" id="usenew"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="usenew"
                                         name="usenew" value="">
                                     <hr />
                                 </div>
@@ -215,7 +215,7 @@
                                         name="oldusereason{{ $loop->index }}" value="{{ $usereason->領用原因 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="usereason" type="text"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text"
                                         id="usereasonnew" name="usereasonnew" value="">
                                     <hr />
                                 </div>
@@ -234,7 +234,7 @@
                                         name="oldinreason{{ $loop->index }}" value="{{ $inreason->入庫原因 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="inreason" type="text"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text"
                                         id="inreasonnew" name="inreasonnew" value="">
                                     <hr />
                                 </div>
@@ -253,7 +253,7 @@
                                         name="oldposition{{ $loop->index }}" value="{{ $position->儲存位置 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="position" type="text"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text"
                                         id="positionnew" name="positionnew" value="">
                                     <hr />
                                 </div>
@@ -272,7 +272,7 @@
                                         value="{{ $send->發料部門 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="send" type="text" id="sendnew"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="sendnew"
                                         name="sendnew" value="">
                                     <hr />
                                 </div>
@@ -291,7 +291,7 @@
                                         value="{{ $o->O庫 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="o" type="text" id="onew" name="onew"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="onew" name="onew"
                                         value="">
                                     <hr />
                                 </div>
@@ -310,7 +310,7 @@
                                         value="{{ $back->退回原因 }}">
                                     <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="back" type="text" id="backnew"
+                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="backnew"
                                         name="backnew" value="">
                                     <hr />
                                 </div>

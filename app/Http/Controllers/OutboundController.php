@@ -618,6 +618,15 @@ class OutboundController extends Controller
 
                     $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->sum('現有庫存');
 
+
+                    $showstock  = '';
+                    $nowstock = DB::table('inventory')->where('料號', $number)->where('客戶別', $client)->where('現有庫存', '>', 0)->pluck('現有庫存')->toArray();
+                    $nowloc = DB::table('inventory')->where('料號', $number)->where('客戶別', $client)->where('現有庫存', '>', 0)->pluck('儲位')->toArray();
+                    $test = array_combine($nowloc, $nowstock);
+                    foreach ($test as $k => $a) {
+                        $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\n";
+                    }
+
                     if ($name !== null && $format !== null) {
                         if ($stock > 0) {
                             Session::put('pick', $number);
@@ -625,22 +634,22 @@ class OutboundController extends Controller
                             return \Response::json([
                                 'number' => $number, 'client' => $client, 'machine' => $machine,
                                 'production' => $production, 'line' => $line, 'usereason' => $usereason, 'name' => $name,
-                                'format' => $format, 'unit' => $unit, 'send' => $send
+                                'format' => $format, 'unit' => $unit, 'send' => $send, 'showstock' => $showstock,
                             ]/* Status code here default is 200 ok*/);
                         }
                         //沒有庫存
                         else {
-                            return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+                            return \Response::json(['message' => 'no stock'], 420/* Status code here default is 200 ok*/);
                         }
                     }
                     //沒有料號
                     else {
-                        return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
+                        return \Response::json(['message' => 'no isn'], 421/* Status code here default is 200 ok*/);
                     }
                 }
                 //料號長度不為12
                 else {
-                    return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
+                    return \Response::json(['message' => 'isn no 12'], 422/* Status code here default is 200 ok*/);
                 }
             } else {
                 return view('outbound.pick');
