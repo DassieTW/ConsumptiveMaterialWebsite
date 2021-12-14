@@ -2,10 +2,15 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-ide-helper": "^2.10",
+        "doctrine/dbal": "^3.2",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -20,12 +25,13 @@
         "mariuzzo/laravel-js-localization": "^1.8",
         "phpoffice/phpspreadsheet": "^1.18",
         "predis/predis": "^1.1",
+        "sentry/sentry-laravel": "^2.10",
+        "symfony/mailer": "^5.4",
         "symfony/polyfill-mbstring": "^1.22",
         "twbs/bootstrap": "5.0.0",
         "vmeditab/laravel-odbc-driver": "^2.0"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "2.10.0",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
@@ -39,7 +45,9 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         },
-        "files": ["app/Helpers/Navigation.php"]
+        "files": [
+            "app/Helpers/Navigation.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -71,7 +79,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.3.33"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

@@ -34,8 +34,29 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        // $this->reportable(function (Throwable $e) { // default
+        //     //
+        // });
+
+        $this->reportable(function (Throwable $e) {  // Laravel Sentry
+            if ($this->shouldReport($e) && app()->bound('sentry')) {
+                app('sentry')->captureException($e);
+            }
         });
+    }
+
+
+    /**
+     * For Laravel Sentry
+     *
+     * @return void
+     */
+    public function report(Throwable $exception)
+    {
+        if (app()->bound('sentry') && $this->shouldReport($exception)) {
+            app('sentry')->captureException($exception);
+        }
+
+        parent::report($exception);
     }
 }

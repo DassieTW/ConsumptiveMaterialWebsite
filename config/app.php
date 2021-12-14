@@ -181,6 +181,8 @@ return [
         // For generating js version of localization files base on php files from "/resources/lang"
         Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class,
 
+        // IDE Helper (for dev)
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*

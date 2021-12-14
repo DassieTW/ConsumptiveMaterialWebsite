@@ -9464,7 +9464,7 @@
                     /**
          * Gets the list of trusted proxies.
          *
-         * @return array An array of trusted proxies
+         * @return array 
          * @static 
          */ 
         public static function getTrustedProxies()
@@ -9496,7 +9496,7 @@
                     /**
          * Gets the list of trusted host patterns.
          *
-         * @return array An array of trusted host patterns
+         * @return array 
          * @static 
          */ 
         public static function getTrustedHosts()
@@ -9509,7 +9509,7 @@
          * It builds a normalized query string, where keys/value pairs are alphabetized,
          * have consistent escaping and unneeded delimiters are removed.
          *
-         * @return string A normalized query string for the Request
+         * @return string 
          * @static 
          */ 
         public static function normalizeQueryString($qs)
@@ -9536,7 +9536,7 @@
                     /**
          * Checks whether support for the _method request parameter is enabled.
          *
-         * @return bool True when the _method request parameter is enabled, false otherwise
+         * @return bool 
          * @static 
          */ 
         public static function getHttpMethodParameterOverride()
@@ -9562,7 +9562,8 @@
          * like whether the session is started or not. It is just a way to check if this Request
          * is associated with a Session instance.
          *
-         * @return bool true when the Request contains a Session object, false otherwise
+         * @param bool $skipIfUninitialized When true, ignores factories injected by `setSessionFactory`
+         * @return bool 
          * @static 
          */ 
         public static function hasSession()
@@ -9584,6 +9585,7 @@
          * 
          *
          * @internal 
+         * @param \Symfony\Component\HttpFoundation\callable():  SessionInterface $factory
          * @static 
          */ 
         public static function setSessionFactory($factory)
@@ -9600,7 +9602,7 @@
          * 
          * Use this method carefully; you should use getClientIp() instead.
          *
-         * @return array The client IP addresses
+         * @return array 
          * @see getClientIp()
          * @static 
          */ 
@@ -9622,7 +9624,7 @@
          * ("Client-Ip" for instance), configure it via the $trustedHeaderSet
          * argument of the Request::setTrustedProxies() method instead.
          *
-         * @return string|null The client IP address
+         * @return string|null 
          * @see getClientIps()
          * @see https://wikipedia.org/wiki/X-Forwarded-For
          * @static 
@@ -9716,7 +9718,7 @@
          * 
          * The "X-Forwarded-Port" header must contain the client port.
          *
-         * @return int|string can be a string if fetched from the server bag
+         * @return int|string|null Can be a string if fetched from the server bag
          * @static 
          */ 
         public static function getPort()
@@ -9749,7 +9751,7 @@
                     /**
          * Gets the user info.
          *
-         * @return string A user name and, optionally, scheme-specific information about how to gain authorization to access the server
+         * @return string|null A user name if any and, optionally, scheme-specific information about how to gain authorization to access the server
          * @static 
          */ 
         public static function getUserInfo()
@@ -9787,7 +9789,7 @@
          * If the URL was called with basic authentication, the user
          * and the password are not added to the generated string.
          *
-         * @return string The scheme and HTTP host
+         * @return string 
          * @static 
          */ 
         public static function getSchemeAndHttpHost()
@@ -9798,7 +9800,7 @@
                     /**
          * Generates a normalized URI (URL) for the Request.
          *
-         * @return string A normalized URI (URL) for the Request
+         * @return string 
          * @see getQueryString()
          * @static 
          */ 
@@ -9811,7 +9813,7 @@
          * Generates a normalized URI for the given path.
          *
          * @param string $path A path to use instead of the current one
-         * @return string The normalized URI for the path
+         * @return string 
          * @static 
          */ 
         public static function getUriForPath($path)
@@ -9834,7 +9836,7 @@
          * - "/a/b/c/other" -> "other"
          * - "/a/x/y"       -> "../../x/y"
          *
-         * @return string The relative target path
+         * @return string 
          * @static 
          */ 
         public static function getRelativeUriForPath($path)
@@ -9848,7 +9850,7 @@
          * It builds a normalized query string, where keys/value pairs are alphabetized
          * and have consistent escaping.
          *
-         * @return string|null A normalized query string for the Request
+         * @return string|null 
          * @static 
          */ 
         public static function getQueryString()
@@ -9910,7 +9912,7 @@
          * 
          * The method is always an uppercased string.
          *
-         * @return string The request method
+         * @return string 
          * @see getRealMethod()
          * @static 
          */ 
@@ -9922,7 +9924,7 @@
                     /**
          * Gets the "real" request method.
          *
-         * @return string The request method
+         * @return string 
          * @see getMethod()
          * @static 
          */ 
@@ -9934,7 +9936,7 @@
                     /**
          * Gets the mime type associated with the format.
          *
-         * @return string|null The associated mime type (null if not found)
+         * @return string|null 
          * @static 
          */ 
         public static function getMimeType($format)
@@ -9945,7 +9947,7 @@
                     /**
          * Gets the mime types associated with the format.
          *
-         * @return array The associated mime types
+         * @return array 
          * @static 
          */ 
         public static function getMimeTypes($format)
@@ -9955,7 +9957,7 @@
                     /**
          * Gets the format associated with the mime type.
          *
-         * @return string|null The format (null if not found)
+         * @return string|null 
          * @static 
          */ 
         public static function getFormat($mimeType)
@@ -9984,7 +9986,7 @@
          *  * $default
          *
          * @see getPreferredFormat
-         * @return string|null The request format
+         * @return string|null 
          * @static 
          */ 
         public static function getRequestFormat($default = 'html')
@@ -10005,7 +10007,7 @@
                     /**
          * Gets the format associated with the request.
          *
-         * @return string|null The format (null if no content type is present)
+         * @return string|null 
          * @static 
          */ 
         public static function getContentType()
@@ -10094,7 +10096,7 @@
          * Checks whether the method is cacheable or not.
          *
          * @see https://tools.ietf.org/html/rfc7231#section-4.2.3
-         * @return bool True for GET and HEAD, false otherwise
+         * @return bool 
          * @static 
          */ 
         public static function isMethodCacheable()
@@ -10123,7 +10125,7 @@
          * Returns the request body content.
          *
          * @param bool $asResource If true, a resource will be returned
-         * @return string|resource The request body content or a resource to read the body stream
+         * @return string|resource 
          * @static 
          */ 
         public static function getContent($asResource = false)
@@ -10134,7 +10136,7 @@
                     /**
          * Gets the Etags.
          *
-         * @return array The entity tags
+         * @return array 
          * @static 
          */ 
         public static function getETags()
@@ -10172,7 +10174,7 @@
          * Returns the preferred language.
          *
          * @param string[] $locales An array of ordered available locales
-         * @return string|null The preferred locale
+         * @return string|null 
          * @static 
          */ 
         public static function getPreferredLanguage($locales = null)
@@ -10181,9 +10183,9 @@
                         return $instance->getPreferredLanguage($locales);
         }
                     /**
-         * Gets a list of languages acceptable by the client browser.
+         * Gets a list of languages acceptable by the client browser ordered in the user browser preferences.
          *
-         * @return array Languages ordered in the user browser preferences
+         * @return array 
          * @static 
          */ 
         public static function getLanguages()
@@ -10192,9 +10194,9 @@
                         return $instance->getLanguages();
         }
                     /**
-         * Gets a list of charsets acceptable by the client browser.
+         * Gets a list of charsets acceptable by the client browser in preferable order.
          *
-         * @return array List of charsets in preferable order
+         * @return array 
          * @static 
          */ 
         public static function getCharsets()
@@ -10203,9 +10205,9 @@
                         return $instance->getCharsets();
         }
                     /**
-         * Gets a list of encodings acceptable by the client browser.
+         * Gets a list of encodings acceptable by the client browser in preferable order.
          *
-         * @return array List of encodings in preferable order
+         * @return array 
          * @static 
          */ 
         public static function getEncodings()
@@ -10214,9 +10216,9 @@
                         return $instance->getEncodings();
         }
                     /**
-         * Gets a list of content types acceptable by the client browser.
+         * Gets a list of content types acceptable by the client browser in preferable order.
          *
-         * @return array List of content types in preferable order
+         * @return array 
          * @static 
          */ 
         public static function getAcceptableContentTypes()
@@ -10231,7 +10233,7 @@
          * It is known to work with common JavaScript frameworks:
          *
          * @see https://wikipedia.org/wiki/List_of_Ajax_frameworks#JavaScript
-         * @return bool true if the request is an XMLHttpRequest, false otherwise
+         * @return bool 
          * @static 
          */ 
         public static function isXmlHttpRequest()
@@ -10256,7 +10258,7 @@
          * This can be useful to determine whether or not to trust the
          * contents of a proxy-specific header.
          *
-         * @return bool true if the request came from a trusted proxy, false otherwise
+         * @return bool 
          * @static 
          */ 
         public static function isFromTrustedProxy()
@@ -15180,9 +15182,9 @@
          * @param string|null $fileName
          * @param string $writerType
          * @param array $headers
+         * @return \Symfony\Component\HttpFoundation\BinaryFileResponse 
          * @throws \PhpOffice\PhpSpreadsheet\Exception
          * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-         * @return \Symfony\Component\HttpFoundation\BinaryFileResponse 
          * @static 
          */ 
         public static function download($export, $fileName, $writerType = null, $headers = [])
@@ -15198,9 +15200,9 @@
          * @param string|null $disk
          * @param string $writerType
          * @param mixed $diskOptions
+         * @return bool 
          * @throws \PhpOffice\PhpSpreadsheet\Exception
          * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-         * @return bool 
          * @static 
          */ 
         public static function store($export, $filePath, $diskName = null, $writerType = null, $diskOptions = [])
@@ -15761,6 +15763,233 @@
         {
                         /** @var \Intervention\Image\ImageManager $instance */
                         return $instance->cache($callback, $lifetime, $returnObj);
+        }
+         
+    }
+     
+}
+
+    namespace Sentry\Laravel { 
+            /**
+     * 
+     *
+     * @see \Sentry\State\HubInterface
+     */ 
+        class Facade {
+                    /**
+         * Gets the client bound to the top of the stack.
+         *
+         * @static 
+         */ 
+        public static function getClient()
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->getClient();
+        }
+                    /**
+         * Gets the ID of the last captured event.
+         *
+         * @static 
+         */ 
+        public static function getLastEventId()
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->getLastEventId();
+        }
+                    /**
+         * Creates a new scope to store context information that will be layered on
+         * top of the current one. It is isolated, i.e. all breadcrumbs and context
+         * information added to this scope will be removed once the scope ends. Be
+         * sure to always remove this scope with {@see Hub::popScope} when the
+         * operation finishes or throws.
+         *
+         * @static 
+         */ 
+        public static function pushScope()
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->pushScope();
+        }
+                    /**
+         * Removes a previously pushed scope from the stack. This restores the state
+         * before the scope was pushed. All breadcrumbs and context information added
+         * since the last call to {@see Hub::pushScope} are discarded.
+         *
+         * @static 
+         */ 
+        public static function popScope()
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->popScope();
+        }
+                    /**
+         * Creates a new scope with and executes the given operation within. The scope
+         * is automatically removed once the operation finishes or throws.
+         *
+         * @param callable $callback The callback to be executed
+         * @static 
+         */ 
+        public static function withScope($callback)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->withScope($callback);
+        }
+                    /**
+         * Calls the given callback passing to it the current scope so that any
+         * operation can be run within its context.
+         *
+         * @param callable $callback The callback to be executed
+         * @static 
+         */ 
+        public static function configureScope($callback)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->configureScope($callback);
+        }
+                    /**
+         * Binds the given client to the current scope.
+         *
+         * @param \Sentry\ClientInterface $client The client
+         * @static 
+         */ 
+        public static function bindClient($client)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->bindClient($client);
+        }
+                    /**
+         * Captures a message event and sends it to Sentry.
+         *
+         * @param string $message The message
+         * @param \Sentry\Severity|null $level The severity level of the message
+         * @param \Sentry\EventHint|null $hint Object that can contain additional information about the event
+         * @static 
+         */ 
+        public static function captureMessage($message, $level = null, $hint = null)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->captureMessage($message, $level, $hint);
+        }
+                    /**
+         * Captures an exception event and sends it to Sentry.
+         *
+         * @param \Throwable $exception The exception
+         * @param \Sentry\EventHint|null $hint Object that can contain additional information about the event
+         * @static 
+         */ 
+        public static function captureException($exception, $hint = null)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->captureException($exception, $hint);
+        }
+                    /**
+         * Captures a new event using the provided data.
+         *
+         * @param \Event $event The event being captured
+         * @param \Sentry\EventHint|null $hint May contain additional information about the event
+         * @static 
+         */ 
+        public static function captureEvent($event, $hint = null)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->captureEvent($event, $hint);
+        }
+                    /**
+         * Captures an event that logs the last occurred error.
+         *
+         * @param \Sentry\EventHint|null $hint Object that can contain additional information about the event
+         * @static 
+         */ 
+        public static function captureLastError($hint = null)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->captureLastError($hint);
+        }
+                    /**
+         * Records a new breadcrumb which will be attached to future events. They
+         * will be added to subsequent events to provide more context on user's
+         * actions prior to an error or crash.
+         *
+         * @param \Sentry\Breadcrumb $breadcrumb The breadcrumb to record
+         * @return bool Whether the breadcrumb was actually added to the current scope
+         * @static 
+         */ 
+        public static function addBreadcrumb($breadcrumb)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->addBreadcrumb($breadcrumb);
+        }
+                    /**
+         * Gets the integration whose FQCN matches the given one if it's available on the current client.
+         *
+         * @param string $className The FQCN of the integration
+         * @psalm-template T of IntegrationInterface
+         * @psalm-param class-string<T> $className
+         * @psalm-return T|null
+         * @static 
+         */ 
+        public static function getIntegration($className)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->getIntegration($className);
+        }
+                    /**
+         * Starts a new `Transaction` and returns it. This is the entry point to manual
+         * tracing instrumentation.
+         * 
+         * A tree structure can be built by adding child spans to the transaction, and
+         * child spans to other spans. To start a new child span within the transaction
+         * or any span, call the respective `startChild()` method.
+         * 
+         * Every child span must be finished before the transaction is finished,
+         * otherwise the unfinished spans are discarded.
+         * 
+         * The transaction must be finished with a call to its `finish()` method, at
+         * which point the transaction with all its finished child spans will be sent to
+         * Sentry.
+         *
+         * @param \Sentry\State\array<string,  mixed> $customSamplingContext Additional context that will be passed to the {@see SamplingContext}
+         * @param \Sentry\Tracing\TransactionContext $context Properties of the new transaction
+         * @param \Sentry\State\array<string,  mixed> $customSamplingContext Additional context that will be passed to the {@see SamplingContext}
+         * @static 
+         */ 
+        public static function startTransaction($context, $customSamplingContext = [])
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->startTransaction($context, $customSamplingContext);
+        }
+                    /**
+         * Returns the transaction that is on the Hub.
+         *
+         * @psalm-suppress MoreSpecificReturnType
+         * @psalm-suppress LessSpecificReturnStatement
+         * @static 
+         */ 
+        public static function getTransaction()
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->getTransaction();
+        }
+                    /**
+         * Sets the span on the Hub.
+         *
+         * @param \Sentry\Tracing\Span|null $span The span
+         * @static 
+         */ 
+        public static function setSpan($span)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->setSpan($span);
+        }
+                    /**
+         * Returns the span that is on the Hub.
+         *
+         * @static 
+         */ 
+        public static function getSpan()
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->getSpan();
         }
          
     }
@@ -19064,6 +19293,7 @@ namespace  {
             class Excel extends \Maatwebsite\Excel\Facades\Excel {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Image extends \Intervention\Image\Facades\Image {}
+            class Sentry extends \Sentry\Laravel\Facade {}
      
 }
 

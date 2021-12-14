@@ -4,11 +4,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Whether to enable Prometheus collector
+    |--------------------------------------------------------------------------
+    | Default true.
+    */
+    'enable'                   => env('PROMETHEUS_ENABLE', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | The name of the application
     |--------------------------------------------------------------------------
-    | APP_NAME is used by default
+    | Default APP_NAME.
     */
-    'application'        => env('APP_NAME', 'Laravel'),
+    'application'              => env('PROMETHEUS_APP_NAME', env('APP_NAME', 'Laravel')),
 
     /*
     |--------------------------------------------------------------------------
@@ -18,7 +26,7 @@ return [
     | Cannot contain any regular expression characters. Default "prom".
     |
     */
-    'apcu_key_prefix'    => env('PROMETHEUS_APCU_KEY_PREFIX', 'prom'),
+    'apcu_key_prefix'          => env('PROMETHEUS_APCU_KEY_PREFIX', 'prom'),
 
     /*
     |--------------------------------------------------------------------------
@@ -28,17 +36,17 @@ return [
     | Cannot contain any regular expression characters. Default "::".
     |
     */
-    'apcu_key_separator' => env('PROMETHEUS_APCU_KEY_SEPARATOR', '::'),
+    'apcu_key_separator'       => env('PROMETHEUS_APCU_KEY_SEPARATOR', '::'),
 
     /*
     |--------------------------------------------------------------------------
     | The max age(seconds) of apcu keys.
     |--------------------------------------------------------------------------
     |
-    | It's TTL of apcu keys. Default 86400.
+    | It's TTL of apcu keys. Default 86400s(1 day).
     |
     */
-    'apcu_key_max_age'   => env('PROMETHEUS_APCU_KEY_MAX_AGE', 86400),
+    'apcu_key_max_age'         => env('PROMETHEUS_APCU_KEY_MAX_AGE', 86400),
 
     /*
     |--------------------------------------------------------------------------
@@ -48,5 +56,15 @@ return [
     | Default "400,404,405".
     |
     */
-    'ignored_http_codes' => array_flip(explode(',', env('PROMETHEUS_IGNORED_HTTP_CODES', '400,404,405'))),
+    'ignored_http_codes'       => array_flip(explode(',', env('PROMETHEUS_IGNORED_HTTP_CODES', '400,404,405'))),
+
+    /*
+    |--------------------------------------------------------------------------
+    | The interval of collecting metrics.
+    |--------------------------------------------------------------------------
+    |
+    | Default 10s.
+    |
+    */
+    'collect_metrics_interval' => env('PROMETHEUS_COLLECT_METRICS_INTERVAL', 10),
 ];
