@@ -1154,28 +1154,33 @@ To make our main server support more protocols not just Http and WebSocket, we b
     ```
     If your project is `Lumen`, you also need to manually load the configuration `$app->configure('prometheus');` in `bootstrap/app.php`.
 
-3. Configure `global` middleware: `Hhxsv5\LaravelS\Components\Prometheus\PrometheusMiddleware`. In order to count the request time consumption as accurately as possible, PrometheusMiddleware must be the `first` global middleware, which needs to be placed in front of other middleware.
+3. Configure `global` middleware: `Hhxsv5\LaravelS\Components\Prometheus\RequestMiddleware::class`. In order to count the request time consumption as accurately as possible, `RequestMiddleware` must be the `first` global middleware, which needs to be placed in front of other middleware.
 
-4. Register ServiceProvider: `Hhxsv5\LaravelS\Components\Prometheus\PrometheusServiceProvider`.
+4. Register ServiceProvider: `Hhxsv5\LaravelS\Components\Prometheus\ServiceProvider::class`.
 
-5. Create the route to output metrics.
+5. Configure the CollectorProcess in `config/laravels.php` to collect the metrics of Swoole Worker/Task/Timer processes regularly.
     ```php
-    use Hhxsv5\LaravelS\Components\Prometheus\PrometheusExporter;
+    'processes' => Hhxsv5\LaravelS\Components\Prometheus\CollectorProcess::getDefinition(),
+    ```
+
+6. Create the route to output metrics.
+    ```php
+    use Hhxsv5\LaravelS\Components\Prometheus\Exporter;
 
     Route::get('/actuator/prometheus', function () {
-        $result = app(PrometheusExporter::class)->render();
-        return response($result, 200, ['Content-Type' => PrometheusExporter::REDNER_MIME_TYPE]);
+        $result = app(Exporter::class)->render();
+        return response($result, 200, ['Content-Type' => Exporter::REDNER_MIME_TYPE]);
     });
     ```
 
-6. Complete the configuration of Prometheus and start it.
+7. Complete the configuration of Prometheus and start it.
     ```yml
     global:
       scrape_interval: 5s
       scrape_timeout: 5s
       evaluation_interval: 30s
     scrape_configs:
-    - job_name: swoole-test
+    - job_name: laravel-s-test
       honor_timestamps: true
       metrics_path: /actuator/prometheus
       scheme: http
@@ -1185,7 +1190,9 @@ To make our main server support more protocols not just Http and WebSocket, we b
         - 127.0.0.1:5200 # The ip and port of the monitored service
     ```
 
-7. Start Grafana, import [Panel json](https://github.com/hhxsv5/laravel-s/tree/master/src/Components/Prometheus/laravels-grafana-panel.json).
+8. Start Grafana, then import [panel json](https://github.com/hhxsv5/laravel-s/tree/master/grafana-dashboard.json).
+
+<img src="https://raw.githubusercontent.com/hhxsv5/laravel-s/master/grafana-dashboard.png" height="800px" alt="Grafana Dashboard">
 
 ## Other features
 

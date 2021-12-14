@@ -60,10 +60,10 @@ Route::get('/test2', function () {
     return $mats;
 });
 
-Route::get('/import_excel', [ImportexcelController::class , 'index']);
+Route::get('/import_excel', [ImportexcelController::class, 'index']);
 
-Route::get('/import_excel/import', [ImportexcelController::class , 'index']);
-Route::post('/import_excel/import', [ImportexcelController::class , 'import']);
+Route::get('/import_excel/import', [ImportexcelController::class, 'index']);
+Route::post('/import_excel/import', [ImportexcelController::class, 'import']);
 
 
 //Route::middleware('priority')->get('member/call', [PriorityController::class, 'call'])->name('member.call');
@@ -79,6 +79,9 @@ Route::get('/lang/{type}', function (Request $request, $type) {
     return Redirect::back();
 })->withoutMiddleware('auth');
 
+Route::get('/debug-sentry', function () {
+    throw new Exception('My first Sentry error!');
+});
 
 //update data(test)
 // Route::get('/updatedata' , function() {

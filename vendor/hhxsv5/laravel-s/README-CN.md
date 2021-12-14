@@ -1168,28 +1168,33 @@ class WebSocketService implements WebSocketHandlerInterface
     ```
     如果是`Lumen`工程，还需要在`bootstrap/app.php`中手动加载配置`$app->configure('prometheus');`。
 
-3. 配置`全局`中间件：`Hhxsv5\LaravelS\Components\Prometheus\PrometheusMiddleware`。为了尽可能精确地统计请求耗时，PrometheusMiddleware必须作为`第一个`全局中间件，需要放在其他中间件的前面。
+3. 配置`全局`中间件：`Hhxsv5\LaravelS\Components\Prometheus\RequestMiddleware::class`。为了尽可能精确地统计请求耗时，`RequestMiddleware`必须作为`第一个`全局中间件，需要放在其他中间件的前面。
 
-4. 注册ServiceProvider：`Hhxsv5\LaravelS\Components\Prometheus\PrometheusServiceProvider`。
+4. 注册 ServiceProvider：`Hhxsv5\LaravelS\Components\Prometheus\ServiceProvider::class`。
 
-5. 创建路由，输出监控指标数据。
+5. 在`config/laravels.php`中配置 CollectorProcess 进程，用于定时采集 Swoole Worker/Task/Timer 进程的指标。
     ```php
-    use Hhxsv5\LaravelS\Components\Prometheus\PrometheusExporter;
+    'processes' => Hhxsv5\LaravelS\Components\Prometheus\CollectorProcess::getDefinition(),
+    ```
+
+6. 创建路由，输出监控指标数据。
+    ```php
+    use Hhxsv5\LaravelS\Components\Prometheus\Exporter;
 
     Route::get('/actuator/prometheus', function () {
-        $result = app(PrometheusExporter::class)->render();
-        return response($result, 200, ['Content-Type' => PrometheusExporter::REDNER_MIME_TYPE]);
+        $result = app(Exporter::class)->render();
+        return response($result, 200, ['Content-Type' => Exporter::REDNER_MIME_TYPE]);
     });
     ```
 
-6. 完成Prometheus的配置，启动Prometheus。
+7. 完成Prometheus的配置，启动Prometheus。
     ```yml
     global:
       scrape_interval: 5s
       scrape_timeout: 5s
       evaluation_interval: 30s
     scrape_configs:
-    - job_name: swoole-test
+    - job_name: laravel-s-test
       honor_timestamps: true
       metrics_path: /actuator/prometheus
       scheme: http
@@ -1199,7 +1204,9 @@ class WebSocketService implements WebSocketHandlerInterface
         - 127.0.0.1:5200 # 被监控服务的ip与端口
     ```
 
-7. 启动Grafana，导入[Panel json](https://github.com/hhxsv5/laravel-s/tree/master/src/Components/Prometheus/laravels-grafana-panel.json)。
+8. 启动Grafana，然后导入[panel json](https://github.com/hhxsv5/laravel-s/tree/master/grafana-dashboard.json)。
+
+<img src="https://raw.githubusercontent.com/hhxsv5/laravel-s/master/grafana-dashboard.png" height="800px" alt="Grafana Dashboard">
 
 ## 其他特性
 
