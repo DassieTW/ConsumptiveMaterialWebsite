@@ -102,7 +102,7 @@
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
                     <input class="form-control form-control-lg @error('twd') is-invalid @enderror" type="number"
-                        id="twd" name="twd" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)">
+                        id="twd" name="twd" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)" min="0">
                     @error('twd')
                     <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
@@ -117,7 +117,7 @@
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
                     <input class="form-control form-control-lg @error('rmb') is-invalid @enderror" type="number"
-                        id="rmb" name="rmb" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)">
+                        id="rmb" name="rmb" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)" min="0">
                     @error('rmb')
                     <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
@@ -132,7 +132,7 @@
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
                     <input class="form-control form-control-lg @error('vnd') is-invalid @enderror" type="number"
-                        id="vnd" name="vnd" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)">
+                        id="vnd" name="vnd" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)" min="0">
                     @error('vnd')
                     <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
@@ -147,7 +147,7 @@
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
                     <input class="form-control form-control-lg @error('usd') is-invalid @enderror" type="number"
-                        id="usd" name="usd" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)">
+                        id="usd" name="usd" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)" min="0">
                     @error('usd')
                     <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
@@ -162,7 +162,7 @@
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
                     <input class="form-control form-control-lg @error('jpy') is-invalid @enderror" type="number"
-                        id="jpy" name="jpy" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)">
+                        id="jpy" name="jpy" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)" min="0">
                     @error('jpy')
                     <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
@@ -178,7 +178,7 @@
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
                     <input class="form-control form-control-lg @error('idr') is-invalid @enderror" type="number"
-                        id="idr" name="idr" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)">
+                        id="idr" name="idr" step = "0.000001" oninput="if(value.length>8)value=value.slice(0,8)" min="0">
                     @error('idr')
                     <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>

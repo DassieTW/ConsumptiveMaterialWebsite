@@ -123,7 +123,7 @@
                                 value="{{$data->MOQ}}"></td>
                         <td><input style="width:100px" type="number" id="lt{{$loop->index}}" name="lt{{$loop->index}}"
                                 value="{{$data->LT}}"></td>
-                        <td><input style="width:100px" type="number" id="safe{{$loop->index}}"
+                        <td><input class = "form-control form-control-lg"style="width:100px" type="number" id="safe{{$loop->index}}"
                                 name="safe{{$loop->index}}" value="{{$data->安全庫存}}"></td>
                         <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     </tr>

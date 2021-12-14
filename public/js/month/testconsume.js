@@ -38,10 +38,7 @@ $.ajaxSetup({
 
     for(let i = 0 ; i < count ; i++)
     {
-        console.log(typeof (amount[i]));
-        console.log(typeof (compare[i]));
-
-        if(parseFloat(amount[i]) != parseFloat(compare[i]))
+        if(parseFloat(amount[i]) !== parseFloat(compare[i]))
         {
             check[i] = 1;
         }
@@ -53,7 +50,7 @@ $.ajaxSetup({
 
     $.ajax({
       type: 'POST',
-      url: "testsubmit",
+      url: "testconsume",
       data: { client: client, number: number, production: production, machine: machine ,
         amount :amount  , jobnumber:jobnumber , email:email , count : count , check : check},
       beforeSend: function () {

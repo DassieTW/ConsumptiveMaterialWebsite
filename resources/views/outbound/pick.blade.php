@@ -41,7 +41,6 @@
                     <option>{{ $machine->機種 }}</option>
                     @endforeach
                 </select>
-
             </div>
             <div class="col-auto">
                 <label class="col col-lg-12 form-label">{!! __('outboundpageLang.process') !!}</label>
@@ -52,7 +51,6 @@
                     <option>{{ $production->制程 }}</option>
                     @endforeach
                 </select>
-
             </div>
             <div class="col-auto">
                 <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>

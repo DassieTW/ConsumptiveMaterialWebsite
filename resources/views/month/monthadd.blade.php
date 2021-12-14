@@ -5,6 +5,7 @@
 
 @section('js')
 <!--for this page's sepcified js -->
+<script src="{{ asset('/js/month/monthadd.js') }}"></script>
 @endsection
 @section('content')
 <!DOCTYPE html>
@@ -19,7 +20,7 @@
         <h3>{!! __('monthlyPRpageLang.importMonthlyData') !!}</h3>
     </div>
     <div class="card-body">
-        <form action="{{ route('month.monthadd') }}" method="POST">
+        <form id="monthadd" method="POST">
             @csrf
             <div class="table-responsive">
                 <table class="table" id="month">
@@ -34,32 +35,31 @@
                     </tr>
                     @foreach($production as $production)
                     <tr>
-                        <td><input type="hidden" id="client" name="client" value="{{$client}}">{{ $client }}</td>
-                        <td><input type="hidden" id="machine" name="machine" value="{{$machine}}">{{ $machine }}</td>
-                        <td><input type="hidden" id="production{{$loop->index}}" name="production{{$loop->index}}"
-                                value="{{$production}}">{{ $production }}</td>
-                        <td><input style="width:100px" type="number" id="nextmps{{$loop->index}}"
+                        <td><span id="client{{$loop->index}}">{{$client}}</span></td>
+                        <td><span id="machine{{$loop->index}}">{{$machine}}</span></td>
+                        <td><span id="production{{$loop->index}}">{{$production}}</span></td>
+                        <td><input class="form-control form-control-lg" type="number" id="nextmps{{$loop->index}}"
                                 name="nextmps{{$loop->index}}" required value="{{$nextmps}}" step="0.001"
-                                oninput="if(value.length>5)value=value.slice(0,5)"></td>
-                        <td><input style="width:100px" type="number" id="nextday{{$loop->index}}"
+                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                        <td><input class="form-control form-control-lg" type="number" id="nextday{{$loop->index}}"
                                 name="nextday{{$loop->index}}" required value="{{$nextday}}" step="0.001"
-                                oninput="if(value.length>5)value=value.slice(0,5)"></td>
-                        <td><input style="width:100px" type="number" id="nowmps{{$loop->index}}"
+                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                        <td><input class="form-control form-control-lg" type="number" id="nowmps{{$loop->index}}"
                                 name="nowmps{{$loop->index}}" required value="{{$nowmps}}" step="0.001"
-                                oninput="if(value.length>5)value=value.slice(0,5)"></td>
-                        <td><input style="width:100px" type="number" id="nowday{{$loop->index}}"
+                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                        <td><input class="form-control form-control-lg" type="number" id="nowday{{$loop->index}}"
                                 name="nowday{{$loop->index}}" required value="{{$nowday}}" step="0.001"
-                                oninput="if(value.length>5)value=value.slice(0,5)"></td>
+                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     @endforeach
                 </table>
             </div>
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <input type="submit" id="add" name="add" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.add') !!}">
         </form>
-        <br>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importmonth')}}'">{!!
             __('monthlyPRpageLang.return') !!}</button>
     </div>

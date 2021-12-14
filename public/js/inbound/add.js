@@ -136,9 +136,8 @@ $(document).ready(function () {
             },
 
             success: function (data) {
-                console.log(data.boolean);
 
-                if (data.boolean == 'true') {
+                if (data.type == 'add') {
 
                     document.getElementById("notransit").style.display = "none";
                     sessionStorage.setItem('inboundadd', index + 1);
@@ -154,7 +153,7 @@ $(document).ready(function () {
                         }
                     });
 
-                    document.getElementById('testform').style.display = "block";
+                    document.getElementById('inboundaddform').style.display = "block";
                     var tbl = document.getElementById("inboundaddtable");
                     var body = document.getElementById("inboundaddbody");
                     var row = document.createElement("tr");
@@ -220,10 +219,7 @@ $(document).ready(function () {
 
                     index = index + 1;
                     count = count + 1;
-                }
-
-
-                else if (data.boolean == 'false') {
+                } else if (data.type == 'client') {
                     window.location.href = "/inbound/addclient";
                 }
 
@@ -263,81 +259,105 @@ $(document).ready(function () {
     });
 
 
-    $('#testform').on('submit', function (e) {
+    $('#inboundaddform').on('submit', function (e) {
 
-        //e.preventDefault();
+        e.preventDefault();
 
-        console.log(123);
+        // clean up previous input results
+        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
 
-        /*var inpeo = $("#inpeople").val();
+        if (count == 0) {
+            alert('no data');
+            return false;
+        }
+        var inpeo = $("#inpeople").val();
         inpeo = inpeo.split(' ');
         var inpeople = inpeo[0];
         var checkpeople = [];
 
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < $("#checkcount").val(); i++) {
             checkpeople.push($("#checkpeople" + i).val());
         }
-        console.log(checkpeople);
+        console.log(inpeople);
 
         var check1 = checkpeople.indexOf(inpeople);
 
         if (check1 == -1) {
             alert(Lang.get("inboundpageLang.noinpeople"));
-            $("#inpeople").css("border-color", "red");
-            document.getElementById("nostock").style.display = "none";
-            document.getElementById("inamount").style.borderColor = "";
+            $("#inpeople").addClass("is-invalid");
             return false;
-        }*/
-        // $.ajax({
-        //     type: 'POST',
-        //     url: "addnewsubmit",
-        //     data: {
-        //         client: client,
-        //         number: number,
-        //         name: name,
-        //         format: format,
-        //         unit: unit,
-        //         amount: amount,
-        //         stock: stock,
-        //         inamount: inamount,
-        //         inreason: inreason,
-        //         oldposition: oldposition,
-        //         newposition: newposition,
-        //         inpeople,
-        //         inpeople
-        //     },
-        //     beforeSend: function () {
-        //         // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-        //         $('body').loadingModal({
-        //             text: 'Loading...',
-        //             animation: 'circle'
-        //         });
-        //     },
-        //     complete: function () {
-        //         $('body').loadingModal('hide');
-        //     },
-        //     success: function (data) {
-        //         var mess = Lang.get('inboundpageLang.add') + Lang.get('inboundpageLang.success') + ' : ' +
-        //             Lang.get('inboundpageLang.inlist') + ' : ' + data.message;
-        //         alert(mess);
-        //         window.location.href = "/inbound/add";
+        }
 
-        //     },
-        //     error: function (err) {
-        //         //入庫數量大於在途量
-        //         if (err.status == 420) {
-        //             document.getElementById("nostock").style.display = "block";
-        //             document.getElementById("inamount").classList.add("is-invalid");
-        //             $("#inpeople").css("border-color", "");
-        //             return false;
-        //             //transaction error
-        //         } else if (err.status == 421) {
-        //             window.location.reload();
-        //         }
-        //     }
-        // });
+        var client = [];
+        var number = [];
+        var position = [];
+        var transit = [];
+        var amount = [];
+        var inreason = [];
+        var row = [];
+        var j = 0;
+
+        for (let i = 0; i < sessionStorage.getItem('inboundadd'); i++) {
+            if ($("#client" + i).text() !== null && $("#client" + i).text() !== '') {
+                row[j] = i;
+                client.push($("#client" + i).text());
+                number.push($("#number" + i).text());
+                position.push($("#newposition" + i).val());
+                inreason.push($("#inreason" + i).text());
+                transit.push(parseInt($("#transit" + i).text()));
+                amount.push(parseInt($("#amount" + i).val()));
+                j = j + 1;
+            }
+        }
+
+        //入庫數量 > 在途量
+        for (let i = 0; i < count; i++) {
+            if (amount[i] > transit[i] && inreason[i] != '調撥' && inreason[i] != '退庫') {
+                $("#amount" + row[i]).addClass("is-invalid");
+                var row = i + 1;
+                var mess = Lang.get('inboundpageLang.row') + ' : ' + row + Lang.get('inboundpageLang.transiterror');
+                alert(mess);
+                return false;
+            }
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "addnewsubmit",
+            data: {
+                client: client,
+                number: number,
+                position: position,
+                amount: amount,
+                inreason: inreason,
+                inpeople: inpeople,
+            },
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+            },
+            success: function (data) {
+                var mess = Lang.get('inboundpageLang.total') + ' : ' + data.record + Lang.get('inboundpageLang.record') + ' ' +
+                Lang.get('inboundpageLang.add') + Lang.get('inboundpageLang.success') + ' ' + Lang.get('inboundpageLang.inlist') + ' : ' + data.message;
+                alert(mess);
+                window.location.href = "/inbound/add";
+
+            },
+            error: function (err) {
+                //transaction error
+                if (err.status == 421) {
+                    alert(err.responseJSON.message);
+                    window.location.reload();
+                }
+            }
+        });
     });
 
 });
-
-

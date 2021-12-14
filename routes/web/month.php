@@ -66,9 +66,63 @@ Route::post('/srmsearch', [MonthController::class, 'srmsearch'])->name('month.sr
 Route::post('/srmsubmit', [MonthController::class, 'srmsubmit'])->name('month.srmsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //非月請購查詢
-Route::get('/notmonthinf', [MonthController::class, 'notmonthsearchoradd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+Route::post('/notmonthsearch', function(Request $request){
+    return \Response::json(['client' => $request->input('client') , 'number' => $request->input('number')]/* Status code here default is 200 ok*/);
+})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-Route::post('/notmonthinf', [MonthController::class, 'notmonthsearchoradd'])->name('month.notmonthsearchoradd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+Route::post('/notmonthsearchok', function(Request $request){
+
+    if ($request->input('varr1') === null && $request->input('varr2') === null) {
+        $datas = DB::table('consumptive_material')
+            ->join('非月請購', function ($join) {
+                $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+            })->select('非月請購.*', 'consumptive_material.品名')->get();
+        return view('month.notmonthsearchok')->with(['data' => $datas]);
+    }
+    else if ($request->input('varr1') !== null && $request->input('var2') === null) {
+        $datas = DB::table('consumptive_material')
+            ->join('非月請購', function ($join) {
+                $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+            })->select('非月請購.*', 'consumptive_material.品名')->get();
+        return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
+    }
+    else if ($request->input('varr1') === null && $request->input('varr2') !== null) {
+        $datas = DB::table('consumptive_material')
+            ->join('非月請購', function ($join) {
+                $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+            })->select('非月請購.*', 'consumptive_material.品名')
+            ->where('非月請購.料號', 'like', $request->input('varr2') . '%')->get();
+        return view('month.notmonthsearchok')->with(['data' => $datas]);
+    }
+    else if ($request->input('varr1') !== null && $request->input('varr2') !== null) {
+        $datas = DB::table('consumptive_material')
+            ->join('非月請購', function ($join) {
+                $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+            })->select('非月請購.*', 'consumptive_material.品名')
+            ->where('非月請購.料號', 'like', $request->input('varr2') . '%')->get();
+        return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
+    }
+})->name('month.notmonthsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+
+//非月請購新增
+Route::post('/notmonthadd', [MonthController::class, 'notmonthadd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+
+Route::get('/notmonthaddok', function(){
+    return view('month.importnotmonth')->with(['client' => 客戶別::cursor()]);
+})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+
+Route::post('/notmonthaddok', function(Request $request){
+    return view('month.notmonthadd')
+        ->with('client', $request->input('var1'))
+        ->with('number', $request->input('var2'))
+        ->with('name', $request->input('var3'))
+        ->with('unit', $request->input('var4'))
+        ->with('month', $request->input('var5'))
+        ->with(['showclient' => 客戶別::cursor()]);
+})->name('month.notmonthadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+
+//非月請購提交
+Route::post('/notmonthsubmit', [MonthController::class, 'notmonthsubmit'])->name('month.notmonthsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //月請購查詢
 Route::get('/monthinf', [MonthController::class, 'monthsearchoradd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
@@ -81,10 +135,8 @@ Route::post('/monthdelete', [MonthController::class, 'monthdelete'])->name('mont
 //月請購添加
 Route::post('/monthadd', [MonthController::class, 'monthadd'])->name('month.monthadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//非月請購添加
-Route::get('/notmonthadd', [MonthController::class, 'notmonthadd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/notmonthadd', [MonthController::class, 'notmonthadd'])->name('month.notmonthadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+//月請購提交
+Route::post('/monthsubmit', [MonthController::class, 'monthsubmit'])->name('month.monthsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::get('/buylistmake', function () {
     return view('month.buylist')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
@@ -132,33 +184,6 @@ Route::post('/consumenew', [MonthController::class, 'consumenew'])->name('month.
 
 //站位人力(新增)
 Route::post('/standnew', [MonthController::class, 'standnew'])->name('month.standnew')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//料號單耗(新增)添加頁面
-Route::get('/consumenewok', function () {
-    if(Session::has('consume'))
-    {
-        Session::forget('consume');
-        return view("month.consumenew");
-    }
-    else
-    {
-        return redirect(route('month.consumeadd'));
-    }
-})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//站位人力(新增)添加頁面
-Route::get('/standnewok', function () {
-    if(Session::has('stand'))
-    {
-        Session::forget('stand');
-        return view("month.standnew");
-    }
-    else
-    {
-        return redirect(route('month.standadd'));
-    }
-})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 
 //提交料號單耗
 Route::post('/consumenewsubmit', [MonthController::class, 'consumenewsubmit'])->name('month.consumenewsubmitok')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
@@ -244,7 +269,7 @@ Route::get('/testconsume' , function () {
 })->name('month.testconsume')->withoutMiddleware('auth');
 
 //test單耗畫押提交
-Route::post('/testsubmit' , [MonthController::class, 'testsubmit'])->name('month.testsubmit')->withoutMiddleware('auth');
+Route::post('/testconsume' , [MonthController::class, 'testconsume'])->name('month.testconsume')->withoutMiddleware('auth');
 
 //test站位畫押
 Route::get('/teststand' , function () {
@@ -252,7 +277,7 @@ Route::get('/teststand' , function () {
 })->name('month.teststand')->withoutMiddleware('auth');
 
 //test站位畫押提交
-Route::post('/teststandsubmit' , [MonthController::class, 'teststandsubmit'])->name('month.teststandsubmit')->withoutMiddleware('auth');
+Route::post('/teststand' , [MonthController::class, 'teststand'])->name('month.teststand')->withoutMiddleware('auth');
 
 //站位人力下載
 Route::post('/standdownload' , [MonthController::class, 'standdownload'])->name('month.standdownload');

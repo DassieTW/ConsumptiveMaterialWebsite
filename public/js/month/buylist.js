@@ -199,7 +199,14 @@ $(document).ready(function () {
 
         if (select == '提交' || select == 'Submit') {
             for (let i = 0; i < (counta + countb); i++) {
-                if (parseInt(buyamount[i]) > 0 && srm[i] === null || srm[i] === '') {
+                if (parseInt(buyamount[i]) > 0 && srm[i] === "") {
+                    if (i < counta) {
+                        $("#srmnumbera" + i).addClass("is-invalid");
+                    } else {
+                        let j = i - counta;
+                        $("#srmnumberb" + j).addClass("is-invalid");
+                    }
+                    console.log(123);
                     i++;
                     var mess = Lang.get('monthlyPRpageLang.row') + ' ' + i + ' ' + Lang.get('monthlyPRpageLang.nowrite') + Lang.get('monthlyPRpageLang.srm');
                     alert(mess);
@@ -253,7 +260,7 @@ $(document).ready(function () {
                         Lang.get('monthlyPRpageLang.PR') + Lang.get('monthlyPRpageLang.submit') + Lang.get('monthlyPRpageLang.success');
                     alert(mess);
 
-                    window.location.href = '/month';
+                    window.location.href = 'buylistmake';
 
                 },
                 error: function (err) {

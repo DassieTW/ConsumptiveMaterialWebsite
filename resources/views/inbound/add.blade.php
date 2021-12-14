@@ -29,7 +29,7 @@
                 <select class="form-select form-select-lg" id="client" name="client" required>
                     <option style="display: none" disabled selected value="">{!!
                         __('inboundpageLang.enterclient') !!}</option>
-                    @foreach($client as $client)
+                    @foreach($clients as $client)
                     <option>{{ $client->客戶 }}</option>
                     @endforeach
                 </select>
@@ -42,7 +42,7 @@
                 <select class="form-select form-select-lg " id="inreason" name="inreason" required>
                     <option style="display: none" disabled selected value="">{!!
                         __('inboundpageLang.enterinreason') !!}</option>
-                    @foreach($inreason as $inreason)
+                    @foreach($inreasons as $inreason)
                     <option>{{ $inreason->入庫原因 }}</option>
                     @endforeach
                     <option>{!! __('inboundpageLang.other') !!}</option>
@@ -82,9 +82,19 @@
     </div>
 </div>
 
+<div style="display: none" id="showposition">
+    <select id="copyloc" name="copyloc">
+        <option style="display: none" disabled selected value="">{!!
+            __('inboundpageLang.enterloc') !!}</option>
+        @foreach($positions as $position)
+        <option>{{ $position->儲存位置 }}</option>
+        @endforeach
+    </select>
+</div>
+
 <div class="card w-100">
     <div class="card-body">
-        <form id="testform" style="display: none;">
+        <form id="inboundaddform" style="display: none;">
             @csrf
             <div class="table-responsive">
                 <table class="table" id="inboundaddtable">
@@ -108,22 +118,10 @@
                 </table>
             </div>
 
-            <div style="display: none" id="showposition">
-                {{ $copylocs = App\Models\儲位::all() }}
-                <select class="form-select form-select-lg" id="copyloc" name="copyloc" width="250" style="width: 250px"
-                    required>
-                    <option style="display: none" disabled selected value="">{!!
-                        __('inboundpageLang.enterloc') !!}</option>
-                    @foreach($copylocs as $position)
-                    <option>{{ $position->儲存位置 }}</option>
-                    @endforeach
-                </select>
-            </div>
+
 
             <div style="display: none" id="showname">
-                {{ $name = App\Models\人員信息::all() }}
-                {{ $check = App\Models\人員信息::all() }}
-                @foreach($check as $people)
+                @foreach($checks as $people)
                 <input type="hidden" id="checkpeople{{$loop->index}}" name="checkpeople{{$loop->index}}"
                     value="{{$people->工號}}">
                 <input type="hidden" id="checkcount" name="checkcount" value="{{$loop->count}}">
@@ -138,7 +136,7 @@
                     placeholder="{!! __('inboundpageLang.enterinpeople') !!}">
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <ul id="inboundmenu" style="display: none;" class="list-group">
-                    @foreach($name as $name)
+                    @foreach($peoples as $name)
                     <a class="inboundlist list-group-item list-group-item-action" href="#">{{ $name->工號 .' '.
                         $name->姓名 }}</a>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

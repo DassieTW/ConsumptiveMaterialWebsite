@@ -54,7 +54,7 @@
                         <?php
                             $data->本次請購數量 = round($data->本次請購數量, 0);
                         ?>
-                        <td><input style="width:150px" type="text" id="sxbnumber{{$loop->index}}"
+                        <td><input class = "form-control form-control-lg" style="width:150px" type="text" id="sxbnumber{{$loop->index}}"
                                 name="sxbnumber{{$loop->index}}" required placeholder="請輸入SXB單號"></td>
                         <td><input type="hidden" id="srmnumber{{$loop->index}}" name="srmnumber{{$loop->index}}"
                                 value="{{$data->SRM單號}}">{{$data->SRM單號}}</td>
@@ -65,7 +65,7 @@
                         <td>{{$data->品名}}</td>
                         <td><input type="hidden" id="buyamount{{$loop->index}}" name="buyamount{{$loop->index}}"
                                 value="{{$data->本次請購數量}}">{{$data->本次請購數量}}</td>
-                        <td><input style="width:100px" type="number" id="sxbamount{{$loop->index}}"
+                        <td><input class = "form-control form-control-lg"  style="width:100px" type="number" id="sxbamount{{$loop->index}}"
                                 name="sxbamount{{$loop->index}}" required value="{{$data->本次請購數量}}" min = "0"></td>
                         <td>{{$data->MOQ}}</td>
                         <td>{{$data->下月需求}}</td>

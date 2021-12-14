@@ -141,19 +141,12 @@ class OutboundController extends Controller
                         ->get();
                 }
 
-                if ($request->input('list') === null) {
-                    return view('outbound.picklist')->with(['number' => $datas])
-                        ->with(['data' => $datas])
-                        ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()])
-                        ->with(['check' => 人員信息::cursor()]);
-                } else {
-                    return view('outbound.picklist')->with(['number' => $datas->where('領料單號', $list)])
-                        ->with(['data' => $datas->where('領料單號', $list)])
-                        ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()])
-                        ->with(['check' => 人員信息::cursor()]);
-                }
+
+                return view('outbound.picklist')->with(['number' => $datas->where('領料單號', $list)])
+                    ->with(['data' => $datas->where('領料單號', $list)])
+                    ->with(['people' => 人員信息::cursor()])
+                    ->with(['people1' => 人員信息::cursor()])
+                    ->with(['check' => 人員信息::cursor()]);
             }
         } else {
             return redirect(route('member.login'));
@@ -166,56 +159,40 @@ class OutboundController extends Controller
         if (Session::has('username')) {
             //刪除退料單
             if ($request->has('delete')) {
-                if ($request->input('list') !== null) {
-                    $list =  $request->input('list');
-                    DB::table('出庫退料')
-                        ->where('退料單號', $request->input('list'))
-                        ->delete();
-                    $mess = trans('outboundpageLang.delete') . ' : ' . trans('outboundpageLang.backlistnum')
-                        . $list . trans('outboundpageLang.success');
-                    echo ("<script LANGUAGE='JavaScript'>
+                $list =  $request->input('list');
+                DB::table('出庫退料')
+                    ->where('退料單號', $request->input('list'))
+                    ->delete();
+                $mess = trans('outboundpageLang.delete') . ' : ' . trans('outboundpageLang.backlistnum')
+                    . $list . trans('outboundpageLang.success');
+                echo ("<script LANGUAGE='JavaScript'>
                     window.alert('$mess' );
-                    window.location.href='/outbound';
+                    window.location.href='backlist';
                             </script>");
-                } else {
-                    return back()->withErrors([
-                        'list' => trans('outboundpageLang.enterbacklist'),
-
-                    ]);
-                }
             } else {
                 $list = $request->input('list');
                 if ($request->input('send') === null) {
 
                     $datas =  DB::table('出庫退料')
-                        ->join('consumptive_material', function ($join) {
-                            $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                                ->where('出庫退料.收料人員', '=', null);
-                        })->select('出庫退料.*', 'consumptive_material.發料部門')
+                        ->join('consumptive_material', '出庫退料.料號', '=', 'consumptive_material.料號')
+                        ->wherenull('出庫退料.收料人員')
+                        ->select('出庫退料.*', 'consumptive_material.發料部門')
                         ->get();
                 } else {
                     $datas =  DB::table('出庫退料')
-                        ->join('consumptive_material', function ($join) {
-                            $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                                ->where('出庫退料.收料人員', '=', null);
-                        })->select('出庫退料.*', 'consumptive_material.發料部門')
+                        ->join('consumptive_material', '出庫退料.料號', '=', 'consumptive_material.料號')
+                        ->where('consumptive_material.發料部門', '=', $request->input('send'))
+                        ->wherenull('出庫退料.收料人員')
+                        ->select('出庫退料.*', 'consumptive_material.發料部門')
                         ->get();
                 }
-                if ($request->input('list') === null) {
-                    return view('outbound.backlist')->with(['number' => $datas])
-                        ->with(['data' => $datas])
-                        ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()])
-                        ->with(['position' => 儲位::cursor()])
-                        ->with(['check' => 人員信息::cursor()]);
-                } else {
-                    return view('outbound.backlist')->with(['number' => $datas->where('退料單號', $list)])
-                        ->with(['data' => $datas->where('退料單號', $list)])
-                        ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()])
-                        ->with(['position' => 儲位::cursor()])
-                        ->with(['check' => 人員信息::cursor()]);
-                }
+
+                return view('outbound.backlist')->with(['number' => $datas->where('退料單號', $list)])
+                    ->with(['data' => $datas->where('退料單號', $list)])
+                    ->with(['people' => 人員信息::cursor()])
+                    ->with(['people1' => 人員信息::cursor()])
+                    ->with(['locs' => 儲位::cursor()])
+                    ->with(['check' => 人員信息::cursor()]);
             }
         } else {
             return redirect(route('member.login'));
@@ -629,8 +606,6 @@ class OutboundController extends Controller
 
                     if ($name !== null && $format !== null) {
                         if ($stock > 0) {
-                            Session::put('pick', $number);
-                            Session::put('pickcount', $number);
                             return \Response::json([
                                 'number' => $number, 'client' => $client, 'machine' => $machine,
                                 'production' => $production, 'line' => $line, 'usereason' => $usereason, 'name' => $name,
@@ -662,19 +637,9 @@ class OutboundController extends Controller
     //退料添加
     public function backadd(Request $request)
     {
-        Session::forget('client');
-        Session::forget('machine');
-        Session::forget('production');
-        Session::forget('line');
-        Session::forget('backreason');
-        Session::forget('name');
-        Session::forget('format');
-        Session::forget('unit');
-        Session::forget('send');
-        SessION::forget('number');
+
         if (Session::has('username')) {
             if ($request->input('client') !== null && $request->input('number') !== null) {
-
                 if (strlen($request->input('number')) === 12) {
                     $client = $request->input('client');
                     $machine = $request->input('machine');
@@ -688,27 +653,21 @@ class OutboundController extends Controller
                     $send = DB::table('consumptive_material')->where('料號', $number)->value('發料部門');
 
                     if ($name !== null && $format !== null) {
-                        Session::put('number', $number);
-                        Session::put('client', $client);
-                        Session::put('machine', $machine);
-                        Session::put('production', $production);
-                        Session::put('line', $line);
-                        Session::put('backreason', $backreason);
-                        Session::put('name', $name);
-                        Session::put('format', $format);
-                        Session::put('unit', $unit);
-                        Session::put('send', $send);
-                        Session::put('back', $client);
-                        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+
+                        return \Response::json([
+                            'number' => $number, 'client' => $client, 'machine' => $machine,
+                            'production' => $production, 'line' => $line, 'backreason' => $backreason, 'name' => $name,
+                            'format' => $format, 'unit' => $unit, 'send' => $send,
+                        ]/* Status code here default is 200 ok*/);
                     }
                     //料號不存在
                     else {
-                        return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+                        return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
                     }
                 }
                 //料號長度不為12
                 else {
-                    return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
+                    return \Response::json(['message' => 'isn no 12'], 421/* Status code here default is 200 ok*/);
                 }
             } else {
                 return view('outbound.back');
@@ -722,9 +681,7 @@ class OutboundController extends Controller
     public function pickaddsubmit(Request $request)
     {
         if (Session::has('username')) {
-            $record  = 0;
             $count = $request->input('count');
-
             $j = '0001';
             $max = DB::table('outbound')->max('開單時間');
             $maxtime = date_create(date('Y-m-d', strtotime($max)));
@@ -742,37 +699,8 @@ class OutboundController extends Controller
                 $opentime = $num;
             }
 
-            for ($i = 0; $i < $count; $i++) {
-                $number = $request->input('number')[$i];
-                $name = $request->input('name')[$i];
-                $format = $request->input('format')[$i];
-                $unit = $request->input('unit')[$i];
-                $amount = $request->input('amount')[$i];
-                $remark = $request->input('remark')[$i];
-                if ($remark === null) $remark = '';
-                $client = $request->input('client')[$i];
-                $machine = $request->input('machine')[$i];
-                $production = $request->input('production')[$i];
-                $line = $request->input('line')[$i];
-                $usereason = $request->input('usereason')[$i];
-                DB::beginTransaction();
-                try {
-                    DB::table('outbound')
-                        ->insert([
-                            '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
-                            '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預領數量' => $amount,
-                            '實際領用數量' => $amount, '備註' => $remark, '領料單號' => $opentime, '開單時間' => Carbon::now()
-                        ]);
-                    $record++;
-                    // DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                }
-                DB::rollback();
-            }
-            if ($record == $count) {
-                $record = 0;
+            DB::beginTransaction();
+            try {
                 for ($i = 0; $i < $count; $i++) {
                     $number = $request->input('number')[$i];
                     $name = $request->input('name')[$i];
@@ -786,24 +714,20 @@ class OutboundController extends Controller
                     $production = $request->input('production')[$i];
                     $line = $request->input('line')[$i];
                     $usereason = $request->input('usereason')[$i];
+                    DB::table('outbound')
+                        ->insert([
+                            '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
+                            '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預領數量' => $amount,
+                            '實際領用數量' => $amount, '備註' => $remark, '領料單號' => $opentime, '開單時間' => Carbon::now()
+                        ]);
+                } //for
+                DB::commit();
+                return \Response::json(['message' => $opentime, 'record' => $count]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+            } // catch
 
-                    DB::beginTransaction();
-                    try {
-                        DB::table('outbound')
-                            ->insert([
-                                '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
-                                '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預領數量' => $amount,
-                                '實際領用數量' => $amount, '備註' => $remark, '領料單號' => $opentime, '開單時間' => Carbon::now()
-                            ]);
-                        $record++;
-                        DB::commit();
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                }
-                return \Response::json(['message' => $opentime, 'record' => $record]/* Status code here default is 200 ok*/);
-            }
         } else {
             return redirect(route('member.login'));
         }
@@ -813,53 +737,54 @@ class OutboundController extends Controller
     public function backaddsubmit(Request $request)
     {
         if (Session::has('username')) {
-            if ($request->input('amount') !== null) {
-                $number = $request->input('number');
-                $name = $request->input('name');
-                $format = $request->input('format');
-                $unit = $request->input('unit');
-                $send = $request->input('send');
-                $amount = $request->input('amount');
-                $remark = $request->input('remark');
-                if ($remark === null) $remark = '';
-                $client = $request->input('client');
-                $machine = $request->input('machine');
-                $production = $request->input('production');
-                $line = $request->input('line');
-                $backreason = $request->input('backreason');
-                $i = '0001';
-                $max = DB::table('出庫退料')->max('開單時間');
-                $maxtime = date_create(date('Y-m-d', strtotime($max)));
-                $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
-                $interval = date_diff($maxtime, $nowtime);
-                $interval = $interval->format('%R%a');
-                $interval = (int)($interval);
-                if ($interval > 0) {
-                    $opentime = Carbon::now()->format('Ymd') . $i;
-                } else {
-                    $num = DB::table('出庫退料')->max('退料單號');
-                    $num = intval($num);
-                    $num++;
-                    $num = strval($num);
-                    $opentime = $num;
-                }
-                DB::beginTransaction();
-                try {
+            $count = $request->input('count');
+
+            $j = '0001';
+            $max = DB::table('出庫退料')->max('開單時間');
+            $maxtime = date_create(date('Y-m-d', strtotime($max)));
+            $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
+            $interval = date_diff($maxtime, $nowtime);
+            $interval = $interval->format('%R%a');
+            $interval = (int)($interval);
+            if ($interval > 0) {
+                $opentime = Carbon::now()->format('Ymd') . $j;
+            } else {
+                $num = DB::table('出庫退料')->max('退料單號');
+                $num = intval($num);
+                $num++;
+                $num = strval($num);
+                $opentime = $num;
+            }
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
+                    $number = $request->input('number')[$i];
+                    $name = $request->input('name')[$i];
+                    $format = $request->input('format')[$i];
+                    $unit = $request->input('unit')[$i];
+                    $amount = $request->input('amount')[$i];
+                    $remark = $request->input('remark')[$i];
+                    if ($remark === null) $remark = '';
+                    $client = $request->input('client')[$i];
+                    $machine = $request->input('machine')[$i];
+                    $production = $request->input('production')[$i];
+                    $line = $request->input('line')[$i];
+                    $backreason = $request->input('backreason')[$i];
+
                     DB::table('出庫退料')
                         ->insert([
                             '客戶別' => $client, '機種' => $machine, '製程' => $production, '退回原因' => $backreason, '線別' => $line,
                             '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預退數量' => $amount,
                             '實際退回數量' => $amount, '備註' => $remark, '退料單號' => $opentime, '開單時間' => Carbon::now()
                         ]);
-                    DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                }
-                return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
-            } else {
-                return redirect(route('outbound.back'));
-            }
+                } // for
+                DB::commit();
+                return \Response::json(['message' => $opentime, 'record' => $count]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+            } //catch
+
         } else {
             return redirect(route('member.login'));
         }
@@ -870,62 +795,16 @@ class OutboundController extends Controller
     {
         if (Session::has('username')) {
             $count = count($request->input('client'));
-            $record = 0;
-            for ($i = 0; $i < $count; $i++) {
-                $list = $request->input('list')[$i];
-                $amount = $request->input('amount')[$i];
-                $number = $request->input('number')[$i];
-                $client = $request->input('client')[$i];
-                $reason = $request->input('reason')[$i];
-                $machine = $request->input('machine')[$i];
-                $production = $request->input('production')[$i];
-                $line = $request->input('line')[$i];
-                $usereason = $request->input('usereason')[$i];
-                $sendpeople = $request->input('sendpeople');
-                $pickpeople = $request->input('pickpeople');
-                $position = $request->input('position')[$i];
-                $now = Carbon::now();
-                $sendname = DB::table('人員信息')->where('工號', $sendpeople)->value('姓名');
-                $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
-                $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
-                //庫存小於實際領用數量,無法出庫
-                if ($amount > $stock) {
-                    return \Response::json(['position' => $position, 'nowstock' => $stock, 'row' => $i], 421/* Status code here default is 200 ok*/);
-                } else {
-                    DB::beginTransaction();
-                    try {
-                        DB::table('outbound')
-                            ->where('領料單號', $list)
-                            ->where('客戶別', $client)
-                            ->where('料號', $number)
-                            ->where('機種', $machine)
-                            ->where('製程', $production)
-                            ->where('線別', $line)
-                            ->where('領用原因', $usereason)
-                            ->update([
-                                '實際領用數量' => $amount, '實領差異原因' => $reason, '儲位' => $position,
-                                '領料人員' => $pickname, '領料人員工號' => $pickpeople, '發料人員' => $sendname, '發料人員工號' => $sendpeople,
-                                '出庫時間' => $now
-                            ]);
-
-                        DB::table('inventory')
-                            ->where('客戶別', $client)
-                            ->where('料號', $number)
-                            ->where('儲位', $position)
-                            ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
-
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 422/* Status code here default is 200 ok*/);
-                    }
-                }
-                DB::rollback();
-            }
-            if ($count == $record) {
-                $record = 0;
+            DB::beginTransaction();
+            try {
                 for ($i = 0; $i < $count; $i++) {
                     $list = $request->input('list')[$i];
+                    $advance = $request->input('advance')[$i];
+                    $name = $request->input('name')[$i];
+                    $format = $request->input('format')[$i];
+                    $unit = $request->input('unit')[$i];
+                    $remark = $request->input('remark')[$i];
+                    $opentime = $request->input('opentime')[$i];
                     $amount = $request->input('amount')[$i];
                     $number = $request->input('number')[$i];
                     $client = $request->input('client')[$i];
@@ -943,39 +822,51 @@ class OutboundController extends Controller
                     $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
                     //庫存小於實際領用數量,無法出庫
                     if ($amount > $stock) {
+                        DB::rollBack();
                         return \Response::json(['position' => $position, 'nowstock' => $stock, 'row' => $i], 421/* Status code here default is 200 ok*/);
                     } else {
-                        DB::beginTransaction();
-                        try {
+                        $test = DB::table('outbound')->where('領料單號', $list)->where('客戶別', $client)->where('料號', $number)
+                            ->where('預領數量', $advance)->whereNull('發料人員')->get();
+
+                        if ($remark === null) $remark = '';
+
+                        if (($test->count()) > 0) {
+
                             DB::table('outbound')
                                 ->where('領料單號', $list)
                                 ->where('客戶別', $client)
                                 ->where('料號', $number)
-                                ->where('機種', $machine)
-                                ->where('製程', $production)
-                                ->where('線別', $line)
-                                ->where('領用原因', $usereason)
+                                ->where('預領數量', $advance)
+                                ->whereNUll('發料人員')
                                 ->update([
                                     '實際領用數量' => $amount, '實領差異原因' => $reason, '儲位' => $position,
                                     '領料人員' => $pickname, '領料人員工號' => $pickpeople, '發料人員' => $sendname, '發料人員工號' => $sendpeople,
                                     '出庫時間' => $now
                                 ]);
-
-                            DB::table('inventory')
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->where('儲位', $position)
-                                ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
-                            $record++;
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            return \Response::json(['message' => $e->getmessage()], 422/* Status code here default is 200 ok*/);
+                        } else {
+                            DB::table('outbound')
+                                ->insert([
+                                    '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
+                                    '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預領數量' => $advance,
+                                    '實際領用數量' => $amount, '實領差異原因' => $reason, '備註' => $remark, '領料單號' => $list,
+                                    '開單時間' => $opentime,  '儲位' => $position, '領料人員' => $pickname, '領料人員工號' => $pickpeople,
+                                    '發料人員' => $sendname, '發料人員工號' => $sendpeople, '出庫時間' => $now
+                                ]);
                         }
-                    }
-                }
-                return \Response::json(['list' => $list, 'record' => $record]/* Status code here default is 200 ok*/);
-            }
+
+                        DB::table('inventory')
+                            ->where('客戶別', $client)
+                            ->where('料號', $number)
+                            ->where('儲位', $position)
+                            ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
+                    } // else
+                } //for
+                DB::commit();
+                return \Response::json(['record' => $count, 'list' => $list]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 422/* Status code here default is 200 ok*/);
+            } //try - catch
         } else {
             return redirect(route('member.login'));
         }
@@ -985,95 +876,87 @@ class OutboundController extends Controller
     public function backlistsubmit(Request $request)
     {
         if (Session::has('username')) {
-            if ($request->input('amount') !== null && $request->input('position') !== null) {
-                $list = $request->input('list');
-                $amount = $request->input('amount');
-                $advance = $request->input('advance');
-                $number = $request->input('number');
-                $client = $request->input('client');
-                $reason = $request->input('reason');
-                $backpeople = $request->input('backpeople');
-                $pickpeople = $request->input('pickpeople');
-                $position = $request->input('position');
-                $status = $request->input('status');
-                $time = Carbon::now();
-                $backname = DB::table('人員信息')->where('工號', $backpeople)->value('姓名');
-                $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
-                //沒填寫原因
-                if ($amount !== $advance && $reason === null) {
-                    return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
-                } else {
-                    if ($status === '良品') {
-                        $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
+            $count = count($request->input('client'));
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
+                    $list = $request->input('list')[$i];
+                    $advance = $request->input('advance')[$i];
+                    $name = $request->input('name')[$i];
+                    $format = $request->input('format')[$i];
+                    $unit = $request->input('unit')[$i];
+                    $remark = $request->input('remark')[$i];
+                    $opentime = $request->input('opentime')[$i];
+                    $amount = $request->input('amount')[$i];
+                    $number = $request->input('number')[$i];
+                    $client = $request->input('client')[$i];
+                    $reason = $request->input('reason')[$i];
+                    $machine = $request->input('machine')[$i];
+                    $production = $request->input('production')[$i];
+                    $line = $request->input('line')[$i];
+                    $backreason = $request->input('backreason')[$i];
+                    $backpeople = $request->input('backpeople');
+                    $pickpeople = $request->input('pickpeople');
+                    $position = $request->input('position')[$i];
+                    $status = $request->input('status')[$i];
+                    $now = Carbon::now();
+                    $backname = DB::table('人員信息')->where('工號', $backpeople)->value('姓名');
+                    $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
+
+                    if ($status === '良品' || $status === 'good product') {
+                        $inventoryname = 'inventory';
                     } else {
-                        $stock = DB::table('不良品inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
+                        $inventoryname = '不良品inventory';
+                    }
+
+                    $stock = DB::table($inventoryname)->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
+
+                    $test = DB::table('出庫退料')->where('退料單號', $list)->where('客戶別', $client)->where('料號', $number)
+                        ->where('預退數量', $advance)->whereNull('收料人員')->get();
+
+                    if ($remark === null) $remark = '';
+
+                    if (($test->count()) > 0) {
+
+                        DB::table('出庫退料')
+                            ->where('退料單號', $list)
+                            ->where('客戶別', $client)
+                            ->where('料號', $number)
+                            ->where('預退數量', $advance)
+                            ->whereNUll('收料人員')
+                            ->update([
+                                '實際退回數量' => $amount, '實退差異原因' => $reason, '儲位' => $position,
+                                '收料人員' => $pickname, '收料人員工號' => $pickpeople, '退料人員' => $backname, '退料人員工號' => $backpeople,
+                                '入庫時間' => $now, '功能狀況' => $status
+                            ]);
+                    } else {
+                        DB::table('出庫退料')
+                            ->insert([
+                                '客戶別' => $client, '機種' => $machine, '製程' => $production, '退回原因' => $backreason, '線別' => $line,
+                                '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預退數量' => $advance,
+                                '實際退回數量' => $amount, '實退差異原因' => $reason, '備註' => $remark, '退料單號' => $list,
+                                '開單時間' => $opentime,  '儲位' => $position, '收料人員' => $pickname, '收料人員工號' => $pickpeople,
+                                '退料人員' => $backname, '退料人員工號' => $backpeople, '入庫時間' => $now, '功能狀況' => $status,
+                            ]);
                     }
 
                     if ($stock === null) {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('出庫退料')
-                                ->where('退料單號', $list)
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->update([
-                                    '實際退回數量' => $amount, '實退差異原因' => $reason, '儲位' => $position,
-                                    '收料人員' => $pickname, '收料人員工號' => $pickpeople, '退料人員' => $backname, '退料人員工號' => $backpeople,
-                                    '入庫時間' => $time, '功能狀況' => $status
-                                ]);
-
-                            if ($status === '良品') {
-                                DB::table('inventory')
-                                    ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $time]);
-                            } else {
-                                DB::table('不良品inventory')
-                                    ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $time]);
-                            }
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
-                        }
-
-                        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+                        DB::table($inventoryname)
+                            ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $now]);
                     } else {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('出庫退料')
-                                ->where('退料單號', $list)
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->update([
-                                    '實際退回數量' => $amount, '實退差異原因' => $reason, '儲位' => $position,
-                                    '收料人員' => $pickname, '收料人員工號' => $pickpeople, '退料人員' => $backname, '退料人員工號' => $backpeople,
-                                    '入庫時間' => $time, '功能狀況' => $status
-                                ]);
-                            if ($status === '良品') {
-                                DB::table('inventory')
-                                    ->where('客戶別', $client)
-                                    ->where('料號', $number)
-                                    ->where('儲位', $position)
-                                    ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $time]);
-                            } else {
-                                DB::table('不良品inventory')
-                                    ->where('客戶別', $client)
-                                    ->where('料號', $number)
-                                    ->where('儲位', $position)
-                                    ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $time]);
-                            }
-
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
-                        }
-
-                        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+                        DB::table($inventoryname)
+                            ->where('客戶別', $client)
+                            ->where('料號', $number)
+                            ->where('儲位', $position)
+                            ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $now]);
                     }
-                }
-            } else {
-                return view('outbound.backlist');
-            }
+                } //for
+                DB::commit();
+                return \Response::json(['record' => $count, 'list' => $list]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+            } //try - catch
         } else {
             return redirect(route('member.login'));
         }

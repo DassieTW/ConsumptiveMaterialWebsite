@@ -86,7 +86,7 @@ if($i === false)
                     @foreach($data as $row)
                     <tr>
 
-                        <td><input type="text" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
+                        <td><input class = "form-control corm-control-lg" type="text" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
                                 value="{{$row[0]}}" required></td>
                         <td><input type="hidden" id="data1{{$loop->index}}" name="data1{{$loop->index}}"
                                 value="{{$row[1]}}">{{$row[1]}}</td>
@@ -96,9 +96,9 @@ if($i === false)
                         <td>{{$unit}}</td>
                         <td><input type="hidden" id="data6{{$loop->index}}" name="data6{{$loop->index}}"
                                 value="{{$month}}">{{$month}}</td>
-                        <td><input type="number" id="data3{{$loop->index}}" name="data3{{$loop->index}}"
+                        <td><input class = "form-control corm-control-lg" type="number" id="data3{{$loop->index}}" name="data3{{$loop->index}}"
                                 value="{{$row[3]}}" required></td>
-                        <td><input type="text" id="data4{{$loop->index}}" name="data4{{$loop->index}}"
+                        <td><input class = "form-control corm-control-lg" type="text" id="data4{{$loop->index}}" name="data4{{$loop->index}}"
                                 value="{{$row[4]}}"></td>
                         <td>
                             <select style="width: 150px;" class="form-select form-select-lg " id="data5{{$loop->index}}"

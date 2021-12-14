@@ -58,10 +58,10 @@ Route::get('/back', function () {
 //出庫-領料單頁面
 Route::get('/picklist', function () {
     $datas =  DB::table('outbound')
-    ->join('consumptive_material', 'outbound.料號', '=', 'consumptive_material.料號')
-    ->wherenull('outbound.發料人員')
-    ->select('outbound.*')
-    ->get()->unique('領料單號');
+        ->join('consumptive_material', 'outbound.料號', '=', 'consumptive_material.料號')
+        ->wherenull('outbound.發料人員')
+        ->select('outbound.*')
+        ->get()->unique('領料單號');
 
     // dd($datas);
     return view('outbound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
@@ -72,10 +72,10 @@ Route::get('/picklist', function () {
 //出庫-領料單
 Route::get('/picklistsub', function () {
     $datas =  DB::table('outbound')
-    ->join('consumptive_material', 'outbound.料號', '=', 'consumptive_material.料號')
-    ->wherenull('outbound.發料人員')
-    ->select('outbound.*')
-    ->get()->unique('領料單號');
+        ->join('consumptive_material', 'outbound.料號', '=', 'consumptive_material.料號')
+        ->wherenull('outbound.發料人員')
+        ->select('outbound.*')
+        ->get()->unique('領料單號');
 
     // dd($datas);
     return view('outbound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
@@ -86,11 +86,10 @@ Route::post('/picklistsub', [OutboundController::class, 'picklist'])->name('outb
 //出庫-退料單頁面
 Route::get('/backlist', function () {
     $datas =  DB::table('出庫退料')
-        ->join('consumptive_material', function ($join) {
-            $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                ->where('出庫退料.收料人員', '=', null);
-        })->select('出庫退料.*', 'consumptive_material.發料部門')
-        ->get();
+        ->join('consumptive_material', '出庫退料.料號', '=', 'consumptive_material.料號')
+        ->wherenull('出庫退料.收料人員')
+        ->select('出庫退料.*')
+        ->get()->unique('退料單號');
 
     return view('outbound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
 })->name('outbound.backlistpage')->middleware('can:outboundReturnSerialNum,App\Models\Outbound');
@@ -98,7 +97,15 @@ Route::get('/backlist', function () {
 //Route::post('/backlist', [OutboundController::class, 'backlistpage'])->name('outbound.backlistpage');
 
 //出庫-退料單
-Route::get('/backlistsub', [OutboundController::class, 'backlist'])->middleware('can:outboundReturnSerialNum,App\Models\Outbound');
+Route::get('/backlistsub', function(){
+    $datas =  DB::table('出庫退料')
+        ->join('consumptive_material', '出庫退料.料號', '=', 'consumptive_material.料號')
+        ->wherenull('出庫退料.收料人員')
+        ->select('出庫退料.*')
+        ->get()->unique('退料單號');
+
+    return view('outbound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+})->middleware('can:outboundReturnSerialNum,App\Models\Outbound');
 
 Route::post('/backlistsub', [OutboundController::class, 'backlist'])->name('outbound.backlist')->middleware('can:outboundReturnSerialNum,App\Models\Outbound');
 
@@ -131,23 +138,8 @@ Route::post('/backrecordsearch', [OutboundController::class, 'backrecordsearch']
 //領料添加
 Route::post('/pickadd', [OutboundController::class, 'pickadd'])->name('outbound.pickadd')->middleware('can:outboundPickup,App\Models\Outbound');
 
-/*//領料添加頁面
-Route::post('/pickaddok', [OutboundController::class, 'pickaddok'])->middleware('can:outboundReturnRecord,App\Models\Outbound');
-
-Route::get('/pickaddok', [OutboundController::class, 'pickaddok'])->name('outbound.pickaddok')->middleware('can:outboundReturnRecord,App\Models\Outbound');
-*/
 //退料添加
 Route::post('/backadd', [OutboundController::class, 'backadd'])->name('outbound.backadd')->middleware('can:outboundReturn,App\Models\Outbound');
-
-//退料添加頁面
-Route::get('/backaddok', function () {
-    if (Session::has('back')) {
-        Session::forget('back');
-        return view("outbound.backadd");
-    } else {
-        return redirect(route('outbound.back'));
-    }
-})->middleware('can:outboundReturn,App\Models\Outbound');
 
 //提交領料
 Route::post('/pickaddsubmit', [OutboundController::class, 'pickaddsubmit'])->name('outbound.pickaddsubmit')->middleware('can:outboundPickup,App\Models\Outbound');

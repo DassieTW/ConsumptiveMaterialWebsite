@@ -8,7 +8,7 @@ $month = DB::table('consumptive_material')->where('料號',$row[0])->value('月�
 $belong = DB::table('consumptive_material')->where('料號',$row[0])->value('耗材歸屬');
 $clients = DB::table('客戶別')->pluck('客戶')->toArray();
 $machines = DB::table('機種')->pluck('機種')->toArray();
-$productions = DB::table('製程')->pluck('製程')->toArray();
+$productions = DB::table('製程')->pluck('制程')->toArray();
 $i = false;
 $j = false;
 $k = false;
@@ -156,6 +156,7 @@ if($k === false)
                             $lt = DB::table('consumptive_material')->where('料號',$row[0])->value('LT');
                             $month = DB::table('consumptive_material')->where('料號',$row[0])->value('月請購');
                             $belong = DB::table('consumptive_material')->where('料號',$row[0])->value('耗材歸屬');
+                            $lt = round($lt, 3);
                         ?>
                         <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
                                 value="{{$row[0]}}">{{$row[0]}}</td>

@@ -78,8 +78,8 @@
                             $real = $realneeda < 0 ? 0:$realneeda;
                     ?>
                     <tr>
-                        <td><input type="text" id="srmnumbera{{$loop->index}}" name="srmnumbera{{$loop->index}}"
-                                style="width:150px"></td>
+                        <td><input class="form-control form-control-lg" type="text" id="srmnumbera{{$loop->index}}"
+                                name="srmnumbera{{$loop->index}}" style="width:100px"></td>
                         <td><input type="hidden" id="clienta{{$loop->index}}" name="clienta{{$loop->index}}"
                                 value="{{$data->客戶別}}">{{$data->客戶別}}</td>
                         <td><input type="hidden" id="numbera{{$loop->index}}" name="numbera{{$loop->index}}"
@@ -104,18 +104,19 @@
                                 value="{{$amounta}}">{{$amounta}}</td>
                         <td><input type="hidden" id="stocka{{$loop->index}}" name="stocka{{$loop->index}}"
                                 value="{{$stocka}}">{{$stocka}}</td>
-                        <td><input type="number" id="buyamounta{{$loop->index}}" name="buyamounta{{$loop->index}}"
-                                required style="width:150px" value="{{$real}}" min="0"></td>
+                        <td><input class="form-control form-control-lg" type="number" id="buyamounta{{$loop->index}}"
+                                name="buyamounta{{$loop->index}}" required value="{{$real}}" min="0"
+                                style="width:100px"></td>
                         <td><input type="hidden" id="realneeda{{$loop->index}}" name="realneeda{{$loop->index}}"
                                 value="{{$realneeda}}">{{$realneeda}}</td>
-                        <td><input id="buymoneya{{$loop->index}}" name="buymoneya{{$loop->index}}" style="width:100px"
-                                readonly></td>
-                        <td><input id="buypera{{$loop->index}}" name="buypera{{$loop->index}}" style="width:100px"
-                                readonly step="0.01"></td>
-                        <td><input id="needmoneya{{$loop->index}}" name="needmoneya{{$loop->index}}" style="width:100px"
-                                readonly></td>
-                        <td><input id="needpera{{$loop->index}}" name="needpera{{$loop->index}}" style="width:100px"
-                                readonly step="0.01"></td>
+                        <td><input class="form-control form-control-lg" id="buymoneya{{$loop->index}}"
+                                name="buymoneya{{$loop->index}}" style="width:100px" readonly></td>
+                        <td><input class="form-control form-control-lg" id="buypera{{$loop->index}}"
+                                name="buypera{{$loop->index}}" style="width:100px" readonly step="0.01"></td>
+                        <td><input class="form-control form-control-lg" id="needmoneya{{$loop->index}}"
+                                name="needmoneya{{$loop->index}}" style="width:100px" readonly></td>
+                        <td><input class="form-control form-control-lg" id="needpera{{$loop->index}}"
+                                name="needpera{{$loop->index}}" style="width:100px" readonly step="0.01"></td>
                     </tr>
                     <input type="hidden" id="counta" name="counta" value="{{$loop->count}}">
                     @endforeach
@@ -133,8 +134,8 @@
                         $real = $realneedb < 0 ? 0:$realneedb;
                     ?>
                     <tr>
-                        <td><input type="text" id="srmnumberb{{$loop->index}}" name="srmnumberb{{$loop->index}}"
-                                style="width:150px"></td>
+                        <td><input class="form-control form-control-lg" type="text" id="srmnumberb{{$loop->index}}"
+                                name="srmnumberb{{$loop->index}}" style="width:100px"></td>
                         <td><input type="hidden" id="clientb{{$loop->index}}" name="clientb{{$loop->index}}"
                                 value="{{$data->客戶別}}">{{$data->客戶別}}</td>
                         <td><input type="hidden" id="numberb{{$loop->index}}" name="numberb{{$loop->index}}"
@@ -159,18 +160,19 @@
                                 value="{{$amountb}}">{{$amountb}}</td>
                         <td><input type="hidden" id="stockb{{$loop->index}}" name="stockb{{$loop->index}}"
                                 value="{{$stockb}}">{{$stockb}}</td>
-                        <td><input type="number" id="buyamountb{{$loop->index}}" name="buyamountb{{$loop->index}}"
-                                required style="width:150px" value="{{$real}}" min="0"></td>
+                        <td><input class="form-control form-control-lg" type="number" id="buyamountb{{$loop->index}}"
+                                name="buyamountb{{$loop->index}}" required value="{{$real}}" min="0"
+                                style="width:100px"></td>
                         <td><input type="hidden" id="realneedb{{$loop->index}}" name="realneedb{{$loop->index}}"
                                 value="{{$realneedb}}">{{$realneedb}}</td>
-                        <td><input id="buymoneyb{{$loop->index}}" name="buymoneyb{{$loop->index}}" style="width:100px"
-                                readonly></td>
-                        <td><input id="buyperb{{$loop->index}}" name="buyperb{{$loop->index}}" style="width:100px"
-                                readonly step="0.01"></td>
-                        <td><input id="needmoneyb{{$loop->index}}" name="needmoneyb{{$loop->index}}" style="width:100px"
-                                readonly></td>
-                        <td><input id="needperb{{$loop->index}}" name="needperb{{$loop->index}}" style="width:100px"
-                                readonly step="0.01"></td>
+                        <td><input class="form-control form-control-lg" id="buymoneyb{{$loop->index}}"
+                                name="buymoneyb{{$loop->index}}" style="width:100px" readonly></td>
+                        <td><input class="form-control form-control-lg" id="buyperb{{$loop->index}}"
+                                name="buyperb{{$loop->index}}" style="width:100px" readonly step="0.01"></td>
+                        <td><input class="form-control form-control-lg" id="needmoneyb{{$loop->index}}"
+                                name="needmoneyb{{$loop->index}}" style="width:100px" readonly></td>
+                        <td><input class="form-control form-control-lg" id="needperb{{$loop->index}}"
+                                name="needperb{{$loop->index}}" style="width:100px" readonly step="0.01"></td>
                     </tr>
                     <input type="hidden" id="countb" name="countb" value="{{$loop->count}}">
                     @endforeach

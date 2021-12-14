@@ -46,6 +46,7 @@
                                         $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
                                         $unit = DB::table('consumptive_material')->where('料號',$data->料號)->value('單位');
                                         $price = DB::table('consumptive_material')->where('料號',$data->料號)->value('單價');
+                                        $price = round($price , 3);
                                         $money = DB::table('consumptive_material')->where('料號',$data->料號)->value('幣別');
                                         $gradea = DB::table('consumptive_material')->where('料號',$data->料號)->value('A級資材');
                                         $month = DB::table('consumptive_material')->where('料號',$data->料號)->value('月請購');

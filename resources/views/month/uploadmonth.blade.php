@@ -2,7 +2,7 @@
 <?php
 $clients = DB::table('客戶別')->pluck('客戶')->toArray();
 $machines = DB::table('機種')->pluck('機種')->toArray();
-$productions = DB::table('製程')->pluck('製程')->toArray();
+$productions = DB::table('製程')->pluck('制程')->toArray();
 
 $i = false;
 $j = false;
@@ -94,24 +94,21 @@ if($k === false)
                     @foreach($data as $row)
                     <tr>
 
-                        <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
-                                value="{{$row[0]}}">{{$row[0]}}</td>
-                        <td><input type="hidden" id="data1{{$loop->index}}" name="data1{{$loop->index}}"
-                                value="{{$row[1]}}">{{$row[1]}}</td>
-                        <td><input type="hidden" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
-                                value="{{$row[2]}}">{{$row[2]}}</td>
-                        <td><input type="number" id="data3{{$loop->index}}" name="data3{{$loop->index}}"
+                        <td><span id="data0{{$loop->index}}">{{$row[0]}}</span></td>
+                        <td><span id="data1{{$loop->index}}">{{$row[1]}}</span></td>
+                        <td><span id="data2{{$loop->index}}">{{$row[2]}}</span></td>
+                        <td><input class="form-control form-control-lg" type="number" id="data3{{$loop->index}}" name="data3{{$loop->index}}"
                                 value="{{$row[3]}}" required step="0.001"
-                                oninput="if(value.length>5)value=value.slice(0,5)"></td>
-                        <td><input type="number" id="data4{{$loop->index}}" name="data4{{$loop->index}}"
+                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                        <td><input class="form-control form-control-lg" type="number" id="data4{{$loop->index}}" name="data4{{$loop->index}}"
                                 value="{{$row[4]}}" required step="0.001"
-                                oninput="if(value.length>5)value=value.slice(0,5)"></td>
-                        <td><input type="number" id="data5{{$loop->index}}" name="data5{{$loop->index}}"
+                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                        <td><input class="form-control form-control-lg" type="number" id="data5{{$loop->index}}" name="data5{{$loop->index}}"
                                 value="{{$row[5]}}" required step="0.001"
-                                oninput="if(value.length>5)value=value.slice(0,5)"></td>
-                        <td><input type="number" id="data6{{$loop->index}}" name="data6{{$loop->index}}"
+                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                        <td><input class="form-control form-control-lg" type="number" id="data6{{$loop->index}}" name="data6{{$loop->index}}"
                                 value="{{$row[6]}}" required step="0.001"
-                                oninput="if(value.length>5)value=value.slice(0,5)"></td>
+                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     @endforeach

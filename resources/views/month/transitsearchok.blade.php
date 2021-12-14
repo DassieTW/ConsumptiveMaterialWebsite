@@ -37,7 +37,7 @@
                     <td>{{$data->客戶}}</td>
                     <td>{{$data->料號}}</td>
                     <td>{{$data->品名}}</td>
-                    <td>{{$data->規格}}</td>
+                    <td>{{$data->單位}}</td>
                     <td>{{$data->請購數量}}</td>
                 </tr>
                 @endforeach
