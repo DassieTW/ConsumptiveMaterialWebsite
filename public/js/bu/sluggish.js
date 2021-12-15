@@ -228,10 +228,14 @@ $('#sluggish').on('submit', function (e) {
                     }, 100); // cleanup
                 }
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function (err) {
+                //transaction error
+                //if (err.status == 421) {
+                console.log(err.responseJSON.message);
+                //window.location.reload();
 
-                console.warn(jqXHR.responseText);
-                alert(errorThrown);
+                // console.warn(jqXHR.responseText);
+                // //alert(errorThrown);
             }
         });
     }

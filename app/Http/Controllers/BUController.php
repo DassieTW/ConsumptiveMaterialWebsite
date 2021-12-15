@@ -741,20 +741,24 @@ class BUController extends Controller
 
             // 下載
 
-            $now = Carbon::now()->format('YmdHis');
-            //rawurlencode('呆滯庫存查詢');
-            $filename = rawurlencode('呆滯庫存查詢') . $now . '.xlsx';
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment; filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
-            header('Cache-Control: max-age=0');
+            try{
+                $now = Carbon::now()->format('YmdHis');
+                //rawurlencode('呆滯庫存查詢');
+                $filename = rawurlencode('呆滯庫存查詢') . $now . '.xlsx';
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment; filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
+                header('Cache-Control: max-age=0');
 
-            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
-            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $writer->save('php://output');
-            $callback = function () use ($writer) {
-                $file = fopen('php://output', 'r');
-                fclose($file);
-            };
+                $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
+                $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+                $writer->save('php://output');
+                $callback = function () use ($writer) {
+                    $file = fopen('php://output', 'r');
+                    fclose($file);
+                };
+            }catch(\Exception $e){
+                return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+            }
 
             return response()->stream($callback, 200, $headers);
         } else {
