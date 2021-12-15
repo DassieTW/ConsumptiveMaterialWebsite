@@ -47,6 +47,7 @@ $(document).ready(function () {
       },
       complete: function () {
         $('body').loadingModal('hide');
+        $('body').loadingModal('destroy');
       },
       success: function (data) {
         console.log(data.message); // test
@@ -100,5 +101,6 @@ $(window).on('load', function() {
   // PAGE IS FULLY LOADED
   // FADE OUT YOUR OVERLAYING DIV
   $('body').loadingModal('hide');
+  $('body').loadingModal('destroy');
 });
 

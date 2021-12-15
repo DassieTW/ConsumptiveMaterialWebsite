@@ -54,6 +54,7 @@ $('#uploadmonth').on('submit', function (e) {
         },
         complete: function () {
             $('body').loadingModal('hide');
+            $('body').loadingModal('destroy');
         },
         success: function (data) {
             var mess = Lang.get('monthlyPRpageLang.total') + ' : ' + data.record + ' ' + Lang.get('monthlyPRpageLang.record') +

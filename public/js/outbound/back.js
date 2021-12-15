@@ -86,6 +86,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             success: function (data) {
                 sessionStorage.setItem('backcount', index + 1);
@@ -257,6 +258,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             success: function (data) {
                 var mess = Lang.get('outboundpageLang.total') + ':' + data.record + Lang.get('outboundpageLang.record') + Lang.get('outboundpageLang.add') + Lang.get('outboundpageLang.success') + ' ， ' +

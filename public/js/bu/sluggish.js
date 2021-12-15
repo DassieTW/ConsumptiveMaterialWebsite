@@ -128,6 +128,7 @@ $('#sluggish').on('submit', function (e) {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
 
             success: function (data) {
@@ -182,6 +183,7 @@ $('#sluggish').on('submit', function (e) {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
 
             success: function (blob, status, xhr) {
@@ -233,4 +235,11 @@ $('#sluggish').on('submit', function (e) {
             }
         });
     }
+});
+
+$(window).on('load', function () {
+    // PAGE IS FULLY LOADED
+    // FADE OUT YOUR OVERLAYING DIV
+    $('body').loadingModal('hide');
+    $('body').loadingModal('destroy');
 });

@@ -126,6 +126,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             success: function (response) {
                 var myObjs = JSON.parse(JSON.stringify(response.data));
@@ -233,6 +234,7 @@ $(document).ready(function () {
                 },
                 complete: function () {
                     $('body').loadingModal('hide');
+                    $('body').loadingModal('destroy');
                 },
                 success: function (response) {
                     window.location.href = '/barcode/printingPage';

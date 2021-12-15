@@ -86,6 +86,7 @@ $('#change').on('submit', function (e) {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
 
             success: function (data) {

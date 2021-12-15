@@ -62,6 +62,7 @@ $.ajaxSetup({
       },
       complete: function () {
         $('body').loadingModal('hide');
+        $('body').loadingModal('destroy');
       },
       success: function (data) {
         var mess = Lang.get('monthlyPRpageLang.total')+(data.message)+Lang.get('monthlyPRpageLang.record')

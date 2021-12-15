@@ -42,6 +42,7 @@ $.ajaxSetup({
       },
       complete: function () {
         $('body').loadingModal('hide');
+        $('body').loadingModal('destroy');
       },
       success: function (data) {
         console.log(number);

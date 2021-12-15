@@ -24,6 +24,7 @@ $(document).ready(function () {
         },
         complete: function () {
             $('body').loadingModal('hide');
+            $('body').loadingModal('destroy');
         },
         error: function (err) {
             console.log(err.status); // test
