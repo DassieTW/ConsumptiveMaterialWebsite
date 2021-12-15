@@ -48,7 +48,7 @@
                             !!}</th>
                     </tr>
 
-                    <?php $i = 0 ; $data = ''; $count=array(0,0,0,0,0); $record = array(array());?>
+                    <?php $i = 0 ; $data = ''; $record = array(array());?>
                     @for($i = 0 ; $i < 3 ; $i++) @foreach($test[$i] as $data) <?php
                         $maxtime=date_create(date('Y-m-d',strtotime($data->inventory最後更新時間)));
                         $nowtime = date_create(date('Y-m-d',strtotime(\Carbon\Carbon::now())));
@@ -135,20 +135,18 @@
                             </td>
                         </tr>
                         @endforeach
-                        <input type="hidden" id="count{{$i}}" name="count{{$i}}" value="{{$count[$i]}}"></td>
                         @endfor
 
                 </table>
         </div>
-        <br>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
             value="{!! __('bupagelang.submit') !!}">
         <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
             value="{!! __('bupagelang.download') !!}">
 
         </form>
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.index')}}'">{!!
-            __('bupagelang.return') !!}</button>
+
     </div>
 </div>
 

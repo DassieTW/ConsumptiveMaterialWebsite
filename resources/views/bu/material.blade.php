@@ -30,9 +30,9 @@
                             <select class="form-select form-select-lg" id="table" name="table">
                                 <option style="display: none" disabled selected value="">{!!
                                     __('bupagelang.enterfactory') !!}</option>
-                                @foreach($factory as $factory)
-                                <option>{{ $factory->廠別 }}</option>
-                                @endforeach
+                                <option value="M2_TEST_1112">M2_TEST</option>
+                                <option value="巴淡SMT1214">巴淡SMT_TEST</option>
+                                <option value="BB1_1214 Consumables management">BB1_TEST</option>
                             </select>
                         </div>
 
@@ -43,7 +43,7 @@
                         <div class="col-lg-6  col-md-12 col-sm-12">
                             <input class="form-control form-control-lg @error('number') is-invalid @enderror"
                                 type="text" id="number" name="number" placeholder="{!! __('bupagelang.enterisn') !!}"
-                                required>
+                                oninput="if(value.length>12)value=value.slice(0,12)" required>
                             @error('number')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>

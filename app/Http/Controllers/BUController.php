@@ -365,7 +365,7 @@ class BUController extends Controller
         }
     }
 
-    //調撥_撥出單頁面
+    /*//調撥_撥出單頁面
     public function outlistpage(Request $request)
     {
         if (Session::has('username')) {
@@ -377,7 +377,7 @@ class BUController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //調撥_撥出單
     public function outlist(Request $request)
@@ -459,7 +459,7 @@ class BUController extends Controller
         }
     }
 
-    //調撥_接收單頁面
+    /*//調撥_接收單頁面
     public function picklistpage(Request $request)
     {
         if (Session::has('username')) {
@@ -471,7 +471,7 @@ class BUController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //調撥_接收單
     public function picklist(Request $request)
@@ -611,7 +611,7 @@ class BUController extends Controller
 
 
 
-    //調撥明細查詢頁面
+    /*//調撥明細查詢頁面
     public function searchdetail(Request $request)
     {
         if (Session::has('username')) {
@@ -619,7 +619,7 @@ class BUController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //調撥明細查詢
     public function searchdetailsub(Request $request)
@@ -631,9 +631,8 @@ class BUController extends Controller
             $endDate = strtotime($request->input('end'));
             $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
             $database = $request->session()->get('database');
-            $choose = 'out';
-
             if ($request->has('outdetail')) {
+                $choose = 'out';
                 if ($request->input('number') !== null) {
                     if ($request->has('date')) {
                         $datas = DB::table('撥出明細')
@@ -660,6 +659,7 @@ class BUController extends Controller
                     }
                 }
             } else {
+                $choose = 'receive';
                 if ($request->input('number') !== null) {
                     if ($request->has('date')) {
                         $datas = DB::table('接收明細')
@@ -685,13 +685,7 @@ class BUController extends Controller
                             ->get();
                     }
                 }
-                $choose = 'receive';
-                $datas = DB::table('撥出明細')
-                    ->where('撥出廠區', '=', $database)
-                    ->get();
             }
-
-            $choose = 'out';
             return view('bu.searchdetailok')->with(['data' => $datas])->with('choose', $choose);
         } else {
             return redirect(route('member.login'));
@@ -819,7 +813,7 @@ class BUController extends Controller
         } // if else
     }
 
-    //廠區庫存調撥頁面
+    /*//廠區庫存調撥頁面
     public function material(Request $request)
     {
         if (Session::has('username')) {
@@ -829,7 +823,7 @@ class BUController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
 
     public function sluggishmaterial(Request $request)
@@ -851,14 +845,19 @@ class BUController extends Controller
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
                     \DB::purge(env("DB_CONNECTION"));
                     $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
-                        ->select(
-                            'inventory.料號',
-                            DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
-                            DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
-                        )
-                        ->groupBy('inventory.料號')
-                        ->where('inventory.料號', $number)
-                        ->get();
+                    ->select(
+                        'inventory.料號',
+                        'consumptive_material.品名',
+                        'consumptive_material.規格',
+                        'consumptive_material.單位',
+                        DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                        DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                    )
+                    ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
+                    ->havingRaw('sum(inventory.現有庫存) > ?', [0])
+                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
+                    ->where('inventory.料號' , '=' , $number)
+                    ->get();
                 }
 
                 return view('bu.sluggish1')->with(['test' => $datas])

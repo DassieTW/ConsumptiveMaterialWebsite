@@ -32,9 +32,9 @@
                             <select class="form-select form-select-lg" id="outfactory" name="outfactory">
                                 <option style="display: none" disabled selected value="">{!!
                                     __('bupagelang.enterfactory') !!}</option>
-                                @foreach($factory as $factory)
-                                <option>{{ $factory->廠別 }}</option>
-                                @endforeach
+                                <option value="M2_TEST_1112">M2_TEST</option>
+                                <option value="巴淡SMT1214">巴淡SMT_TEST</option>
+                                <option value="BB1_1214 Consumables management">BB1_TEST</option>
                             </select>
                         </div>
 
@@ -47,9 +47,9 @@
                             <select class="form-select form-select-lg" id="infactory" name="infactory">
                                 <option style="display: none" disabled selected value="">{!!
                                     __('bupagelang.enterfactory') !!}</option>
-                                @foreach($factory1 as $factory)
-                                <option>{{ $factory->廠別 }}</option>
-                                @endforeach
+                                <option value="M2_TEST_1112">M2_TEST</option>
+                                <option value="巴淡SMT1214">巴淡SMT_TEST</option>
+                                <option value="BB1_1214 Consumables management">BB1_TEST</option>
                             </select>
                         </div>
 

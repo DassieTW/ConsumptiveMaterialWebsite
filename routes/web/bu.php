@@ -11,6 +11,7 @@ use App\Models\機種;
 use App\Models\儲位;
 use App\Models\退回原因;
 use App\Models\O庫;
+use App\Models\調撥單;
 use App\Models\ConsumptiveMaterial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BUController;
@@ -38,11 +39,15 @@ Route::post('/transsluggish', [BUController::class, 'transsluggish'])->name('bu.
 
 //調撥單查詢頁面
 Route::get('/searchlist', function () {
-return view('bu.searchlist')->with(['factory' => 廠別::cursor()])->with(['factory1' => 廠別::cursor()]);
+    if (Session::has('username')) {
+        return view('bu.searchlist');
+    }else {
+        return redirect(route('member.login'));
+    }
 })->name('bu.searchlist');
 
 //調撥單查詢
-Route::get('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.searchlistsub');
+Route::get('/searchlistsub', [BUController::class, 'searchlistsub']);
 
 Route::post('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.searchlistsub');
 
@@ -50,7 +55,16 @@ Route::post('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.
 Route::post('/delete', [BUController::class, 'delete'])->name('bu.delete');
 
 //調撥_撥出單頁面
-Route::get('/outlist', [BUController::class, 'outlistpage'])->name('bu.outlistpage');
+Route::get('/outlist', function(){
+    if (Session::has('username')) {
+        $database = Session::get('database');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        \DB::purge(env("DB_CONNECTION"));
+        return view('bu.outlistpage')->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')]);
+    } else {
+        return redirect(route('member.login'));
+    }
+})->name('bu.outlistpage');
 
 //調撥_撥出單
 Route::post('/outlistsub', [BUController::class, 'outlist'])->name('bu.outlist');
@@ -59,7 +73,16 @@ Route::post('/outlistsub', [BUController::class, 'outlist'])->name('bu.outlist')
 Route::post('/outlistsubmit', [BUController::class, 'outlistsubmit'])->name('bu.outlistsubmit');
 
 //調撥_接收單頁面
-Route::get('/picklist', [BUController::class, 'picklistpage'])->name('bu.picklistpage');
+Route::get('/picklist', function(){
+    if (Session::has('username')) {
+        $database = Session::get('database');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        \DB::purge(env("DB_CONNECTION"));
+        return view('bu.picklistpage')->with(['data' => 調撥單::cursor()->where('接收廠區', $database)->where('狀態', '待接收')]);
+    } else {
+        return redirect(route('member.login'));
+    }
+})->name('bu.picklistpage');
 
 //調撥_接收單
 Route::post('/picklistsub', [BUController::class, 'picklist'])->name('bu.picklist');
@@ -69,10 +92,22 @@ Route::post('/picklistsubmit', [BUController::class, 'picklistsubmit'])->name('b
 
 
 //調撥明細查詢頁面
-Route::get('/searchdetail', [BUController::class, 'searchdetail'])->name('bu.searchdetail');
+Route::get('/searchdetail', function(){
+    if (Session::has('username')) {
+        return view('bu.searchdetail');
+    } else {
+        return redirect(route('member.login'));
+    }
+})->name('bu.searchdetail');
 
-//調撥單查詢
-Route::get('/searchdetailsub', [BUController::class, 'searchdetailsub'])->name('bu.searchdetailsub');
+//調撥明細查詢
+Route::get('/searchdetailsub', function(){
+    if (Session::has('username')) {
+        return view('bu.searchdetail');
+    } else {
+        return redirect(route('member.login'));
+    }
+});
 
 Route::post('/searchdetailsub', [BUController::class, 'searchdetailsub'])->name('bu.searchdetailsub');
 
@@ -83,7 +118,15 @@ Route::post('/download', [BUController::class, 'download'])->name('bu.download')
 Route::post('/downloadlist', [BUController::class, 'downloadlist'])->name('bu.downloadlist');
 
 //廠區庫存調撥頁面
-Route::get('/material', [BUController::class, 'material'])->name('bu.material');
+Route::get('/material',function(){
+    if (Session::has('username')) {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        \DB::purge(env("DB_CONNECTION"));
+        return view('bu.material');
+    } else {
+        return redirect(route('member.login'));
+    }
+})->name('bu.material');
 
 /*//廠區庫存調撥
 Route::get('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.searchlistsub');

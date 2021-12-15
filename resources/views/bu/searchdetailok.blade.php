@@ -49,10 +49,10 @@
                             </tr>
                                 @foreach($data as $data)
                                 <tr id= "{{$loop->index}}">
-
                                     <td><input type = "hidden" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$data->調撥單號}}">{{$data->調撥單號}}</td>
-                                    <td><input type = "hidden" id = "data2{{$loop->index}}" name = "data2{{$loop->index}}" value = "{{$data->撥出廠區}}">{{$data->撥出廠區}}</td>
-                                    <td><input type = "hidden" id = "data3{{$loop->index}}" name = "data3{{$loop->index}}" value = "{{$data->接收廠區}}">{{$data->接收廠區}}</td>
+                                    <td><input type = "hidden" id = "data1{{$loop->index}}" name = "data1{{$loop->index}}" value = "{{$data->撥出廠區}}">{{$data->撥出廠區}}</td>
+                                    <td><input type = "hidden" id = "data2{{$loop->index}}" name = "data2{{$loop->index}}" value = "{{$data->接收廠區}}">{{$data->接收廠區}}</td>
+                                    <td><input type = "hidden" id = "data3{{$loop->index}}" name = "data3{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
                                     <td><input type = "hidden" id = "data4{{$loop->index}}" name = "data4{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
                                     <td><input type = "hidden" id = "data5{{$loop->index}}" name = "data5{{$loop->index}}" value = "{{$data->品名}}">{{$data->品名}}</td>
                                     <td><input type = "hidden" id = "data6{{$loop->index}}" name = "data6{{$loop->index}}" value = "{{$data->規格}}">{{$data->規格}}</td>
