@@ -436,7 +436,7 @@
                                             <ul id="bu" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
                                                 <li class="sidebar-item {{ isActiveRoute(['bu.sluggish']) }}">
-                                                    <a id="passiveStockBtn" class="sidebar-link" href="{{route('bu.sluggish')}}">
+                                                    <a id="passiveStockBtn" class="sidebar-link" href="#">
                                                         {!! __('bupagelang.sluggish') !!}
                                                     </a>
                                                 </li>
@@ -1349,16 +1349,7 @@
     <script src="{{ asset('/messages.js') }}"></script>
     <script src="{{ asset('/js/logout.js') }}"></script>
     <script src="{{ asset('js/popupNotice.js') }}"></script>
-    <script>
-        $(document).ready(function () {
-            $("#passiveStockBtn").on("clcik", function (e) {
-                $('body').loadingModal({
-                    text: 'Loading...',
-                    animation: 'circle'
-                });
-            });
-        }); // on document ready
-    </script>
+    <script src="{{ asset('js/template.js') }}"></script>
     @yield('js')
 </body>
 
