@@ -79,7 +79,7 @@
                             <td><span id="advance{{$loop->index}}">{{$data->預領數量}}</span></td>
                             <td><input class="form-control amount" style="width:100px" type="number"
                                     id="amount{{$loop->index}}" name="amount{{$loop->index}}" required
-                                    value="{{$data->實際領用數量}}"></td>
+                                    value="{{$data->實際領用數量}}" min = "1"></td>
                             <td><span id="remark{{$loop->index}}">{{$data->備註}}</span></td>
                             <td><input class="form-control reason" style="width:100px" type="text"
                                     id="reason{{$loop->index}}" name="reason{{$loop->index}}" value="{{$data->實領差異原因}}">

@@ -1,9 +1,9 @@
 sessionStorage.clear();
 
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-})
+// var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+// var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+//   return new bootstrap.Tooltip(tooltipTriggerEl)
+// })
 
 $.ajaxSetup({
     headers: {
@@ -21,8 +21,6 @@ $("#usereason").on("change", function () {
         document.getElementById("reason").required = false;
     }
 });
-
-
 
 var index = 0;
 var count = 0;
@@ -44,6 +42,16 @@ function appenSVg(index) {
     $('#deleteBtn' + index).append(svg);
     $('#deleteBtn' + index).on('click', function (e) {
         e.preventDefault();
+        notyf.success({
+            message: Lang.get("outboundpageLang.delete") + Lang.get("outboundpageLang.success"),
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+                x: "right",
+                y: "bottom"
+            }
+        });
         count = count - 1;
         $(this).parent().parent().remove();
     }); // on delete btn click
@@ -53,6 +61,10 @@ function appenSVg(index) {
 $(document).ready(function () {
     $('#pick').on('submit', function (e) {
         e.preventDefault();
+
+        // clean up previous input results
+        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
 
         var client = $("#client").val();
         var machine = $("#machine").val();
@@ -89,8 +101,6 @@ $(document).ready(function () {
 
                 sessionStorage.setItem('pickcount', index + 1);
                 document.getElementById("nostock").style.display = "none";
-                document.getElementById('client').style.borderColor = "";
-                document.getElementById('number').style.borderColor = "";
                 document.getElementById('numbererror').style.display = "none";
                 document.getElementById('numbererror1').style.display = "none";
 
@@ -177,8 +187,8 @@ $(document).ready(function () {
                 //沒有庫存
                 if (err.status == 420) {
                     document.getElementById("nostock").style.display = "block";
-                    document.getElementById('number').style.borderColor = "red";
-                    document.getElementById('client').style.borderColor = "red";
+                    document.getElementById('number').classList.add("is-invalid");
+                    document.getElementById('client').classList.add("is-invalid");
                     document.getElementById('number').value = '';
                     document.getElementById('client').value = '';
                     document.getElementById("numbererror1").style.display = "none";
@@ -187,19 +197,17 @@ $(document).ready(function () {
                 //沒有料號
                 else if (err.status == 421) {
                     document.getElementById("numbererror1").style.display = "block";
-                    document.getElementById('number').style.borderColor = "red";
+                    document.getElementById('number').classList.add("is-invalid");
                     document.getElementById('number').value = '';
                     document.getElementById("nostock").style.display = "none";
-                    document.getElementById("client").style.borderColor = "";
                     document.getElementById("numbererror").style.display = "none";
                 }
                 //料號長度不為12
                 else if (err.status == 422) {
                     document.getElementById("numbererror").style.display = "block";
-                    document.getElementById('number').style.borderColor = "red";
+                    document.getElementById('number').classList.add("is-invalid");
                     document.getElementById('number').value = '';
                     document.getElementById("nostock").style.display = "none";
-                    document.getElementById("client").style.borderColor = "";
                     document.getElementById("numbererror1").style.display = "none";
                 }
             }
@@ -208,6 +216,11 @@ $(document).ready(function () {
 
     $('#pickadd').on('submit', function (e) {
         e.preventDefault();
+
+        // clean up previous input results
+        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+
         if (count == 0) {
             alert('no data');
             return false;

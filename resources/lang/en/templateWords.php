@@ -30,7 +30,7 @@ return [
     'bu' => 'BU C.M.',
     'basicInfo' => 'Basic Info.',
     'checkIvent' => 'Check Inv.',
-    'dashboard' => 'Dashboards',
+    'dashboard' => 'Menubar',
     'barcode_gen' => 'Barcodes',
     'barcode_generator' => 'Barcode Generator',
     'locBarcode' => 'Find Loc. Barcode',

@@ -39,59 +39,6 @@ class InboundController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    /*public function index()
-    {
-        //
-        if (Session::has('username')) {
-            return view('inbound.index');
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//入庫-查詢頁面
-    public function search(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('inbound.search')->with(['client' => 客戶別::cursor()]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//入庫-庫存查詢頁面
-    public function searchstock(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('inbound.searchstock')->with(['client' => 客戶別::cursor()])
-                ->with(['position' => 儲位::cursor()])
-                ->with(['senddep' => 發料部門::cursor()]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//入庫-儲位調撥頁面
-    public function positionchange(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('inbound.positionchange')->with(['client' => 客戶別::cursor()])
-                ->with(['position' => 儲位::cursor()]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//入庫-庫存上傳頁面
-    public function upload(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('inbound.upload');
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
     //入庫-儲位調撥
     public function change(Request $request)
     {
@@ -514,24 +461,9 @@ class InboundController extends Controller
         }
     }
 
-
-    /*//入庫-新增頁面
-    public function add(Request $request)
-    {
-        if (Session::has('username')) {
-
-            return view('inbound.add')->with(['client' => 客戶別::cursor()])
-                ->with(['inreason' => 入庫原因::cursor()]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
     //入庫-新增
     public function addnew(Request $request)
     {
-        Session::forget('inboundadd');
-
         if (Session::has('username')) {
             if ($request->input('submit') === '0') {
                 if ($request->input('client') !== null && $request->input('inreason') !== null) {
@@ -593,8 +525,9 @@ class InboundController extends Controller
                                     }
                                 }
                                 $amount = round($amount);
-                                Session::put('inboundadd', $number);
-                                return \Response::json(['boolean' => 'true',
+
+                                return \Response::json([
+                                    'type' => 'add',
                                     'number' => $number, 'client' => $client, 'inreason' => $inreason,
                                     'transit' => $amount, 'stock' => $stock, 'safe' => $safe, 'name' => $name,
                                     'format' => $format, 'unit' => $unit, 'positions' => $positions
@@ -609,193 +542,20 @@ class InboundController extends Controller
                 Session::put('addclient', $request->input('client'));
                 Session::put('client', $request->input('client'));
                 Session::put('inreason', $request->input('inreason'));
-                return \Response::json(['boolean' => 'false']/* Status code here default is 200 ok*/);
+                return \Response::json(['type' => 'client']/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
         }
     }
-
-
-    /*//入庫-新增頁面
-    public function addnewok(Request $request)
-    {
-        if (Session::has('username')) {
-            if (Session::has('inboundadd')) {
-                Session::forget('inboundadd');
-                return view("inbound.addnew");
-            } else {
-                return redirect(route('inbound.add'));
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
 
     //入庫-新增提交
     public function addnewsubmit(Request $request)
     {
 
         if (Session::has('username')) {
-            if ($request->input('inamount') !== null) {
-                $number = $request->input('number');
-                $client = $request->input('client');
-                $amount = $request->input('amount');
-                $inamount = $request->input('inamount');
-                $inreason = $request->input('inreason');
-                $newposition = $request->input('newposition');
-                $inpeople = $request->input('inpeople');
-                $time = Carbon::now();
-                $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $newposition)->value('現有庫存');
-                $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
-                //入庫>在途量
-                if ($inamount > $amount && $inreason !== '調撥' && $inreason !== '退庫') {
-                    return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
-                } else {
-                    if ($stock !== null) {
-                        $i = '0001';
-                        $max = DB::table('inbound')->max('入庫時間');
-                        $maxtime = date_create(date('Y-m-d', strtotime($max)));
-                        $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
-                        $interval = date_diff($maxtime, $nowtime);
-                        $interval = $interval->format('%R%a');
-                        $interval = (int)($interval);
-                        if ($interval > 0) {
-                            $opentime = Carbon::now()->format('Ymd') . $i;
-                        } else {
-                            $num = DB::table('inbound')->max('入庫單號');
-                            $num = intval($num);
-                            $num++;
-                            $num = strval($num);
-                            $opentime = $num;
-                        }
-                        DB::beginTransaction();
-                        try {
-
-                            DB::table('inbound')
-                                ->insert([
-                                    '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $inamount, '儲位' => $newposition,
-                                    '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
-                                ]);
-
-                            DB::table('inventory')
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->where('儲位', $newposition)
-                                ->update(['現有庫存' => $stock + $inamount, '最後更新時間' => $time]);
-                            if ($inreason !== '調撥' && $inreason !== '退庫') {
-                                DB::table('在途量')
-                                    ->where('客戶', $client)
-                                    ->where('料號', $number)
-                                    ->update(['請購數量' => $buy - $inamount]);
-                            }
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
-                        }
-
-                        return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
-                    } else {
-                        $i = '0001';
-                        $max = DB::table('inbound')->max('入庫時間');
-                        $maxtime = date_create(date('Y-m-d', strtotime($max)));
-                        $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
-                        $interval = date_diff($maxtime, $nowtime);
-                        $interval = $interval->format('%R%a');
-                        $interval = (int)($interval);
-                        if ($interval > 0) {
-                            $opentime = Carbon::now()->format('Ymd') . $i;
-                        } else {
-                            $num = DB::table('inbound')->max('入庫單號');
-                            $num = intval($num);
-                            $num++;
-                            $num = strval($num);
-                            $opentime = $num;
-                        }
-                        DB::beginTransaction();
-                        try {
-                            DB::table('inbound')
-                                ->insert([
-                                    '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $inamount, '儲位' => $newposition,
-                                    '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
-                                ]);
-
-                            DB::table('inventory')
-                                ->insert(['料號' => $number, '現有庫存' => $inamount, '儲位' => $newposition, '客戶別' => $client, '最後更新時間' => Carbon::now()]);
-                            if ($inreason !== '調撥' && $inreason !== '退庫') {
-                                DB::table('在途量')
-                                    ->where('客戶', $client)
-                                    ->where('料號', $number)
-                                    ->update(['請購數量' => $buy - $inamount]);
-                            }
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
-                        }
-                        return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
-                    }
-                }
-            } else {
-                return redirect(route('inbound.add'));
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-
-    /*//入庫-新增提交成功
-    public function addnewsubmitok()
-    {
-        if (Session::has('username'))
-        {
-            if(Session::has('addnewsubmitok'))
-            {
-                Session::forget('addnewsubmitok');
-                return view("inbound.addnewsubmitok");
-
-            }
-            else
-            {
-                return redirect(route('inbound.add'));
-            }
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//入庫-新增(By客戶別)頁面
-    public function addclient(Request $request)
-    {
-        if (Session::has('username')) {
-            if (Session::has('addclient')) {
-                Session::forget('addclient');
-                $client = Session::get('client');
-                $number = DB::table('在途量')->where('客戶', Session::get('client'))->where('請購數量', '>', 0)->value('料號');
-                return view("inbound.addclient")->with(['data' => 在途量::cursor()->where('請購數量', '>', 0)->where('客戶', $client)])
-                    ->with(['inreason' => Session::get('inreason')])
-                    ->with(['positions' => 儲位::cursor()])
-                    ->with(['peopleinf' => 人員信息::cursor()]);
-            } else {
-                return redirect(route('inbound.add'));
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    //入庫-新增(By客戶別)提交
-    public function addclientsubmit(Request $request)
-    {
-        if (Session::has('username')) {
-            $count = $request->input('count');
-            $record = 0;
-            //入庫單號
-            $i = '0001';
+            $count = count($request->input('client'));
+            $j = '0001';
             $max = DB::table('inbound')->max('入庫時間');
             $maxtime = date_create(date('Y-m-d', strtotime($max)));
             $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
@@ -803,7 +563,7 @@ class InboundController extends Controller
             $interval = $interval->format('%R%a');
             $interval = (int)($interval);
             if ($interval > 0) {
-                $opentime = Carbon::now()->format('Ymd') . $i;
+                $opentime = Carbon::now()->format('Ymd') . $j;
             } else {
                 $num = DB::table('inbound')->max('入庫單號');
                 $num = intval($num);
@@ -811,136 +571,61 @@ class InboundController extends Controller
                 $num = strval($num);
                 $opentime = $num;
             }
-            for ($i = 0; $i < $count; $i++) {
-                $number = $request->input('number')[$i];
-                $client = $request->input('client')[$i];
-                $amount = $request->input('amount')[$i];
-                $inreason = $request->input('inreason')[$i];
-                $position = $request->input('position')[$i];
-                $inpeople = $request->input('inpeople');
-                $time = Carbon::now();
-                $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
-                $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
-                if ($stock !== null) {
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
 
-                    DB::beginTransaction();
-                    try {
+                    $amount = $request->input('amount')[$i];
+                    $number = $request->input('number')[$i];
+                    $client = $request->input('client')[$i];
+                    $inreason = $request->input('inreason')[$i];
+                    $position = $request->input('position')[$i];
+                    $now = Carbon::now();
+                    $inpeople = $request->input('inpeople');
+                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
+                    $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
 
+                    if ($stock !== null) {
                         DB::table('inbound')
                             ->insert([
                                 '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $position,
-                                '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
+                                '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => $now
                             ]);
 
                         DB::table('inventory')
                             ->where('客戶別', $client)
                             ->where('料號', $number)
                             ->where('儲位', $position)
-                            ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $time]);
+                            ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $now]);
                         if ($inreason !== '調撥' && $inreason !== '退庫') {
                             DB::table('在途量')
                                 ->where('客戶', $client)
                                 ->where('料號', $number)
                                 ->update(['請購數量' => $buy - $amount]);
-                        }
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                } else {
-                    DB::beginTransaction();
-                    try {
+                        } //if reason
+                    } //if stock
+                    else {
                         DB::table('inbound')
                             ->insert([
                                 '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $position,
-                                '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
+                                '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => $now
                             ]);
 
                         DB::table('inventory')
-                            ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => Carbon::now()]);
-
+                            ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $now]);
                         if ($inreason !== '調撥' && $inreason !== '退庫') {
                             DB::table('在途量')
                                 ->where('客戶', $client)
                                 ->where('料號', $number)
                                 ->update(['請購數量' => $buy - $amount]);
                         }
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                }
-                DB::rollBack();
-            }
-            if ($record == $count) {
-                $record = 0;
-                for ($i = 0; $i < $count; $i++) {
-                    $number = $request->input('number')[$i];
-                    $client = $request->input('client')[$i];
-                    $amount = $request->input('amount')[$i];
-                    $inreason = $request->input('inreason')[$i];
-                    $position = $request->input('position')[$i];
-                    $inpeople = $request->input('inpeople');
-                    $time = Carbon::now();
-                    $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
-                    $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
-                    if ($stock !== null) {
-
-                        DB::beginTransaction();
-                        try {
-
-                            DB::table('inbound')
-                                ->insert([
-                                    '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $position,
-                                    '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
-                                ]);
-
-                            DB::table('inventory')
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->where('儲位', $position)
-                                ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $time]);
-                            if ($inreason !== '調撥' && $inreason !== '退庫') {
-                                DB::table('在途量')
-                                    ->where('客戶', $client)
-                                    ->where('料號', $number)
-                                    ->update(['請購數量' => $buy - $amount]);
-                            }
-                            $record++;
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                        }
-                    } else {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('inbound')
-                                ->insert([
-                                    '入庫單號' => $opentime, '料號' => $number, '入庫數量' => $amount, '儲位' => $position,
-                                    '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '入庫時間' => Carbon::now()
-                                ]);
-
-                            DB::table('inventory')
-                                ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '客戶別' => $client, '最後更新時間' => Carbon::now()]);
-
-                            if ($inreason !== '調撥' && $inreason !== '退庫') {
-                                DB::table('在途量')
-                                    ->where('客戶', $client)
-                                    ->where('料號', $number)
-                                    ->update(['請購數量' => $buy - $amount]);
-                            }
-                            $record++;
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                        }
-                    }
-                }
-                return \Response::json(['message' => $record , 'opentime' => $opentime]/* Status code here default is 200 ok*/);
+                    } //else
+                } // for
+                DB::commit();
+                return \Response::json(['message' => $opentime, 'record' => $count]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
@@ -1044,8 +729,6 @@ class InboundController extends Controller
         }
     }
 
-
-
     //庫存上傳
     public function uploadinventory(Request $request)
     {
@@ -1066,61 +749,40 @@ class InboundController extends Controller
         }
     }
 
-    /*//庫存上傳頁面
-    function uploadinventorypage(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('inbound.uploadinventory1');
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
     //上傳資料新增至資料庫
     public function insertuploadinventory(Request $request)
     {
         if (Session::has('username')) {
             $count = $request->input('count');
-            $record = 0;
             $now = Carbon::now();
             $clients =  $request->input('client');
             $numbers =  $request->input('number');
             $amounts =  $request->input('amount');
             $positions =  $request->input('position');
-            for ($i = 0; $i < $count; $i++) {
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
 
-                $stock = DB::table('inventory')->where('客戶別', $clients[$i])->where('料號', $numbers[$i])->where('儲位', $positions[$i])->value('現有庫存');
+                    $stock = DB::table('inventory')->where('客戶別', $clients[$i])->where('料號', $numbers[$i])->where('儲位', $positions[$i])->value('現有庫存');
 
-                if ($stock === null) {
-                    DB::beginTransaction();
-                    try {
+                    if ($stock === null) {
                         DB::table('inventory')
                             ->insert(['料號' => $numbers[$i], '現有庫存' => $amounts[$i], '儲位' => $positions[$i], '客戶別' => $clients[$i], '最後更新時間' => $now]);
-                        DB::commit();
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        $mess = $e->getmessage();
-                        return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
-                    }
-                } else {
-                    DB::beginTransaction();
-                    try {
+                    } else {
                         DB::table('inventory')
                             ->where('客戶別', $clients[$i])
                             ->where('料號', $numbers[$i])
                             ->where('儲位', $positions[$i])
                             ->update(['現有庫存' => $stock + $amounts[$i], '最後更新時間' => $now]);
-                        DB::commit();
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        $mess = $e->getmessage();
-                        return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
                     }
-                }
+                } // for
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $mess = $e->getmessage();
+                return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
             }
-            return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
         }

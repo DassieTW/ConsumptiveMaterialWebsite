@@ -62,7 +62,7 @@ function copyoption(index, count) {
 }
 
 function deleteBtn(index) {
-    notyf.error({
+    notyf.success({
         message: Lang.get("outboundpageLang.delete") +
             Lang.get("outboundpageLang.success"),
         duration: 3000, //miliseconds, use 0 for infinite duration
@@ -73,10 +73,8 @@ function deleteBtn(index) {
             y: "bottom",
         },
     });
-    $("#deleteBtn" + index)
-        .parent()
-        .parent()
-        .remove();
+    count = count - 1;
+    $("#deleteBtn" + index).parent().parent().remove();
     // on delete btn click
 }
 
@@ -255,7 +253,18 @@ $("#pickpeople").on("blur", function () {
 
 $(document).ready(function () {
     $("#picklist").on("submit", function (e) {
+
         e.preventDefault();
+
+        // clean up previous input results
+        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+
+        if (count == 0) {
+            alert('no data');
+            window.location.reload();
+        }
+
         var client = [];
         var machine = [];
         var production = [];
@@ -267,6 +276,12 @@ $(document).ready(function () {
         var list = [];
         var advance = [];
         var position = [];
+        var name = [];
+        var format = [];
+        var unit = [];
+        var opentime = [];
+        var remark = [];
+
         for (let i = 0; i < count; i++) {
             if ($("#client" + i).text() !== null && $("#client" + i).text() !== "") {
                 client.push($("#client" + i).text());
@@ -279,6 +294,11 @@ $(document).ready(function () {
                 advance.push(parseInt($("#advance" + i).text()));
                 amount.push(parseInt($("#amount" + i).val()));
                 list.push($("#list" + i).text());
+                name.push($("#name" + i).text());
+                format.push($("#format" + i).text());
+                unit.push($("#unit" + i).text());
+                opentime.push($("#opentime" + i).text());
+                remark.push($("#remark" + i).text());
                 po = $("#position" + i)
                     .val()
                     .split(" ");
@@ -303,37 +323,31 @@ $(document).ready(function () {
         var check1 = checkpeople.indexOf(sendpeople);
         var check2 = checkpeople.indexOf(pickpeople);
 
+        //check has people
         if (check1 == -1) {
             alert(Lang.get("outboundpageLang.nosendpeople"));
-            $("#sendpeople").css("border-color", "red");
-            $("#pickpeople").css("border-color", "");
+            $("#sendpeople").addClass("is-invalid");
             return false;
         }
 
         if (check2 == -1) {
             alert(Lang.get("outboundpageLang.nopickpeople"));
-            $("#pickpeople").css("border-color", "red");
-            $("#sendpeople").css("border-color", "");
+            $("#pickpeople").addClass("is-invalid");
             return false;
         }
 
-        console.log(advance);
-        console.log(amount);
+        //check write reason
         for (let i = 0; i < count; i++) {
             if (amount[i] != advance[i] && reason[i] == "") {
-                $(".reason").css("borderColor", "");
+
                 row = i + 1;
-                $("#reasonerrrow")
-                    .empty()
-                    .append(Lang.get("outboundpageLang.row") + " " + row);
+                $("#reasonerrrow").empty().append(Lang.get("outboundpageLang.row") + " " + row);
                 document.getElementById("reasonerror").style.display = "block";
-                document.getElementById("reason" + i).style.borderColor = "red";
+                document.getElementById("reason" + i).classList.add("is-invalid");
                 document.getElementById("lessstock").style.display = "none";
-                document.getElementById("amount" + i).style.borderColor = "";
                 return false;
             } else {
-                document.getElementById("reasonerror").style.display = "none";
-                $(".reason").css("borderColor", "");
+                continue;
             }
         }
 
@@ -353,6 +367,12 @@ $(document).ready(function () {
                 production: production,
                 line: line,
                 usereason: usereason,
+                advance: advance,
+                name: name,
+                format: format,
+                unit: unit,
+                opentime: opentime,
+                remark: remark,
             },
 
             beforeSend: function () {
@@ -368,53 +388,35 @@ $(document).ready(function () {
 
             success: function (data) {
                 var mess =
-                    Lang.get("outboundpageLang.total") +
-                    " : " +
-                    data.record +
-                    Lang.get("outboundpageLang.record") +
-                    Lang.get("outboundpageLang.outpickok") +
-                    " : " +
-                    data.list;
+                    Lang.get("outboundpageLang.total") + " : " + data.record + ' ' +
+                    Lang.get("outboundpageLang.record") + ' ' + Lang.get("outboundpageLang.outpickok") + " : " + data.list;
                 alert(mess);
-                //alert("出庫完成，領料單號: " + list);
+
                 window.location.href = "picklist";
                 //window.location.href = "member.newok";
             },
             error: function (err) {
                 //儲位庫存小於實際領用數量
                 if (err.status == 421) {
-                    $(".amount").css("borderColor", "");
                     document.getElementById("lessstock").style.display = "block";
-                    document.getElementById("position").style.borderColor = "red";
+                    document.getElementById("position").classList.add("is-invalid");
                     $("#lessstock #row").html(
                         Lang.get("outboundpageLang.row") +
                         " : " +
                         (err.responseJSON.row + 1)
                     );
                     $("#lessstock #position").html(
-                        Lang.get("outboundpageLang.nowloc") +
-                        " : " +
-                        err.responseJSON.position +
-                        "<br>" +
-                        Lang.get("outboundpageLang.stockless")
+                        Lang.get("outboundpageLang.nowloc") + " : " +
+                        err.responseJSON.position + "<br>" + Lang.get("outboundpageLang.stockless")
                     );
                     $("#lessstock #nowstock").html(
-                        Lang.get("outboundpageLang.nowstock") +
-                        " : " +
-                        err.responseJSON.nowstock
+                        Lang.get("outboundpageLang.nowstock") + " : " + err.responseJSON.nowstock
                     );
                     $("#lessstock #amount").html(
-                        Lang.get("outboundpageLang.realpickamount") +
-                        " : " +
-                        amount[err.responseJSON.row]
+                        Lang.get("outboundpageLang.realpickamount") + " : " + amount[err.responseJSON.row]
                     );
-                    document.getElementById(
-                        "amount" + err.responseJSON.row
-                    ).style.borderColor = "red";
+                    document.getElementById("amount" + err.responseJSON.row).classList.add("is-invalid");
                     document.getElementById("reasonerror").style.display = "none";
-                    document.getElementById(
-                        "reason" + err.responseJSON.row
-                    ).style.borderColor = "";
                 }
                 //transcation error
                 else if (err.status == 422) {

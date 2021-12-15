@@ -51,14 +51,14 @@
                         <td><input type="hidden" id="machine{{$loop->index}}" name="machine{{$loop->index}}"
                                 value="{{$data->機種}}">{{$data->機種}}</td>
                         <td><input type="hidden" id="production{{$loop->index}}" name="production{{$loop->index}}"
-                                value="{{$data->制程}}">{{$data->制程}}</td>
+                                value="{{$data->製程}}">{{$data->製程}}</td>
                         <td><input type="hidden" id="number{{$loop->index}}" name="number{{$loop->index}}"
                                 value="{{$data->料號}}">{{$data->料號}}</td>
                         <td>{{$name}}</td>
                         <td>{{$format}}</td>
                         <td><input style="width: 200px;" class="form-control form-control-lg " type="number"
                                 id="amount{{$loop->index}}" name="amount{{$loop->index}}" value="{{$data->單耗}}"
-                                step="0.0000000001" oninput="if(value.length>12)value=value.slice(0,12)"></td>
+                                step="0.0000000001" oninput="if(value.length>12)value=value.slice(0,12)" min="0"></td>
                         <td>
                             <?php
                                 echo $test;

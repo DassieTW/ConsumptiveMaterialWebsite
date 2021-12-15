@@ -16,7 +16,6 @@ function copyoption(count) {
     var select1 = document.getElementById("copyloc");
     var select2 = document.getElementById("newposition" + count);
     select2.innerHTML = select1.innerHTML;
-    console.log(1);
     //$('#position'+ index + 'option').clone().appendTo('#position' + count);
 }
 
@@ -33,7 +32,7 @@ function deleteBtn(index) {
         },
     });
     $("#deleteBtn" + index).parent().parent().remove();
-    index = index - 1;
+    count = count - 1;
     // on delete btn click
 }
 
@@ -83,10 +82,9 @@ $.ajaxSetup({
     }
 });
 
-var index = $("#count").val();
+var index = 0;
 var count = $("#count").val();
 count = parseInt(count);
-index = parseInt(index);
 
 $(document).ready(function () {
     $('#add').on('submit', function (e) {
@@ -125,9 +123,8 @@ $(document).ready(function () {
             },
 
             success: function (data) {
-                console.log(data.boolean);
 
-                if (data.boolean == 'true') {
+                if (data.type == 'add') {
 
                     document.getElementById("notransit").style.display = "none";
                     sessionStorage.setItem('addclient', count + 1);
@@ -208,7 +205,9 @@ $(document).ready(function () {
                     index = index + 1;
                     count = count + 1;
 
-                } else if (data.boolean == 'false') {
+
+                }
+                else if (data.type == 'client') {
                     window.location.href = "/inbound/addclient";
                 }
 
@@ -249,84 +248,77 @@ $(document).ready(function () {
     $('#addclient').on('submit', function (e) {
         e.preventDefault();
 
-        if(index == 0)
-        {
-
+        console.log(count);
+        if (count == 0) {
+            alert('no data');
+            return false;
         }
+
         // clean up previous input results
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
-
-        var checkcount = $("#checkcount").val();
-        var client = [];
-        var number = [];
-        var buyamount = []; //在途量
-        var amount = []; //入庫數量
-        var position = [];
-        var inreason = [];
 
         var inpeo = $("#inpeople").val();
         inpeo = inpeo.split(' ');
         var inpeople = inpeo[0];
         var checkpeople = [];
 
-        //check inbound people exist
-        for (let i = 0; i < checkcount; i++) {
+        for (let i = 0; i < $("#checkcount").val(); i++) {
             checkpeople.push($("#checkpeople" + i).val());
         }
-        console.log(checkpeople);
+        console.log(inpeople);
 
         var check1 = checkpeople.indexOf(inpeople);
 
         if (check1 == -1) {
             alert(Lang.get("inboundpageLang.noinpeople"));
-            $("#inpeople").css("border-color", "red");
+            $("#inpeople").addClass("is-invalid");
             return false;
         }
-        //
 
-        for (let i = 0; i < count; i++) {
-            client.push($("#client" + i).val());
-            number.push($("#number" + i).val());
-            buyamount.push($("#buyamount" + i).val());
-            amount.push($("#amount" + i).val());
-            position.push($("#position" + i).val());
-            inreason.push($("#inreason" + i).val());
-        }
+        var client = [];
+        var number = [];
+        var position = [];
+        var transit = [];
+        var amount = [];
+        var inreason = [];
+        var row = [];
+        var j = 0;
 
-        //入庫數量大於在途量
-        for (let i = 0; i < count; i++) {
-            if (parseInt(amount[i]) > parseInt(buyamount[i])) {
-                row = i + 1;
-                mess = Lang.get('inboundpageLang.transiterror') + ' ' + Lang.get('inboundpageLang.row') +
-                    ' : ' + row;
-                alert(mess);
-                $("#inpeople").css("border-color", "");
-                return false;
-            } else {
-                continue;
+        for (let i = 0; i < sessionStorage.getItem('addclient'); i++) {
+            if ($("#client" + i).text() !== null && $("#client" + i).text() !== '') {
+                row[j] = i;
+                client.push($("#client" + i).text());
+                number.push($("#number" + i).text());
+                transit.push(parseInt($("#transit" + i).text()));
+                amount.push(parseInt($("#amount" + i).val()));
+                position.push($("#newposition" + i).val());
+                inreason.push($("#inreason" + i).text());
             }
         }
-        console.log(count);
-        if (count === undefined) {
-            alert(Lang.get('inboundpageLang.notransit'));
-            window.location.reload();
-            return false;
+
+        //入庫數量 > 在途量
+        for (let i = 0; i < count; i++) {
+            if (amount[i] > transit[i] && inreason[i] != '調撥' && inreason[i] != '退庫') {
+                $("#amount" + row[i]).addClass("is-invalid");
+                var row = i + 1;
+                var mess = Lang.get('inboundpageLang.row') + ' : ' + row + Lang.get('inboundpageLang.transiterror');
+                alert(mess);
+                return false;
+            }
         }
 
         $.ajax({
             type: 'POST',
-            url: "addclientsubmit",
+            url: "addnewsubmit",
             data: {
                 client: client,
                 number: number,
-                buyamount: buyamount,
+                position: position,
                 amount: amount,
                 inreason: inreason,
-                position: position,
                 inpeople: inpeople,
-                count: count,
             },
 
             beforeSend: function () {
@@ -335,29 +327,24 @@ $(document).ready(function () {
                     text: 'Loading...',
                     animation: 'circle'
                 });
-
             },
             complete: function () {
                 $('body').loadingModal('hide');
             },
-
             success: function (data) {
-
-                var mess = Lang.get('inboundpageLang.total') + ' ' + (data.message) + ' ' + Lang.get('inboundpageLang.record') +
-                    Lang.get('inboundpageLang.change') + Lang.get('inboundpageLang.success') +
-                    Lang.get('inboundpageLang.inlist') + ' : ' + (data.opentime);
+                var mess = Lang.get('inboundpageLang.total') + ' : ' + data.record + Lang.get('inboundpageLang.record') + ' ' +
+                Lang.get('inboundpageLang.add') + Lang.get('inboundpageLang.success') + ' ' + Lang.get('inboundpageLang.inlist') + ' : ' + data.message;
                 alert(mess);
-                window.location.href = "add";
+                window.location.href = "/inbound/add";
 
             },
             error: function (err) {
                 //transaction error
-                if (err.status == 420) {
-                    console.log(err.status);
-                    var mess = err.responseJSON.message;
-                    alert(mess);
+                if (err.status == 421) {
+                    alert(err.responseJSON.message);
+                    window.location.reload();
                 }
-            },
+            }
         });
     });
 });

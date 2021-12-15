@@ -14,6 +14,7 @@ $("#materialsearch").on("submit", function (e) {
     var select = ($(document.activeElement).val());
     var time = ($("#count").val());
 
+    var row = 0;
     var check = [];
     var number = [];
     var gradea = [];
@@ -107,6 +108,16 @@ $("#materialsearch").on("submit", function (e) {
         if (belong[i] === 'Station') belong[i] = '站位';
     }
 
+    for (let i = 0; i < count; i++) {
+        if (month[i] == '否' && safe[i] == '') {
+            row = parseInt(check[i]) + 1;
+            var mess = Lang.get("basicInfoLang.row") + ' : ' + row + ' ' + Lang.get("basicInfoLang.safeerror");
+            alert(mess);
+            $("#safe" + check[i]).addClass("is-invalid");
+            return false;
+        }
+    }
+
     checked = ("input[type=checkbox]:checked").length;
 
     if (count == 0 && select != "下載") {
@@ -168,15 +179,8 @@ $("#materialsearch").on("submit", function (e) {
                 window.location.reload();
             },
             error: function (err) {
-                //非月請購沒填安全庫存
-                if (err.status == 420) {
-                    var mess = err.responseJSON.row + ' ' + err.responseJSON.message;
-                    alert(mess);
-
-                    console.log(err.responseJSON.message);
-                    console.log(err.status);
-                    //transaction error
-                } else if (err.status == 409) {
+                //transaction error
+                if (err.status == 409) {
                     console.log(err.status);
                 }
             },

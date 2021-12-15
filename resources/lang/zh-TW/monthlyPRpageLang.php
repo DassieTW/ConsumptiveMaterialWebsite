@@ -129,4 +129,5 @@ return [
     'stand' => '站位',
     'nopeople' => '請輸入畫押人員',
     'noemail' => '請輸入畫押人員信箱',
+    'data' => '資料',
 ];

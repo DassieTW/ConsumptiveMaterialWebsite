@@ -99,7 +99,7 @@ $.ajaxSetup({
             + Lang.get('monthlyPRpageLang.isn')+Lang.get('monthlyPRpageLang.consume')
             + Lang.get('monthlyPRpageLang.delete')+Lang.get('monthlyPRpageLang.success');
             alert(mess);
-            window.location.href = "/month";
+            window.location.href = "consume";
 
         }
 

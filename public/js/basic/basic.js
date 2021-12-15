@@ -1,5 +1,3 @@
-
-
 var tab = sessionStorage.getItem('basic');
 var choose = sessionStorage.getItem('basic');
 if (!tab) {
@@ -211,15 +209,17 @@ $(document).ready(function () {
 
             },
             error: function (err) {
-                document.getElementById(err.responseJSON.message).classList.add("is-invalid");
-                var mess = Lang.get('basicInfoLang.repeat');
-                alert(mess);
-                console.log(err.responseJSON.message);
-                console.log(err.status);
+                if (err.status == 422) {
+                    document.getElementById(err.responseJSON.message).classList.add("is-invalid");
+                    var mess = Lang.get('basicInfoLang.repeat');
+                    alert(mess);
+                } else {
+                    var mess = err.responseJSON.message;
+                    alert(mess);
+                    window.location.reload();
+                }
             }
-
         });
-
     });
 });
 

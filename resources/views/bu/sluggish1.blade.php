@@ -54,7 +54,7 @@
                                             $buytime1 = array();
                                             $buytimeco = array();
                                             $buytimeco1 = array();
-                                            $database = ['default','M2-TEST-1112','M2_TEST_1112'];
+                                            $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management'];
                                             foreach ($database as $key => $value) {
                                                 if($value != $database[$i])
                                                 {

@@ -1,3 +1,4 @@
+
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -46,6 +47,22 @@ $("#uploadnew").on("submit", function (e) {
         safe.push($("#data13a" + i).val());
     }
 
+    for (let i = 0; i < count; i++) {
+        if (number[i].length !== 12) {
+            var row = i + 1;
+            var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.isnlength');
+            $("#data0a" + i).addClass("is-invalid");
+            window.alert(mess);
+            return false;
+        }
+        if (month[i] == '否' || month[i] == 'No' && safe[i] == "") {
+            var row = i + 1;
+            var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.safeerror');
+            $("#data13a" + i).addClass("is-invalid");
+            window.alert(mess);
+            return false;
+        }
+    }
     $.ajax({
         type: "POST",
         url: "insertuploadmaterial",
@@ -97,18 +114,8 @@ $("#uploadnew").on("submit", function (e) {
                 window.alert(mess);
                 window.location.href = 'new';
             }
-            //料號長度不為12
-            else if (err.status == 421) {
-                var mess = Lang.get('basicInfoLang.row') + ' : ' + err.responseJSON.message + ' ' + Lang.get('basicInfoLang.isnlength');
-                window.alert(mess);
-                window.location.href = 'new';
-            }
-            //非月請購沒安全庫存
-            else if (err.status == 422) {
-                var mess = Lang.get('basicInfoLang.row') + ' : ' + err.responseJSON.message + ' ' + Lang.get('basicInfoLang.safeerror');
-                window.alert(mess);
-                window.location.href = 'new';
-            } else {
+            //transaction error
+            else {
                 var mess = err.responseJSON.message;
                 window.alert(mess);
                 window.location.reload();

@@ -25,7 +25,7 @@ return [
     'exampleExcel' => 'Example Template Download',
     'Temporary_Storage_Zone' => 'Temporary Storage Zone',
     'Delete_Notice' => 'Deleting here only means the barcode will not be printed.',
-    'print_amount' => 'Print Amount',
+    'print_amount' => 'Print quantity',
     'print' => 'Print',
     'upload_save_success' => 'Successfully Uploaded',
     'temp_save_success' => 'Successfully Saved',

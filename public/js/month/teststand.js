@@ -75,11 +75,11 @@ $.ajaxSetup({
 
     for(let i = 0 ; i < count ; i++)
     {
-        if(parseInt(nowpeople[i]) != parseInt(comnowpeople[i]) || parseInt(nowline[i]) != parseInt(comnowline[i]) ||
-        parseInt(nowclass[i]) != parseInt(comnowclass[i]) || parseInt(nowuse[i]) != parseInt(comnowuse[i]) ||
-        parseInt(nowchange[i]) != parseInt(comnowchange[i]) || parseInt(nextpeople[i]) != parseInt(comnextpeople[i]) ||
-        parseInt(nextline[i]) != parseInt(comnowline[i]) || parseInt(nextclass[i]) != parseInt(comnextclass[i]) ||
-        parseInt(nextuse[i]) != parseInt(comnextuse[i]) || parseInt(nextchange[i]) != parseInt(comnextchange[i]))
+        if(parseFloat(nowpeople[i]) !== parseFloat(comnowpeople[i]) || parseFloat(nowline[i]) !== parseFloat(comnowline[i]) ||
+        parseFloat(nowclass[i]) !== parseFloat(comnowclass[i]) || parseFloat(nowuse[i]) !== parseFloat(comnowuse[i]) ||
+        parseFloat(nowchange[i]) !== parseFloat(comnowchange[i]) || parseFloat(nextpeople[i]) !== parseFloat(comnextpeople[i]) ||
+        parseFloat(nextline[i]) !== parseFloat(comnowline[i]) || parseFloat(nextclass[i]) !== parseFloat(comnextclass[i]) ||
+        parseFloat(nextuse[i]) !== parseFloat(comnextuse[i]) || parseFloat(nextchange[i]) !== parseFloat(comnextchange[i]))
         {
             check[i] = 1;
         }
@@ -91,7 +91,7 @@ $.ajaxSetup({
 
     $.ajax({
       type: 'POST',
-      url: "teststandsubmit",
+      url: "teststand",
       data: { client: client, number: number, production: production, machine: machine ,
         nowpeople :nowpeople , nowline : nowline , nowclass : nowclass , nowuse : nowuse , nowchange : nowchange ,
         nextpeople :nextpeople , nextline : nextline , nextclass : nextclass , nextuse : nextuse , nextchange : nextchange ,

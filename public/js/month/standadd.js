@@ -1,56 +1,353 @@
-
+sessionStorage.clear();
 
 $.ajaxSetup({
-  headers: {
-    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  }
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
 });
 
-$('#standadd').on('submit', function (e) {
-  e.preventDefault();
+var index = 0;
+var count = 0;
 
-  // clean up previous input results
-  $('.is-invalid').removeClass('is-invalid');
-  $(".invalid-feedback").remove();
+function appenSVg(index) {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    path.setAttribute('d', "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z");
+    svg.setAttribute("width", "16");
+    svg.setAttribute("height", "16");
+    svg.setAttribute("fill", "#c94466");
+    svg.setAttribute("class", "bi bi-x-circle-fill");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    svg.appendChild(path);
+    $('#deleteBtn' + index).append(svg);
+    $('#deleteBtn' + index).on('click', function (e) {
+        e.preventDefault();
+        notyf.success({
+            message: Lang.get("monthlyPRpageLang.delete") + Lang.get("monthlyPRpageLang.success"),
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+                x: "right",
+                y: "bottom"
+            }
+        });
+        count = count - 1;
+        $(this).parent().parent().remove();
+    }); // on delete btn click
+} // appenSVg
 
-  var client = $("#client").val();
-  var number = $("#number").val();
-  var production = $("#production").val();
-  var machine = $("#machine").val();
-  $.ajax({
-    type: 'POST',
-    url: "standnew",
-    data: { client: client, number: number, production: production, machine: machine },
-    beforeSend: function () {
-      // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-      $('body').loadingModal({
-        text: 'Loading...',
-        animation: 'circle'
-      });
-    },
-    complete: function () {
-      $('body').loadingModal('hide');
-    },
-    success: function (data) {
-      console.log(data);
-      window.location.href = "standnewok";
-    },
-    error: function (err) {
-      //料號長度不為12
-      if (err.status == 421) {
-        document.getElementById("numbererror").style.display = "block";
-        document.getElementById('number').style.borderColor = "red";
-        document.getElementById('number').value = '';
-        document.getElementById("numbererror1").style.display = "none";
+$(document).ready(function () {
 
-      }
-      //料號不存在
-      else if (err.status == 420) {
-        document.getElementById("numbererror1").style.display = "block";
-        document.getElementById('number').style.borderColor = "red";
-        document.getElementById('number').value = '';
-        document.getElementById("numbererror").style.display = "none";
-      }
-    }
-  });
+    $('#stand').on('submit', function (e) {
+        e.preventDefault();
+
+        // clean up previous input results
+        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+
+        var client = $("#client").val();
+        var number = $("#number").val();
+        var production = $("#production").val();
+        var machine = $("#machine").val();
+        $.ajax({
+            type: 'POST',
+            url: "standnew",
+            data: {
+                client: client,
+                number: number,
+                production: production,
+                machine: machine
+            },
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+            },
+            success: function (data) {
+                sessionStorage.setItem('standcount', index + 1);
+                document.getElementById('numbererror').style.display = "none";
+                document.getElementById('numbererror1').style.display = "none";
+
+                notyf.success({
+                    message: Lang.get("monthlyPRpageLang.add") + Lang.get("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
+
+                document.getElementById('standadd').style.display = "block";
+                var tbl = document.getElementById("standaddtable");
+                var body = document.getElementById("standaddbody");
+                var row = document.createElement("tr");
+
+                let rowdelete = document.createElement('td');
+                rowdelete.innerHTML = "<a id=" + "deleteBtn" + index + "></a>";
+
+                let rownumber = document.createElement('td');
+                rownumber.innerHTML = "<span id=" + "number" + index + ">" + data.number + "</span>";
+
+                let rowname = document.createElement('td');
+                rowname.innerHTML = "<span id=" + "name" + index + ">" + data.name + "</span>";
+
+                let rowunit = document.createElement('td');
+                rowunit.innerHTML = "<span id=" + "unit" + index + ">" + data.unit + "</span>";
+
+                let rowmpq = document.createElement('td');
+                rowmpq.innerHTML = "<span id=" + "mpq" + index + ">" + data.mpq + "</span>";
+
+                let rowlt = document.createElement('td');
+                rowlt.innerHTML = "<span id=" + "lt" + index + ">" + data.lt + "</span>";
+
+                let rownowpeople = document.createElement('td');
+                rownowpeople.innerHTML = '<input id="nowpeople' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownowline = document.createElement('td');
+                rownowline.innerHTML = '<input id="nowline' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownowclass = document.createElement('td');
+                rownowclass.innerHTML = '<input id="nowclass' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownowuse = document.createElement('td');
+                rownowuse.innerHTML = '<input id="nowuse' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownowchange = document.createElement('td');
+                rownowchange.innerHTML = '<input id="nowchange' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownowdayneed = document.createElement('td');
+                rownowdayneed.innerHTML = '<input id="nowdayneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'style="width: 200px"' + '" readonly>';
+
+                let rownextpeople = document.createElement('td');
+                rownextpeople.innerHTML = '<input id="nextpeople' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownextline = document.createElement('td');
+                rownextline.innerHTML = '<input id="nextline' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownextclass = document.createElement('td');
+                rownextclass.innerHTML = '<input id="nextclass' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownextuse = document.createElement('td');
+                rownextuse.innerHTML = '<input id="nextuse' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownextchange = document.createElement('td');
+                rownextchange.innerHTML = '<input id="nextchange' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+
+                let rownextdayneed = document.createElement('td');
+                rownextdayneed.innerHTML = '<input id="nextdayneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'style="width: 200px"' + '" readonly>';
+
+                let rowsafestock = document.createElement('td');
+                rowsafestock.innerHTML = '<input id="safestock' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                    'style="width: 150px"' + '" readonly>';
+
+                let rowclient = document.createElement('td');
+                rowclient.innerHTML = "<span id=" + "client" + index + ">" + data.client + "</span>";
+
+                let rowmachine = document.createElement('td');
+                rowmachine.innerHTML = "<span id=" + "machine" + index + ">" + data.machine + "</span>";
+
+                let rowproduction = document.createElement('td');
+                rowproduction.innerHTML = "<span id=" + "production" + index + ">" + data.production + "</span>";
+
+                row.appendChild(rowdelete);
+                row.appendChild(rownumber);
+                row.appendChild(rowname);
+                row.appendChild(rowunit);
+                row.appendChild(rowmpq);
+                row.appendChild(rowlt);
+                row.appendChild(rownowpeople);
+                row.appendChild(rownowline);
+                row.appendChild(rownowclass);
+                row.appendChild(rownowuse);
+                row.appendChild(rownowchange);
+                row.appendChild(rownowdayneed);
+                row.appendChild(rownextpeople);
+                row.appendChild(rownextline);
+                row.appendChild(rownextclass);
+                row.appendChild(rownextuse);
+                row.appendChild(rownextchange);
+                row.appendChild(rownextdayneed);
+                row.appendChild(rowsafestock);
+                row.appendChild(rowclient);
+                row.appendChild(rowmachine);
+                row.appendChild(rowproduction);
+
+                body.appendChild(row);
+                tbl.appendChild(body);
+                appenSVg(index);
+
+                index = index + 1;
+                count = count + 1;
+
+                $("input").change(function () {
+                    for (let i = 0; i < sessionStorage.getItem('standcount'); i++) {
+                        var nowpeople = $("#nowpeople" + i).val();
+                        var nowline = $("#nowline" + i).val();
+                        var nowclass = $("#nowclass" + i).val();
+                        var nowuse = $("#nowuse" + i).val();
+                        var nowchange = $("#nowchange" + i).val();
+                        var nextpeople = $("#nextpeople" + i).val();
+                        var nextline = $("#nextline" + i).val();
+                        var nextclass = $("#nextclass" + i).val();
+                        var nextuse = $("#nextuse" + i).val();
+                        var nextchange = $("#nextchange" + i).val();
+                        var mpq = $("#mpq" + i).text();
+                        var lt = $("#lt" + i).text();
+                        var now = (nowpeople * nowclass * nowline * nowuse * nowchange) / mpq;
+                        var next = (nextpeople * nextclass * nextline * nextuse * nextchange) / mpq;
+                        var safe = next * lt;
+                        now = now.toFixed(7);
+                        next = next.toFixed(7);
+                        safe = safe.toFixed(7);
+                        $('#nowdayneed' + i).val(now);
+                        $('#nextdayneed' + i).val(next);
+                        $('#safestock' + i).val(safe);
+                    }
+                });
+            },
+            error: function (err) {
+                //料號長度不為12
+                if (err.status == 420) {
+                    document.getElementById("numbererror1").style.display = "block";
+                    document.getElementById('number').classList.add("is-invalid");
+                    document.getElementById('number').value = '';
+                    document.getElementById("numbererror").style.display = "none";
+
+                }
+                //料號不存在
+                else if (err.status == 421) {
+                    document.getElementById("numbererror").style.display = "block";
+                    document.getElementById('number').classList.add("is-invalid");
+                    document.getElementById('number').value = '';
+                    document.getElementById("numbererror1").style.display = "none";
+                }
+            }
+        });
+    });
+
+    $('#standadd').on('submit', function (e) {
+        e.preventDefault();
+
+        // clean up previous input results
+        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+
+        if (count == 0) {
+            alert('no data');
+            return false;
+        }
+
+        console.log(sessionStorage.getItem('standcount'));
+        var client = [];
+        var machine = [];
+        var production = [];
+        var number = [];
+        var nowpeople = [];
+        var nowline = [];
+        var nowclass = [];
+        var nowuse = [];
+        var nowchange = [];
+        var nextpeople = [];
+        var nextline = [];
+        var nextclass = [];
+        var nextuse = [];
+        var nextchange = [];
+
+        var jobnumber = $("#jobnumber").val();
+        var email = $("#email").val();
+
+        for (let i = 0; i < sessionStorage.getItem('standcount'); i++) {
+            if ($("#client" + i).text() !== null && $("#client" + i).text() !== '') {
+                client.push($("#client" + i).text());
+                machine.push($("#machine" + i).text());
+                production.push($("#production" + i).text());
+                number.push($("#number" + i).text());
+                nowpeople.push($("#nowpeople" + i).val());
+                nowline.push($("#nowline" + i).val());
+                nowclass.push($("#nowclass" + i).val());
+                nowuse.push($("#nowuse" + i).val());
+                nowchange.push($("#nowchange" + i).val());
+                nextpeople.push($("#nextpeople" + i).val());
+                nextline.push($("#nextline" + i).val());
+                nextclass.push($("#nextclass" + i).val());
+                nextuse.push($("#nextuse" + i).val());
+                nextchange.push($("#nextchange" + i).val());
+            }
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "standnewsubmit",
+            data: {
+                client: client,
+                machine: machine,
+                production: production,
+                number: number,
+                nowpeople: nowpeople,
+                nowline: nowline,
+                nowclass: nowclass,
+                nowuse: nowuse,
+                nowchange: nowchange,
+                nextpeople: nextpeople,
+                nextline: nextline,
+                nextclass: nextclass,
+                nextuse: nextuse,
+                nextchange: nextchange,
+                jobnumber: jobnumber,
+                email: email,
+                count: count,
+            },
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+            },
+            success: function (data) {
+
+                var mess = Lang.get('monthlyPRpageLang.total') + ' : ' + count + Lang.get('monthlyPRpageLang.record') +
+                    Lang.get('monthlyPRpageLang.data') + ' ， ' + Lang.get('monthlyPRpageLang.success') + Lang.get('monthlyPRpageLang.new') +
+                    ' : ' + data.record + Lang.get('monthlyPRpageLang.record') + Lang.get('monthlyPRpageLang.stand');
+                alert(mess);
+
+                $("#standhead").hide();
+                $("#standbody").hide();
+                $("#standupload").hide();
+
+                $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/teststand?' + data.database + '</a>');
+
+            },
+            error: function (err) {
+                //transaction error
+                if (err.status == 421) {
+                    alert(err.responseJSON.message);
+                    window.location.reload();
+                }
+            },
+        });
+    });
 });

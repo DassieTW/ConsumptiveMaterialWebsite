@@ -71,6 +71,8 @@
                 <input type="submit" onclick="buttonIndex=0;" id="addto" name="addto" class="btn btn-lg btn-primary"
                     value="{!! __('inboundpageLang.add') !!}">
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                <input type="submit" onclick="buttonIndex=1;" id="addclient" name="addclient"
+                    class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.addclient') !!}">
             </div>
             <div class="col-auto">
                 <label class="col col-auto form-label"></label>
@@ -80,6 +82,17 @@
         </form>
     </div>
 </div>
+
+<div style="display: none" id="showposition">
+    <select id="copyloc" name="copyloc">
+        <option style="display: none" disabled selected value="">{!!
+            __('inboundpageLang.enterloc') !!}</option>
+        @foreach($positions as $position)
+        <option>{{ $position->儲存位置 }}</option>
+        @endforeach
+    </select>
+</div>
+
 <div class="card w-100">
     <div class="card-body">
         <form id="addclient" method="POST">
@@ -150,23 +163,23 @@
                                 }
                             }
                         ?>
-                        <td><a id="deleteBtn{{$loop->index}}" href="javascript:deleteBtn({{$loop->index}})"><svg
-                            width="16" height="16" fill="#c94466" class="bi bi-x-circle-fill"
-                            viewBox="0 0 16 16">
-                            <path
-                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z">
-                            </path>
-                        </svg></a></td>
+                            <td><a id="deleteBtn{{$loop->index}}" href="javascript:deleteBtn({{$loop->index}})"><svg
+                                        width="16" height="16" fill="#c94466" class="bi bi-x-circle-fill"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z">
+                                        </path>
+                                    </svg></a></td>
                             <td><span id="client{{$loop->index}}">{{$data->客戶}}</span></td>
                             <td><span id="number{{$loop->index}}">{{$data->料號}}</span></td>
                             <td><span id="name{{$loop->index}}">{{$name}}</span></td>
                             <td><span id="format{{$loop->index}}">{{$format}}</td>
                             <td><span id="unit{{$loop->index}}">{{$unit}}</td>
-                            <td><span id="buyamount{{$loop->index}}">{{$data->請購數量}}</td>
+                            <td><span id="transit{{$loop->index}}">{{$data->請購數量}}</td>
                             <td><span id="stock{{$loop->index}}">{{$stock}}</td>
                             <td><span id="safe{{$loop->index}}">{{$safe}}</td>
-                            <td><input class = "form-control" type="number" id="amount{{$loop->index}}" name="amount{{$loop->index}}" required
-                                    value="1" min="1" style="width: 100px"></td>
+                            <td><input class="form-control" type="number" id="amount{{$loop->index}}"
+                                    name="amount{{$loop->index}}" required value="1" min="1" style="width: 100px"></td>
                             <td><span id="inreason{{$loop->index}}">{{$inreason}}</td>
                             <td>
                                 <input type="hidden" id="oldposition{{$loop->index}}" name="oldposition{{$loop->index}}"
@@ -192,17 +205,6 @@
                     </tbody>
                 </table>
             </div>
-            <div style="display: none" id="showposition">
-                {{ $copylocs = App\Models\儲位::all() }}
-                <select class="form-select form-select-lg" id="copyloc" name="copyloc"
-                    width="250" style="width: 250px" required>
-                    <option style="display: none" disabled selected value="">{!!
-                        __('inboundpageLang.enterloc') !!}</option>
-                    @foreach($copylocs as $position)
-                    <option>{{ $position->儲存位置 }}</option>
-                    @endforeach
-                </select>
-            </div>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="mb-3 col-md-6">
@@ -212,14 +214,14 @@
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                 <ul id="inboundmenu" style="display: none;" class="list-group">
-                    @foreach($peopleinf as $peopleinf )
+                    @foreach($peoples as $peopleinf )
                     <a class="inboundlist list-group-item list-group-item-action" href="#">{{ $peopleinf ->工號 .' '.
                         $peopleinf ->姓名 }}</a>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                     @endforeach
                 </ul>
-                @foreach($check as $people)
+                @foreach($checks as $people)
                 <input type="hidden" id="checkpeople{{$loop->index}}" name="checkpeople{{$loop->index}}"
                     value="{{$people->工號}}">
                 <input type="hidden" id="checkcount" name="checkcount" value="{{$loop->count}}">
@@ -229,9 +231,6 @@
             <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
                 value="{!! __('inboundpageLang.submit') !!}">
         </form>
-        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.add')}}'">{!!
-            __('inboundpageLang.return') !!}</button>
     </div>
 </div>
 

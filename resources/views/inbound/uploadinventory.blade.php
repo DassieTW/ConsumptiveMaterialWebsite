@@ -94,7 +94,7 @@ if($j === false)
                         <td>{{$name}}</td>
                         <td>{{$format}}</td>
                         <td><input type="number" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
-                                value="{{$row[2]}}" required min="1"></td>
+                                value="{{$row[2]}}" required min="1" class = "form-control form-control-lg"></td>
                         <td>
                             <select class="form-select form-select-lg" id="data3{{$loop->index}}"
                                 name="data3{{$loop->index}}">
