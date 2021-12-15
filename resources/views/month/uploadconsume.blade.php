@@ -134,8 +134,6 @@
                                     $format = DB::table('consumptive_material')->where('料號',$row[3])->value('規格');
                                     $unit = DB::table('consumptive_material')->where('料號',$row[3])->value('單位');
                                     $lt = DB::table('consumptive_material')->where('料號',$row[3])->value('LT');
-                                    $month = DB::table('consumptive_material')->where('料號',$row[3])->value('月請購');
-                                    $belong = DB::table('consumptive_material')->where('料號',$row[3])->value('耗材歸屬');
                                     $lt = round($lt, 3);
                                 ?>
                                 <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
@@ -147,15 +145,15 @@
                                         value="{{$lt}}">{{$lt}}</td>
                                 <td><input style="width:200px" type="number" id="data1{{$loop->index}}"
                                         name="data1{{$loop->index}}" step="0.0000000001" required value="{{$row[4]}}"
-                                        oninput="if(value.length>12)value=value.slice(0,12)"></td>
-                                <td><input style="width:120px" type="number" id="data2{{$loop->index}}"
-                                        name="data2{{$loop->index}}" readonly step="0.0000001" >
+                                        class="form-control form-control-lg" min="0.0000000001"></td>
+                                <td><input style="width:200px" class="form-control form-control-lg" type="number"
+                                        id="data2{{$loop->index}}" name="data2{{$loop->index}}" readonly>
                                 </td>
-                                <td><input style="width:120px" type="number" id="data3{{$loop->index}}"
-                                        name="data3{{$loop->index}}" readonly step="0.0000001">
+                                <td><input style="width:200px" type="number" id="data3{{$loop->index}}"
+                                        name="data3{{$loop->index}}" readonly class="form-control form-control-lg">
                                 </td>
-                                <td><input style="width:120px" type="number" id="data4{{$loop->index}}"
-                                        name="data4{{$loop->index}}" readonly step="0.0000001">
+                                <td><input style="width:200px" type="number" id="data4{{$loop->index}}"
+                                        name="data4{{$loop->index}}" readonly class="form-control form-control-lg">
                                 </td>
                                 <td><input type="hidden" id="data5{{$loop->index}}" name="data5{{$loop->index}}"
                                         value="{{$row[0]}}">{{$row[0]}}</td>
@@ -163,14 +161,18 @@
                                         value="{{$row[1]}}">{{$row[1]}}</td>
                                 <td><input type="hidden" id="data7{{$loop->index}}" name="data7{{$loop->index}}"
                                         value="{{$row[2]}}">{{$row[2]}}</td>
-                                <td><input style="width:80px" type="number" id="data8{{$loop->index}}"
-                                        name="data8{{$loop->index}}" step="0.01" oninput="if(value.length>4)value=value.slice(0,4)"></td>
-                                <td><input style="width:80px" type="number" id="data9{{$loop->index}}"
-                                        name="data9{{$loop->index}}" step="0.01" oninput="if(value.length>4)value=value.slice(0,4)"></td>
-                                <td><input style="width:80px" type="number" id="data10{{$loop->index}}"
-                                        name="data10{{$loop->index}}" step="0.01" oninput="if(value.length>4)value=value.slice(0,4)"></td>
-                                <td><input style="width:80px" type="number" id="data11{{$loop->index}}"
-                                        name="data11{{$loop->index}}" step="0.01" oninput="if(value.length>4)value=value.slice(0,4)"></td>
+                                <td><input class="form-control form-control-lg" style="width:85px" type="number"
+                                        id="data8{{$loop->index}}" name="data8{{$loop->index}}" step="0.01" min="0">
+                                </td>
+                                <td><input class="form-control form-control-lg" style="width:85px" type="number"
+                                        id="data9{{$loop->index}}" name="data9{{$loop->index}}" step="0.01" min="0">
+                                </td>
+                                <td><input class="form-control form-control-lg" style="width:85px" type="number"
+                                        id="data10{{$loop->index}}" name="data10{{$loop->index}}" step="0.01" min="0">
+                                </td>
+                                <td><input class="form-control form-control-lg" style="width:85px" type="number"
+                                        id="data11{{$loop->index}}" name="data11{{$loop->index}}" step="0.01" min="0">
+                                </td>
 
                             </tr>
                             <input type="hidden" id="count" name="count" value="{{$loop->count}}">
@@ -203,6 +205,8 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
 </html>
 @endsection

@@ -19,6 +19,8 @@ use App\Models\廠別;
 use App\Models\在途量;
 use App\Models\調撥單;
 use App\Models\Inventory;
+use App\Models\請購單;
+use App\Models\非月請購;
 use App\Models\不良品Inventory;
 use App\Models\Inbound;
 use App\Models\ConsumptiveMaterial;
@@ -57,23 +59,47 @@ class BUController extends Controller
         //
         if (Session::has('username')) {
 
-            $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management'];
+            $database = ['M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management'];
 
             foreach ($database as $key => $value) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
                 \DB::purge(env("DB_CONNECTION"));
+
                 $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
                     ->select(
                         'inventory.料號',
+                        'consumptive_material.品名',
+                        'consumptive_material.規格',
+                        'consumptive_material.單位',
                         DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
                         DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
                     )
-                    ->groupBy('inventory.料號')
+                    ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
+                    ->havingRaw('sum(inventory.現有庫存) > ?', [0])
+                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
                     ->get();
+
+                /*$records[$key] = 請購單::join('consumptive_material', 'consumptive_material.料號', "=", '請購單.料號')
+                    ->select(
+                        '請購單.料號',
+                        'consumptive_material.發料部門',
+                        DB::raw('max(請購單.請購時間) as 請購單請購時間'),
+                    )
+                    ->groupBy('請購單.料號', 'consumptive_material.發料部門')
+                    ->get();
+
+                $records1[$key] = 非月請購::join('consumptive_material', 'consumptive_material.料號', "=", '非月請購.料號')
+                    ->select(
+                        '非月請購.料號',
+                        'consumptive_material.發料部門',
+                        DB::raw('max(非月請購.上傳時間) as 非月請購上傳時間'),
+                    )
+                    ->groupBy('非月請購.料號', 'consumptive_material.發料部門')
+                    ->get();*/
             }
 
 
-            //dd($datas[2]);
+            //dd($datas[1]);
             return view('bu.sluggish')->with(['test' => $datas]);
             /*return view('bu.sluggish')->with(['data0' => $datas[0]])->with(['data1' => $datas[1]])->with(['data2' => $datas[2]])
             ->with(['data3' => $datas[3]])->with(['data4' => $datas[4]]);*/
@@ -130,14 +156,12 @@ class BUController extends Controller
 
                     DB::commit();
                     return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
-
                 } catch (\Exception $e) {
                     DB::rollback();
                     return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                 }
             } else {
                 return \Response::json(['message' => $oldstock], 421/* Status code here default is 200 ok*/);
-
             }
         } else {
             return redirect(route('member.login'));
@@ -696,23 +720,16 @@ class BUController extends Controller
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
             }
 
-            for ($i = 0 ; $i < 8; $i++)
-            {
-                for($j = 0 ; $j < count($data0) ;$j ++)
-                {
+            for ($i = 0; $i < 8; $i++) {
+                for ($j = 0; $j < count($data0); $j++) {
 
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data'.$i)[$j]);
-
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
                 }
-
             }
 
-            for ($i = 0 ; $i < 5; $i++)
-            {
-                if(isset($request->input('data8')[$i]) != 0)
-                {
-                    for ($j = 0 ; $j < count($request->input('data8')[$i]); $j++)
-                    {
+            for ($i = 0; $i < 5; $i++) {
+                if (isset($request->input('data8')[$i]) != 0) {
+                    for ($j = 0; $j < count($request->input('data8')[$i]); $j++) {
                         $test = $test . $request->input('data8')[$i][$j] . "\n";
                     }
                     $worksheet->setCellValueByColumnAndRow(9, $i + 2, $test);
@@ -720,11 +737,9 @@ class BUController extends Controller
                 }
             }
 
-            for($j = 0 ; $j < count($data0) ;$j ++)
-            {
+            for ($j = 0; $j < count($data0); $j++) {
 
                 $worksheet->setCellValueByColumnAndRow(10, $j + 2, $request->input('data9')[$j]);
-
             }
 
 
@@ -771,13 +786,10 @@ class BUController extends Controller
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
             }
 
-            for ($i = 0 ; $i < 17; $i++)
-            {
-                for($j = 0 ; $j < count($data0) ;$j ++)
-                {
+            for ($i = 0; $i < 17; $i++) {
+                for ($j = 0; $j < count($data0); $j++) {
 
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data'.$i)[$j]);
-
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
                 }
             }
 
@@ -790,7 +802,7 @@ class BUController extends Controller
 
             $filename = rawurlencode('調撥單查詢') . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\''.$filename.';');
+            header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
             header('Cache-Control: max-age=0');
 
             $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
@@ -811,8 +823,8 @@ class BUController extends Controller
     public function material(Request $request)
     {
         if (Session::has('username')) {
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
-        \DB::purge(env("DB_CONNECTION"));
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+            \DB::purge(env("DB_CONNECTION"));
             return view('bu.material')->with(['factory' => 廠別::cursor()]);
         } else {
             return redirect(route('member.login'));
@@ -827,16 +839,13 @@ class BUController extends Controller
             $number = $request->input('number');
             $table = $request->input('table');
 
-            if(strlen($number) !== 12)
-            {
+            if (strlen($number) !== 12) {
                 return back()->withErrors([
 
                     'number' => trans('bupagelang.isnlength'),
                 ]);
-            }
-            else
-            {
-                $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management'];
+            } else {
+                $database = ['M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management'];
 
                 foreach ($database as $key => $value) {
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
@@ -848,14 +857,12 @@ class BUController extends Controller
                             DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
                         )
                         ->groupBy('inventory.料號')
-                        ->where('inventory.料號',$number)
+                        ->where('inventory.料號', $number)
                         ->get();
                 }
 
                 return view('bu.sluggish1')->with(['test' => $datas])
-                ->with(['table' => $table]);
-
-
+                    ->with(['table' => $table]);
             }
         } else {
             return redirect(route('member.login'));

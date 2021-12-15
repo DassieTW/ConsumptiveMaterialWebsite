@@ -60,7 +60,6 @@
                         $buytimeco = array();
                         $buytimeco1 = array();
                         $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management'];
-
                         foreach ($database as $key => $value) {
                         if($value != $database[$i])
                         {
@@ -68,33 +67,19 @@
                         \DB::purge(env("DB_CONNECTION"));
                         $buytime[$key][0] = $value;
                         $buytime[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
-
                         $buytime1[$key][0] = $value;
                         $buytime1[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
-
                         $buytime[$key][2] = DB::table('請購單')->where('料號', $data->料號)->max('請購時間');
                         $buytime1[$key][2] = DB::table('非月請購')->where('料號', $data->料號)->max('上傳時間');
-
                         $buytimeco[$key][0] = $value;
                         $buytimeco[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
-
                         $buytimeco1[$key][0] = $value;
                         $buytimeco1[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
-
                         $buytimeco[$key][2] = DB::table('請購單')->where('料號', $data->料號)->max('請購時間');
                         $buytimeco1[$key][2] = DB::table('非月請購')->where('料號', $data->料號)->max('上傳時間');
-
-                        $name = DB::table('consumptive_material')->where('料號', $data->料號)->value('品名');
-                        $format = DB::table('consumptive_material')->where('料號', $data->料號)->value('規格');
-                        $unit = DB::table('consumptive_material')->where('料號', $data->料號)->value('單位');
                         }
                         }
                         ?>
-
-                        @if($stayday > 30 && $data->inventory現有庫存 > 0)
-                        <?php $count[$i] ++;
-
-                                        ?>
                         <tr>
                             <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
                                     name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
@@ -104,11 +89,11 @@
                             <td><input type="hidden" id="data1{{$i}}{{$loop->index}}" name="data1{{$i}}{{$loop->index}}"
                                     value={{$data->料號}}>{{$data->料號}}</td>
                             <td><input type="hidden" id="data2{{$i}}{{$loop->index}}" name="data2{{$i}}{{$loop->index}}"
-                                    value={{$name}}>{{$name}}</td>
+                                    value={{$data->品名}}>{{$data->品名}}</td>
                             <td><input type="hidden" id="data3{{$i}}{{$loop->index}}" name="data3{{$i}}{{$loop->index}}"
-                                    value={{$format}}>{{$format}}</td>
+                                    value={{$data->規格}}>{{$data->規格}}</td>
                             <td><input type="hidden" id="data4{{$i}}{{$loop->index}}" name="data4{{$i}}{{$loop->index}}"
-                                    value={{$unit}}>{{$unit}}</td>
+                                    value={{$data->單位}}>{{$data->單位}}</td>
                             <td><input type="hidden" id="data5{{$i}}{{$loop->index}}" name="data5{{$i}}{{$loop->index}}"
                                     value={{$stayday}}>{{$stayday}}</td>
                             <td><input type="hidden" id="data6{{$i}}{{$loop->index}}" name="data6{{$i}}{{$loop->index}}"
@@ -149,7 +134,6 @@
                                 </select>
                             </td>
                         </tr>
-                        @endif
                         @endforeach
                         <input type="hidden" id="count{{$i}}" name="count{{$i}}" value="{{$count[$i]}}"></td>
                         @endfor
