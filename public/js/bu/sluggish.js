@@ -234,3 +234,9 @@ $('#sluggish').on('submit', function (e) {
         });
     }
 });
+
+$(window).on('load', function () {
+    // PAGE IS FULLY LOADED
+    // FADE OUT YOUR OVERLAYING DIV
+    $('body').loadingModal('hide');
+});
