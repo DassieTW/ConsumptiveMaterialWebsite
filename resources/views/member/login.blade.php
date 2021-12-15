@@ -128,9 +128,10 @@
                                             <select class="form-select form-select-lg" id="site" name="site" required>
                                                 <option value="" selected>{{ __('loginPageLang.site_placeholder')}}
                                                 </option>
+                                                <option value="TestDB">TestDB</option>
                                                 <option value="M2_TEST_1112">M2_TEST</option>
-                                                <option value="M2-TEST-1112">M2-TEST</option>
-                                                <option value="default">Default</option>
+                                                <option value="BB1_1214 Consumables management">BB1</option>
+                                                <option value="巴淡SMT1214">巴淡SMT</option>
                                                 {{--
                                                 <option value="testing">TEST</option>
                                                 <option value="default">Default</option>

@@ -1343,13 +1343,15 @@
         });
     </script> -->
 
-
     <script src="{{ asset('/js/app.js') }}"></script>
     <script src="{{ asset('/admin/js/app.js') }}"></script>
     <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
     <script src="{{ asset('/messages.js') }}"></script>
     <script src="{{ asset('/js/logout.js') }}"></script>
     <script src="{{ asset('js/popupNotice.js') }}"></script>
+    <script>
+        
+    </script>
     @yield('js')
 </body>
 
