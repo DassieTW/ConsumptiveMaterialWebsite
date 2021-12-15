@@ -209,6 +209,7 @@ function CallPhpSpreadSheetToGetData(fileName) {
         },
         complete: function () {
             $('body').loadingModal('hide');
+            $('body').loadingModal('destroy');
         },
         success: function (response) {
             // console.log(response.isnSheet.length); // test
@@ -420,6 +421,7 @@ $(document).ready(function () {
                 },
                 complete: function () {
                     $('body').loadingModal('hide');
+                    $('body').loadingModal('destroy');
                 },
                 success: function (data) {
                     console.log(data.message);
@@ -462,6 +464,7 @@ $(document).ready(function () {
                 },
                 complete: function () {
                     $('body').loadingModal('hide');
+                    $('body').loadingModal('destroy');
                 },
                 success: function (data) {
                     console.log(data.message);
@@ -506,6 +509,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             success: function (data) {
                 if (toSess === 'true') {
@@ -613,6 +617,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             success: function (data) {
                 if (toSess === 'true') {
@@ -715,6 +720,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             success: function (response) {
                 // console.log(response.filename); // test
@@ -856,6 +862,7 @@ $(document).ready(function () {
                 },
                 complete: function () {
                     $('body').loadingModal('hide');
+                    $('body').loadingModal('destroy');
                 },
                 success: function (response) {
                     window.location.href = '/barcode/printingPage';

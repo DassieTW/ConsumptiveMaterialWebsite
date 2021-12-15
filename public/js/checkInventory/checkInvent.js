@@ -95,6 +95,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             success: function (response) {
                 // do nothing
@@ -739,6 +740,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             error: function (err) {
                 if (err.status == 422) { // when status code is 422, it's a validation issue
@@ -924,6 +926,7 @@ $(document).ready(function () {
                 },
                 complete: function () {
                     $('body').loadingModal('hide');
+                    $('body').loadingModal('destroy');
                 },
                 error: function (err) {
                     if (err.status == 422) { // when status code is 422, it's a validation issue

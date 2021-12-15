@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . time() }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.loadingModal.min.css') }}">
     @yield('css')
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script>
@@ -436,7 +437,7 @@
                                             <ul id="bu" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
                                                 <li class="sidebar-item {{ isActiveRoute(['bu.sluggish']) }}">
-                                                    <a id="passiveStockBtn" class="sidebar-link" href="#">
+                                                    <a id="passiveStockBtn" class="sidebar-link" href="{{route('bu.sluggish')}}">
                                                         {!! __('bupagelang.sluggish') !!}
                                                     </a>
                                                 </li>

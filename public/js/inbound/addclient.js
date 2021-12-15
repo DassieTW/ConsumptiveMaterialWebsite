@@ -120,6 +120,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
 
             success: function (data) {
@@ -330,6 +331,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             success: function (data) {
                 var mess = Lang.get('inboundpageLang.total') + ' : ' + data.record + Lang.get('inboundpageLang.record') + ' ' +

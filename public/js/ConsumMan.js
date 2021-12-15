@@ -85,6 +85,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.warn(jqXHR.responseText);
@@ -418,6 +419,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.warn(jqXHR.responseText);
@@ -528,6 +530,7 @@ $(document).ready(function () {
             },
             complete: function () {
                 $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.warn(jqXHR.responseText);
