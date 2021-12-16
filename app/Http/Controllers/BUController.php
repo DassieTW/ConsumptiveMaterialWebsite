@@ -76,7 +76,7 @@ class BUController extends Controller
                     )
                     ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
                     ->havingRaw('sum(inventory.現有庫存) > ?', [0])
-                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
+                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>50')   // change date for test
                     ->get();
 
                 /*$records[$key] = 請購單::join('consumptive_material', 'consumptive_material.料號', "=", '請購單.料號')
@@ -697,51 +697,51 @@ class BUController extends Controller
     public function download(Request $request)
     {
         if (Session::has('username')) {
-            $reDive = new responseObj();
-            $spreadsheet = new Spreadsheet();
-            //$spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
-            foreach (range('A', 'Z') as $char) {
-                $spreadsheet->getActiveSheet()->getColumnDimension($char)->setWidth(20);
-            }
-            $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(60);
-            $worksheet = $spreadsheet->getActiveSheet();
+            try {
+                $spreadsheet = new Spreadsheet();
+                //$spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+                foreach (range('A', 'Z') as $char) {
+                    $spreadsheet->getActiveSheet()->getColumnDimension($char)->setWidth(20);
+                }
+                $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(60);
+                $worksheet = $spreadsheet->getActiveSheet();
 
-            $title = $request->input('title');
-            $data0 = $request->input('data0');
-            $test = "";
-            //填寫表頭
-            for ($i = 0; $i < 10; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
-            }
+                $title = $request->input('title');
+                $data0 = $request->input('data0');
+                $test = "";
+                //填寫表頭
+                for ($i = 0; $i < 10; $i++) {
+                    $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+                }
 
-            for ($i = 0; $i < 8; $i++) {
+                for ($i = 0; $i < 8; $i++) {
+                    for ($j = 0; $j < count($data0); $j++) {
+
+                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
+                    }
+                }
+
+                for ($i = 0; $i < 5; $i++) {
+                    if (isset($request->input('data8')[$i]) != 0) {
+                        for ($j = 0; $j < count($request->input('data8')[$i]); $j++) {
+                            $test = $test . $request->input('data8')[$i][$j] . "\n";
+                        }
+                        $worksheet->setCellValueByColumnAndRow(9, $i + 2, $test);
+                        $test = "";
+                    }
+                }
+
                 for ($j = 0; $j < count($data0); $j++) {
 
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
+                    $worksheet->setCellValueByColumnAndRow(10, $j + 2, $request->input('data9')[$j]);
                 }
-            }
-
-            for ($i = 0; $i < 5; $i++) {
-                if (isset($request->input('data8')[$i]) != 0) {
-                    for ($j = 0; $j < count($request->input('data8')[$i]); $j++) {
-                        $test = $test . $request->input('data8')[$i][$j] . "\n";
-                    }
-                    $worksheet->setCellValueByColumnAndRow(9, $i + 2, $test);
-                    $test = "";
-                }
-            }
-
-            for ($j = 0; $j < count($data0); $j++) {
-
-                $worksheet->setCellValueByColumnAndRow(10, $j + 2, $request->input('data9')[$j]);
-            }
 
 
 
 
-            // 下載
+                // 下載
 
-            try{
+
                 $now = Carbon::now()->format('YmdHis');
                 //rawurlencode('呆滯庫存查詢');
                 $filename = rawurlencode('呆滯庫存查詢') . $now . '.xlsx';
@@ -756,7 +756,7 @@ class BUController extends Controller
                     $file = fopen('php://output', 'r');
                     fclose($file);
                 };
-            }catch(\Exception $e){
+            } catch (\Exception $e) {
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
             }
 
@@ -849,19 +849,19 @@ class BUController extends Controller
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
                     \DB::purge(env("DB_CONNECTION"));
                     $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
-                    ->select(
-                        'inventory.料號',
-                        'consumptive_material.品名',
-                        'consumptive_material.規格',
-                        'consumptive_material.單位',
-                        DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
-                        DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
-                    )
-                    ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
-                    ->havingRaw('sum(inventory.現有庫存) > ?', [0])
-                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
-                    ->where('inventory.料號' , '=' , $number)
-                    ->get();
+                        ->select(
+                            'inventory.料號',
+                            'consumptive_material.品名',
+                            'consumptive_material.規格',
+                            'consumptive_material.單位',
+                            DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                            DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                        )
+                        ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
+                        ->havingRaw('sum(inventory.現有庫存) > ?', [0])
+                        ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
+                        ->where('inventory.料號', '=', $number)
+                        ->get();
                 }
 
                 return view('bu.sluggish1')->with(['test' => $datas])

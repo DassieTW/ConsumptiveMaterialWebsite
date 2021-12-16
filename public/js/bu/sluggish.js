@@ -106,7 +106,6 @@ $('#sluggish').on('submit', function (e) {
     if (select == '提交' || select == 'Submit') {
         $.ajax({
             type: 'POST',
-
             url: "transsluggish",
             data: {
                 factory: factory,
@@ -118,7 +117,7 @@ $('#sluggish').on('submit', function (e) {
                 amount: amount,
                 receive: receive
             },
-
+            dataType: 'json', // let's set the expected response format
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
                 $('body').loadingModal({
@@ -170,10 +169,10 @@ $('#sluggish').on('submit', function (e) {
                 data8: data8,
                 data9: data9,
             },
-            xhrFields: {
-                responseType: 'blob', // to avoid binary data being mangled on charset conversion
-            },
-
+            // xhrFields: {
+            //     responseType: 'blob', // to avoid binary data being mangled on charset conversion
+            // },
+            dataType: 'json', // let's set the expected response format  // test
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
                 $('body').loadingModal({
