@@ -62,27 +62,29 @@ $("#uploadnew").on("submit", function (e) {
             window.alert(mess);
             return false;
         }
-    }
+    } // for 
+
+    var data = [];
+    data.push(number);
+    data.push(name);
+    data.push(format);
+    data.push(price);
+    data.push(money);
+    data.push(unit);
+    data.push(mpq);
+    data.push(moq);
+    data.push(lt);
+    data.push(month);
+    data.push(gradea);
+    data.push(belong);
+    data.push(send);
+    data.push(safe);
+
     $.ajax({
         type: "POST",
         url: "insertuploadmaterial",
-        data: {
-            number: number,
-            name: name,
-            format: format,
-            price: price,
-            money: money,
-            unit: unit,
-            mpq: mpq,
-            moq: moq,
-            lt: lt,
-            month: month,
-            gradea: gradea,
-            belong: belong,
-            send: send,
-            safe: safe,
-            count: count,
-        },
+        data: { AllData: JSON.stringify(data), count: count},
+        // dataType: 'json', // let's set the expected response format
         beforeSend: function () {
             // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
             $("body").loadingModal({
@@ -114,6 +116,9 @@ $("#uploadnew").on("submit", function (e) {
                 window.alert(mess);
                 window.location.href = 'new';
             }
+            else if (err.status == 423) {
+                console.log(err.responseJSON.message);
+            } // else if
             //transaction error
             else {
                 var mess = err.responseJSON.message;

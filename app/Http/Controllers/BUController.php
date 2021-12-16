@@ -758,7 +758,7 @@ class BUController extends Controller
                 };
             } catch (\Exception $e) {
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
-            }
+            } // try catch
 
             return response()->stream($callback, 200, $headers);
         } else {
