@@ -626,10 +626,6 @@ class BasicInformationController extends Controller
     //上傳資料新增至資料庫
     public function insertuploadmaterial(Request $request)
     {
-        $testDecode2 = json_decode( $request->input('AllData') );
-        $number = $testDecode2[0];
-        return \Response::json(['message' => $testDecode2], 423/* Status code here default is 200 ok*/); // test
-
         if (Session::has('username')) {
 
             $count = $request->input('count');
@@ -638,9 +634,10 @@ class BasicInformationController extends Controller
             $test = 0;
             $test1 = array();
             $bool = true;
+            $Alldata = json_decode( $request->input('AllData') );
             for ($i = 0; $i < $count; $i++) {
                 $test1[$i] = 0;
-                $number =  $request->input('number')[$i];
+                $number =  $Alldata[0][$i];
                 $numbers = DB::table('consumptive_material')->pluck('料號');
                 $delete = ConsumptiveMaterial::onlyTrashed()
                     ->where('料號', $number)->get();
@@ -663,46 +660,24 @@ class BasicInformationController extends Controller
                 $test++;
             } // for
 
-            $number = ($request->input('test'));
-            //$data = json_decode($number[0]);
-            // $name =  $request->input('data');
-            // $format =  $request->input('data');
-            // $price =  $request->input('data');
-            // $money =  $request->input('data');
-            // $unit =  $request->input('data');
-            // $mpq =  $request->input('data');
-            // $moq =  $request->input('data');
-            // $lt =  $request->input('data');
-            // $month =  $request->input('data');
-            // $gradea =  $request->input('data');
-            // $belong =  $request->input('data');
-            // $send =  $request->input('data');
-            // $safe =  $request->input('data');
-
-            // return \Response::json(['A級資材' => $gradea, '月請購' => $month, '發料部門' => $send, '耗材歸屬' => $belong,
-            // '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq,
-            // 'MOQ' => $moq, 'LT' => $lt, '安全庫存' => $number] , 422/* Status code here default is 200 ok*/);
-
-            return \Response::json(['安全庫存' => $number] , 422);
-
             if ($test == $count && $bool == true) {
                 DB::beginTransaction();
                 try {
                     for ($i = 0; $i < $count; $i++) {
-                        $number =  $request->input('number')[$i];
-                        $name =  $request->input('name')[$i];
-                        $format =  $request->input('format')[$i];
-                        $price =  $request->input('price')[$i];
-                        $money =  $request->input('money')[$i];
-                        $unit =  $request->input('unit')[$i];
-                        $mpq =  $request->input('mpq')[$i];
-                        $moq =  $request->input('moq')[$i];
-                        $lt =  $request->input('lt')[$i];
-                        $month =  $request->input('month')[$i];
-                        $gradea =  $request->input('gradea')[$i];
-                        $belong =  $request->input('belong')[$i];
-                        $send =  $request->input('send')[$i];
-                        $safe =  $request->input('safe')[$i];
+                        $number =  $Alldata[0][$i];
+                        $name =   $Alldata[1][$i];
+                        $format =   $Alldata[2][$i];
+                        $price =  $Alldata[3][$i];
+                        $money =   $Alldata[4][$i];
+                        $unit =   $Alldata[5][$i];
+                        $mpq =   $Alldata[6][$i];
+                        $moq =   $Alldata[7][$i];
+                        $lt =   $Alldata[8][$i];
+                        $month =   $Alldata[9][$i];
+                        $gradea =   $Alldata[10][$i];
+                        $belong =   $Alldata[11][$i];
+                        $send =   $Alldata[12][$i];
+                        $safe =   $Alldata[13][$i];
 
                         if ($gradea === 'Yes') $gradea = '是';
                         if ($gradea === 'No') $gradea = '否';

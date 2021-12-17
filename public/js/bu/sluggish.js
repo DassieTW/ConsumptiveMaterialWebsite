@@ -148,26 +148,34 @@ $('#sluggish').on('submit', function (e) {
         });
     } else {
 
+        var data = [];
+
+        var count = data0.length;
+        data.push(data0);
+        data.push(data1);
+        data.push(data2);
+        data.push(data3);
+        data.push(data4);
+        data.push(data5);
+        data.push(data6);
+        data.push(data7);
+        data.push(data8);
+        data.push(data9);
+
+
+
         $.ajax({
             type: 'POST',
             url: "download",
             data: {
+                AllData: JSON.stringify(data),
                 title: title,
-                data0: data0,
-                data1: data1,
-                data2: data2,
-                data3: data3,
-                data4: data4,
-                data5: data5,
-                data6: data6,
-                data7: data7,
-                data8: data8,
-                data9: data9,
+                count , count,
             },
-            // xhrFields: {
-            //     responseType: 'blob', // to avoid binary data being mangled on charset conversion
-            // },
-            dataType: 'json', // let's set the expected response format  // test
+            xhrFields: {
+                responseType: 'blob', // to avoid binary data being mangled on charset conversion
+            },
+            //dataType: 'json', // let's set the expected response format  // test
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
                 $('body').loadingModal({
@@ -222,14 +230,10 @@ $('#sluggish').on('submit', function (e) {
                     }, 100); // cleanup
                 }
             },
-            error: function (err) {
-                //transaction error
-                //if (err.status == 421) {
-                console.log(err.responseJSON.message);
-                //window.location.reload();
+            error: function (jqXHR, textStatus, errorThrown) {
 
-                // console.warn(jqXHR.responseText);
-                // //alert(errorThrown);
+                console.warn(jqXHR.responseText);
+                alert(errorThrown);
             }
         });
     }

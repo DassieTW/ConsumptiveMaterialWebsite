@@ -76,26 +76,9 @@ class BUController extends Controller
                     )
                     ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
                     ->havingRaw('sum(inventory.現有庫存) > ?', [0])
-                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>50')   // change date for test
+                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
                     ->get();
 
-                /*$records[$key] = 請購單::join('consumptive_material', 'consumptive_material.料號', "=", '請購單.料號')
-                    ->select(
-                        '請購單.料號',
-                        'consumptive_material.發料部門',
-                        DB::raw('max(請購單.請購時間) as 請購單請購時間'),
-                    )
-                    ->groupBy('請購單.料號', 'consumptive_material.發料部門')
-                    ->get();
-
-                $records1[$key] = 非月請購::join('consumptive_material', 'consumptive_material.料號', "=", '非月請購.料號')
-                    ->select(
-                        '非月請購.料號',
-                        'consumptive_material.發料部門',
-                        DB::raw('max(非月請購.上傳時間) as 非月請購上傳時間'),
-                    )
-                    ->groupBy('非月請購.料號', 'consumptive_material.發料部門')
-                    ->get();*/
             }
 
 
@@ -697,9 +680,6 @@ class BUController extends Controller
     public function download(Request $request)
     {
         if (Session::has('username')) {
-            $reDive = new responseObj();
-            $spreadsheet = new Spreadsheet();
-            //$spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
             $spreadsheet = new Spreadsheet();
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
 
@@ -707,33 +687,36 @@ class BUController extends Controller
 
 
             $title = $request->input('title');
-            $data0 = $request->input('data0');
+            $Alldata = json_decode( $request->input('AllData') );
+            $count = $request->input('count');
             $test = "";
-            //填寫表頭
-            for ($i = 0; $i < 10; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
-            }
+
+            try {
+                //填寫表頭
+                for ($i = 0; $i < 10; $i++) {
+                    $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+                }
 
                 for ($i = 0; $i < 8; $i++) {
-                    for ($j = 0; $j < count($data0); $j++) {
+                    for ($j = 0; $j < $count; $j++) {
 
-                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
+                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
                     }
                 }
 
                 for ($i = 0; $i < 5; $i++) {
-                    if (isset($request->input('data8')[$i]) != 0) {
-                        for ($j = 0; $j < count($request->input('data8')[$i]); $j++) {
-                            $test = $test . $request->input('data8')[$i][$j] . "\n";
+                    if (isset($Alldata[8][$i]) != 0) {
+                        for ($j = 0; $j < count($Alldata[8][$i]); $j++) {
+                            $test = $test . $Alldata[8][$i][$j];
                         }
                         $worksheet->setCellValueByColumnAndRow(9, $i + 2, $test);
                         $test = "";
                     }
                 }
 
-                for ($j = 0; $j < count($data0); $j++) {
+                for ($j = 0; $j < $count; $j++) {
 
-                    $worksheet->setCellValueByColumnAndRow(10, $j + 2, $request->input('data9')[$j]);
+                    $worksheet->setCellValueByColumnAndRow(10, $j + 2, $Alldata[9][$j]);
                 }
 
 
