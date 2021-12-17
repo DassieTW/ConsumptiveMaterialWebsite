@@ -124,7 +124,7 @@ class OboundController extends Controller
         if (Session::has('username'))
         {
             $this->validate($request, [
-            'select_file'  => 'required|mimes:xls,xlsx'
+            'select_file'  => 'required|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/zip'
             ]);
             $path = $request->file('select_file')->getRealPath();
 
@@ -797,7 +797,7 @@ class OboundController extends Controller
         if (Session::has('username'))
         {
             $this->validate($request, [
-            'select_file'  => 'required|mimes:xls,xlsx'
+            'select_file'  => 'required|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/zip'
             ]);
             $path = $request->file('select_file')->getRealPath();
 

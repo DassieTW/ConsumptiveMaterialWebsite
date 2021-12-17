@@ -62,7 +62,7 @@ $("#uploadnew").on("submit", function (e) {
             window.alert(mess);
             return false;
         }
-    } // for 
+    } // for
 
     var data = [];
     data.push(number);

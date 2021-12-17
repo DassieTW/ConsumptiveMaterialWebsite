@@ -626,10 +626,6 @@ class BasicInformationController extends Controller
     //上傳資料新增至資料庫
     public function insertuploadmaterial(Request $request)
     {
-        $testDecode2 = json_decode( $request->input('AllData') );
-        $number = $testDecode2[0];
-        return \Response::json(['message' => $testDecode2], 423/* Status code here default is 200 ok*/); // test
-
         if (Session::has('username')) {
 
             $count = $request->input('count');
@@ -638,10 +634,10 @@ class BasicInformationController extends Controller
             $test = 0;
             $test1 = array();
             $bool = true;
+            $Alldata = json_decode( $request->input('AllData') );
             for ($i = 0; $i < $count; $i++) {
                 $test1[$i] = 0;
-                $number =  $request->input('number')[$i];
-
+                $number =  $Alldata[0][$i];
                 $numbers = DB::table('consumptive_material')->pluck('料號');
                 $delete = ConsumptiveMaterial::onlyTrashed()
                     ->where('料號', $number)->get();
@@ -659,6 +655,7 @@ class BasicInformationController extends Controller
                     } else {
                         continue;
                     }
+
                 }
                 $test++;
             } // for
@@ -667,20 +664,20 @@ class BasicInformationController extends Controller
                 DB::beginTransaction();
                 try {
                     for ($i = 0; $i < $count; $i++) {
-                        $number =  $request->input('number')[$i];
-                        $name =  $request->input('name')[$i];
-                        $format =  $request->input('format')[$i];
-                        $price =  $request->input('price')[$i];
-                        $money =  $request->input('money')[$i];
-                        $unit =  $request->input('unit')[$i];
-                        $mpq =  $request->input('mpq')[$i];
-                        $moq =  $request->input('moq')[$i];
-                        $lt =  $request->input('lt')[$i];
-                        $month =  $request->input('month')[$i];
-                        $gradea =  $request->input('gradea')[$i];
-                        $belong =  $request->input('belong')[$i];
-                        $send =  $request->input('send')[$i];
-                        $safe =  $request->input('safe')[$i];
+                        $number =  $Alldata[0][$i];
+                        $name =   $Alldata[1][$i];
+                        $format =   $Alldata[2][$i];
+                        $price =  $Alldata[3][$i];
+                        $money =   $Alldata[4][$i];
+                        $unit =   $Alldata[5][$i];
+                        $mpq =   $Alldata[6][$i];
+                        $moq =   $Alldata[7][$i];
+                        $lt =   $Alldata[8][$i];
+                        $month =   $Alldata[9][$i];
+                        $gradea =   $Alldata[10][$i];
+                        $belong =   $Alldata[11][$i];
+                        $send =   $Alldata[12][$i];
+                        $safe =   $Alldata[13][$i];
 
                         if ($gradea === 'Yes') $gradea = '是';
                         if ($gradea === 'No') $gradea = '否';
@@ -705,15 +702,16 @@ class BasicInformationController extends Controller
                                 ]);
                         }
                         $record++;
-                    }
+                    } //for
+                    DB::commit();
+                    return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
+
                 } catch (\Exception $e) {
                     DB::rollback();
                     $mess = $e->getMessage();
                     return \Response::json(['message' => $mess], 423/* Status code here default is 200 ok*/);
                 }
 
-                DB::commit();
-                return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
@@ -725,7 +723,7 @@ class BasicInformationController extends Controller
     {
         if (Session::has('username')) {
             $this->validate($request, [
-                'select_file'  => 'required|mimes:xls,xlsx'
+                'select_file'  => 'required|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/zip'
             ]);
             $path = $request->file('select_file')->getRealPath();
 
