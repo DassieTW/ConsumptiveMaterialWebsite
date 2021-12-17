@@ -15,9 +15,10 @@ use App\Models\Checking_inventory;
 // Matches The "/checking" URL
 Route::get('/', function () {
     $month = Carbon::now()->subMonths(3);
+    // dd($month); // test
     $serialNums = \DB::table('checking_inventory')->select('id', '單號', 'created_at')
         ->latest('created_at')->where('created_at', '>=', $month)->get()->unique('單號');
-    $serialNumsCount = Checking_inventory::where('created_at', '>=', $month)->distinct('單號')->count();
+    $serialNumsCount = count($serialNums);
     return view('checkInventory.checkingInvent', ['serialCount' => $serialNumsCount, 'serialNums' => $serialNums]);
 })->name('checking.index');
 
@@ -30,8 +31,9 @@ Route::post('/updateChecking', [CheckingInventoryController::class, 'updateCheck
 // create new table page
 Route::get('/create_new_table', function () {
     $month = Carbon::now()->subMonths(3);
-    $serialNums = \DB::table('checking_inventory')->select('id', '單號', 'created_at')->latest('created_at')->groupBy('單號')->having('created_at', '>=', $month)->cursor();
-    $serialNumsCount = Checking_inventory::where('created_at', '>=', $month)->distinct('單號')->count();
+    $serialNums = \DB::table('checking_inventory')->select('id', '單號', 'created_at')
+        ->latest('created_at')->where('created_at', '>=', $month)->get()->unique('單號');
+    $serialNumsCount = count($serialNums);
     return view('checkInventory.newTable', ['serialCount' => $serialNumsCount, 'serialNums' => $serialNums]);
 })->name('checking.create_new_table');
 

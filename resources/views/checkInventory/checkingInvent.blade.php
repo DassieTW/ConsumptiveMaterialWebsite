@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-6 col-xxl-12">
+        <div class="col-12">
             <div class="card flex-fill w-100">
                 <div class="card-header pb-0">
                     <h1 class="card-title">{!! __('checkInvLang.serial_number') !!} :&nbsp;&nbsp;

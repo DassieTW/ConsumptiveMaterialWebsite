@@ -14,6 +14,7 @@ return [
     */
     'page_name' => 'Checking Inv.',
     'check' => 'Check',
+    'check_result' => 'Check Result',
     'no_table_found' => 'No table Found',
     'create_new_table' => 'Create New Table',
     'input_isn_barcode' => 'Scan In Part No. Barcode',

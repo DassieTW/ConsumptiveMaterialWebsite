@@ -502,6 +502,7 @@
                                             </ul>
                                         </li>
                                         @endcan
+
                                         @can('viewCheckInvent', App\Models\Checking_inventory::class )
                                         <li class="sidebar-item {{ isActiveRoute(['checking/', 'checking.index']) }}">
                                             <a data-bs-target="#checking" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false">
@@ -527,15 +528,15 @@
                                                     </a>
                                                 </li>
                                                 <li
-                                                    class="sidebar-item {{ isActiveRoute(['obound.material' , 'obound/material']) }}">
-                                                    <a class="sidebar-link" href="{{route('obound.material')}}">
-                                                        {!! __('oboundpageLang.matsInfo') !!}
+                                                    class="sidebar-item {{ isActiveRoute(['checking.index']) }}">
+                                                    <a class="sidebar-link" href="{{route('checking.index')}}">
+                                                        {!! __('checkInvLang.check') !!}
                                                     </a>
                                                 </li>
                                                 <li
-                                                    class="sidebar-item {{ isActiveRoute(['obound.inbound' , 'obound/inboundnewok']) }}">
-                                                    <a class="sidebar-link" href="{{route('obound.inbound')}}">
-                                                        {!! __('oboundpageLang.inbound') !!}
+                                                    class="sidebar-item {{ isActiveRoute([]) }}">
+                                                    <a class="sidebar-link" href="{{route('checking.index')}}">
+                                                        {!! __('checkInvLang.check_result') !!}
                                                     </a>
                                                 </li>
                                             </ul>
