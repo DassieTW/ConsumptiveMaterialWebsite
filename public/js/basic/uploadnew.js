@@ -62,27 +62,29 @@ $("#uploadnew").on("submit", function (e) {
             window.alert(mess);
             return false;
         }
-    }
+    } // for
 
     var data = [];
-    data.push({ Number: number, Name: name , Format : format , Price : price ,Money: money,
-        Unit: unit,
-        Mpq: mpq,
-        Moq: moq,
-        Lt: lt,
-        Month: month,
-        Gradea: gradea,
-        Belong: belong,
-        Send: send,
-        Safe: safe,
-        Count: count,});
+    data.push(number);
+    data.push(name);
+    data.push(format);
+    data.push(price);
+    data.push(money);
+    data.push(unit);
+    data.push(mpq);
+    data.push(moq);
+    data.push(lt);
+    data.push(month);
+    data.push(gradea);
+    data.push(belong);
+    data.push(send);
+    data.push(safe);
+
     $.ajax({
         type: "POST",
         url: "insertuploadmaterial",
-        data: {
-            test: JSON.stringify(data),
-        },
-        contentType: "application/json",
+        data: { AllData: JSON.stringify(data), count: count},
+        // dataType: 'json', // let's set the expected response format
         beforeSend: function () {
             // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
             $("body").loadingModal({
@@ -114,15 +116,9 @@ $("#uploadnew").on("submit", function (e) {
                 window.alert(mess);
                 window.location.href = 'new';
             }
-            if (err.status == 422) {
-                console.log(err.responseJSON.幣別);
-                console.log(err.responseJSON.A級資材);
-
-                console.log(err.responseJSON.發料部門);
-
-                console.log(err.responseJSON.安全庫存);
-
-            }
+            else if (err.status == 423) {
+                console.log(err.responseJSON.message);
+            } // else if
             //transaction error
             else {
                 var mess = err.responseJSON.message;

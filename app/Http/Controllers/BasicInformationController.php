@@ -626,6 +626,10 @@ class BasicInformationController extends Controller
     //上傳資料新增至資料庫
     public function insertuploadmaterial(Request $request)
     {
+        $testDecode2 = json_decode( $request->input('AllData') );
+        $number = $testDecode2[0];
+        return \Response::json(['message' => $testDecode2], 423/* Status code here default is 200 ok*/); // test
+
         if (Session::has('username')) {
 
             $count = $request->input('count');
@@ -657,8 +661,7 @@ class BasicInformationController extends Controller
 
                 }
                 $test++;
-
-            }
+            } // for
 
             $number = ($request->input('test'));
             //$data = json_decode($number[0]);
