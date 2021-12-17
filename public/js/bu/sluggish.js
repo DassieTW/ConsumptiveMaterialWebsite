@@ -73,11 +73,6 @@ $('#sluggish').on('submit', function (e) {
         data9.push($("#data9" + record[k]).val());
     }
 
-
-
-    console.log(data6);
-    console.log(data8);
-
     checked = $("input[type=checkbox]:checked").length;
 
     if (select == '提交' || select == 'Submit') {

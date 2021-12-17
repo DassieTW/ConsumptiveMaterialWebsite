@@ -607,7 +607,7 @@ class BasicInformationController extends Controller
     {
         if (Session::has('username')) {
             $this->validate($request, [
-                'select_file'  => 'required|mimes:xls,xlsx'
+                'select_file'  => 'required|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/zip'
             ]);
             $path = $request->file('select_file')->getRealPath();
 
@@ -637,7 +637,6 @@ class BasicInformationController extends Controller
             for ($i = 0; $i < $count; $i++) {
                 $test1[$i] = 0;
                 $number =  $request->input('number')[$i];
-
                 $numbers = DB::table('consumptive_material')->pluck('料號');
                 $delete = ConsumptiveMaterial::onlyTrashed()
                     ->where('料號', $number)->get();
@@ -655,9 +654,33 @@ class BasicInformationController extends Controller
                     } else {
                         continue;
                     }
+
                 }
                 $test++;
+
             }
+
+            $number = ($request->input('test'));
+            //$data = json_decode($number[0]);
+            // $name =  $request->input('data');
+            // $format =  $request->input('data');
+            // $price =  $request->input('data');
+            // $money =  $request->input('data');
+            // $unit =  $request->input('data');
+            // $mpq =  $request->input('data');
+            // $moq =  $request->input('data');
+            // $lt =  $request->input('data');
+            // $month =  $request->input('data');
+            // $gradea =  $request->input('data');
+            // $belong =  $request->input('data');
+            // $send =  $request->input('data');
+            // $safe =  $request->input('data');
+
+            // return \Response::json(['A級資材' => $gradea, '月請購' => $month, '發料部門' => $send, '耗材歸屬' => $belong,
+            // '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq,
+            // 'MOQ' => $moq, 'LT' => $lt, '安全庫存' => $number] , 422/* Status code here default is 200 ok*/);
+
+            return \Response::json(['安全庫存' => $number] , 422);
 
             if ($test == $count && $bool == true) {
                 DB::beginTransaction();
@@ -701,15 +724,16 @@ class BasicInformationController extends Controller
                                 ]);
                         }
                         $record++;
-                    }
+                    } //for
+                    DB::commit();
+                    return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
+
                 } catch (\Exception $e) {
                     DB::rollback();
                     $mess = $e->getMessage();
                     return \Response::json(['message' => $mess], 423/* Status code here default is 200 ok*/);
                 }
 
-                DB::commit();
-                return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
@@ -721,7 +745,7 @@ class BasicInformationController extends Controller
     {
         if (Session::has('username')) {
             $this->validate($request, [
-                'select_file'  => 'required|mimes:xls,xlsx'
+                'select_file'  => 'required|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/zip'
             ]);
             $path = $request->file('select_file')->getRealPath();
 

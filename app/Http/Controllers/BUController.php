@@ -700,11 +700,11 @@ class BUController extends Controller
             $reDive = new responseObj();
             $spreadsheet = new Spreadsheet();
             //$spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
-            foreach (range('A', 'Z') as $char) {
-                $spreadsheet->getActiveSheet()->getColumnDimension($char)->setWidth(20);
-            }
-            $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(60);
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+
             $worksheet = $spreadsheet->getActiveSheet();
+
 
             $title = $request->input('title');
             $data0 = $request->input('data0');
