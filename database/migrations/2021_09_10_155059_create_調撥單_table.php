@@ -31,8 +31,8 @@ class Create調撥單Table extends Migration
             $table->dateTime('出庫時間')->nullable();
             $table->dateTime('入庫時間')->nullable();
             $table->string('狀態', 45);
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

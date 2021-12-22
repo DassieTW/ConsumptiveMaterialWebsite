@@ -24,30 +24,30 @@
         <form id="consume" class="row gx-6 gy-1 align-items-center">
             @csrf
             <div class="col-auto">
-                <label class="col col-lg-12 form-label">{!! __('outboundpageLang.client') !!}</label>
+                <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.client') !!}</label>
                 <select class="form-select form-select-lg" id="client" name="client" required>
                     <option style="display: none" disabled selected value="">{!!
-                        __('outboundpageLang.enterclient') !!}</option>
+                        __('monthlyPRpageLang.enterclient') !!}</option>
                     @foreach($client as $client)
                     <option>{{ $client->客戶 }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-auto">
-                <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
+                <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.machine') !!}</label>
                 <select class="form-select form-select-lg" id="machine" name="machine" required>
                     <option style="display: none" disabled selected value="">{!!
-                        __('outboundpageLang.entermachine') !!}</option>
+                        __('monthlyPRpageLang.entermachine') !!}</option>
                     @foreach($machine as $machine)
                     <option>{{ $machine->機種 }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-auto">
-                <label class="col col-lg-12 form-label">{!! __('outboundpageLang.process') !!}</label>
+                <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.process') !!}</label>
                 <select class="form-select form-select-lg " id="production" name="production" required>
                     <option style="display: none" disabled selected value="">{!!
-                        __('outboundpageLang.enterprocess') !!}</option>
+                        __('monthlyPRpageLang.enterprocess') !!}</option>
                     @foreach($production as $production)
                     <option>{{ $production->制程 }}</option>
                     @endforeach
@@ -55,19 +55,19 @@
             </div>
 
             <div class="col-auto">
-                <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
+                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
                 <input class="form-control form-control-lg " type="text" id="number" name="number" required
-                    placeholder="{!! __('outboundpageLang.enterisn') !!}"
+                    placeholder="{!! __('monthlyPRpageLang.enterisn') !!}"
                     oninput="if(value.length>12)value=value.slice(0,12)">
                 <div id="numbererror" style="display:none; color:red;">{!!
-                    __('outboundpageLang.isnlength')!!}</div>
-                <div id="numbererror1" style="display:none; color:red;">{!! __('outboundpageLang.noisn') !!}
+                    __('monthlyPRpageLang.isnlength')!!}</div>
+                <div id="numbererror1" style="display:none; color:red;">{!! __('monthlyPRpageLang.noisn') !!}
                 </div>
             </div>
             <div class="col-auto">
                 <label class="col col-auto form-label"></label>
                 <input type="submit" id="add" name="add" class="form-control form-control-lg btn btn-lg btn-primary"
-                    value="{!! __('outboundpageLang.add') !!}">
+                    value="{!! __('monthlyPRpageLang.add') !!}">
             </div>
         </form>
     </div>
@@ -111,16 +111,18 @@
             <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
             <input type="email" id="email" name="email" pattern=".+@pegatroncorp\.com" required
                 placeholder="xxx@pegatroncorp.com">
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
-                    <input type="submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}"
+                    <input type="submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}"
                         style="width: 80px">
                 </div>
             </div>
         </form>
     </div>
 </div>
+
 <div class="row justify-content-center">
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
     <div class="card w-75" id="consumeupload">

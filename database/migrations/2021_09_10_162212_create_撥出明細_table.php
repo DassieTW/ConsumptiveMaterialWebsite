@@ -27,8 +27,8 @@ class Create撥出明細Table extends Migration
             $table->string('儲位',50);
             $table->string('調撥人',45);
             $table->dateTime('撥出時間');
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

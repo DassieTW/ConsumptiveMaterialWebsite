@@ -35,8 +35,8 @@ class CreateO庫出庫退料Table extends Migration
             $table->dateTime('開單時間');
             $table->dateTime('入庫時間')->nullable();
             $table->string('功能狀況', 45)->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

@@ -227,9 +227,6 @@ Route::get('/uploadconsume', function () {
 
 Route::post('/uploadconsume', [MonthController::class, 'uploadconsume'])->name('month.uploadconsume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//單耗上傳資料新增至資料庫
-Route::post('/insertuploadconsume', [MonthController::class, 'insertuploadconsume'])->name('month.insertuploadconsume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //新增站位上傳
 Route::get('/uploadstand', function () {
     return view('month.standadd')->with(['client' => 客戶別::cursor()])
@@ -238,19 +235,12 @@ Route::get('/uploadstand', function () {
 
 Route::post('/uploadstand', [MonthController::class, 'uploadstand'])->name('month.uploadstand')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//站位上傳資料新增至資料庫
-Route::post('/insertuploadstand', [MonthController::class, 'insertuploadstand'])->name('month.insertuploadstand')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-
 //非月請購上傳
 Route::get('/uploadnotmonth', function() {
     return view('month.importnotmonth')->with(['client' => 客戶別::cursor()]);
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/uploadnotmonth', [MonthController::class, 'uploadnotmonth'])->name('month.uploadnotmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//非月請購上傳資料新增至資料庫
-Route::post('/insertuploadnotmonth', [MonthController::class, 'insertuploadnotmonth'])->name('month.insertuploadnotmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //月請購上傳
 Route::get('/uploadmonth', function () {
@@ -259,9 +249,6 @@ Route::get('/uploadmonth', function () {
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('month.uploadmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//月請購上傳資料新增至資料庫
-Route::post('/insertuploadmonth', [MonthController::class, 'insertuploadmonth'])->name('month.insertuploadmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //test單耗畫押
 Route::get('/testconsume' , function () {

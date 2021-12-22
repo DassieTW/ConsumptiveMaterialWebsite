@@ -10,7 +10,7 @@ class 領用原因 extends Model
 {
 
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = "領用原因";
 

@@ -15,8 +15,8 @@ class Create廠別Table extends Migration
     {
         Schema::create('廠別', function (Blueprint $table) {
             $table->string('廠別',10)->primary();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

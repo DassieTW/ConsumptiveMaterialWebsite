@@ -72,7 +72,7 @@
                             <input type="hidden" id="time" name="time" value="14">
                         </tr>
                         @foreach($data as $row)
-                        <tr>
+                        <tr id = "row{{$loop->index}}">
                             <td><input class="form-control form-control-lg" type="text" id="data0a{{$loop->index}}"
                                     name="data0a{{$loop->index}}" value="{{$row[0]}}" required
                                     oninput="if(value.length>12) value=value.slice(0,12)" style="width:150px"></td>

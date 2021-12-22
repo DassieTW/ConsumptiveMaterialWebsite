@@ -93,6 +93,8 @@ $(document).ready(function () {
                 var body = document.getElementById("consumeaddbody");
                 var row = document.createElement("tr");
 
+                row.setAttribute("id", "row" + index);
+
                 let rowdelete = document.createElement('td');
                 rowdelete.innerHTML = "<a id=" + "deleteBtn" + index + "></a>";
 
@@ -236,6 +238,7 @@ $(document).ready(function () {
         var production = [];
         var number = [];
         var consume = [];
+        var row = [];
         var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
 
@@ -246,8 +249,11 @@ $(document).ready(function () {
                 production.push($("#production" + i).text());
                 number.push($("#number" + i).text());
                 consume.push($("#amount" + i).val());
+                row.push(i);
             }
         }
+
+        console.log(row);
 
         $.ajax({
             type: 'POST',
@@ -261,6 +267,7 @@ $(document).ready(function () {
                 jobnumber: jobnumber,
                 email: email,
                 count: count,
+                row : row,
             },
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
@@ -280,11 +287,32 @@ $(document).ready(function () {
                     ' : ' + data.record + Lang.get('monthlyPRpageLang.record') + Lang.get('monthlyPRpageLang.consume');
                 alert(mess);
 
-                $("#consumehead").hide();
-                $("#consumebody").hide();
-                $("#consumeupload").hide();
+                var mess2 = Lang.get('monthlyPRpageLang.yellowrepeat');
 
-                $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/testconsume?' + data.database + '</a>');
+                alert(mess2);
+
+                for(let i = 0 ; i < row.length ; i++)
+                {
+                    console.log(typeof(data.check[i]));
+                    console.log(typeof(row[i]));
+                    let j = row.indexOf(parseInt((data.check)[i]));
+                    console.log(j);
+                    if(j != -1)
+                    {
+                        $('#row' + row[i]).remove();
+                        count = count -1;
+                    }
+                    else
+                    {
+                        document.getElementById("row" + row[i]).style.backgroundColor = "yellow";
+                    }
+                }
+
+                // $("#consumehead").hide();
+                // $("#consumebody").hide();
+                // $("#consumeupload").hide();
+
+                // $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/testconsume?' + data.database + '</a>');
 
             },
             error: function (err) {

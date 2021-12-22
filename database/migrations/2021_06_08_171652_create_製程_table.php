@@ -15,8 +15,8 @@ class Create製程Table extends Migration
     {
         Schema::create('製程', function (Blueprint $table) {
             $table->string('制程',30)->primary();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

@@ -10,7 +10,7 @@ class 退回原因 extends Model
 {
 
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = "退回原因";
 

@@ -65,7 +65,7 @@ return [
     'stand' => '站位',
     'yes' => '是',
     'no' => '否',
-    'add' => '新增至资料库',
+    'add' => '添加',
     'matssearch' => '料号查询',
     'download' => '下载',
     'newbasicInfo' => '新增基础信息',
@@ -85,4 +85,7 @@ return [
     'upload1' => '上传',
     'nocheck' => '请勾选欲提交项目',
     'check' => '勾选',
+    'submit' => '提交',
+    'addtodatabase' => '新增至资料库',
+    'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
 ];

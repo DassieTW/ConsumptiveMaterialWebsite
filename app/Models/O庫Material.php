@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class O庫Material extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    //use SoftDeletes;
 
     protected $table = "O庫_material";
 

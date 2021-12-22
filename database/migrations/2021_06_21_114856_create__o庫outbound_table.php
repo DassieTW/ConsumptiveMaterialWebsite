@@ -35,8 +35,8 @@ class CreateO庫OutboundTable extends Migration
             $table->string('領料單號', 45);
             $table->dateTime('開單時間');
             $table->dateTime('出庫時間')->nullable();;
-            $table->timestamps();
-            $table->softDeletes();
+            //table->timestamps();
+            //$table->softDeletes();
         });
     }
 

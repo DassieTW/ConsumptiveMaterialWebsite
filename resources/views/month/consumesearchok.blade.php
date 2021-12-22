@@ -15,11 +15,11 @@
     <meta charset="utf-8">
 </head>
 <h2>{!! __('templateWords.monthly') !!}</h2>
+<div id="url"></div>
 <div class="card">
     <div class="card-header">
         <h3>{!! __('monthlyPRpageLang.isnConsumeUpdate') !!}</h3>
     </div>
-    <div id="url"></div>
     <div class="card-body" id="consumebody">
         <form id="consume" method="POST">
             @csrf
@@ -72,11 +72,11 @@
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
-            <input type="text" id="jobnumber" name="jobnumber">
+            <input type="text" id="jobnumber" name="jobnumber" class="form-control form-control" style="width: 250px">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
             <input type="email" id="email" name="email" pattern=".+@pegatroncorp\.com"
-                placeholder="xxx@pegartoncorp.com">
+                placeholder="xxx@pegartoncorp.com" class="form-control form-control" style="width: 250px">
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

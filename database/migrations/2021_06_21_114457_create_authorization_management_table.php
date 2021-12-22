@@ -17,8 +17,8 @@ class CreateAuthorizationManagementTable extends Migration
             $table->string('authorization',50);
             $table->integer('priority');
             $table->primary(['authorization','priority']);
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

@@ -15,8 +15,8 @@ class Create入庫原因Table extends Migration
     {
         Schema::create('入庫原因', function (Blueprint $table) {
             $table->string('入庫原因',45)->primary();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

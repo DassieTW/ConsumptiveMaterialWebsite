@@ -23,8 +23,8 @@ class CreateInboundTable extends Migration
             $table->string('入庫原因', 45);
             $table->dateTime('入庫時間');
             $table->string('備註', 45)->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

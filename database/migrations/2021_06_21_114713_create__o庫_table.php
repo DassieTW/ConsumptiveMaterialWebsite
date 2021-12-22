@@ -16,8 +16,8 @@ class CreateO庫Table extends Migration
         //
         Schema::create('O庫', function (Blueprint $table) {
             $table->string('O庫',50)->primary();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

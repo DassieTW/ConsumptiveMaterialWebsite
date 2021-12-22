@@ -23,8 +23,8 @@ class CreateO庫InventoryTable extends Migration
             $table->dateTime('最後更新時間');
             $table->string('品名',100);
             $table->string('規格',100);
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

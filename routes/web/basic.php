@@ -48,10 +48,14 @@ Route::get('/', function () {
 Route::post('/changeordelete', [BasicInformationController::class, 'changeordelete'])->name('basic.changeordelete')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //新增料件
-Route::get('/new', [BasicInformationController::class, 'new'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+Route::get('/new', function(){
+    return view('basic.new')->with(['data' => 發料部門::cursor()]);
+})->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 Route::post('/new', [BasicInformationController::class, 'new'])->name('basic.new')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
+//新增料件提交
+Route::post('/materialaddsubmit', [BasicInformationController::class, 'materialaddsubmit'])->name('basic.materialaddsubmit')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //料件信息查詢頁面
 Route::get('/material', function () {

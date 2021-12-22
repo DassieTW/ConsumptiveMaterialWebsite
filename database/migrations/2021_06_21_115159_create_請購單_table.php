@@ -35,8 +35,8 @@ class Create請購單Table extends Migration
             $table->string('需求占比', 50);
             $table->dateTime('請購時間');
             $table->string('SXB單號', 50)->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

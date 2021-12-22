@@ -228,6 +228,7 @@ $(document).ready(function () {
         }
 
         console.log(sessionStorage.getItem('pickcount'));
+        var data = [];
         var client = [];
         var machine = [];
         var production = [];
@@ -254,24 +255,25 @@ $(document).ready(function () {
                 amount.push($("#amount" + i).val());
                 remark.push($("#remark" + i).text());
             }
-
         }
+
+        data.push(client);
+        data.push(machine);
+        data.push(production);
+        data.push(line);
+        data.push(usereason);
+        data.push(number);
+        data.push(name);
+        data.push(format);
+        data.push(unit);
+        data.push(amount);
+        data.push(remark);
 
         $.ajax({
             type: 'POST',
             url: "pickaddsubmit",
             data: {
-                client: client,
-                machine: machine,
-                production: production,
-                line: line,
-                usereason: usereason,
-                number: number,
-                name: name,
-                format: format,
-                unit: unit,
-                amount: amount,
-                remark: remark,
+                AllData: JSON.stringify(data),
                 count: count,
             },
             beforeSend: function () {

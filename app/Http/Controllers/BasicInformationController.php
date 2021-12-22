@@ -228,8 +228,10 @@ class BasicInformationController extends Controller
         if (Session::has('username')) {
             //delete
             if ($request->input('select') == "刪除") {
+                $Alldata = json_decode($request->input('AllData'));
+
                 for ($i = 0; $i < $request->input('count'); $i++) {
-                    ConsumptiveMaterial::where('料號', $request->input('number')[$i])->delete();
+                    ConsumptiveMaterial::where('料號', $Alldata[0][$i])->delete();
                     /*DB::table('consumptive_material')
                     ->where('料號', $request->input('number' )[$i])
                     ->delete();*/
@@ -240,20 +242,22 @@ class BasicInformationController extends Controller
             else if ($request->input('select') == "更新") {
                 $count = $request->input('count');
                 DB::beginTransaction();
+                $Alldata = json_decode($request->input('AllData'));
                 try {
                     for ($i = 0; $i < $count; $i++) {
-                        $gradea = $request->input('gradea')[$i];
-                        $month = $request->input('month')[$i];
-                        $send = $request->input('send')[$i];
-                        $belong = $request->input('belong')[$i];
-                        $price = $request->input('price')[$i];
-                        $money = $request->input('money')[$i];
-                        $unit = $request->input('unit')[$i];
-                        $mpq = $request->input('mpq')[$i];
-                        $moq = $request->input('moq')[$i];
-                        $lt = $request->input('lt')[$i];
-                        $safe = $request->input('safe')[$i];
-                        $number = $request->input('number')[$i];
+                        $number = $Alldata[0][$i];
+                        $gradea = $Alldata[1][$i];
+                        $month = $Alldata[2][$i];
+                        $send = $Alldata[3][$i];
+                        $belong = $Alldata[4][$i];
+                        $price  = $Alldata[5][$i];
+                        $money = $Alldata[6][$i];
+                        $unit = $Alldata[7][$i];
+                        $mpq = $Alldata[8][$i];
+                        $moq = $Alldata[9][$i];
+                        $lt = $Alldata[10][$i];
+                        $safe = $Alldata[11][$i];
+
                         $check = $request->input('check');
 
                         if ($gradea === 'Yes') $gradea = '是';
@@ -289,7 +293,9 @@ class BasicInformationController extends Controller
                 $spreadsheet = new Spreadsheet();
                 $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
                 $worksheet = $spreadsheet->getActiveSheet();
-                $time = $request->input('time');
+                $downloadcount = $request->input('downloadcount');
+                $Alldata = json_decode($request->input('AllData'));
+
                 //填寫表頭
                 for ($i = 0; $i < 14; $i++) {
                     $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
@@ -297,8 +303,8 @@ class BasicInformationController extends Controller
 
                 //填寫內容
                 for ($i = 0; $i < 14; $i++) {
-                    for ($j = 0; $j < $time; $j++) {
-                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
+                    for ($j = 0; $j < $downloadcount; $j++) {
+                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
                     }
                 }
 
@@ -447,7 +453,6 @@ class BasicInformationController extends Controller
 
                 return view("basic.searchmaterialok")
                     ->with(['data' => $datas])
-                    ->with(['data1' => $datas])
                     ->with(['sends' => 發料部門::cursor()]);
             } else {
                 return back()->withErrors([
@@ -481,26 +486,15 @@ class BasicInformationController extends Controller
             $send = $request->input('send');
             $safe = $request->input('safe');
             $numbers = DB::table('consumptive_material')->pluck('料號');
-
             $delete = ConsumptiveMaterial::onlyTrashed()
                 ->where('料號', $number)->get();
             //判斷料號是否重複
             for ($i = 0; $i < count($numbers); $i++) {
                 if (strcasecmp($number, $numbers[$i]) === 0) {
                     if (!$delete->isEmpty()) {
-                        DB::table('consumptive_material')
-                            ->where('料號', $number)
-                            ->update([
-                                '品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe, 'updated_at' => Carbon::now(), 'deleted_at' => null
-                            ]);
-
-
-                        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+                        continue;
                     } else {
                         return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
-                        /*return back()->withErrors([
-                        'number' => '料號 is repeated , Please enter another 料號',
-                        ]);*/
                     }
                 } else {
                     continue;
@@ -512,10 +506,6 @@ class BasicInformationController extends Controller
                 if (strlen($request->input('number')) !== 12) {
 
                     return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
-
-                    /*return back()->withErrors([
-                        'number' => '料號長度不為12 , Please enter again',
-                        ]);*/
                 }
 
                 //check 非月請購是否有填安全庫存
@@ -526,13 +516,11 @@ class BasicInformationController extends Controller
                     ]);*/
                 }
 
-                DB::table('consumptive_material')
-                    ->insert([
-                        '料號' => $number, '品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe, 'created_at' => Carbon::now()
-                    ]);
-
-                return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
-                //return view('basic.newok');
+                return \Response::json([
+                    'number' => $number, 'name' => $name, 'format' => $format, 'price' => $price,
+                    'money' => $money, 'unit' => $unit, 'mpq' => $mpq, 'moq' => $moq, 'lt' => $lt, 'month' => $month,
+                    'gradea' => $gradea, 'belong' => $belong, 'send' => $send, 'safe' => $safe
+                ]/* Status code here default is 200 ok*/);
             } else {
                 return view('basic.new')->with(['data' => 發料部門::cursor()]);
             }
@@ -623,95 +611,82 @@ class BasicInformationController extends Controller
     }
 
 
-    //上傳資料新增至資料庫
+    //上傳料件新增至資料庫
     public function insertuploadmaterial(Request $request)
     {
         if (Session::has('username')) {
 
             $count = $request->input('count');
+            $row = $request->input('row');
             $record = 0;
-            $row = 0;
-            $test = 0;
-            $test1 = array();
-            $bool = true;
-            $Alldata = json_decode( $request->input('AllData') );
-            for ($i = 0; $i < $count; $i++) {
-                $test1[$i] = 0;
-                $number =  $Alldata[0][$i];
-                $numbers = DB::table('consumptive_material')->pluck('料號');
-                $delete = ConsumptiveMaterial::onlyTrashed()
-                    ->where('料號', $number)->get();
-                //判斷料號是否重複
-                for ($j = 0; $j < count($numbers); $j++) {
-                    if (strcasecmp($number, $numbers[$j]) === 0) {
-                        if (!$delete->isEmpty()) {
-                            $test1[$i] = 1;
-                        } else {
-                            //料號重複
-                            $bool = false;
-                            $row = $i + 1;
-                            return \Response::json(['message' => $row], 420/* Status code here default is 200 ok*/);
-                        }
-                    } else {
-                        continue;
+            $check = array();
+            $Alldata = json_decode($request->input('AllData'));
+
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
+                    $number =  $Alldata[0][$i];
+                    $name =   $Alldata[1][$i];
+                    $format =   $Alldata[2][$i];
+                    $price =  $Alldata[3][$i];
+                    $money =   $Alldata[4][$i];
+                    $unit =   $Alldata[5][$i];
+                    $mpq =   $Alldata[6][$i];
+                    $moq =   $Alldata[7][$i];
+                    $lt =   $Alldata[8][$i];
+                    $month =   $Alldata[9][$i];
+                    $gradea =   $Alldata[10][$i];
+                    $belong =   $Alldata[11][$i];
+                    $send =   $Alldata[12][$i];
+                    $safe =   $Alldata[13][$i];
+
+                    $test = DB::table('consumptive_material')->where('料號', $number)->value('品名');
+                    $delete = ConsumptiveMaterial::onlyTrashed()
+                        ->where('料號', $number)->get();
+
+                    if ($gradea === 'Yes') $gradea = '是';
+                    if ($gradea === 'No') $gradea = '否';
+
+                    if ($month === 'Yes') $month = '是';
+                    if ($month === 'No') $month = '否';
+
+                    if ($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
+                    if ($belong === 'Station') $belong = '站位';
+
+                    if($safe === '') $safe = null;
+
+                    if($month === "否" && $safe === null)
+                    {
+                        $row = $i + 1;
+                        return \Response::json(['message' => $row], 422/* Status code here default is 200 ok*/);
                     }
-
-                }
-                $test++;
-            } // for
-
-            if ($test == $count && $bool == true) {
-                DB::beginTransaction();
-                try {
-                    for ($i = 0; $i < $count; $i++) {
-                        $number =  $Alldata[0][$i];
-                        $name =   $Alldata[1][$i];
-                        $format =   $Alldata[2][$i];
-                        $price =  $Alldata[3][$i];
-                        $money =   $Alldata[4][$i];
-                        $unit =   $Alldata[5][$i];
-                        $mpq =   $Alldata[6][$i];
-                        $moq =   $Alldata[7][$i];
-                        $lt =   $Alldata[8][$i];
-                        $month =   $Alldata[9][$i];
-                        $gradea =   $Alldata[10][$i];
-                        $belong =   $Alldata[11][$i];
-                        $send =   $Alldata[12][$i];
-                        $safe =   $Alldata[13][$i];
-
-                        if ($gradea === 'Yes') $gradea = '是';
-                        if ($gradea === 'No') $gradea = '否';
-
-                        if ($month === 'Yes') $month = '是';
-                        if ($month === 'No') $month = '否';
-
-                        if ($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
-                        if ($belong === 'Station') $belong = '站位';
-
-
-                        if ($test1[$i] != 0) {
-                            DB::table('consumptive_material')
-                                ->where('料號', $number)
-                                ->update([
-                                    '品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe, 'updated_at' => Carbon::now(), 'deleted_at' => null
-                                ]);
-                        } else {
+                    if (!$delete->isEmpty()) {
+                        DB::table('consumptive_material')
+                            ->where('料號', $number)
+                            ->update([
+                                '品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe, 'updated_at' => Carbon::now(), 'deleted_at' => null
+                            ]);
+                        $record++;
+                        array_push($check,$row[$i]);
+                    } else {
+                        if ($test === null) {
                             DB::table('consumptive_material')
                                 ->insert([
                                     '料號' => $number, '品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe, 'created_at' => Carbon::now()
                                 ]);
+                            $record++;
+                            array_push($check,$row[$i]);
+                        } else {
+                            continue;
                         }
-                        $record++;
-                    } //for
-                    DB::commit();
-                    return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
-
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    $mess = $e->getMessage();
-                    return \Response::json(['message' => $mess], 423/* Status code here default is 200 ok*/);
-                }
-
+                    }
+                } //for
+                DB::commit();
+                return \Response::json(['record' => $record , 'check' => $check]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                $mess = $e->getMessage();
+                return \Response::json(['message' => $mess], 423/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));

@@ -699,21 +699,23 @@ class OutboundController extends Controller
                 $opentime = $num;
             }
 
+            $Alldata = json_decode( $request->input('AllData') );
+
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
-                    $number = $request->input('number')[$i];
-                    $name = $request->input('name')[$i];
-                    $format = $request->input('format')[$i];
-                    $unit = $request->input('unit')[$i];
-                    $amount = $request->input('amount')[$i];
-                    $remark = $request->input('remark')[$i];
+                    $client = $Alldata[0][$i];
+                    $machine = $Alldata[1][$i];
+                    $production = $Alldata[2][$i];
+                    $line = $Alldata[3][$i];
+                    $usereason = $Alldata[4][$i];
+                    $number = $Alldata[5][$i];
+                    $name = $Alldata[6][$i];
+                    $format = $Alldata[7][$i];
+                    $unit = $Alldata[8][$i];
+                    $amount = $Alldata[9][$i];
+                    $remark = $Alldata[10][$i];
                     if ($remark === null) $remark = '';
-                    $client = $request->input('client')[$i];
-                    $machine = $request->input('machine')[$i];
-                    $production = $request->input('production')[$i];
-                    $line = $request->input('line')[$i];
-                    $usereason = $request->input('usereason')[$i];
                     DB::table('outbound')
                         ->insert([
                             '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
@@ -738,7 +740,6 @@ class OutboundController extends Controller
     {
         if (Session::has('username')) {
             $count = $request->input('count');
-
             $j = '0001';
             $max = DB::table('出庫退料')->max('開單時間');
             $maxtime = date_create(date('Y-m-d', strtotime($max)));
@@ -755,22 +756,23 @@ class OutboundController extends Controller
                 $num = strval($num);
                 $opentime = $num;
             }
+            $Alldata = json_decode( $request->input('AllData') );
+
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
-                    $number = $request->input('number')[$i];
-                    $name = $request->input('name')[$i];
-                    $format = $request->input('format')[$i];
-                    $unit = $request->input('unit')[$i];
-                    $amount = $request->input('amount')[$i];
-                    $remark = $request->input('remark')[$i];
+                    $client = $Alldata[0][$i];
+                    $machine = $Alldata[1][$i];
+                    $production = $Alldata[2][$i];
+                    $line = $Alldata[3][$i];
+                    $backreason = $Alldata[4][$i];
+                    $number = $Alldata[5][$i];
+                    $name = $Alldata[6][$i];
+                    $format = $Alldata[7][$i];
+                    $unit = $Alldata[8][$i];
+                    $amount = $Alldata[9][$i];
+                    $remark = $Alldata[10][$i];
                     if ($remark === null) $remark = '';
-                    $client = $request->input('client')[$i];
-                    $machine = $request->input('machine')[$i];
-                    $production = $request->input('production')[$i];
-                    $line = $request->input('line')[$i];
-                    $backreason = $request->input('backreason')[$i];
-
                     DB::table('出庫退料')
                         ->insert([
                             '客戶別' => $client, '機種' => $machine, '製程' => $production, '退回原因' => $backreason, '線別' => $line,
@@ -794,28 +796,30 @@ class OutboundController extends Controller
     public function picklistsubmit(Request $request)
     {
         if (Session::has('username')) {
-            $count = count($request->input('client'));
+            $Alldata = json_decode( $request->input('AllData') );
+            $count = count($Alldata[0]);
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
-                    $list = $request->input('list')[$i];
-                    $advance = $request->input('advance')[$i];
-                    $name = $request->input('name')[$i];
-                    $format = $request->input('format')[$i];
-                    $unit = $request->input('unit')[$i];
-                    $remark = $request->input('remark')[$i];
-                    $opentime = $request->input('opentime')[$i];
-                    $amount = $request->input('amount')[$i];
-                    $number = $request->input('number')[$i];
-                    $client = $request->input('client')[$i];
-                    $reason = $request->input('reason')[$i];
-                    $machine = $request->input('machine')[$i];
-                    $production = $request->input('production')[$i];
-                    $line = $request->input('line')[$i];
-                    $usereason = $request->input('usereason')[$i];
+                    $client = $Alldata[0][$i];
+                    $machine = $Alldata[1][$i];
+                    $production = $Alldata[2][$i];
+                    $usereason = $Alldata[3][$i];
+                    $line = $Alldata[4][$i];
+                    $number = $Alldata[5][$i];
+                    $name = $Alldata[6][$i];
+                    $format = $Alldata[7][$i];
+                    $unit = $Alldata[8][$i];
+                    $advance = $Alldata[9][$i];
+                    $amount = $Alldata[10][$i];
+                    $remark = $Alldata[11][$i];
+                    $reason = $Alldata[12][$i];
+                    $list = $Alldata[13][$i];
+                    $opentime = $Alldata[14][$i];
+                    $position = $Alldata[15][$i];
                     $sendpeople = $request->input('sendpeople');
                     $pickpeople = $request->input('pickpeople');
-                    $position = $request->input('position')[$i];
+
                     $now = Carbon::now();
                     $sendname = DB::table('人員信息')->where('工號', $sendpeople)->value('姓名');
                     $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
@@ -876,34 +880,35 @@ class OutboundController extends Controller
     public function backlistsubmit(Request $request)
     {
         if (Session::has('username')) {
-            $count = count($request->input('client'));
+            $Alldata = json_decode( $request->input('AllData') );
+            $count = count($Alldata[0]);
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
-                    $list = $request->input('list')[$i];
-                    $advance = $request->input('advance')[$i];
-                    $name = $request->input('name')[$i];
-                    $format = $request->input('format')[$i];
-                    $unit = $request->input('unit')[$i];
-                    $remark = $request->input('remark')[$i];
-                    $opentime = $request->input('opentime')[$i];
-                    $amount = $request->input('amount')[$i];
-                    $number = $request->input('number')[$i];
-                    $client = $request->input('client')[$i];
-                    $reason = $request->input('reason')[$i];
-                    $machine = $request->input('machine')[$i];
-                    $production = $request->input('production')[$i];
-                    $line = $request->input('line')[$i];
-                    $backreason = $request->input('backreason')[$i];
+                    $client = $Alldata[0][$i];
+                    $machine = $Alldata[1][$i];
+                    $production = $Alldata[2][$i];
+                    $backreason = $Alldata[3][$i];
+                    $line = $Alldata[4][$i];
+                    $number = $Alldata[5][$i];
+                    $name = $Alldata[6][$i];
+                    $format = $Alldata[7][$i];
+                    $unit = $Alldata[8][$i];
+                    $advance = $Alldata[9][$i];
+                    $amount = $Alldata[10][$i];
+                    $remark = $Alldata[11][$i];
+                    $reason = $Alldata[12][$i];
+                    $list = $Alldata[13][$i];
+                    $opentime = $Alldata[14][$i];
+                    $position = $Alldata[15][$i];
+                    $status = $Alldata[16][$i];
                     $backpeople = $request->input('backpeople');
                     $pickpeople = $request->input('pickpeople');
-                    $position = $request->input('position')[$i];
-                    $status = $request->input('status')[$i];
                     $now = Carbon::now();
                     $backname = DB::table('人員信息')->where('工號', $backpeople)->value('姓名');
                     $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
 
-                    if ($status === '良品' || $status === 'good product') {
+                    if ($status === '良品') {
                         $inventoryname = 'inventory';
                     } else {
                         $inventoryname = '不良品inventory';
@@ -986,25 +991,27 @@ class OutboundController extends Controller
             $spreadsheet = new Spreadsheet();
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
             $worksheet = $spreadsheet->getActiveSheet();
-            $time = $request->input('time');
+            $titlecount = $request->input('titlecount');
             $count = $request->input('count');
+            $Alldata = json_decode( $request->input('AllData') );
+
             //填寫表頭
-            for ($i = 0; $i < $time; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title' . $i));
+            for ($i = 0; $i < $titlecount; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
             }
 
             //填寫內容
-            for ($i = 0; $i < $time; $i++) {
+            for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
                 }
             }
 
 
             // 下載
             $now = Carbon::now()->format('YmdHis');
-            $title = $request->input('title');
-            $filename = $title . $now . '.xlsx';
+            $titlename = $request->input('titlename');
+            $filename = rawurlencode($titlename) . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="' . $filename . '"');
             header('Cache-Control: max-age=0');

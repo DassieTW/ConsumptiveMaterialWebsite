@@ -18,8 +18,8 @@ class Create人員信息Table extends Migration
             $table->string('工號',50)->primary();
             $table->string('姓名',50);
             $table->string('部門',50);
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

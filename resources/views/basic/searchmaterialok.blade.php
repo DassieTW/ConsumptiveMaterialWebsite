@@ -60,14 +60,17 @@
                     @foreach($data as $data)
                     <?php
                         $data->單價 = round($data->單價 , 3);
+                        $data->LT = round($data->LT , 3);
                     ?>
                     <tr>
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                 style="width:25px;height:25px;" value="{{$loop->index}}"></td>
                         <td><input type="hidden" id="number{{$loop->index}}" name="number{{$loop->index}}"
                                 value="{{$data->料號}}">{{$data->料號}}</td>
-                        <td>{{$data->品名}}</td>
-                        <td>{{$data->規格}}</td>
+                        <td><input type="hidden" id="name{{$loop->index}}" name="name{{$loop->index}}"
+                            value="{{$data->品名}}">{{$data->品名}}</td>
+                        <td><input type="hidden" id="format{{$loop->index}}" name="format{{$loop->index}}"
+                            value="{{$data->規格}}">{{$data->規格}}</td>
                         <td>
                             <select style="width:100px" class="form-select form-select-lg " id="gradea{{$loop->index}}"
                                 name="gradea{{$loop->index}}">
@@ -102,7 +105,7 @@
                             </select>
                         </td>
                         <td><input style="width:100px" type="number" id="price{{$loop->index}}"
-                                name="price{{$loop->index}}" value="{{$data->單價}}" step="0.00001"></td>
+                            class="form-control form-control-lg" name="price{{$loop->index}}" value="{{$data->單價}}" step="0.00001"></td>
                         <td>
                             <select style="width:100px" class="form-select form-select-lg " id="money{{$loop->index}}"
                                 name="money{{$loop->index}}">
@@ -116,38 +119,23 @@
                             </select>
                         </td>
                         <td><input style="width:100px" type="text" id="unit{{$loop->index}}" name="unit{{$loop->index}}"
-                                value="{{$data->單位}}"></td>
+                                value="{{$data->單位}}" class="form-control form-control-lg"></td>
                         <td><input style="width:100px" type="number" id="mpq{{$loop->index}}" name="mpq{{$loop->index}}"
-                                value="{{$data->MPQ}}"></td>
+                                value="{{$data->MPQ}}" class="form-control form-control-lg"></td>
                         <td><input style="width:100px" type="number" id="moq{{$loop->index}}" name="moq{{$loop->index}}"
-                                value="{{$data->MOQ}}"></td>
+                                value="{{$data->MOQ}}" class="form-control form-control-lg"></td>
                         <td><input style="width:100px" type="number" id="lt{{$loop->index}}" name="lt{{$loop->index}}"
-                                value="{{$data->LT}}"></td>
+                                value="{{$data->LT}}" class="form-control form-control-lg"></td>
                         <td><input class = "form-control form-control-lg"style="width:100px" type="number" id="safe{{$loop->index}}"
-                                name="safe{{$loop->index}}" value="{{$data->安全庫存}}"></td>
+                                name="safe{{$loop->index}}" value="{{$data->安全庫存}}" min="0"></td>
                         <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     </tr>
                     @endforeach
                 </table>
             </div>
-            @foreach ($data1 as $data )
-            <input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}" value="{{$data->料號}}">
-            <input type="hidden" id="data1{{$loop->index}}" name="data1{{$loop->index}}" value="{{$data->品名}}">
-            <input type="hidden" id="data2{{$loop->index}}" name="data2{{$loop->index}}" value="{{$data->規格}}">
-            <input type="hidden" id="data3{{$loop->index}}" name="data3{{$loop->index}}" value="{{$data->A級資材}}">
-            <input type="hidden" id="data4{{$loop->index}}" name="data4{{$loop->index}}" value="{{$data->月請購}}">
-            <input type="hidden" id="data5{{$loop->index}}" name="data5{{$loop->index}}" value="{{$data->發料部門}}">
-            <input type="hidden" id="data6{{$loop->index}}" name="data6{{$loop->index}}" value="{{$data->耗材歸屬}}">
-            <input type="hidden" id="data7{{$loop->index}}" name="data7{{$loop->index}}" value="{{$data->單價}}">
-            <input type="hidden" id="data8{{$loop->index}}" name="data8{{$loop->index}}" value="{{$data->幣別}}">
-            <input type="hidden" id="data9{{$loop->index}}" name="data9{{$loop->index}}" value="{{$data->單位}}">
-            <input type="hidden" id="data10{{$loop->index}}" name="data10{{$loop->index}}" value="{{$data->MPQ}}">
-            <input type="hidden" id="data11{{$loop->index}}" name="data11{{$loop->index}}" value="{{$data->MOQ}}">
-            <input type="hidden" id="data12{{$loop->index}}" name="data12{{$loop->index}}" value="{{$data->LT}}">
-            <input type="hidden" id="data13{{$loop->index}}" name="data13{{$loop->index}}" value="{{$data->安全庫存}}">
-            @endforeach
 
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
                 value="{!! __('basicInfoLang.delete') !!}">
             <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
@@ -155,7 +143,8 @@
             <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                 value="{!! __('basicInfoLang.download') !!}">
         </form>
-        <br>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('basic.material')}}'">{!!
             __('basicInfoLang.return') !!}</button>
     </div>

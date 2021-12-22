@@ -21,8 +21,8 @@ class Create非月請購Table extends Migration
             $table->dateTime('上傳時間');
             $table->string('說明',50)->nullable();
             $table->string('SXB單號',50)->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 
