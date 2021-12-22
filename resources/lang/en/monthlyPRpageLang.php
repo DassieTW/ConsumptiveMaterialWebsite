@@ -12,16 +12,16 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'isnConsumeAdd' => 'Unit Consumption <br/> &nbsp;&nbsp;&nbsp; (Add)',
-    'isnConsumeUpdate' => 'Unit Consumption <br/> &nbsp;&nbsp;&nbsp; (Search & Update)',
-    'standAdd' => 'Station Manpower <br/> &nbsp;&nbsp;&nbsp; (Add)',
-    'standUpdate' => 'Station Manpower <br/> &nbsp;&nbsp;&nbsp; (Search & Update)',
-    'importNonMonthlyData' => 'Import Non-Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
-    'importMonthlyData' => 'Import Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
+    'isnConsumeAdd' => 'Unit Consumption (Add)',
+    'isnConsumeUpdate' => 'Unit Consumption (Search & Update)',
+    'standAdd' => 'Station Manpower (Add)',
+    'standUpdate' => 'Station Manpower (Search & Update)',
+    'importNonMonthlyData' => 'Import Non-Monthly PR Data',
+    'importMonthlyData' => 'Import Monthly PR Data',
     'PR' => 'PR',
     'SRM' => 'SRM',
     'SXB_search' => 'SXB (Search)',
-    'on_the_way_search' => 'On-Order Inventory <br/> &nbsp;&nbsp;&nbsp; (Search)',
+    'on_the_way_search' => 'On-Order Inventory (Search)',
     'client' => 'Clients',
     'enterclient' => 'Please select client',
     'isn' => 'Part No.',

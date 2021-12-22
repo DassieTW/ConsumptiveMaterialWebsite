@@ -261,36 +261,36 @@
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['month/consumeadd','month/consumenewok','month/uploadconsume','month/insertuploadconsume']) }}">
                                                     <a class="sidebar-link" href="{{route('month.consumeadd')}}">
-                                                        {!! __('monthlyPRpageLang.isnConsumeAdd') !!}
+                                                        {!! __('templateWords.isnConsumeAdd') !!}
                                                     </a>
                                                 </li>
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['month.consume','month/consumesearch']) }}">
                                                     <a class="sidebar-link" href="{{route('month.consume')}}">
-                                                        {!! __('monthlyPRpageLang.isnConsumeUpdate') !!}
+                                                        {!! __('templateWords.isnConsumeUpdate') !!}
                                                     </a>
                                                 </li>
                                                 <li class="sidebar-item {{ isActiveRoute(['month/standadd','month/standnewok','month/uploadstand','month/insertuploadstand']) }}">
                                                     <a class="sidebar-link" href="{{route('month.standadd')}}">
-                                                        {!! __('monthlyPRpageLang.standAdd') !!}
+                                                        {!! __('templateWords.standAdd') !!}
                                                     </a>
                                                 </li>
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['month.stand','month/standsearch']) }}">
                                                     <a class="sidebar-link" href="{{route('month.stand')}}">
-                                                        {!! __('monthlyPRpageLang.standUpdate') !!}
+                                                        {!! __('templateWords.standUpdate') !!}
                                                     </a>
                                                 </li>
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['month/importnotmonth', 'month/uploadnotmonth','month/notmonthinf']) }}">
                                                     <a class="sidebar-link" href="{{route('month.importnotmonth')}}">
-                                                        {!! __('monthlyPRpageLang.importNonMonthlyData') !!}
+                                                        {!! __('templateWords.importNonMonthlyData') !!}
                                                     </a>
                                                 </li>
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['month/importmonth','month/uploadmonth','month/monthinf']) }}">
                                                     <a class="sidebar-link" href="{{route('month.importmonth')}}">
-                                                        {!! __('monthlyPRpageLang.importMonthlyData') !!}
+                                                        {!! __('templateWords.importMonthlyData') !!}
                                                     </a>
                                                 </li>
                                                 <li class="sidebar-item {{ isActiveRoute(['month/buylist']) }}">
@@ -310,7 +310,7 @@
                                                 </li>
                                                 <li class="sidebar-item {{ isActiveRoute(['month/transit']) }}">
                                                     <a class="sidebar-link" href="{{route('month.transit')}}">
-                                                        {!! __('monthlyPRpageLang.on_the_way_search') !!}
+                                                        {!! __('templateWords.on_the_way_search') !!}
                                                     </a>
                                                 </li>
                                             </ul>

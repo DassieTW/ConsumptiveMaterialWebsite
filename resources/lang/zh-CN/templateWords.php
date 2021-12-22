@@ -36,4 +36,12 @@ return [
     'locBarcode' => '储位条码查询',
     'isnBarcode' => '料号条码查询',
     'nowuser' => '现在登入的用户是:',
+
+    'isnConsumeAdd' => '料号单耗(新增)',
+    'isnConsumeUpdate' => '料号单耗(查询与修改)',
+    'standAdd' => '站位人力(新增)',
+    'standUpdate' => '站位人力(查询与修改)',
+    'importNonMonthlyData' => '汇入非月请购资料',
+    'importMonthlyData' => '汇入月请购资料',
+    'on_the_way_search' => '在途数量(查询)',
 ];
