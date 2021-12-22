@@ -20,7 +20,7 @@ return [
     'input_isn_barcode' => 'Scan In Part No. Barcode',
     'input_loc_barcode' => 'Scan In Loc. Barcode',
     'isn' => 'Part No.',
-    'product_name' => 'Product Name',
+    'product_name' => 'Name',
     'loc' => 'Location',
     'client' => 'Client',
     'stock' => 'Stock',

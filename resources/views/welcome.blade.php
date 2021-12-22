@@ -396,6 +396,31 @@
         }
     </style>
 
+    {{-- styles for nav bar icons --}}
+    <style>
+        .navSvg path {
+            stroke: rgb(58, 58, 58);
+        }
+        .navSvg polyline {
+            stroke: rgb(58, 58, 58);
+        }
+        .navSvg line {
+            stroke: rgb(58, 58, 58);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .navSvg path {
+                stroke: rgb(141, 141, 141);
+            }
+            .navSvg polyline {
+                stroke: rgb(141, 141, 141);
+            }
+            .navSvg line {
+                stroke: rgb(141, 141, 141);
+            }
+        }
+    </style>
+
     <title>{{ __('templateWords.websiteName')}}</title>
 </head>
 
@@ -403,22 +428,48 @@
     <div
         class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
 
-        <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-            @if (Auth::check())
-            <a href="{{ route('member.index') }}"
-                class="text-lg text-gray-700 underline">{{ __('welcomePageLang.menu')}}</a>
-            @else
-            <a href="{{ url('/member/login') }}"
-                class="text-lg text-gray-700 underline">{{ __('welcomePageLang.login_btn')}}</a>
-            @endif
-            <br>
-            <div class="dropdown">
-                <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown"
+        <div class="fixed top-0 right-0 px-3 pt-3">
+            <div class="dropdown fixed top-0 right-0 px-3 pt-3">
+                @if (Auth::check())
+                <a class="nav-icon d-inline-block d-md-none" href="{{ route('member.index') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-home align-middle navSvg">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </a>
+                @else
+                <a class="nav-icon d-inline-block d-md-none" href="{{ url('/member/login') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-log-in align-middle navSvg">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                        <polyline points="10 17 15 12 10 7"></polyline>
+                        <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                </a>
+                @endif
+
+                <a class="nav-icon dropdown-toggle d-inline-block d-md-none" href="#" data-bs-toggle="dropdown"
                     data-bs-auto-close="outside" data-bs-display="static" aria-expanded="false">
-                    <i class="align-middle mr-1" data-feather="book-open"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-book-open align-middle navSvg">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
                 </a>
 
-                <a class="text-lg text-gray-700 underline dropdown-toggle align-middle d-none d-sm-inline-block"
+                @if (Auth::check())
+                <a href="{{ route('member.index') }}"
+                    class="text-lg text-gray-700 dark:text-white underline d-none d-sm-none d-md-block">{{ __('welcomePageLang.menu')}}</a>
+                @else
+                <a href="{{ url('/member/login') }}"
+                    class="text-lg text-gray-700 dark:text-white underline d-none d-sm-none d-md-block">{{ __('welcomePageLang.login_btn')}}</a>
+                @endif
+                <br class="d-none d-md-block">
+                <a class="text-lg text-gray-700 dark:text-white underline dropdown-toggle align-middle d-none d-sm-none d-md-block"
                     href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
                     aria-expanded="false">
                     {{ __('templateWords.language')}}</a>
@@ -447,8 +498,7 @@
 
                     <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
                         <div class="flex items-center">
-                            <svg fill="currentColor" class="w-8 h-8 text-gray-500" viewBox="0 0 16 16"
-                                class="w-8 h-8 text-gray-500">
+                            <svg fill="currentColor" class="w-8 h-8 text-gray-600" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
                                     d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
                                 <path
@@ -457,11 +507,12 @@
                                     d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/checking') }}" class="underline text-gray-900 dark:text-white">盤點管理</a>
+                                <a href="{{ url('/checking') }}"
+                                    class="underline text-gray-900 dark:text-black">盤點管理</a>
                             </div>
                         </div>
                         <div class="ml-12">
-                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-md">
+                            <div class="mt-2 text-gray-600 dark:text-gray-800 text-md">
                                 清查與盤點耗材在各儲位之數量，
                                 <br>查詢盤點結果與紀錄。
                             </div>
@@ -471,18 +522,17 @@
                     <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
                         <div class="flex items-center">
                             <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                                class="w-8 h-8 text-gray-500">
+                                class="w-8 h-8 text-gray-600">
                                 <path
                                     d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5zM3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/barcode') }}"
-                                    class="underline text-gray-900 dark:text-white">條碼生成</a>
+                                <a href="{{ url('/barcode') }}" class="underline text-gray-900 dark:text-black">條碼生成</a>
                             </div>
                         </div>
 
                         <div class="ml-12">
-                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-md">
+                            <div class="mt-2 text-gray-600 dark:text-gray-800 text-md">
                                 單筆產生料號/儲位條碼，或批量生成條碼，
                                 <br>結果可存至PDF印出，
                                 <br>亦可由資料庫取得料號與儲位條碼一次性生成。
@@ -492,7 +542,7 @@
 
                     <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-l">
                         <div class="flex items-center">
-                            <svg width="16" height="16" fill="currentColor" class="w-8 h-8 text-gray-500"
+                            <svg width="16" height="16" fill="currentColor" class="w-8 h-8 text-gray-600"
                                 viewBox="0 0 16 16">
                                 <path
                                     d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z" />
@@ -502,12 +552,12 @@
                                     d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/member') }}" class="underline text-gray-900 dark:text-white">耗材管理</a>
+                                <a href="{{ url('/member') }}" class="underline text-gray-900 dark:text-black">耗材管理</a>
                             </div>
                         </div>
 
                         <div class="ml-12">
-                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-md">
+                            <div class="mt-2 text-gray-600 dark:text-gray-800 text-md">
                                 包含基礎資料、月請購、出入庫、
                                 <br>報警系統、O庫等功能。
                             </div>
@@ -516,7 +566,7 @@
 
                     <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-l">
                         <div class="flex items-center">
-                            <svg width="16" height="16" fill="currentColor" class="w-8 h-8 text-gray-500"
+                            <svg width="16" height="16" fill="currentColor" class="w-8 h-8 text-gray-600"
                                 viewBox="0 0 16 16">
                                 <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                                 <path fill-rule="evenodd"
@@ -524,12 +574,12 @@
                                 <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/member') }}" class="underline text-gray-900 dark:text-white">用戶管理</a>
+                                <a href="{{ url('/member') }}" class="underline text-gray-900 dark:text-black">用戶管理</a>
                             </div>
                         </div>
 
                         <div class="ml-12">
-                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-md">
+                            <div class="mt-2 text-gray-600 dark:text-gray-800 text-md">
                                 包含人員訊息新增/查詢/修改、
                                 <br>用戶訊息新增/查詢/修改/刪除、
                                 <br>以及密碼修改。

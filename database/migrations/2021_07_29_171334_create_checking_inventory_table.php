@@ -23,7 +23,7 @@ class CreateCheckingInventoryTable extends Migration
             $table->bigInteger('盤點')->nullable();
             $table->string('updated_by', 255)->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            // $table->softDeletes();
         });
     }
 

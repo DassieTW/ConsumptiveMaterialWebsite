@@ -93,7 +93,7 @@ class LoginController extends Controller
             Session::put('username', $usernameAuthed);
             Session::put('priority', $prior);
             Session::put('avatarChoice', $avatarChoice);
-            $this->authenticated($request, \Auth::user());
+            $this->authenticated($request, \Auth::user()); // set the login db
             return \Response::json(['message' => 'Log in successful !']); // Status code here
         } // if
         else { // login failed

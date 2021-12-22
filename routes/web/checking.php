@@ -30,6 +30,7 @@ Route::post('/updateChecking', [CheckingInventoryController::class, 'updateCheck
 
 // create new table page
 Route::get('/create_new_table', function () {
+    // dd($databaseName); // test
     $month = Carbon::now()->subMonths(3);
     $serialNums = \DB::table('checking_inventory')->select('id', '單號', 'created_at')
         ->latest('created_at')->where('created_at', '>=', $month)->get()->unique('單號');
@@ -47,6 +48,11 @@ Route::post('/get_creators', [CheckingInventoryController::class, 'getCreators']
 Route::post('/set_wanted_table', [CheckingInventoryController::class, 'setContinue']);
 
 // get the record search page
-Route::get('/check_record', function () {
-    return view('checkInventory.checkRecord');
-})->name('checking.checkRecord');
+Route::get('/check_result', function () {
+    // dd($databaseName); // test
+    $month = Carbon::now()->subMonths(3);
+    $serialNums = \DB::table('checking_inventory')->select('id', '單號', 'created_at')
+        ->latest('created_at')->where('created_at', '>=', $month)->get()->unique('單號');
+    $serialNumsCount = count($serialNums);
+    return view('checkInventory.checkResult', ['serialCount' => $serialNumsCount, 'serialNums' => $serialNums]);
+})->name('checking.check_result');

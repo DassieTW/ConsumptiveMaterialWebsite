@@ -45,7 +45,7 @@
                         <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                             <div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;">
                                 <div class="simplebar-content" style="padding: 0px;">
-                                    <a class="sidebar-brand" href="#">
+                                    <a class="sidebar-brand" href="{{url('/')}}">
                                         <span class="sidebar-brand-text align-middle">
                                             {!! __('templateWords.websiteName') !!}
                                             {{-- <sup><small class="badge bg-primary text-uppercase">Pro</small></sup> --}}
@@ -322,7 +322,7 @@
                                             <a data-bs-target="#obound" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+                                                    fill="currentColor" class="bi bi-box-seam align-middle me-2" viewBox="0 0 16 16">
                                                     <path
                                                         d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
                                                 </svg>
@@ -428,7 +428,7 @@
                                         <li class="sidebar-item {{ isActiveRoute(['bu/' , 'bu.index']) }}">
                                             <a data-bs-target="#bu" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-briefcase" viewBox="0 0 16 16">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-briefcase align-middle me-2" viewBox="0 0 16 16">
                                                     <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
                                                 </svg>
 
@@ -476,7 +476,7 @@
                                         <li class="sidebar-item {{ isActiveRoute(['call/']) }}">
                                             <a href="#call" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-exclamation-triangle"
+                                                    fill="currentColor" class="bi bi-exclamation-triangle align-middle me-2"
                                                     viewBox="0 0 16 16">
                                                     <path
                                                         d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
@@ -524,7 +524,7 @@
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['checking/create_new_table']) }}">
                                                     <a class="sidebar-link" href="{{route('checking.create_new_table')}}">
-                                                        {!! __('templateWords.checkIvent_create_new_table') !!}
+                                                        {!! __('checkInvLang.create_new_table') !!}
                                                     </a>
                                                 </li>
                                                 <li
@@ -534,8 +534,8 @@
                                                     </a>
                                                 </li>
                                                 <li
-                                                    class="sidebar-item {{ isActiveRoute([]) }}">
-                                                    <a class="sidebar-link" href="{{route('checking.index')}}">
+                                                    class="sidebar-item {{ isActiveRoute(['checking/check_result','checking.check_result']) }}">
+                                                    <a class="sidebar-link" href="{{route('checking.check_result')}}">
                                                         {!! __('checkInvLang.check_result') !!}
                                                     </a>
                                                 </li>

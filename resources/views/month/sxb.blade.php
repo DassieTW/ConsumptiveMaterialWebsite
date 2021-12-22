@@ -25,8 +25,8 @@
                     <form action="{{ route('month.sxbsearch') }}" method="POST">
                         @csrf
                         <div class="row w-100 justify-content-center mb-3">
-                            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <label class="col col-auto form-label p-0 m-0">{!! __('monthlyPRpageLang.client') !!}</label>
+                            <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <select class="form-select form-select-lg col col-auto" id="client" name="client">
                                     <option style="display: none" disabled selected>{!!
@@ -39,8 +39,8 @@
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <label class="col col-auto form-label p-0 m-0">{!! __('monthlyPRpageLang.isn') !!}</label>
+                            <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg @error('number') is-invalid @enderror"
                                     type="text" id="number" name="number"
@@ -54,8 +54,8 @@
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.sxb') !!}</label>
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <label class="col col-auto form-label p-0 m-0">{!! __('monthlyPRpageLang.sxb') !!}</label>
+                            <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg @error('sxb') is-invalid @enderror"
                                     type="text" id="sxb" name="sxb"
@@ -64,8 +64,8 @@
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.senddep') !!}</label>
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <label class="col col-auto form-label p-0 m-0">{!! __('monthlyPRpageLang.senddep') !!}</label>
+                            <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <select class="form-select form-select-lg" id="send" name="send">
                                     <option style="display: none" disabled selected>{!!
@@ -79,11 +79,10 @@
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                            <div class="row w-100 justify-content-center">
-                                <div class="col col-auto">
-                                    <input class="basic" type="checkbox" id="date" name="date"
-                                        style="width:20px;height:20px;"> {!! __('monthlyPRpageLang.timepart') !!}
-                                </div>
+                            <div class="row w-100 justify-content-center align-items-center">
+                                <input class="basic col col-auto p-0 m-0" type="checkbox" id="date" name="date"
+                                    style="width:20px;height:20px;">
+                                <span class="col col-auto p-1 m-0">{!! __('monthlyPRpageLang.timepart') !!}</span>
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
