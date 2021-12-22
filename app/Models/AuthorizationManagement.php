@@ -11,6 +11,7 @@ class AuthorizationManagement extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "authorization_management";
 
     protected $primaryKey = ['authorization','priority'];

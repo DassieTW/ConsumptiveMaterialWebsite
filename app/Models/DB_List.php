@@ -11,6 +11,7 @@ class DB_List extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "DB_List";
 
     protected $primaryKey = '廠區';

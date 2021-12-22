@@ -11,6 +11,7 @@ class 撥出明細 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "撥出明細";
 
 

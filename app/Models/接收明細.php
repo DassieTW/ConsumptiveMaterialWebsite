@@ -11,6 +11,7 @@ class 接收明細 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "接收明細";
 
 

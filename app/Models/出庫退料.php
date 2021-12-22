@@ -11,6 +11,7 @@ class 出庫退料 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "出庫退料";
 
     //PK no return 0

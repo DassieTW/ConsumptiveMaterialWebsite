@@ -11,6 +11,7 @@ class 領用部門 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "領用部門";
 
     protected $primaryKey = '領用部門';

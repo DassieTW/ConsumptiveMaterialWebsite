@@ -11,6 +11,7 @@ class 月請購_單耗 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "月請購_單耗";
 
     protected $primaryKey = ['料號','客戶別','機種','製程'];

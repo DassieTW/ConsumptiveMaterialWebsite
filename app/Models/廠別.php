@@ -11,6 +11,7 @@ class 廠別 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "廠別";
 
     protected $primaryKey = '廠別';

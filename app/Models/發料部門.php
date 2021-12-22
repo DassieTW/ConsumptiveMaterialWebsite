@@ -10,6 +10,7 @@ class 發料部門 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "發料部門";
 
     protected $primaryKey = '發料部門';

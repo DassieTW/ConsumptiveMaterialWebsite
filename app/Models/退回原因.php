@@ -12,6 +12,7 @@ class 退回原因 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "退回原因";
 
     protected $primaryKey = '退回原因';

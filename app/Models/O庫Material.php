@@ -11,6 +11,7 @@ class O庫Material extends Model
     use HasFactory;
     //use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "O庫_material";
 
     protected $primaryKey = '料號';

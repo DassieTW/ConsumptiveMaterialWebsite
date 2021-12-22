@@ -11,6 +11,7 @@ class Outbound extends Model
     use HasFactory;
     //use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "outbound";
 
     //PK no return 0

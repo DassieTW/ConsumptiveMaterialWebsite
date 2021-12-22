@@ -11,6 +11,7 @@ class 儲位 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "儲位";
 
     protected $primaryKey = '儲存位置';

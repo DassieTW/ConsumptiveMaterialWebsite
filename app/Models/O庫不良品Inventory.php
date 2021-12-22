@@ -11,6 +11,7 @@ class O庫不良品Inventory extends Model
     use HasFactory;
     //use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "O庫不良品inventory";
 
     protected $primaryKey = ['料號' , '客戶別','庫別'];

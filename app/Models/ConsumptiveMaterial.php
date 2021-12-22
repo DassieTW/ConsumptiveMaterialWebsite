@@ -12,6 +12,7 @@ class ConsumptiveMaterial extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     /**
      * The table associated with the model.
      *

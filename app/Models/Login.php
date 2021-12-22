@@ -9,6 +9,7 @@ class Login extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public $timestamps = false;
     protected $table = "login";
 
     protected $primaryKey = 'username';

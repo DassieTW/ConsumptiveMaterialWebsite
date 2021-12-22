@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class O庫Outbound extends Model
 {
     use HasFactory;
-   // use SoftDeletes;
+    // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "O庫outbound";
 
     //PK no return 0

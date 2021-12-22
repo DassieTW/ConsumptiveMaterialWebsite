@@ -11,6 +11,7 @@ class MPS extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "MPS";
 
     protected $primaryKey = ['客戶別','機種' , '製程'];

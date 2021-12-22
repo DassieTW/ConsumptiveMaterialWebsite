@@ -11,6 +11,7 @@ class 人員信息 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "人員信息";
 
     protected $primaryKey = '工號';

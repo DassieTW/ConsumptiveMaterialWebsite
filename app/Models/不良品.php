@@ -11,6 +11,7 @@ class 不良品 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "不良品";
 
     protected $primaryKey = ['料號','客戶別'];

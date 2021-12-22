@@ -12,6 +12,7 @@ class 領用原因 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "領用原因";
 
     protected $primaryKey = '領用原因';

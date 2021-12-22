@@ -11,6 +11,7 @@ class 在途量 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "在途量";
 
     protected $primaryKey = ['客戶','料號'];

@@ -11,6 +11,7 @@ class O庫Inbound extends Model
     use HasFactory;
     //use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "O庫inbound";
 
     //PK no return 0

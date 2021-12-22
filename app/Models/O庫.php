@@ -11,6 +11,7 @@ class O庫 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "O庫";
 
     protected $primaryKey = 'O庫';

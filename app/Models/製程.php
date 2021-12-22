@@ -11,6 +11,7 @@ class 製程 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "製程";
 
     protected $primaryKey = '制程';

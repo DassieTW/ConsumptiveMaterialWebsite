@@ -11,6 +11,7 @@ class 非月請購 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "非月請購";
 
     //PK no return 0

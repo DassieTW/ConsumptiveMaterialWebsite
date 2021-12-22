@@ -11,6 +11,7 @@ class 請購單 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "請購單";
 
     //PK no return 0

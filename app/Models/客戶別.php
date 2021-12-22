@@ -11,6 +11,7 @@ class 客戶別 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "客戶別";
 
     protected $primaryKey = '客戶';

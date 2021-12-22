@@ -11,6 +11,7 @@ class 調撥單 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "調撥單";
 
     //PK no return 0

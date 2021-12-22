@@ -11,6 +11,7 @@ class 機種 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "機種";
 
     protected $primaryKey = '機種';

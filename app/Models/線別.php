@@ -11,6 +11,7 @@ class 線別 extends Model
     use HasFactory;
     // use SoftDeletes;
 
+    public $timestamps = false;
     protected $table = "線別";
 
     protected $primaryKey = '線別';
