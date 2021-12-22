@@ -239,7 +239,7 @@ class SqlServerGrammar extends Grammar
 
         $tableName = $this->getTablePrefix().$blueprint->getTable();
 
-        $sql = "DECLARE @sql NVARCHAR(MAX) = '';";
+        $sql = "DECLARE @sql VARCHAR(MAX) = '';";
         $sql .= "SELECT @sql += 'ALTER TABLE [dbo].[{$tableName}] DROP CONSTRAINT ' + OBJECT_NAME([default_object_id]) + ';' ";
         $sql .= 'FROM SYS.COLUMNS ';
         $sql .= "WHERE [object_id] = OBJECT_ID('[dbo].[{$tableName}]') AND [name] in ({$columns}) AND [default_object_id] <> 0;";
@@ -372,7 +372,7 @@ class SqlServerGrammar extends Grammar
      */
     public function compileDropAllForeignKeys()
     {
-        return "DECLARE @sql NVARCHAR(MAX) = N'';
+        return "DECLARE @sql VARCHAR(MAX) = N'';
             SELECT @sql += 'ALTER TABLE '
                 + QUOTENAME(OBJECT_SCHEMA_NAME(parent_object_id)) + '.' + + QUOTENAME(OBJECT_NAME(parent_object_id))
                 + ' DROP CONSTRAINT ' + QUOTENAME(name) + ';'
@@ -388,7 +388,7 @@ class SqlServerGrammar extends Grammar
      */
     public function compileDropAllViews()
     {
-        return "DECLARE @sql NVARCHAR(MAX) = N'';
+        return "DECLARE @sql VARCHAR(MAX) = N'';
             SELECT @sql += 'DROP VIEW ' + QUOTENAME(OBJECT_SCHEMA_NAME(object_id)) + '.' + QUOTENAME(name) + ';'
             FROM sys.views;
 
@@ -414,7 +414,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeString(Fluent $column)
     {
-        return "nvarchar({$column->length})";
+        return "varchar({$column->length})";
     }
 
     /**
@@ -425,7 +425,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeTinyText(Fluent $column)
     {
-        return 'nvarchar(255)';
+        return 'varchar(255)';
     }
 
     /**
@@ -436,7 +436,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeText(Fluent $column)
     {
-        return 'nvarchar(max)';
+        return 'varchar(max)';
     }
 
     /**
@@ -447,7 +447,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeMediumText(Fluent $column)
     {
-        return 'nvarchar(max)';
+        return 'varchar(max)';
     }
 
     /**
@@ -458,7 +458,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeLongText(Fluent $column)
     {
-        return 'nvarchar(max)';
+        return 'varchar(max)';
     }
 
     /**
@@ -569,7 +569,7 @@ class SqlServerGrammar extends Grammar
     protected function typeEnum(Fluent $column)
     {
         return sprintf(
-            'nvarchar(255) check ("%s" in (%s))',
+            'varchar(255) check ("%s" in (%s))',
             $column->name,
             $this->quoteString($column->allowed)
         );
@@ -583,7 +583,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeJson(Fluent $column)
     {
-        return 'nvarchar(max)';
+        return 'varchar(max)';
     }
 
     /**
@@ -594,7 +594,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeJsonb(Fluent $column)
     {
-        return 'nvarchar(max)';
+        return 'varchar(max)';
     }
 
     /**
@@ -721,7 +721,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeIpAddress(Fluent $column)
     {
-        return 'nvarchar(45)';
+        return 'varchar(45)';
     }
 
     /**
@@ -732,7 +732,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeMacAddress(Fluent $column)
     {
-        return 'nvarchar(17)';
+        return 'varchar(17)';
     }
 
     /**
