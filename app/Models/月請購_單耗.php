@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class 月請購_單耗 extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = "月請購_單耗";
 

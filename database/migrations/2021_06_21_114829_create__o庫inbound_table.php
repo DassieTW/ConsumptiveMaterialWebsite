@@ -26,8 +26,8 @@ class CreateO庫InboundTable extends Migration
             $table->dateTime('時間');
             $table->string('備註',45)->nullable();
             $table->string('入庫原因',45);
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

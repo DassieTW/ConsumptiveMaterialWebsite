@@ -20,7 +20,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <form action="{{ route('month.download') }}" method="POST">
+            <form id = "notmonthform" method="POST">
                 @csrf
                 <input type = "hidden" id = "titlename" name = "titlename" value = "非月請購">
                 <table class="table">
@@ -32,7 +32,7 @@
                         <th><input type = "hidden" id = "title4" name = "title4" value = "上傳時間">{!! __('monthlyPRpageLang.uploadtime') !!}</td>
                         <th><input type = "hidden" id = "title5" name = "title5" value = "說明">{!! __('monthlyPRpageLang.description') !!}</td>
                         <th><input type = "hidden" id = "title6" name = "title6" value = "SXB單號">{!! __('monthlyPRpageLang.sxb') !!}</td>
-                        <input type = "hidden" id = "title" name = "title" value = "7">
+                        <input type = "hidden" id = "titlecount" name = "titlecount" value = "7">
                     </tr>
                     @foreach($data as $data)
                     <tr>

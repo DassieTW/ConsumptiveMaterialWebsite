@@ -1,130 +1,154 @@
-
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
     },
 });
 
-$("#uploadnew").on("submit", function (e) {
+$(document).ready(function () {
+    $("#uploadnew").on("submit", function (e) {
 
-    e.preventDefault();
+        e.preventDefault();
 
-    // clean up previous input results
-    $(".is-invalid").removeClass("is-invalid");
-    $(".invalid-feedback").remove();
+        // clean up previous input results
+        $(".is-invalid").removeClass("is-invalid");
+        $(".invalid-feedback").remove();
 
-    var number = [];
-    var name = [];
-    var format = [];
-    var price = [];
-    var money = [];
-    var unit = [];
-    var mpq = [];
-    var moq = [];
-    var lt = [];
-    var month = [];
-    var gradea = [];
-    var belong = [];
-    var send = [];
-    var safe = [];
+        var number = [];
+        var name = [];
+        var format = [];
+        var price = [];
+        var money = [];
+        var unit = [];
+        var mpq = [];
+        var moq = [];
+        var lt = [];
+        var month = [];
+        var gradea = [];
+        var belong = [];
+        var send = [];
+        var safe = [];
+        var row = [];
 
-    var count = $("#count").val();
+        var count = $("#count").val();
 
-    for (let i = 0; i < count; i++) {
-        number.push($("#data0a" + i).val());
-        name.push($("#data1a" + i).val());
-        format.push($("#data2a" + i).val());
-        price.push($("#data3a" + i).val());
-        money.push($("#data4a" + i).val());
-        unit.push($("#data5a" + i).val());
-        mpq.push($("#data6a" + i).val());
-        moq.push($("#data7a" + i).val());
-        lt.push($("#data8a" + i).val());
-        month.push($("#data9a" + i).val());
-        gradea.push($("#data10a" + i).val());
-        belong.push($("#data11a" + i).val());
-        send.push($("#data12a" + i).val());
-        safe.push($("#data13a" + i).val());
-    }
-
-    for (let i = 0; i < count; i++) {
-        if (number[i].length !== 12) {
-            var row = i + 1;
-            var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.isnlength');
-            $("#data0a" + i).addClass("is-invalid");
-            window.alert(mess);
-            return false;
+        for (let i = 0; i < count; i++) {
+            number.push($("#data0a" + i).val());
+            name.push($("#data1a" + i).val());
+            format.push($("#data2a" + i).val());
+            price.push($("#data3a" + i).val());
+            money.push($("#data4a" + i).val());
+            unit.push($("#data5a" + i).val());
+            mpq.push($("#data6a" + i).val());
+            moq.push($("#data7a" + i).val());
+            lt.push($("#data8a" + i).val());
+            month.push($("#data9a" + i).val());
+            gradea.push($("#data10a" + i).val());
+            belong.push($("#data11a" + i).val());
+            send.push($("#data12a" + i).val());
+            safe.push($("#data13a" + i).val());
+            row.push(i);
         }
-        if (month[i] == '否' || month[i] == 'No' && safe[i] == "") {
-            var row = i + 1;
-            var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.safeerror');
-            $("#data13a" + i).addClass("is-invalid");
-            window.alert(mess);
-            return false;
-        }
-    } // for
 
-    var data = [];
-    data.push(number);
-    data.push(name);
-    data.push(format);
-    data.push(price);
-    data.push(money);
-    data.push(unit);
-    data.push(mpq);
-    data.push(moq);
-    data.push(lt);
-    data.push(month);
-    data.push(gradea);
-    data.push(belong);
-    data.push(send);
-    data.push(safe);
+        for (let i = 0; i < count; i++) {
+            if (number[i].length !== 12) {
+                var row = i + 1;
+                var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.isnlength');
+                $("#data0a" + i).addClass("is-invalid");
+                window.alert(mess);
+                return false;
+            }
+            if (month[i] == '否' || month[i] == 'No' && safe[i] == "") {
+                var row = i + 1;
+                var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.safeerror');
+                $("#data13a" + i).addClass("is-invalid");
+                window.alert(mess);
+                return false;
+            }
+        } // for
 
-    $.ajax({
-        type: "POST",
-        url: "insertuploadmaterial",
-        data: { AllData: JSON.stringify(data), count: count},
-        // dataType: 'json', // let's set the expected response format
-        beforeSend: function () {
-            // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-        },
-        complete: function () {
-            $("body").loadingModal("hide");
-        },
-        success: function (data) {
-            console.log(number);
-            var mess =
-                Lang.get("basicInfoLang.total") +
-                " " +
-                data.message +
-                " " +
-                Lang.get("basicInfoLang.record") +
-                Lang.get("basicInfoLang.newMats") +
-                Lang.get("basicInfoLang.success");
-            alert(mess);
-            window.location.href = "/basic";
-        },
-        error: function (err) {
-            console.log(err.status);
-            //料號重複
-            if (err.status == 420) {
-                var mess = Lang.get('basicInfoLang.row') + ' : ' + err.responseJSON.message + ' ' + Lang.get('basicInfoLang.isnrepeat');
-                window.alert(mess);
-                window.location.href = 'new';
-            }
-            else if (err.status == 423) {
-                console.log(err.responseJSON.message);
-            } // else if
-            //transaction error
-            else {
-                var mess = err.responseJSON.message;
-                window.alert(mess);
-                window.location.reload();
-            }
-        },
+        var data = [];
+        data.push(number);
+        data.push(name);
+        data.push(format);
+        data.push(price);
+        data.push(money);
+        data.push(unit);
+        data.push(mpq);
+        data.push(moq);
+        data.push(lt);
+        data.push(month);
+        data.push(gradea);
+        data.push(belong);
+        data.push(send);
+        data.push(safe);
+
+        $.ajax({
+            type: "POST",
+            url: "insertuploadmaterial",
+            data: {
+                AllData: JSON.stringify(data),
+                count: count,
+                row: row,
+            },
+            // dataType: 'json', // let's set the expected response format
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
+                });
+            },
+            complete: function () {
+                $("body").loadingModal("hide");
+            },
+            success: function (data) {
+
+                var mess = Lang.get('basicInfoLang.total') + ' : ' + count + Lang.get('basicInfoLang.record') +
+                    Lang.get('basicInfoLang.matsdata') + ' ， ' + Lang.get('basicInfoLang.success') + Lang.get('basicInfoLang.new') +
+                    ' : ' + data.record + Lang.get('basicInfoLang.matsdata');
+
+                alert(mess);
+
+                var mess2 = Lang.get('basicInfoLang.yellowrepeat');
+
+                alert(mess2);
+
+                for(let i = 0 ; i < row.length ; i++)
+                {
+                    console.log(typeof(data.check[i]));
+                    console.log(typeof(row[i]));
+                    let j = row.indexOf(parseInt((data.check)[i]));
+                    console.log(j);
+                    if(j != -1)
+                    {
+                        $('#row' + row[i]).remove();
+                        count = count -1;
+                    }
+                    else
+                    {
+                        document.getElementById("row" + row[i]).style.backgroundColor = "yellow";
+                    }
+                }
+                // window.location.href = "/basic";
+            },
+            error: function (err) {
+                console.log(err.status);
+                //料號重複
+                if (err.status == 420) {
+                    var mess = Lang.get('basicInfoLang.row') + ' : ' + err.responseJSON.message + ' ' + Lang.get('basicInfoLang.isnrepeat');
+                    window.alert(mess);
+                    window.location.href = 'new';
+                } else if (err.status == 423) {
+                    window.alert(err.responseJSON.message);
+                    console.log(err.responseJSON.message);
+                } // else if
+                //transaction error
+                else {
+                    var mess = err.responseJSON.message;
+                    window.alert(mess);
+                    window.location.reload();
+                }
+            },
+        });
     });
 });

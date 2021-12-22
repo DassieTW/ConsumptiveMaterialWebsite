@@ -15,8 +15,8 @@ class Create客戶別Table extends Migration
     {
         Schema::create('客戶別', function (Blueprint $table) {
             $table->string('客戶',30)->primary();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

@@ -23,8 +23,8 @@ class CreateO庫不良品InventoryTable extends Migration
             $table->string('品名', 100);
             $table->string('規格', 100);
             $table->primary(['料號','客戶別','庫別']);
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

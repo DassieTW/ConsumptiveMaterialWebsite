@@ -130,4 +130,5 @@ return [
     'nopeople' => '请输入画押人员',
     'noemail' => '请输入画押人员信箱',
     'data' => '资料',
+    'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
 ];

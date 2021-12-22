@@ -323,15 +323,18 @@ $(document).ready(function () {
             }
         }
 
+        var data = [];
+        data.push(client);
+        data.push(number);
+        data.push(position);
+        data.push(amount);
+        data.push(inreason);
+
         $.ajax({
             type: 'POST',
             url: "addnewsubmit",
             data: {
-                client: client,
-                number: number,
-                position: position,
-                amount: amount,
-                inreason: inreason,
+                AllData: JSON.stringify(data),
                 inpeople: inpeople,
             },
             beforeSend: function () {

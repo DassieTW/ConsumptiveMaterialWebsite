@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AuthorizationManagement extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = "authorization_management";
 

@@ -57,7 +57,6 @@ function copyoption(index, count) {
     var select1 = document.getElementById("position" + index);
     var select2 = document.getElementById("position" + count);
     select2.innerHTML = select1.innerHTML;
-    console.log(1);
     //$('#position'+ index + 'option').clone().appendTo('#position' + count);
 }
 
@@ -265,6 +264,7 @@ $(document).ready(function () {
             window.location.reload();
         }
 
+        var data = [];
         var client = [];
         var machine = [];
         var production = [];
@@ -351,28 +351,30 @@ $(document).ready(function () {
             }
         }
 
+        data.push(client);
+        data.push(machine);
+        data.push(production);
+        data.push(usereason);
+        data.push(line);
+        data.push(number);
+        data.push(name);
+        data.push(format);
+        data.push(unit);
+        data.push(advance);
+        data.push(amount);
+        data.push(remark);
+        data.push(reason);
+        data.push(list);
+        data.push(opentime);
+        data.push(position);
+
         $.ajax({
             type: "POST",
             url: "picklistsubmit",
             data: {
-                list: list,
-                amount: amount,
-                reason: reason,
                 sendpeople: sendpeople,
                 pickpeople: pickpeople,
-                position: position,
-                number: number,
-                client: client,
-                machine: machine,
-                production: production,
-                line: line,
-                usereason: usereason,
-                advance: advance,
-                name: name,
-                format: format,
-                unit: unit,
-                opentime: opentime,
-                remark: remark,
+                AllData: JSON.stringify(data),
             },
 
             beforeSend: function () {

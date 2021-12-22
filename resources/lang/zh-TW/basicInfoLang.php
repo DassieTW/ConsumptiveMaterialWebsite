@@ -65,7 +65,7 @@ return [
     'stand' => '站位',
     'yes' => '是',
     'no' => '否',
-    'add' => '新增至資料庫',
+    'add' => '添加',
     'matssearch' => '料號查詢',
     'download' => '下載',
     'newbasicInfo' => '新增基礎信息',
@@ -85,4 +85,7 @@ return [
     'upload1' => '上傳',
     'nocheck' => '請勾選欲提交項目',
     'check' => '勾選',
+    'submit' => '提交',
+    'addtodatabase' => '新增至資料庫',
+    'yellowrepeat' => '黃底標表示資料庫已存放在資料庫內',
 ];

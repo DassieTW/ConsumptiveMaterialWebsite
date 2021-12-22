@@ -23,8 +23,8 @@ class CreateMPSTable extends Migration
             $table->double('本月MPS');
             $table->double('本月生產天數');
             $table->dateTime('填寫時間');
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

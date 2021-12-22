@@ -29,8 +29,8 @@ class CreateConsumptiveMaterialTable extends Migration
             $table->string('耗材歸屬', 45);
             $table->string('發料部門', 45);
             $table->integer('安全庫存')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

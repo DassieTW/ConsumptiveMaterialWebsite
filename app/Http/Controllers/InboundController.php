@@ -554,7 +554,8 @@ class InboundController extends Controller
     {
 
         if (Session::has('username')) {
-            $count = count($request->input('client'));
+            $Alldata = json_decode( $request->input('AllData') );
+            $count = count($Alldata[0]);
             $j = '0001';
             $max = DB::table('inbound')->max('入庫時間');
             $maxtime = date_create(date('Y-m-d', strtotime($max)));
@@ -574,12 +575,12 @@ class InboundController extends Controller
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
+                    $client = $Alldata[0][$i];
+                    $number = $Alldata[1][$i];
+                    $position = $Alldata[2][$i];
+                    $amount = $Alldata[3][$i];
+                    $inreason = $Alldata[4][$i];
 
-                    $amount = $request->input('amount')[$i];
-                    $number = $request->input('number')[$i];
-                    $client = $request->input('client')[$i];
-                    $inreason = $request->input('inreason')[$i];
-                    $position = $request->input('position')[$i];
                     $now = Carbon::now();
                     $inpeople = $request->input('inpeople');
                     $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
@@ -695,6 +696,8 @@ class InboundController extends Controller
             $worksheet = $spreadsheet->getActiveSheet();
             $titlecount = $request->input('titlecount');
             $count = $request->input('count');
+            $Alldata = json_decode( $request->input('AllData') );
+
             //填寫表頭
             for ($i = 0; $i < $titlecount; $i++) {
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
@@ -703,7 +706,7 @@ class InboundController extends Controller
             //填寫內容
             for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
                 }
             }
 
@@ -755,25 +758,22 @@ class InboundController extends Controller
         if (Session::has('username')) {
             $count = $request->input('count');
             $now = Carbon::now();
-            $clients =  $request->input('client');
-            $numbers =  $request->input('number');
-            $amounts =  $request->input('amount');
-            $positions =  $request->input('position');
+            $Alldata = json_decode( $request->input('AllData') );
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
 
-                    $stock = DB::table('inventory')->where('客戶別', $clients[$i])->where('料號', $numbers[$i])->where('儲位', $positions[$i])->value('現有庫存');
+                    $stock = DB::table('inventory')->where('客戶別', $Alldata[0][$i])->where('料號', $Alldata[1][$i])->where('儲位', $Alldata[3][$i])->value('現有庫存');
 
                     if ($stock === null) {
                         DB::table('inventory')
-                            ->insert(['料號' => $numbers[$i], '現有庫存' => $amounts[$i], '儲位' => $positions[$i], '客戶別' => $clients[$i], '最後更新時間' => $now]);
+                            ->insert(['料號' => $Alldata[1][$i], '現有庫存' => $Alldata[2][$i], '儲位' => $Alldata[3][$i], '客戶別' => $Alldata[0][$i], '最後更新時間' => $now]);
                     } else {
                         DB::table('inventory')
-                            ->where('客戶別', $clients[$i])
-                            ->where('料號', $numbers[$i])
-                            ->where('儲位', $positions[$i])
-                            ->update(['現有庫存' => $stock + $amounts[$i], '最後更新時間' => $now]);
+                            ->where('客戶別', $Alldata[0][$i])
+                            ->where('料號', $Alldata[1][$i])
+                            ->where('儲位', $Alldata[3][$i])
+                            ->update(['現有庫存' => $stock + $Alldata[2][$i], '最後更新時間' => $now]);
                     }
                 } // for
                 DB::commit();

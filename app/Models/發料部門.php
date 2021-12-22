@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class 發料部門 extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = "發料部門";
 

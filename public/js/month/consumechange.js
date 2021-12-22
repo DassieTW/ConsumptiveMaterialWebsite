@@ -56,11 +56,13 @@ $.ajaxSetup({
         if(!jobnumber)
         {
             alert(Lang.get('monthlyPRpageLang.nopeople'));
+            document.getElementById('jobnumber').classList.add("is-invalid");
             return false;
         }
         else if(!email)
         {
             alert(Lang.get('monthlyPRpageLang.noemail'));
+            document.getElementById('email').classList.add("is-invalid");
             return false;
         }
         select = "更新";

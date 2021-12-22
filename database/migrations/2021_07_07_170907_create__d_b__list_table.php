@@ -17,8 +17,8 @@ class CreateDBListTable extends Migration
             $table->string('廠區', 50)->primary();
             $table->string('IP', 50)->nullable();
             $table->string('DB_Name', 50)->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

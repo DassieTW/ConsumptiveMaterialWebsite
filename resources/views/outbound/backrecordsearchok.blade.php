@@ -5,6 +5,7 @@
 
 @section('js')
 <!--for this page's sepcified js -->
+<script src="{{ asset('js/outbound/download.js') }}"></script>
 @endsection
 @section('content')
 <!DOCTYPE html>
@@ -20,9 +21,9 @@
     </div>
     <div class="card-body">
 
-        <form action="{{ route('outbound.download') }}" method="POST">
+        <form id = "backtable" method="POST">
             @csrf
-            <input type="hidden" id="title" name="title" value="退料記錄表">
+            <input type="hidden" id="titlename" name="titlename" value="退料記錄表">
             <div class="table-responsive">
                 <table class="table" id="pickrecordlist">
                     <tr id="require">
@@ -69,55 +70,55 @@
                             __('outboundpageLang.opentime') !!}</th>
                         <th><input type="hidden" id="title20" name="title20" value="入庫時間">{!!
                             __('outboundpageLang.inboundtime') !!}</th>
-                        <th><input type="hidden" id="title20" name="title20" value="功能狀況">{!!
+                        <th><input type="hidden" id="title21" name="title21" value="功能狀況">{!!
                             __('outboundpageLang.status') !!}</th>
-                        <input type="hidden" id="time" name="time" value="21">
+                        <input type="hidden" id="titlecount" name="titlecount" value="22">
                     </tr>
                     @foreach($data as $data)
                     <tr id="{{$data->退料單號}}">
-                        <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
+                        <td><input type="hidden" id="dataa{{$loop->index}}" name="dataa{{$loop->index}}"
                                 value="{{$data->客戶別}}">{{$data->客戶別}}</td>
-                        <td><input type="hidden" id="data1{{$loop->index}}" name="data1{{$loop->index}}"
+                        <td><input type="hidden" id="datab{{$loop->index}}" name="datab{{$loop->index}}"
                                 value="{{$data->機種}}">{{$data->機種}}</td>
-                        <td><input type="hidden" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
+                        <td><input type="hidden" id="datac{{$loop->index}}" name="datac{{$loop->index}}"
                                 value="{{$data->製程}}">{{$data->製程}}</td>
-                        <td><input type="hidden" id="data3{{$loop->index}}" name="data3{{$loop->index}}"
+                        <td><input type="hidden" id="datad{{$loop->index}}" name="datad{{$loop->index}}"
                                 value="{{$data->退回原因}}">{{$data->退回原因}}</td>
-                        <td><input type="hidden" id="data4{{$loop->index}}" name="data4{{$loop->index}}"
+                        <td><input type="hidden" id="datae{{$loop->index}}" name="datae{{$loop->index}}"
                                 value="{{$data->線別}}">{{$data->線別}}</td>
-                        <td><input type="hidden" id="data5{{$loop->index}}" name="data5{{$loop->index}}"
+                        <td><input type="hidden" id="dataf{{$loop->index}}" name="dataf{{$loop->index}}"
                                 value="{{$data->料號}}">{{$data->料號}}</td>
-                        <td><input type="hidden" id="data6{{$loop->index}}" name="data6{{$loop->index}}"
+                        <td><input type="hidden" id="datag{{$loop->index}}" name="datag{{$loop->index}}"
                                 value="{{$data->品名}}">{{$data->品名}}</td>
-                        <td><input type="hidden" id="data7{{$loop->index}}" name="data7{{$loop->index}}"
+                        <td><input type="hidden" id="datah{{$loop->index}}" name="datah{{$loop->index}}"
                                 value="{{$data->規格}}">{{$data->規格}}</td>
-                        <td><input type="hidden" id="data8{{$loop->index}}" name="data8{{$loop->index}}"
+                        <td><input type="hidden" id="datai{{$loop->index}}" name="datai{{$loop->index}}"
                                 value="{{$data->單位}}">{{$data->單位}}</td>
-                        <td><input type="hidden" id="data9{{$loop->index}}" name="data9{{$loop->index}}"
+                        <td><input type="hidden" id="dataj{{$loop->index}}" name="dataj{{$loop->index}}"
                                 value="{{$data->預退數量}}">{{$data->預退數量}}</td>
-                        <td><input type="hidden" id="data10{{$loop->index}}" name="data10{{$loop->index}}"
+                        <td><input type="hidden" id="datak{{$loop->index}}" name="datak{{$loop->index}}"
                                 value="{{$data->實際退回數量}}">{{$data->實際退回數量}}</td>
-                        <td><input type="hidden" id="data11{{$loop->index}}" name="data11{{$loop->index}}"
+                        <td><input type="hidden" id="datal{{$loop->index}}" name="datal{{$loop->index}}"
                                 value="{{$data->備註}}">{{$data->備註}}</td>
-                        <td><input type="hidden" id="data12{{$loop->index}}" name="data12{{$loop->index}}"
+                        <td><input type="hidden" id="datam{{$loop->index}}" name="datam{{$loop->index}}"
                                 value="{{$data->實退差異原因}}">{{$data->實退差異原因}}</td>
-                        <td><input type="hidden" id="data13{{$loop->index}}" name="data13{{$loop->index}}"
+                        <td><input type="hidden" id="datan{{$loop->index}}" name="datan{{$loop->index}}"
                                 value="{{$data->儲位}}">{{$data->儲位}}</td>
-                        <td><input type="hidden" id="data14{{$loop->index}}" name="data14{{$loop->index}}"
+                        <td><input type="hidden" id="datao{{$loop->index}}" name="datao{{$loop->index}}"
                                 value="{{$data->收料人員}}">{{$data->收料人員}}</td>
-                        <td><input type="hidden" id="data15{{$loop->index}}" name="data15{{$loop->index}}"
+                        <td><input type="hidden" id="datap{{$loop->index}}" name="datap{{$loop->index}}"
                                 value="{{$data->收料人員工號}}">{{$data->收料人員工號}}</td>
-                        <td><input type="hidden" id="data16{{$loop->index}}" name="data16{{$loop->index}}"
+                        <td><input type="hidden" id="dataq{{$loop->index}}" name="dataq{{$loop->index}}"
                                 value="{{$data->退料人員}}">{{$data->退料人員}}</td>
-                        <td><input type="hidden" id="data17{{$loop->index}}" name="data17{{$loop->index}}"
+                        <td><input type="hidden" id="datar{{$loop->index}}" name="datar{{$loop->index}}"
                                 value="{{$data->退料人員工號}}">{{$data->退料人員工號}}</td>
-                        <td><input type="hidden" id="data18{{$loop->index}}" name="data18{{$loop->index}}"
+                        <td><input type="hidden" id="datas{{$loop->index}}" name="datas{{$loop->index}}"
                                 value="{{$data->退料單號}}">{{$data->退料單號}}</td>
-                        <td><input type="hidden" id="data19{{$loop->index}}" name="data19{{$loop->index}}"
+                        <td><input type="hidden" id="datat{{$loop->index}}" name="datat{{$loop->index}}"
                                 value="{{$data->開單時間}}">{{$data->開單時間}}</td>
-                        <td><input type="hidden" id="data20{{$loop->index}}" name="data20{{$loop->index}}"
+                        <td><input type="hidden" id="datau{{$loop->index}}" name="datau{{$loop->index}}"
                                 value="{{$data->入庫時間}}">{{$data->入庫時間}}</td>
-                        <td><input type="hidden" id="data20{{$loop->index}}" name="data20{{$loop->index}}"
+                        <td><input type="hidden" id="datav{{$loop->index}}" name="datav{{$loop->index}}"
                                 value="{{$data->功能狀況}}">{{$data->功能狀況}}</td>
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">

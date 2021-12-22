@@ -4,7 +4,7 @@
 @endsection
 
 @section('js')
-<script src="{{ asset('/js/safe.js') }}"></script>
+<script src="{{ asset('/js/call/safe.js') }}"></script>
 <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
 <!--for notifications pop up -->
 @endsection

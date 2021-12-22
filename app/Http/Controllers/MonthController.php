@@ -179,14 +179,14 @@ class MonthController extends Controller
                 $datas = DB::table('consumptive_material')
                     ->join('月請購_單耗', function ($join) {
                         $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
-                    })->wherenull('月請購_單耗.deleted_at')
+                    })//->wherenull('月請購_單耗.deleted_at')
                     ->where('consumptive_material.料號', 'like', $number . '%')
                     ->where('狀態', '已完成')->get();
             } else {
                 $datas = DB::table('consumptive_material')
                     ->join('月請購_單耗', function ($join) {
                         $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
-                    })->wherenull('月請購_單耗.deleted_at')
+                    })//->wherenull('月請購_單耗.deleted_at')
                     ->where('狀態', '已完成')->get();
             }
             //all empty
@@ -371,14 +371,14 @@ class MonthController extends Controller
                 $datas = DB::table('consumptive_material')
                     ->join('月請購_站位', function ($join) {
                         $join->on('月請購_站位.料號', '=', 'consumptive_material.料號');
-                    })->wherenull('月請購_站位.deleted_at')
+                    })//->wherenull('月請購_站位.deleted_at')
                     ->where('consumptive_material.料號', 'like', $number . '%')
                     ->where('狀態', '已完成')->get();
             } else {
                 $datas = DB::table('consumptive_material')
                     ->join('月請購_站位', function ($join) {
                         $join->on('月請購_站位.料號', '=', 'consumptive_material.料號');
-                    })->wherenull('月請購_站位.deleted_at')
+                    })//->wherenull('月請購_站位.deleted_at')
                     ->where('狀態', '已完成')->get();
             }
 
@@ -603,48 +603,52 @@ class MonthController extends Controller
         if (Session::has('username')) {
             $select = $request->input('select');
             $now = Carbon::now();
+            $Alldata = json_decode($request->input('AllData'));
+
             $count = $request->input('count');
-            $client = $request->input('data5');
-            $machine = $request->input('data6');
-            $production = $request->input('data7');
-            $number = $request->input('data0');
-            $nowpeople = $request->input('data8');
-            $nowline = $request->input('data9');
-            $nowclass = $request->input('data10');
-            $nowdayneed = $request->input('data11');
-            $nowchange = $request->input('data12');
-            $nextpeople = $request->input('data14');
-            $nextline = $request->input('data15');
-            $nextclass = $request->input('data16');
-            $nextdayneed = $request->input('data17');
-            $nextchange = $request->input('data18');
+            $client =  $Alldata[5];
+            $machine = $Alldata[6];
+            $production = $Alldata[7];
+            $number = $Alldata[0];
+            $nowpeople = $Alldata[8];
+            $nowline = $Alldata[9];
+            $nowclass = $Alldata[10];
+            $nowdayneed = $Alldata[11];
+            $nowchange = $Alldata[12];
+            $nextpeople = $Alldata[14];
+            $nextline = $Alldata[15];
+            $nextclass = $Alldata[16];
+            $nextdayneed = $Alldata[17];
+            $nextchange = $Alldata[18];
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $database = $request->session()->get('database');
             $database = Hash::make($database);
             //delete
             if ($select == "刪除") {
-                for ($i = 0; $i < $count; $i++) {
-                    DB::beginTransaction();
-                    try {
+                DB::beginTransaction();
+                try {
+                    for ($i = 0; $i < $count; $i++) {
+
                         月請購_站位::where('客戶別', $client[$i])
                             ->where('機種', $machine[$i])
                             ->where('製程', $production[$i])
                             ->where('料號', $number[$i])
                             ->delete();
-                        DB::commit();
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
+                    } //for
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                 }
                 return \Response::json(['message' => $count, 'database' => $database]/* Status code here default is 200 ok*/);
             }
             //change
             else if ($select == "更新") {
-                for ($i = 0; $i < $count; $i++) {
-                    DB::beginTransaction();
-                    try {
+                DB::beginTransaction();
+                try {
+                    for ($i = 0; $i < $count; $i++) {
+
                         月請購_站位::where('客戶別', $client[$i])
                             ->where('機種', $machine[$i])
                             ->where('製程', $production[$i])
@@ -656,11 +660,11 @@ class MonthController extends Controller
                                 '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextdayneed[$i],
                                 '當月每日更換頻率' => $nowchange[$i], '下月每日更換頻率' => $nextchange[$i]
                             ]);
-                        DB::commit();
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
+                    } //for
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                 }
                 return \Response::json(['message' => $count, 'database' => $database, 'status' => 201], /* Status code here default is 200 ok*/);
             }
@@ -781,7 +785,9 @@ class MonthController extends Controller
     {
         if (Session::has('username')) {
             $count = $request->input('count');
+            $row = $request->input('row');
             $record = 0;
+            $check = array();
             $database = $request->session()->get('database');
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
@@ -810,6 +816,8 @@ class MonthController extends Controller
                             ->update([
                                 'created_at' =>  Carbon::now(), 'deleted_at' => null, 'updated_at' => null, '單耗' => $consume, '畫押工號' => $jobnumber, '畫押信箱' => $email, '狀態' => "待畫押"
                             ]);
+                            $record++;
+                            array_push($check,$row[$i]);
                     } else {
                         if ($test === null) {
                             DB::table('月請購_單耗')
@@ -819,13 +827,14 @@ class MonthController extends Controller
                                     '畫押信箱' => $email, '狀態' => "待畫押"
                                 ]);
                             $record++;
+                            array_push($check,$row[$i]);
                         } else {
                             continue;
                         } //continue-else
                     } //else
                 } //for
                 DB::commit();
-                return \Response::json(['record' => $record, 'database' => $database]/* Status code here default is 200 ok*/);
+                return \Response::json(['record' => $record, 'database' => $database , 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
@@ -1946,132 +1955,6 @@ class MonthController extends Controller
         }
     }
 
-
-    //單耗上傳資料新增至資料庫
-    public function insertuploadconsume(Request $request)
-    {
-        if (Session::has('username')) {
-            $count = $request->input('count');
-            $jobnumber = $request->input('jobnumber');
-            $email = $request->input('email');
-            $client =  $request->input('client');
-            $number =  $request->input('number');
-            $amount =  $request->input('amount');
-            $machine = $request->input('machine');
-            $production = $request->input('production');
-            $database = $request->session()->get('database');
-            $database = Hash::make($database);
-            $bool = true;
-            $record =  0;
-            for ($i = 0; $i < $count; $i++) {
-                $test = DB::table('月請購_單耗')->where('料號', $number[$i])->where('客戶別', $client[$i])
-                    ->where('機種', $machine[$i])->where('製程', $production)->value('單耗');
-
-                $delete = DB::table('月請購_單耗')->where('料號', $number[$i])->where('客戶別', $client[$i])
-                    ->where('機種', $machine[$i])->where('製程', $production)->value('deleted_at');
-
-                //data no delete
-                if ($delete === null) {
-                    //new data
-                    if ($test === null) {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('月請購_單耗')
-                                ->insert([
-                                    '料號' => $number[$i], '客戶別' => $client[$i], '機種' => $machine[$i], '製程' => $production[$i], '單耗' => $amount[$i], 'created_at' => Carbon::now(), '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
-                                ]);
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            $bool = false;
-                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                        }
-                        DB::rollback();
-                        $record++;
-                    }
-                    //data repeat
-                    else {
-                        $bool = false;
-                        $i = $i + 1;
-                        return \Response::json(['message' => $i], 420/* Status code here default is 200 ok*/);
-                    }
-                } else {
-                    DB::beginTransaction();
-                    try {
-                        DB::table('月請購_單耗')
-                            ->where('料號', $number[$i])->where('客戶別', $client[$i])
-                            ->where('機種', $machine[$i])->where('製程', $production[$i])
-                            ->update([
-                                'created_at' =>  Carbon::now(), 'deleted_at' => null, 'updated_at' => null, '單耗' => $amount[$i], '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
-                            ]);
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        $bool = false;
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                    DB::rollback();
-                }
-            }
-
-            if ($record == $count && $bool == true) {
-                $record = 0;
-                for ($i = 0; $i < $count; $i++) {
-                    $test = DB::table('月請購_單耗')->where('料號', $number[$i])->where('客戶別', $client[$i])
-                        ->where('機種', $machine[$i])->where('製程', $production)->value('單耗');
-
-                    $delete = DB::table('月請購_單耗')->where('料號', $number[$i])->where('客戶別', $client[$i])
-                        ->where('機種', $machine[$i])->where('製程', $production)->value('deleted_at');
-
-                    //data no delete
-                    if ($delete === null) {
-                        //new data
-                        if ($test === null) {
-                            DB::beginTransaction();
-                            try {
-                                DB::table('月請購_單耗')
-                                    ->insert([
-                                        '料號' => $number[$i], '客戶別' => $client[$i], '機種' => $machine[$i], '製程' => $production[$i], '單耗' => $amount[$i], 'created_at' => Carbon::now(), '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
-                                    ]);
-                                $record++;
-                                DB::commit();
-                            } catch (\Exception $e) {
-                                DB::rollback();
-                                $bool = false;
-                                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                            }
-                        }
-                        //data repeat
-                        else {
-                            $bool = false;
-                            $i = $i + 1;
-                            return \Response::json(['message' => $i], 420/* Status code here default is 200 ok*/);
-                        }
-                    } else {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('月請購_單耗')
-                                ->where('料號', $number[$i])->where('客戶別', $client[$i])
-                                ->where('機種', $machine[$i])->where('製程', $production[$i])
-                                ->update([
-                                    'created_at' =>  Carbon::now(), 'deleted_at' => null, 'updated_at' => null, '單耗' => $amount[$i], '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email, '紀錄' => null
-                                ]);
-                            $record++;
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            $bool = false;
-                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                        }
-                    }
-                }
-
-                return \Response::json(['message' => $record, 'database' => $database]/* Status code here default is 200 ok*/);
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
     //站位上傳
     public function uploadstand(Request $request)
     {
@@ -2087,141 +1970,6 @@ class MonthController extends Controller
 
             unset($sheetData[0]);
             return view('month.uploadstand')->with(['data' => $sheetData]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-
-    //站位上傳資料新增至資料庫
-    public function insertuploadstand(Request $request)
-    {
-        if (Session::has('username')) {
-            $count = $request->input('count');
-            $jobnumber = $request->input('jobnumber');
-            $email = $request->input('email');
-            $client =  $request->input('client');
-            $number =  $request->input('number');
-            $machine = $request->input('machine');
-            $production = $request->input('production');
-            $nowpeople = $request->input('nowpeople');
-            $nowline = $request->input('nowline');
-            $nowclass = $request->input('nowclass');
-            $nowuse = $request->input('nowuse');
-            $nowchange = $request->input('nowchange');
-            $nextpeople = $request->input('nextpeople');
-            $nextline = $request->input('nextline');
-            $nextclass = $request->input('nextclass');
-            $nextuse = $request->input('nextuse');
-            $nextchange = $request->input('nextchange');
-            $database = $request->session()->get('database');
-            $database = Hash::make($database);
-            $bool = true;
-            $record = 0;
-            for ($i = 0; $i < $count; $i++) {
-                $test = DB::table('月請購_站位')->where('料號', $number[$i])->where('客戶別', $client[$i])
-                    ->where('機種', $machine[$i])->where('製程', $production)->value('當月站位人數');
-
-                $delete = DB::table('月請購_站位')->where('料號', $number[$i])->where('客戶別', $client[$i])
-                    ->where('機種', $machine[$i])->where('製程', $production)->value('deleted_at');
-
-                //data no delete
-                if ($delete === null) {
-                    //new data
-                    if ($test === null) {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('月請購_站位')
-                                ->insert([
-                                    '料號' => $number[$i], '客戶別' => $client[$i], '機種' => $machine[$i], '製程' => $production[$i], '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i], '當月開班數' => $nowclass[$i], '當月每人每日需求量' => $nowuse[$i], '當月每日更換頻率' => $nowchange[$i], '下月站位人數' => $nextpeople[$i], '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextuse[$i], '下月每日更換頻率' => $nextchange[$i], 'created_at' => Carbon::now(), '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
-                                ]);
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            $bool = false;
-                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                        }
-                        DB::rollback();
-                        $record++;
-                    }
-                    //data repeat
-                    else {
-                        $bool = false;
-                        $i = $i + 1;
-                        return \Response::json(['message' => $i], 420/* Status code here default is 200 ok*/);
-                    }
-                } else {
-                    DB::beginTransaction();
-                    try {
-                        DB::table('月請購_站位')
-                            ->where('料號', $number[$i])->where('客戶別', $client[$i])
-                            ->where('機種', $machine[$i])->where('製程', $production[$i])
-                            ->update([
-                                'created_at' =>  Carbon::now(), 'deleted_at' => null, 'updated_at' => null, '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i], '當月開班數' => $nowclass[$i], '當月每人每日需求量' => $nowuse[$i], '當月每日更換頻率' => $nowchange[$i], '下月站位人數' => $nextpeople[$i], '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextuse[$i], '下月每日更換頻率' => $nextchange[$i], '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
-                            ]);
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        $bool = false;
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                    DB::rollback();
-                }
-            }
-
-            if ($record == $count && $bool == true) {
-                $record = 0;
-                for ($i = 0; $i < $count; $i++) {
-                    $test = DB::table('月請購_站位')->where('料號', $number[$i])->where('客戶別', $client[$i])
-                        ->where('機種', $machine[$i])->where('製程', $production)->value('當月站位人數');
-
-                    $delete = DB::table('月請購_站位')->where('料號', $number[$i])->where('客戶別', $client[$i])
-                        ->where('機種', $machine[$i])->where('製程', $production)->value('deleted_at');
-
-                    //data no delete
-                    if ($delete === null) {
-                        //new data
-                        if ($test === null) {
-                            DB::beginTransaction();
-                            try {
-                                DB::table('月請購_站位')
-                                    ->insert([
-                                        '料號' => $number[$i], '客戶別' => $client[$i], '機種' => $machine[$i], '製程' => $production[$i], '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i], '當月開班數' => $nowclass[$i], '當月每人每日需求量' => $nowuse[$i], '當月每日更換頻率' => $nowchange[$i], '下月站位人數' => $nextpeople[$i], '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextuse[$i], '下月每日更換頻率' => $nextchange[$i], 'created_at' => Carbon::now(), '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
-                                    ]);
-                                $record++;
-                                DB::commit();
-                            } catch (\Exception $e) {
-                                DB::rollback();
-                                $bool = false;
-                                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                            }
-                        }
-                        //data repeat
-                        else {
-                            $bool = false;
-                            $i = $i + 1;
-                            return \Response::json(['message' => $i], 420/* Status code here default is 200 ok*/);
-                        }
-                    } else {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('月請購_站位')
-                                ->where('料號', $number[$i])->where('客戶別', $client[$i])
-                                ->where('機種', $machine[$i])->where('製程', $production[$i])
-                                ->update([
-                                    'created_at' =>  Carbon::now(), 'deleted_at' => null, 'updated_at' => null, '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i], '當月開班數' => $nowclass[$i], '當月每人每日需求量' => $nowuse[$i], '當月每日更換頻率' => $nowchange[$i], '下月站位人數' => $nextpeople[$i], '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextuse[$i], '下月每日更換頻率' => $nextchange[$i], '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email, '紀錄' => null
-                                ]);
-                            $record++;
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            $bool = false;
-                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                        }
-                    }
-                }
-
-                return \Response::json(['message' => $record, 'database' => $database]/* Status code here default is 200 ok*/);
-            }
         } else {
             return redirect(route('member.login'));
         }
@@ -2247,77 +1995,6 @@ class MonthController extends Controller
         }
     }
 
-    //非月請購上傳資料新增至資料庫
-    public function insertuploadnotmonth(Request $request)
-    {
-        if (Session::has('username')) {
-            $count = $request->input('count');
-            $now = Carbon::now();
-            $record = 0;
-            $client =  $request->input('client');
-            $number =  $request->input('number');
-            $amount =  $request->input('amount');
-            $month = $request->input('month');
-            $say = $request->input('say');
-            $sxb = $request->input('sxb');
-            for ($i = 0; $i < $count; $i++) {
-                $test = DB::table('在途量')->where('客戶', $client[$i])->where('料號', $number[$i])->value('請購數量');
-                if ($month[$i] === '是') {
-                    DB::beginTransaction();
-                    try {
-                        if ($test === null) {
-                            DB::table('在途量')
-                                ->insert(['客戶' => $client[$i], '料號' => $number[$i], '請購數量' => $amount[$i]]);
-                        } else {
-                            DB::table('在途量')
-                                ->where('客戶', $client[$i])->where('料號', $number[$i])
-                                ->update(['請購數量' => $test + $amount[$i]]);
-                        }
-
-                        DB::table('非月請購')
-                            ->insert([
-                                '料號' => $number[$i], '客戶別' => $client[$i], '請購數量' => $amount[$i], '上傳時間' => $now, '說明' => $say[$i],
-                                'SXB單號' => $sxb[$i]
-                            ]);
-                        DB::commit();
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                } else {
-                    DB::beginTransaction();
-                    try {
-                        if ($test === null) {
-                            DB::table('在途量')
-                                ->insert(['客戶' => $client[$i], '料號' => $number[$i], '請購數量' => $amount[$i]]);
-                        } else {
-                            DB::table('在途量')
-                                ->where('客戶', $client[$i])->where('料號', $number[$i])
-                                ->update(['請購數量' => $test + $amount[$i]]);
-                        }
-
-                        DB::table('非月請購')
-                            ->insert([
-                                '料號' => $number[$i], '客戶別' => $client[$i], '請購數量' => $amount[$i], '上傳時間' => $now, '說明' => $say[$i],
-                                'SXB單號' => $sxb[$i]
-                            ]);
-                        DB::commit();
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                }
-            }
-
-            return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-
     //月請購上傳
     public function uploadmonth(Request $request)
     {
@@ -2333,58 +2010,6 @@ class MonthController extends Controller
 
             unset($sheetData[0]);
             return view('month.uploadmonth')->with(['data' => $sheetData]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //月請購上傳資料新增至資料庫
-    public function insertuploadmonth(Request $request)
-    {
-        if (Session::has('username')) {
-            $count = $request->input('count');
-            $now = Carbon::now();
-            $record = 0;
-            $client =  $request->input('client');
-            $machine =  $request->input('machine');
-            $production = $request->input('production');
-            $nowmps = $request->input('nowmps');
-            $nowday = $request->input('nowday');
-            $nextmps = $request->input('nextmps');
-            $nextday = $request->input('nextday');
-            for ($i = 0; $i < $count; $i++) {
-                $test = DB::table('MPS')->where('客戶別', $client[$i])->where('機種', $machine[$i])->where('製程', $production[$i])->value('本月MPS');
-                if ($test === null) {
-                    DB::beginTransaction();
-                    try {
-
-                        DB::table('MPS')
-                            ->insert([
-                                '機種' => $machine[$i], '客戶別' => $client[$i], '製程' => $production[$i], '本月MPS' => $nowmps[$i], '本月生產天數' => $nowday[$i], '下月MPS' => $nextmps[$i], '下月生產天數' => $nextday[$i], '填寫時間' => $now
-                            ]);
-                        DB::commit();
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                } else {
-                    DB::beginTransaction();
-                    try {
-
-                        DB::table('MPS')
-                            ->where('客戶別', $client[$i])->where('機種', $machine[$i])->where('製程', $production[$i])
-                            ->update(['本月MPS' => $nowmps[$i], '本月生產天數' => $nowday[$i], '下月MPS' => $nextmps[$i], '下月生產天數' => $nextday[$i], '填寫時間' => $now]);
-                        DB::commit();
-                        $record++;
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                }
-            }
-
-            return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
         }
@@ -2555,25 +2180,26 @@ class MonthController extends Controller
             $spreadsheet = new Spreadsheet();
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
             $worksheet = $spreadsheet->getActiveSheet();
-            $title = $request->input('title');
+            $titlecount = $request->input('titlecount');
             $count = $request->input('count');
+            $Alldata = json_decode($request->input('AllData'));
+
             //填寫表頭
-            for ($i = 0; $i < $title; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title' . $i));
+            for ($i = 0; $i < $titlecount; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
             }
 
             //填寫內容
-            for ($i = 0; $i < $title; $i++) {
+            for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
                 }
             }
-
 
             // 下載
             $now = Carbon::now()->format('YmdHis');
             $titlename = $request->input('titlename');
-            $filename = $titlename . $now . '.xlsx';
+            $filename = rawurlencode($titlename) . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="' . $filename . '"');
             header('Cache-Control: max-age=0');

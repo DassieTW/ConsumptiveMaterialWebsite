@@ -15,11 +15,11 @@
     <meta charset="utf-8">
 </head>
 <h2>{!! __('templateWords.monthly') !!}</h2>
+<div id="url"></div>
 <div class="card">
     <div class="card-header">
         <h3>{!! __('monthlyPRpageLang.standUpdate') !!}</h3>
     </div>
-    <div id="url"></div>
     <div class="card-body" id="standbody">
 
         <form id="stand" method="POST">
@@ -73,7 +73,7 @@
                             __('monthlyPRpageLang.safe') !!}</th>
                         <th><input type="hidden" id="title21" name="title21" value="備註">{!!
                             __('monthlyPRpageLang.remark') !!}</th>
-                        <input type="hidden" id="title" name="title" value="22">
+                        <input type="hidden" id="titlecount" name="titlecount" value="22">
                     </tr>
                     @foreach($data as $data)
                     <?php
@@ -93,64 +93,64 @@
                     <tr>
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                 style="width:20px;height:20px;" value="{{$loop->index}}"></td>
-                        <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
+                        <td><input type="hidden" id="dataa{{$loop->index}}" name="dataa{{$loop->index}}"
                                 value="{{$data->料號}}">{{$data->料號}}</td>
-                        <td><input type="hidden" id="data1{{$loop->index}}" name="data1{{$loop->index}}"
+                        <td><input type="hidden" id="datab{{$loop->index}}" name="datab{{$loop->index}}"
                                 value="{{$data->品名}}">{{$data->品名}}</td>
-                        <td><input type="hidden" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
+                        <td><input type="hidden" id="datac{{$loop->index}}" name="datac{{$loop->index}}"
                                 value="{{$data->單位}}">{{$data->單位}}</td>
-                        <td><input type="hidden" id="data3{{$loop->index}}" name="data3{{$loop->index}}"
+                        <td><input type="hidden" id="datad{{$loop->index}}" name="datad{{$loop->index}}"
                                 value="{{$data->MPQ}}">{{$data->MPQ}}</td>
-                        <td><input type="hidden" id="data4{{$loop->index}}" name="data4{{$loop->index}}"
+                        <td><input type="hidden" id="datae{{$loop->index}}" name="datae{{$loop->index}}"
                                 value="{{$data->LT}}">{{$data->LT}}</td>
-                        <td><input type="hidden" id="data5{{$loop->index}}" name="data5{{$loop->index}}"
+                        <td><input type="hidden" id="dataf{{$loop->index}}" name="dataf{{$loop->index}}"
                                 value="{{$data->客戶別}}">{{$data->客戶別}}</td>
-                        <td><input type="hidden" id="data6{{$loop->index}}" name="data6{{$loop->index}}"
+                        <td><input type="hidden" id="datag{{$loop->index}}" name="datag{{$loop->index}}"
                                 value="{{$data->機種}}">{{$data->機種}}</td>
-                        <td><input type="hidden" id="data7{{$loop->index}}" name="data7{{$loop->index}}"
+                        <td><input type="hidden" id="datah{{$loop->index}}" name="datah{{$loop->index}}"
                                 value="{{$data->製程}}">{{$data->製程}}</td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data8{{$loop->index}}" name="data8{{$loop->index}}" value="{{$data->當月站位人數}}" step="0.0000001"
+                                id="datai{{$loop->index}}" name="datai{{$loop->index}}" value="{{$data->當月站位人數}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0"></td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data9{{$loop->index}}" name="data9{{$loop->index}}" value="{{$data->當月開線數}}" step="0.0000001"
+                                id="dataj{{$loop->index}}" name="dataj{{$loop->index}}" value="{{$data->當月開線數}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0"></td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data10{{$loop->index}}" name="data10{{$loop->index}}" value="{{$data->當月開班數}}" step="0.0000001"
+                                id="datak{{$loop->index}}" name="datak{{$loop->index}}" value="{{$data->當月開班數}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0"></td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data11{{$loop->index}}" name="data11{{$loop->index}}" value="{{$data->當月每人每日需求量}}" step="0.0000001"
+                                id="datal{{$loop->index}}" name="datal{{$loop->index}}" value="{{$data->當月每人每日需求量}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0">
                         </td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data12{{$loop->index}}" name="data12{{$loop->index}}" value="{{$data->當月每日更換頻率}}" step="0.0000001"
+                                id="datam{{$loop->index}}" name="datam{{$loop->index}}" value="{{$data->當月每日更換頻率}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0">
                         </td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data13{{$loop->index}}" name="data13{{$loop->index}}" readonly></td>
+                                id="datan{{$loop->index}}" name="datan{{$loop->index}}" readonly></td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data14{{$loop->index}}" name="data14{{$loop->index}}" value="{{$data->下月站位人數}}" step="0.0000001"
+                                id="datao{{$loop->index}}" name="datao{{$loop->index}}" value="{{$data->下月站位人數}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0">
                         </td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data15{{$loop->index}}" name="data15{{$loop->index}}" value="{{$data->下月開線數}}" step="0.0000001"
+                                id="datap{{$loop->index}}" name="datap{{$loop->index}}" value="{{$data->下月開線數}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0"></td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data16{{$loop->index}}" name="data16{{$loop->index}}" value="{{$data->下月開班數}}" step="0.0000001"
+                                id="dataq{{$loop->index}}" name="dataq{{$loop->index}}" value="{{$data->下月開班數}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0"></td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data17{{$loop->index}}" name="data17{{$loop->index}}" value="{{$data->下月每人每日需求量}}" step="0.0000001"
+                                id="datar{{$loop->index}}" name="datar{{$loop->index}}" value="{{$data->下月每人每日需求量}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0">
                         </td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data18{{$loop->index}}" name="data18{{$loop->index}}" value="{{$data->下月每日更換頻率}}" step="0.0000001"
+                                id="datas{{$loop->index}}" name="datas{{$loop->index}}" value="{{$data->下月每日更換頻率}}" step="0.0000001"
                                 oninput="if(value.length>9)value=value.slice(0,9)" min="0">
                         </td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data19{{$loop->index}}" name="data19{{$loop->index}}" readonly></td>
+                                id="datat{{$loop->index}}" name="datat{{$loop->index}}" readonly></td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
-                                id="data20{{$loop->index}}" name="data20{{$loop->index}}" readonly></td>
-                        <td id="data21{{$loop->index}}">
+                                id="datau{{$loop->index}}" name="datau{{$loop->index}}" readonly></td>
+                        <td id="datav{{$loop->index}}">
                             <?php
                                 echo $test;
                             ?>
@@ -164,11 +164,11 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
-            <input type="text" id="jobnumber" name="jobnumber">
+            <input type="text" id="jobnumber" name="jobnumber" class="form-control form-control" style="width: 250px">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
             <input type="email" id="email" name="email" pattern=".+@pegatroncorp\.com"
-                placeholder="xxx@pegatroncorp.com">
+                placeholder="xxx@pegatroncorp.com" class="form-control form-control" style="width: 250px">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"

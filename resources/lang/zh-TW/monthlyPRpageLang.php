@@ -130,4 +130,5 @@ return [
     'nopeople' => '請輸入畫押人員',
     'noemail' => '請輸入畫押人員信箱',
     'data' => '資料',
+    'yellowrepeat' => '黃底標表示資料庫已存放在資料庫內',
 ];

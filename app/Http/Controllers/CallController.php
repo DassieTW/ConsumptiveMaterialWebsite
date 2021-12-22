@@ -227,21 +227,27 @@ class CallController extends Controller
             if($send === null)
             {
                 $datas = Inventory::join('consumptive_material', 'consumptive_material.料號',"=", 'inventory.料號')
-                    ->select('inventory.客戶別','inventory.料號',DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'))
-                    ->groupBy('inventory.客戶別','inventory.料號')
+                    ->select('inventory.客戶別','inventory.料號',DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                    'consumptive_material.品名',
+                    'consumptive_material.規格',)
+                    ->groupBy('inventory.客戶別','inventory.料號' ,'consumptive_material.品名','consumptive_material.規格',)
+                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
                     ->get();
             }
             else
             {
                 $datas = Inventory::join('consumptive_material', 'consumptive_material.料號',"=", 'inventory.料號')
-                    ->select('客戶別','inventory.料號',DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'))
-                    ->groupBy('inventory.客戶別','inventory.料號')
+                    ->select('客戶別','inventory.料號',DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                    'consumptive_material.品名',
+                    'consumptive_material.規格',)
+                    ->groupBy('inventory.客戶別','inventory.料號','consumptive_material.品名','consumptive_material.規格',)
+                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
                     ->where('consumptive_material.發料部門',$send)
                     ->get();
 
 
             }
-            //dd($datas);
+            // dd($datas);
             return view('call.day')->with(['data' => $datas]);
         }
         else

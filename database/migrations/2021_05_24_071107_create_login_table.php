@@ -20,8 +20,8 @@ class CreateLoginTable extends Migration
             $table->string('姓名',50)->nullable();
             $table->string('部門',50)->nullable();
             $table->integer('avatarChoice')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+            // $table->timestamps();
+            // $table->softDeletes();
         });
     }
 

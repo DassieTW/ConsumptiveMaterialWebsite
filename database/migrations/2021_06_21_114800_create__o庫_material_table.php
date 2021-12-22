@@ -18,8 +18,8 @@ class CreateO庫MaterialTable extends Migration
             $table->string('料號',50)->primary();
             $table->string('品名',100);
             $table->string('規格',100);
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 

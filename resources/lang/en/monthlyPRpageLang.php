@@ -126,9 +126,9 @@ return [
     'enterisn' => 'Please enter the Part No.',
     'entersrm' => 'Please enter the SRM No.',
     'timepart' => 'Time period',
-
     'stand' => 'Station Manpower',
     'nopeople' => 'Please enter Confirm People Job number',
     'noemail' => 'Please enter Confirm People email',
     'data' => 'data',
+    'yellowrepeat' => 'Yellow background means the data has been stored in the database',
 ];

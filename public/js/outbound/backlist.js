@@ -17,7 +17,6 @@ var index = 0;
 var count = $("#count").val();
 count = parseInt(count);
 
-
 function appenSVg(count) {
 
     $(".amount").hover(function () {
@@ -281,6 +280,7 @@ $(document).ready(function () {
             window.location.reload();
         }
 
+        var data = [];
         var client = [];
         var machine = [];
         var production = [];
@@ -362,29 +362,38 @@ $(document).ready(function () {
             }
         }
 
+        for (let i = 0; i < count; i++) {
+            if (status[i] == 'good product' || status == '良品') {
+                status[i] = '良品';
+            } else{
+                status[i] = '不良品';
+            }
+        }
+        data.push(client);
+        data.push(machine);
+        data.push(production);
+        data.push(backreason);
+        data.push(line);
+        data.push(number);
+        data.push(name);
+        data.push(format);
+        data.push(unit);
+        data.push(advance);
+        data.push(amount);
+        data.push(remark);
+        data.push(reason);
+        data.push(list);
+        data.push(opentime);
+        data.push(position);
+        data.push(status);
+
         $.ajax({
             type: "POST",
             url: "backlistsubmit",
             data: {
-                list: list,
-                amount: amount,
-                reason: reason,
                 backpeople: backpeople,
                 pickpeople: pickpeople,
-                position: position,
-                number: number,
-                client: client,
-                machine: machine,
-                production: production,
-                line: line,
-                backreason: backreason,
-                advance: advance,
-                name: name,
-                format: format,
-                unit: unit,
-                opentime: opentime,
-                remark: remark,
-                status: status,
+                AllData: JSON.stringify(data),
             },
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class 儲位 extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = "儲位";
 

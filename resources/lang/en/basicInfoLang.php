@@ -65,7 +65,7 @@ return [
     'stand' => 'Station',
     'yes' => 'Yes',
     'no' => 'No',
-    'add' => 'Add to Database',
+    'add' => 'Add',
     'matssearch' => 'Part No. Search',
     'download' => 'Download Excel',
     'newbasicInfo' => 'New Basic Info.',
@@ -85,4 +85,7 @@ return [
     'upload1' => 'Upload',
     'nocheck' => 'Please check the items to be submitted',
     'check' => 'Check',
+    'submit' =>'Submit',
+    'addtodatabase' => 'Add to database',
+    'yellowrepeat' => 'Yellow background means the data has been stored in the database',
 ];

@@ -26,8 +26,8 @@ class Create接收明細Table extends Migration
             $table->string('儲位',50);
             $table->string('接收人',45);
             $table->dateTime('接收時間');
-            $table->timestamps();
-            $table->softDeletes();
+            //$table->timestamps();
+            //$table->softDeletes();
         });
     }
 
