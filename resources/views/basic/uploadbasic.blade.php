@@ -71,7 +71,7 @@
                                 </tr>
                                     @foreach($data as $row)
                                     <tr>
-                                        <td><input type = "text"  id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$row[0]}}"></td>
+                                        <td id="row{{$loop->index}}"><input type = "text" class="form-control form-control-lg" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$row[0]}}"></td>
                                     </tr>
                                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                 @endforeach

@@ -249,7 +249,7 @@ $(document).ready(function () {
                 production.push($("#production" + i).text());
                 number.push($("#number" + i).text());
                 consume.push($("#amount" + i).val());
-                row.push(i);
+                row.push(i.toString());
             }
         }
 
@@ -267,7 +267,7 @@ $(document).ready(function () {
                 jobnumber: jobnumber,
                 email: email,
                 count: count,
-                row : row,
+                row: row,
             },
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
@@ -291,21 +291,21 @@ $(document).ready(function () {
 
                 alert(mess2);
 
-                for(let i = 0 ; i < row.length ; i++)
-                {
-                    console.log(typeof(data.check[i]));
-                    console.log(typeof(row[i]));
-                    let j = row.indexOf(parseInt((data.check)[i]));
-                    console.log(j);
-                    if(j != -1)
-                    {
-                        $('#row' + row[i]).remove();
-                        count = count -1;
-                    }
-                    else
-                    {
-                        document.getElementById("row" + row[i]).style.backgroundColor = "yellow";
-                    }
+                for (let i = 0; i < row.length; i++) {
+
+                    var same = row.filter(function (v) {
+                        return (data.check).indexOf(v) > -1
+                    });
+                    var diff = row.filter(function (v) {
+                        return (data.check).indexOf(v) == -1
+                    });
+                }
+                for (let i = 0; i < same.length; i++) {
+                    $('#row' + same[i]).remove();
+                }
+                for (let i = 0; i < diff.length; i++) {
+
+                    document.getElementById("row" + diff[i]).style.backgroundColor = "yellow";
                 }
 
                 // $("#consumehead").hide();

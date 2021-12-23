@@ -1886,26 +1886,27 @@ class MonthController extends Controller
 
             $now = Carbon::now();
             $count = $request->input('count');
+            $Alldata = json_decode($request->input('AllData'));
             $record = 0;
-            $srm = $request->input('srm');
-            $client = $request->input('client');
-            $number = $request->input('number');
-            $name = $request->input('name');
-            $moq = $request->input('moq');
-            $nextneed = $request->input('nextneed');
-            $nowneed = $request->input('nowneed');
-            $safe = $request->input('safe');
-            $price = $request->input('price');
-            $money = $request->input('money');
-            $rate = $request->input('rate');
-            $amount = $request->input('amount');
-            $stock = $request->input('stock');
-            $buyamount = $request->input('buyamount');
-            $realneed = $request->input('realneed');
-            $buymoney = $request->input('buymoney');
-            $buyper = $request->input('buyper');
-            $needmoney = $request->input('needmoney');
-            $needper = $request->input('needper');
+            $srm = $Alldata[0];
+            $client = $Alldata[1];
+            $number = $Alldata[2];
+            $name = $Alldata[3];
+            $moq = $Alldata[4];
+            $nextneed = $Alldata[5];
+            $nowneed = $Alldata[6];
+            $safe = $Alldata[7];
+            $price = $Alldata[8];
+            $money = $Alldata[9];
+            $rate = $Alldata[10];
+            $amount = $Alldata[11];
+            $stock = $Alldata[12];
+            $buyamount = $Alldata[13];
+            $realneed = $Alldata[14];
+            $buymoney = $Alldata[15];
+            $buyper = $Alldata[16];
+            $needmoney = $Alldata[17];
+            $needper = $Alldata[18];
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
@@ -2268,7 +2269,7 @@ class MonthController extends Controller
                 $i++;
             }
             // 下載
-            $now = Carbon::now();
+            $now = Carbon::now()->format('YmdHis');
             $titlename = $request->input('titlename');
             $filename = rawurlencode($titlename) . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

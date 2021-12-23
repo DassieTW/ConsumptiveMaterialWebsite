@@ -32,24 +32,29 @@ $(document).ready(function () {
         var count = $("#count").val();
 
         for (let i = 0; i < count; i++) {
-            number.push($("#data0a" + i).val());
-            name.push($("#data1a" + i).val());
-            format.push($("#data2a" + i).val());
-            price.push($("#data3a" + i).val());
-            money.push($("#data4a" + i).val());
-            unit.push($("#data5a" + i).val());
-            mpq.push($("#data6a" + i).val());
-            moq.push($("#data7a" + i).val());
-            lt.push($("#data8a" + i).val());
-            month.push($("#data9a" + i).val());
-            gradea.push($("#data10a" + i).val());
-            belong.push($("#data11a" + i).val());
-            send.push($("#data12a" + i).val());
-            safe.push($("#data13a" + i).val());
-            row.push(i);
+            if ($("#data0a" + i).val() !== null && $("#data0a" + i).val() !== undefined && $("#data0a" + i).val() !== ' ') {
+                number.push($("#data0a" + i).val());
+                name.push($("#data1a" + i).val());
+                format.push($("#data2a" + i).val());
+                price.push($("#data3a" + i).val());
+                money.push($("#data4a" + i).val());
+                unit.push($("#data5a" + i).val());
+                mpq.push($("#data6a" + i).val());
+                moq.push($("#data7a" + i).val());
+                lt.push($("#data8a" + i).val());
+                month.push($("#data9a" + i).val());
+                gradea.push($("#data10a" + i).val());
+                belong.push($("#data11a" + i).val());
+                send.push($("#data12a" + i).val());
+                safe.push($("#data13a" + i).val());
+                row.push(i.toString());
+            }
+            else{
+                continue;
+            }
         }
 
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < number.length; i++) {
             if (number[i].length !== 12) {
                 var row = i + 1;
                 var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.isnlength');
@@ -100,10 +105,12 @@ $(document).ready(function () {
             },
             complete: function () {
                 $("body").loadingModal("hide");
+                $('body').loadingModal('destroy');
+
             },
             success: function (data) {
 
-                var mess = Lang.get('basicInfoLang.total') + ' : ' + count + Lang.get('basicInfoLang.record') +
+                var mess = Lang.get('basicInfoLang.total') + ' : ' + row.length + Lang.get('basicInfoLang.record') +
                     Lang.get('basicInfoLang.matsdata') + ' ， ' + Lang.get('basicInfoLang.success') + Lang.get('basicInfoLang.new') +
                     ' : ' + data.record + Lang.get('basicInfoLang.matsdata');
 
@@ -113,21 +120,21 @@ $(document).ready(function () {
 
                 alert(mess2);
 
-                for(let i = 0 ; i < row.length ; i++)
-                {
-                    console.log(typeof(data.check[i]));
-                    console.log(typeof(row[i]));
-                    let j = row.indexOf(parseInt((data.check)[i]));
-                    console.log(j);
-                    if(j != -1)
-                    {
-                        $('#row' + row[i]).remove();
-                        count = count -1;
-                    }
-                    else
-                    {
-                        document.getElementById("row" + row[i]).style.backgroundColor = "yellow";
-                    }
+                for (let i = 0; i < row.length; i++) {
+
+                    var same = row.filter(function (v) {
+                        return (data.check).indexOf(v) > -1
+                    });
+                    var diff = row.filter(function (v) {
+                        return (data.check).indexOf(v) == -1
+                    });
+                }
+                for (let i = 0; i < same.length; i++) {
+                    $('#row' + same[i]).remove();
+                }
+                for (let i = 0; i < diff.length; i++) {
+
+                    document.getElementById("row" + diff[i]).style.backgroundColor = "yellow";
                 }
                 // window.location.href = "/basic";
             },
