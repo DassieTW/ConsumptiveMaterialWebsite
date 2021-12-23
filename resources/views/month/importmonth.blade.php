@@ -71,28 +71,28 @@
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg col col-auto" type="number" id="nowmps"
-                                    name="nowmps" value="0" step = "0.001" oninput="if(value.length>5)value=value.slice(0,5)">
+                                    name="nowmps" value="0" step = "0.001" min="0">
                             </div>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <label class="col col-auto form-label">{!! __('monthlyPRpageLang.nowday') !!}</label>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg" type="number" id="nowday" name="nowday"
-                                    value="0" step = "0.001" oninput="if(value.length>5)value=value.slice(0,5)">
+                                    value="0" step = "0.001" min="0">
                             </div>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <label class="col col-auto form-label">{!! __('monthlyPRpageLang.nextmps') !!}</label>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg" type="number" id="nextmps" name="nextmps"
-                                    value="0" step = "0.001" oninput="if(value.length>5)value=value.slice(0,5)">
+                                    value="0" step = "0.001" min="0">
                             </div>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <label class="col col-auto form-label">{!! __('monthlyPRpageLang.nextday') !!}</label>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg" type="number" id="nextday" name="nextday"
-                                    value="0" step = "0.001" oninput="if(value.length>5)value=value.slice(0,5)">
+                                    value="0" step = "0.001" min="0">
                             </div>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         </div>

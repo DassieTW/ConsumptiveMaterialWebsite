@@ -609,8 +609,9 @@ class BasicInformationController extends Controller
     {
         if (Session::has('username')) {
 
-            $count = $request->input('count');
+
             $row = $request->input('row');
+            $count = count($row);
             $record = 0;
             $check = array();
             $Alldata = json_decode($request->input('AllData'));
@@ -714,13 +715,14 @@ class BasicInformationController extends Controller
     public function insertuploadbasic(Request $request)
     {
         if (Session::has('username')) {
-            $count = $request->input('count');
-            $choose = $request->input('title');
             $dataarray =  $request->input('data');
+            $count = count($dataarray);
+            $choose = $request->input('title');
+            $row = $request->input('row');
             $record = 0;
-            $test = 0;
-            $row = 0;
-            $bool = true;
+            $check = array();
+            $test  = [];
+
 
             if ($choose == '客戶別') {
                 $chooseindex = '客戶';
@@ -736,50 +738,33 @@ class BasicInformationController extends Controller
                 // $table = "App\Models" . "\\" . $choose;
             }
 
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
+                    $data = $dataarray[$i];
+                    $testa = DB::table($choose)->where($choose, $data)->value($chooseindex);
 
-            for ($i = 0; $i < $count; $i++) {
-
-                $data = $dataarray[$i];
-                $datas = DB::table($choose)->pluck($chooseindex);
-
-                /*$delete = $table::onlyTrashed()
-                    ->where($chooseindex, $data)->get();*/
-
-                //判斷data是否重複
-                for ($j = 0; $j < count($datas); $j++) {
-                    if (strcasecmp($data, $datas[$j]) === 0) {
-
-                        $bool = false;
-                        $row = $i + 1;
-                        //data repeat
-                        return \Response::json(['message' => $row], 420/* Status code here default is 200 ok*/);
+                    //判斷data是否重複
+                    if ($testa === null) {
+                        $test[$i] = 1;
                     } else {
-
+                        $test[$i] = 2;
+                    }
+                    if ($test[$i] == 1) {
+                        DB::table($choose)
+                            ->insert([$chooseindex => $data]);
+                            $record++;
+                            array_push($check, $row[$i]);
+                    } else {
                         continue;
                     }
                 }
-                $test++;
+                DB::commit();
+                return \Response::json(['record' => $record, 'choose' => $choose , 'check' => $check]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
             }
-
-            if ($test == $count && $bool == true) {
-                DB::beginTransaction();
-                try {
-                    for ($i = 0; $i < $count; $i++) {
-                        $data = $dataarray[$i];
-
-                        DB::table($choose)
-                            ->insert([$chooseindex => $data]);
-
-                        $record++;
-                    } // for
-                    DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    $i = $i + 1;
-                    return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
-                }
-            }
-            return \Response::json(['message' => $record, 'choose' => $choose]/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
         }

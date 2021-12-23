@@ -88,4 +88,5 @@ return [
     'submit' => '提交',
     'addtodatabase' => '新增至资料库',
     'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
+    'data' => '资料',
 ];

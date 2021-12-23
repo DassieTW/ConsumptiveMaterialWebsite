@@ -239,6 +239,10 @@ $(document).ready(function () {
         data.push(needper);
 
         if (select == '提交' || select == 'Submit') {
+            if (count == 0) {
+                alert('no data');
+                return false;
+            }
             $.ajax({
                 type: 'POST',
                 url: "buylistsubmit",
@@ -283,8 +287,7 @@ $(document).ready(function () {
                 title.push($("#title" + i).val());
             }
 
-            if(select == '匯出' || select == 'Export' || select == '汇出')
-            {
+            if (select == '匯出' || select == 'Export' || select == '汇出') {
                 var titlename = $("#titlename").val();
 
                 $.ajax({
@@ -361,9 +364,7 @@ $(document).ready(function () {
                         alert(errorThrown);
                     }
                 });
-            }
-            else
-            {
+            } else {
                 var titlename = $("#titlename1").val();
 
                 $.ajax({

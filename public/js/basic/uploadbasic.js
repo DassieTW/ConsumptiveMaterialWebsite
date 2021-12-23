@@ -1,77 +1,107 @@
+sessionStorage.clear();
+
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
     },
 });
 
-$("#uploadbasic").on("submit", function (e) {
-    console.log(12);
+$(document).ready(function () {
+    $("#uploadbasic").on("submit", function (e) {
 
-    e.preventDefault();
+        e.preventDefault();
 
-    // clean up previous input results
-    $(".is-invalid").removeClass("is-invalid");
-    $(".invalid-feedback").remove();
+        // clean up previous input results
+        $(".is-invalid").removeClass("is-invalid");
+        $(".invalid-feedback").remove();
 
-    var data = [];
-    var title = $("#title0").val();
-    var count = $("#count").val();
+        var data = [];
+        var row = [];
+        var title = $("#title0").val();
+        var count = $("#count").val();
 
-    for (let i = 0; i < count; i++) {
-        data.push($("#data0" + i).val());
-    }
-
-    console.log(title);
-    $.ajax({
-        type: "POST",
-        url: "insertuploadbasic",
-        data: {
-            title: title,
-            data: data,
-            count: count,
-        },
-        beforeSend: function () {
-            // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-        },
-        complete: function () {
-            $("body").loadingModal("hide");
-        },
-        success: function (data) {
-            var mess =
-                Lang.get("basicInfoLang.total") +
-                " " +
-                data.message +
-                " " +
-                Lang.get("basicInfoLang.record") +
-                data.choose +
-                Lang.get("basicInfoLang.new") +
-                Lang.get("basicInfoLang.success");
-            alert(mess);
-            window.location.href = "/basic";
-        },
-        error: function (err) {
-            console.log(err.status);
-            //data重複
-            if (err.status == 420) {
-                var mess =
-                    Lang.get("basicInfoLang.row") +
-                    " : " +
-                    err.responseJSON.message +
-                    " " +
-                    Lang.get("basicInfoLang.repeat");
-                window.alert(mess);
-                window.location.reload();
+        for (let i = 0; i < count; i++) {
+            if ($("#data0" + i).val() !== null && $("#data0" + i).val() !== undefined && $("#data0" + i).val() !== ' ') {
+                data.push($("#data0" + i).val());
+                row.push(i.toString());
+            } else {
+                continue;
             }
-            // transaction error
-            else {
-                var mess = err.responseJSON.message;
-                window.alert(mess);
-                window.location.reload();
-            }
-        },
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "insertuploadbasic",
+            data: {
+                title: title,
+                data: data,
+                row: row,
+                count: count,
+            },
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
+                });
+            },
+            complete: function () {
+                $("body").loadingModal("hide");
+                $('body').loadingModal('destroy');
+
+            },
+            success: function (data) {
+
+                console.log(data.choose);
+                console.log(data.record);
+
+                var mess = Lang.get('basicInfoLang.total') + ' : ' + row.length + Lang.get('basicInfoLang.record') +
+                    Lang.get('basicInfoLang.data') + ' ， ' + Lang.get('basicInfoLang.success') + Lang.get('basicInfoLang.new') +
+                    ' : ' + data.record + data.choose + ' ' + Lang.get('basicInfoLang.data');
+
+                alert(mess);
+
+                var mess2 = Lang.get('basicInfoLang.yellowrepeat');
+
+                alert(mess2);
+
+                for (let i = 0; i < row.length; i++) {
+
+                    var same = row.filter(function (v) {
+                        return (data.check).indexOf(v) > -1
+                    });
+                    var diff = row.filter(function (v) {
+                        return (data.check).indexOf(v) == -1
+                    });
+                }
+                for (let i = 0; i < same.length; i++) {
+                    $('#row' + same[i]).remove();
+                }
+                for (let i = 0; i < diff.length; i++) {
+
+                    document.getElementById("row" + diff[i]).style.backgroundColor = "yellow";
+                }
+            },
+            error: function (err) {
+                console.log(err.status);
+                //data重複
+                if (err.status == 420) {
+                    var mess =
+                        Lang.get("basicInfoLang.row") +
+                        " : " +
+                        err.responseJSON.message +
+                        " " +
+                        Lang.get("basicInfoLang.repeat");
+                    window.alert(mess);
+                    window.location.reload();
+                }
+                // transaction error
+                else {
+                    var mess = err.responseJSON.message;
+                    window.alert(mess);
+                    //window.location.reload();
+                }
+            },
+        });
     });
 });
