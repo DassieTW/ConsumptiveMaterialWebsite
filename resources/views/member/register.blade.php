@@ -36,11 +36,11 @@
 
 <body>
     <nav class="navbar navbar-expand fixed-top navbar-light navbar-bg p-0 m-0">
-        <a class="nav-icon d-inline-block d-sm-none" href="{{ url()->previous() }}">
+        <a class="nav-icon d-inline-block d-sm-none" href="{{ route('member.index') }}">
             <i class="align-middle" data-feather="arrow-left"></i>
         </a>
         <div class="align-middle">
-            <a class="nav-link d-none d-sm-inline-block" href="{{ url()->previous() }}">
+            <a class="nav-link d-none d-sm-inline-block" href="{{ route('member.index') }}">
                 <i class="align-middle text-dark" data-feather="arrow-left"></i>
                 <u class="text-dark"><span class="align-middle text-dark">{{ __('loginPageLang.pre_page')}}</span></u>
             </a>
