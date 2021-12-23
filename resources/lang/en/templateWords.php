@@ -37,4 +37,12 @@ return [
     'isnBarcode' => 'Find Part No. Barcode',
     'nowuser' => 'Now login user is:',
     'checkIvent_create_new_table' => 'Create New Sheet',
+
+    'isnConsumeAdd' => 'Unit Consumption <br/> &nbsp;&nbsp;&nbsp; (Add)',
+    'isnConsumeUpdate' => 'Unit Consumption <br/> &nbsp;&nbsp;&nbsp; (Search & Update)',
+    'standAdd' => 'Station Manpower <br/> &nbsp;&nbsp;&nbsp; (Add)',
+    'standUpdate' => 'Station Manpower <br/> &nbsp;&nbsp;&nbsp; (Search & Update)',
+    'importNonMonthlyData' => 'Import Non-Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
+    'importMonthlyData' => 'Import Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
+    'on_the_way_search' => 'On-Order Inventory <br/> &nbsp;&nbsp;&nbsp; (Search)',
 ];

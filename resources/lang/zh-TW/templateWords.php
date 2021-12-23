@@ -37,4 +37,12 @@ return [
     'isnBarcode' => '料號條碼查詢',
     'nowuser' => '現在登入的用戶是:',
     'checkIvent_create_new_table' => 'Create New Sheet',
+
+    'isnConsumeAdd' => '料號單耗(新增)',
+    'isnConsumeUpdate' => '料號單耗(查詢與修改)',
+    'standAdd' => '站位人力(新增)',
+    'standUpdate' => '站位人力(查詢與修改)',
+    'importNonMonthlyData' => '匯入非月請購資料',
+    'importMonthlyData' => '匯入月請購資料',
+    'on_the_way_search' => '在途數量(查詢)',
 ];
