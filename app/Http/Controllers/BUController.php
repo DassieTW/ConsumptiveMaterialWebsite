@@ -59,7 +59,8 @@ class BUController extends Controller
         //
         if (Session::has('username')) {
 
-            $database = ['M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management'];
+            $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management' ,
+            '巴淡-LOT11 Consumables management' , '巴淡-LOT2 Consumables management' , '巴淡-PTSN Consumables management'];
 
             foreach ($database as $key => $value) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
@@ -826,7 +827,8 @@ class BUController extends Controller
                     'number' => trans('bupagelang.isnlength'),
                 ]);
             } else {
-                $database = ['M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management'];
+                $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management' ,
+                '巴淡-LOT11 Consumables management' , '巴淡-LOT2 Consumables management' , '巴淡-PTSN Consumables management'];
 
                 foreach ($database as $key => $value) {
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);

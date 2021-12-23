@@ -49,7 +49,7 @@
                     </tr>
 
                     <?php $i = 0 ; $data = ''; $record = array(array());?>
-                    @for($i = 0 ; $i < 3 ; $i++) @foreach($test[$i] as $data) <?php
+                    @for($i = 0 ; $i < 6 ; $i++) @foreach($test[$i] as $data) <?php
                         $maxtime=date_create(date('Y-m-d',strtotime($data->inventory最後更新時間)));
                         $nowtime = date_create(date('Y-m-d',strtotime(\Carbon\Carbon::now())));
                         $interval = date_diff($maxtime ,$nowtime);
@@ -59,7 +59,8 @@
                         $buytime1 = array();
                         $buytimeco = array();
                         $buytimeco1 = array();
-                        $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management'];
+                        $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management' ,
+                        '巴淡-LOT11 Consumables management' , '巴淡-LOT2 Consumables management' , '巴淡-PTSN Consumables management'];
                         foreach ($database as $key => $value) {
                         if($value != $database[$i])
                         {
