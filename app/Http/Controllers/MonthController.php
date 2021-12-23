@@ -179,14 +179,14 @@ class MonthController extends Controller
                 $datas = DB::table('consumptive_material')
                     ->join('月請購_單耗', function ($join) {
                         $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
-                    })//->wherenull('月請購_單耗.deleted_at')
+                    }) //->wherenull('月請購_單耗.deleted_at')
                     ->where('consumptive_material.料號', 'like', $number . '%')
                     ->where('狀態', '已完成')->get();
             } else {
                 $datas = DB::table('consumptive_material')
                     ->join('月請購_單耗', function ($join) {
                         $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
-                    })//->wherenull('月請購_單耗.deleted_at')
+                    }) //->wherenull('月請購_單耗.deleted_at')
                     ->where('狀態', '已完成')->get();
             }
             //all empty
@@ -371,14 +371,14 @@ class MonthController extends Controller
                 $datas = DB::table('consumptive_material')
                     ->join('月請購_站位', function ($join) {
                         $join->on('月請購_站位.料號', '=', 'consumptive_material.料號');
-                    })//->wherenull('月請購_站位.deleted_at')
+                    }) //->wherenull('月請購_站位.deleted_at')
                     ->where('consumptive_material.料號', 'like', $number . '%')
                     ->where('狀態', '已完成')->get();
             } else {
                 $datas = DB::table('consumptive_material')
                     ->join('月請購_站位', function ($join) {
                         $join->on('月請購_站位.料號', '=', 'consumptive_material.料號');
-                    })//->wherenull('月請購_站位.deleted_at')
+                    }) //->wherenull('月請購_站位.deleted_at')
                     ->where('狀態', '已完成')->get();
             }
 
@@ -582,7 +582,7 @@ class MonthController extends Controller
                             ->where('料號', $number[$i])
                             ->update([
                                 '狀態' => "待畫押", '畫押工號' => $jobnumber,
-                                '畫押信箱' => $email, 'updated_at' => $now, '單耗' => $amount[$i]
+                                '畫押信箱' => $email, /*'updated_at' => $now,*/ '單耗' => $amount[$i]
                             ]);
                         DB::commit();
                     } catch (\Exception $e) {
@@ -655,7 +655,7 @@ class MonthController extends Controller
                             ->where('料號', $number[$i])
                             ->update([
                                 '狀態' => "待畫押", '畫押工號' => $jobnumber,
-                                '畫押信箱' => $email, 'updated_at' => $now, '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i],
+                                '畫押信箱' => $email, /*'updated_at' => $now,*/ '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i],
                                 '當月開班數' => $nowclass[$i], '當月每人每日需求量' => $nowdayneed[$i], '下月站位人數' => $nextpeople[$i],
                                 '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextdayneed[$i],
                                 '當月每日更換頻率' => $nowchange[$i], '下月每日更換頻率' => $nextchange[$i]
@@ -804,37 +804,28 @@ class MonthController extends Controller
                     $test = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
                         ->where('機種', $machine)->where('製程', $production)->value('單耗');
 
-                    $delete = 月請購_單耗::onlyTrashed()
+                    /*$delete = 月請購_單耗::onlyTrashed()
                         ->where('料號', $number)->where('客戶別', $client)
                         ->where('機種', $machine)->where('製程', $production)
-                        ->get();
+                        ->get();*/
 
-                    if (!$delete->isEmpty()) {
+
+                    if ($test === null) {
                         DB::table('月請購_單耗')
-                            ->where('料號', $number)->where('客戶別', $client)
-                            ->where('機種', $machine)->where('製程', $production)
-                            ->update([
-                                'created_at' =>  Carbon::now(), 'deleted_at' => null, 'updated_at' => null, '單耗' => $consume, '畫押工號' => $jobnumber, '畫押信箱' => $email, '狀態' => "待畫押"
+                            ->insert([
+                                '料號' => $number, '客戶別' => $client, '機種' => $machine, '製程' => $production,
+                                '單耗' => $consume, '畫押工號' => $jobnumber,
+                                '畫押信箱' => $email, '狀態' => "待畫押"
                             ]);
-                            $record++;
-                            array_push($check,$row[$i]);
+                        $record++;
+                        array_push($check, $row[$i]);
                     } else {
-                        if ($test === null) {
-                            DB::table('月請購_單耗')
-                                ->insert([
-                                    '料號' => $number, '客戶別' => $client, '機種' => $machine, '製程' => $production,
-                                    '單耗' => $consume, 'created_at' => Carbon::now(), '畫押工號' => $jobnumber,
-                                    '畫押信箱' => $email, '狀態' => "待畫押"
-                                ]);
-                            $record++;
-                            array_push($check,$row[$i]);
-                        } else {
-                            continue;
-                        } //continue-else
-                    } //else
+                        continue;
+                    } //continue-else
+
                 } //for
                 DB::commit();
-                return \Response::json(['record' => $record, 'database' => $database , 'check' => $check]/* Status code here default is 200 ok*/);
+                return \Response::json(['record' => $record, 'database' => $database, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
@@ -875,32 +866,32 @@ class MonthController extends Controller
                     $test = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)
                         ->where('機種', $machine)->where('製程', $production)->value('當月站位人數');
 
-                    $delete = 月請購_站位::onlyTrashed()
+                    /*$delete = 月請購_站位::onlyTrashed()
                         ->where('料號', $number)->where('客戶別', $client)
                         ->where('機種', $machine)->where('製程', $production)
-                        ->get();
+                        ->get();*/
 
-                    if (!$delete->isEmpty()) {
+                    /*if (!$delete->isEmpty()) {
                         DB::table('月請購_站位')
                             ->where('料號', $number)->where('客戶別', $client)
                             ->where('機種', $machine)->where('製程', $production)
                             ->update([
                                 'created_at' =>  Carbon::now(), 'deleted_at' => null, 'updated_at' => null, '當月站位人數' => $nowpeople, '當月開線數' => $nowline, '當月開班數' => $nowclass, '當月每人每日需求量' => $nowuse, '當月每日更換頻率' => $nowchange, '下月站位人數' => $nextpeople, '下月開線數' => $nextline, '下月開班數' => $nextclass, '下月每人每日需求量' => $nextuse, '下月每日更換頻率' => $nextchange, '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
                             ]);
+                    } else {*/
+                    if ($test === null) {
+                        DB::table('月請購_站位')
+                            ->insert([
+                                '料號' => $number, '客戶別' => $client, '機種' => $machine, '製程' => $production, '當月站位人數' => $nowpeople,
+                                '當月開線數' => $nowline, '當月開班數' => $nowclass, '當月每人每日需求量' => $nowuse, '當月每日更換頻率' => $nowchange,
+                                '下月站位人數' => $nextpeople, '下月開線數' => $nextline, '下月開班數' => $nextclass, '下月每人每日需求量' => $nextuse,
+                                '下月每日更換頻率' => $nextchange, '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
+                            ]);
+                        $record++;
                     } else {
-                        if ($test === null) {
-                            DB::table('月請購_站位')
-                                ->insert([
-                                    '料號' => $number, '客戶別' => $client, '機種' => $machine, '製程' => $production, '當月站位人數' => $nowpeople,
-                                    '當月開線數' => $nowline, '當月開班數' => $nowclass, '當月每人每日需求量' => $nowuse, '當月每日更換頻率' => $nowchange,
-                                    '下月站位人數' => $nextpeople, '下月開線數' => $nextline, '下月開班數' => $nextclass, '下月每人每日需求量' => $nextuse,
-                                    '下月每日更換頻率' => $nextchange, 'created_at' => Carbon::now(), '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
-                                ]);
-                            $record++;
-                        } else {
-                            continue;
-                        } // continue-else
-                    } // else
+                        continue;
+                    } // continue-else
+
                 } //for
                 DB::commit();
                 return \Response::json(['record' => $record, 'database' => $database]/* Status code here default is 200 ok*/);
@@ -954,11 +945,11 @@ class MonthController extends Controller
                     $say = $reason . ' ' . $say;
                     if ($test === null) {
                         DB::table('在途量')
-                            ->insert(['客戶' => $client, '料號' => $number, '請購數量' => $amount, 'created_at' => $now]);
+                            ->insert(['客戶' => $client, '料號' => $number, '請購數量' => $amount, /*'created_at' => $now*/]);
                     } else {
                         DB::table('在途量')
                             ->where('客戶', $client)->where('料號', $number)
-                            ->update(['請購數量' => $test + $amount, 'updated_at' => $now]);
+                            ->update(['請購數量' => $test + $amount, /*'updated_at' => $now*/]);
                     }
 
                     DB::table('非月請購')
@@ -2032,8 +2023,8 @@ class MonthController extends Controller
                     $number = $request->input('number')[$i];
                     $amount = $request->input('amount')[$i];
                     $check = $request->input('check')[$i];
-                    $update = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
-                        ->where('機種', $machine)->where('製程', $production)->value('updated_at');
+                    /*$update = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
+                        ->where('機種', $machine)->where('製程', $production)->value('updated_at');*/
                     $record = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
                         ->where('機種', $machine)->where('製程', $production)->value('紀錄');
                     if ($check == 1) {
@@ -2051,7 +2042,7 @@ class MonthController extends Controller
                         ->where('料號', $number)
                         ->update([
                             '狀態' => "已完成", '畫押工號' => $jobnumber,
-                            '畫押信箱' => $email, '畫押時間' => $now, '單耗' => $amount, 'updated_at' => $update, '紀錄' => $record
+                            '畫押信箱' => $email, '畫押時間' => $now, '單耗' => $amount, /*'updated_at' => $update*/ '紀錄' => $record
                         ]);
                 } //for
                 DB::commit();
@@ -2092,9 +2083,8 @@ class MonthController extends Controller
                     $nextchange = $request->input('nextchange')[$i];
                     $check = $request->input('check')[$i];
 
-
-                    $update = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)
-                        ->where('機種', $machine)->where('製程', $production)->value('updated_at');
+                    /*$update = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)
+                        ->where('機種', $machine)->where('製程', $production)->value('updated_at');*/
                     $record = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)
                         ->where('機種', $machine)->where('製程', $production)->value('紀錄');
                     if ($check == 1) {
@@ -2112,7 +2102,7 @@ class MonthController extends Controller
                         ->where('料號', $number)
                         ->update([
                             '狀態' => "已完成", '畫押工號' => $jobnumber,
-                            '畫押信箱' => $email, '畫押時間' => $now, '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i], '當月開班數' => $nowclass[$i], '當月每人每日需求量' => $nowuse[$i], '當月每日更換頻率' => $nowchange[$i], '下月站位人數' => $nextpeople[$i], '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextuse[$i], '下月每日更換頻率' => $nextchange[$i], 'updated_at' => $update, '紀錄' => $record
+                            '畫押信箱' => $email, '畫押時間' => $now, '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i], '當月開班數' => $nowclass[$i], '當月每人每日需求量' => $nowuse[$i], '當月每日更換頻率' => $nowchange[$i], '下月站位人數' => $nextpeople[$i], '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextuse[$i], '下月每日更換頻率' => $nextchange[$i], /*'updated_at' => $update*/ '紀錄' => $record
                         ]);
                 } //for
                 DB::commit();
@@ -2215,115 +2205,84 @@ class MonthController extends Controller
     public function buylistdownload(Request $request)
     {
         if (Session::has('username')) {
-            $reDive = new responseObj();
+
             $spreadsheet = new Spreadsheet();
             //$spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
             $worksheet = $spreadsheet->getActiveSheet();
 
-            $title = $request->input('title');
-            $titlecount = $request->input('titlecount');
             $count = $request->input('count');
-            $select = $request->input('select');
-            if ($select == '匯出' || $select == '汇出' || $select == 'Export') {
-                //填寫表頭
-                for ($i = 0; $i < $titlecount; $i++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+            $Alldata = json_decode($request->input('AllData'));
+
+            $i = 2;
+            //填寫表頭
+            $worksheet->setCellValueByColumnAndRow(1, 1, 'Item');
+            $worksheet->setCellValueByColumnAndRow(2, 1, 'Part Number');
+            $worksheet->setCellValueByColumnAndRow(3, 1, 'Part Desc');
+            $worksheet->setCellValueByColumnAndRow(4, 1, 'Material Group');
+            $worksheet->setCellValueByColumnAndRow(5, 1, '指定廠牌 / 品牌否');
+            $worksheet->setCellValueByColumnAndRow(6, 1, '指定廠牌_說明');
+            $worksheet->setCellValueByColumnAndRow(7, 1, '廠牌 / 品牌');
+            $worksheet->setCellValueByColumnAndRow(8, 1, '客戶指定否');
+            $worksheet->setCellValueByColumnAndRow(9, 1, '用途');
+            $worksheet->setCellValueByColumnAndRow(10, 1, '是否有驗收要求');
+            $worksheet->setCellValueByColumnAndRow(11, 1, '驗收標準');
+            $worksheet->setCellValueByColumnAndRow(12, 1, '精度等特殊要求');
+            $worksheet->setCellValueByColumnAndRow(13, 1, 'Quantity');
+            $worksheet->setCellValueByColumnAndRow(14, 1, '季度預估用量');
+            $worksheet->setCellValueByColumnAndRow(15, 1, 'Unit');
+            $worksheet->setCellValueByColumnAndRow(16, 1, '需求日期');
+            $worksheet->setCellValueByColumnAndRow(17, 1, 'Applicant');
+            $worksheet->setCellValueByColumnAndRow(18, 1, '保管人');
+            $worksheet->setCellValueByColumnAndRow(19, 1, 'Plant');
+            $worksheet->setCellValueByColumnAndRow(20, 1, '廠別');
+            $worksheet->setCellValueByColumnAndRow(21, 1, '廠別_Other');
+            $worksheet->setCellValueByColumnAndRow(22, 1, '購買類型');
+            $worksheet->setCellValueByColumnAndRow(23, 1, '購買類型_Other');
+            $worksheet->setCellValueByColumnAndRow(24, 1, 'Project');
+            $worksheet->setCellValueByColumnAndRow(25, 1, 'Customer');
+            $worksheet->setCellValueByColumnAndRow(26, 1, '製程別');
+            $worksheet->setCellValueByColumnAndRow(27, 1, '製程別_Other');
+            $worksheet->setCellValueByColumnAndRow(28, 1, '系統別');
+            $worksheet->setCellValueByColumnAndRow(29, 1, 'PR TYPE');
+            $worksheet->setCellValueByColumnAndRow(30, 1, 'S.L');
+            $worksheet->setCellValueByColumnAndRow(31, 1, 'Account Assignment');
+            $worksheet->setCellValueByColumnAndRow(32, 1, 'Cost Center');
+            $worksheet->setCellValueByColumnAndRow(33, 1, 'AUC No.');
+            $worksheet->setCellValueByColumnAndRow(34, 1, 'AUC子號');
+            $worksheet->setCellValueByColumnAndRow(35, 1, 'Int.PO');
+            $worksheet->setCellValueByColumnAndRow(36, 1, 'Purch.Org.');
+            $worksheet->setCellValueByColumnAndRow(37, 1, 'Address');
+            $worksheet->setCellValueByColumnAndRow(38, 1, 'Street / House number');
+            $worksheet->setCellValueByColumnAndRow(39, 1, 'Remark');
+            $worksheet->setCellValueByColumnAndRow(40, 1, '提前備料否');
+            //填寫內容
+            for ($j = 0; $j < $count; $j++) {
+                if ($Alldata[13][$j] > 0) {
+                    $worksheet->setCellValueByColumnAndRow(2, $i, $Alldata[2][$j]);
+                    $worksheet->setCellValueByColumnAndRow(13, $i, $Alldata[13][$j]);
+                    $worksheet->setCellValueByColumnAndRow(14, $i, $Alldata[14][$j]);
+                } else {
+                    continue;
                 }
-
-                //填寫內容
-                for ($i = 0; $i < $titlecount; $i++) {
-                    for ($j = 0; $j < $count; $j++) {
-                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
-                    }
-                }
-
-
-                // 下載
-                $now = Carbon::now()->format('YmdHis');
-                //rawurlencode('呆滯庫存查詢');
-                $filename = rawurlencode('請購單') . $now . '.xlsx';
-                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment; filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
-                header('Cache-Control: max-age=0');
-
-                $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
-                $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-                $writer->save('php://output');
-                $callback = function () use ($writer) {
-                    $file = fopen('php://output', 'r');
-                    fclose($file);
-                };
-            } else {
-                $i = 2;
-                //填寫表頭
-                $worksheet->setCellValueByColumnAndRow(1, 1, 'Item');
-                $worksheet->setCellValueByColumnAndRow(2, 1, 'Part Number');
-                $worksheet->setCellValueByColumnAndRow(3, 1, 'Part Desc');
-                $worksheet->setCellValueByColumnAndRow(4, 1, 'Material Group');
-                $worksheet->setCellValueByColumnAndRow(5, 1, '指定廠牌 / 品牌否');
-                $worksheet->setCellValueByColumnAndRow(6, 1, '指定廠牌_說明');
-                $worksheet->setCellValueByColumnAndRow(7, 1, '廠牌 / 品牌');
-                $worksheet->setCellValueByColumnAndRow(8, 1, '客戶指定否');
-                $worksheet->setCellValueByColumnAndRow(9, 1, '用途');
-                $worksheet->setCellValueByColumnAndRow(10, 1, '是否有驗收要求');
-                $worksheet->setCellValueByColumnAndRow(11, 1, '驗收標準');
-                $worksheet->setCellValueByColumnAndRow(12, 1, '精度等特殊要求');
-                $worksheet->setCellValueByColumnAndRow(13, 1, 'Quantity');
-                $worksheet->setCellValueByColumnAndRow(14, 1, '季度預估用量');
-                $worksheet->setCellValueByColumnAndRow(15, 1, 'Unit');
-                $worksheet->setCellValueByColumnAndRow(16, 1, '需求日期');
-                $worksheet->setCellValueByColumnAndRow(17, 1, 'Applicant');
-                $worksheet->setCellValueByColumnAndRow(18, 1, '保管人');
-                $worksheet->setCellValueByColumnAndRow(19, 1, 'Plant');
-                $worksheet->setCellValueByColumnAndRow(20, 1, '廠別');
-                $worksheet->setCellValueByColumnAndRow(21, 1, '廠別_Other');
-                $worksheet->setCellValueByColumnAndRow(22, 1, '購買類型');
-                $worksheet->setCellValueByColumnAndRow(23, 1, '購買類型_Other');
-                $worksheet->setCellValueByColumnAndRow(24, 1, 'Project');
-                $worksheet->setCellValueByColumnAndRow(25, 1, 'Customer');
-                $worksheet->setCellValueByColumnAndRow(26, 1, '製程別');
-                $worksheet->setCellValueByColumnAndRow(27, 1, '製程別_Other');
-                $worksheet->setCellValueByColumnAndRow(28, 1, '系統別');
-                $worksheet->setCellValueByColumnAndRow(29, 1, 'PR TYPE');
-                $worksheet->setCellValueByColumnAndRow(30, 1, 'S.L');
-                $worksheet->setCellValueByColumnAndRow(31, 1, 'Account Assignment');
-                $worksheet->setCellValueByColumnAndRow(32, 1, 'Cost Center');
-                $worksheet->setCellValueByColumnAndRow(33, 1, 'AUC No.');
-                $worksheet->setCellValueByColumnAndRow(34, 1, 'AUC子號');
-                $worksheet->setCellValueByColumnAndRow(35, 1, 'Int.PO');
-                $worksheet->setCellValueByColumnAndRow(36, 1, 'Purch.Org.');
-                $worksheet->setCellValueByColumnAndRow(37, 1, 'Address');
-                $worksheet->setCellValueByColumnAndRow(38, 1, 'Street / House number');
-                $worksheet->setCellValueByColumnAndRow(39, 1, 'Remark');
-                $worksheet->setCellValueByColumnAndRow(40, 1, '提前備料否');
-                //填寫內容
-                for ($j = 0; $j < $count; $j++) {
-                    if ($request->input('data' . '13')[$j] > 0) {
-                        $worksheet->setCellValueByColumnAndRow(2, $i, $request->input('data' . '2')[$j]);
-                        $worksheet->setCellValueByColumnAndRow(13, $i, $request->input('data' . '13')[$j]);
-                        $worksheet->setCellValueByColumnAndRow(14, $i, $request->input('data' . '14')[$j]);
-                    } else {
-                        continue;
-                    }
-                    $i++;
-                }
-                // 下載
-                $now = Carbon::now()->format('YmdHis');
-                //rawurlencode('呆滯庫存查詢');
-                $filename = rawurlencode('請購單上傳') . $now . '.xlsx';
-                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment; filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
-                header('Cache-Control: max-age=0');
-
-                $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
-                $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-                $writer->save('php://output');
-                $callback = function () use ($writer) {
-                    $file = fopen('php://output', 'r');
-                    fclose($file);
-                };
+                $i++;
             }
+            // 下載
+            $now = Carbon::now();
+            $titlename = $request->input('titlename');
+            $filename = rawurlencode($titlename) . $now . '.xlsx';
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
+            header('Cache-Control: max-age=0');
+
+            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+            $callback = function () use ($writer) {
+                $file = fopen('php://output', 'r');
+                fclose($file);
+            };
+
 
             return response()->stream($callback, 200, $headers);
         } else {

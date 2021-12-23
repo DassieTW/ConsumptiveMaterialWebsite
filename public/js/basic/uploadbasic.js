@@ -21,6 +21,7 @@ $("#uploadbasic").on("submit", function (e) {
         data.push($("#data0" + i).val());
     }
 
+    console.log(title);
     $.ajax({
         type: "POST",
         url: "insertuploadbasic",
@@ -64,7 +65,9 @@ $("#uploadbasic").on("submit", function (e) {
                     Lang.get("basicInfoLang.repeat");
                 window.alert(mess);
                 window.location.reload();
-            } else {
+            }
+            // transaction error
+            else {
                 var mess = err.responseJSON.message;
                 window.alert(mess);
                 window.location.reload();

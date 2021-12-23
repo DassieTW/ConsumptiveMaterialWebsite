@@ -22,6 +22,8 @@
     <div class="card-body">
         <form method="POST" id="buylist">
             @csrf
+            <input type = "hidden" id = "titlename" name = "titlename" value = "請購單">
+            <input type = "hidden" id = "titlename1" name = "titlename1" value = "請購單上傳">
             <div class="table-responsive">
                 <table class="table">
                     <tr>
@@ -63,7 +65,7 @@
                             __('monthlyPRpageLang.needprice') !!}</td>
                         <td><input type="hidden" id="title18" name="title18" value="需求占比">{!!
                             __('monthlyPRpageLang.needper') !!}</td>
-                        <input type="hidden" id="title" name="title" value="19">
+                        <input type="hidden" id="titlecount" name="titlecount" value="19">
                     </tr>
                     @foreach($data1 as $data)
                     <?php

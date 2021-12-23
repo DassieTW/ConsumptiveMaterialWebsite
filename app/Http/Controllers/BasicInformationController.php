@@ -184,7 +184,7 @@ class BasicInformationController extends Controller
 
                         DB::table($table)
                             ->where($chooseindex, $oldnames[$i])
-                            ->update([$chooseindex => $names[$i], 'updated_at' => Carbon::now()]);
+                            ->update([$chooseindex => $names[$i]]);
                     }
                     DB::commit();
                 } catch (\Exception $e) {
@@ -195,20 +195,16 @@ class BasicInformationController extends Controller
 
 
                 if ($datanew !== null) {
-                    $test = $choose::onlyTrashed()
+                    /*$test = $choose::onlyTrashed()
                         ->where($chooseindex, $datanew)
-                        ->get();
+                        ->get();*/
 
                     DB::beginTransaction();
                     try {
-                        if (!$test->isEmpty()) {
-                            DB::table($table)
-                                ->where($chooseindex, $datanew)
-                                ->update(['updated_at' =>  null, 'deleted_at' => null, 'created_at' => Carbon::now()]);
-                        } else {
-                            DB::table($table)
-                                ->insert([$chooseindex => $datanew, 'created_at' => Carbon::now()]);
-                        }
+
+                        DB::table($table)
+                            ->insert([$chooseindex => $datanew]);
+
                         DB::commit();
                     } catch (\Exception $e) {
                         DB::rollback();
@@ -272,7 +268,7 @@ class BasicInformationController extends Controller
                             ->update([
                                 'A級資材' => $gradea, '月請購' => $month, '發料部門' => $send, '耗材歸屬' => $belong,
                                 '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq,
-                                'MOQ' => $moq, 'LT' => $lt, '安全庫存' => $safe, 'updated_at' => Carbon::now()
+                                'MOQ' => $moq, 'LT' => $lt, '安全庫存' => $safe, /*'updated_at' => Carbon::now()*/
                             ]);
                     } //for
                     DB::commit();
@@ -486,16 +482,13 @@ class BasicInformationController extends Controller
             $send = $request->input('send');
             $safe = $request->input('safe');
             $numbers = DB::table('consumptive_material')->pluck('料號');
-            $delete = ConsumptiveMaterial::onlyTrashed()
-                ->where('料號', $number)->get();
+            /*$delete = ConsumptiveMaterial::onlyTrashed()
+                ->where('料號', $number)->get();*/
             //判斷料號是否重複
             for ($i = 0; $i < count($numbers); $i++) {
                 if (strcasecmp($number, $numbers[$i]) === 0) {
-                    if (!$delete->isEmpty()) {
-                        continue;
-                    } else {
-                        return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
-                    }
+
+                    return \Response::json(['message' => 'isn repeat'], 420/* Status code here default is 200 ok*/);
                 } else {
                     continue;
                 }
@@ -505,12 +498,12 @@ class BasicInformationController extends Controller
                 //長度是否為12
                 if (strlen($request->input('number')) !== 12) {
 
-                    return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
+                    return \Response::json(['message' => 'isn not 12'], 421/* Status code here default is 200 ok*/);
                 }
 
                 //check 非月請購是否有填安全庫存
                 if ($request->input('month') === '否' && $request->input('safe') === null) {
-                    return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
+                    return \Response::json(['message' => 'no write safe'], 422/* Status code here default is 200 ok*/);
                     /*return back()->withErrors([
                         'safe' => '非月請購之安全庫存為必填項目',
                     ]);*/
@@ -641,8 +634,8 @@ class BasicInformationController extends Controller
                     $safe =   $Alldata[13][$i];
 
                     $test = DB::table('consumptive_material')->where('料號', $number)->value('品名');
-                    $delete = ConsumptiveMaterial::onlyTrashed()
-                        ->where('料號', $number)->get();
+                    /*$delete = ConsumptiveMaterial::onlyTrashed()
+                        ->where('料號', $number)->get();*/
 
                     if ($gradea === 'Yes') $gradea = '是';
                     if ($gradea === 'No') $gradea = '否';
@@ -653,36 +646,26 @@ class BasicInformationController extends Controller
                     if ($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
                     if ($belong === 'Station') $belong = '站位';
 
-                    if($safe === '') $safe = null;
+                    if ($safe === '') $safe = null;
 
-                    if($month === "否" && $safe === null)
-                    {
+                    if ($month === "否" && $safe === null) {
                         $row = $i + 1;
                         return \Response::json(['message' => $row], 422/* Status code here default is 200 ok*/);
                     }
-                    if (!$delete->isEmpty()) {
+
+                    if ($test === null) {
                         DB::table('consumptive_material')
-                            ->where('料號', $number)
-                            ->update([
-                                '品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe, 'updated_at' => Carbon::now(), 'deleted_at' => null
+                            ->insert([
+                                '料號' => $number, '品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe
                             ]);
                         $record++;
-                        array_push($check,$row[$i]);
+                        array_push($check, $row[$i]);
                     } else {
-                        if ($test === null) {
-                            DB::table('consumptive_material')
-                                ->insert([
-                                    '料號' => $number, '品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe, 'created_at' => Carbon::now()
-                                ]);
-                            $record++;
-                            array_push($check,$row[$i]);
-                        } else {
-                            continue;
-                        }
+                        continue;
                     }
                 } //for
                 DB::commit();
-                return \Response::json(['record' => $record , 'check' => $check]/* Status code here default is 200 ok*/);
+                return \Response::json(['record' => $record, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
                 $mess = $e->getMessage();
@@ -734,48 +717,42 @@ class BasicInformationController extends Controller
             $count = $request->input('count');
             $choose = $request->input('title');
             $dataarray =  $request->input('data');
-            $table = "";
             $record = 0;
             $test = 0;
-            $test1 = array();
             $row = 0;
             $bool = true;
 
             if ($choose == '客戶別') {
                 $chooseindex = '客戶';
-                $table = "App\Models\客戶別";
+                // $table = "App\Models\客戶別";
             } else if ($choose == '儲位') {
                 $chooseindex = '儲存位置';
-                $table = "App\Models\儲位";
+                // $table = "App\Models\儲位";
             } else if ($choose == '製程') {
                 $chooseindex = '制程';
-                $table = "App\Models\製程";
+                // $table = "App\Models\製程";
             } else {
                 $chooseindex = $choose;
-                $table = "App\Models" . "\\" . $choose;
+                // $table = "App\Models" . "\\" . $choose;
             }
 
 
             for ($i = 0; $i < $count; $i++) {
-                $test1[$i] = 0;
 
                 $data = $dataarray[$i];
                 $datas = DB::table($choose)->pluck($chooseindex);
 
-                $delete = $table::onlyTrashed()
-                    ->where($chooseindex, $data)->get();
+                /*$delete = $table::onlyTrashed()
+                    ->where($chooseindex, $data)->get();*/
 
                 //判斷data是否重複
                 for ($j = 0; $j < count($datas); $j++) {
                     if (strcasecmp($data, $datas[$j]) === 0) {
-                        if (!$delete->isEmpty()) {
-                            $test1[$i] = 1;
-                        } else {
-                            $bool = false;
-                            $row = $i + 1;
-                            //data repeat
-                            return \Response::json(['message' => $row], 420/* Status code here default is 200 ok*/);
-                        }
+
+                        $bool = false;
+                        $row = $i + 1;
+                        //data repeat
+                        return \Response::json(['message' => $row], 420/* Status code here default is 200 ok*/);
                     } else {
 
                         continue;
@@ -789,21 +766,17 @@ class BasicInformationController extends Controller
                 try {
                     for ($i = 0; $i < $count; $i++) {
                         $data = $dataarray[$i];
-                        if ($test1[$i] != 0) {
-                            DB::table($choose)
-                                ->where($chooseindex, $data)
-                                ->update([$chooseindex => $data, 'updated_at' => Carbon::now(), 'deleted_at' => null]);
-                        } else {
-                            DB::table($choose)
-                                ->insert([$chooseindex => $data, 'created_at' => Carbon::now()]);
-                        }
+
+                        DB::table($choose)
+                            ->insert([$chooseindex => $data]);
+
                         $record++;
                     } // for
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();
                     $i = $i + 1;
-                    return \Response::json(['message' => $i], 420/* Status code here default is 200 ok*/);
+                    return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
                 }
             }
             return \Response::json(['message' => $record, 'choose' => $choose]/* Status code here default is 200 ok*/);
