@@ -425,10 +425,7 @@
                     <div class="d-table-cell align-middle">
 
                         <div class="text-center mt-4">
-                            <h1 class="h2 py-0 my-0">{!! __('loginPageLang.welcome') !!}</h1>
-                            <p class="lead p-0 m-0">
-                                {!! __('loginPageLang.adduser') !!}
-                            </p>
+                            <h1 class="h2 py-0 my-0">{!! __('loginPageLang.adduser') !!}</h1>
                         </div>
 
                         <div class="card">

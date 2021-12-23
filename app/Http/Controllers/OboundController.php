@@ -93,7 +93,7 @@ class OboundController extends Controller
                 DB::beginTransaction();
                 try {
                 DB::table('O庫_material')
-                ->insert(['料號' => $number, '品名' => $name, '規格' => $format , 'created_at' => Carbon::now()]);
+                ->insert(['料號' => $number, '品名' => $name, '規格' => $format /*, 'created_at' => Carbon::now()*/]);
                 DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -191,7 +191,7 @@ class OboundController extends Controller
                     DB::beginTransaction();
                     try {
                         DB::table('O庫_material')
-                        ->insert(['料號' => $number, '品名' => $name, '規格' => $format,'created_at' => Carbon::now()]);
+                        ->insert(['料號' => $number, '品名' => $name, '規格' => $format/*,'created_at' => Carbon::now()*/]);
                         DB::commit();
                         $record++;
                     }catch (\Exception $e) {

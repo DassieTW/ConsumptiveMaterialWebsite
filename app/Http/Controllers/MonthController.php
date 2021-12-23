@@ -945,7 +945,7 @@ class MonthController extends Controller
                     $say = $reason . ' ' . $say;
                     if ($test === null) {
                         DB::table('在途量')
-                            ->insert(['客戶' => $client, '料號' => $number, '請購數量' => $amount, /*'created_at' => $now*/]);
+                            ->insert(['客戶' => $client, '料號' => $number, '請購數量' => $amount/*, 'created_at' => $now*/]);
                     } else {
                         DB::table('在途量')
                             ->where('客戶', $client)->where('料號', $number)

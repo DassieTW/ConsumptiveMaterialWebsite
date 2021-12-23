@@ -139,7 +139,6 @@ class LoginController extends Controller
     //register login people
     public function register(Request $request)
     {
-        $reDive = new responseObj();
         if ($request->input('username') !== null && $request->input('password2') !== null) {
             if ($request->input('password') === $request->input('password2')) {
                 $username = $request->input('username');
@@ -163,7 +162,7 @@ class LoginController extends Controller
                 DB::table('login')
                     ->insert([
                         'username' => $username, 'password' => $password, 'priority' => $priority,
-                        '姓名' => $name, '部門' => $department, 'created_at' => Carbon::now()
+                        '姓名' => $name, '部門' => $department/*, 'created_at' => Carbon::now()*/
                     ]);
 
                 $request->session()->flush();
@@ -460,7 +459,7 @@ class LoginController extends Controller
                         DB::beginTransaction();
                         try {
                             DB::table('人員信息')
-                                ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i], 'created_at' => Carbon::now()]);
+                                ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i]/*, 'created_at' => Carbon::now()*/]);
                         } catch (\Exception $e) {
                             DB::rollback();
                             $bool = false;
@@ -489,7 +488,7 @@ class LoginController extends Controller
                     DB::beginTransaction();
                     try {
                         DB::table('人員信息')
-                            ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i], 'created_at' => Carbon::now()]);
+                            ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i]/*, 'created_at' => Carbon::now()*/]);
                         $record++;
                         DB::commit();
                     } catch (\Exception $e) {

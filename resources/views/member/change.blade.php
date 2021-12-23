@@ -29,13 +29,13 @@
                     <div class="row w-100 justify-content-center mb-3">
 
                         <?php
-                        $username = Session::get('username');
-                        echo __('templateWords.nowuser') .' '. $username;
-                    ?>
+                            $username = Session::get('username');
+                            echo __('templateWords.nowuser') .' '. $username;
+                        ?>
                         <hr />
 
-                        <label class="col col-auto form-label">{!! __('loginPageLang.oldpass') !!}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <label class="col col-auto form-label p-0 m-0">{!! __('loginPageLang.oldpass') !!}</label>
+                        <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                         <div class="col-lg-6  col-md-12 col-sm-12">
                             <div class="input-group" id="show_hide_password">
                                 <input class="form-control form-control-lg @error('password') is-invalid @enderror"
@@ -54,14 +54,15 @@
                                 </div>
                             </div>
 
-                            <div id="message" style="display: none; color:red;">{!! __('loginPageLang.errorpassword') !!}</div>
+                            <div id="message" style="display: none; color:red;">{!! __('loginPageLang.errorpassword')
+                                !!}</div>
 
                         </div>
 
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                        <label class="col col-auto form-label">{!! __('loginPageLang.newpass') !!}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <label class="col col-auto form-label p-0 m-0">{!! __('loginPageLang.newpass') !!}</label>
+                        <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                         <div class="col-lg-6  col-md-12 col-sm-12">
                             <div class="input-group" id="show_hide_password1">
                                 <input class="form-control form-control-lg @error('newpassword') is-invalid @enderror"
@@ -88,10 +89,9 @@
 
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                        <label class="col col-auto form-label">{!! __('loginPageLang.surepassword') !!}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <label class="col col-auto form-label p-0 m-0">{!! __('loginPageLang.surepassword') !!}</label>
+                        <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                         <div class="col-lg-6  col-md-12 col-sm-12">
-
                             <div class="input-group" id="show_hide_password2">
                                 <input class="form-control form-control-lg @error('surepassword') is-invalid @enderror"
                                     type="password" id="surepassword" name="surepassword"
@@ -110,7 +110,8 @@
                             </div>
 
 
-                            <div id="message2" style="display: none; color:red;">{!! __('loginPageLang.errorpassword2') !!}</div>
+                            <div id="message2" style="display: none; color:red;">{!! __('loginPageLang.errorpassword2')
+                                !!}</div>
                         </div>
 
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
