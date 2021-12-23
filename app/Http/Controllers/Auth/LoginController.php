@@ -43,8 +43,6 @@ class LoginController extends Controller
             'password' => $request->password,
         ];
 
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->site);
-        \DB::purge(env("DB_CONNECTION"));
         // dd($request->site) ; // test
         // return \Auth::attempt($credentials);
 
@@ -82,7 +80,8 @@ class LoginController extends Controller
             ],
         );
 
-        // exit(0); // test
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->site);
+        \DB::purge(env("DB_CONNECTION"));
 
         if ($this->attemptLogin($request)) {
             $request->session()->regenerate();
@@ -97,7 +96,7 @@ class LoginController extends Controller
             return \Response::json(['message' => 'Log in successful !']); // Status code here
         } // if
         else { // login failed
-            return \Response::json(['message' => 'Invalid Username and/or Password.'], 420); // Status code here
+            return \Response::json(['message' => \DB::connection()->getDatabaseName()], 420); // Status code here
         } // else
     } // login
 
