@@ -69,4 +69,6 @@ return [
     'check' => '勾选',
     'nocheck' => '请勾选欲提交项目',
     'pre_page' => '返回',
+    'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
+    'data' => '资料',
 ];

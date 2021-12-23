@@ -840,7 +840,9 @@ class MonthController extends Controller
     {
         if (Session::has('username')) {
             $count = $request->input('count');
+            $row = $request->input('row');
             $record = 0;
+            $check = array();
             $database = $request->session()->get('database');
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
@@ -887,14 +889,15 @@ class MonthController extends Controller
                                 '下月站位人數' => $nextpeople, '下月開線數' => $nextline, '下月開班數' => $nextclass, '下月每人每日需求量' => $nextuse,
                                 '下月每日更換頻率' => $nextchange, '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
                             ]);
-                        $record++;
+                            $record++;
+                            array_push($check, $row[$i]);
                     } else {
                         continue;
                     } // continue-else
 
                 } //for
                 DB::commit();
-                return \Response::json(['record' => $record, 'database' => $database]/* Status code here default is 200 ok*/);
+                return \Response::json(['record' => $record, 'database' => $database , 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);

@@ -128,7 +128,7 @@
                                     __('monthlyPRpageLang.nextday') !!}</th>
                             </tr>
                             @foreach($data as $row)
-                            <tr>
+                            <tr id="row{{$loop->index}}">
                                 <?php
                                     $name = DB::table('consumptive_material')->where('料號',$row[3])->value('品名');
                                     $format = DB::table('consumptive_material')->where('料號',$row[3])->value('規格');

@@ -302,6 +302,7 @@ $(document).ready(function () {
                 }
                 for (let i = 0; i < same.length; i++) {
                     $('#row' + same[i]).remove();
+                    count = count - 1;
                 }
                 for (let i = 0; i < diff.length; i++) {
 

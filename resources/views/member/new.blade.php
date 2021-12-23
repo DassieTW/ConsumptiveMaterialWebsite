@@ -30,7 +30,8 @@
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg " type="text" id="number" name="number"
-                                    required placeholder="{!! __('loginPageLang.enterjobsearch') !!}">
+                                    required placeholder="{!! __('loginPageLang.enterjobsearch') !!}"
+                                    oninput="if(value.length>9)value=value.slice(0,9)">
                                 <div id="message" style="display:none; color:red;">
                                     {!! __('loginPageLang.jobrepeat') !!}
                                 </div>

@@ -25,7 +25,7 @@
         <form id="uploadpeople" method="POST">
             @csrf
             <div class="table-responsive">
-                <table class="table" id="test">
+                <table class="table">
                     <tr>
                         <th><input type="hidden" id="title0" name="title0" value="工號">{!! __('loginPageLang.jobnumber')
                             !!}</th>
@@ -34,17 +34,17 @@
                         <th><input type="hidden" id="title2" name="title2" value="部門">{!! __('loginPageLang.dep') !!}
                         </th>
 
-                        <input type="hidden" id="time" name="time" value="3">
+                        <input type="hidden" id="titlecount" name="titlecount" value="3">
                     </tr>
                     @foreach($data as $row)
-                    <tr>
+                    <tr id = "row{{$loop->index}}">
                         <td><input type="text" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
                                 value="{{$row[0]}}" required oninput="if(value.length>9)value=value.slice(0,9)"
-                                ></td>
+                                class="form-control form-control-lg"></td>
                         <td><input type="text" id="data1{{$loop->index}}" name="data1{{$loop->index}}"
-                                value="{{$row[1]}}" required></td>
+                                value="{{$row[1]}}" required class="form-control form-control-lg"></td>
                         <td><input type="text" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
-                                value="{{$row[2]}}" required></td>
+                                value="{{$row[2]}}" required class="form-control form-control-lg"></td>
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     @endforeach

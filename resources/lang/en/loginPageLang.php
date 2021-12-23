@@ -67,4 +67,6 @@ return [
     'check' => 'Check',
     'nocheck' => 'Please tick the items you want to submit',
     'pre_page' => 'Prev.',
+    'yellowrepeat' => 'Yellow background means the data has been stored in the database',
+    'data' => 'data',
 ];

@@ -69,4 +69,6 @@ return [
     'check' => '勾選',
     'nocheck' => '請勾選欲提交項目',
     'pre_page' => '返回',
+    'yellowrepeat' => '黃底標表示資料庫已存放在資料庫內',
+    'data' => '資料',
 ];

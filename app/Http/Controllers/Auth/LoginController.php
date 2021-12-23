@@ -101,7 +101,7 @@ class LoginController extends Controller
     } // login
 
     //search by job number
-    public function search(Request $request)
+    /*public function search(Request $request)
     {
         Session::forget('number');
         Session::forget('name');
@@ -122,18 +122,18 @@ class LoginController extends Controller
                     ->with('number' , $number)
                     ->with('name', $name)
                     ->with('department', $department);*/
-            } else {
-                $reDive->boolean = false;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
-                /*return back()->withErrors([
-                        'number' => 'Job number is not exist , Please enter another job number',
-                        ]);*/
-            }
-        } else {
-            return view('member.search');
-        }
-    }
+    //         } else {
+    //             $reDive->boolean = false;
+    //             $myJSON = json_encode($reDive);
+    //             echo $myJSON;
+    //             /*return back()->withErrors([
+    //                     'number' => 'Job number is not exist , Please enter another job number',
+    //                     ]);*/
+    //         }
+    //     } else {
+    //         return view('member.search');
+    //     }
+    // }
 
 
     //register login people
@@ -192,11 +192,11 @@ class LoginController extends Controller
                 $username = Session::get('username');
                 $password = DB::table('login')->where('username', $username)->value('password');
                 // if (Hash::check($request->input('password'), $password)) {
-                    if ($request->input('password') === $password) {
+                if ($request->input('password') === $password) {
                     DB::table('login')
                         ->where('username', $username)
                         // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
-                        ->update(['password' => $request->input('newpassword'), 'updated_at' => Carbon::now()]);
+                        ->update(['password' => $request->input('newpassword')]);
                     $request->session()->flush();
 
                     return \Response::json([]/* Status code here default is 200 ok*/);
@@ -214,31 +214,20 @@ class LoginController extends Controller
     //new people information
     public function new(Request $request)
     {
-        Session::forget('new');
         if (Session::has('username')) {
             if ($request->input('number') !== null && $request->input('name') !== null) {
                 $number = $request->input('number');
                 $name = $request->input('name');
                 $department = $request->input('department');
                 $numbers = DB::table('人員信息')->pluck('工號');
-                $reDive = new responseObj();
+                //job length not 9
                 if (strlen($number) !== 9) {
-                    $reDive->boolean = false;
-                    $reDive->passbool = true;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
-                    return;
+                    return \Response::json(['message' => 'job number isn\'t 9'], 420/* Status code here default is 200 ok*/);
                 }
+                //job number repeat
                 for ($i = 0; $i < count($numbers); $i++) {
                     if (strcasecmp($number, $numbers[$i]) === 0) {
-                        $reDive->boolean = true;
-                        $reDive->passbool = false;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                        return;
-                        /*return back()->withErrors([
-                            'number' => 'Job number is repeated , Please enter another job number',
-                            ]);*/
+                        return \Response::json(['message' => 'job number is repeat'], 421/* Status code here default is 200 ok*/);
                     } else {
                         continue;
                     }
@@ -247,11 +236,7 @@ class LoginController extends Controller
                 DB::table('人員信息')
                     ->insert(['工號' => $number, '姓名' => $name, '部門' => $department]);
 
-                Session::put('new', $number);
-                $reDive->boolean = true;
-                $reDive->passbool = true;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
             } else {
                 return view('member.new');
             }
@@ -322,7 +307,7 @@ class LoginController extends Controller
                         人員信息::where('工號', $number[$i])
                             ->update([
                                 '姓名' => $name[$i], '部門' => $department[$i],
-                                'updated_at' => Carbon::now()
+                                /*'updated_at' => Carbon::now()*/
                             ]);
                         DB::commit();
                     } catch (\Exception $e) {
@@ -442,59 +427,35 @@ class LoginController extends Controller
     public function insertuploadpeople(Request $request)
     {
         if (Session::has('username')) {
-            $count = $request->input('count');
+
             $number = $request->input('number');
             $name = $request->input('name');
             $department =  $request->input('department');
-            $bool = true;
             $record =  0;
-            for ($i = 0; $i < $count; $i++) {
-                if (strlen($number[$i]) === 9) {
-                    $test = DB::table('人員信息')->where('工號', $number[$i])->value('姓名');
-                    //new data
-                    if ($test === null) {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('人員信息')
-                                ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i]/*, 'created_at' => Carbon::now()*/]);
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            $bool = false;
-                            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                        }
-                        DB::rollback();
-                        $record++;
-                    }
-                    //data repeat
-                    else {
-                        $bool = false;
-                        $i = $i + 1;
-                        return \Response::json(['message' => $i], 420/* Status code here default is 200 ok*/);
-                    }
-                } else {
-                    $bool = false;
-                    $i = $i + 1;
-                    return \Response::json(['message' => $i], 421/* Status code here default is 200 ok*/);
-                }
-            }
-            if ($record == $count && $bool == true) {
-                $record = 0;
+            $count = count($number);
+            $row = $request->input('row');
+            $check = array();
+
+            DB::beginTransaction();
+            try {
                 for ($i = 0; $i < $count; $i++) {
                     $test = DB::table('人員信息')->where('工號', $number[$i])->value('姓名');
 
-                    DB::beginTransaction();
-                    try {
+                    //判斷data是否重複
+                    if ($test === null) {
                         DB::table('人員信息')
                             ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i]/*, 'created_at' => Carbon::now()*/]);
                         $record++;
-                        DB::commit();
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        $bool = false;
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+                        array_push($check, $row[$i]);
+                    } else {
+                        continue;
                     }
-                }
-                return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
+                } //for
+                DB::commit();
+                return \Response::json(['record' => $record, 'check' => $check]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
