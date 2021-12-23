@@ -74,14 +74,14 @@ $.ajaxSetup({
             var mess = Lang.get('loginPageLang.total')+(data.message)+Lang.get('loginPageLang.record')
                 + Lang.get('loginPageLang.pinf')+ Lang.get('loginPageLang.change')+Lang.get('loginPageLang.success');
             alert(mess);
-            window.location.href='/member';
+            window.location.href='number';
 
         }
         else{
             var mess = Lang.get('loginPageLang.total')+(data.message)+Lang.get('loginPageLang.record')
             + Lang.get('loginPageLang.pinf')+ Lang.get('loginPageLang.delete')+Lang.get('loginPageLang.success');
             alert(mess);
-            window.location.href='/member';
+            window.location.href='number';
 
         }
 

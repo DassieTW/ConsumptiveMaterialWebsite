@@ -91,6 +91,8 @@ $(document).ready(function () {
                 var body = document.getElementById("standaddbody");
                 var row = document.createElement("tr");
 
+                row.setAttribute("id", "row" + index);
+
                 let rowdelete = document.createElement('td');
                 rowdelete.innerHTML = "<a id=" + "deleteBtn" + index + "></a>";
 
@@ -259,6 +261,7 @@ $(document).ready(function () {
         }
 
         console.log(sessionStorage.getItem('standcount'));
+        var row = [];
         var client = [];
         var machine = [];
         var production = [];
@@ -293,6 +296,7 @@ $(document).ready(function () {
                 nextclass.push($("#nextclass" + i).val());
                 nextuse.push($("#nextuse" + i).val());
                 nextchange.push($("#nextchange" + i).val());
+                row.push(i.toString());
             }
         }
 
@@ -317,6 +321,7 @@ $(document).ready(function () {
                 jobnumber: jobnumber,
                 email: email,
                 count: count,
+                row:row,
             },
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
@@ -336,11 +341,33 @@ $(document).ready(function () {
                     ' : ' + data.record + Lang.get('monthlyPRpageLang.record') + Lang.get('monthlyPRpageLang.stand');
                 alert(mess);
 
-                $("#standhead").hide();
-                $("#standbody").hide();
-                $("#standupload").hide();
+                var mess2 = Lang.get('monthlyPRpageLang.yellowrepeat');
 
-                $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/teststand?' + data.database + '</a>');
+                alert(mess2);
+
+                for (let i = 0; i < row.length; i++) {
+
+                    var same = row.filter(function (v) {
+                        return (data.check).indexOf(v) > -1
+                    });
+                    var diff = row.filter(function (v) {
+                        return (data.check).indexOf(v) == -1
+                    });
+                }
+                for (let i = 0; i < same.length; i++) {
+                    $('#row' + same[i]).remove();
+                    count = count - 1;
+                }
+                for (let i = 0; i < diff.length; i++) {
+
+                    document.getElementById("row" + diff[i]).style.backgroundColor = "yellow";
+                }
+
+                // $("#standhead").hide();
+                // $("#standbody").hide();
+                // $("#standupload").hide();
+
+                // $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/teststand?' + data.database + '</a>');
 
             },
             error: function (err) {

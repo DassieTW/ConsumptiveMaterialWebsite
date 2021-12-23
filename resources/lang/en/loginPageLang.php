@@ -65,4 +65,6 @@ return [
     'row' => 'In Row',
     'check' => 'Check',
     'nocheck' => 'Please tick the items you want to submit',
+    'yellowrepeat' => 'Yellow background means the data has been stored in the database',
+    'data' => 'data',
 ];

@@ -742,7 +742,7 @@ class BasicInformationController extends Controller
             try {
                 for ($i = 0; $i < $count; $i++) {
                     $data = $dataarray[$i];
-                    $testa = DB::table($choose)->where($choose, $data)->value($chooseindex);
+                    $testa = DB::table($choose)->where($chooseindex, $data)->value($chooseindex);
 
                     //判斷data是否重複
                     if ($testa === null) {

@@ -18,7 +18,7 @@ class InventoryCheckService
         DB::beginTransaction();
 
         try {
-            if ($isIsn) {  // if it is an isn 
+            if ($isIsn) {  // if it is an isn
                 $results = DB::table('checking_inventory')
                     ->where([
                         ['checking_inventory.單號', '=', $serialNum],

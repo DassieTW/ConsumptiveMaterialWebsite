@@ -67,4 +67,6 @@ return [
     'row' => '在列',
     'check' => '勾选',
     'nocheck' => '请勾选欲提交项目',
+    'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
+    'data' => '资料',
 ];

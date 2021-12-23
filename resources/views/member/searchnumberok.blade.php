@@ -38,9 +38,9 @@
                         <td><input type="hidden" id="number{{$loop->index}}" name="number{{$loop->index}}"
                                 value="{{$data->工號}}">{{$data->工號}}</td>
                         <td><input style="width:150px" type="text" id="name{{$loop->index}}" name="name{{$loop->index}}"
-                                value="{{$data->姓名}}"></td>
+                                value="{{$data->姓名}}" class="form-control form-control-lg"></td>
                         <td><input style="width:150px" type="text" id="department{{$loop->index}}"
-                                name="department{{$loop->index}}" value="{{$data->部門}}"></td>
+                                name="department{{$loop->index}}" value="{{$data->部門}}" class="form-control form-control-lg"></td>
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     @endforeach

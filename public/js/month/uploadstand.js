@@ -68,7 +68,7 @@ $(document).ready(function () {
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
-
+        var row = [];
         var client = [];
         var number = [];
         var production = [];
@@ -89,20 +89,26 @@ $(document).ready(function () {
         var count = $("#count").val();
 
         for (let i = 0; i < count; i++) {
-            client.push($("#data16" + i).val());
-            machine.push($("#data17" + i).val());
-            production.push($("#data18" + i).val());
-            number.push($("#data0" + i).val());
-            nowpeople.push($("#data3" + i).val());
-            nowline.push($("#data4" + i).val());
-            nowclass.push($("#data5" + i).val());
-            nowuse.push($("#data6" + i).val());
-            nowchange.push($("#data7" + i).val());
-            nextpeople.push($("#data9" + i).val());
-            nextline.push($("#data10" + i).val());
-            nextclass.push($("#data11" + i).val());
-            nextuse.push($("#data12" + i).val());
-            nextchange.push($("#data13" + i).val());
+            if ($("#data16" + i).val() !== null && $("#data16" + i).val() !== undefined && $("#data16" + i).val() !== ' ') {
+
+                client.push($("#data16" + i).val());
+                machine.push($("#data17" + i).val());
+                production.push($("#data18" + i).val());
+                number.push($("#data0" + i).val());
+                nowpeople.push($("#data3" + i).val());
+                nowline.push($("#data4" + i).val());
+                nowclass.push($("#data5" + i).val());
+                nowuse.push($("#data6" + i).val());
+                nowchange.push($("#data7" + i).val());
+                nextpeople.push($("#data9" + i).val());
+                nextline.push($("#data10" + i).val());
+                nextclass.push($("#data11" + i).val());
+                nextuse.push($("#data12" + i).val());
+                nextchange.push($("#data13" + i).val());
+                row.push(i.toString());
+            } else {
+                continue;
+            }
 
         }
 
@@ -127,6 +133,7 @@ $(document).ready(function () {
                 jobnumber: jobnumber,
                 email: email,
                 count: count,
+                row: row,
             },
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
@@ -146,11 +153,31 @@ $(document).ready(function () {
                     ' : ' + data.record + Lang.get('monthlyPRpageLang.record') + Lang.get('monthlyPRpageLang.stand');
                 alert(mess);
 
-                $("#standhead").hide();
-                $("#standbody").hide();
-                $("#standupload").hide();
+                var mess2 = Lang.get('monthlyPRpageLang.yellowrepeat');
 
-                $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/teststand?' + data.database + '</a>');
+                alert(mess2);
+
+                for (let i = 0; i < row.length; i++) {
+
+                    var same = row.filter(function (v) {
+                        return (data.check).indexOf(v) > -1
+                    });
+                    var diff = row.filter(function (v) {
+                        return (data.check).indexOf(v) == -1
+                    });
+                }
+                for (let i = 0; i < same.length; i++) {
+                    $('#row' + same[i]).remove();
+                }
+                for (let i = 0; i < diff.length; i++) {
+
+                    document.getElementById("row" + diff[i]).style.backgroundColor = "yellow";
+                }
+                // $("#standhead").hide();
+                // $("#standbody").hide();
+                // $("#standupload").hide();
+
+                // $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/teststand?' + data.database + '</a>');
 
             },
             error: function (err) {

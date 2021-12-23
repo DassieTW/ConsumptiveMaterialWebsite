@@ -160,7 +160,7 @@ if($k === false)
                                 <input type="hidden" id="time" name="time" value="21">
                             </tr>
                             @foreach($data as $row)
-                            <tr>
+                            <tr id = "row{{$loop->index}}">
                                 <?php
                                             $name = DB::table('consumptive_material')->where('料號',$row[0])->value('品名');
                                             $unit = DB::table('consumptive_material')->where('料號',$row[0])->value('單位');
