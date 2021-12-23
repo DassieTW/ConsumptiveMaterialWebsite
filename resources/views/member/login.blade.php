@@ -94,7 +94,6 @@
         </div>
     </nav>
 
-
     <main class="d-flex w-100 h-100">
         <div class="container d-flex flex-column">
             <div class="row vh-100">
@@ -117,7 +116,7 @@
                             <div class="card-body">
                                 <div class="m-sm-4">
                                     <div class="text-center">
-                                        <img src="../admin/img/avatars/avatarBot0.png" alt="Charles"
+                                        <img src="../admin/img/avatars/avatarBot.png" alt="Charles"
                                             class="img-fluid rounded-circle" width="132" height="132" />
                                     </div>
                                     <form id="loginForm" class="needs-validation" method="post" accept-charset="utf-8"

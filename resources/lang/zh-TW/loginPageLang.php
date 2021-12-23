@@ -32,6 +32,7 @@ return [
     'enterpriority' => '請選擇權限',
     'priority' => '權限',
     'dep' => '部門',
+    'profile_pic' => '頭像',
     'enterdep' => '請輸入部門',
     'signup' => '註冊',
     'oldpass' => '舊密碼',
@@ -67,4 +68,5 @@ return [
     'row' => '在列',
     'check' => '勾選',
     'nocheck' => '請勾選欲提交項目',
+    'pre_page' => '返回',
 ];

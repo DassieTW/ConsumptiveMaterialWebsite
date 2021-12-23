@@ -147,6 +147,7 @@ class LoginController extends Controller
                 $priority = $request->input('priority');
                 $name = $request->input('name');
                 $department = $request->input('department');
+                $profilePic = intval($request->flexRadioDefault);
                 $names = DB::table('login')->pluck('username');
                 for ($i = 0; $i < count($names); $i++) {
                     if (strcasecmp($username, $names[$i]) === 0) {
@@ -157,12 +158,12 @@ class LoginController extends Controller
                     } else {
                         continue;
                     }
-                }
+                } // for
 
                 DB::table('login')
                     ->insert([
                         'username' => $username, 'password' => $password, 'priority' => $priority,
-                        '姓名' => $name, '部門' => $department/*, 'created_at' => Carbon::now()*/
+                        '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic/*, 'created_at' => Carbon::now()*/
                     ]);
 
                 $request->session()->flush();
@@ -173,10 +174,6 @@ class LoginController extends Controller
                     window.location.href='login';
                     </script>");
             } else {
-                /*$reDive->boolean = true;
-                $reDive->passbool = false;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;*/
                 return back()->withErrors([
                     'password' => '',
                     'password2' => trans('loginPageLang.errorpassword2'),
@@ -184,7 +181,7 @@ class LoginController extends Controller
             }
         } else {
             return view('member.register');
-        }
+        } // if else
     }
 
     //change password

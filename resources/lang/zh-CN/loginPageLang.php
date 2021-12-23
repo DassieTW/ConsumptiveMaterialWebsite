@@ -32,6 +32,7 @@ return [
     'enterpriority' => '请选择权限',
     'priority' => '权限',
     'dep' => '部门',
+    'profile_pic' => '头像',
     'enterdep' => '请输入部门',
     'signup' => '注册',
     'oldpass' => '旧密码',
@@ -67,4 +68,5 @@ return [
     'row' => '在列',
     'check' => '勾选',
     'nocheck' => '请勾选欲提交项目',
+    'pre_page' => '返回',
 ];

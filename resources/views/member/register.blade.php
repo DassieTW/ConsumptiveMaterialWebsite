@@ -16,426 +16,94 @@
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
     <link href="../admin/css/app.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    {{-- checkbox on top left of picture --}}
     <style>
-        /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
-        html {
-            line-height: 1.15;
-            -webkit-text-size-adjust: 100%
-        }
-
-        body {
-            margin: 0
-        }
-
-        a {
-            background-color: transparent
-        }
-
-        [hidden] {
-            display: none
-        }
-
-        html {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-            line-height: 1.5
-        }
-
-        *,
-        :after,
-        :before {
-            box-sizing: border-box;
-            border: 0 solid #e2e8f0
-        }
-
-        a {
-            color: inherit;
-            text-decoration: inherit
-        }
-
-        svg,
-        video {
-            display: block;
-            vertical-align: middle
-        }
-
-        video {
-            max-width: 100%;
-            height: auto
-        }
-
-        .bg-white {
-            --bg-opacity: 1;
-            background-color: #fff;
-            background-color: rgba(255, 255, 255, var(--bg-opacity))
-        }
-
-        .bg-gray-100 {
-            --bg-opacity: 1;
-            background-color: #f7fafc;
-            background-color: rgba(247, 250, 252, var(--bg-opacity))
-        }
-
-        .border-gray-200 {
-            --border-opacity: 1;
-            border-color: #edf2f7;
-            border-color: rgba(237, 242, 247, var(--border-opacity))
-        }
-
-        .border-t {
-            border-top-width: 1px
-        }
-
-        .flex {
-            display: flex
-        }
-
-        .grid {
-            display: grid
-        }
-
-        .hidden {
-            display: none
-        }
-
-        .items-center {
-            align-items: center
-        }
-
-        .justify-center {
-            justify-content: center
-        }
-
-        .font-semibold {
-            font-weight: 600
-        }
-
-        .h-5 {
-            height: 1.25rem
-        }
-
-        .h-8 {
-            height: 2rem
-        }
-
-        .h-16 {
-            height: 4rem
-        }
-
-        .text-sm {
-            font-size: .875rem
-        }
-
-        .text-lg {
-            font-size: 1.125rem
-        }
-
-        .leading-7 {
-            line-height: 1.75rem
-        }
-
-        .mx-auto {
-            margin-left: auto;
-            margin-right: auto
-        }
-
-        .ml-1 {
-            margin-left: .25rem
-        }
-
-        .mt-2 {
-            margin-top: .5rem
-        }
-
-        .mr-2 {
-            margin-right: .5rem
-        }
-
-        .ml-2 {
-            margin-left: .5rem
-        }
-
-        .mt-4 {
-            margin-top: 1rem
-        }
-
-        .ml-4 {
-            margin-left: 1rem
-        }
-
-        .mt-8 {
-            margin-top: 2rem
-        }
-
-        .ml-12 {
-            margin-left: 3rem
-        }
-
-        .-mt-px {
-            margin-top: -1px
-        }
-
-        .max-w-6xl {
-            max-width: 72rem
-        }
-
-        .min-h-screen {
-            min-height: 100vh
-        }
-
-        .overflow-hidden {
-            overflow: hidden
-        }
-
-        .p-6 {
-            padding: 1.5rem
-        }
-
-        .py-4 {
-            padding-top: 1rem;
-            padding-bottom: 1rem
-        }
-
-        .px-6 {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem
-        }
-
-        .pt-8 {
-            padding-top: 2rem
-        }
-
-        .fixed {
-            position: fixed
-        }
-
-        .relative {
-            position: relative
-        }
-
-        .top-0 {
-            top: 0
-        }
-
-        .right-0 {
-            right: 0
-        }
-
-        .shadow {
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)
-        }
-
-        .text-center {
-            text-align: center
-        }
-
-        .text-gray-200 {
-            --text-opacity: 1;
-            color: #edf2f7;
-            color: rgba(237, 242, 247, var(--text-opacity))
-        }
-
-        .text-gray-300 {
-            --text-opacity: 1;
-            color: #e2e8f0;
-            color: rgba(226, 232, 240, var(--text-opacity))
-        }
-
-        .text-gray-400 {
-            --text-opacity: 1;
-            color: #cbd5e0;
-            color: rgba(203, 213, 224, var(--text-opacity))
-        }
-
-        .text-gray-500 {
-            --text-opacity: 1;
-            color: #a0aec0;
-            color: rgba(160, 174, 192, var(--text-opacity))
-        }
-
-        .text-gray-600 {
-            --text-opacity: 1;
-            color: #718096;
-            color: rgba(113, 128, 150, var(--text-opacity))
-        }
-
-        .text-gray-700 {
-            --text-opacity: 1;
-            color: #4a5568;
-            color: rgba(74, 85, 104, var(--text-opacity))
-        }
-
-        .text-gray-900 {
-            --text-opacity: 1;
-            color: #1a202c;
-            color: rgba(26, 32, 44, var(--text-opacity))
-        }
-
-        .underline {
-            text-decoration: underline
-        }
-
-        .antialiased {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale
-        }
-
-        .w-5 {
-            width: 1.25rem
-        }
-
-        .w-8 {
-            width: 2rem
-        }
-
-        .w-auto {
-            width: auto
-        }
-
-        .grid-cols-1 {
-            grid-template-columns: repeat(1, minmax(0, 1fr))
-        }
-
-        @media (min-width:640px) {
-            .sm\:rounded-lg {
-                border-radius: .5rem
-            }
-
-            .sm\:block {
-                display: block
-            }
-
-            .sm\:items-center {
-                align-items: center
-            }
-
-            .sm\:justify-start {
-                justify-content: flex-start
-            }
-
-            .sm\:justify-between {
-                justify-content: space-between
-            }
-
-            .sm\:h-20 {
-                height: 5rem
-            }
-
-            .sm\:ml-0 {
-                margin-left: 0
-            }
-
-            .sm\:px-6 {
-                padding-left: 1.5rem;
-                padding-right: 1.5rem
-            }
-
-            .sm\:pt-0 {
-                padding-top: 0
-            }
-
-            .sm\:text-left {
-                text-align: left
-            }
-
-            .sm\:text-right {
-                text-align: right
-            }
-        }
-
-        @media (min-width:768px) {
-            .md\:border-t-0 {
-                border-top-width: 0
-            }
-
-            .md\:border-l {
-                border-left-width: 1px
-            }
-
-            .md\:grid-cols-2 {
-                grid-template-columns: repeat(2, minmax(0, 1fr))
-            }
-        }
-
-        @media (min-width:1024px) {
-            .lg\:px-8 {
-                padding-left: 2rem;
-                padding-right: 2rem
-            }
-        }
-
-        @media (prefers-color-scheme:dark) {
-            .dark\:bg-gray-800 {
-                --bg-opacity: 1;
-                background-color: #2d3748;
-                background-color: rgba(45, 55, 72, var(--bg-opacity))
-            }
-
-            .dark\:bg-gray-900 {
-                --bg-opacity: 1;
-                background-color: #1a202c;
-                background-color: rgba(26, 32, 44, var(--bg-opacity))
-            }
-
-            .dark\:border-gray-700 {
-                --border-opacity: 1;
-                border-color: #4a5568;
-                border-color: rgba(74, 85, 104, var(--border-opacity))
-            }
-
-            .dark\:text-white {
-                --text-opacity: 1;
-                color: #fff;
-                color: rgba(255, 255, 255, var(--text-opacity))
-            }
-
-            .dark\:text-gray-400 {
-                --text-opacity: 1;
-                color: #cbd5e0;
-                color: rgba(203, 213, 224, var(--text-opacity))
-            }
-        }
-    </style>
-    <script>
-        if (window.history.replaceState) {
-            // java script to prvent "confirm form resubmission" dialog
-            // 避免重新整理這個頁面時跳出要你重新提交表單的對話框
-            // (避免重新提交表單)
-            window.history.replaceState(null, null, window.location.href);
-        } // if
-    </script>
-    <style>
-        #fixedbutton {
-            position: fixed;
-            top: 20px;
-            left: 30px;
+        .checkboxContainer {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            float: left;
+        }
+
+        .checkboxOnPic {
+            position: absolute;
+            top: 0px;
+            left: 0px;
         }
     </style>
 </head>
 
 <body>
-    <main class="d-flex w-100 h-100 position-relative">
-        <div class="" id="fixedbutton">
-            <u><a href="{{ route('member.index') }}"
-                style="font-size: 1.2rem;"
-                class="text-lg underline text-gray-900 dark:text-white">{!! __('loginPageLang.home') !!}</a></u>
+    <nav class="navbar navbar-expand fixed-top navbar-light navbar-bg p-0 m-0">
+        <a class="nav-icon d-inline-block d-sm-none" href="{{ url()->previous() }}">
+            <i class="align-middle" data-feather="arrow-left"></i>
+        </a>
+        <div class="align-middle">
+            <a class="nav-link d-none d-sm-inline-block" href="{{ url()->previous() }}">
+                <i class="align-middle text-dark" data-feather="arrow-left"></i>
+                <u class="text-dark"><span class="align-middle text-dark">{{ __('loginPageLang.pre_page')}}</span></u>
+            </a>
         </div>
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav navbar-align">
+                <li class="nav-item dropdown">
+                    <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside" data-bs-display="static" aria-expanded="false">
+                        <i class="align-middle" data-feather="settings"></i>
+                    </a>
+
+                    <a class="nav-link dropdown-toggle align-middle d-none d-sm-inline-block" href="#"
+                        data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
+                        aria-expanded="false">
+                        <i class="align-middle text-dark" data-feather="settings"></i>
+                        <u class="text-dark"><span class="align-middle text-dark">{{
+                                __('loginPageLang.settings')}}</span></u>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="user"></i>
+                            Profile</a>
+                        <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu"
+                            aria-expanded="false"><i class="align-middle mr-1" data-feather="book-open"></i>
+                            {{ __('templateWords.language')}}</a>
+                        <div class="collapse" id="langMenu">
+                            <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
+                                English</a>
+                            <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-TW') }}">
+                                繁體中文</a>
+                            <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-CN') }}">
+                                简体中文</a>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="help-circle"></i>
+                            Help
+                            Center</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="d-flex w-100 h-100 position-relative">
         <div class="container d-flex flex-column">
             <div class="row vh-100">
                 <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                     <div class="d-table-cell align-middle">
-
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <div class="w-100 d-none d-sm-inline-block" style="height: 2ch;"></div>
                         <div class="text-center mt-4">
-                            <h1 class="h2 py-0 my-0">{!! __('loginPageLang.adduser') !!}</h1>
+                            <h1 class="h2">{!! __('loginPageLang.adduser') !!}</h1>
                         </div>
 
                         <div class="card">
                             <div class="card-body py-0">
                                 <div class="m-sm-4">
                                     <div class="text-center">
-                                        <img src="../admin/img/avatars/avatarBot0.png" alt="Charles Hall"
+                                        <img src="../admin/img/avatars/avatarBot.png" alt="Charles Hall"
                                             class="img-fluid rounded-circle" width="132" height="132" />
                                     </div>
-                                    <form class="needs-validation" action = "{{ route('member.register') }}" method="post"
+                                    <form class="needs-validation" action="{{ route('member.register') }}" method="post"
                                         accept-charset="utf-8">
                                         @csrf
                                         <div class="mb-3">
@@ -443,7 +111,7 @@
                                             <input
                                                 class="form-control form-control-lg @error('username') is-invalid @enderror"
                                                 type="text" id="username" name="username"
-                                                placeholder="{!! __('loginPageLang.username_placeholder') !!}" required >
+                                                placeholder="{!! __('loginPageLang.username_placeholder') !!}" required>
                                             @error('username')
                                             <span class="invalid-feedback p-0 m-0" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -457,7 +125,8 @@
                                                 <input
                                                     class="form-control form-control-lg @error('password') is-invalid @enderror"
                                                     type="password" id="password" name="password"
-                                                    placeholder="{!! __('loginPageLang.password_placeholder') !!}" required />
+                                                    placeholder="{!! __('loginPageLang.password_placeholder') !!}"
+                                                    required />
                                                 <div class="input-group-text" id="eye-button"
                                                     style="color: darkblue; border-radius: 5px;">
                                                     <a href="#">
@@ -507,7 +176,8 @@
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.name') !!}</label>
                                             <input class="form-control form-control-lg" type="text" id="name"
-                                                name="name" placeholder="{!! __('loginPageLang.entername') !!}" required />
+                                                name="name" placeholder="{!! __('loginPageLang.entername') !!}"
+                                                required />
 
                                         </div>
 
@@ -516,7 +186,8 @@
 
                                             <select class="form-select form-select-lg" id="priority" name="priority"
                                                 required>
-                                                <option style="display: none" disabled selected value="">{!! __('loginPageLang.enterpriority') !!}</option>
+                                                <option style="display: none" disabled selected value="">{!!
+                                                    __('loginPageLang.enterpriority') !!}</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -528,12 +199,67 @@
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.dep') !!}</label>
                                             <input class="form-control form-control-lg " type="text" id="department"
-                                                name="department" placeholder="{!! __('loginPageLang.enterdep') !!}" required>
+                                                name="department" placeholder="{!! __('loginPageLang.enterdep') !!}"
+                                                required>
+                                        </div>
+
+                                        <label class="form-label">{!! __('loginPageLang.profile_pic') !!}</label>
+                                        <div class="row justify-content-center align-items-center">
+                                            <div class="form-check col col-auto checkboxContainer m-0 p-0">
+                                                <label class="form-check-label" for="radio1">
+                                                    <img src="../admin/img/avatars/avatarBot1.png" alt="Ed Sheeran"
+                                                        class="img-fluid rounded-circle" />
+                                                </label>
+                                                <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
+                                                    name="flexRadioDefault" id="radio1" value="1" required>
+                                            </div>
+                                            &nbsp;
+                                            <div class="form-check col col-auto checkboxContainer m-0 p-0">
+                                                <label class="form-check-label" for="radio2">
+                                                    <img src="../admin/img/avatars/avatarBot2.png" alt="Adele"
+                                                        class="img-fluid rounded-circle" />
+                                                </label>
+                                                <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
+                                                    name="flexRadioDefault" id="radio2" value="2" required>
+                                            </div>
+                                            &nbsp;
+                                            <div class="form-check col col-auto checkboxContainer m-0 p-0">
+                                                <label class="form-check-label" for="radio3">
+                                                    <img src="../admin/img/avatars/avatarBot3.png" alt="Taylor Swift"
+                                                        class="img-fluid rounded-circle" />
+                                                </label>
+                                                <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
+                                                    name="flexRadioDefault" id="radio3" value="3" required>
+                                            </div>
+                                            &nbsp;
+                                            <div class="form-check col col-auto checkboxContainer m-0 p-0">
+                                                <label class="form-check-label" for="radio4">
+                                                    <img src="../admin/img/avatars/avatarBot4.png" alt="Lady GaGa"
+                                                        class="img-fluid rounded-circle" />
+                                                </label>
+                                                <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
+                                                    name="flexRadioDefault" id="radio4" value="4" required>
+                                            </div>
+                                            &nbsp;
+                                            <div class="form-check col col-auto checkboxContainer m-0 p-0">
+                                                <label class="form-check-label" for="radio5">
+                                                    <img src="../admin/img/avatars/avatarBot5.png" alt="Charles Hall"
+                                                        class="img-fluid rounded-circle" />
+                                                </label>
+                                                <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
+                                                    name="flexRadioDefault" id="radio5" value="5" required>
+                                            </div>
+
+                                            @error('flexRadioDefault')
+                                            <span class="invalid-feedback p-0 m-0" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
 
                                         <div class="text-center mt-3">
-                                            <input type="submit" class="btn btn-lg btn-primary" value="{!! __('loginPageLang.signup') !!}">
-                                            <!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
+                                            <input type="submit" class="btn btn-lg btn-primary"
+                                                value="{!! __('loginPageLang.signup') !!}">
                                         </div>
                                     </form>
                                 </div>

@@ -31,6 +31,7 @@ return [
     'enterpriority' =>'Please select the permission',
     'priority' =>'Permission',
     'dep' =>'Department',
+    'profile_pic' => 'Profile Pic',
     'enterdep' =>'Please enter the department',
     'signup' =>'Sign Up',
     'oldpass' =>'Old password',
@@ -65,4 +66,5 @@ return [
     'row' => 'In Row',
     'check' => 'Check',
     'nocheck' => 'Please tick the items you want to submit',
+    'pre_page' => 'Prev.',
 ];
