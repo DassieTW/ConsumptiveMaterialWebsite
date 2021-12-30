@@ -78,7 +78,7 @@
                     <form class="inp text-center needs-validation" id="inp" method="post" novalidate autocomplete="off">
                         @csrf
                         <input type="text" id="texBox" name="texBox" class="form-control form-control-lg"
-                            style="text-align: center;" autocomplete="off" required autofocus>
+                            style="text-align: center;" autocomplete="off" autofocus>
                         <input type="submit" class="form-control" name="hiddensub" id="hiddensub"
                             style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1">
                     </form>

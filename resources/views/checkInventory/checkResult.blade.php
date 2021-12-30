@@ -3,11 +3,13 @@
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
 <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('/css/daterangepicker.css') }}">
 @endsection
 
 @section('js')
 <!--for this page's sepcified js -->
 <script src="{{ asset('/js/checkInventory/checkResult.js') }}"></script>
+<script src="{{ asset('/js/daterangepicker.js') }}"></script>
 @endsection
 
 
@@ -35,34 +37,12 @@
         <div class="col-12">
             <div class="card flex-fill w-100">
                 <div class="card-header pb-0">
-                    <h1 class="card-title">{!! __('checkInvLang.serial_number') !!} :&nbsp;&nbsp;
+                    <h1 class="card-title" style="color: rgb(71, 71, 71);">{!! __('checkInvLang.serial_number') !!} :&nbsp;&nbsp;
                         <div class="btn-group col col-auto">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="continueT"
-                                data-bs-toggle="dropdown" data-bs-auto-close="inside" aria-expanded="false" data-serial-no="">@php
-                                    if( \Session::has('tableName') ) {
-                                        echo \Session::get('tableName');
-                                    } // if
-                                    else if( $serialNums->first() !== null ){
-                                        echo $serialNums->first()->單號 ;
-                                    } // if
-                                @endphp</button>
-                            <ul class="dropdown-menu" aria-labelledby="continueT" id="serialList">
-                                @foreach ($serialNums as $serialNum)
-                                @if ( \Session::has('tableName'))
-                                    @if ($serialNum->單號 === \Session::get('tableName'))
-                                        <li><a class="serialNum dropdown-item active" href="#">{{ $serialNum->單號 }}</a></li>
-                                    @else
-                                        <li><a class="serialNum dropdown-item" href="#">{{ $serialNum->單號 }}</a></li>
-                                    @endif
-                                @else
-                                    @if ($serialNum->單號 === $serialNums->first()->單號)
-                                        <li><a class="serialNum dropdown-item active" href="#">{{ $serialNum->單號 }}</a></li>
-                                    @else
-                                        <li><a class="serialNum dropdown-item" href="#">{{ $serialNum->單號 }}</a></li>
-                                    @endif
-                                @endif
-                                @endforeach
-                            </ul>
+                            <div id="reportrange" class="pull-right">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <span id="DateRangeString"></span> <b class="caret"></b>
+                            </div>
                         </div>
                     </h1>
                 </div>
@@ -79,7 +59,7 @@
                     <form class="inp text-center needs-validation" id="inp" method="post" novalidate autocomplete="off">
                         @csrf
                         <input type="text" id="texBox" name="texBox" class="form-control form-control-lg"
-                            style="text-align: center;" autocomplete="off" required autofocus>
+                            style="text-align: center;" autocomplete="off" autofocus>
                         <input type="submit" class="form-control" name="hiddensub" id="hiddensub"
                             style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1">
                     </form>

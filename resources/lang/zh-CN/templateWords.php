@@ -44,4 +44,12 @@ return [
     'importNonMonthlyData' => '汇入非月请购资料',
     'importMonthlyData' => '汇入月请购资料',
     'on_the_way_search' => '在途数量(查询)',
+
+    //date picker lang
+    'all_history_records' => '所有纪录',
+    'past_three_months' => '过去3个月内',
+    'today' => '今日',
+    'custom_range' => '自订',
+    'apply' => '确定',
+    'cancel' => '取消',
 ];

@@ -28,6 +28,7 @@ return [
     'serial_number' => '單號',
     'no_such_loc' => '查無此儲位',
     'no_such_isn' => '查無此料號',
+    'no_results_found' => '查無資料 !',
     'inventory' => '盤點',
     'checking_result' => '結果',
     'unknown' => 'N/A',

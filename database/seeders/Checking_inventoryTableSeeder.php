@@ -46,7 +46,7 @@ class Checking_inventoryTableSeeder extends Seeder
         //
         $inventory = new Checking_inventory;
         $inventory->單號 = "1_2021-03-17_15:29:32";
-        $inventory->料號 = '4152-01EV000';
+        $inventory->料號 = '4152-01ER000';
         $inventory->現有庫存 = 18;
         $inventory->儲位 = '7-A05';
         $inventory->客戶別 = 'Omega';
@@ -76,7 +76,7 @@ class Checking_inventoryTableSeeder extends Seeder
         //
         $inventory = new Checking_inventory;
         $inventory->單號 = "2_2021-04-20_10:21:15";
-        $inventory->料號 = '4152-01EV000';
+        $inventory->料號 = '4152-01ER000';
         $inventory->現有庫存 = 18;
         $inventory->儲位 = '7-A05';
         $inventory->客戶別 = 'Omega';
@@ -106,7 +106,7 @@ class Checking_inventoryTableSeeder extends Seeder
         //
         $inventory = new Checking_inventory;
         $inventory->單號 = "1_2021-06-09_10:42:01";
-        $inventory->料號 = '4152-01EV000';
+        $inventory->料號 = '4152-01ER000';
         $inventory->現有庫存 = 18;
         $inventory->儲位 = '7-A05';
         $inventory->客戶別 = 'Omega';

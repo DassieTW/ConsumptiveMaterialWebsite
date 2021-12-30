@@ -14,7 +14,7 @@ use App\Models\Checking_inventory;
 
 // Matches The "/checking" URL
 Route::get('/', function () {
-    $month = Carbon::now()->subMonths(3);
+    $month = Carbon::now()->subMonths(3); // get ther record of the past three months
     // dd($month); // test
     $serialNums = \DB::table('checking_inventory')->select('id', '單號', 'created_at')
         ->latest('created_at')->where('created_at', '>=', $month)->get()->unique('單號');
@@ -24,6 +24,9 @@ Route::get('/', function () {
 
 // fetch the wanted table (by serial no.) from db
 Route::post('/checkInentdbSearch', [CheckingInventoryController::class, 'dbSearch'])->name('checkInentdbSearch');
+
+// fetch the wanted table (by serial no.) within time range from db
+Route::post('/checkInentdbSearchTimeRange', [CheckingInventoryController::class, 'dbSearchWithinTimeRange'])->name('checkInentdbSearchWithinTimeRange');
 
 // user fill in and update the checking
 Route::post('/updateChecking', [CheckingInventoryController::class, 'updateChecking'])->name('updateChecking');

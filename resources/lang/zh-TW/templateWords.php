@@ -45,4 +45,12 @@ return [
     'importNonMonthlyData' => '匯入非月請購資料',
     'importMonthlyData' => '匯入月請購資料',
     'on_the_way_search' => '在途數量(查詢)',
+
+    //date picker lang
+    'all_history_records' => '所有紀錄',
+    'past_three_months' => '過去3個月內',
+    'today' => '今日',
+    'custom_range' => '自訂',
+    'apply' => '確定',
+    'cancel' => '取消',
 ];

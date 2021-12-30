@@ -39,20 +39,46 @@ class CheckingInventoryController extends Controller
     public function dbSearch(Request $request)
     {
         $rules = [
-            'texBox' => ['required'],
+            'texBox' => [],
         ];
 
         $this->validate($request, $rules);
         $fetchedData = $this->service->fetchInventCheckRecord($request);
 
         if (count($fetchedData) === 0) { // return 420 if the search result length is 0
-            return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => __('checkInvLang.no_results_found')], 420/* Status code here default is 200 ok*/);
         } // if no results are found
         else {
             return \Response::json(['data' => $fetchedData]/* Status code here default is 200 ok*/);
         } // else
 
     } // dbSearch
+
+    public function dbSearchWithinTimeRange(Request $request)
+    {
+        $rules = [
+            'texBox' => [],
+        ];
+
+        $this->validate($request, $rules);
+        $temp  = $request->input('timeRange');
+        $formatStr = $request->input('formatStr');
+        $pieces = explode(" ", $temp);
+        // dd($pieces[2] . " " . $formatStr ) ; // test
+        $rangeStrFrom = Carbon::parse($pieces[0])->format('Y-m-d H:i:s.v'); // starting date string
+        $rangeObjFrom = Carbon::createFromFormat('Y-m-d H:i:s.v', $rangeStrFrom) ; // covert to datetime obj 
+        $rangeStrTo = Carbon::parse($pieces[2])->format('Y-m-d H:i:s.v'); // ending date string
+        $rangeObjTo = Carbon::createFromFormat('Y-m-d H:i:s.v', $rangeStrTo) ; // covert to datetime obj
+        $fetchedData = $this->service->fetchInventCheckRecordWithinTimeRange($request, $rangeObjFrom, $rangeObjTo);
+
+        if (count($fetchedData) === 0) { // return 420 if the search result length is 0
+            return \Response::json(['message' => __('checkInvLang.no_results_found')], 420/* Status code here default is 200 ok*/);
+        } // if no results are found
+        else {
+            return \Response::json(['data' => $fetchedData]/* Status code here default is 200 ok*/);
+        } // else
+
+    } // dbSearchWithinTimeRange
 
     public function updateChecking(Request $request)
     {
@@ -63,7 +89,7 @@ class CheckingInventoryController extends Controller
         $this->validate($request, $rules);
         $updateDone = $this->service->updateInventCheckRecord($request);
 
-        if ($updateDone) { 
+        if ($updateDone) {
             return \Response::json(['message' => 'Update Success !']/* Status code here default is 200 ok*/);
         } // if no results are found
         else { // return 420 if updated failed
@@ -76,7 +102,7 @@ class CheckingInventoryController extends Controller
     {
         $createDone = $this->service->createTableService($request);
 
-        if ($createDone) { 
+        if ($createDone) {
             return \Response::json(['message' => 'Create Success !']/* Status code here default is 200 ok*/);
         } // if no results are found
         else { // return 420 if updated failed
@@ -96,19 +122,19 @@ class CheckingInventoryController extends Controller
             return \Response::json(['data' => $fetchedCreators]/* Status code here default is 200 ok*/);
         } // else
     } // getCreators
-    
+
     public function setContinue(Request $request)
     {
         $fetchedCreators = $this->service->fetchCreators($request);
 
         $request->session()->put('tableName', $request->tableName);
-        if ( ! $request->session()->has('tableName')) { // return 420 if not done
+        if (!$request->session()->has('tableName')) { // return 420 if not done
             return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
         } // if no results are found
         else {
             return \Response::json(['message' => 'put to session!']/* Status code here default is 200 ok*/);
         } // else
-        
+
     } // setContinue
 
 

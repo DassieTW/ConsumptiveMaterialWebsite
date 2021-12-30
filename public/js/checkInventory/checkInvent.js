@@ -132,7 +132,7 @@ $(document).ready(function () {
         $(".carousel-inner").html(''); // cleanup
 
 
-        // -------------------------------------- for single condition search ---------------------------- //
+        // --------------------------- for single condition search ---------------------------- //
         var $temp = $('#texBox').val();
         $('#texBox').val(''); // clear input box value
         $isIsn = document.getElementById('toggle-state').checked;
@@ -776,7 +776,7 @@ $(document).ready(function () {
                     console.log(err.status); // test
                 } // else
             } // error
-        });    // ajax
+        }); // ajax
         //--------------------------------------   end               --------------------------------- //
 
         $([document.documentElement, document.body]).animate({

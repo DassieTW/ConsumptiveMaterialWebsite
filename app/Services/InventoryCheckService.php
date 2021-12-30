@@ -51,6 +51,52 @@ class InventoryCheckService
         return $results;
     } // fetchInventCheckRecord
 
+    public function fetchInventCheckRecordWithinTimeRange(Request $request, $fromTime, $toTime )
+    {
+        $results = [];
+        $onlyCode = filter_input(INPUT_POST, 'texBox', FILTER_SANITIZE_STRING); // the scanned in barcode
+        $isIsn = filter_input(INPUT_POST, 'isIsn', FILTER_VALIDATE_BOOLEAN); // is this a ISN or Loc.
+
+        DB::beginTransaction();
+
+        try {
+            if ($isIsn) {  // if it is an isn
+                $results = DB::table('checking_inventory')
+                    ->where([
+                        ['checking_inventory.created_at', '>=', $fromTime],
+                        ['checking_inventory.created_at', '<=', $toTime],
+                        ['checking_inventory.料號', 'like', $onlyCode . '%'],
+                    ])->join('consumptive_material', function ($join) {
+                        $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
+                    })
+                    ->leftJoin('login', 'checking_inventory.updated_by', '=', 'login.username')
+                    ->get();
+            } else {     // if it is a loc
+                $results = DB::table('checking_inventory')
+                    ->where([
+                        ['checking_inventory.created_at', '>=', $fromTime],
+                        ['checking_inventory.created_at', '<=', $toTime],
+                        ['checking_inventory.儲位', 'like', $onlyCode . '%'],
+                    ])
+                    ->join('consumptive_material', function ($join) {
+                        $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
+                    })
+                    ->leftJoin('login', 'checking_inventory.updated_by', '=', 'login.username')
+                    ->get();
+            } // if else
+
+            // dd($results); // test
+
+            DB::commit();
+            // all good
+        } catch (\Exception $e) {
+            // DB::rollback(); // select statements dont need to roll back
+            // something went wrong
+        } // try catch
+
+        return $results;
+    } // fetchInventCheckRecordWithinTimeRange
+
     public function updateInventCheckRecord(Request $request)
     {
         $results = [];

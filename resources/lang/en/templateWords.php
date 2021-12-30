@@ -45,4 +45,12 @@ return [
     'importNonMonthlyData' => 'Import Non-Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
     'importMonthlyData' => 'Import Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
     'on_the_way_search' => 'On-Order Inventory <br/> &nbsp;&nbsp;&nbsp; (Search)',
+
+    //date picker lang
+    'all_history_records' => 'All Past Records',
+    'past_three_months' => 'Past 3 Months',
+    'today' => 'Today',
+    'custom_range' => 'Custom Range',
+    'apply' => 'Apply',
+    'cancel' => 'Cancel',
 ];
