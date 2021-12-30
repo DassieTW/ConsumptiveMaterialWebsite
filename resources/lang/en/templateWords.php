@@ -45,4 +45,10 @@ return [
     'importNonMonthlyData' => 'Import Non-Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
     'importMonthlyData' => 'Import Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
     'on_the_way_search' => 'On-Order Inventory <br/> &nbsp;&nbsp;&nbsp; (Search)',
+    'taipei' => 'Taipei EIP',
+    'dep' => 'Department Site',
+    'project' => 'Project Site',
+    'east' => 'PSH EIP',
+    'west' => 'PCQ EIP',
+    'middle' => 'PSZ EIP',
 ];

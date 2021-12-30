@@ -29,6 +29,12 @@ $(document).ready(function () {
             }
         }
 
+        if(row.length == 0)
+        {
+            alert('no data');
+            return false;
+        }
+
         $.ajax({
             type: "POST",
             url: "insertuploadbasic",

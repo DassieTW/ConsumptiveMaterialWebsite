@@ -103,7 +103,7 @@
                                         <img src="../admin/img/avatars/avatarBot.png" alt="Charles Hall"
                                             class="img-fluid rounded-circle" width="132" height="132" />
                                     </div>
-                                    <form class="needs-validation" action="{{ route('member.register') }}" method="post"
+                                    <form class="needs-validation" id="registerform" method="post"
                                         accept-charset="utf-8">
                                         @csrf
                                         <div class="mb-3">
@@ -112,11 +112,6 @@
                                                 class="form-control form-control-lg @error('username') is-invalid @enderror"
                                                 type="text" id="username" name="username"
                                                 placeholder="{!! __('loginPageLang.username_placeholder') !!}" required>
-                                            @error('username')
-                                            <span class="invalid-feedback p-0 m-0" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
                                         </div>
 
                                         <div class="mb-3">
@@ -139,11 +134,7 @@
                                                         </svg>
                                                     </a>
                                                 </div>
-                                                @error('password')
-                                                <span class="invalid-feedback p-0 m-0" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
+
                                             </div>
                                         </div>
 
@@ -166,11 +157,7 @@
                                                         </svg>
                                                     </a>
                                                 </div>
-                                                @error('password2')
-                                                <span class="invalid-feedback p-0 m-0" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
+
                                             </div>
                                         </div>
                                         <div class="mb-3">

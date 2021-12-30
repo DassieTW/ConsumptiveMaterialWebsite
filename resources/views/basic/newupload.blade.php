@@ -80,8 +80,8 @@
                                     value="{{$row[1]}}" required></td>
                             <td><input  style="width:200px" class="form-control form-control-lg" type="text" id="data2a{{$loop->index}}" name="data2a{{$loop->index}}"
                                     value="{{$row[2]}}" required></td>
-                            <td><input  class="form-control form-control-lg" style="width:100px" type="number" id="data3a{{$loop->index}}"
-                                    name="data3a{{$loop->index}}" value="{{$row[3]}}" step="0.00001" required></td>
+                            <td><input  class="form-control form-control-lg" style="width:120px" type="number" id="data3a{{$loop->index}}"
+                                    name="data3a{{$loop->index}}" value="{{$row[3]}}" step="0.00001" required min="0"></td>
                             <td>
                                 <select style="width:100px" class="form-select form-select-lg "
                                     id="data4a{{$loop->index}}" id="data4a{{$loop->index}}"
@@ -98,11 +98,11 @@
                             <td><input class="form-control form-control-lg" style="width:100px" type="text" id="data5a{{$loop->index}}"
                                     name="data5a{{$loop->index}}" value="{{$row[5]}}" required></td>
                             <td><input class="form-control form-control-lg" style="width:100px" type="number" id="data6a{{$loop->index}}"
-                                    name="data6a{{$loop->index}}" value="{{$row[6]}}" required></td>
+                                    name="data6a{{$loop->index}}" value="{{$row[6]}}" required min="0"></td>
                             <td><input class="form-control form-control-lg" style="width:100px" type="number" id="data7a{{$loop->index}}"
-                                    name="data7a{{$loop->index}}" value="{{$row[7]}}" required></td>
+                                    name="data7a{{$loop->index}}" value="{{$row[7]}}" required min="0"></td>
                             <td><input class="form-control form-control-lg" style="width:100px" type="number" id="data8a{{$loop->index}}"
-                                    name="data8a{{$loop->index}}" step="0.00001" value="{{$row[8]}}" required></td>
+                                    name="data8a{{$loop->index}}" step="0.00001" value="{{$row[8]}}" required min="0"></td>
                             <td>
                                 <select style="width:100px" class="form-select form-select-lg "
                                     id="data9a{{$loop->index}}" id="data9a{{$loop->index}}"
@@ -142,7 +142,7 @@
                                 </select>
                             </td>
                             <td><input class="form-control form-control-lg " style="width:100px" type="number"
-                                    id="data13a{{$loop->index}}" name="data13a{{$loop->index}}" value="{{$row[13]}}">
+                                    id="data13a{{$loop->index}}" name="data13a{{$loop->index}}" value="{{$row[13]}}" min="0">
                             </td>
 
                         </tr>

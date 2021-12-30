@@ -33,7 +33,7 @@
                                 <input
                                     class="form-control form-control-lg col col-auto @error('number') is-invalid @enderror"
                                     type="text" id="number" name="number"
-                                    placeholder="{!! __('basicInfoLang.enterisn') !!}">
+                                    placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
                                 @error('number')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>

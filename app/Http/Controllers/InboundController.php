@@ -554,7 +554,7 @@ class InboundController extends Controller
     {
 
         if (Session::has('username')) {
-            $Alldata = json_decode( $request->input('AllData') );
+            $Alldata = json_decode($request->input('AllData'));
             $count = count($Alldata[0]);
             $j = '0001';
             $max = DB::table('inbound')->max('入庫時間');
@@ -586,6 +586,10 @@ class InboundController extends Controller
                     $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
                     $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
 
+                    if ($amount > $buy && $inreason !== '調撥' && $inreason !== '退庫') {
+                        $row = $i + 1;
+                        return \Response::json(['row' => $row, 'client' => $client, 'number' => $number], 420/* Status code here default is 200 ok*/);
+                    }
                     if ($stock !== null) {
                         DB::table('inbound')
                             ->insert([
@@ -696,7 +700,7 @@ class InboundController extends Controller
             $worksheet = $spreadsheet->getActiveSheet();
             $titlecount = $request->input('titlecount');
             $count = $request->input('count');
-            $Alldata = json_decode( $request->input('AllData') );
+            $Alldata = json_decode($request->input('AllData'));
 
             //填寫表頭
             for ($i = 0; $i < $titlecount; $i++) {
@@ -758,7 +762,7 @@ class InboundController extends Controller
         if (Session::has('username')) {
             $count = $request->input('count');
             $now = Carbon::now();
-            $Alldata = json_decode( $request->input('AllData') );
+            $Alldata = json_decode($request->input('AllData'));
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {

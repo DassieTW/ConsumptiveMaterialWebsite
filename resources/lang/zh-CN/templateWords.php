@@ -44,4 +44,10 @@ return [
     'importNonMonthlyData' => '汇入非月请购资料',
     'importMonthlyData' => '汇入月请购资料',
     'on_the_way_search' => '在途数量(查询)',
+    'taipei' => '台北企总EIP',
+    'dep' => '部门网站',
+    'project' => '专案网站',
+    'east' => '华东EIP',
+    'west' => '华西EIP',
+    'middle' => '华中EIP',
 ];

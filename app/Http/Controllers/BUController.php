@@ -59,8 +59,10 @@ class BUController extends Controller
         //
         if (Session::has('username')) {
 
-            $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management' ,
-            '巴淡-LOT11 Consumables management' , '巴淡-LOT2 Consumables management' , '巴淡-PTSN Consumables management'];
+            $database = [
+                'M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management',
+                '巴淡-LOT11 Consumables management', '巴淡-LOT2 Consumables management', '巴淡-PTSN Consumables management'
+            ];
 
             foreach ($database as $key => $value) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
@@ -79,7 +81,6 @@ class BUController extends Controller
                     ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                     ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
                     ->get();
-
             }
 
 
@@ -184,15 +185,9 @@ class BUController extends Controller
             else if ($request->input('outfactory') !== null && $request->input('infactory') === null && $request->input('number') === null && !($request->has('date'))) {
                 return view('bu.searchlistok')->with(['data' => 調撥單::cursor()->where('撥出廠區', $request->input('outfactory'))]);
             }
-            //input infactory
+            //select infactory
             else if ($request->input('outfactory') === null && $request->input('infactory') !== null && $request->input('number') === null && !($request->has('date'))) {
-                if (strlen($request->input('infactory')) !== 12) {
-                    return back()->withErrors([
-                        'infactory' => trans('validation.regex'),
-                    ]);
-                } else {
-                    return view('bu.searchlistok')->with(['data' => 調撥單::cursor()->where('接收廠區', $request->input('infactory'))]);
-                }
+                return view('bu.searchlistok')->with(['data' => 調撥單::cursor()->where('接收廠區', $request->input('infactory'))]);
             }
             //input material number
             else if ($request->input('outfactory') === null && $request->input('infactory') === null && $request->input('number') !== null && !($request->has('date'))) {
@@ -205,18 +200,11 @@ class BUController extends Controller
             }
             //select outfactory and infactory
             else if ($request->input('outfactory') !== null && $request->input('infactory') !== null && $request->input('number') === null && !($request->has('date'))) {
-                if (strlen($request->input('infactory')) !== 12) {
-                    return back()->withErrors([
-                        'infactory' => trans('validation.regex'),
-                    ]);
-                } else {
-                    return view('bu.searchlistok')->with(['data' => 調撥單::cursor()
-                        ->where('撥出廠區', $request->input('outfactory'))->where('接收廠區', $request->input('infactory'))]);
-                }
+                return view('bu.searchlistok')->with(['data' => 調撥單::cursor()
+                    ->where('撥出廠區', $request->input('outfactory'))->where('接收廠區', $request->input('infactory'))]);
             }
             //select outfactory and number
             else if ($request->input('outfactory') !== null && $request->input('infactory') === null && $request->input('number') !== null && !($request->has('date'))) {
-
                 return view('bu.searchlistok')->with(['data' => $datas->where('撥出廠區', $request->input('outfactory'))]);
             }
             //select outfactory and time
@@ -227,26 +215,12 @@ class BUController extends Controller
             }
             //select infactory and number
             else if ($request->input('outfactory') === null && $request->input('infactory') !== null && $request->input('number') !== null && !($request->has('date'))) {
-
-                if (strlen($request->input('infactory')) !== 12) {
-                    return back()->withErrors([
-                        'infactory' => trans('validation.regex'),
-                    ]);
-                } else {
-                    return view('bu.searchlistok')->with(['data' => $datas->where('接收廠區', $request->input('infactory'))]);
-                }
+                return view('bu.searchlistok')->with(['data' => $datas->where('接收廠區', $request->input('infactory'))]);
             }
             //select infactory and time
             else if ($request->input('outfactory') === null && $request->input('infactory') !== null && $request->input('number') === null && ($request->has('date'))) {
-                if (strlen($request->input('infactory')) !== 12) {
-                    return back()->withErrors([
-                        'infactory' => trans('validation.regex'),
-                    ]);
-                } else {
-
-                    return view('bu.searchlistok')->with(['data' => 調撥單::cursor()
-                        ->whereBetween('開單時間', [$begin, $end])->where('接收廠區', $request->input('infactory'))]);
-                }
+                return view('bu.searchlistok')->with(['data' => 調撥單::cursor()
+                    ->whereBetween('開單時間', [$begin, $end])->where('接收廠區', $request->input('infactory'))]);
             }
             //select number and time
             else if ($request->input('outfactory') === null && $request->input('infactory') === null && $request->input('number') !== null && ($request->has('date'))) {
@@ -255,28 +229,14 @@ class BUController extends Controller
             }
             //select outfactory and infactory and number
             else if ($request->input('outfactory') !== null && $request->input('infactory') !== null && $request->input('number') !== null && !($request->has('date'))) {
-
-                if (strlen($request->input('infactory')) !== 12) {
-                    return back()->withErrors([
-                        'infactory' => trans('validation.regex'),
-                    ]);
-                } else {
-                    return view('bu.searchlistok')->with(['data' => $datas->where('接收廠區', $request->input('infactory'))
-                        ->where('撥出廠區', $request->input('outfactory'))]);
-                }
+                return view('bu.searchlistok')->with(['data' => $datas->where('接收廠區', $request->input('infactory'))
+                    ->where('撥出廠區', $request->input('outfactory'))]);
             }
             //select outfactory and infactory and time
             else if ($request->input('outfactory') !== null && $request->input('infactory') !== null && $request->input('number') === null && ($request->has('date'))) {
-                if (strlen($request->input('infactory')) !== 12) {
-                    return back()->withErrors([
-                        'infactory' => trans('validation.regex'),
-                    ]);
-                } else {
-
-                    return view('bu.searchlistok')->with(['data' => 調撥單::cursor()
-                        ->whereBetween('開單時間', [$begin, $end])->where('', $request->input('infactory'))
-                        ->where('撥出廠區', $request->input('outfactory'))]);
-                }
+                return view('bu.searchlistok')->with(['data' => 調撥單::cursor()
+                    ->whereBetween('開單時間', [$begin, $end])->where('', $request->input('infactory'))
+                    ->where('撥出廠區', $request->input('outfactory'))]);
             }
             //select outfactory and number and time
             else if ($request->input('outfactory') !== null && $request->input('infactory') === null && $request->input('number') !== null && ($request->has('date'))) {
@@ -286,27 +246,13 @@ class BUController extends Controller
             }
             //select infactory and number and time
             else if ($request->input('outfactory') === null && $request->input('infactory') !== null && $request->input('number') !== null && ($request->has('date'))) {
-                if (strlen($request->input('infactory')) !== 12) {
-                    return back()->withErrors([
-                        'infactory' => trans('validation.regex'),
-                    ]);
-                } else {
-
-                    return view('bu.searchlistok')->with(['data' => $datas->whereBetween('開單時間', [$begin, $end])
-                        ->where('接收廠區', $request->input('infactory'))]);
-                }
+                return view('bu.searchlistok')->with(['data' => $datas->whereBetween('開單時間', [$begin, $end])
+                    ->where('接收廠區', $request->input('infactory'))]);
             }
             //select all
             else if ($request->input('outfactory') !== null && $request->input('infactory') !== null && $request->input('number') !== null && ($request->has('date'))) {
-                if (strlen($request->input('infactory')) !== 12) {
-                    return back()->withErrors([
-                        'infactory' => trans('validation.regex'),
-                    ]);
-                } else {
-
-                    return view('bu.searchlistok')->with(['data' => $datas->whereBetween('開單時間', [$begin, $end])
-                        ->where('接收廠區', $request->input('infactory'))->where('撥出廠區', $request->input('outfactory'))]);
-                }
+                return view('bu.searchlistok')->with(['data' => $datas->whereBetween('開單時間', [$begin, $end])
+                    ->where('接收廠區', $request->input('infactory'))->where('撥出廠區', $request->input('outfactory'))]);
             }
         } else {
             return redirect(route('member.login'));
@@ -317,7 +263,6 @@ class BUController extends Controller
     public function delete(Request $request)
     {
         if (Session::has('username')) {
-            $reDive = new  responseObj();
 
             $list = $request->input('list');
 
@@ -332,17 +277,10 @@ class BUController extends Controller
                     ->where('調撥單號', $list)
                     ->delete();
                 DB::commit();
-                $reDive->boolean = true;
-                $reDive->message = $list;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['message' => $list]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
-                $mess = $e->getMessage();
-                echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='/bu';
-                    </script>");
+                return \Response::json(['message' => $e->getmessage(), 420]/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
@@ -372,7 +310,8 @@ class BUController extends Controller
             $database = $request->session()->get('database');
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
             \DB::purge(env("DB_CONNECTION"));
-            return view('bu.outlist')->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')->where('調撥單號', $list)]);
+            return view('bu.outlist')
+                ->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')->where('調撥單號', $list)]);
         } else {
             return redirect(route('member.login'));
         }
@@ -382,8 +321,6 @@ class BUController extends Controller
     public function outlistsubmit(Request $request)
     {
         if (Session::has('username')) {
-            $reDive = new responseObj();
-
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
             \DB::purge(env("DB_CONNECTION"));
             $list = $request->input('list');
@@ -426,17 +363,10 @@ class BUController extends Controller
                 }
 
                 DB::commit();
-                $reDive->boolean = true;
-                $reDive->message = $list;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['message' => $list]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
-                $mess = $e->getMessage();
-                $reDive->boolean = true;
-                $reDive->message = $mess;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
@@ -476,7 +406,6 @@ class BUController extends Controller
     public function picklistsubmit(Request $request)
     {
         if (Session::has('username')) {
-            $reDive = new responseObj();
 
             $now = Carbon::now();
             $number = $request->input('number');
@@ -506,9 +435,7 @@ class BUController extends Controller
             for ($i = 0; $i < $count; $i++) {
                 $nowoutstock[$i] = DB::table('inventory')->where('料號', $number)->where('客戶別', $outclients[$i])->where('儲位', $outlocs[$i])->value('現有庫存');
                 if ($outstock[$i] != $nowoutstock[$i]) {
-                    $reDive->boolean = true;
-                    $reDive->passbool = false;
-                    $inventorysure = false;
+                    return \Response::json(['message' => 'inventory error'], 421/* Status code here default is 200 ok*/);
                 } else {
                     $inventorysure = true;
                 }
@@ -567,25 +494,13 @@ class BUController extends Controller
                         ->update(['接收人' => $pickpeople, '接收數量' => $realpick, '狀態' => '已完成', '入庫時間' => $now]);
 
                     DB::commit();
-                    $reDive->boolean = true;
-                    $reDive->passbool = true;
-                    $reDive->message = $list;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    return \Response::json(['message' => $list]/* Status code here default is 200 ok*/);
                 } else {
-                    $reDive->boolean = true;
-                    $reDive->passbool = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    return \Response::json(['message' => 'inventory error'], 421/* Status code here default is 200 ok*/);
                 }
             } catch (\Exception $e) {
                 DB::rollback();
-                $mess = $e->getMessage();
-                $reDive->boolean = false;
-                $reDive->passbool = false;
-                $reDive->message = $mess;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
+                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
@@ -688,7 +603,7 @@ class BUController extends Controller
 
 
             $title = $request->input('title');
-            $Alldata = json_decode( $request->input('AllData') );
+            $Alldata = json_decode($request->input('AllData'));
             $count = $request->input('count');
             $test = "";
 
@@ -754,35 +669,33 @@ class BUController extends Controller
     public function downloadlist(Request $request)
     {
         if (Session::has('username')) {
-            $reDive = new responseObj();
+
             $spreadsheet = new Spreadsheet();
-            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
 
             $worksheet = $spreadsheet->getActiveSheet();
 
-            $title = $request->input('title');
-            $data0 = $request->input('data0');
+            $titlecount = $request->input('titlecount');
+            $count = $request->input('count');
+            $Alldata = json_decode($request->input('AllData'));
+
 
             //填寫表頭
-            for ($i = 0; $i < 17; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+            for ($i = 0; $i < $titlecount; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
             }
 
-            for ($i = 0; $i < 17; $i++) {
-                for ($j = 0; $j < count($data0); $j++) {
+            for ($i = 0; $i < $titlecount; $i++) {
+                for ($j = 0; $j < $count; $j++) {
 
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
                 }
             }
 
-
-
-
             // 下載
-
             $now = Carbon::now()->format('YmdHis');
-
-            $filename = rawurlencode('調撥單查詢') . $now . '.xlsx';
+            $titlename = $request->input('titlename');
+            $filename = rawurlencode($titlename) . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
             header('Cache-Control: max-age=0');
@@ -827,8 +740,10 @@ class BUController extends Controller
                     'number' => trans('bupagelang.isnlength'),
                 ]);
             } else {
-                $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management' ,
-                '巴淡-LOT11 Consumables management' , '巴淡-LOT2 Consumables management' , '巴淡-PTSN Consumables management'];
+                $database = [
+                    'M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management',
+                    '巴淡-LOT11 Consumables management', '巴淡-LOT2 Consumables management', '巴淡-PTSN Consumables management'
+                ];
 
                 foreach ($database as $key => $value) {
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);

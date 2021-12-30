@@ -45,4 +45,10 @@ return [
     'importNonMonthlyData' => '匯入非月請購資料',
     'importMonthlyData' => '匯入月請購資料',
     'on_the_way_search' => '在途數量(查詢)',
+    'taipei' => '台北企總EIP',
+    'dep' => '部門網站',
+    'project' => '專案網站',
+    'east' => '華東EIP',
+    'west' => '華西EIP',
+    'middle' => '華中EIP',
 ];

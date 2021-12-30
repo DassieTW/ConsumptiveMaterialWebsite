@@ -32,6 +32,16 @@ Route::get('/',function () {
 Route::get('/sluggish', [BUController::class, 'sluggish'])->name('bu.sluggish');
 
 //廠區庫存調撥
+Route::get('/sluggishmaterial', function(){
+    if (Session::has('username')) {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        \DB::purge(env("DB_CONNECTION"));
+        return view('bu.material');
+    } else {
+        return redirect(route('member.login'));
+    }
+});
+
 Route::post('/sluggishmaterial', [BUController::class, 'sluggishmaterial'])->name('bu.sluggishmaterial');
 
 //新增調撥單
@@ -67,6 +77,17 @@ Route::get('/outlist', function(){
 })->name('bu.outlistpage');
 
 //調撥_撥出單
+Route::get('/outlistsub', function(){
+    if (Session::has('username')) {
+        $database = Session::get('database');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        \DB::purge(env("DB_CONNECTION"));
+        return view('bu.outlistpage')->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')]);
+    } else {
+        return redirect(route('member.login'));
+    }
+})->name('bu.outlist');
+
 Route::post('/outlistsub', [BUController::class, 'outlist'])->name('bu.outlist');
 
 //調撥_撥出單提交
@@ -85,6 +106,17 @@ Route::get('/picklist', function(){
 })->name('bu.picklistpage');
 
 //調撥_接收單
+Route::get('/picklistsub', function(){
+    if (Session::has('username')) {
+        $database = Session::get('database');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        \DB::purge(env("DB_CONNECTION"));
+        return view('bu.picklistpage')->with(['data' => 調撥單::cursor()->where('接收廠區', $database)->where('狀態', '待接收')]);
+    } else {
+        return redirect(route('member.login'));
+    }
+})->name('bu.picklist');
+
 Route::post('/picklistsub', [BUController::class, 'picklist'])->name('bu.picklist');
 
 //調撥_接收單提交
