@@ -45,7 +45,7 @@
                             <input
                                 class="form-control form-control-lg col col-auto @error('number') is-invalid @enderror"
                                 type="text" id="number" name="number"
-                                placeholder="{!! __('inboundpageLang.enterisn') !!}">
+                                placeholder="{!! __('inboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
                             @error('number')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -61,7 +61,7 @@
 
                             <input class="form-control form-control-lg @error('innumber') is-invalid @enderror"
                                 type="text" id="innumber" name="innumber"
-                                placeholder="{!! __('inboundpageLang.enterinlist') !!}">
+                                placeholder="{!! __('inboundpageLang.enterinlist') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
                             @error('innumber')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -81,7 +81,7 @@
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">
                                 <label class="form-label">{!! __('inboundpageLang.begindate') !!}</label>:
-                                <input type="date" id="begin" name="begin" value="<?php echo date('Y-m-d'); ?>" />
+                                <input class = "form-control form-control-lg" type="date" id="begin" name="begin" value="<?php echo date('Y-m-d'); ?>" />
                             </div>
                         </div>
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -89,7 +89,7 @@
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">
                                 <label class="form-label">{!! __('inboundpageLang.enddate') !!}</label>:
-                                <input type="date" id="end" name="end" value="<?php echo date('Y-m-d'); ?>" />
+                                <input class = "form-control form-control-lg" type="date" id="end" name="end" value="<?php echo date('Y-m-d'); ?>" />
                             </div>
                         </div>
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

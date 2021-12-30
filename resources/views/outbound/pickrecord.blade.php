@@ -58,7 +58,7 @@
                         <div class="col-lg-6  col-md-12 col-sm-12">
                             <input class="form-control form-control-lg @error('number') is-invalid @enderror"
                                 type="text" id="number" name="number"
-                                placeholder="{!! __('outboundpageLang.enterisn') !!}">
+                                placeholder="{!! __('outboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
                             @error('number')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -93,9 +93,8 @@
 
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">
-                                <label class="col col-auto form-label">{!! __('outboundpageLang.begindate')
-                                    !!}</label>:
-                                <input type="date" id="begin" name="begin" value="<?php echo date('Y-m-d'); ?>" />
+                                <label class="col col-auto form-label">{!! __('outboundpageLang.begindate')!!}</label>:
+                                <input class ="form-control form-control-lg" type="date" id="begin" name="begin" value="<?php echo date('Y-m-d'); ?>" />
                             </div>
                         </div>
 
@@ -104,7 +103,7 @@
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">
                                 <label class="col col-auto form-label">{!! __('outboundpageLang.enddate') !!}</label>:
-                                <input type="date" id="end" name="end" value="<?php echo date('Y-m-d'); ?>" />
+                                <input class ="form-control form-control-lg" type="date" id="end" name="end" value="<?php echo date('Y-m-d'); ?>" />
                             </div>
                         </div>
 
