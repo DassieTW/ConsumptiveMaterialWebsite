@@ -53,4 +53,11 @@ return [
     'custom_range' => 'Custom Range',
     'apply' => 'Apply',
     'cancel' => 'Cancel',
+    
+    'taipei' => 'Taipei EIP',
+    'dep' => 'Department Site',
+    'project' => 'Project Site',
+    'east' => 'PSH EIP',
+    'west' => 'PCQ EIP',
+    'middle' => 'PSZ EIP',
 ];

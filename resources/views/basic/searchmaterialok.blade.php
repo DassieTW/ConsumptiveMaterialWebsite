@@ -104,8 +104,8 @@
                                 <option>{!! __('basicInfoLang.stand') !!}</option>
                             </select>
                         </td>
-                        <td><input style="width:100px" type="number" id="price{{$loop->index}}"
-                            class="form-control form-control-lg" name="price{{$loop->index}}" value="{{$data->單價}}" step="0.00001"></td>
+                        <td><input style="width:120px" type="number" id="price{{$loop->index}}"
+                            class="form-control form-control-lg" name="price{{$loop->index}}" value="{{$data->單價}}" step="0.00001" min="0"></td>
                         <td>
                             <select style="width:100px" class="form-select form-select-lg " id="money{{$loop->index}}"
                                 name="money{{$loop->index}}">
@@ -121,11 +121,11 @@
                         <td><input style="width:100px" type="text" id="unit{{$loop->index}}" name="unit{{$loop->index}}"
                                 value="{{$data->單位}}" class="form-control form-control-lg"></td>
                         <td><input style="width:100px" type="number" id="mpq{{$loop->index}}" name="mpq{{$loop->index}}"
-                                value="{{$data->MPQ}}" class="form-control form-control-lg"></td>
+                                value="{{$data->MPQ}}" class="form-control form-control-lg" min="0"></td>
                         <td><input style="width:100px" type="number" id="moq{{$loop->index}}" name="moq{{$loop->index}}"
-                                value="{{$data->MOQ}}" class="form-control form-control-lg"></td>
+                                value="{{$data->MOQ}}" class="form-control form-control-lg" min="0"></td>
                         <td><input style="width:100px" type="number" id="lt{{$loop->index}}" name="lt{{$loop->index}}"
-                                value="{{$data->LT}}" class="form-control form-control-lg"></td>
+                                value="{{$data->LT}}" class="form-control form-control-lg" min="0"></td>
                         <td><input class = "form-control form-control-lg"style="width:100px" type="number" id="safe{{$loop->index}}"
                                 name="safe{{$loop->index}}" value="{{$data->安全庫存}}" min="0"></td>
                         <input type="hidden" id="count" name="count" value="{{$loop->count}}">

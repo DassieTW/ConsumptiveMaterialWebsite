@@ -53,4 +53,11 @@ return [
     'custom_range' => '自訂',
     'apply' => '確定',
     'cancel' => '取消',
+    
+    'taipei' => '台北企總EIP',
+    'dep' => '部門網站',
+    'project' => '專案網站',
+    'east' => '華東EIP',
+    'west' => '華西EIP',
+    'middle' => '華中EIP',
 ];

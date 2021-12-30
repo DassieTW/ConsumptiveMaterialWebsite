@@ -88,4 +88,6 @@ return [
     'enterisn' =>'Please enter the Part No.',
     'isnlength' =>'Part No. length is not 12',
     'timepart' => 'Time Period',
+    'nooutpeople' => 'The job number of the dialed people does not exist, please go to User Management-Maintenance of New Person Information',
+    'nopickpeople' => 'The job number of the receive people does not exist, please go to User Management-Maintenance of New Person Information',
 ];

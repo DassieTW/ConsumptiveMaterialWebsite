@@ -52,7 +52,7 @@
             <div class="col-auto">
                 <label class="col col-lg-12 form-label">{!! __('inboundpageLang.isn') !!}</label>
                 <input class="form-control form-control-lg " type="text" id="number" name="number"
-                    placeholder="{!! __('inboundpageLang.enterisn') !!}">
+                    placeholder="{!! __('inboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
 
                 <div id="numbererror" style="display:none; color:red;">{!!
                     __('inboundpageLang.isnlength')
@@ -133,7 +133,8 @@
             <div class="mb-3 col-md-6">
                 <label class="form-label">{!! __('inboundpageLang.inpeople') !!}</label>
                 <input class="form-control form-control-lg" id="inpeople" name="inpeople" required style="width: 250px"
-                    placeholder="{!! __('inboundpageLang.enterinpeople') !!}">
+                    placeholder="{!! __('inboundpageLang.enterinpeople') !!}"
+                    oninput="if(value.length>9)value=value.slice(0,9)">
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <ul id="inboundmenu" style="display: none;" class="list-group">
                     @foreach($peoples as $name)

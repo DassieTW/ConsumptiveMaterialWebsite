@@ -84,7 +84,7 @@
                             <td><span id="advance{{$loop->index}}">{{$data->預退數量}}</span></td>
                             <td><input class="form-control amount" style="width:100px" type="number"
                                     id="amount{{$loop->index}}" name="amount{{$loop->index}}" required
-                                    value="{{$data->實際退回數量}}" title="{{$showstock}}"></td>
+                                    value="{{$data->實際退回數量}}" title="{{$showstock}}" min="1"></td>
                             <input type="hidden" id="amounttitle{{$loop->index}}" value="{{$showstock}}">
                             <td><span id="remark{{$loop->index}}">{{$data->備註}}</span></td>
                             <td><input class="form-control reason" style="width:100px" type="text"

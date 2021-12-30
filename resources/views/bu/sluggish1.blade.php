@@ -51,149 +51,148 @@
                     <?php $i = 0 ; $data = ''; $record = array(array());
 
                     ?>
-                    @for($i = 0 ; $i < 6 ; $i++)
-                        @foreach($test[$i] as $data)
-                        <?php
-                            $maxtime=date_create(date('Y-m-d',strtotime($data->inventory最後更新時間)));
-                            $nowtime = date_create(date('Y-m-d',strtotime(\Carbon\Carbon::now())));
-                            $interval = date_diff($maxtime ,$nowtime);
-                            $interval = $interval->format('%R%a');
-                            $stayday = (int)($interval);
-                            $buytime = array();
-                            $buytime1 = array();
-                            $buytimeco = array();
-                            $buytimeco1 = array();
-                            $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management' ,
+                    @for($i = 0 ; $i < 6 ; $i++) @foreach($test[$i] as $data) <?php
+                        $maxtime=date_create(date('Y-m-d',strtotime($data->inventory最後更新時間)));
+                        $nowtime = date_create(date('Y-m-d',strtotime(\Carbon\Carbon::now())));
+                        $interval = date_diff($maxtime ,$nowtime);
+                        $interval = $interval->format('%R%a');
+                        $stayday = (int)($interval);
+                        $buytime = array();
+                        $buytime1 = array();
+                        $buytimeco = array();
+                        $buytimeco1 = array();
+                        $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management' ,
                         '巴淡-LOT11 Consumables management' , '巴淡-LOT2 Consumables management' , '巴淡-PTSN Consumables management'];
-                            foreach ($database as $key => $value) {
-                                if($value != $database[$i]){
-                                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
-                                    \DB::purge(env("DB_CONNECTION"));
-                                    $buytime[$key][0] = $value;
-                                    $buytime[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
+                        foreach ($database as $key => $value) {
+                        if($value != $database[$i]){
+                        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
+                        \DB::purge(env("DB_CONNECTION"));
+                        $buytime[$key][0] = $value;
+                        $buytime[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
 
-                                    $buytime1[$key][0] = $value;
-                                    $buytime1[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
+                        $buytime1[$key][0] = $value;
+                        $buytime1[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
 
-                                    $buytime[$key][2] = DB::table('請購單')->where('料號', $data->料號)->max('請購時間');
-                                    $buytime1[$key][2] = DB::table('非月請購')->where('料號', $data->料號)->max('上傳時間');
+                        $buytime[$key][2] = DB::table('請購單')->where('料號', $data->料號)->max('請購時間');
+                        $buytime1[$key][2] = DB::table('非月請購')->where('料號', $data->料號)->max('上傳時間');
 
-                                    $buytimeco[$key][0] = $value;
-                                    $buytimeco[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
+                        $buytimeco[$key][0] = $value;
+                        $buytimeco[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
 
-                                    $buytimeco1[$key][0] = $value;
-                                    $buytimeco1[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
+                        $buytimeco1[$key][0] = $value;
+                        $buytimeco1[$key][1] = DB::table('consumptive_material')->where('料號', $data->料號)->value('發料部門');
 
-                                    $buytimeco[$key][2] = DB::table('請購單')->where('料號', $data->料號)->max('請購時間');
-                                    $buytimeco1[$key][2] = DB::table('非月請購')->where('料號', $data->料號)->max('上傳時間');
-                                }
-                            }
+                        $buytimeco[$key][2] = DB::table('請購單')->where('料號', $data->料號)->max('請購時間');
+                        $buytimeco1[$key][2] = DB::table('非月請購')->where('料號', $data->料號)->max('上傳時間');
+                        }
+                        }
                         ?>
                         @if(isset($table))
-                            @if($database[$i] === $table)
-                                <tr>
-                                    <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
-                                            name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
-                                            value="{{$i}}{{$loop->index}}"></td>
-                                    <td><input type="hidden" id="data0{{$i}}{{$loop->index}}" name="data0{{$i}}{{$loop->index}}"
-                                            value={{$database[$i]}}>{{$database[$i]}}</td>
-                                    <td><input type="hidden" id="data1{{$i}}{{$loop->index}}" name="data1{{$i}}{{$loop->index}}"
-                                            value={{$data->料號}}>{{$data->料號}}</td>
-                                    <td><input type="hidden" id="data2{{$i}}{{$loop->index}}" name="data2{{$i}}{{$loop->index}}"
-                                            value={{$data->品名}}>{{$data->品名}}</td>
-                                    <td><input type="hidden" id="data3{{$i}}{{$loop->index}}" name="data3{{$i}}{{$loop->index}}"
-                                            value={{$data->規格}}>{{$data->規格}}</td>
-                                    <td><input type="hidden" id="data4{{$i}}{{$loop->index}}" name="data4{{$i}}{{$loop->index}}"
-                                            value={{$data->單位}}>{{$data->單位}}</td>
-                                    <td><input type="hidden" id="data5{{$i}}{{$loop->index}}" name="data5{{$i}}{{$loop->index}}"
-                                            value={{$stayday}}>{{$stayday}}</td>
-                                    <td><input type="hidden" id="data6{{$i}}{{$loop->index}}" name="data6{{$i}}{{$loop->index}}"
-                                            value={{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
-                                    <td><input type="number" id="data7{{$i}}{{$loop->index}}" name="data7{{$i}}{{$loop->index}}"
-                                            value="" style="width:100px;"></td>
-                                    <td id="data8{{$i}}{{$loop->index}}" name="data8{{$i}}{{$loop->index}}">@foreach ($buytime
-                                        as $buytime)
-                                        @if( $buytime[2] != null)
-                                        <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime[0]}}
-                                            {!! __('bupagelang.senddep') !!} : {{$buytime[1]}} {!! __('bupagelang.buytime') !!}
-                                            : {{$buytime[2]}}</span><br>
-                                        @endif
-                                        @endforeach
-                                        @foreach ($buytime1 as $buytime1)
-                                        @if( $buytime1[2] != null)
-                                        <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime1[0]}}
-                                            {!! __('bupagelang.senddep') !!} : {{$buytime1[1]}} {!! __('bupagelang.buytime') !!}
-                                            : {{$buytime1[2]}}</span><br>
-                                        @endif
-                                        @endforeach
-                                    </td>
-                                    <td>
-                                        <select class="form-control form-control-lg" id="data9{{$i}}{{$loop->index}}"
-                                            name="data9{{$i}}{{$loop->index}}" style="width: 200px">
-                                            <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
-                                                !!}</option>
-                                            @foreach($buytimeco as $buytime)
-                                            <option>{{ $buytime[0] }}</option>
-                                            @endforeach
+                        @if($database[$i] === $table)
+                        <tr>
+                            <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
+                                    name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
+                                    value="{{$i}}{{$loop->index}}"></td>
+                            <td><input type="hidden" id="data0{{$i}}{{$loop->index}}" name="data0{{$i}}{{$loop->index}}"
+                                    value={{$database[$i]}}>{{$database[$i]}}</td>
+                            <td><input type="hidden" id="data1{{$i}}{{$loop->index}}" name="data1{{$i}}{{$loop->index}}"
+                                    value={{$data->料號}}>{{$data->料號}}</td>
+                            <td><input type="hidden" id="data2{{$i}}{{$loop->index}}" name="data2{{$i}}{{$loop->index}}"
+                                    value={{$data->品名}}>{{$data->品名}}</td>
+                            <td><input type="hidden" id="data3{{$i}}{{$loop->index}}" name="data3{{$i}}{{$loop->index}}"
+                                    value={{$data->規格}}>{{$data->規格}}</td>
+                            <td><input type="hidden" id="data4{{$i}}{{$loop->index}}" name="data4{{$i}}{{$loop->index}}"
+                                    value={{$data->單位}}>{{$data->單位}}</td>
+                            <td><input type="hidden" id="data5{{$i}}{{$loop->index}}" name="data5{{$i}}{{$loop->index}}"
+                                    value={{$stayday}}>{{$stayday}}</td>
+                            <td><input type="hidden" id="data6{{$i}}{{$loop->index}}" name="data6{{$i}}{{$loop->index}}"
+                                    value={{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
+                            <td><input type="number" id="data7{{$i}}{{$loop->index}}" name="data7{{$i}}{{$loop->index}}"
+                                    value="1" style="width:100px;" min="0"></td>
+                            <td id="data8{{$i}}{{$loop->index}}" name="data8{{$i}}{{$loop->index}}">@foreach ($buytime
+                                as $buytime)
+                                @if( $buytime[2] != null)
+                                <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime[0]}}
+                                    {!! __('bupagelang.senddep') !!} : {{$buytime[1]}} {!! __('bupagelang.buytime') !!}
+                                    : {{$buytime[2]}}</span><br>
+                                @endif
+                                @endforeach
+                                @foreach ($buytime1 as $buytime1)
+                                @if( $buytime1[2] != null)
+                                <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime1[0]}}
+                                    {!! __('bupagelang.senddep') !!} : {{$buytime1[1]}} {!! __('bupagelang.buytime') !!}
+                                    : {{$buytime1[2]}}</span><br>
+                                @endif
+                                @endforeach
+                            </td>
+                            <td>
+                                <select class="form-control form-control-lg" id="data9{{$i}}{{$loop->index}}"
+                                    name="data9{{$i}}{{$loop->index}}" style="width: 200px">
+                                    <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
+                                        !!}</option>
+                                    @foreach($buytimeco as $buytime)
+                                    <option>{{ $buytime[0] }}</option>
+                                    @endforeach
 
-                                    </td>
-                                </tr>
-                            @endif
+                            </td>
+                        </tr>
+                        @endif
                         @else
-                            <tr>
-                                <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
-                                        name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
-                                        value="{{$i}}{{$loop->index}}"></td>
-                                <td><input type="hidden" id="data0{{$i}}{{$loop->index}}" name="data0{{$i}}{{$loop->index}}"
-                                        value={{$database[$i]}}>{{$database[$i]}}</td>
-                                <td><input type="hidden" id="data1{{$i}}{{$loop->index}}" name="data1{{$i}}{{$loop->index}}"
-                                        value={{$data->料號}}>{{$data->料號}}</td>
-                                <td><input type="hidden" id="data2{{$i}}{{$loop->index}}" name="data2{{$i}}{{$loop->index}}"
-                                        value={{$data->品名}}>{{$data->品名}}</td>
-                                <td><input type="hidden" id="data3{{$i}}{{$loop->index}}" name="data3{{$i}}{{$loop->index}}"
-                                        value={{$data->規格}}>{{$data->規格}}</td>
-                                <td><input type="hidden" id="data4{{$i}}{{$loop->index}}" name="data4{{$i}}{{$loop->index}}"
-                                        value={{$data->單位}}>{{$data->單位}}</td>
-                                <td><input type="hidden" id="data5{{$i}}{{$loop->index}}" name="data5{{$i}}{{$loop->index}}"
-                                        value={{$stayday}}>{{$stayday}}</td>
-                                <td><input type="hidden" id="data6{{$i}}{{$loop->index}}" name="data6{{$i}}{{$loop->index}}"
-                                        value={{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
-                                <td><input type="number" id="data7{{$i}}{{$loop->index}}" name="data7{{$i}}{{$loop->index}}"
-                                        value="" style="width:100px;"></td>
-                                <td id="data8{{$i}}{{$loop->index}}" name="data8{{$i}}{{$loop->index}}">@foreach ($buytime
-                                    as $buytime)
-                                    @if( $buytime[2] != null)
-                                    <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime[0]}}
-                                        {!! __('bupagelang.senddep') !!} : {{$buytime[1]}} {!! __('bupagelang.buytime') !!}
-                                        : {{$buytime[2]}}</span><br>
-                                    @endif
+                        <tr>
+                            <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
+                                    name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
+                                    value="{{$i}}{{$loop->index}}"></td>
+                            <td><input type="hidden" id="data0{{$i}}{{$loop->index}}" name="data0{{$i}}{{$loop->index}}"
+                                    value={{$database[$i]}}>{{$database[$i]}}</td>
+                            <td><input type="hidden" id="data1{{$i}}{{$loop->index}}" name="data1{{$i}}{{$loop->index}}"
+                                    value={{$data->料號}}>{{$data->料號}}</td>
+                            <td><input type="hidden" id="data2{{$i}}{{$loop->index}}" name="data2{{$i}}{{$loop->index}}"
+                                    value={{$data->品名}}>{{$data->品名}}</td>
+                            <td><input type="hidden" id="data3{{$i}}{{$loop->index}}" name="data3{{$i}}{{$loop->index}}"
+                                    value={{$data->規格}}>{{$data->規格}}</td>
+                            <td><input type="hidden" id="data4{{$i}}{{$loop->index}}" name="data4{{$i}}{{$loop->index}}"
+                                    value={{$data->單位}}>{{$data->單位}}</td>
+                            <td><input type="hidden" id="data5{{$i}}{{$loop->index}}" name="data5{{$i}}{{$loop->index}}"
+                                    value={{$stayday}}>{{$stayday}}</td>
+                            <td><input type="hidden" id="data6{{$i}}{{$loop->index}}" name="data6{{$i}}{{$loop->index}}"
+                                    value={{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
+                            <td><input type="number" class="form-control form-control-lg"
+                                    id="data7{{$i}}{{$loop->index}}" name="data7{{$i}}{{$loop->index}}" value="1"
+                                    style="width:100px;" min="0"></td>
+                            <td id="data8{{$i}}{{$loop->index}}" name="data8{{$i}}{{$loop->index}}">@foreach ($buytime
+                                as $buytime)
+                                @if( $buytime[2] != null)
+                                <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime[0]}}
+                                    {!! __('bupagelang.senddep') !!} : {{$buytime[1]}} {!! __('bupagelang.buytime') !!}
+                                    : {{$buytime[2]}}</span><br>
+                                @endif
+                                @endforeach
+                                @foreach ($buytime1 as $buytime1)
+                                @if( $buytime1[2] != null)
+                                <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime1[0]}}
+                                    {!! __('bupagelang.senddep') !!} : {{$buytime1[1]}} {!! __('bupagelang.buytime') !!}
+                                    : {{$buytime1[2]}}</span><br>
+                                @endif
+                                @endforeach
+                            </td>
+                            <td>
+                                <select class="form-select form-select-lg" id="data9{{$i}}{{$loop->index}}"
+                                    name="data9{{$i}}{{$loop->index}}" style="width: 200px">
+                                    <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
+                                        !!}</option>
+                                    @foreach($buytimeco as $buytime)
+                                    <option>{{ $buytime[0] }}</option>
                                     @endforeach
-                                    @foreach ($buytime1 as $buytime1)
-                                    @if( $buytime1[2] != null)
-                                    <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime1[0]}}
-                                        {!! __('bupagelang.senddep') !!} : {{$buytime1[1]}} {!! __('bupagelang.buytime') !!}
-                                        : {{$buytime1[2]}}</span><br>
-                                    @endif
-                                    @endforeach
-                                </td>
-                                <td>
-                                    <select class="form-control form-control-lg" id="data9{{$i}}{{$loop->index}}"
-                                        name="data9{{$i}}{{$loop->index}}" style="width: 200px">
-                                        <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
-                                            !!}</option>
-                                        @foreach($buytimeco as $buytime)
-                                        <option>{{ $buytime[0] }}</option>
-                                        @endforeach
 
-                                </td>
+                            </td>
 
 
 
 
-                            </tr>
+                        </tr>
                         @endif
                         @endforeach
-                    @endfor
+                        @endfor
                 </table>
         </div>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

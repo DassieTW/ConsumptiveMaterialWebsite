@@ -52,4 +52,11 @@ return [
     'custom_range' => '自订',
     'apply' => '确定',
     'cancel' => '取消',
+    
+    'taipei' => '台北企总EIP',
+    'dep' => '部门网站',
+    'project' => '专案网站',
+    'east' => '华东EIP',
+    'west' => '华西EIP',
+    'middle' => '华中EIP',
 ];

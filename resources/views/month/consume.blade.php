@@ -74,7 +74,8 @@
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input
                                     class="form-control form-control-lg col col-auto @error('number') is-invalid @enderror"
-                                    type="text" id="number" name="number" placeholder="{!! __('monthlyPRpageLang.enterisn') !!}">
+                                    type="text" id="number" name="number" placeholder="{!! __('monthlyPRpageLang.enterisn') !!}"
+                                    oninput="if(value.length>12)value=value.slice(0,12)">
                                 @error('number')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -87,7 +88,7 @@
                             <label class="col col-auto form-label">{!! __('monthlyPRpageLang.senddep') !!}</label>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
-                                <select class="form-control form-control-lg" id="send" name="send">
+                                <select class="form-select form-select-lg" id="send" name="send">
                                     <option style="display: none" disabled selected>{!!
                                         __('monthlyPRpageLang.entersenddep')
                                         !!}

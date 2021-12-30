@@ -22,7 +22,7 @@
                 <div class="table-responsive">
                         <form action="{{ route('bu.delete') }}" method="POST" id = "bulist">
                             @csrf
-                            <input type = "hidden" id = "title" name = "title" value = "調撥單查詢">
+                            <input type = "hidden" id = "titlename" name = "titlename" value = "調撥單查詢">
                         <table class="table" id = "inboundsearch">
                             <tr id = "require">
                                 <th>{!! __('bupagelang.delete') !!}</th>
@@ -43,28 +43,28 @@
                                 <th><input type = "hidden" id = "title14" name = "title14" value = "開單時間">{!! __('bupagelang.opentime') !!}</th>
                                 <th><input type = "hidden" id = "title15" name = "title15" value = "出庫時間">{!! __('bupagelang.outboundtime') !!}</th>
                                 <th><input type = "hidden" id = "title16" name = "title16" value = "入庫時間">{!! __('bupagelang.inboundtime') !!}</th>
-                                <input type = "hidden" id = "time" name = "time" value = "17">
+                                <input type = "hidden" id = "titlecount" name = "titlecount" value = "17">
                             </tr>
                                 @foreach($data as $data)
                                 <tr id= "list{{$loop->index}}">
                                     <td><input class ="basic" type="checkbox" id="check{{$loop->index}}" name="check{{$loop->index}}" style="width:20px;height:20px;"  value="{{$loop->index}}"></td>
-                                    <td><input type = "hidden" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$data->調撥單號}}">{{$data->調撥單號}}</td>
-                                    <td><input type = "hidden" id = "data1{{$loop->index}}" name = "data1{{$loop->index}}" value = "{{$data->狀態}}">{{$data->狀態}}</td>
-                                    <td><input type = "hidden" id = "data2{{$loop->index}}" name = "data2{{$loop->index}}" value = "{{$data->撥出廠區}}">{{$data->撥出廠區}}</td>
-                                    <td><input type = "hidden" id = "data3{{$loop->index}}" name = "data3{{$loop->index}}" value = "{{$data->接收廠區}}">{{$data->接收廠區}}</td>
-                                    <td><input type = "hidden" id = "data4{{$loop->index}}" name = "data4{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
-                                    <td><input type = "hidden" id = "data5{{$loop->index}}" name = "data5{{$loop->index}}" value = "{{$data->品名}}">{{$data->品名}}</td>
-                                    <td><input type = "hidden" id = "data6{{$loop->index}}" name = "data6{{$loop->index}}" value = "{{$data->規格}}">{{$data->規格}}</td>
-                                    <td><input type = "hidden" id = "data7{{$loop->index}}" name = "data7{{$loop->index}}" value = "{{$data->單位}}">{{$data->單位}}</td>
-                                    <td><input type = "hidden" id = "data8{{$loop->index}}" name = "data8{{$loop->index}}" value = "{{$data->庫存}}">{{$data->庫存}}</td>
-                                    <td><input type = "hidden" id = "data9{{$loop->index}}" name = "data9{{$loop->index}}" value = "{{$data->調撥數量}}">{{$data->調撥數量}}</td>
-                                    <td><input type = "hidden" id = "data10{{$loop->index}}" name = "data10{{$loop->index}}" value = "{{$data->調撥人}}">{{$data->調撥人}}</td>
-                                    <td><input type = "hidden" id = "data11{{$loop->index}}" name = "data11{{$loop->index}}" value = "{{$data->接收人}}">{{$data->接收人}}</td>
-                                    <td><input type = "hidden" id = "data12{{$loop->index}}" name = "data12{{$loop->index}}" value = "{{$data->撥出數量}}">{{$data->撥出數量}}</td>
-                                    <td><input type = "hidden" id = "data13{{$loop->index}}" name = "data13{{$loop->index}}" value = "{{$data->接收數量}}">{{$data->接收數量}}</td>
-                                    <td><input type = "hidden" id = "data14{{$loop->index}}" name = "data14{{$loop->index}}" value = "{{$data->開單時間}}">{{$data->開單時間}}</td>
-                                    <td><input type = "hidden" id = "data15{{$loop->index}}" name = "data15{{$loop->index}}" value = "{{$data->出庫時間}}">{{$data->出庫時間}}</td>
-                                    <td><input type = "hidden" id = "data16{{$loop->index}}" name = "data16{{$loop->index}}" value = "{{$data->入庫時間}}">{{$data->入庫時間}}</td>
+                                    <td><input type = "hidden" id = "dataa{{$loop->index}}" name = "dataa{{$loop->index}}" value = "{{$data->調撥單號}}">{{$data->調撥單號}}</td>
+                                    <td><input type = "hidden" id = "datab{{$loop->index}}" name = "datab{{$loop->index}}" value = "{{$data->狀態}}">{{$data->狀態}}</td>
+                                    <td><input type = "hidden" id = "datac{{$loop->index}}" name = "datac{{$loop->index}}" value = "{{$data->撥出廠區}}">{{$data->撥出廠區}}</td>
+                                    <td><input type = "hidden" id = "datad{{$loop->index}}" name = "datad{{$loop->index}}" value = "{{$data->接收廠區}}">{{$data->接收廠區}}</td>
+                                    <td><input type = "hidden" id = "datae{{$loop->index}}" name = "datae{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
+                                    <td><input type = "hidden" id = "dataf{{$loop->index}}" name = "dataf{{$loop->index}}" value = "{{$data->品名}}">{{$data->品名}}</td>
+                                    <td><input type = "hidden" id = "datag{{$loop->index}}" name = "datag{{$loop->index}}" value = "{{$data->規格}}">{{$data->規格}}</td>
+                                    <td><input type = "hidden" id = "datah{{$loop->index}}" name = "datah{{$loop->index}}" value = "{{$data->單位}}">{{$data->單位}}</td>
+                                    <td><input type = "hidden" id = "datai{{$loop->index}}" name = "datai{{$loop->index}}" value = "{{$data->庫存}}">{{$data->庫存}}</td>
+                                    <td><input type = "hidden" id = "dataj{{$loop->index}}" name = "dataj{{$loop->index}}" value = "{{$data->調撥數量}}">{{$data->調撥數量}}</td>
+                                    <td><input type = "hidden" id = "datak{{$loop->index}}" name = "datak{{$loop->index}}" value = "{{$data->調撥人}}">{{$data->調撥人}}</td>
+                                    <td><input type = "hidden" id = "datal{{$loop->index}}" name = "datal{{$loop->index}}" value = "{{$data->接收人}}">{{$data->接收人}}</td>
+                                    <td><input type = "hidden" id = "datam{{$loop->index}}" name = "datam{{$loop->index}}" value = "{{$data->撥出數量}}">{{$data->撥出數量}}</td>
+                                    <td><input type = "hidden" id = "datan{{$loop->index}}" name = "datan{{$loop->index}}" value = "{{$data->接收數量}}">{{$data->接收數量}}</td>
+                                    <td><input type = "hidden" id = "datao{{$loop->index}}" name = "datao{{$loop->index}}" value = "{{$data->開單時間}}">{{$data->開單時間}}</td>
+                                    <td><input type = "hidden" id = "datap{{$loop->index}}" name = "datap{{$loop->index}}" value = "{{$data->出庫時間}}">{{$data->出庫時間}}</td>
+                                    <td><input type = "hidden" id = "dataq{{$loop->index}}" name = "dataq{{$loop->index}}" value = "{{$data->入庫時間}}">{{$data->入庫時間}}</td>
                                 </tr>
                                 <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                 @endforeach

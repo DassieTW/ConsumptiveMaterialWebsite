@@ -46,7 +46,7 @@
                             <div class="col-lg-6  col-md-12 col-sm-12">
 
                                 <input class="form-control form-control-lg" type="text" id="number" name="number"
-                                    placeholder="{!! __('monthlyPRpageLang.enterisn') !!}">
+                                    placeholder="{!! __('monthlyPRpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

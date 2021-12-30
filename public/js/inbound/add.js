@@ -35,7 +35,7 @@ function appenSVg(index) {
     $('#deleteBtn' + index).on('click', function (e) {
 
         e.preventDefault();
-        notyf.error({
+        notyf.success({
             message: Lang.get("inboundpageLang.delete") +
                 Lang.get("inboundpageLang.success"),
             duration: 3000, //miliseconds, use 0 for infinite duration
@@ -350,12 +350,22 @@ $(document).ready(function () {
             },
             success: function (data) {
                 var mess = Lang.get('inboundpageLang.total') + ' : ' + data.record + Lang.get('inboundpageLang.record') + ' ' +
-                Lang.get('inboundpageLang.add') + Lang.get('inboundpageLang.success') + ' ' + Lang.get('inboundpageLang.inlist') + ' : ' + data.message;
+                    Lang.get('inboundpageLang.add') + Lang.get('inboundpageLang.success') + ' ' + Lang.get('inboundpageLang.inlist') + ' : ' + data.message;
                 alert(mess);
                 window.location.href = "/inbound/add";
 
             },
             error: function (err) {
+                //入庫數量大於在途量
+                if (err.status == 420) {
+                    let j = err.responseJSON.row - 1;
+                    var mess = Lang.get('inboundpageLang.row') + ' : ' + err.responseJSON.row + Lang.get('inboundpageLang.transiterror') +
+                        ' ' + Lang.get('inboundpageLang.client') + ' : ' + err.responseJSON.client + ' ' + Lang.get('inboundpageLang.isn') + ' : ' +
+                        err.responseJSON.number;
+                    alert(mess);
+                    $("#amount" + row[j]).addClass("is-invalid");
+                    return false;
+                }
                 //transaction error
                 if (err.status == 421) {
                     alert(err.responseJSON.message);

@@ -35,6 +35,9 @@
                                 <option value="M2_TEST_1112">M2_TEST</option>
                                 <option value="巴淡SMT1214">巴淡SMT_TEST</option>
                                 <option value="BB1_1214 Consumables management">BB1_TEST</option>
+                                <option value="巴淡-LOT11 Consumables management">巴淡-LOT11</option>
+                                <option value="巴淡-LOT2 Consumables management">巴淡-LOT2</option>
+                                <option value="巴淡-PTSN Consumables management">巴淡-PTSN</option>
                             </select>
                         </div>
 
@@ -50,6 +53,9 @@
                                 <option value="M2_TEST_1112">M2_TEST</option>
                                 <option value="巴淡SMT1214">巴淡SMT_TEST</option>
                                 <option value="BB1_1214 Consumables management">BB1_TEST</option>
+                                <option value="巴淡-LOT11 Consumables management">巴淡-LOT11</option>
+                                <option value="巴淡-LOT2 Consumables management">巴淡-LOT2</option>
+                                <option value="巴淡-PTSN Consumables management">巴淡-PTSN</option>
                             </select>
                         </div>
 
@@ -59,7 +65,8 @@
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <div class="col-lg-6  col-md-12 col-sm-12">
                             <input class="form-control form-control-lg @error('number') is-invalid @enderror"
-                                type="text" id="number" name="number" placeholder="{!! __('bupagelang.enterisn') !!}">
+                                type="text" id="number" name="number" placeholder="{!! __('bupagelang.enterisn') !!}"
+                                oninput="if(value.length>12)value=value.slice(0,12)">
                             @error('number')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -81,7 +88,7 @@
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">
                                 <label class="col col-auto form-label">{!! __('bupagelang.begindate') !!}</label>:
-                                <input type="date" id="begin" name="begin" value="<?php echo date('Y-m-d'); ?>" />
+                                <input class = "form-control form-control-lg" type="date" id="begin" name="begin" value="<?php echo date('Y-m-d'); ?>" />
                             </div>
                         </div>
 
@@ -90,7 +97,7 @@
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">
                                 <label class="col col-auto form-label">{!! __('bupagelang.enddate') !!}</label>:
-                                <input type="date" id="end" name="end" value="<?php echo date('Y-m-d'); ?>" />
+                                <input  class = "form-control form-control-lg" type="date" id="end" name="end" value="<?php echo date('Y-m-d'); ?>" />
                             </div>
                         </div>
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

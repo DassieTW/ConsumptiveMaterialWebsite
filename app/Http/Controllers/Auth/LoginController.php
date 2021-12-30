@@ -139,49 +139,32 @@ class LoginController extends Controller
     //register login people
     public function register(Request $request)
     {
-        if ($request->input('username') !== null && $request->input('password2') !== null) {
-            if ($request->input('password') === $request->input('password2')) {
-                $username = $request->input('username');
-                //$password = Hash::make($request->input('password'));
-                $password = $request->input('password');
-                $priority = $request->input('priority');
-                $name = $request->input('name');
-                $department = $request->input('department');
-                $profilePic = intval($request->flexRadioDefault);
-                $names = DB::table('login')->pluck('username');
-                for ($i = 0; $i < count($names); $i++) {
-                    if (strcasecmp($username, $names[$i]) === 0) {
+        $username = $request->input('username');
+        //$password = Hash::make($request->input('password'));
+        $password = $request->input('password');
+        $priority = $request->input('priority');
+        $name = $request->input('name');
+        $department = $request->input('department');
+        $profilePic = intval($request->input('profilePic'));
+        $names = DB::table('login')->pluck('username');
+        for ($i = 0; $i < count($names); $i++) {
+            if (strcasecmp($username, $names[$i]) === 0) {
 
-                        return back()->withErrors([
-                            'username' => trans('loginPageLang.usernamerepeat'),
-                        ]);
-                    } else {
-                        continue;
-                    }
-                } // for
-
-                DB::table('login')
-                    ->insert([
-                        'username' => $username, 'password' => $password, 'priority' => $priority,
-                        '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic/*, 'created_at' => Carbon::now()*/
-                    ]);
-
-                $request->session()->flush();
-
-                $mess = trans('loginPageLang.new') . trans('loginPageLang.success') . trans('loginPageLang.againlogin');
-                echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='login';
-                    </script>");
+                return \Response::json(['message' => 'username repeat'], 420/* Status code here default is 200 ok*/);
             } else {
-                return back()->withErrors([
-                    'password' => '',
-                    'password2' => trans('loginPageLang.errorpassword2'),
-                ]);
+                continue;
             }
-        } else {
-            return view('member.register');
-        } // if else
+        } // for
+
+        DB::table('login')
+            ->insert([
+                'username' => $username, 'password' => $password, 'priority' => $priority,
+                '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic/*, 'created_at' => Carbon::now()*/
+            ]);
+
+        $request->session()->flush();
+
+        return \Response::json(['message' => 'success insert']/* Status code here default is 200 ok*/);
     }
 
     //change password

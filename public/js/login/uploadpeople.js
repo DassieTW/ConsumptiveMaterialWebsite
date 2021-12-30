@@ -31,14 +31,16 @@ $(document).ready(function () {
         }
 
         for (let i = 0; i < count; i++) {
-            if (number[i].length !== 9) {
-                var errorrow = i + 1;
-                var mess = Lang.get('loginPageLang.row') + ' ' + errorrow + ' ' + Lang.get('loginPageLang.joblength');
-                alert(mess);
-                $("#data0" + i).addClass("is-invalid");
-                return false;
-            } else {
-                continue;
+            if (number[i] !== undefined) {
+                if (number[i].length !== 9) {
+                    var errorrow = i + 1;
+                    var mess = Lang.get('loginPageLang.row') + ' ' + errorrow + ' ' + Lang.get('loginPageLang.joblength');
+                    alert(mess);
+                    $("#data0" + i).addClass("is-invalid");
+                    return false;
+                } else {
+                    continue;
+                }
             }
         }
         $.ajax({
