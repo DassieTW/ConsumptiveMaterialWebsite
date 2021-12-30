@@ -178,7 +178,7 @@ $(document).ready(function () {
         var past_three_months = Lang.get('templateWords.past_three_months');
         var tody = Lang.get('templateWords.today');
         var json_rangeObj = {};
-        json_rangeObj[tody] = [moment(), moment()];
+        json_rangeObj[tody] = [moment().subtract(1, 'day').startOf('day'), moment().add(1, 'day').endOf('day')];
         json_rangeObj[past_three_months] = [moment().subtract(3, 'month').startOf('month'), moment().subtract(0, 'month').endOf('month')];
         json_rangeObj[all_history_records] = [moment().subtract(99, 'year').startOf('year'), moment().subtract(0, 'month').endOf('month')];
 
