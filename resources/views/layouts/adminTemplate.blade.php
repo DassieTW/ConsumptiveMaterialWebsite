@@ -1045,19 +1045,22 @@
                                     class="avatar img-fluid rounded mr-1" alt="Charles Hall" /> <span
                                     class="text-dark">{{ \Auth::user()->姓名 }}</span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="user"></i>
-                                    Profile</a>
-                                <a class="dropdown-item disabled" style="color : #495057;" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+                            <div class="dropdown-menu dropdown-menu-end align-items-center">
+                                <a class="dropdown-item" href="#">
+                                    <i class="p-0 mr-1" data-feather="user"></i>
+                                    <span>Profile</span>
+                                </a>
+                                <a class="dropdown-item disabled align-items-center" style="color : #495057;" href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-building p-0 mr-1" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
                                         <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
                                     </svg>
-                                    {{ str_replace("Consumables management", "", \Session::get('database'))}}
+                                    <span>{{ str_replace("Consumables management", "", \Session::get('database'))}}</span>
                                 </a>
-                                <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu"
-                                    aria-expanded="false"><i class="align-middle mr-1" data-feather="book-open"></i>
-                                    {!! __('templateWords.language') !!}</a>
+                                <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu" aria-expanded="false">
+                                    <i class="p-0 mr-1" data-feather="book-open"></i>
+                                    <span>{!! __('templateWords.language') !!}</span>
+                                </a>
                                 <div class="collapse" id="langMenu">
                                     <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
                                         English</a>
@@ -1067,14 +1070,18 @@
                                         简体中文</a>
                                 </div>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><i class="align-middle mr-1"
-                                        data-feather="settings"></i> Settings</a>
-                                <a class="dropdown-item" href="#"><i class="align-middle mr-1"
-                                        data-feather="help-circle"></i> Help Center</a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="p-0 mr-1" data-feather="settings"></i>
+                                    <span>Settings</span>
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="p-0 mr-1" data-feather="help-circle"></i>
+                                    <span>Help Center</span>
+                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" id="logoutbtn" href="{{ route('member.logout') }}">
-                                    <i class="align-middle mr-1" data-feather="log-out"></i>
-                                    {!! __('templateWords.logout_btn') !!}
+                                    <i class="p-0 mr-1" data-feather="log-out"></i>
+                                    <span>{!! __('templateWords.logout_btn') !!}</span>
                                 </a>
                             </div>
                         </li>

@@ -55,4 +55,12 @@ return [
     'existed_tables' => '已有近期盤點表',
     'continue_check' => '續盤',
     'has_exist_sheet_confirm' => '已有近期盤點表，請確認是否仍須建立新盤點表？',
+
+    //check result lang
+    'time_range' => '時間',
+    'checked' => '已盤點',
+    'not_checked' => '未盤點',
+    'search_by' => '搜尋',
+    'sort_by' => '篩選',
+    'loc_short' => '儲位',
 ];
