@@ -63,7 +63,7 @@
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">
                                 <input type="submit" class="btn btn-lg btn-primary"
-                                    value="{!! __('oboundpageLang.addtodatabase') !!}">
+                                    value="{!! __('oboundpageLang.add') !!}">
                             </div>
                         </div>
                     </div>
@@ -71,8 +71,32 @@
             </div>
         </div>
     </div>
-    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+    <div class="card w-75" id="materialbody">
+        <div class="card-body">
+            <form id="materialadd" style="display: none">
+                @csrf
+                <div class="table-responsive">
+                    <table class="table" id="materialaddtable">
+                        <tbody id="materialaddbody">
+                            <tr>
+                                <th>{!! __('oboundpageLang.delete') !!}</th>
+                                <th>{!! __('oboundpageLang.isn') !!}</th>
+                                <th>{!! __('oboundpageLang.pName') !!}</th>
+                                <th>{!! __('oboundpageLang.format') !!}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
+                <div class="row w-100 justify-content-center">
+                    <div class="col col-auto">
+                        <input type="submit" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.addtodatabase') !!}">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

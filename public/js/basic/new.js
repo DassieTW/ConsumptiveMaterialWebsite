@@ -292,7 +292,7 @@ $(document).ready(function () {
                 month.push($("#month" + i).val());
                 send.push($("#send" + i).val());
                 safe.push($("#safe" + i).val());
-                row.push(i);
+                row.push(i.toString());
             }
         }
 

@@ -552,7 +552,6 @@ class InboundController extends Controller
     //入庫-新增提交
     public function addnewsubmit(Request $request)
     {
-
         if (Session::has('username')) {
             $Alldata = json_decode($request->input('AllData'));
             $count = count($Alldata[0]);
@@ -760,12 +759,19 @@ class InboundController extends Controller
     public function insertuploadinventory(Request $request)
     {
         if (Session::has('username')) {
+            $positions = DB::table('儲位')->pluck('儲存位置')->toArray();
             $count = $request->input('count');
             $now = Carbon::now();
             $Alldata = json_decode($request->input('AllData'));
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
+
+                    if(!(in_array($Alldata[3][$i],$positions)))
+                    {
+                        DB::table('儲位')
+                            ->insert(['儲存位置' => $Alldata[5][$i]]);
+                    }
 
                     $stock = DB::table('inventory')->where('客戶別', $Alldata[0][$i])->where('料號', $Alldata[1][$i])->where('儲位', $Alldata[3][$i])->value('現有庫存');
 

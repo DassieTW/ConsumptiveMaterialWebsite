@@ -30,18 +30,6 @@ if($i === false)
             </script>");
 }
 
-//判斷是否有這個儲位
-if(in_array($row[3],$positions)) $j = true;
-
-if($j === false)
-{
-
-    $mess = trans('inboundpageLang.noloc').' '.trans('inboundpageLang.row').' : '.$error.' '.$row[3];
-    echo ("<script LANGUAGE='JavaScript'>
-            window.alert('$mess');
-            window.location.href='upload';
-            </script>");
-}
 ?>
 @endforeach
 @extends('layouts.adminTemplate')
@@ -96,13 +84,8 @@ if($j === false)
                         <td><input type="number" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
                                 value="{{$row[2]}}" required min="1" class = "form-control form-control-lg"></td>
                         <td>
-                            <select class="form-select form-select-lg" id="data3{{$loop->index}}"
-                                name="data3{{$loop->index}}">
-                                <option style="display: none" selected value="{{$row[3]}}">{{$row[3]}}</option>
-                                @foreach($positions as $position)
-                                <option>{{ $position }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" id="data3{{$loop->index}}" name="data3{{$loop->index}}"
+                                value="{{$row[2]}}" required class = "form-control form-control-lg"></td>
                         </td>
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">

@@ -55,7 +55,8 @@
 
                             </table>
                         </div>
-                        <br>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.delete') !!}">
                             <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.download') !!}">
                         </form>

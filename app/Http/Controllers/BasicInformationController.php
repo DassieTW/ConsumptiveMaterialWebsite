@@ -514,8 +514,6 @@ class BasicInformationController extends Controller
                     'money' => $money, 'unit' => $unit, 'mpq' => $mpq, 'moq' => $moq, 'lt' => $lt, 'month' => $month,
                     'gradea' => $gradea, 'belong' => $belong, 'send' => $send, 'safe' => $safe
                 ]/* Status code here default is 200 ok*/);
-            } else {
-                return view('basic.new')->with(['data' => 發料部門::cursor()]);
             }
         } else {
             return redirect(route('member.login'));

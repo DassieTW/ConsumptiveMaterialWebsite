@@ -81,7 +81,7 @@
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">
                                 <label class="form-label">{!! __('oboundpageLang.begindate') !!}</label>:
-                                <input type="date" id="begin" name="begin" value="<?php echo date('Y-m-d'); ?>" />
+                                <input class = "form-control form-control-lg" type="date" id="begin" name="begin" value="<?php echo date('Y-m-d'); ?>" />
                             </div>
                         </div>
 
@@ -90,7 +90,7 @@
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">
                                 <label class="form-label">{!! __('oboundpageLang.enddate') !!}</label>:
-                                <input type="date" id="end" name="end" value="<?php echo date('Y-m-d'); ?>" />
+                                <input class = "form-control form-control-lg" type="date" id="end" name="end" value="<?php echo date('Y-m-d'); ?>" />
                             </div>
                         </div>
 

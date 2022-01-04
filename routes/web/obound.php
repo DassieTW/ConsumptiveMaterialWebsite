@@ -1,7 +1,25 @@
 <?php
-
+use App\Models\人員信息;
+use App\Models\入庫原因;
+use App\Models\客戶別;
+use App\Models\發料部門;
+use App\Models\製程;
+use App\Models\領用原因;
+use App\Models\領用部門;
+use App\Models\廠別;
+use App\Models\線別;
+use App\Models\機種;
+use App\Models\儲位;
+use App\Models\退回原因;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OboundController;
+use App\Models\O庫;
+use App\Models\O庫Material;
+use App\Models\O庫Inbound;
+use App\Models\O庫Inventory;
+use App\Models\O庫不良品Inventory;
+use App\Models\O庫Outbound;
+use App\Models\O庫出庫退料;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,54 +29,60 @@ use App\Http\Controllers\OboundController;
 */
 
 //O庫
-Route::get('/', [OboundController::class, 'index'])->name('obound.index')->middleware('can:viewObound,App\Models\O庫');
+Route::get('/', function () {
+    return view('obound.index');
+})->name('obound.index')->middleware('can:viewObound,App\Models\O庫');
 
 //新增料件
 
-Route::get('/new', [OboundController::class, 'new'])->middleware('can:oboundNewMat,App\Models\O庫');
+Route::get('/new', function () {
+    return view('obound.new');
+})->name('obound.new')->middleware('can:oboundNewMat,App\Models\O庫');
 
-Route::post('/new', [OboundController::class, 'new'])->name('obound.new')->middleware('can:oboundNewMat,App\Models\O庫');
-
-//新增料件成功
-Route::get('/newok', [OboundController::class, 'newok'])->middleware('can:oboundNewMat,App\Models\O庫');
-
-//新增料件批量上傳   ???? 現在沒用到了？？？
-Route::get('/uploadmaterial', [OboundController::class, 'uploadmaterialpage'])->middleware('can:oboundNewMat,App\Models\O庫');
+//新增料件批量上傳
+Route::get('/uploadmaterial', function () {
+    return view('obound.new');
+})->middleware('can:oboundNewMat,App\Models\O庫');
 
 Route::post('/uploadmaterial', [OboundController::class, 'uploadmaterial'])->name('obound.uploadmaterial')->middleware('can:oboundNewMat,App\Models\O庫');
 
 //基礎資料上傳新增至資料庫
 Route::post('/insertuploadmaterial', [OboundController::class, 'insertuploadmaterial'])->name('obound.insertuploadmaterial')->middleware('can:oboundNewMat,App\Models\O庫');
 
-
 //料件信息查詢頁面
-Route::get('/material', [OboundController::class, 'material'])->name('obound.material')->middleware('can:oboundMatSearch,App\Models\O庫');
+Route::get('/material', function () {
+    return view('obound.searchmaterial');
+})->name('obound.material')->middleware('can:oboundMatSearch,App\Models\O庫');
 
 
 //料件信息查詢
-Route::get('/materialsearch', [OboundController::class, 'searchmaterial'])->middleware('can:oboundMatSearch,App\Models\O庫');
+Route::get('/materialsearch', function () {
+    return view('obound.searchmaterialok')->with(['data' => O庫Material::cursor()]);
+})->middleware('can:oboundMatSearch,App\Models\O庫');
 
 Route::post('/materialsearch', [OboundController::class, 'searchmaterial'])->name('obound.searchmaterial')->middleware('can:oboundMatSearch,App\Models\O庫');
 
-//O庫-入庫頁面
-Route::get('/inbound', [OboundController::class, 'inbound'])->name('obound.inbound')->middleware('can:oboundIn,App\Models\O庫');
 
+//O庫-入庫頁面
+Route::get('/inbound', function () {
+    return view('obound.inbound')->with(['client' => 客戶別::cursor()])
+        ->with(['inreason' => 入庫原因::cursor()])
+        ->with(['bounds' => O庫::cursor()])
+        ->with(['peoples' => 人員信息::cursor()])
+        ->with(['checks' => 人員信息::cursor()]);
+})->name('obound.inbound')->middleware('can:oboundIn,App\Models\O庫');
 
 //O庫-入庫新增
 Route::post('/inboundnew', [OboundController::class, 'inboundnew'])->name('obound.inboundnew')->middleware('can:oboundIn,App\Models\O庫');
 
-
-//O庫-入庫新增添加頁面
-Route::get('/inboundnewok', [OboundController::class, 'inboundnewok'])->middleware('can:oboundIn,App\Models\O庫');
-
 //O庫-入庫新增提交
 Route::post('/inboundnewsubmit', [OboundController::class, 'inboundnewsubmit'])->name('obound.inboundnewsubmit')->middleware('can:oboundIn,App\Models\O庫');
 
-//O庫-入庫提交新增成功
-Route::get('/inboundnewsubmitok', [OboundController::class, 'inboundnewsubmitok'])->name('obound.inboundnewsubmitok')->middleware('can:oboundIn,App\Models\O庫');
-
 //O庫-入庫查詢頁面
-Route::get('/inboundsearch', [OboundController::class, 'inboundsearch'])->name('obound.inboundsearch')->middleware('can:oboundInSearch,App\Models\O庫');
+Route::get('/inboundsearch', function(){
+    return view('obound.inboundsearch')->with(['client' => 客戶別::cursor()])
+    ->with(['bound' => O庫::cursor()]);
+})->name('obound.inboundsearch')->middleware('can:oboundInSearch,App\Models\O庫');
 
 //O庫-入庫查詢ok
 Route::get('/inboundsearchok', [OboundController::class, 'inboundsearchok'])->middleware('can:oboundInSearch,App\Models\O庫');
@@ -69,10 +93,14 @@ Route::post('/inboundsearchok', [OboundController::class, 'inboundsearchok'])->n
 Route::post('/delete', [OboundController::class, 'delete'])->name('obound.delete')->middleware('can:oboundInSearch,App\Models\O庫');
 
 //O庫-庫存上傳頁面
-Route::get('/upload', [OboundController::class, 'upload'])->name('obound.upload')->middleware('can:oboundStockUpload,App\Models\O庫');
+Route::get('/upload', function(){
+    return view('obound.upload');
+})->name('obound.upload')->middleware('can:oboundStockUpload,App\Models\O庫');
 
 //O庫-新增料件上傳
-Route::get('/uploadinventory', [OboundController::class, 'uploadinventorypage'])->middleware('can:oboundStockUpload,App\Models\O庫');
+Route::get('/uploadinventory', function(){
+    return view('obound.upload');
+})->middleware('can:oboundStockUpload,App\Models\O庫');
 
 Route::post('/uploadinventory', [OboundController::class, 'uploadinventory'])->name('obound.uploadinventory')->middleware('can:oboundStockUpload,App\Models\O庫');
 
@@ -80,7 +108,10 @@ Route::post('/uploadinventory', [OboundController::class, 'uploadinventory'])->n
 Route::post('/insertuploadinventory', [OboundController::class, 'insertuploadinventory'])->name('obound.insertuploadinventory')->middleware('can:oboundStockUpload,App\Models\O庫');
 
 //O庫-庫存查詢頁面
-Route::get('/searchstock', [OboundController::class, 'searchstock'])->name('obound.searchstock')->middleware('can:oboundStockSearch,App\Models\O庫');
+Route::get('/searchstock', function(){
+    return view('obound.searchstock')->with(['client' => 客戶別::cursor()])
+                ->with(['bound' => O庫::cursor()]);
+})->name('obound.searchstock')->middleware('can:oboundStockSearch,App\Models\O庫');
 
 //O庫-庫存查詢成功
 Route::get('/searchstocksubmit', [OboundController::class, 'searchstocksubmit'])->middleware('can:oboundStockSearch,App\Models\O庫');

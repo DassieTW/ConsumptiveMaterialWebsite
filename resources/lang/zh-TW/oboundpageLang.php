@@ -128,4 +128,8 @@ return [
     'upload1' => '上傳',
     'timepart' => '時間段',
     'amount' => '數量',
+    'matsdata' => '料件資料',
+    'yellowrepeat' => '黃底標表示資料庫已存放在資料庫內',
+    'data' => '資料',
+
 ];

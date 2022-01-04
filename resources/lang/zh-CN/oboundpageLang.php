@@ -128,4 +128,7 @@ return [
     'upload1' => '上传',
     'timepart' => '时间段',
     'amount' => '数量',
+    'matsdata' => '料件资料',
+    'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
+    'data' => '资料',
 ];

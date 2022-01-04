@@ -10,9 +10,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {{-- <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    {{--
+    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
     <meta name="author" content="AdminKit">
-    <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"> --}}
+    <meta name="keywords"
+        content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    --}}
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
@@ -26,6 +29,7 @@
     <script src="{{ asset('/messages.js') }}"></script>
     {{-- for date picker's js --}}
     <script type="text/javascript" href="{{ asset('/js/moment.min.js') }}"></script>
+    <script type="text/javascript" href="{{ asset('/js/tablesort.min.js') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script>
         if (window.history.replaceState) {
@@ -52,7 +56,8 @@
                                     <a class="sidebar-brand" href="{{url('/')}}">
                                         <span class="sidebar-brand-text align-middle">
                                             {!! __('templateWords.websiteName') !!}
-                                            {{-- <sup><small class="badge bg-primary text-uppercase">Pro</small></sup> --}}
+                                            {{-- <sup><small class="badge bg-primary text-uppercase">Pro</small></sup>
+                                            --}}
                                         </span>
                                         <svg class="sidebar-brand-icon align-middle" width="32px" height="32px"
                                             viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
@@ -98,11 +103,14 @@
                                             </a>
                                             <ul id="basicInfo" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
-                                                <li class="sidebar-item {{ isActiveRoute(['basic.index','basic/uploadbasic','basic/inf' , 'basic/insertuploadbasic']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['basic.index','basic/uploadbasic','basic/inf' , 'basic/insertuploadbasic']) }}">
                                                     <a class="sidebar-link" href="{{url('basic')}}">
-                                                        {!! __('basicInfoLang.basicInfo') !!}</a></li>
-                                                <li class="sidebar-item {{ isActiveRoute(['basic/new','basic.uploadmaterial']) }}"><a
-                                                        class="sidebar-link" href="{{url('basic/new')}}">
+                                                        {!! __('basicInfoLang.basicInfo') !!}</a>
+                                                </li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['basic/new','basic.uploadmaterial']) }}">
+                                                    <a class="sidebar-link" href="{{url('basic/new')}}">
                                                         {!! __('basicInfoLang.newMats') !!}</a></li>
                                                 <li class="sidebar-item {{ isActiveRoute(['basic/material']) }}"><a
                                                         class="sidebar-link" href="{{url('basic/material')}}">
@@ -128,15 +136,16 @@
                                                 data-bs-parent="#sidebar" style="">
                                                 <li class="sidebar-item {{ isActiveRoute(['barcode.index']) }}">
                                                     <a class="sidebar-link" href="{{url('barcode')}}">
-                                                        {!! __('templateWords.barcode_generator') !!}</a></li>
-                                                <li
-                                                    class="sidebar-item {{ isActiveRoute(['barcode/isn_search']) }}">
+                                                        {!! __('templateWords.barcode_generator') !!}</a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['barcode/isn_search']) }}">
                                                     <a class="sidebar-link" href="{{url('barcode/isn_search')}}">
-                                                        {!! __('templateWords.isnBarcode') !!}</a></li>
-                                                <li
-                                                    class="sidebar-item {{ isActiveRoute(['barcode/loc_search']) }}">
+                                                        {!! __('templateWords.isnBarcode') !!}</a>
+                                                </li>
+                                                <li class="sidebar-item {{ isActiveRoute(['barcode/loc_search']) }}">
                                                     <a class="sidebar-link" href="{{url('barcode/loc_search')}}">
-                                                        {!! __('templateWords.locBarcode') !!}</a></li>
+                                                        {!! __('templateWords.locBarcode') !!}</a>
+                                                </li>
                                             </ul>
                                         </li>
 
@@ -159,7 +168,8 @@
                                                         {!! __('inboundpageLang.new') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['inbound.search','inbound/inquire']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['inbound.search','inbound/inquire']) }}">
                                                     <a class="sidebar-link" href="{{route('inbound.search')}}">
                                                         {!! __('inboundpageLang.search') !!}
                                                     </a>
@@ -223,7 +233,8 @@
                                                 </li>
                                                 @endcan
                                                 @can('outboundReturn', App\Models\Outbound::class )
-                                                <li class="sidebar-item {{ isActiveRoute(['outbound.back', 'outbound/backaddok']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['outbound.back', 'outbound/backaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('outbound.back')}}">
                                                         {!! __('outboundpageLang.back') !!}
                                                     </a>
@@ -274,7 +285,8 @@
                                                         {!! __('templateWords.isnConsumeUpdate') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['month/standadd','month/standnewok','month/uploadstand','month/insertuploadstand']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['month/standadd','month/standnewok','month/uploadstand','month/insertuploadstand']) }}">
                                                     <a class="sidebar-link" href="{{route('month.standadd')}}">
                                                         {!! __('templateWords.standAdd') !!}
                                                     </a>
@@ -326,7 +338,8 @@
                                             <a data-bs-target="#obound" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-box-seam align-middle me-2" viewBox="0 0 16 16">
+                                                    fill="currentColor" class="bi bi-box-seam align-middle me-2"
+                                                    viewBox="0 0 16 16">
                                                     <path
                                                         d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
                                                 </svg>
@@ -382,7 +395,8 @@
                                                 </li>
                                                 @endcan
                                                 @can('oboundPickup', App\Models\O庫::class )
-                                                <li class="sidebar-item {{ isActiveRoute(['obound.pick','obound/pickaddok']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['obound.pick','obound/pickaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.pick')}}">
                                                         {!! __('oboundpageLang.pick') !!}
                                                     </a>
@@ -403,7 +417,8 @@
                                                 </li>
                                                 @endcan
                                                 @can('oboundReturn', App\Models\O庫::class )
-                                                <li class="sidebar-item {{ isActiveRoute(['obound.back','obound/backaddok']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['obound.back','obound/backaddok']) }}">
                                                     <a class="sidebar-link" href="{{route('obound.back')}}">
                                                         {!! __('oboundpageLang.back') !!}
                                                     </a>
@@ -432,8 +447,11 @@
                                         <li class="sidebar-item {{ isActiveRoute(['bu/' , 'bu.index']) }}">
                                             <a data-bs-target="#bu" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-briefcase align-middle me-2" viewBox="0 0 16 16">
-                                                    <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-briefcase align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z" />
                                                 </svg>
 
                                                 <span class="align-middle">{!! __('templateWords.bu') !!}</span>
@@ -441,16 +459,19 @@
                                             <ul id="bu" class="sidebar-dropdown list-unstyled collapse"
                                                 data-bs-parent="#sidebar" style="">
                                                 <li class="sidebar-item {{ isActiveRoute(['bu.sluggish']) }}">
-                                                    <a id="passiveStockBtn" class="sidebar-link" href="{{route('bu.sluggish')}}">
+                                                    <a id="passiveStockBtn" class="sidebar-link"
+                                                        href="{{route('bu.sluggish')}}">
                                                         {!! __('bupagelang.sluggish') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['bu/material','bu/sluggishmaterial']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['bu/material','bu/sluggishmaterial']) }}">
                                                     <a class="sidebar-link" href="{{route('bu.material')}}">
                                                         {!! __('bupagelang.factorychange') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['bu.searchlist','bu/searchlistsub']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['bu.searchlist','bu/searchlistsub']) }}">
                                                     <a class="sidebar-link" href="{{route('bu.searchlist')}}">
                                                         {!! __('bupagelang.searchlist') !!}
                                                     </a>
@@ -460,13 +481,13 @@
                                                         {!! __('bupagelang.outlist') !!}
                                                     </a>
                                                 </li>
-                                                <li
-                                                    class="sidebar-item {{ isActiveRoute(['bu/picklist']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['bu/picklist']) }}">
                                                     <a class="sidebar-link" href="{{route('bu.picklistpage')}}">
                                                         {!! __('bupagelang.picklist') !!}
                                                     </a>
                                                 </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['bu.searchdetail','bu/searchdetailsub']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['bu.searchdetail','bu/searchdetailsub']) }}">
                                                     <a class="sidebar-link" href="{{route('bu.searchdetail')}}">
                                                         {!! __('bupagelang.searchdetail') !!}
                                                     </a>
@@ -480,7 +501,8 @@
                                         <li class="sidebar-item {{ isActiveRoute(['call/']) }}">
                                             <a href="#call" data-bs-toggle="collapse" class="sidebar-link collapsed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-exclamation-triangle align-middle me-2"
+                                                    fill="currentColor"
+                                                    class="bi bi-exclamation-triangle align-middle me-2"
                                                     viewBox="0 0 16 16">
                                                     <path
                                                         d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
@@ -509,7 +531,8 @@
 
                                         @can('viewCheckInvent', App\Models\Checking_inventory::class )
                                         <li class="sidebar-item {{ isActiveRoute(['checking/', 'checking.index']) }}">
-                                            <a data-bs-target="#checking" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false">
+                                            <a data-bs-target="#checking" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-clipboard-check align-middle me-2"
                                                     viewBox="0 0 16 16">
@@ -527,12 +550,12 @@
                                                 data-bs-parent="#sidebar" style="">
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['checking/create_new_table']) }}">
-                                                    <a class="sidebar-link" href="{{route('checking.create_new_table')}}">
+                                                    <a class="sidebar-link"
+                                                        href="{{route('checking.create_new_table')}}">
                                                         {!! __('checkInvLang.create_new_table') !!}
                                                     </a>
                                                 </li>
-                                                <li
-                                                    class="sidebar-item {{ isActiveRoute(['checking.index']) }}">
+                                                <li class="sidebar-item {{ isActiveRoute(['checking.index']) }}">
                                                     <a class="sidebar-link" href="{{route('checking.index')}}">
                                                         {!! __('checkInvLang.check') !!}
                                                     </a>
@@ -561,8 +584,10 @@
                                                 <li class="sidebar-item {{ isActiveRoute(['member/change']) }}">
                                                     <a class="sidebar-link" href="{{route('member.change')}}">
                                                         {!! __('templateWords.changePass') !!}
-                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
-                                                    </a></li>
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
+                                                        --}}
+                                                    </a>
+                                                </li>
                                                 @can('create', App\Models\Login::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['member/register']) }}">
                                                     <a class="sidebar-link" href="{{route('member.register')}}">
@@ -573,22 +598,27 @@
                                                 <li class="sidebar-item {{ isActiveRoute(['member/new']) }}"><a
                                                         class="sidebar-link" href="{{route('member.new')}}">
                                                         {!! __('templateWords.newPInfo') !!}
-                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
+                                                        --}}
                                                     </a></li>
                                                 @endcan
                                                 @can('searchAndUpdatePeople', App\Models\Login::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['member/number']) }}">
                                                     <a class="sidebar-link" href="{{route('member.number')}}">
                                                         {!! __('templateWords.PInfo') !!}
-                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
-                                                    </a></li>
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
+                                                        --}}
+                                                    </a>
+                                                </li>
                                                 @endcan
                                                 @can('searchAndUpdateUser', App\Models\Login::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['member/username']) }}">
                                                     <a class="sidebar-link" href="{{route('member.username')}}">
                                                         {!! __('templateWords.UserInfo') !!}
-                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
-                                                    </a></li>
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
+                                                        --}}
+                                                    </a>
+                                                </li>
                                                 @endcan
                                             </ul>
                                         </li>
@@ -848,8 +878,7 @@
                                             </div>
 
                                             <div class="d-grid">
-                                                <a href="#" class="btn btn-outline-primary"
-                                                    target="_blank">Download</a>
+                                                <a href="#" class="btn btn-outline-primary" target="_blank">Download</a>
                                             </div>
                                         </div>
                                     </div> --}}
@@ -1049,9 +1078,12 @@
                                 <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="user"></i>
                                     Profile</a>
                                 <a class="dropdown-item disabled" style="color : #495057;" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
-                                        <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                        class="bi bi-building" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z" />
+                                        <path
+                                            d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
                                     </svg>
                                     {{ str_replace("Consumables management", "", \Session::get('database'))}}
                                 </a>
