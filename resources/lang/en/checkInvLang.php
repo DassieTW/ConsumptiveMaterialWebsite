@@ -55,4 +55,12 @@ return [
     'existed_tables' => 'There are existed sheets',
     'continue_check' => 'Proceed',
     'has_exist_sheet_confirm' => 'Existing sheets found, do you still want to create a new sheet?',
+
+    //check result lang
+    'time_range' => 'Time Range',
+    'checked' => 'Checked',
+    'not_checked' => 'Not Checked',
+    'search_by' => 'Search by',
+    'sort_by' => 'Sort by',
+    'loc_short' => 'Loc.', 
 ];

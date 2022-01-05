@@ -66,11 +66,11 @@ class CheckingInventoryController extends Controller
         $pieces = explode(" ", $temp);
         // dd($pieces[2] . " " . $formatStr ) ; // test
         $rangeStrFrom = Carbon::parse($pieces[0])->format('Y-m-d H:i:s.v'); // starting date string
-        $rangeObjFrom = Carbon::createFromFormat('Y-m-d H:i:s.v', $rangeStrFrom) ; // covert to datetime obj 
+        $rangeObjFrom = Carbon::createFromFormat('Y-m-d H:i:s.v', $rangeStrFrom)->subDay()->endOfDay() ; // covert to datetime obj 
         $rangeStrTo = Carbon::parse($pieces[2])->format('Y-m-d H:i:s.v'); // ending date string
-        $rangeObjTo = Carbon::createFromFormat('Y-m-d H:i:s.v', $rangeStrTo) ; // covert to datetime obj
+        $rangeObjTo = Carbon::createFromFormat('Y-m-d H:i:s.v', $rangeStrTo)->addDay()->startOfDay() ; // covert to datetime obj
         $fetchedData = $this->service->fetchInventCheckRecordWithinTimeRange($request, $rangeObjFrom, $rangeObjTo);
-
+        // dd($rangeObjFrom . " " . $rangeObjTo ) ; // test
         if (count($fetchedData) === 0) { // return 420 if the search result length is 0
             return \Response::json(['message' => __('checkInvLang.no_results_found')], 420/* Status code here default is 200 ok*/);
         } // if no results are found

@@ -1,27 +1,83 @@
 $(document).ready(function () {
     var serialSheetsObj = {};
 
+    $("#texBox").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+    $(".sortBtn").on("click", function (e) {
+        e.preventDefault();
+
+    });
+
+    $(".sortBtn").on('mousedown touchstart', function () {
+        $(this).css('box-shadow', '0px 0px 1px 1px rgba(0, 0, 0, 0.1)');
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        } else {
+            $(this).addClass('active');
+        } // if else
+
+        var clickedElementText = $(this).find('span').text();
+        $(".sortBtn").each(function (index, element) {
+            // element == this
+            if( $(element).find('span').text() === clickedElementText ) {
+                // skip it
+            } // if
+            else {
+                if( $(element).hasClass('active') ) {
+                    $(element).removeClass('active');
+                    $(element).css('box-shadow', '-2px 2px 1px 5px rgba(0, 0, 0, 0.1)');
+                } // if
+            } // if else
+        });
+    });
+    $(".sortBtn").on('mouseup touchend', function () {
+        if ($(this).hasClass('active')) {
+            $(this).css('box-shadow', '0px 0px 1px 3px rgba(0, 0, 0, 0.1)');
+            if ($(this).hasClass('sortUp') && $(this).hasClass('sortBtn')) {
+                $(this).removeClass('sortUp');
+                $(this).addClass('sortDw');
+
+                $(this).find('i').removeClass('bi-sort-up');
+                $(this).find('i').addClass('bi-sort-down-alt');
+            } // if
+            else if ($(this).hasClass('sortBtn')) {
+                $(this).removeClass('sortDw');
+                $(this).addClass('sortUp');
+
+                $(this).find('i').removeClass('bi-sort-down-alt');
+                $(this).find('i').addClass('bi-sort-up');
+            } // else
+        } else {
+            $(this).css('box-shadow', '-2px 2px 1px 5px rgba(0, 0, 0, 0.1)');
+        } // if else    
+    });
+
     (function () { // starting show on document ready
         if (document.getElementById("toggle-state").checked) {
             $('#toggle-state-text').text(Lang.get('checkInvLang.isn'));
-            document.getElementById("texBox").setAttribute("placeholder", Lang.get('checkInvLang.input_isn_barcode'));
+            document.getElementById("texBox").setAttribute("placeholder", Lang.get('checkInvLang.isn'));
         } // if
         else {
-            $('#toggle-state-text').text(Lang.get('checkInvLang.loc'));
-            document.getElementById("texBox").setAttribute("placeholder", Lang.get('checkInvLang.input_loc_barcode'));
+            $('#toggle-state-text').text(Lang.get('checkInvLang.loc_short'));
+            document.getElementById("texBox").setAttribute("placeholder", Lang.get('checkInvLang.loc_short'));
         } // else
 
-        $("#texBox").focus();
+        // $("#texBox").focus();
     })();
 
     $('#toggle-state').on('change', function () { // 目標改變
         // 'this' will contain a reference to the checkbox
         if (this.checked) {
             $('#toggle-state-text').text(Lang.get('checkInvLang.isn'));
-            document.getElementById("texBox").setAttribute("placeholder", Lang.get('checkInvLang.input_isn_barcode'));
+            document.getElementById("texBox").setAttribute("placeholder", Lang.get('checkInvLang.isn'));
         } else {
-            $('#toggle-state-text').text(Lang.get('checkInvLang.loc'));
-            document.getElementById("texBox").setAttribute("placeholder", Lang.get('checkInvLang.input_loc_barcode'));
+            $('#toggle-state-text').text(Lang.get('checkInvLang.loc_short'));
+            document.getElementById("texBox").setAttribute("placeholder", Lang.get('checkInvLang.loc_short'));
         } // if else
 
         $("#texBox").focus();
@@ -29,6 +85,43 @@ $(document).ready(function () {
 
     $("#inp").on('submit', function (e) {
         e.preventDefault();
+
+    }); // on submit
+
+    // date range picker function
+    $(function () {
+        // var start = moment().subtract(29, 'days');
+        var start = moment().subtract(3, 'month').startOf('month');
+        var end = moment().subtract(0, 'month').endOf('month');
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format(moment().localeData().longDateFormat('L')) + ' ～ ' + end.format(moment().localeData().longDateFormat('L')));
+            $("#DateRangeString").trigger('change');
+        }
+
+        var all_history_records = Lang.get('templateWords.all_history_records');
+        var past_three_months = Lang.get('templateWords.past_three_months');
+        var tody = Lang.get('templateWords.today');
+        var json_rangeObj = {};
+        json_rangeObj[tody] = [moment().startOf('day'), moment().endOf('day')];
+        json_rangeObj[past_three_months] = [moment().subtract(3, 'month').startOf('month'), moment().subtract(0, 'month').endOf('month')];
+        json_rangeObj[all_history_records] = [moment().subtract(99, 'year').startOf('year'), moment().subtract(0, 'month').endOf('month')];
+
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: json_rangeObj
+        }, cb);
+
+        cb(start, end);
+    });
+
+    $("#texBox").on('change', function (e) {
+        e.preventDefault();
+    });
+
+    $("#DateRangeString").on('change', function () { // trigger ajax post whenever time range is set
+        // console.log("time range triggered"); // test
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -38,22 +131,22 @@ $(document).ready(function () {
         // clean up previous input results
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
-        var $temp = $('#texBox').val();
-        $('#texBox').val(''); // clear input box value
-        $isIsn = document.getElementById('toggle-state').checked;
-        $isLoc = !$isIsn;
+        var $temp = "";
+        // $('#texBox').val(''); // clear input box value
+        // $isIsn = document.getElementById('toggle-state').checked;
+        // $isLoc = !$isIsn;
         var $timeRange = $('#DateRangeString').text();
         var $formatStr = moment().localeData().longDateFormat('L');
         $.ajax({
             type: "post",
             url: "/checking/checkInentdbSearchTimeRange",
-            data: { texBox: $temp, isIsn: $isIsn, timeRange: $timeRange, formatStr: $formatStr },
+            data: { timeRange: $timeRange, formatStr: $formatStr },
             dataType: 'json', // expected respose datatype from server
             success: function (response) {
                 var myObjs = JSON.parse(JSON.stringify(response.data));
                 serialSheetsObj = {};
                 for (let a = 0; a < myObjs.length; a++) {
-                    if( serialSheetsObj.hasOwnProperty(myObjs[a].單號) ){
+                    if (serialSheetsObj.hasOwnProperty(myObjs[a].單號)) {
                         var tempObj = {};
                         tempObj["料號"] = myObjs[a].料號;
                         tempObj["現有庫存"] = myObjs[a].現有庫存;
@@ -83,7 +176,7 @@ $(document).ready(function () {
                         serialSheetsObj[myObjs[a].單號].push(tempObj);
                     } // if
                     else {
-                        serialSheetsObj[myObjs[a].單號] = [] ;
+                        serialSheetsObj[myObjs[a].單號] = [];
 
                         var tempObj = {};
                         tempObj["料號"] = myObjs[a].料號;
@@ -151,45 +244,16 @@ $(document).ready(function () {
                 else if (err.status == 420) { // else if error 420
                     $('#texBox').addClass("is-invalid");
                     if ($isIsn) {
-                        $('#texBox').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('checkInvLang.no_such_isn') + '</strong></span>'));
+                        // $('#texBox').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('checkInvLang.no_such_isn') + '</strong></span>'));
                     } else {
-                        $('#texBox').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('checkInvLang.no_such_loc') + '</strong></span>'));
+                        // $('#texBox').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('checkInvLang.no_such_loc') + '</strong></span>'));
                     } // else
                 } // else 
                 else {
-                    // Lang = new Lang();
                     console.log(err.status); // test
                 } // else
             } // error
         }); // ajax
-    }); // on submit
-
-    // date range picker function
-    $(function () {
-        // var start = moment().subtract(29, 'days');
-        var start = moment().subtract(3, 'month').startOf('month');
-        var end = moment().subtract(0, 'month').endOf('month');
-
-        function cb(start, end) {
-            $('#reportrange span').html(start.format(moment().localeData().longDateFormat('L')) + ' ～ ' + end.format(moment().localeData().longDateFormat('L')));
-        }
-
-        var all_history_records = Lang.get('templateWords.all_history_records');
-        var past_three_months = Lang.get('templateWords.past_three_months');
-        var tody = Lang.get('templateWords.today');
-        var json_rangeObj = {};
-        json_rangeObj[tody] = [moment().subtract(1, 'day').startOf('day'), moment().add(1, 'day').endOf('day')];
-        json_rangeObj[past_three_months] = [moment().subtract(3, 'month').startOf('month'), moment().subtract(0, 'month').endOf('month')];
-        json_rangeObj[all_history_records] = [moment().subtract(99, 'year').startOf('year'), moment().subtract(0, 'month').endOf('month')];
-
-        $('#reportrange').daterangepicker({
-            startDate: start,
-            endDate: end,
-            ranges: json_rangeObj
-        }, cb);
-
-        cb(start, end);
     });
-
 
 }); // on document ready
