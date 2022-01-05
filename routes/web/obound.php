@@ -121,78 +121,124 @@ Route::post('/searchstocksubmit', [OboundController::class, 'searchstocksubmit']
 
 
 //O庫-領料
-Route::get('/pick', [OboundController::class, 'pick'])->name('obound.pick')->middleware('can:oboundPickup,App\Models\O庫');
+Route::get('/pick', function () {
+    return view('obound.pick')->with(['client' => 客戶別::cursor()])
+        ->with(['machine' => 機種::cursor()])
+        ->with(['production' => 製程::cursor()])
+        ->with(['line' => 線別::cursor()])
+        ->with(['usereason' => 領用原因::cursor()]);
+})->name('obound.pick')->middleware('can:oboundPickup,App\Models\O庫');
+
+//Route::post('/pick', [OboundController::class, 'pick'])->name('outbound.pick');
 
 //O庫-退料
-Route::get('/back', [OboundController::class, 'back'])->name('obound.back')->middleware('can:oboundReturn,App\Models\O庫');
+Route::get('/back', function () {
+    return view('obound.back')->with(['client' => 客戶別::cursor()])
+        ->with(['machine' => 機種::cursor()])
+        ->with(['production' => 製程::cursor()])
+        ->with(['line' => 線別::cursor()])
+        ->with(['backreason' => 退回原因::cursor()]);
+})->name('obound.back')->middleware('can:oboundReturn,App\Models\O庫');
+
+//Route::post('/back', [OboundController::class, 'back'])->name('outbound.back');
 
 //O庫-領料單頁面
-Route::get('/picklist', [OboundController::class, 'picklistpage'])->name('obound.picklistpage')->middleware('can:oboundPickupSerialNum,App\Models\O庫');
+Route::get('/picklist', function () {
+    $datas =  DB::table('O庫outbound')
+        ->join('O庫_material', 'O庫outbound.料號', '=', 'O庫_material.料號')
+        ->wherenull('O庫outbound.發料人員')
+        ->select('O庫outbound.*')
+        ->get()->unique('領料單號');
 
-//O庫-退料單頁面
-Route::get('/backlist', [OboundController::class, 'backlistpage'])->name('obound.backlistpage')->middleware('can:oboundReturnSerialNum,App\Models\O庫');
+    //dd($datas);
+    return view('obound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+})->name('obound.picklistpage')->middleware('can:oboundPickupSerialNum,App\Models\O庫');
+
+//Route::post('/picklist', [OboundController::class, 'picklistpage'])->name('outbound.picklistpage');
 
 //O庫-領料單
-Route::get('/picklistsub', [OboundController::class, 'picklist'])->middleware('can:oboundPickupSerialNum,App\Models\O庫');
+Route::get('/picklistsub', function () {
+    $datas =  DB::table('O庫outbound')
+        ->join('O庫_material', 'O庫outbound.料號', '=', 'O庫_material.料號')
+        ->wherenull('O庫outbound.發料人員')
+        ->select('O庫outbound.*')
+        ->get()->unique('領料單號');
+
+    // dd($datas);
+    return view('obound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+})->middleware('can:oboundPickupSerialNum,App\Models\O庫');
 
 Route::post('/picklistsub', [OboundController::class, 'picklist'])->name('obound.picklist')->middleware('can:oboundPickupSerialNum,App\Models\O庫');
 
+//O庫-退料單頁面
+Route::get('/backlist', function () {
+    $datas =  DB::table('O庫出庫退料')
+        ->join('O庫_material', 'O庫出庫退料.料號', '=', 'O庫_material.料號')
+        ->wherenull('O庫出庫退料.收料人員')
+        ->select('O庫出庫退料.*')
+        ->get()->unique('退料單號');
+
+    return view('obound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+})->name('obound.backlistpage')->middleware('can:oboundReturnSerialNum,App\Models\O庫');
+
+//Route::post('/backlist', [OboundController::class, 'backlistpage'])->name('outbound.backlistpage');
+
 //O庫-退料單
-Route::get('/backlistsub', [OboundController::class, 'backlist'])->middleware('can:oboundReturnSerialNum,App\Models\O庫');
+Route::get('/backlistsub', function(){
+    $datas =  DB::table('O庫出庫退料')
+        ->join('O庫_material', 'O庫出庫退料.料號', '=', 'O庫_material.料號')
+        ->wherenull('O庫出庫退料.收料人員')
+        ->select('O庫出庫退料.*')
+        ->get()->unique('退料單號');
+
+    return view('obound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+})->middleware('can:oboundReturnSerialNum,App\Models\O庫');
 
 Route::post('/backlistsub', [OboundController::class, 'backlist'])->name('obound.backlist')->middleware('can:oboundReturnSerialNum,App\Models\O庫');
 
-//O庫-領料記錄表頁面
-Route::get('/pickrecord', [OboundController::class, 'pickrecord'])->name('obound.pickrecord')->middleware('can:oboundPickupRecord,App\Models\O庫');
+//O庫-領料紀錄表
+Route::get('/pickrecord', function () {
+    return view('obound.pickrecord')->with(['client' => 客戶別::cursor()])
+        ->with(['production' => 製程::cursor()]);
+})->name('obound.pickrecord')->middleware('can:oboundPickupRecord,App\Models\O庫');
 
-//O庫-退料紀錄表頁面
-Route::get('/backrecord', [OboundController::class, 'backrecord'])->name('obound.backrecord')->middleware('can:oboundReturnRecord,App\Models\O庫');
+//Route::post('/pickrecord', [OboundController::class, 'pickrecord'])->name('outbound.pickrecord');
 
 //O庫-領料紀錄表查詢
 Route::get('/pickrecordsearch', [OboundController::class, 'pickrecordsearch'])->middleware('can:oboundPickupRecord,App\Models\O庫');
 
 Route::post('/pickrecordsearch', [OboundController::class, 'pickrecordsearch'])->name('obound.pickrecordsearch')->middleware('can:oboundPickupRecord,App\Models\O庫');
 
+//O庫-退料紀錄表
+Route::get('/backrecord', function () {
+    return view('obound.backrecord')->with(['client' => 客戶別::cursor()])
+        ->with(['production' => 製程::cursor()]);
+})->name('obound.backrecord')->middleware('can:oboundReturnRecord,App\Models\O庫');
+
+//Route::post('/backrecord', [OboundController::class, 'backrecord'])->name('outbound.backrecord');
+
 //O庫-退料紀錄表查詢
-Route::get('/backrecordsearch', [OboundController::class, 'backrecordsearch'])->middleware('can:oboundReturnRecord,App\Models\O庫');
+Route::get('/backrecordsearch', [OboundController::class, 'backrecordsearch'])->middleware('can:outboundReturnRecord,App\Models\Outbound');
 
-Route::post('/backrecordsearch', [OboundController::class, 'backrecordsearch'])->name('obound.backrecordsearch')->middleware('can:oboundReturnRecord,App\Models\O庫');
+Route::post('/backrecordsearch', [OboundController::class, 'backrecordsearch'])->name('obound.backrecordsearch')->middleware('can:outboundReturnRecord,App\Models\Outbound');
 
-//O庫-領料添加
+//領料添加
 Route::post('/pickadd', [OboundController::class, 'pickadd'])->name('obound.pickadd')->middleware('can:oboundPickup,App\Models\O庫');
 
-//O庫-領料添加頁面
-Route::get('/pickaddok', [OboundController::class, 'pickaddok'])->middleware('can:oboundPickup,App\Models\O庫');
-
-//O庫-退料添加
+//退料添加
 Route::post('/backadd', [OboundController::class, 'backadd'])->name('obound.backadd')->middleware('can:oboundReturn,App\Models\O庫');
 
-//O庫-退料添加頁面
-Route::get('/backaddok', [OboundController::class, 'backaddok'])->middleware('can:oboundReturn,App\Models\O庫');
-
-//O庫-提交領料
+//提交領料
 Route::post('/pickaddsubmit', [OboundController::class, 'pickaddsubmit'])->name('obound.pickaddsubmit')->middleware('can:oboundPickup,App\Models\O庫');
 
-//O庫-提交退料
+//提交退料
 Route::post('/backaddsubmit', [OboundController::class, 'backaddsubmit'])->name('obound.backaddsubmit')->middleware('can:oboundReturn,App\Models\O庫');
 
-//O庫-提交領料單
+//提交領料單
 Route::post('/picklistsubmit', [OboundController::class, 'picklistsubmit'])->name('obound.picklistsubmit')->middleware('can:oboundPickupSerialNum,App\Models\O庫');
 
-//O庫-提交退料單
+//提交退料單
 Route::post('/backlistsubmit', [OboundController::class, 'backlistsubmit'])->name('obound.backlistsubmit')->middleware('can:oboundReturnSerialNum,App\Models\O庫');
 
-//O庫-領料添加成功頁面
-Route::get('/pickaddsubmitok', [OboundController::class, 'pickaddsubmitok'])->middleware('can:oboundPickup,App\Models\O庫');
-
-//O庫-退料添加成功頁面
-Route::get('/backaddsubmitok', [OboundController::class, 'backaddsubmitok'])->middleware('can:oboundReturn,App\Models\O庫');
-
-//O庫-領料單添加成功頁面
-Route::get('/picklistsubmitok', [OboundController::class, 'picklistsubmitok'])->middleware('can:oboundPickupSerialNum,App\Models\O庫');
-
-//O庫-退料單添加成功頁面
-Route::get('/backlistsubmitok', [OboundController::class, 'backlistsubmitok'])->middleware('can:oboundReturnSerialNum,App\Models\O庫');
-
-//O庫-資料下載
+//資料下載
 Route::post('/download', [OboundController::class, 'download'])->name('obound.download')->middleware('can:viewObound,App\Models\O庫');

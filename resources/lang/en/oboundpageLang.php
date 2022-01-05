@@ -131,4 +131,12 @@ return [
     'matsdata' => 'Material Data',
     'yellowrepeat' => 'Yellow background means the data has been stored in the database',
     'data' => 'data',
+    'nosendpeople' =>'The job number of the sender does not exist, please go to User Management-Maintenance of New Person Information',
+    'nopickpeople' =>'The job number of the picker does not exist, please go to User Management-Maintenance of New Person Information',
+    'nobackpeople' => 'The job number of the return people does not exist, please go to User Management-Maintenance of New Person Information',
+    'noreceivepeople' => 'The job number of the Receiver does not exist, please go to User Management-Maintenance of New Person Information',
+    'inputsendpeople' => 'Please input Send people job number',
+    'inputpickpeople' => 'Please input Pickup person job number',
+    'inputbackpeople' => 'Please input Return person job number',
+    'inputreceivepeople' => 'Please input Receiver job number',
 ];

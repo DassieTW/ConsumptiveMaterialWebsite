@@ -117,7 +117,8 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.sendpeople') !!}</label>
             <input class="form-control form-control-lg" id="sendpeople" name="sendpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.inputsendpeople') !!}" required>
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputsendpeople') !!}" required
+                oninput="if(value.length>9)value=value.slice(0,9)">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="sendmenu" style="display: none;" class="list-group">
                 @foreach($people as $people)
@@ -130,7 +131,8 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.pickpeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.inputpickpeople') !!}" required>
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputpickpeople') !!}" required
+                oninput="if(value.length>9)value=value.slice(0,9)">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="pickmenu" style="display: none;" class="list-group">
                 @foreach($people1 as $people)

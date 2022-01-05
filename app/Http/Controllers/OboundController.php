@@ -347,7 +347,7 @@ class OboundController extends Controller
             }
             //select client and number
             else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') !== null && !($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => $datas->where('客戶別' , $request->input('client'))]);
+                return view('obound.inboundsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
             }
             //select client and time
             else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') === null && ($request->has('date'))) {
@@ -357,7 +357,7 @@ class OboundController extends Controller
             }
             //select bound and number
             else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') !== null && !($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => $datas->where('庫別' , $request->input('bound'))]);
+                return view('obound.inboundsearchok')->with(['data' => $datas->where('庫別', $request->input('bound'))]);
             }
             //select bound and time
             else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') === null && ($request->has('date'))) {
@@ -372,7 +372,7 @@ class OboundController extends Controller
             //select client and bound and number
             else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') !== null && !($request->has('date'))) {
 
-                return view('obound.inboundsearchok')->with(['data' => $datas->where('庫別' , $request->input('bound'))->where('客戶別' , $request->input('client'))]);
+                return view('obound.inboundsearchok')->with(['data' => $datas->where('庫別', $request->input('bound'))->where('客戶別', $request->input('client'))]);
             }
             //select client and bound and time
             else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') === null && ($request->has('date'))) {
@@ -384,18 +384,18 @@ class OboundController extends Controller
             //select client and number and time
             else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') !== null && ($request->has('date'))) {
 
-                return view('obound.inboundsearchok')->with(['data' => $datas->where('客戶別' , $request->input('client'))->whereBetween('時間', [$begin, $end])]);
+                return view('obound.inboundsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))->whereBetween('時間', [$begin, $end])]);
             }
             //select bound and number and time
             else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') !== null && ($request->has('date'))) {
 
-                return view('obound.inboundsearchok')->with(['data' => $datas->whereBetween('時間', [$begin, $end])->where('庫別' , $request->input('bound'))]);
+                return view('obound.inboundsearchok')->with(['data' => $datas->whereBetween('時間', [$begin, $end])->where('庫別', $request->input('bound'))]);
             }
             //select all
             else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') !== null && ($request->has('date'))) {
 
                 return view('obound.inboundsearchok')->with(['data' => $datas->whereBetween('時間', [$begin, $end])
-                ->where('庫別' , $request->input('bound'))->where('客戶別' , $request->input('client'))]);
+                    ->where('庫別', $request->input('bound'))->where('客戶別', $request->input('client'))]);
             }
         } else {
             return redirect(route('member.login'));
@@ -499,8 +499,7 @@ class OboundController extends Controller
             try {
                 for ($i = 0; $i < $count; $i++) {
 
-                    if(!(in_array($Alldata[5][$i],$bounds)))
-                    {
+                    if (!(in_array($Alldata[5][$i], $bounds))) {
                         DB::table('O庫')
                             ->insert(['O庫' => $Alldata[5][$i]]);
                     }
@@ -509,14 +508,16 @@ class OboundController extends Controller
 
                     if ($stock === null) {
                         DB::table('O庫inventory')
-                            ->insert(['料號' => $Alldata[1][$i], '現有庫存' => $Alldata[4][$i], '庫別' => $Alldata[5][$i],
-                            '客戶別' => $Alldata[0][$i], '最後更新時間' => $now , '品名' => $Alldata[2][$i] , '規格' => $Alldata[3][$i]]);
+                            ->insert([
+                                '料號' => $Alldata[1][$i], '現有庫存' => $Alldata[4][$i], '庫別' => $Alldata[5][$i],
+                                '客戶別' => $Alldata[0][$i], '最後更新時間' => $now, '品名' => $Alldata[2][$i], '規格' => $Alldata[3][$i]
+                            ]);
                     } else {
                         DB::table('O庫inventory')
                             ->where('客戶別', $Alldata[0][$i])
                             ->where('料號', $Alldata[1][$i])
                             ->where('庫別', $Alldata[5][$i])
-                            ->update(['現有庫存' => $stock + $Alldata[4][$i], '最後更新時間' => $now , '品名' => $Alldata[2][$i] , '規格' => $Alldata[3][$i]]);
+                            ->update(['現有庫存' => $stock + $Alldata[4][$i], '最後更新時間' => $now, '品名' => $Alldata[2][$i], '規格' => $Alldata[3][$i]]);
                     }
                 } // for
                 DB::commit();
@@ -645,54 +646,6 @@ class OboundController extends Controller
         }
     }
 
-    //O庫-領料
-    public function pick(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('obound.pick')->with(['client' => 客戶別::cursor()])
-                ->with(['machine' => 機種::cursor()])
-                ->with(['production' => 製程::cursor()])
-                ->with(['line' => 線別::cursor()])
-                ->with(['usereason' => 領用原因::cursor()]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //O庫-退料
-    public function back(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('obound.back')->with(['client' => 客戶別::cursor()])
-                ->with(['machine' => 機種::cursor()])
-                ->with(['production' => 製程::cursor()])
-                ->with(['line' => 線別::cursor()])
-                ->with(['backreason' => 退回原因::cursor()]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //O庫-領料單頁面
-    public function picklistpage(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('obound.picklistpage')->with(['data' => O庫Outbound::cursor()->whereNull('發料人員')]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //O庫-退料單頁面
-    public function backlistpage(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('obound.backlistpage')->with(['data' => O庫出庫退料::cursor()->whereNull('收料人員')]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
     //O庫-領料單
     public function picklist(Request $request)
     {
@@ -704,26 +657,24 @@ class OboundController extends Controller
                     ->where('領料單號', $request->input('list'))
                     ->delete();
 
-
-                $mess = trans('oboundpageLang.delete') . trans('oboundpageLang.picklistnum') . ' : ' .
-                    $list . trans('oboundpageLang.success');
+                $mess = trans('oboundpageLang.delete') . ' : ' . trans('oboundpageLang.picklistnum')
+                    . $list . trans('oboundpageLang.success');
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
-                window.location.href='/obound';
+                window.location.href='picklist';
                 </script>");
             } else {
                 $list =  $request->input('list');
-                if ($list === null) {
-                    return view('obound.picklist')->with(['number' => O庫outbound::cursor()->whereNull('發料人員')])
-                        ->with(['data' => O庫outbound::cursor()->whereNull('發料人員')])
-                        ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()]);
-                } else {
-                    return view('obound.picklist')->with(['number' => O庫outbound::cursor()->whereNull('發料人員')->where('領料單號', $list)])
-                        ->with(['data' => O庫outbound::cursor()->whereNull('發料人員')->where('領料單號', $list)])
-                        ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()]);
-                }
+                $datas =  DB::table('O庫outbound')
+                    ->join('O庫_material', 'O庫outbound.料號', '=', 'O庫_material.料號')
+                    ->wherenull('O庫outbound.發料人員')
+                    ->select('O庫outbound.*')
+                    ->get();
+                return view('obound.picklist')->with(['number' => $datas->where('領料單號', $list)])
+                    ->with(['data' => $datas->where('領料單號', $list)])
+                    ->with(['people' => 人員信息::cursor()])
+                    ->with(['people1' => 人員信息::cursor()])
+                    ->with(['check' => 人員信息::cursor()]);
             }
         } else {
             return redirect(route('member.login'));
@@ -741,27 +692,26 @@ class OboundController extends Controller
                     ->where('退料單號', $request->input('list'))
                     ->delete();
 
-                $mess = trans('oboundpageLang.delete') . trans('oboundpageLang.backlistnum') . ' : ' .
-                    $list . trans('oboundpageLang.success');
+                $mess = trans('oboundpageLang.delete') . ' : ' . trans('oboundpageLang.backlistnum')
+                    . $list . trans('oboundpageLang.success');
+
                 echo ("<script LANGUAGE='JavaScript'>
                 window.alert('$mess');
-                window.location.href='/obound';
+                window.location.href='backlist';
                 </script>");
             } else {
                 $list =  $request->input('list');
-                if ($list === null) {
-                    return view('obound.backlist')->with(['number' => O庫出庫退料::cursor()->whereNull('收料人員')])
-                        ->with(['data' => O庫出庫退料::cursor()->whereNull('收料人員')])
-                        ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()])
-                        ->with(['bound' => O庫::cursor()]);
-                } else {
-                    return view('obound.backlist')->with(['number' => O庫出庫退料::cursor()->whereNull('收料人員')->where('領料單號', $list)])
-                        ->with(['data' => O庫出庫退料::cursor()->whereNull('收料人員')->where('退料單號', $list)])
-                        ->with(['people' => 人員信息::cursor()])
-                        ->with(['people1' => 人員信息::cursor()])
-                        ->with(['bound' => O庫::cursor()]);
-                }
+                $datas =  DB::table('O庫出庫退料')
+                    ->join('O庫_material', 'O庫出庫退料.料號', '=', 'O庫_material.料號')
+                    ->wherenull('O庫出庫退料.收料人員')
+                    ->select('O庫出庫退料.*')
+                    ->get();
+                return view('obound.backlist')->with(['number' => $datas->where('退料單號', $list)])
+                    ->with(['data' => $datas->where('退料單號', $list)])
+                    ->with(['people' => 人員信息::cursor()])
+                    ->with(['people1' => 人員信息::cursor()])
+                    ->with(['bounds' => O庫::cursor()])
+                    ->with(['check' => 人員信息::cursor()]);
             }
         } else {
             return redirect(route('member.login'));
@@ -772,76 +722,81 @@ class OboundController extends Controller
     public function picklistsubmit(Request $request)
     {
 
-        $reDive = new responseObj();
         if (Session::has('username')) {
-            if ($request->input('amount') !== null && $request->input('bound') !== null) {
-                $list = $request->input('list');
-                $amount = $request->input('amount');
-                $advance = $request->input('advance');
-                $number = $request->input('number');
-                $client = $request->input('client');
-                $reason = $request->input('reason');
-                $sendpeople = $request->input('sendpeople');
-                $pickpeople = $request->input('pickpeople');
-                $bound = $request->input('bound');
-                $time = Carbon::now();
-                $sendname = DB::table('人員信息')->where('工號', $sendpeople)->value('姓名');
-                $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
-                //沒填寫實領差異原因
-                if ($amount !== $advance && $reason === null) {
-                    $reDive->boolean = true;
-                    $reDive->passbool = false;
-                    $reDive->passstock = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
-                } else {
+            $Alldata = json_decode($request->input('AllData'));
+            $count = count($Alldata[0]);
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
+                    $client = $Alldata[0][$i];
+                    $machine = $Alldata[1][$i];
+                    $production = $Alldata[2][$i];
+                    $usereason = $Alldata[3][$i];
+                    $line = $Alldata[4][$i];
+                    $number = $Alldata[5][$i];
+                    $name = $Alldata[6][$i];
+                    $format = $Alldata[7][$i];
+                    $advance = $Alldata[8][$i];
+                    $amount = $Alldata[9][$i];
+                    $remark = $Alldata[10][$i];
+                    $reason = $Alldata[11][$i];
+                    $list = $Alldata[12][$i];
+                    $opentime = $Alldata[13][$i];
+                    $bound = $Alldata[14][$i];
+                    $sendpeople = $request->input('sendpeople');
+                    $pickpeople = $request->input('pickpeople');
+
+                    $now = Carbon::now();
+                    $sendname = DB::table('人員信息')->where('工號', $sendpeople)->value('姓名');
+                    $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
                     $stock = DB::table('O庫inventory')->where('客戶別', $client)->where('料號', $number)->where('庫別', $bound)->value('現有庫存');
                     //庫存小於實際領用數量,無法出庫
                     if ($amount > $stock) {
-                        $reDive->boolean = false;
-                        $reDive->passbool = true;
-                        $reDive->passstock = true;
-                        $reDive->position = $bound;
-                        $reDive->nowstock = $stock;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        DB::rollBack();
+                        return \Response::json(['bound' => $bound, 'nowstock' => $stock, 'row' => $i], 421/* Status code here default is 200 ok*/);
                     } else {
-                        DB::beginTransaction();
-                        try {
+                        $test = DB::table('O庫outbound')->where('領料單號', $list)->where('客戶別', $client)->where('料號', $number)
+                            ->where('預領數量', $advance)->whereNull('發料人員')->get();
+
+                        if ($remark === null) $remark = '';
+
+                        if (($test->count()) > 0) {
+
                             DB::table('O庫outbound')
                                 ->where('領料單號', $list)
                                 ->where('客戶別', $client)
                                 ->where('料號', $number)
+                                ->where('預領數量', $advance)
+                                ->whereNUll('發料人員')
                                 ->update([
                                     '實際領用數量' => $amount, '實領差異原因' => $reason, '庫別' => $bound,
                                     '領料人員' => $pickname, '領料人員工號' => $pickpeople, '發料人員' => $sendname, '發料人員工號' => $sendpeople,
-                                    '出庫時間' => $time
+                                    '出庫時間' => $now
                                 ]);
-
-                            DB::table('O庫inventory')
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->where('庫別', $bound)
-                                ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $time]);
-
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            $reDive->boolean = false;
-                            $reDive->passbool = false;
-                            $reDive->passstock = false;
+                        } else {
+                            DB::table('O庫outbound')
+                                ->insert([
+                                    '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
+                                    '料號' => $number, '品名' => $name, '規格' => $format, '預領數量' => $advance,
+                                    '實際領用數量' => $amount, '實領差異原因' => $reason, '備註' => $remark, '領料單號' => $list,
+                                    '開單時間' => $opentime,  '庫別' => $bound, '領料人員' => $pickname, '領料人員工號' => $pickpeople,
+                                    '發料人員' => $sendname, '發料人員工號' => $sendpeople, '出庫時間' => $now
+                                ]);
                         }
 
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $reDive->passstock = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
-                    }
-                }
-            } else {
-                return view('obound.picklist');
-            }
+                        DB::table('O庫inventory')
+                            ->where('客戶別', $client)
+                            ->where('料號', $number)
+                            ->where('庫別', $bound)
+                            ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
+                    } // else
+                } //for
+                DB::commit();
+                return \Response::json(['record' => $count, 'list' => $list]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 422/* Status code here default is 200 ok*/);
+            } //try - catch
         } else {
             return redirect(route('member.login'));
         }
@@ -850,124 +805,94 @@ class OboundController extends Controller
     //O庫-提交退料單
     public function backlistsubmit(Request $request)
     {
-
-        $reDive = new responseObj();
         if (Session::has('username')) {
-            if ($request->input('amount') !== null && $request->input('bound') !== null) {
-                $list = $request->input('list');
-                $amount = $request->input('amount');
-                $advance = $request->input('advance');
-                $number = $request->input('number');
-                $client = $request->input('client');
-                $reason = $request->input('reason');
-                $backpeople = $request->input('backpeople');
-                $pickpeople = $request->input('pickpeople');
-                $bound = $request->input('bound');
-                $status = $request->input('status');
-                $time = Carbon::now();
-                $backname = DB::table('人員信息')->where('工號', $backpeople)->value('姓名');
-                $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
-                $name = DB::table('O庫_material')->where('料號', $number)->value('品名');
-                $format = DB::table('O庫_material')->where('料號', $number)->value('規格');
-                if ($amount !== $advance && $reason === null) {
-                    $reDive->boolean = true;
-                    $reDive->passbool = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
-                } else {
+            $Alldata = json_decode( $request->input('AllData') );
+            $count = count($Alldata[0]);
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
+                    $client = $Alldata[0][$i];
+                    $machine = $Alldata[1][$i];
+                    $production = $Alldata[2][$i];
+                    $backreason = $Alldata[3][$i];
+                    $line = $Alldata[4][$i];
+                    $number = $Alldata[5][$i];
+                    $name = $Alldata[6][$i];
+                    $format = $Alldata[7][$i];
+                    $advance = $Alldata[8][$i];
+                    $amount = $Alldata[9][$i];
+                    $remark = $Alldata[10][$i];
+                    $reason = $Alldata[11][$i];
+                    $list = $Alldata[12][$i];
+                    $opentime = $Alldata[13][$i];
+                    $bound = $Alldata[14][$i];
+                    $status = $Alldata[15][$i];
+                    $backpeople = $request->input('backpeople');
+                    $pickpeople = $request->input('pickpeople');
+                    $now = Carbon::now();
+                    $backname = DB::table('人員信息')->where('工號', $backpeople)->value('姓名');
+                    $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
+
                     if ($status === '良品') {
-                        $stock = DB::table('O庫inventory')->where('客戶別', $client)->where('料號', $number)->where('庫別', $bound)->value('現有庫存');
+                        $inventoryname = 'O庫inventory';
                     } else {
-                        $stock = DB::table('O庫不良品inventory')->where('客戶別', $client)->where('料號', $number)->where('庫別', $bound)->value('現有庫存');
+                        $inventoryname = 'O庫不良品inventory';
                     }
+
+                    $stock = DB::table($inventoryname)->where('客戶別', $client)->where('料號', $number)->where('庫別', $bound)->value('現有庫存');
+
+                    $test = DB::table('O庫出庫退料')->where('退料單號', $list)->where('客戶別', $client)->where('料號', $number)
+                        ->where('預退數量', $advance)->whereNull('收料人員')->get();
+
+                    if ($remark === null) $remark = '';
+
+                    if (($test->count()) > 0) {
+
+                        DB::table('O庫出庫退料')
+                            ->where('退料單號', $list)
+                            ->where('客戶別', $client)
+                            ->where('料號', $number)
+                            ->where('預退數量', $advance)
+                            ->whereNUll('收料人員')
+                            ->update([
+                                '實際退回數量' => $amount, '實退差異原因' => $reason, '庫別' => $bound,
+                                '收料人員' => $pickname, '收料人員工號' => $pickpeople, '退料人員' => $backname, '退料人員工號' => $backpeople,
+                                '入庫時間' => $now, '功能狀況' => $status
+                            ]);
+                    } else {
+                        DB::table('O庫出庫退料')
+                            ->insert([
+                                '客戶別' => $client, '機種' => $machine, '製程' => $production, '退回原因' => $backreason, '線別' => $line,
+                                '料號' => $number, '品名' => $name, '規格' => $format, '預退數量' => $advance,
+                                '實際退回數量' => $amount, '實退差異原因' => $reason, '備註' => $remark, '退料單號' => $list,
+                                '開單時間' => $opentime,  '庫別' => $bound, '收料人員' => $pickname, '收料人員工號' => $pickpeople,
+                                '退料人員' => $backname, '退料人員工號' => $backpeople, '入庫時間' => $now, '功能狀況' => $status,
+                            ]);
+                    }
+
                     if ($stock === null) {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('O庫出庫退料')
-                                ->where('退料單號', $list)
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->update([
-                                    '實際退回數量' => $amount, '實退差異原因' => $reason, '庫別' => $bound,
-                                    '收料人員' => $pickname, '收料人員工號' => $pickpeople, '退料人員' => $backname, '退料人員工號' => $backpeople,
-                                    '入庫時間' => $time, '功能狀況' => $status
-                                ]);
-                            if ($status === '良品') {
-                                DB::table('O庫inventory')
-                                    ->insert([
-                                        '料號' => $number, '現有庫存' => $amount, '庫別' => $bound, '客戶別' => $client, '最後更新時間' => $time, '品名' => $name, '規格' => $format
-                                    ]);
-                            } else {
-                                DB::table('O庫不良品inventory')
-                                    ->insert([
-                                        '料號' => $number, '現有庫存' => $amount, '庫別' => $bound, '客戶別' => $client, '最後更新時間' => $time, '品名' => $name, '規格' => $format
-                                    ]);
-                            }
-                            DB::commit();
-                        } catch (\Exception $e) {
-
-                            $reDive->boolean = false;
-                            $reDive->passbool = false;
-                            $reDive->message = $e->getmessage();
-                            $myJSON = json_encode($reDive);
-                            echo $myJSON;
-                        }
-
-                        Session::put('backlistsubmitok', $list);
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        DB::table($inventoryname)
+                            ->insert(['料號' => $number, '現有庫存' => $amount, '庫別' => $bound, '客戶別' => $client, '最後更新時間' => $now , '品名' => $name , '規格' => $format]);
                     } else {
-                        DB::beginTransaction();
-                        try {
-                            DB::table('O庫出庫退料')
-                                ->where('退料單號', $list)
-                                ->where('客戶別', $client)
-                                ->where('料號', $number)
-                                ->update([
-                                    '實際退回數量' => $amount, '實退差異原因' => $reason, '庫別' => $bound,
-                                    '收料人員' => $pickname, '收料人員工號' => $pickpeople, '退料人員' => $backname, '退料人員工號' => $backpeople,
-                                    '入庫時間' => $time, '功能狀況' => $status
-                                ]);
-                            if ($status === '良品') {
-                                DB::table('O庫inventory')
-                                    ->where('客戶別', $client)
-                                    ->where('料號', $number)
-                                    ->where('庫別', $bound)
-                                    ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $time]);
-                            } else {
-                                DB::table('O庫不良品inventory')
-                                    ->where('客戶別', $client)
-                                    ->where('料號', $number)
-                                    ->where('庫別', $bound)
-                                    ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $time]);
-                            }
-
-                            DB::commit();
-                        } catch (\Exception $e) {
-                            DB::rollback();
-                            $reDive->message = $e->getmessage();
-                            $reDive->boolean = false;
-                            $reDive->passbool = false;
-                            $myJSON = json_encode($reDive);
-                            echo $myJSON;
-                        }
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        DB::table($inventoryname)
+                            ->where('客戶別', $client)
+                            ->where('料號', $number)
+                            ->where('庫別', $bound)
+                            ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $now]);
                     }
-                }
-            } else {
-                return view('obound.backlist');
-            }
+                } //for
+                DB::commit();
+                return \Response::json(['record' => $count, 'list' => $list]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+            } //try - catch
         } else {
             return redirect(route('member.login'));
         }
     }
 
-    //O庫-領料記錄表
+    /*//O庫-領料記錄表
     public function pickrecord(Request $request)
     {
         if (Session::has('username')) {
@@ -987,7 +912,7 @@ class OboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    }*/
 
     //O庫-領料記錄表查詢
     public function pickrecordsearch(Request $request)
@@ -1234,17 +1159,9 @@ class OboundController extends Controller
     //O庫-領料添加
     public function pickadd(Request $request)
     {
-        Session::forget('client');
-        Session::forget('machine');
-        Session::forget('production');
-        Session::forget('line');
-        Session::forget('usereason');
-        Session::forget('name');
-        Session::forget('format');
-        Session::forget('number');
-        $reDive = new responseObj();
         if (Session::has('username')) {
             if ($request->input('client') !== null && $request->input('number') !== null) {
+
 
                 $client = $request->input('client');
                 $machine = $request->input('machine');
@@ -1254,41 +1171,34 @@ class OboundController extends Controller
                 $number = $request->input('number');
                 $name = DB::table('O庫_material')->where('料號', $number)->value('品名');
                 $format = DB::table('O庫_material')->where('料號', $number)->value('規格');
-                $stock = DB::table('O庫inventory')->where('客戶別', $client)->where('料號', $number)->value('現有庫存');
+
+                $stock = DB::table('O庫inventory')->where('客戶別', $client)->where('料號', $number)->sum('現有庫存');
+
+                $showstock  = '';
+                $nowstock = DB::table('O庫inventory')->where('料號', $number)->where('客戶別', $client)->where('現有庫存', '>', 0)->pluck('現有庫存')->toArray();
+                $nowloc = DB::table('O庫inventory')->where('料號', $number)->where('客戶別', $client)->where('現有庫存', '>', 0)->pluck('庫別')->toArray();
+                $test = array_combine($nowloc, $nowstock);
+
+                foreach ($test as $k => $a) {
+                    $showstock = $showstock . __('oboundpageLang.bound') . ' : ' . $k . ' ' . __('oboundpageLang.nowstock') . ' : ' . $a . "\n";
+                }
 
                 if ($name !== null && $format !== null) {
-                    Session::put('number', $number);
-                    Session::put('client', $client);
-                    Session::put('machine', $machine);
-                    Session::put('production', $production);
-                    Session::put('line', $line);
-                    Session::put('usereason', $usereason);
-                    Session::put('name', $name);
-                    Session::put('format', $format);
-                    Session::put('pick', $client);
                     if ($stock > 0) {
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $reDive->passstock = true;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json([
+                            'number' => $number, 'client' => $client, 'machine' => $machine,
+                            'production' => $production, 'line' => $line, 'usereason' => $usereason, 'name' => $name,
+                            'format' => $format, 'showstock' => $showstock,
+                        ]/* Status code here default is 200 ok*/);
                     }
                     //沒有庫存
                     else {
-                        $reDive->boolean = true;
-                        $reDive->passbool = true;
-                        $reDive->passstock = false;
-                        $myJSON = json_encode($reDive);
-                        echo $myJSON;
+                        return \Response::json(['message' => 'no stock'], 420/* Status code here default is 200 ok*/);
                     }
                 }
                 //沒有料號
                 else {
-                    $reDive->boolean = true;
-                    $reDive->passbool = false;
-                    $reDive->passstock = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    return \Response::json(['message' => 'no isn'], 421/* Status code here default is 200 ok*/);
                 }
             } else {
                 return view('obound.pick');
@@ -1301,15 +1211,6 @@ class OboundController extends Controller
     //O庫-退料添加
     public function backadd(Request $request)
     {
-        Session::forget('client');
-        Session::forget('machine');
-        Session::forget('production');
-        Session::forget('line');
-        Session::forget('backreason');
-        Session::forget('name');
-        Session::forget('format');
-        Session::forget('number');
-        $reDive = new responseObj();
         if (Session::has('username')) {
             if ($request->input('client') !== null && $request->input('number') !== null) {
 
@@ -1323,117 +1224,78 @@ class OboundController extends Controller
                 $format = DB::table('O庫_material')->where('料號', $number)->value('規格');
 
                 if ($name !== null && $format !== null) {
-                    Session::put('number', $number);
-                    Session::put('client', $client);
-                    Session::put('machine', $machine);
-                    Session::put('production', $production);
-                    Session::put('line', $line);
-                    Session::put('backreason', $backreason);
-                    Session::put('name', $name);
-                    Session::put('format', $format);
-                    Session::put('back', $client);
-                    $reDive->boolean = true;
-                    $reDive->passbool = true;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+
+                    return \Response::json([
+                        'number' => $number, 'client' => $client, 'machine' => $machine,
+                        'production' => $production, 'line' => $line, 'backreason' => $backreason, 'name' => $name,
+                        'format' => $format,
+                    ]/* Status code here default is 200 ok*/);
                 }
-                //沒有料號
+                //料號不存在
                 else {
-                    $reDive->boolean = true;
-                    $reDive->passbool = false;
-                    $myJSON = json_encode($reDive);
-                    echo $myJSON;
+                    return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
                 }
             } else {
-                return view('obound.back');
+                return view('outbound.back');
             }
         } else {
             return redirect(route('member.login'));
         }
     }
 
-    //O庫-領料添加頁面
-    public function pickaddok()
-    {
-        if (Session::has('username')) {
-            if (Session::has('pick')) {
-                Session::forget('pick');
-                return view("obound.pickadd");
-            } else {
-                return redirect(route('obound.pick'));
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //O庫-退料添加頁面
-    public function backaddok()
-    {
-        if (Session::has('username')) {
-            if (Session::has('back')) {
-                Session::forget('back');
-                return view("obound.backadd");
-            } else {
-                return redirect(route('obound.back'));
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
 
     //O庫-提交領料添加
     public function pickaddsubmit(Request $request)
     {
-        $reDive = new  responseObj();
         if (Session::has('username')) {
-            if ($request->input('amount') !== null) {
-                $number = $request->input('number');
-                $name = $request->input('name');
-                $format = $request->input('format');
-                $amount = $request->input('amount');
-                $remark = $request->input('remark');
-                $client = $request->input('client');
-                $machine = $request->input('machine');
-                $production = $request->input('production');
-                $line = $request->input('line');
-                $usereason = $request->input('usereason');
-                $i = '0001';
-                $max = DB::table('O庫outbound')->max('開單時間');
-                $maxtime = date_create(date('Y-m-d', strtotime($max)));
-                $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
-                $interval = date_diff($maxtime, $nowtime);
-                $interval = $interval->format('%R%a');
-                $interval = (int)($interval);
-                if ($interval > 0) {
-                    $opentime = Carbon::now()->format('Ymd') . $i;
-                } else {
-                    $num = DB::table('O庫outbound')->max('領料單號');
-                    $num = intval($num);
-                    $num++;
-                    $num = strval($num);
-                    $opentime = $num;
-                }
-                if ($remark === null || $remark === ' ') $remark = '';
-                DB::beginTransaction();
-                try {
+            $count = $request->input('count');
+            $j = '0001';
+            $max = DB::table('O庫outbound')->max('開單時間');
+            $maxtime = date_create(date('Y-m-d', strtotime($max)));
+            $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
+            $interval = date_diff($maxtime, $nowtime);
+            $interval = $interval->format('%R%a');
+            $interval = (int)($interval);
+            if ($interval > 0) {
+                $opentime = Carbon::now()->format('Ymd') . $j;
+            } else {
+                $num = DB::table('O庫outbound')->max('領料單號');
+                $num = intval($num);
+                $num++;
+                $num = strval($num);
+                $opentime = $num;
+            }
+
+            $Alldata = json_decode($request->input('AllData'));
+
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
+                    $client = $Alldata[0][$i];
+                    $machine = $Alldata[1][$i];
+                    $production = $Alldata[2][$i];
+                    $line = $Alldata[3][$i];
+                    $usereason = $Alldata[4][$i];
+                    $number = $Alldata[5][$i];
+                    $name = $Alldata[6][$i];
+                    $format = $Alldata[7][$i];
+                    $amount = $Alldata[8][$i];
+                    $remark = $Alldata[9][$i];
+                    if ($remark === null) $remark = '';
                     DB::table('O庫outbound')
                         ->insert([
-                            '料號' => $number, '品名' => $name, '規格' => $format, '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line, '預領數量' => $amount, '實際領用數量' => $amount, '備註' => $remark, '領料單號' => $opentime, '開單時間' => Carbon::now()
+                            '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
+                            '料號' => $number, '品名' => $name, '規格' => $format, '預領數量' => $amount,
+                            '實際領用數量' => $amount, '備註' => $remark, '領料單號' => $opentime, '開單時間' => Carbon::now()
                         ]);
-                    DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    $reDive->boolean = false;
-                }
+                } //for
+                DB::commit();
+                return \Response::json(['message' => $opentime, 'record' => $count]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+            } // catch
 
-                $reDive->boolean = true;
-                $reDive->message = $opentime;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
-            } else {
-                return redirect(route('obound.pick'));
-            }
         } else {
             return redirect(route('member.login'));
         }
@@ -1442,55 +1304,54 @@ class OboundController extends Controller
     //O庫-提交退料添加
     public function backaddsubmit(Request $request)
     {
-        $reDive = new  responseObj();
         if (Session::has('username')) {
-            if ($request->input('amount') !== null) {
-                $number = $request->input('number');
-                $name = $request->input('name');
-                $format = $request->input('format');
-                $amount = $request->input('amount');
-                $remark = $request->input('remark');
-                $client = $request->input('client');
-                $machine = $request->input('machine');
-                $production = $request->input('production');
-                $line = $request->input('line');
-                $backreason = $request->input('backreason');
-                $i = '0001';
-                $max = DB::table('O庫出庫退料')->max('開單時間');
-                $maxtime = date_create(date('Y-m-d', strtotime($max)));
-                $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
-                $interval = date_diff($maxtime, $nowtime);
-                $interval = $interval->format('%R%a');
-                $interval = (int)($interval);
-                if ($interval > 0) {
-                    $opentime = Carbon::now()->format('Ymd') . $i;
-                } else {
-                    $num = DB::table('O庫出庫退料')->max('退料單號');
-                    $num = intval($num);
-                    $num++;
-                    $num = strval($num);
-                    $opentime = $num;
-                }
-                if ($remark === '' || $remark === null) $remark = '';
-                DB::beginTransaction();
-                try {
+            $count = $request->input('count');
+            $j = '0001';
+            $max = DB::table('O庫出庫退料')->max('開單時間');
+            $maxtime = date_create(date('Y-m-d', strtotime($max)));
+            $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
+            $interval = date_diff($maxtime, $nowtime);
+            $interval = $interval->format('%R%a');
+            $interval = (int)($interval);
+            if ($interval > 0) {
+                $opentime = Carbon::now()->format('Ymd') . $j;
+            } else {
+                $num = DB::table('O庫出庫退料')->max('退料單號');
+                $num = intval($num);
+                $num++;
+                $num = strval($num);
+                $opentime = $num;
+            }
+            $Alldata = json_decode( $request->input('AllData') );
+
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
+                    $client = $Alldata[0][$i];
+                    $machine = $Alldata[1][$i];
+                    $production = $Alldata[2][$i];
+                    $line = $Alldata[3][$i];
+                    $backreason = $Alldata[4][$i];
+                    $number = $Alldata[5][$i];
+                    $name = $Alldata[6][$i];
+                    $format = $Alldata[7][$i];
+                    $amount = $Alldata[8][$i];
+                    $remark = $Alldata[9][$i];
+                    if ($remark === null) $remark = '';
                     DB::table('O庫出庫退料')
                         ->insert([
-                            '料號' => $number, '品名' => $name, '規格' => $format, '客戶別' => $client, '機種' => $machine, '製程' => $production, '退回原因' => $backreason, '線別' => $line, '預退數量' => $amount, '實際退回數量' => $amount, '備註' => $remark, '退料單號' => $opentime, '開單時間' => Carbon::now()
+                            '客戶別' => $client, '機種' => $machine, '製程' => $production, '退回原因' => $backreason, '線別' => $line,
+                            '料號' => $number, '品名' => $name, '規格' => $format, '預退數量' => $amount,
+                            '實際退回數量' => $amount, '備註' => $remark, '退料單號' => $opentime, '開單時間' => Carbon::now()
                         ]);
-                    DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    $reDive->boolean = false;
-                }
+                } // for
+                DB::commit();
+                return \Response::json(['message' => $opentime, 'record' => $count]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+            } //catch
 
-                $reDive->boolean = true;
-                $reDive->message = $opentime;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
-            } else {
-                return redirect(route('obound.back'));
-            }
         } else {
             return redirect(route('member.login'));
         }
@@ -1584,28 +1445,29 @@ class OboundController extends Controller
         if (Session::has('username')) {
 
             $spreadsheet = new Spreadsheet();
-
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
             $worksheet = $spreadsheet->getActiveSheet();
-            $time = $request->input('time');
+            $titlecount = $request->input('titlecount');
             $count = $request->input('count');
+            $Alldata = json_decode($request->input('AllData'));
+
             //填寫表頭
-            for ($i = 0; $i < $time; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title' . $i));
+            for ($i = 0; $i < $titlecount; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
             }
 
             //填寫內容
-            for ($i = 0; $i < $time; $i++) {
+            for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
                 }
             }
 
 
             // 下載
             $now = Carbon::now()->format('YmdHis');
-            $title = $request->input('title');
-            $filename = $title . $now . '.xlsx';
+            $titlename = $request->input('titlename');
+            $filename = rawurlencode($titlename) . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="' . $filename . '"');
             header('Cache-Control: max-age=0');

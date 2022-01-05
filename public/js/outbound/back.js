@@ -198,6 +198,8 @@ $(document).ready(function () {
         $(".invalid-feedback").remove();
 
         if (count == 0) {
+            document.getElementById('numbererror').style.display = "none";
+            document.getElementById('numbererror1').style.display = "none";
             alert('no data');
             return false;
         }

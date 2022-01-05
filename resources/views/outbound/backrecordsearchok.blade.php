@@ -126,11 +126,13 @@
 
                 </table>
             </div>
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
             <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                 value="{!! __('outboundpageLang.download') !!}">
         </form>
-        <br>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.backrecord')}}'">{!!
             __('outboundpageLang.return') !!}</button>
     </div>

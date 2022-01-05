@@ -637,7 +637,6 @@ class OutboundController extends Controller
     //退料添加
     public function backadd(Request $request)
     {
-
         if (Session::has('username')) {
             if ($request->input('client') !== null && $request->input('number') !== null) {
                 if (strlen($request->input('number')) === 12) {

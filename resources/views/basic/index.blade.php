@@ -93,7 +93,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($factorys as $factory)
-                                    <input class="factory form-check-input" type="checkbox" id="factorycheck"
+                                    <input class="factory " type="checkbox" id="factorycheck"
                                         name="factorycheck" style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="factory" type="text" id="factory{{ $loop->index }}"
                                         name="factory{{ $loop->index }}" value="{{ $factory->廠別 }}">
@@ -113,7 +113,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($clients as $client)
-                                    <input class="client form-check-input" type="checkbox" id="clientcheck" name="clientcheck"
+                                    <input class="client " type="checkbox" id="clientcheck" name="clientcheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="client" type="text" id="client{{ $loop->index }}"
                                         name="client{{ $loop->index }}" value="{{ $client->客戶 }}">
@@ -132,7 +132,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($machines as $machine)
-                                    <input class="machine form-check-input" type="checkbox" id="machinecheck" name="machinecheck"
+                                    <input class="machine " type="checkbox" id="machinecheck" name="machinecheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="machine" type="text" id="machine{{ $loop->index }}"
                                         name="machine{{ $loop->index }}" value="{{ $machine->機種 }}">
@@ -151,7 +151,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($productions as $production)
-                                    <input class="production form-check-input" type="checkbox" id="productioncheck"
+                                    <input class="production " type="checkbox" id="productioncheck"
                                         name="productioncheck" style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="production" type="text" id="production{{ $loop->index }}"
                                         name="production{{ $loop->index }}" value="{{ $production->制程 }}">
@@ -170,7 +170,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($lines as $line)
-                                    <input class="line form-check-input" type="checkbox" id="linecheck" name="linecheck"
+                                    <input class="line " type="checkbox" id="linecheck" name="linecheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="line" type="text" id="line{{ $loop->index }}"
                                         name="line{{ $loop->index }}" value="{{ $line->線別 }}">
@@ -189,7 +189,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($uses as $use)
-                                    <input class="use form-check-input" type="checkbox" id="usecheck" name="usecheck"
+                                    <input class="use " type="checkbox" id="usecheck" name="usecheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="use" type="text" id="use{{ $loop->index }}"
                                         name="use{{ $loop->index }}" value="{{ $use->領用部門 }}">
@@ -208,7 +208,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($usereasons as $usereason)
-                                    <input class="usereason form-check-input" type="checkbox" id="usereasoncheck" name="usereasoncheck"
+                                    <input class="usereason " type="checkbox" id="usereasoncheck" name="usereasoncheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="usereason" type="text" id="usereason{{ $loop->index }}"
                                         name="usereason{{ $loop->index }}" value="{{ $usereason->領用原因 }}">
@@ -227,7 +227,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($inreasons as $inreason)
-                                    <input class="inreason form-check-input" type="checkbox" id="inreasoncheck" name="inreasoncheck"
+                                    <input class="inreason " type="checkbox" id="inreasoncheck" name="inreasoncheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="inreason" type="text" id="inreason{{ $loop->index }}"
                                         name="inreason{{ $loop->index }}" value="{{ $inreason->入庫原因 }}">
@@ -246,7 +246,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($positions as $position)
-                                    <input class="position form-check-input" type="checkbox" id="positioncheck" name="positioncheck"
+                                    <input class="position " type="checkbox" id="positioncheck" name="positioncheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="position" type="text" id="position{{ $loop->index }}"
                                         name="position{{ $loop->index }}" value="{{ $position->儲存位置 }}">
@@ -265,7 +265,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($sends as $send)
-                                    <input class="send form-check-input" type="checkbox" id="sendcheck" name="sendcheck"
+                                    <input class="send " type="checkbox" id="sendcheck" name="sendcheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="send" type="text" id="send{{ $loop->index }}"
                                         name="send{{ $loop->index }}" value="{{ $send->發料部門 }}">
@@ -284,7 +284,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($os as $o)
-                                    <input class="o form-check-input" type="checkbox" id="ocheck" name="ocheck"
+                                    <input class="o " type="checkbox" id="ocheck" name="ocheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="o" type="text" id="o{{ $loop->index }}" name="o{{ $loop->index }}"
                                         value="{{ $o->O庫 }}">
@@ -303,7 +303,7 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach($backs as $back)
-                                    <input class="back form-check-input" type="checkbox" id="backcheck" name="backcheck"
+                                    <input class="back " type="checkbox" id="backcheck" name="backcheck"
                                         style="width:20px;height:20px;" value="{{$loop->index}}">
                                     <input class="back" type="text" id="back{{ $loop->index }}"
                                         name="back{{ $loop->index }}" value="{{ $back->退回原因 }}">

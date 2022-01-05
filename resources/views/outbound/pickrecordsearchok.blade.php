@@ -24,7 +24,7 @@
                             <input type = "hidden" id = "titlename" name = "titlename" value = "領料記錄表">
                             <div class="table-responsive">
                             <table class="table" id = "pickrecordlist">
-                            <tr id = "require">
+                            <tr>
                                 <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('outboundpageLang.client') !!}</th>
                                 <th><input type = "hidden" id = "title1" name = "title1" value = "機種">{!! __('outboundpageLang.machine') !!}</th>
                                 <th><input type = "hidden" id = "title2" name = "title2" value = "製程">{!! __('outboundpageLang.process') !!}</th>
