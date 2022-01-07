@@ -52,10 +52,5 @@ Route::post('/set_wanted_table', [CheckingInventoryController::class, 'setContin
 
 // get the record search page
 Route::get('/check_result', function () {
-    // dd($databaseName); // test
-    $month = Carbon::now()->subMonths(3);
-    $serialNums = \DB::table('checking_inventory')->select('id', '單號', 'created_at')
-        ->latest('created_at')->where('created_at', '>=', $month)->get()->unique('單號');
-    $serialNumsCount = count($serialNums);
-    return view('checkInventory.checkResult', ['serialCount' => $serialNumsCount, 'serialNums' => $serialNums]);
+    return view('checkInventory.checkResult');
 })->name('checking.check_result');
