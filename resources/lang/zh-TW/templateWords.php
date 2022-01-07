@@ -12,7 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
     'websiteName' => '耗材管理系統',
     'language' => '語言/Language',
     'logout_btn' => '登出',
@@ -53,7 +52,7 @@ return [
     'custom_range' => '自訂',
     'apply' => '確定',
     'cancel' => '取消',
-    
+
     'taipei' => '台北企總EIP',
     'dep' => '部門網站',
     'project' => '專案網站',

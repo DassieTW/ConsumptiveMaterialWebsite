@@ -132,7 +132,7 @@
 
             <label class="form-label">{!! __('bupagelang.receivepeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" style="width: 250px"
-                placeholder="{!! __('bupagelang.enteroutpeople') !!}" required>
+                placeholder="{!! __('bupagelang.enteroutpeople') !!}" required oninput="if(value.length>9)value=value.slice(0,9)">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="pickmenu" style="display: none;" class="list-group">
                 @foreach($test as $k=> $a)

@@ -48,8 +48,7 @@ $(document).ready(function () {
                 send.push($("#data12a" + i).val());
                 safe.push($("#data13a" + i).val());
                 row.push(i.toString());
-            }
-            else{
+            } else {
                 continue;
             }
         }
@@ -110,8 +109,8 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-                var mess = Lang.get('basicInfoLang.total') + ' : ' + row.length + Lang.get('basicInfoLang.record') +
-                    Lang.get('basicInfoLang.matsdata') + ' ， ' + Lang.get('basicInfoLang.success') + Lang.get('basicInfoLang.new') +
+                var mess = Lang.get('basicInfoLang.total') + ' : ' + row.length + Lang.get('basicInfoLang.record') + ' ' +
+                    Lang.get('basicInfoLang.matsdata') + ' ， ' + Lang.get('basicInfoLang.success') + ' ' + Lang.get('basicInfoLang.new') +
                     ' : ' + data.record + Lang.get('basicInfoLang.matsdata');
 
                 alert(mess);
@@ -140,21 +139,12 @@ $(document).ready(function () {
             },
             error: function (err) {
                 console.log(err.status);
-                //料號重複
-                if (err.status == 420) {
-                    var mess = Lang.get('basicInfoLang.row') + ' : ' + err.responseJSON.message + ' ' + Lang.get('basicInfoLang.isnrepeat');
-                    window.alert(mess);
-                    window.location.href = 'new';
-                } else if (err.status == 423) {
-                    window.alert(err.responseJSON.message);
-                    console.log(err.responseJSON.message);
-                } // else if
-                //transaction error
-                else {
-                    var mess = err.responseJSON.message;
-                    window.alert(mess);
-                    window.location.reload();
-                }
+
+                // transaction error
+                var mess = err.responseJSON.message;
+                window.alert(mess);
+                window.location.reload();
+
             },
         });
     });

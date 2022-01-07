@@ -25,7 +25,7 @@
             <div class="table-responsive">
 
                 <table class="table">
-                    <tr id="require">
+                    <tr>
                         <th>{!! __('bupagelang.dblist') !!}</th>
                         <th>{!! __('bupagelang.client') !!}</th>
                         <th>{!! __('bupagelang.isn') !!}</th>
@@ -63,28 +63,28 @@
                                     );
                         ?>
                         @foreach($result as $k)
-                        <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
+                        <td><input type="hidden" id="dataa{{$loop->index}}" name="dataa{{$loop->index}}"
                                 value="{{$data->調撥單號}}">{{$data->調撥單號}}</td>
-                        <td><input type="hidden" id="data1{{$loop->index}}" name="data1{{$loop->index}}"
+                        <td><input type="hidden" id="datab{{$loop->index}}" name="datab{{$loop->index}}"
                                 value="{{$k[0]}}">{{$k[0]}}</td>
-                        <td><input type="hidden" id="data2{{$loop->index}}" name="data2{{$loop->index}}"
+                        <td><input type="hidden" id="datac{{$loop->index}}" name="datac{{$loop->index}}"
                                 value="{{$data->料號}}">{{$data->料號}}</td>
-                        <td><input type="hidden" id="data3{{$loop->index}}" name="data3{{$loop->index}}"
+                        <td><input type="hidden" id="datad{{$loop->index}}" name="datad{{$loop->index}}"
                                 value="{{$data->品名}}">{{$data->品名}}</td>
-                        <td><input type="hidden" id="data4{{$loop->index}}" name="data4{{$loop->index}}"
+                        <td><input type="hidden" id="datae{{$loop->index}}" name="datae{{$loop->index}}"
                                 value="{{$data->規格}}">{{$data->規格}}</td>
-                        <td><input type="hidden" id="data5{{$loop->index}}" name="data5{{$loop->index}}"
+                        <td><input type="hidden" id="dataf{{$loop->index}}" name="dataf{{$loop->index}}"
                                 value="{{$data->調撥數量}}">{{$data->調撥數量}}</td>
-                        <td><input type="hidden" id="data6{{$loop->index}}" name="data6{{$loop->index}}"
+                        <td><input type="hidden" id="datag{{$loop->index}}" name="datag{{$loop->index}}"
                                 value="{{$k[1]}}">{{$k[1]}}</td>
                         <td><input type="number" class="form-control form-control-lg" style="width: 150px"
-                                id="data7{{$loop->index}}" name="data7{{$loop->index}}" min="0" value="{{$k[1]}}"
+                                id="datah{{$loop->index}}" name="datah{{$loop->index}}" min="0" value="{{$k[1]}}"
                                 required></td>
-                        <td><input type="hidden" id="data8{{$loop->index}}" name="data8{{$loop->index}}"
+                        <td><input type="hidden" id="datai{{$loop->index}}" name="datai{{$loop->index}}"
                                 value="{{$k[2]}}">{{$k[2]}}</td>
-                        <td><input type="hidden" id="data9{{$loop->index}}" name="data9{{$loop->index}}"
+                        <td><input type="hidden" id="dataj{{$loop->index}}" name="dataj{{$loop->index}}"
                                 value="{{$data->撥出廠區}}">{{$data->撥出廠區}}</td>
-                        <td><input type="hidden" id="data10{{$loop->index}}" name="data10{{$loop->index}}"
+                        <td><input type="hidden" id="datak{{$loop->index}}" name="datak{{$loop->index}}"
                                 value="{{$data->接收廠區}}">{{$data->接收廠區}}</td>
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
@@ -107,7 +107,7 @@
 
             <label class="form-label">{!! __('bupagelang.outpeople') !!}</label>
             <input class="form-control form-control-lg" id="outpeople" name="outpeople" width="250" style="width: 250px"
-                placeholder="{!! __('bupagelang.enteroutpeople') !!}" required>
+                placeholder="{!! __('bupagelang.enteroutpeople') !!}" required oninput="if(value.length>9)value=value.slice(0,9)">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="outmenu" style="display: none;" class="list-group">
                 @foreach($test as $k=> $a)

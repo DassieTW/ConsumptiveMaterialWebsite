@@ -64,18 +64,18 @@ $(document).ready(function () {
         var positions = new Array();
         console.log(count);
         for (var i = 0; i < count; i++) {
-            clients[i] = $("#data1" + i).val();
-            nowstocks[i] = $("#data6" + i).val();
-            realamounts[i] = $("#data7" + i).val();
-            positions[i] = $("#data8" + i).val();
+            clients[i] = $("#datab" + i).val();
+            nowstocks[i] = $("#datag" + i).val();
+            realamounts[i] = $("#datah" + i).val();
+            positions[i] = $("#datai" + i).val();
         }
-        var list = $("#data0" + '0').val();
-        var number = $("#data2" + '0').val();
-        var name = $("#data3" + '0').val();
-        var format = $("#data4" + '0').val();
-        var preamount = $("#data5" + '0').val();
-        var outfactory = $("#data9" + '0').val();
-        var receivefac = $("#data10" + '0').val();
+        var list = $("#dataa" + '0').val();
+        var number = $("#datac" + '0').val();
+        var name = $("#datad" + '0').val();
+        var format = $("#datae" + '0').val();
+        var preamount = $("#dataf" + '0').val();
+        var outfactory = $("#dataj" + '0').val();
+        var receivefac = $("#datak" + '0').val();
 
         var out = $("#outpeople").val();
         out = out.split(' ');
@@ -104,16 +104,16 @@ $(document).ready(function () {
             amount = amount + parseInt(realamounts[i]);
         }
 
-        var mess = Lang.get('bupagelang.preamount') + ' : ' + preamount + ' ' + Lang.get('bupagelang.realamount') + ' : ' + amount +
-            ' ' + Lang.get('bupagelang.dblist') + ' : ' + list + '\n' + Lang.get('bupagelang.checktrans');
-        var sure = window.confirm(mess);
-
         //check has people
         if (check1 == -1) {
             alert(Lang.get("bupagelang.nooutpeople"));
             $("#outpeople").addClass("is-invalid");
             return false;
         }
+
+        var mess = Lang.get('bupagelang.preamount') + ' : ' + preamount + ' ' + Lang.get('bupagelang.realamount') + ' : ' + amount +
+            ' ' + Lang.get('bupagelang.dblist') + ' : ' + list + '\n' + Lang.get('bupagelang.checktrans');
+        var sure = window.confirm(mess);
 
         if (sure !== true) {
             return false;

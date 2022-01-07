@@ -66,7 +66,7 @@
                         @endforeach
                     </td>
                     @endif
-                    <td><input type="text" style="width:100px;"></td>
+                    <td><input class = "form-control form-control-lg" type="text" style="width:100px;"></td>
                 </tr>
 
                 <input type="hidden" id="count" name="count" value="{{$loop->count}}">

@@ -29,14 +29,15 @@ $(document).ready(function () {
 
         var i = $("input:checked").val();
 
-        var factory = $("#data0" + i).val();
-        var number = $("#data1" + i).val();
-        var name = $("#data2" + i).val();
-        var format = $("#data3" + i).val();
-        var unit = $("#data4" + i).val();
-        var oldstock = $("#data6" + i).val();
-        var amount = $("#data7" + i).val();
-        var receive = $("#data9" + i).val();
+        console.log(i);
+        var factory = $("#dataa" + i).val();
+        var number = $("#datab" + i).val();
+        var name = $("#datac" + i).val();
+        var format = $("#datad" + i).val();
+        var unit = $("#datae" + i).val();
+        var oldstock = $("#datag" + i).val();
+        var amount = $("#datah" + i).val();
+        var receive = $("#dataj" + i).val();
         var title = [];
         for (var k = 0; k < 10; k++) {
             title[k] = $("#title" + k).val();
@@ -64,18 +65,18 @@ $(document).ready(function () {
         for (let k = 0; k < record.length; k++) {
             var a = new Array();
             data8.push(a);
-            data0.push($("#data0" + record[k]).val());
-            data1.push($("#data1" + record[k]).val());
-            data2.push($("#data2" + record[k]).val());
-            data3.push($("#data3" + record[k]).val());
-            data4.push($("#data4" + record[k]).val());
-            data5.push($("#data5" + record[k]).val());
-            data6.push($("#data6" + record[k]).val());
-            data7.push($("#data7" + record[k]).val());
-            $("#data8" + record[k]).children('span').each(function () {
+            data0.push($("#dataa" + record[k]).val());
+            data1.push($("#datab" + record[k]).val());
+            data2.push($("#datac" + record[k]).val());
+            data3.push($("#datad" + record[k]).val());
+            data4.push($("#datae" + record[k]).val());
+            data5.push($("#dataf" + record[k]).val());
+            data6.push($("#datag" + record[k]).val());
+            data7.push($("#datah" + record[k]).val());
+            $("#datai" + record[k]).children('span').each(function () {
                 data8[data8.length - 1].push($(this).text());
             });
-            data9.push($("#data9" + record[k]).val());
+            data9.push($("#dataj" + record[k]).val());
         }
 
         checked = $("input[type=checkbox]:checked").length;
@@ -88,12 +89,12 @@ $(document).ready(function () {
 
             if (amount === '') {
 
-                document.getElementById("data7" + i).classList.add("is-invalid");
+                document.getElementById("datah" + i).classList.add("is-invalid");
                 alert(Lang.get('bupagelang.enteramount'));
                 return false;
             }
             if (receive === null) {
-                document.getElementById("data9" + i).classList.add("is-invalid");
+                document.getElementById("dataj" + i).classList.add("is-invalid");
                 alert(Lang.get('bupagelang.enterfactory'));
                 return false;
             }
@@ -104,6 +105,7 @@ $(document).ready(function () {
             }
         }
         if (select == '提交' || select == 'Submit') {
+            console.log(factory);
             $.ajax({
                 type: 'POST',
                 url: "transsluggish",
@@ -139,7 +141,7 @@ $(document).ready(function () {
                 error: function (err) {
                     //transaction error
                     if (err.status == 420) {
-                        var mess = myObj.message;
+                        var mess = err.message;
                         alert(mess);
                         window.location.reload();
                     }
@@ -148,6 +150,10 @@ $(document).ready(function () {
                         var mess = Lang.get('bupagelang.inventoryerr') + ' ' + err.responseJSON.message;
                         alert(mess);
                         return false;
+                    }
+                    else{
+                        var mess = err.responseJSON.message;
+                        alert(mess);
                     }
                 },
             });

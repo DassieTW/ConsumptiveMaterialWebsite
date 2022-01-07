@@ -93,23 +93,23 @@
                             <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
                                     name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
                                     value="{{$i}}{{$loop->index}}"></td>
-                            <td><input type="hidden" id="data0{{$i}}{{$loop->index}}" name="data0{{$i}}{{$loop->index}}"
-                                    value={{$database[$i]}}>{{$database[$i]}}</td>
-                            <td><input type="hidden" id="data1{{$i}}{{$loop->index}}" name="data1{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="dataa{{$i}}{{$loop->index}}" name="dataa{{$i}}{{$loop->index}}"
+                                    value="{{$database[$i]}}">{{$database[$i]}}</td>
+                            <td><input type="hidden" id="datab{{$i}}{{$loop->index}}" name="datab{{$i}}{{$loop->index}}"
                                     value={{$data->料號}}>{{$data->料號}}</td>
-                            <td><input type="hidden" id="data2{{$i}}{{$loop->index}}" name="data2{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="datac{{$i}}{{$loop->index}}" name="datac{{$i}}{{$loop->index}}"
                                     value={{$data->品名}}>{{$data->品名}}</td>
-                            <td><input type="hidden" id="data3{{$i}}{{$loop->index}}" name="data3{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="datad{{$i}}{{$loop->index}}" name="datad{{$i}}{{$loop->index}}"
                                     value={{$data->規格}}>{{$data->規格}}</td>
-                            <td><input type="hidden" id="data4{{$i}}{{$loop->index}}" name="data4{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="datae{{$i}}{{$loop->index}}" name="datae{{$i}}{{$loop->index}}"
                                     value={{$data->單位}}>{{$data->單位}}</td>
-                            <td><input type="hidden" id="data5{{$i}}{{$loop->index}}" name="data5{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="dataf{{$i}}{{$loop->index}}" name="dataf{{$i}}{{$loop->index}}"
                                     value={{$stayday}}>{{$stayday}}</td>
-                            <td><input type="hidden" id="data6{{$i}}{{$loop->index}}" name="data6{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="datag{{$i}}{{$loop->index}}" name="datag{{$i}}{{$loop->index}}"
                                     value={{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
-                            <td><input type="number" id="data7{{$i}}{{$loop->index}}" name="data7{{$i}}{{$loop->index}}"
+                            <td><input type="number" id="datah{{$i}}{{$loop->index}}" name="data7{{$i}}{{$loop->index}}"
                                     value="1" style="width:100px;" min="0"></td>
-                            <td id="data8{{$i}}{{$loop->index}}" name="data8{{$i}}{{$loop->index}}">@foreach ($buytime
+                            <td id="datai{{$i}}{{$loop->index}}" name="datai{{$i}}{{$loop->index}}">@foreach ($buytime
                                 as $buytime)
                                 @if( $buytime[2] != null)
                                 <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime[0]}}
@@ -126,8 +126,8 @@
                                 @endforeach
                             </td>
                             <td>
-                                <select class="form-control form-control-lg" id="data9{{$i}}{{$loop->index}}"
-                                    name="data9{{$i}}{{$loop->index}}" style="width: 200px">
+                                <select class="form-select form-select-lg" id="dataj{{$i}}{{$loop->index}}"
+                                    name="dataj{{$i}}{{$loop->index}}" style="width: 200px">
                                     <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
                                         !!}</option>
                                     @foreach($buytimeco as $buytime)
@@ -142,24 +142,24 @@
                             <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
                                     name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
                                     value="{{$i}}{{$loop->index}}"></td>
-                            <td><input type="hidden" id="data0{{$i}}{{$loop->index}}" name="data0{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="dataa{{$i}}{{$loop->index}}" name="dataa{{$i}}{{$loop->index}}"
                                     value={{$database[$i]}}>{{$database[$i]}}</td>
-                            <td><input type="hidden" id="data1{{$i}}{{$loop->index}}" name="data1{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="datab{{$i}}{{$loop->index}}" name="datab{{$i}}{{$loop->index}}"
                                     value={{$data->料號}}>{{$data->料號}}</td>
-                            <td><input type="hidden" id="data2{{$i}}{{$loop->index}}" name="data2{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="datac{{$i}}{{$loop->index}}" name="datac{{$i}}{{$loop->index}}"
                                     value={{$data->品名}}>{{$data->品名}}</td>
-                            <td><input type="hidden" id="data3{{$i}}{{$loop->index}}" name="data3{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="datad{{$i}}{{$loop->index}}" name="datad{{$i}}{{$loop->index}}"
                                     value={{$data->規格}}>{{$data->規格}}</td>
-                            <td><input type="hidden" id="data4{{$i}}{{$loop->index}}" name="data4{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="datae{{$i}}{{$loop->index}}" name="datae{{$i}}{{$loop->index}}"
                                     value={{$data->單位}}>{{$data->單位}}</td>
-                            <td><input type="hidden" id="data5{{$i}}{{$loop->index}}" name="data5{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="dataf{{$i}}{{$loop->index}}" name="dataf{{$i}}{{$loop->index}}"
                                     value={{$stayday}}>{{$stayday}}</td>
-                            <td><input type="hidden" id="data6{{$i}}{{$loop->index}}" name="data6{{$i}}{{$loop->index}}"
+                            <td><input type="hidden" id="datag{{$i}}{{$loop->index}}" name="datag{{$i}}{{$loop->index}}"
                                     value={{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
                             <td><input type="number" class="form-control form-control-lg"
-                                    id="data7{{$i}}{{$loop->index}}" name="data7{{$i}}{{$loop->index}}" value="1"
+                                    id="datah{{$i}}{{$loop->index}}" name="datah{{$i}}{{$loop->index}}" value="1"
                                     style="width:100px;" min="0"></td>
-                            <td id="data8{{$i}}{{$loop->index}}" name="data8{{$i}}{{$loop->index}}">@foreach ($buytime
+                            <td id="datai{{$i}}{{$loop->index}}" name="datai{{$i}}{{$loop->index}}">@foreach ($buytime
                                 as $buytime)
                                 @if( $buytime[2] != null)
                                 <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} : {{$buytime[0]}}
@@ -176,8 +176,8 @@
                                 @endforeach
                             </td>
                             <td>
-                                <select class="form-select form-select-lg" id="data9{{$i}}{{$loop->index}}"
-                                    name="data9{{$i}}{{$loop->index}}" style="width: 200px">
+                                <select class="form-select form-select-lg" id="dataj{{$i}}{{$loop->index}}"
+                                    name="dataj{{$i}}{{$loop->index}}" style="width: 200px">
                                     <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
                                         !!}</option>
                                     @foreach($buytimeco as $buytime)

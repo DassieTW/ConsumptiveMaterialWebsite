@@ -12,7 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
     'websiteName' => 'Consumable Mgmt.',
     'language' => 'Language',
     'logout_btn' => 'Log Out',
@@ -53,7 +52,7 @@ return [
     'custom_range' => 'Custom Range',
     'apply' => 'Apply',
     'cancel' => 'Cancel',
-    
+
     'taipei' => 'Taipei EIP',
     'dep' => 'Department Site',
     'project' => 'Project Site',

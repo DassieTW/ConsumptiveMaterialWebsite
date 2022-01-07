@@ -95,7 +95,7 @@
                                         @endforeach
                                         </td>
                                         @endif
-                                        <td><input type = "text" style="width:100px"></td>
+                                        <td><input class = "form-control form-control-lg" type = "text" style="width:100px"></td>
                                     </tr>
                                     @endif
                                     <input type = "hidden" id="count1" name = "count1" value="{{$loop->count}}">

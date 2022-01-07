@@ -52,16 +52,10 @@ $(document).ready(function () {
 
             success: function (data) {
                 console.log(number);
-                var mess =
-                    Lang.get("inboundpageLang.total") +
-                    " " +
-                    data.message +
-                    " " +
-                    Lang.get("inboundpageLang.record") +
-                    Lang.get("inboundpageLang.stockupload") +
-                    Lang.get("inboundpageLang.success");
+                var mess = Lang.get("inboundpageLang.total") + " " + data.message + " " +
+                    Lang.get("inboundpageLang.record") + ' ' + Lang.get("inboundpageLang.stockupload") + ' ' + Lang.get("inboundpageLang.success");
                 alert(mess);
-                window.location.href = "/inbound";
+                window.location.href = "upload";
             },
             error: function (err) {
                 console.log(err.status);

@@ -97,7 +97,6 @@ return [
     'good' =>'good product',
     'nogood' =>'rejects',
     'timepart' => 'Time period',
-
     'nosendpeople' =>'The job number of the sender does not exist, please go to User Management-Maintenance of New Person Information',
     'nopickpeople' =>'The job number of the picker does not exist, please go to User Management-Maintenance of New Person Information',
     'nobackpeople' => 'The job number of the return people does not exist, please go to User Management-Maintenance of New Person Information',
