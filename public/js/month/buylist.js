@@ -71,6 +71,7 @@ for (var i = 0; i < countb; i++) {
 }
 
 $(document).ready(function () {
+
     $("input").change(function () {
         for (var i = 0; i < counta; i++) {
             var buyamounta = $("#buyamounta" + i).val();
@@ -116,6 +117,16 @@ $(document).ready(function () {
         }
     });
 
+    $("#writesrm").click(function () {
+        var writesrm = prompt(Lang.get('monthlyPRpageLang.writesrm'));
+        for (let i = 0; i < counta; i++) {
+            $("#srmnumbera" + i).val(writesrm);
+        }
+        for (let i = 0; i < countb; i++) {
+            $("#srmnumberb" + i).val(writesrm);
+        }
+    });
+
     $('#buylist').on('submit', function (e) {
         e.preventDefault();
 
@@ -133,6 +144,7 @@ $(document).ready(function () {
         countb = parseInt(countb);
 
         count = counta + countb;
+        var check1 = 0;
         var data = [];
         var srm = [];
         var client = [];
@@ -153,6 +165,7 @@ $(document).ready(function () {
         var buyper = [];
         var needmoney = [];
         var needper = [];
+        var check = [];
 
         for (let i = 0; i < counta; i++) {
             srm.push($("#srmnumbera" + i).val());
@@ -207,16 +220,19 @@ $(document).ready(function () {
                         let j = i - counta;
                         $("#srmnumberb" + j).addClass("is-invalid");
                     }
-                    console.log(123);
                     i++;
                     var mess = Lang.get('monthlyPRpageLang.row') + ' ' + i + ' ' + Lang.get('monthlyPRpageLang.nowrite') + Lang.get('monthlyPRpageLang.srm');
                     alert(mess);
                     return false;
+                } else if (parseInt(buyamount[i]) === 0) {
+                    check.push(0);
                 } else {
+                    check.push(1);
                     continue;
                 }
             }
         }
+
 
         data.push(srm);
         data.push(client);
@@ -239,8 +255,25 @@ $(document).ready(function () {
         data.push(needper);
 
         if (select == '提交' || select == 'Submit') {
-            if (count == 0) {
-                alert('no data');
+            for (let i = 0; i < (counta + countb); i++) {
+                if (check[i] == 0) {
+                    check1++;
+                }
+            }
+
+            if(check1 == count)
+            {
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('monthlyPRpageLang.nodata'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             }
             $.ajax({
@@ -249,6 +282,7 @@ $(document).ready(function () {
                 data: {
                     AllData: JSON.stringify(data),
                     count: count,
+                    check: check,
                 },
                 beforeSend: function () {
                     // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test

@@ -889,15 +889,15 @@ class MonthController extends Controller
                                 '下月站位人數' => $nextpeople, '下月開線數' => $nextline, '下月開班數' => $nextclass, '下月每人每日需求量' => $nextuse,
                                 '下月每日更換頻率' => $nextchange, '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email
                             ]);
-                            $record++;
-                            array_push($check, $row[$i]);
+                        $record++;
+                        array_push($check, $row[$i]);
                     } else {
                         continue;
                     } // continue-else
 
                 } //for
                 DB::commit();
-                return \Response::json(['record' => $record, 'database' => $database , 'check' => $check]/* Status code here default is 200 ok*/);
+                return \Response::json(['record' => $record, 'database' => $database, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
@@ -1888,6 +1888,7 @@ class MonthController extends Controller
             //submit
 
             $now = Carbon::now();
+            $check = $request->input('check');
             $count = $request->input('count');
             $Alldata = json_decode($request->input('AllData'));
             $record = 0;
@@ -1913,11 +1914,16 @@ class MonthController extends Controller
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
-                    DB::table('請購單')
-                        ->insert([
-                            'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '安全庫存' => $safe[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '實際需求' => $realneed[$i], '請購金額' => $buymoney[$i], '請購占比' => $buyper[$i], '需求金額' => $needmoney[$i], '需求占比' => $needper[$i], '請購時間' => $now
-                        ]);
-                    $record++;
+                    if ($check[$i] == 1) {
+                        DB::table('請購單')
+                            ->insert([
+                                'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '安全庫存' => $safe[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '實際需求' => $realneed[$i], '請購金額' => $buymoney[$i], '請購占比' => $buyper[$i], '需求金額' => $needmoney[$i], '需求占比' => $needper[$i], '請購時間' => $now
+                            ]);
+                        $record++;
+                    }
+                    else{
+                        continue;
+                    }
                 }
                 DB::commit();
                 return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
@@ -2106,7 +2112,8 @@ class MonthController extends Controller
                         ->where('料號', $number)
                         ->update([
                             '狀態' => "已完成", '畫押工號' => $jobnumber,
-                            '畫押信箱' => $email, '畫押時間' => $now, '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i], '當月開班數' => $nowclass[$i], '當月每人每日需求量' => $nowuse[$i], '當月每日更換頻率' => $nowchange[$i], '下月站位人數' => $nextpeople[$i], '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextuse[$i], '下月每日更換頻率' => $nextchange[$i], /*'updated_at' => $update*/ '紀錄' => $record
+                            '畫押信箱' => $email, '畫押時間' => $now, '當月站位人數' => $nowpeople, '當月開線數' => $nowline, '當月開班數' => $nowclass, '當月每人每日需求量' => $nowuse,
+                            '當月每日更換頻率' => $nowchange, '下月站位人數' => $nextpeople, '下月開線數' => $nextline, '下月開班數' => $nextclass, '下月每人每日需求量' => $nextuse, '下月每日更換頻率' => $nextchange, /*'updated_at' => $update*/ '紀錄' => $record
                         ]);
                 } //for
                 DB::commit();

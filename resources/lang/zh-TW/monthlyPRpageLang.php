@@ -131,4 +131,6 @@ return [
     'noemail' => '請輸入畫押人員信箱',
     'data' => '資料',
     'yellowrepeat' => '黃底標表示資料庫已存放在資料庫內',
+    'writesrm' => '填寫SRM單號',
+    'nodata' => '無資料提交',
 ];

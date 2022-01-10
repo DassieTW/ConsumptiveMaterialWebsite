@@ -22,8 +22,8 @@
     <div class="card-body">
         <form method="POST" id="buylist">
             @csrf
-            <input type = "hidden" id = "titlename" name = "titlename" value = "請購單">
-            <input type = "hidden" id = "titlename1" name = "titlename1" value = "請購單上傳">
+            <input type="hidden" id="titlename" name="titlename" value="請購單">
+            <input type="hidden" id="titlename1" name="titlename1" value="請購單上傳">
             <div class="table-responsive">
                 <table class="table">
                     <tr>
@@ -191,8 +191,9 @@
             <input type="submit" id="download1" name="download1" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.export1') !!}">
         </form>
-
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+        <button class="btn btn-primary" id="writesrm">{!! __('monthlyPRpageLang.writesrm') !!}</button>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.buylist')}}'">{!!

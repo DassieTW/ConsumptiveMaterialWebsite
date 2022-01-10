@@ -136,42 +136,46 @@
                                     $lt = DB::table('consumptive_material')->where('料號',$row[3])->value('LT');
                                     $lt = round($lt, 3);
                                 ?>
-                                <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
+                                <td><input type="hidden" id="dataa{{$loop->index}}" name="dataa{{$loop->index}}"
                                         value="{{$row[3]}}">{{$row[3]}}</td>
                                 <td>{{$name}}</td>
                                 <td>{{$format}}</td>
                                 <td>{{$unit}}</td>
-                                <td><input type="hidden" id="data12{{$loop->index}}" name="data12{{$loop->index}}"
+                                <td><input type="hidden" id="datab{{$loop->index}}" name="datab{{$loop->index}}"
                                         value="{{$lt}}">{{$lt}}</td>
-                                <td><input style="width:200px" type="number" id="data1{{$loop->index}}"
-                                        name="data1{{$loop->index}}" step="0.0000000001" required value="{{$row[4]}}"
+                                <td><input style="width:200px" type="number" id="datac{{$loop->index}}"
+                                        name="datac{{$loop->index}}" step="0.0000000001" required value="{{$row[4]}}"
                                         class="form-control form-control-lg" min="0.0000000001"></td>
                                 <td><input style="width:200px" class="form-control form-control-lg" type="number"
-                                        id="data2{{$loop->index}}" name="data2{{$loop->index}}" readonly>
+                                        id="datad{{$loop->index}}" name="datad{{$loop->index}}" readonly>
                                 </td>
-                                <td><input style="width:200px" type="number" id="data3{{$loop->index}}"
-                                        name="data3{{$loop->index}}" readonly class="form-control form-control-lg">
+                                <td><input style="width:200px" type="number" id="datae{{$loop->index}}"
+                                        name="datae{{$loop->index}}" readonly class="form-control form-control-lg">
                                 </td>
-                                <td><input style="width:200px" type="number" id="data4{{$loop->index}}"
-                                        name="data4{{$loop->index}}" readonly class="form-control form-control-lg">
+                                <td><input style="width:200px" type="number" id="dataf{{$loop->index}}"
+                                        name="dataf{{$loop->index}}" readonly class="form-control form-control-lg">
                                 </td>
-                                <td><input type="hidden" id="data5{{$loop->index}}" name="data5{{$loop->index}}"
+                                <td><input type="hidden" id="datag{{$loop->index}}" name="datag{{$loop->index}}"
                                         value="{{$row[0]}}">{{$row[0]}}</td>
-                                <td><input type="hidden" id="data6{{$loop->index}}" name="data6{{$loop->index}}"
+                                <td><input type="hidden" id="datah{{$loop->index}}" name="datah{{$loop->index}}"
                                         value="{{$row[1]}}">{{$row[1]}}</td>
-                                <td><input type="hidden" id="data7{{$loop->index}}" name="data7{{$loop->index}}"
+                                <td><input type="hidden" id="datai{{$loop->index}}" name="datai{{$loop->index}}"
                                         value="{{$row[2]}}">{{$row[2]}}</td>
                                 <td><input class="form-control form-control-lg" style="width:85px" type="number"
-                                        id="data8{{$loop->index}}" name="data8{{$loop->index}}" step="0.01" min="0">
+                                        id="dataj{{$loop->index}}" name="dataj{{$loop->index}}" step="0.01" min="0"
+                                        value="{{$row[5]}}">
                                 </td>
                                 <td><input class="form-control form-control-lg" style="width:85px" type="number"
-                                        id="data9{{$loop->index}}" name="data9{{$loop->index}}" step="0.01" min="0">
+                                        id="datak{{$loop->index}}" name="datak{{$loop->index}}" step="0.01" min="0"
+                                        value="{{$row[6]}}">
                                 </td>
                                 <td><input class="form-control form-control-lg" style="width:85px" type="number"
-                                        id="data10{{$loop->index}}" name="data10{{$loop->index}}" step="0.01" min="0">
+                                        id="datal{{$loop->index}}" name="datal{{$loop->index}}" step="0.01" min="0"
+                                        value="{{$row[7]}}">
                                 </td>
                                 <td><input class="form-control form-control-lg" style="width:85px" type="number"
-                                        id="data11{{$loop->index}}" name="data11{{$loop->index}}" step="0.01" min="0">
+                                        id="datam{{$loop->index}}" name="datam{{$loop->index}}" step="0.01" min="0"
+                                        value="{{$row[8]}}">
                                 </td>
 
                             </tr>

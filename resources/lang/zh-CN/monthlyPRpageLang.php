@@ -131,4 +131,6 @@ return [
     'noemail' => '请输入画押人员信箱',
     'data' => '资料',
     'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
+    'writesrm' => '填写SRM单号',
+    'nodata' => '无资料提交',
 ];

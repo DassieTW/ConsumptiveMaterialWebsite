@@ -130,7 +130,7 @@
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.receivepeople') !!}</label>
-            <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" required width="250"
+            <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
                 style="width: 250px" placeholder="{!! __('outboundpageLang.inputreceivepeople') !!}"
                 oninput="if(value.length>9)value=value.slice(0,9)">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -142,9 +142,13 @@
                 @endforeach
             </ul>
 
+            <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
+                pattern="[A-Za-z0-9]+" >
+
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.backpeople') !!}</label>
-            <input class="form-control form-control-lg" id="backpeople" name="backpeople" required width="250"
+            <input class="form-control form-control-lg" id="backpeople" name="backpeople" width="250"
                 style="width: 250px" placeholder="{!! __('outboundpageLang.inputbackpeople') !!}"
                 oninput="if(value.length>9)value=value.slice(0,9)">
             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterbackpeople')
@@ -158,6 +162,11 @@
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 @endforeach
             </ul>
+
+            <input class="form-control form-control-lg rfid" id="rfidbackpeople" name="rfidbackpeople" width="250"
+            style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}"
+            pattern="[A-Za-z0-9]+" >
+
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             {{-- check people --}}

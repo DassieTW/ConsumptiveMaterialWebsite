@@ -207,9 +207,12 @@ $(document).ready(function () {
             }
         }
 
+        console.log(month);
+        console.log(reason);
+        console.log(say);
         //check month write description
         for (let i = 0; i < count; i++) {
-            if (month[i] == "是" && reason[i] == null || say[i] == "") {
+            if (month[i] == "是" && (reason[i] == null || say[i] == " ")) {
 
                 let row = i + 1;
                 $("#errorrow").empty().append(Lang.get("monthlyPRpageLang.row") + " " + row);

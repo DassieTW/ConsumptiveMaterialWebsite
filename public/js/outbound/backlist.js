@@ -264,8 +264,26 @@ $("#backpeople").on("blur", function () {
 
 $(document).ready(function () {
 
+    var checkrfidpick = false;
+    var checkrfidback = false;
+
     $(".amount").hover(function () {
         $(this).tooltip();
+    });
+
+    $('#rfidpickpeople').on("input", function () {
+        var rfidpick = $("#rfidpickpeople").val();
+        rfidpick = rfidpick.slice(-9);
+        $("#rfidpickpeople").val(rfidpick);
+        $("#pickpeople").val(rfidpick);
+        checkrfidpick = true;
+    });
+    $('#rfidbackpeople').on("input", function () {
+        var rfidback = $("#rfidbackpeople").val();
+        rfidback = rfidback.slice(-9);
+        $("#rfidbackpeople").val(rfidback);
+        $("#backpeople").val(rfidback);
+        checkrfidback = true;
     });
 
     $("#backlist").on("submit", function (e) {
@@ -365,7 +383,7 @@ $(document).ready(function () {
         for (let i = 0; i < count; i++) {
             if (status[i] == 'good product' || status == '良品') {
                 status[i] = '良品';
-            } else{
+            } else {
                 status[i] = '不良品';
             }
         }
