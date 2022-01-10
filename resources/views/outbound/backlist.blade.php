@@ -144,7 +144,7 @@
 
             <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
                 style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
-                pattern="[A-Za-z0-9]+" >
+                type="password" >
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.backpeople') !!}</label>
@@ -165,7 +165,7 @@
 
             <input class="form-control form-control-lg rfid" id="rfidbackpeople" name="rfidbackpeople" width="250"
             style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}"
-            pattern="[A-Za-z0-9]+" >
+            type="password" >
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

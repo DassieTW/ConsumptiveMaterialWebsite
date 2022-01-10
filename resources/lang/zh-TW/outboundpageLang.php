@@ -108,4 +108,6 @@ return [
     'row' => '在列',
     'total' => '共',
     'record' => '筆',
+    'rfidinputreceivepeople' => '請點這裡感應收料人員識別證',
+    'rfidinputbackpeople' => '請點這裡感應退料人員識別證',
 ];

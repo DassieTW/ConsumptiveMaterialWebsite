@@ -108,4 +108,6 @@ return [
     'row' => 'In Row',
     'total' => 'Total',
     'record' => 'record',
+    'rfidinputreceivepeople' => 'Please click here to tap the Receiver\'s ID card',
+    'rfidinputbackpeople' => 'Please click here to to tap the Return person\'s ID card',
 ];
