@@ -60,7 +60,9 @@ return [
     'time_range' => '时间',
     'checked' => '已盘点',
     'not_checked' => '未盘点',
+    'check_not_right_amount' => '盘盈亏',
     'search_by' => '搜寻',
     'sort_by' => '筛选',
     'loc_short' => '储位',
+    'all' => '全部', 
 ];

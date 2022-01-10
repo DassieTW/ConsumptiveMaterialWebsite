@@ -60,7 +60,9 @@ return [
     'time_range' => 'Time Range',
     'checked' => 'Checked',
     'not_checked' => 'Not Checked',
+    'check_not_right_amount' => 'Excess/Short',
     'search_by' => 'Search by',
     'sort_by' => 'Sort by',
-    'loc_short' => 'Loc.', 
+    'loc_short' => 'Loc.',
+    'all' => 'All', 
 ];

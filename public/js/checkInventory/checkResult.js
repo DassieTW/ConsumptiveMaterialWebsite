@@ -1,5 +1,49 @@
 $(document).ready(function () {
-    var serialSheetsObj = {};
+    var serialSheetsObj = {}; // objs of array of objs
+    var allcreators = []; // array of objs
+    var sheetCreators = []; // array of objs
+    var serialSheetsObjbyLoc = {};
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        type: "post",
+        url: "/checking/get_creators",
+        dataType: 'json', // expected respose datatype from server
+        success: function (response) {
+            allcreators = JSON.parse(JSON.stringify(response.data));
+            // console.log(allcreators); // test
+        },
+        beforeSend: function () {
+            $('body').loadingModal({
+                text: 'Loading...',
+                animation: 'circle'
+            });
+        },
+        complete: function () {
+            $('body').loadingModal('hide');
+            $('body').loadingModal('destroy');
+        },
+        error: function (err) {
+            if (err.status == 422) { // when status code is 422, it's a validation issue
+
+                // you can loop through the errors object and show it to the user
+                // console.warn(err.responseJSON.errors); // test
+                // display errors on each form field
+                $.each(err.responseJSON.errors, function (i, error) {
+                    console.log(error[0]); // show errors in console only 
+                });
+            } // if error 422
+            else if (err.status == 420) { // else if error 420
+                console.log(err); // show errors in console only 
+            } // else 
+            else {
+                console.log(err.status); // test
+            } // else
+        } // error
+    }); // ajax
 
     $("#texBox").on("keyup", function () {
         var value = $(this).val().toLowerCase();
@@ -10,11 +54,10 @@ $(document).ready(function () {
 
     $(".sortBtn").on("click", function (e) {
         e.preventDefault();
-
+        
     });
 
     $(".sortBtn").on('mousedown touchstart', function () {
-        $(this).css('box-shadow', '0px 0px 1px 1px rgba(0, 0, 0, 0.1)');
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         } else {
@@ -24,20 +67,19 @@ $(document).ready(function () {
         var clickedElementText = $(this).find('span').text();
         $(".sortBtn").each(function (index, element) {
             // element == this
-            if( $(element).find('span').text() === clickedElementText ) {
+            if ($(element).find('span').text() === clickedElementText) {
                 // skip it
             } // if
             else {
-                if( $(element).hasClass('active') ) {
+                if ($(element).hasClass('active')) {
                     $(element).removeClass('active');
-                    $(element).css('box-shadow', '-2px 2px 1px 5px rgba(0, 0, 0, 0.1)');
                 } // if
             } // if else
         });
     });
+
     $(".sortBtn").on('mouseup touchend', function () {
         if ($(this).hasClass('active')) {
-            $(this).css('box-shadow', '0px 0px 1px 3px rgba(0, 0, 0, 0.1)');
             if ($(this).hasClass('sortUp') && $(this).hasClass('sortBtn')) {
                 $(this).removeClass('sortUp');
                 $(this).addClass('sortDw');
@@ -53,8 +95,23 @@ $(document).ready(function () {
                 $(this).find('i').addClass('bi-sort-up');
             } // else
         } else {
-            $(this).css('box-shadow', '-2px 2px 1px 5px rgba(0, 0, 0, 0.1)');
         } // if else    
+    });
+
+    $(".filterBtn").on('mousedown touchstart', function () {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        } else {
+            $(this).addClass('active');
+        } // if else
+    });
+
+    $(".filterBtn2").on('mousedown touchstart', function () {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        } else {
+            $(this).addClass('active');
+        } // if else
     });
 
     (function () { // starting show on document ready
@@ -120,6 +177,113 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("myTable2");
+        switching = true;
+        // Set the sorting direction to ascending:
+        dir = "asc";
+        /* Make a loop that will continue until
+        no switching has been done: */
+        while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+                // Start by saying there should be no switching:
+                shouldSwitch = false;
+                /* Get the two elements you want to compare,
+                one from current row and one from the next: */
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                /* Check if the two rows should switch place,
+                based on the direction, asc or desc: */
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /* If a switch has been marked, make the switch
+                and mark that a switch has been done: */
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                // Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /* If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again. */
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                } // if
+            } // if else
+        } // while
+    } // sort table
+
+    function getName(id) {
+        var name = "";
+        for (let a = 0; a < allcreators.length; a++) {
+            if (id === allcreators[a].username) {
+                name = allcreators[a].姓名;
+            } // if
+        } // for
+
+        return name;
+    } // find the creator name by id
+
+    function collapseByLoc() {
+        // console.log(serialSheetsObj); // test
+        // console.log(sheetCreators); // test
+        // $("#appendDataHere").html(""); // clear the table
+        const keys = Object.keys(serialSheetsObj);
+
+
+        for (let b = 0; b < sheetCreators.length; b++) {
+            var serialNumDataRow = $('<tr>', { "data-bs-toggle": "collapse", "data-bs-target": "#sheet" + b, "aria-expanded": "false" }); // create an elemet by jquery
+            serialNumDataRow.append("<td>" + keys[b] + "</td>");
+            serialNumDataRow.append("<td>" + sheetCreators[b] + "</td>");
+            serialNumDataRow.append("<td>" + serialSheetsObj[keys[b]][0].created_at + "</td>");
+            serialNumDataRow.append('<td><a class="collapseBtn" href="#" disabled style="color: grey;"><i class="bi bi-chevron-down"></i></a></td>');
+            var detailDataRowWithCollapse = $('<tr>', {});
+            var detailTD = $('<td>', { "colspan": "12", "class": "p-0 m-0" });
+            var locCollapseDiv = $('<div>', { "class": "collapse p-0 m-0", "id": "sheet" + b, "aria-expanded": "false" });
+            var locTable = $('<table>', { "class": "table table-primary table-hover m-0 p-0" });
+            var thead = $('<thead>', { "class": "table table-primary table-hover m-0 p-0" });
+
+            var tbody = $('<body>', {});
+            for (let c = 0; c < serialSheetsObj[keys[b]].length; c++) {
+                var dataTR = $('<tr>', { "data-bs-toggle": "collapse", "data-bs-target": "#locData" + b, "aria-expanded": "false" });
+            } // for
+
+            var tr = $('<tr>', {});
+            tr.append("<th>&nbsp;</th>");
+            tr.append("<th>" + Lang.get('checkInvLang.loc_short') + "</th>");
+            tr.append("<th>" + Lang.get('checkInvLang.not_checked') + "/" + Lang.get('checkInvLang.all') + "</th>");
+            tr.append("<th>&nbsp;</th>");
+            thead.append(tr);
+            locTable.append(thead);
+            locCollapseDiv.append(locTable);
+            detailTD.append(locCollapseDiv);
+            detailDataRowWithCollapse.append(detailTD);
+
+            $("#appendDataHere").append(serialNumDataRow);
+            $("#appendDataHere").append(detailDataRowWithCollapse);
+        } // for
+
+    } // collapseByLoc
+
     $("#DateRangeString").on('change', function () { // trigger ajax post whenever time range is set
         // console.log("time range triggered"); // test
         $.ajaxSetup({
@@ -131,6 +295,8 @@ $(document).ready(function () {
         // clean up previous input results
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
+        sheetCreators = []; // array of objs
+
         var $temp = "";
         // $('#texBox').val(''); // clear input box value
         // $isIsn = document.getElementById('toggle-state').checked;
@@ -144,6 +310,7 @@ $(document).ready(function () {
             dataType: 'json', // expected respose datatype from server
             success: function (response) {
                 var myObjs = JSON.parse(JSON.stringify(response.data));
+                // console.log(myObjs); // test
                 serialSheetsObj = {};
                 for (let a = 0; a < myObjs.length; a++) {
                     if (serialSheetsObj.hasOwnProperty(myObjs[a].單號)) {
@@ -177,7 +344,9 @@ $(document).ready(function () {
                     } // if
                     else {
                         serialSheetsObj[myObjs[a].單號] = [];
-
+                        let username = myObjs[a].單號.split("_")[0];
+                        // console.log( username ) ; // test
+                        sheetCreators.push(getName(username));
                         var tempObj = {};
                         tempObj["料號"] = myObjs[a].料號;
                         tempObj["現有庫存"] = myObjs[a].現有庫存;
@@ -209,6 +378,8 @@ $(document).ready(function () {
                 } // for
 
                 console.log(serialSheetsObj); // test
+                collapseByLoc();
+
             },
             beforeSend: function () {
                 $('body').loadingModal({
@@ -254,6 +425,8 @@ $(document).ready(function () {
                 } // else
             } // error
         }); // ajax
+
+
     });
 
 }); // on document ready
