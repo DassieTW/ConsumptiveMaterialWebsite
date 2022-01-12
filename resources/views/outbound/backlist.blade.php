@@ -142,9 +142,13 @@
                 @endforeach
             </ul>
 
-            <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
-                type="password" >
+            <div class="form-floating col col-auto">
+                <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
+                    style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
+                    type="password">
+                <label for="rfidpickpeople">{!! __('outboundpageLang.rfidinputreceivepeople') !!}</label>
+            </div>
+
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.backpeople') !!}</label>
@@ -163,9 +167,12 @@
                 @endforeach
             </ul>
 
-            <input class="form-control form-control-lg rfid" id="rfidbackpeople" name="rfidbackpeople" width="250"
-            style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}"
-            type="password" >
+            <div class="form-floating col col-auto">
+                <input class="form-control form-control-lg rfid" id="rfidbackpeople" name="rfidbackpeople" width="250"
+                    style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}"
+                    type="password">
+                <label for="rfidbackpeople">{!! __('outboundpageLang.rfidinputbackpeople') !!}</label>
+            </div>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

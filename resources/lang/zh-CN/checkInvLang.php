@@ -64,5 +64,7 @@ return [
     'search_by' => '搜寻',
     'sort_by' => '筛选',
     'loc_short' => '储位',
-    'all' => '全部', 
+    'all' => '全部',
+    'updated_by' => '盘点人',
+    'updated_at' => '盘点时间',
 ];

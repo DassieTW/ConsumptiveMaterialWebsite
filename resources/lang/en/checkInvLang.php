@@ -65,4 +65,6 @@ return [
     'sort_by' => 'Sort by',
     'loc_short' => 'Loc.',
     'all' => 'All', 
+    'updated_by' => 'Updated By',
+    'updated_at' => 'Updated At',
 ];
