@@ -18,7 +18,6 @@ return [
     'username_placeholder' => '請輸入帳號',
     'password_placeholder' => '請輸入密碼',
     'site_placeholder' => '請選擇廠區',
-    'home' => '主頁',
     'welcome' => '歡迎',
     'welcome_msg' => '請登入帳戶以繼續使用功能',
     'login_btn' => '登入',

@@ -542,7 +542,6 @@ class MonthController extends Controller
     {
         if (Session::has('username')) {
             $select = $request->input('select');
-            $now = Carbon::now();
             $count = $request->input('count');
             $client = $request->input('client');
             $machine = $request->input('machine');

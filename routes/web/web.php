@@ -89,3 +89,8 @@ Route::get('/debug-sentry', function () {
 //     ->where('客戶別', 'Fendi')->where('料號', '4017-01HL000')->where('儲位', '1-2')
 //     ->update(['最後更新時間' => '2021-08-30 13:24:29.000']);
 // });
+
+
+Route::get('sendbasicemail','MailController@basic_email');
+Route::get('sendhtmlemail','MailController@html_email');
+Route::get('sendattachmentemail','MailController@attachment_email');

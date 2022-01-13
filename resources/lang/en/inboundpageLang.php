@@ -90,4 +90,5 @@ return [
     'timepart' => 'Time period',
     'upload1' => 'Upload',
     'noinpeople' => 'The job number of the inbound people does not exist, please go to User Management-Maintenance of New Person Information',
+    'rfidinpeople' => 'Please click here to to tap the Inbound person\'s ID card',
 ];

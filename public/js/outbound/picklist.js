@@ -251,6 +251,25 @@ $("#pickpeople").on("blur", function () {
 });
 
 $(document).ready(function () {
+
+    var checkrfidpick = false;
+    var checkrfidsend = false;
+
+    $('#rfidpickpeople').on("input", function () {
+        var rfidpick = $("#rfidpickpeople").val();
+        rfidpick = rfidpick.slice(-9);
+        $("#rfidpickpeople").val(rfidpick);
+        $("#pickpeople").val(rfidpick);
+        checkrfidpick = true;
+    });
+    $('#rfidsendpeople').on("input", function () {
+        var rfidsend = $("#rfidsendpeople").val();
+        rfidsend = rfidsend.slice(-9);
+        $("#rfidsendpeople").val(rfidsend);
+        $("#sendpeople").val(rfidsend);
+        checkrfidsend = true;
+    });
+
     $("#picklist").on("submit", function (e) {
 
         e.preventDefault();

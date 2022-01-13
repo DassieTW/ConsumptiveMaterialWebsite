@@ -128,6 +128,7 @@
                 <h3 style="color: red">{!! __('outboundpageLang.enterdiffreason') !!}</h3>
             </div>
 
+            {{-- input pickpeople --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.receivepeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
@@ -142,6 +143,7 @@
                 @endforeach
             </ul>
 
+<<<<<<< HEAD
             <div class="form-floating col col-auto">
                 <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
                     style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
@@ -149,7 +151,14 @@
                 <label for="rfidpickpeople">{!! __('outboundpageLang.rfidinputreceivepeople') !!}</label>
             </div>
 
+=======
+            {{-- rfid pickpeople --}}
+            <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
+                type="password" >
+>>>>>>> 5e13759119a9bece93bb889cd3aa6f2185dfb5d1
 
+            {{-- input backpeople --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.backpeople') !!}</label>
             <input class="form-control form-control-lg" id="backpeople" name="backpeople" width="250"
@@ -167,12 +176,10 @@
                 @endforeach
             </ul>
 
-            <div class="form-floating col col-auto">
-                <input class="form-control form-control-lg rfid" id="rfidbackpeople" name="rfidbackpeople" width="250"
-                    style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}"
-                    type="password">
-                <label for="rfidbackpeople">{!! __('outboundpageLang.rfidinputbackpeople') !!}</label>
-            </div>
+            {{-- rfid backpeople --}}
+            <input class="form-control form-control-lg rfid" id="rfidbackpeople" name="rfidbackpeople" width="250"
+            style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}"
+            type="password" >
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
