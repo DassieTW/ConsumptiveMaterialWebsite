@@ -480,7 +480,7 @@ class InboundController extends Controller
                         $unit = DB::table('consumptive_material')->where('料號', $number)->value('單位');
                         $amount = DB::table('在途量')->where('料號', $number)->where('客戶', $client)->sum('請購數量');
                         $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->sum('現有庫存');
-                        $positions = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('現有庫存', '>', 0)->pluck('儲位');
+                        $positions = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->pluck('儲位');
                         $belong = DB::table('consumptive_material')->where('料號', $number)->value('耗材歸屬');
                         $lt = DB::table('consumptive_material')->where('料號', $number)->value('LT');
                         $month = DB::table('consumptive_material')->where('料號', $number)->value('月請購');

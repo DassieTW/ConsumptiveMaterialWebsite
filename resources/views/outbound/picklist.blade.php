@@ -79,7 +79,7 @@
                             <td><span id="advance{{$loop->index}}">{{$data->預領數量}}</span></td>
                             <td><input class="form-control amount" style="width:100px" type="number"
                                     id="amount{{$loop->index}}" name="amount{{$loop->index}}" required
-                                    value="{{$data->實際領用數量}}" min = "1"></td>
+                                    value="{{$data->實際領用數量}}" min="1"></td>
                             <td><span id="remark{{$loop->index}}">{{$data->備註}}</span></td>
                             <td><input class="form-control reason" style="width:100px" type="text"
                                     id="reason{{$loop->index}}" name="reason{{$loop->index}}" value="{{$data->實領差異原因}}">
@@ -114,6 +114,7 @@
                 <h3 style="color: red">{!! __('outboundpageLang.enterdiffreason') !!}</h3>
             </div>
 
+            {{-- input sendpeople --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.sendpeople') !!}</label>
             <input class="form-control form-control-lg" id="sendpeople" name="sendpeople" width="250"
@@ -128,6 +129,12 @@
                 @endforeach
             </ul>
 
+            {{-- rfid sendpeople --}}
+            <input class="form-control form-control-lg rfid" id="rfidsendpeople" name="rfidsendpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputsendpeople') !!}" type="password">
+
+
+            {{-- input pickpeople --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.pickpeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
@@ -141,6 +148,10 @@
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 @endforeach
             </ul>
+
+            {{-- rfid pickpeople --}}
+            <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputpickpeople') !!}" type="password">
 
             {{-- check people --}}
             @foreach($check as $people)

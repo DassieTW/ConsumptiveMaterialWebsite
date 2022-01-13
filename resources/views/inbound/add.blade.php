@@ -132,9 +132,9 @@
 
             <div class="mb-3 col-md-6">
                 <label class="form-label">{!! __('inboundpageLang.inpeople') !!}</label>
-                <input class="form-control form-control-lg" id="inpeople" name="inpeople" required style="width: 250px"
+                <input class="form-control form-control-lg" id="inpeople" name="inpeople" style="width: 250px"
                     placeholder="{!! __('inboundpageLang.enterinpeople') !!}"
-                    oninput="if(value.length>9)value=value.slice(0,9)">
+                    oninput="if(value.length>9)value=value.slice(0,9)" required>
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <ul id="inboundmenu" style="display: none;" class="list-group">
                     @foreach($peoples as $name)
@@ -144,6 +144,11 @@
                     @endforeach
                 </ul>
             </div>
+
+            <input class="form-control form-control-lg rfid" id="rfidinpeople" name="rfidinpeople" width="250"
+            style="width: 250px" placeholder="{!! __('inboundpageLang.rfidinputinpeople') !!}"
+            type="password" >
+
 
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
