@@ -90,7 +90,7 @@ $(document).ready(function () {
 
     $(".sortBtn").on("click", function (e) {
         e.preventDefault();
-
+        
     });
 
     $(".sortBtn").on('mousedown touchstart', function () {
@@ -112,6 +112,7 @@ $(document).ready(function () {
         //         } // if
         //     } // if else
         // });
+        // sortTable("asc", "locTable"); // test
     });
 
     $(".sortBtn").on('mouseup touchend', function () {
@@ -176,11 +177,6 @@ $(document).ready(function () {
         $("#texBox").focus();
     });  // 目標改變
 
-    $("#inp").on('submit', function (e) {
-        e.preventDefault();
-
-    }); // on submit
-
     // date range picker function
     $(function () {
         // var start = moment().subtract(29, 'days');
@@ -214,7 +210,7 @@ $(document).ready(function () {
         quickSearch();
     });
 
-    function compare(a, b) {
+    function compare(a, b) { // compare two numbers
         if (a.last_nom < b.last_nom) {
             return -1;
         } // if
@@ -225,60 +221,27 @@ $(document).ready(function () {
     } // compare
 
 
-    function sortTable(n) {
-        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementById("myTable2");
-        switching = true;
-        // Set the sorting direction to ascending:
-        dir = "asc";
-        /* Make a loop that will continue until
-        no switching has been done: */
-        while (switching) {
-            // Start by saying: no switching is done:
-            switching = false;
-            rows = table.rows;
-            /* Loop through all table rows (except the
-            first, which contains table headers): */
-            for (i = 1; i < (rows.length - 1); i++) {
-                // Start by saying there should be no switching:
-                shouldSwitch = false;
-                /* Get the two elements you want to compare,
-                one from current row and one from the next: */
-                x = rows[i].getElementsByTagName("TD")[n];
-                y = rows[i + 1].getElementsByTagName("TD")[n];
-                /* Check if the two rows should switch place,
-                based on the direction, asc or desc: */
-                if (dir == "asc") {
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                        // If so, mark as a switch and break the loop:
-                        shouldSwitch = true;
-                        break;
-                    }
-                } else if (dir == "desc") {
-                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                        // If so, mark as a switch and break the loop:
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            }
-            if (shouldSwitch) {
-                /* If a switch has been marked, make the switch
-                and mark that a switch has been done: */
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-                // Each time a switch is done, increase this count by 1:
-                switchcount++;
-            } else {
-                /* If no switching has been done AND the direction is "asc",
-                set the direction to "desc" and run the while loop again. */
-                if (switchcount == 0 && dir == "asc") {
-                    dir = "desc";
-                    switching = true;
-                } // if
-            } // if else
-        } // while
-    } // sort table
+    function comparer(index) {
+        return function (a, b) {
+            var valA = getCellValue(a, index), valB = getCellValue(b, index) ;
+            console.log( valA + " and " + valB );// test
+            return valA.localeCompare(valB) ; 
+        } // function
+    } // comparer
+
+    function getCellValue(row, index) { return $(row).children('td').eq(index).find("span").text(); } // getCellValue
+
+    function sortTable(dir, tableClass) {
+        $("." + tableClass).each(function (index, obj) {
+            var table = $(this) ;
+            console.log( table.parent().attr("id")); // test
+            var rows = table.find('tr.locRows:gt(0)').toArray().sort(comparer(1)) ;
+            console.log(rows); // test
+            this.asc = !this.asc ;
+            if (!this.asc) { rows = rows.reverse() }
+            for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+        });
+    } // sortTable
 
     function getName(id) {
         var name = "";
@@ -308,7 +271,7 @@ $(document).ready(function () {
                 var detailDataRowWithCollapse = $('<tr>', {});
                 var detailTD = $('<td>', { "colspan": "12", "class": "p-0 m-0" });
                 var locCollapseDiv = $('<div>', { "class": "collapse p-0 m-0", "id": "sheet" + b, "aria-expanded": "false" });
-                var locTable = $('<table>', { "class": "table table-primary table-hover align-items-center table-responsive m-0 p-0" });
+                var locTable = $('<table>', { "class": "table table-primary table-hover align-items-center table-responsive m-0 p-0 locTable" });
                 var thead = $('<thead>', { "class": "table table-primary table-hover m-0 p-0" });
 
                 var tbody = $('<tbody>', {});
@@ -326,7 +289,7 @@ $(document).ready(function () {
                     var isnTR = $('<tr>', {});
                     var isnTD = $('<td>', { "colspan": "12", "class": "p-0 m-0" });
                     var isnCollapseDiv = $('<div>', { "class": "collapse p-0 m-0", "id": "locData" + keys[b].substring(0, keys[b].length - 9) + "_" + c, "aria-expanded": "false" });
-                    var isnTable = $('<table>', { "class": "table table-success table-hover table-responsive align-items-center m-0 p-0" });
+                    var isnTable = $('<table>', { "class": "table table-success table-hover table-responsive align-items-center m-0 p-0 isnTable" });
                     var isnthead = $('<thead>', {});
                     var tr0 = $('<tr>', { "class": "align-items-center", "style": "vertical-align: middle;" });
                     tr0.append("<th>#</th>");

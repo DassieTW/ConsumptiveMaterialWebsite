@@ -227,7 +227,7 @@
                             </div>
                             <div class="col">
                                 <button type="button"
-                                    class="sortBtn btn btn-outline-secondary col col-auto p-1 ms-0 me-1">
+                                    class="sortBtn btn btn-outline-secondary col col-auto p-1 ms-0 me-1 active sortUp">
                                     <i class="bi bi-sort-up"></i>
                                     <span>{!! __('checkInvLang.loc_short') !!}</span>
                                 </button>
