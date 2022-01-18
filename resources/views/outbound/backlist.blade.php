@@ -143,10 +143,20 @@
                 @endforeach
             </ul>
 
+<<<<<<< HEAD
+            <div class="form-floating col col-auto">
+                <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
+                    style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
+                    type="password">
+                <label for="rfidpickpeople">{!! __('outboundpageLang.rfidinputreceivepeople') !!}</label>
+            </div>
+
+=======
             {{-- rfid pickpeople --}}
             <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
                 style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
                 type="password" >
+>>>>>>> 5e13759119a9bece93bb889cd3aa6f2185dfb5d1
 
             {{-- input backpeople --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

@@ -145,7 +145,6 @@
         background-color: #fff;
         box-shadow: 0px 0px 1px 3px rgba(255, 0, 55, 0.1);
     }
-    
 </style>
 @endsection
 
@@ -228,7 +227,7 @@
                             </div>
                             <div class="col">
                                 <button type="button"
-                                    class="sortBtn btn btn-outline-secondary col col-auto p-1 ms-0 me-1">
+                                    class="sortBtn btn btn-outline-secondary col col-auto p-1 ms-0 me-1 active sortUp">
                                     <i class="bi bi-sort-up"></i>
                                     <span>{!! __('checkInvLang.loc_short') !!}</span>
                                 </button>
@@ -274,7 +273,8 @@
             <div class="card flex-fill w-100">
                 <div class="card-body allRecord">
                     <div class="table-responsive">
-                        <table class="table table-warning table-hover justify-content-center text-center align-items-center">
+                        <table id="fullRecordTable"
+                            class="table table-warning table-hover justify-content-center text-center align-items-center">
                             <thead>
                                 <tr id="tableHead" class="justify-content-center align-items-center">
                                     <th class="col col-auto justify-content-center align-items-center px-0 m-0">
@@ -295,78 +295,7 @@
                                 </tr>
                             </thead>
                             <tbody id="appendDataHere">
-                                <tr data-bs-toggle="collapse" data-bs-target="#demo1" aria-expanded="false">
-                                    <td>1_2021-03-17_15:29:32</td>
-                                    <td>權限1_測試</td>
-                                    <td>2021-12-30 19:05:44.470</td>
-                                    <td>
-                                        <a class="" href="#" disabled style="color: grey;"><i
-                                                class="bi bi-chevron-down"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="12" class="p-0 m-0">
-                                        <div class="collapse p-0 m-0" id="demo1" aria-expanded="false">
-                                            <table class="table table-primary table-hover m-0 p-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>&nbsp;</th>
-                                                        <th>Company</th>
-                                                        <th>Salary</th>
-                                                        <th>Date On</th>
-                                                        <th>Date off</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr data-toggle="collapse" class="accordion-toggle"
-                                                        data-target="#demo10">
-                                                        <td>&nbsp;</td>
-                                                        <td>Google</td>
-                                                        <td>U$8.00000 </td>
-                                                        <td> 2016/09/27</td>
-                                                        <td> 2017/09/27</td>
-                                                        <td>
-                                                            <a class="" href="#" disabled style="color: grey;">
-                                                                <i class="bi bi-chevron-down"></i></a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td colspan="12" class="hiddenRow p-0">
-                                                            <div class="accordian-body collapse" id="demo10">
-                                                                <table class="table table-secondary table-hover m-0 p-0">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>&nbsp;</th>
-                                                                            <th>&nbsp;</th>
-                                                                            <th>item 1</th>
-                                                                            <th>item 2</th>
-                                                                            <th>item 3 </th>
-                                                                            <th>item 4</th>
-                                                                            <th>item 5</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>&nbsp;</td>
-                                                                            <td>&nbsp;</td>
-                                                                            <td>data 1</td>
-                                                                            <td>data 2</td>
-                                                                            <td>data 3</td>
-                                                                            <td>data 4</td>
-                                                                            <td>data 5</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
+                                {{-- content gen by js --}}
                             </tbody>
                         </table>
                     </div>

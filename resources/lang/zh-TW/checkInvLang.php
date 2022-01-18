@@ -65,4 +65,6 @@ return [
     'sort_by' => '篩選',
     'loc_short' => '儲位',
     'all' => '全部', 
+    'updated_by' => '盤點人',
+    'updated_at' => '盤點時間',
 ];
