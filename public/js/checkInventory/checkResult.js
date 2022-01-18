@@ -90,7 +90,7 @@ $(document).ready(function () {
 
     $(".sortBtn").on("click", function (e) {
         e.preventDefault();
-        
+
     });
 
     $(".sortBtn").on('mousedown touchstart', function () {
@@ -112,7 +112,7 @@ $(document).ready(function () {
         //         } // if
         //     } // if else
         // });
-        // sortTable("asc", "locTable"); // test
+        sortTable("asc", "locTable"); // test
     });
 
     $(".sortBtn").on('mouseup touchend', function () {
@@ -210,36 +210,61 @@ $(document).ready(function () {
         quickSearch();
     });
 
-    function compare(a, b) { // compare two numbers
-        if (a.last_nom < b.last_nom) {
-            return -1;
-        } // if
-        if (a.last_nom > b.last_nom) {
-            return 1;
-        } // if
-        return 0;
-    } // compare
+    // ---------------- quick sort --------------
 
+    var swap = function (data, i, j) {
+        var tmp = data[i];
+        data[i] = data[j];
+        data[j] = tmp;
+    }; // swap
 
-    function comparer(index) {
-        return function (a, b) {
-            var valA = getCellValue(a, index), valB = getCellValue(b, index) ;
-            console.log( valA + " and " + valB );// test
-            return valA.localeCompare(valB) ; 
-        } // function
-    } // comparer
+    var partition = function (data, left, right, dir) {
+        var pivot = $(data[right]).find('span').text();
+        // console.log(pivot); // test
+        var i = left - 1;
+        for (let j = left; j < right; j++) {
+            if (dir === "asc") {
+                if ($(data[j]).find('span').text() < pivot) {
+                    i++;
+                    swap(data, i, j);
+                } // if
+            } // if sort to ascending
+            else {
+                if ($(data[j]).find('span').text() > pivot) {
+                    i++;
+                    swap(data, i, j);
+                } // if
+            } // else sort to decending
+        } // for
+        i++;
+        swap(data, i, right);
+        return i;
+    }; // partition
 
-    function getCellValue(row, index) { return $(row).children('td').eq(index).find("span").text(); } // getCellValue
+    var quickSort = function (data, left, right, dir) {
+        if (left < right) {
+            var pivot = partition(data, left, right, dir);
+            quickSort(data, left, pivot - 1, dir);    // 對左子串列進行快速排序
+            quickSort(data, pivot + 1, right, dir);   // 對右子串列進行快速排序
+        } // if left < right
+    }; // quickSort
+
+    // --------- end of quick sort ---------------- // 
 
     function sortTable(dir, tableClass) {
         $("." + tableClass).each(function (index, obj) {
-            var table = $(this) ;
-            console.log( table.parent().attr("id")); // test
-            var rows = table.find('tr.locRows:gt(0)').toArray().sort(comparer(1)) ;
-            console.log(rows); // test
-            this.asc = !this.asc ;
-            if (!this.asc) { rows = rows.reverse() }
-            for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+            var table = $(this);
+            // console.log( table.parent().attr("id")); // test
+            var rows = table.find('tr.locRows').toArray();
+            var rowsData = [];
+            $.each(rows, function (i, item) {
+                $(this)
+            });
+            // console.log(rows); // test
+            quickSort(rows, 0, rows.length - 1, dir);
+            // console.log(rows); // test
+
+            console.log($(this).find("tr").toArray()); // test
         });
     } // sortTable
 
