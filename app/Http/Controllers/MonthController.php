@@ -2311,7 +2311,7 @@ class MonthController extends Controller
 
         Mail::send(['text' => 'consumecheck'], $data, function ($message) {
             $email = Session::get('email');
-            $message->to($email, 'Tutorials Point')->subject('Check Consume data');
+            $message->to($email, 'Default Name')->subject('Check Consume data');
             $message->from('ConsumablesManagement@pegatroncorp.com', 'Consumables Management');
         });
     }
@@ -2323,7 +2323,7 @@ class MonthController extends Controller
 
         Mail::send(['text' => 'standcheck'], $data, function ($message) {
             $email = Session::get('email');
-            $message->to($email, 'Tutorials Point')->subject('Check Stand data');
+            $message->to($email, 'Default Name')->subject('Check Stand data');
             $message->from('ConsumablesManagement@pegatroncorp.com', 'Consumables Management');
         });
     }
