@@ -52,7 +52,8 @@
             <div class="col-auto">
                 <label class="col col-lg-12 form-label">{!! __('inboundpageLang.isn') !!}</label>
                 <input class="form-control form-control-lg " type="text" id="number" name="number"
-                    placeholder="{!! __('inboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
+                    placeholder="{!! __('inboundpageLang.enterisn') !!}"
+                    oninput="if(value.length>12)value=value.slice(0,12)">
 
                 <div id="numbererror" style="display:none; color:red;">{!!
                     __('inboundpageLang.isnlength')
@@ -119,7 +120,7 @@
             </div>
 
 
-
+            {{-- check people --}}
             <div style="display: none" id="showname">
                 @foreach($checks as $people)
                 <input type="hidden" id="checkpeople{{$loop->index}}" name="checkpeople{{$loop->index}}"
@@ -146,8 +147,7 @@
             </div>
 
             <input class="form-control form-control-lg rfid" id="rfidinpeople" name="rfidinpeople" width="250"
-            style="width: 250px" placeholder="{!! __('inboundpageLang.rfidinputinpeople') !!}"
-            type="password" >
+                style="width: 250px" placeholder="{!! __('inboundpageLang.rfidinpeople') !!}" type="password">
 
 
             <div class="row w-100 justify-content-center">

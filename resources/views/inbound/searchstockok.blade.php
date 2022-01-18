@@ -34,17 +34,17 @@
                             !!}</th>
                         <th><input type="hidden" id="title3" name="title3" value="規格">{!! __('inboundpageLang.format')
                             !!}</th>
-                        <th><input type="hidden" id="title5" name="title4" value="單位">{!! __('inboundpageLang.unit') !!}
+                        <th><input type="hidden" id="title4" name="title4" value="單位">{!! __('inboundpageLang.unit') !!}
                         </th>
-                        <th><input type="hidden" id="title6" name="title5" value="單價">{!! __('inboundpageLang.price')
+                        <th><input type="hidden" id="title5" name="title5" value="單價">{!! __('inboundpageLang.price')
                             !!}</th>
-                        <th><input type="hidden" id="title7" name="title6" value="幣別">{!! __('inboundpageLang.money')
+                        <th><input type="hidden" id="title6" name="title6" value="幣別">{!! __('inboundpageLang.money')
                             !!}</th>
-                        <th><input type="hidden" id="title8" name="title7" value="A級資材">{!! __('inboundpageLang.gradea')
+                        <th><input type="hidden" id="title7" name="title7" value="A級資材">{!! __('inboundpageLang.gradea')
                             !!}</th>
-                        <th><input type="hidden" id="title9" name="title8" value="月請購">{!! __('inboundpageLang.month')
+                        <th><input type="hidden" id="title8" name="title8" value="月請購">{!! __('inboundpageLang.month')
                             !!}</th>
-                        <th><input type="hidden" id="title4" name="title9" value="庫存">{!! __('inboundpageLang.stock')
+                        <th><input type="hidden" id="title9" name="title9" value="庫存">{!! __('inboundpageLang.stock')
                             !!}</th>
                         <th><input type="hidden" id="title10" name="title10" value="安全庫存">{!! __('inboundpageLang.safe')
                             !!}</th>

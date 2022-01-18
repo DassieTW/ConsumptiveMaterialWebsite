@@ -30,7 +30,17 @@ $(document).ready(function () {
         }
 
         if (row.length == 0) {
-            alert('no data');
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nodata'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
 
@@ -62,7 +72,7 @@ $(document).ready(function () {
 
                 var mess = Lang.get('basicInfoLang.total') + ' : ' + row.length + Lang.get('basicInfoLang.record') + ' ' +
                     Lang.get('basicInfoLang.data') + ' ， ' + Lang.get('basicInfoLang.success') + ' ' + Lang.get('basicInfoLang.new') +
-                    ' : ' + data.record + data.choose + ' ' + Lang.get('basicInfoLang.data');
+                    ' : ' + data.record + ' ' + data.choose + ' ' + Lang.get('basicInfoLang.data');
 
                 alert(mess);
 

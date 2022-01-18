@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Mail;
 
 class MonthController extends Controller
 {
@@ -790,6 +791,9 @@ class MonthController extends Controller
             $database = $request->session()->get('database');
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
+            $sessemail = \Crypt::encrypt($email);
+            Session::put('email', $email);
+            Session::put('sessemail', $sessemail);
             $database = Hash::make($database);
             DB::beginTransaction();
             try {
@@ -824,6 +828,7 @@ class MonthController extends Controller
 
                 } //for
                 DB::commit();
+                self::sendconsumemail();
                 return \Response::json(['record' => $record, 'database' => $database, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
@@ -846,6 +851,9 @@ class MonthController extends Controller
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $database = Hash::make($database);
+            $sessemail = \Crypt::encrypt($email);
+            Session::put('email', $email);
+            Session::put('sessemail', $sessemail);
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
@@ -896,6 +904,7 @@ class MonthController extends Controller
 
                 } //for
                 DB::commit();
+                self::sendstandmail();
                 return \Response::json(['record' => $record, 'database' => $database, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
@@ -1919,8 +1928,7 @@ class MonthController extends Controller
                                 'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '安全庫存' => $safe[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '實際需求' => $realneed[$i], '請購金額' => $buymoney[$i], '請購占比' => $buyper[$i], '需求金額' => $needmoney[$i], '需求占比' => $needper[$i], '請購時間' => $now
                             ]);
                         $record++;
-                    }
-                    else{
+                    } else {
                         continue;
                     }
                 }
@@ -2018,51 +2026,48 @@ class MonthController extends Controller
     //test單耗畫押提交
     public function testconsume(Request $request)
     {
-        if (Session::has('username')) {
-            $now = Carbon::now();
-            $count = $request->input('count');
-            $jobnumber = $request->input('jobnumber');
-            $email = $request->input('email');
-            DB::beginTransaction();
-            try {
-                for ($i = 0; $i < $count; $i++) {
-                    $client = $request->input('client')[$i];
-                    $machine = $request->input('machine')[$i];
-                    $production = $request->input('production')[$i];
-                    $number = $request->input('number')[$i];
-                    $amount = $request->input('amount')[$i];
-                    $check = $request->input('check')[$i];
-                    /*$update = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
+
+        $now = Carbon::now();
+        $count = $request->input('count');
+        $jobnumber = $request->input('jobnumber');
+        $email = $request->input('email');
+        DB::beginTransaction();
+        try {
+            for ($i = 0; $i < $count; $i++) {
+                $client = $request->input('client')[$i];
+                $machine = $request->input('machine')[$i];
+                $production = $request->input('production')[$i];
+                $number = $request->input('number')[$i];
+                $amount = $request->input('amount')[$i];
+                $check = $request->input('check')[$i];
+                /*$update = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
                         ->where('機種', $machine)->where('製程', $production)->value('updated_at');*/
-                    $record = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
-                        ->where('機種', $machine)->where('製程', $production)->value('紀錄');
-                    if ($check == 1) {
-                        if ($record == "畫押完成") {
-                            $record = ' 工號: ' . $jobnumber . ' 時間: ' . $now . ' 修改此筆單耗 ' . ';';
-                        } else {
-                            $record = $record . ' 工號: ' . $jobnumber . ' 時間: ' . $now . ' 修改此筆單耗 ' . ';';
-                        } //else
+                $record = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
+                    ->where('機種', $machine)->where('製程', $production)->value('紀錄');
+                if ($check == 1) {
+                    if ($record == "畫押完成") {
+                        $record = ' 工號: ' . $jobnumber . ' 時間: ' . $now . ' 修改此筆單耗 ' . ';';
                     } else {
-                        $record = '畫押完成';
+                        $record = $record . ' 工號: ' . $jobnumber . ' 時間: ' . $now . ' 修改此筆單耗 ' . ';';
                     } //else
-                    月請購_單耗::where('客戶別', $client)
-                        ->where('機種', $machine)
-                        ->where('製程', $production)
-                        ->where('料號', $number)
-                        ->update([
-                            '狀態' => "已完成", '畫押工號' => $jobnumber,
-                            '畫押信箱' => $email, '畫押時間' => $now, '單耗' => $amount, /*'updated_at' => $update*/ '紀錄' => $record
-                        ]);
-                } //for
-                DB::commit();
-                return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
-            } catch (\Exception $e) {
-                DB::rollback();
-                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-            } //try-catch
-        } else {
-            return redirect(route('member.login'));
-        }
+                } else {
+                    $record = '畫押完成';
+                } //else
+                月請購_單耗::where('客戶別', $client)
+                    ->where('機種', $machine)
+                    ->where('製程', $production)
+                    ->where('料號', $number)
+                    ->update([
+                        '狀態' => "已完成", '畫押時間' => $now, '單耗' => $amount, /*'updated_at' => $update*/ '紀錄' => $record
+                    ]);
+            } //for
+            DB::commit();
+            return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+        } //try-catch
+
     }
 
     //test站位畫押提交
@@ -2110,8 +2115,7 @@ class MonthController extends Controller
                         ->where('製程', $production)
                         ->where('料號', $number)
                         ->update([
-                            '狀態' => "已完成", '畫押工號' => $jobnumber,
-                            '畫押信箱' => $email, '畫押時間' => $now, '當月站位人數' => $nowpeople, '當月開線數' => $nowline, '當月開班數' => $nowclass, '當月每人每日需求量' => $nowuse,
+                            '狀態' => "已完成", '畫押時間' => $now, '當月站位人數' => $nowpeople, '當月開線數' => $nowline, '當月開班數' => $nowclass, '當月每人每日需求量' => $nowuse,
                             '當月每日更換頻率' => $nowchange, '下月站位人數' => $nextpeople, '下月開線數' => $nextline, '下月開班數' => $nextclass, '下月每人每日需求量' => $nextuse, '下月每日更換頻率' => $nextchange, /*'updated_at' => $update*/ '紀錄' => $record
                         ]);
                 } //for
@@ -2298,5 +2302,29 @@ class MonthController extends Controller
         } else {
             return redirect(route('member.login'));
         } // if else
+    }
+
+    //test send consume mail
+    public function sendconsumemail()
+    {
+        $data = array('email' => Session::get('sessemail'));
+
+        Mail::send(['text' => 'consumecheck'], $data, function ($message) {
+            $email = Session::get('email');
+            $message->to($email, 'Tutorials Point')->subject('Check Consume data');
+            $message->from('ConsumablesManagement@pegatroncorp.com', 'Consumables Management');
+        });
+    }
+
+    //test send stand mail
+    public function sendstandmail()
+    {
+        $data = array('email' => Session::get('sessemail'));
+
+        Mail::send(['text' => 'standcheck'], $data, function ($message) {
+            $email = Session::get('email');
+            $message->to($email, 'Tutorials Point')->subject('Check Stand data');
+            $message->from('ConsumablesManagement@pegatroncorp.com', 'Consumables Management');
+        });
     }
 }

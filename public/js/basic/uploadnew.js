@@ -70,6 +70,21 @@ $(document).ready(function () {
             }
         } // for
 
+        if(number.length == 0)
+        {
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nodata'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
+            return false;
+        }
         var data = [];
         data.push(number);
         data.push(name);
@@ -130,6 +145,7 @@ $(document).ready(function () {
                 }
                 for (let i = 0; i < same.length; i++) {
                     $('#row' + same[i]).remove();
+                    count = count -1;
                 }
                 for (let i = 0; i < diff.length; i++) {
 

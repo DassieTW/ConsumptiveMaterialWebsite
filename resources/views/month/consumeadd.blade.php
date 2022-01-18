@@ -109,7 +109,7 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
-            <input type="email" id="email" name="email" pattern=".+@pegatroncorp\.com" required
+            <input type="email" id="email" name="email" required pattern=".+@pegatroncorp\.com"
                 placeholder="xxx@pegatroncorp.com">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

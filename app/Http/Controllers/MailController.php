@@ -11,16 +11,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Mail;
+use Session;
 class MailController extends Controller {
    public function basic_email() {
-    $data = array('name'=>"Virat Gandhi");
+    $data = array('email' => Session::get('sessemail'));
 
-    Mail::send(['text'=>'mail'], $data, function($message) {
-       $message->to('t105590005@ntut.org.tw', 'Tutorials Point')->subject
-          ('Laravel Basic Testing Mail');
-       $message->from('xyz@gmail.com','Virat Gandhi');
-    });
-    echo "Basic Email Sent. Check your inbox.";
+        Mail::send(['text' => 'consumecheck'], $data, function ($message) {
+            $email = Session::get('email');
+            $message->to($email, 'Tutorials Point')->subject('Check Consume data');
+            $message->from('ConsumablesManagement@pegatroncorp.com', 'Consumables Management');
+        });
    }
 //    public function html_email() {
 //       $data = array('name'=>"Virat Gandhi");
