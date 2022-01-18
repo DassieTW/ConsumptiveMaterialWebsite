@@ -3,7 +3,12 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-
+$(window).on('load', function () {
+    // PAGE IS FULLY LOADED
+    // FADE OUT YOUR OVERLAYING DIV
+    $('body').loadingModal('hide');
+    $('body').loadingModal('destroy');
+});
 $(document).ready(function () {
     $('#inboundsearch').on('submit', function (e) {
         e.preventDefault();

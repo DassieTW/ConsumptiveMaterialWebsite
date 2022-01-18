@@ -91,6 +91,5 @@ Route::get('/debug-sentry', function () {
 // });
 
 
-Route::get('sendbasicemail','MailController@basic_email');
-Route::get('sendhtmlemail','MailController@html_email');
-Route::get('sendattachmentemail','MailController@attachment_email');
+Route::get('sendbasicemail',[MailController::class, 'basic_email']);
+

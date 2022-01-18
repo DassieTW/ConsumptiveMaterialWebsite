@@ -89,4 +89,5 @@ return [
     'addtodatabase' => 'Add to database',
     'yellowrepeat' => 'Yellow background means the data has been stored in the database',
     'data' => 'data',
+    'nodata' => 'Nothing to submit',
 ];

@@ -78,8 +78,6 @@ Route::get('/addclient', function () {
     }
 })->middleware('can:viewInbound,App\Models\Inbound');
 
-Route::post('/addclient', [InboundController::class, 'addclient'])->name('inbound.addclient')->middleware('can:viewInbound,App\Models\Inbound');
-
 //入庫-提交新增
 Route::post('/addnewsubmit', [InboundController::class, 'addnewsubmit'])->name('inbound.addnewsubmit')->middleware('can:viewInbound,App\Models\Inbound');
 

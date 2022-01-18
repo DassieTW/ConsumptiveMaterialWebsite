@@ -42,8 +42,7 @@ if (tab == "OboundExample") {
 if (tab == "BackReasonExample") {
     sessionStorage.setItem('basic1', 'showreturnreason');
 }
-console.log(tab);
-console.log(tab1);
+
 var tab1 = sessionStorage.getItem('basic1');
 if (!tab1) {
     tab1 = 'showfactory';
@@ -170,12 +169,19 @@ $(document).ready(function () {
         checked = $("input:checkbox[name=" + datacheck + "]:checked").length;
 
         if (!checked && !datanew) {
-            alert(Lang.get('monthlyPRpageLang.nocheck'));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nocheck'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
-        console.log(olddata);
-        console.log(dataname);
-        console.log(data);
 
         $.ajax({
             type: 'POST',

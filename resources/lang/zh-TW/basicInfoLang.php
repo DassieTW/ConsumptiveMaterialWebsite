@@ -89,4 +89,5 @@ return [
     'addtodatabase' => '新增至資料庫',
     'yellowrepeat' => '黃底標表示資料庫已存放在資料庫內',
     'data' => '資料',
+    'nodata' => '無資料提交',
 ];

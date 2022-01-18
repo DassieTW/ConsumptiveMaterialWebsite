@@ -26,7 +26,17 @@ $(document).ready(function () {
 
         if (select == '刪除' || select == 'Delete' || select == '删除') {
             if (!checked) {
-                alert(Lang.get('inboundpageLang.nocheck'));
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('inboundpageLang.nocheck'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             }
         }

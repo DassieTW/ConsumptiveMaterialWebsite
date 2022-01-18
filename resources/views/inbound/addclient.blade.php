@@ -54,7 +54,8 @@
             <div class="col-auto">
                 <label class="col col-lg-12 form-label">{!! __('inboundpageLang.isn') !!}</label>
                 <input class="form-control form-control-lg " type="text" id="number" name="number"
-                    placeholder="{!! __('inboundpageLang.enterisn') !!}">
+                    placeholder="{!! __('inboundpageLang.enterisn') !!}"
+                    oninput="if(value.length>12)value=value.slice(0,12)">
 
                 <div id="numbererror" style="display:none; color:red;">{!!
                     __('inboundpageLang.isnlength')
@@ -70,9 +71,6 @@
                 <label class="col col-auto form-label"></label>
                 <input type="submit" onclick="buttonIndex=0;" id="addto" name="addto" class="btn btn-lg btn-primary"
                     value="{!! __('inboundpageLang.add') !!}">
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <input type="submit" onclick="buttonIndex=1;" id="addclient" name="addclient"
-                    class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.addclient') !!}">
             </div>
             <div class="col-auto">
                 <label class="col col-auto form-label"></label>
@@ -95,7 +93,7 @@
 
 <div class="card w-100">
     <div class="card-body">
-        <form id="addclient" method="POST">
+        <form id="inboundaddclient">
             @csrf
             <div class="table-responsive">
                 <table class="table" id="addclienttable">
@@ -115,8 +113,9 @@
                             <th>{!! __('inboundpageLang.oldloc') !!}</th>
                             <th>{!! __('inboundpageLang.newloc') !!}</th>
                         </tr>
-                        @foreach($data as $data)
                         <tr>
+                            @foreach($data as $data)
+
                             <?php
                             $data->請購數量 = round($data->請購數量,0);
                             $stock = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶)->sum('現有庫存');
@@ -207,6 +206,16 @@
             </div>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+            {{-- check people --}}
+            <div style="display: none" id="showname">
+                @foreach($checks as $people)
+                <input type="hidden" id="checkpeople{{$loop->index}}" name="checkpeople{{$loop->index}}"
+                    value="{{$people->工號}}">
+                <input type="hidden" id="checkcount" name="checkcount" value="{{$loop->count}}">
+                @endforeach
+            </div>
+
             <div class="mb-3 col-md-6">
                 <label class="form-label">{!! __('inboundpageLang.inpeople') !!}</label>
                 <input class="form-control form-control-lg" id="inpeople" name="inpeople" required width="250"
@@ -221,15 +230,18 @@
 
                     @endforeach
                 </ul>
-                @foreach($checks as $people)
-                <input type="hidden" id="checkpeople{{$loop->index}}" name="checkpeople{{$loop->index}}"
-                    value="{{$people->工號}}">
-                <input type="hidden" id="checkcount" name="checkcount" value="{{$loop->count}}">
-                @endforeach
             </div>
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
-                value="{!! __('inboundpageLang.submit') !!}">
+
+            <input class="form-control form-control-lg rfid" id="rfidinpeople" name="rfidinpeople" width="250"
+                style="width: 250px" placeholder="{!! __('inboundpageLang.rfidinpeople') !!}" type="password">
+
+
+            <div class="row w-100 justify-content-center">
+                <div class="col col-auto">
+                    <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
+                        value="{!! __('inboundpageLang.submit') !!}">
+                </div>
+            </div>
         </form>
     </div>
 </div>

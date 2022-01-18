@@ -49,7 +49,6 @@ $(document).ready(function () {
     });
 
 
-
     $("#newmaterial").on("submit", function (e) {
         e.preventDefault();
 
@@ -252,8 +251,20 @@ $(document).ready(function () {
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
+        console.log(count);
+
         if (count == 0) {
-            alert('no data');
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nodata'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
 
@@ -362,6 +373,7 @@ $(document).ready(function () {
                 }
                 for (let i = 0; i < same.length; i++) {
                     $('#row' + same[i]).remove();
+                    count = count - 1;
                 }
                 for (let i = 0; i < diff.length; i++) {
 

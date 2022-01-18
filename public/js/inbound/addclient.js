@@ -1,3 +1,6 @@
+sessionStorage.clear();
+
+
 function appenSVg(count) {
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
@@ -20,7 +23,7 @@ function copyoption(count) {
 }
 
 function deleteBtn(index) {
-    notyf.error({
+    notyf.success({
         message: Lang.get("inboundpageLang.delete") +
             Lang.get("inboundpageLang.success"),
         duration: 3000, //miliseconds, use 0 for infinite duration
@@ -85,8 +88,22 @@ $.ajaxSetup({
 var index = 0;
 var count = $("#count").val();
 count = parseInt(count);
+if(isNaN(count))
+{
+    count = 0;
+}
+sessionStorage.setItem('addclient', count);
 
 $(document).ready(function () {
+
+    $('#rfidinpeople').on("input", function () {
+        var rfidpick = $("#rfidinpeople").val();
+        rfidpick = rfidpick.slice(-9);
+        $("#rfidinpeople").val(rfidpick);
+        $("#inpeople").val(rfidpick);
+        checkrfidpick = true;
+    });
+
     $('#add').on('submit', function (e) {
         e.preventDefault();
 
@@ -246,12 +263,23 @@ $(document).ready(function () {
             }
         });
     });
-    $('#addclient').on('submit', function (e) {
+
+    $('#inboundaddclient').on('submit', function (e) {
         e.preventDefault();
 
-        console.log(count);
-        if (count == 0) {
-            alert('no data');
+
+        if (count == 0 || isNaN(count)) {
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nodata'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
 
@@ -310,15 +338,18 @@ $(document).ready(function () {
             }
         }
 
+        var data = [];
+        data.push(client);
+        data.push(number);
+        data.push(position);
+        data.push(amount);
+        data.push(inreason);
+
         $.ajax({
             type: 'POST',
             url: "addnewsubmit",
             data: {
-                client: client,
-                number: number,
-                position: position,
-                amount: amount,
-                inreason: inreason,
+                AllData: JSON.stringify(data),
                 inpeople: inpeople,
             },
 

@@ -256,7 +256,17 @@ $(document).ready(function () {
         $(".invalid-feedback").remove();
 
         if (count == 0) {
-            alert('no data');
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('monthlyPRpageLang.nodata'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
 
@@ -321,7 +331,7 @@ $(document).ready(function () {
                 jobnumber: jobnumber,
                 email: email,
                 count: count,
-                row:row,
+                row: row,
             },
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
@@ -336,9 +346,9 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-                var mess = Lang.get('monthlyPRpageLang.total') + ' : ' + count + Lang.get('monthlyPRpageLang.record') +
-                    Lang.get('monthlyPRpageLang.data') + ' ， ' + Lang.get('monthlyPRpageLang.success') + Lang.get('monthlyPRpageLang.new') +
-                    ' : ' + data.record + Lang.get('monthlyPRpageLang.record') + Lang.get('monthlyPRpageLang.stand');
+                var mess = Lang.get('monthlyPRpageLang.total') + ' : ' + count + Lang.get('monthlyPRpageLang.record') + ' ' +
+                    Lang.get('monthlyPRpageLang.data') + ' ， ' + Lang.get('monthlyPRpageLang.success') + ' ' + Lang.get('monthlyPRpageLang.new') +
+                    ' : ' + data.record + ' ' + Lang.get('monthlyPRpageLang.record') + ' ' + Lang.get('monthlyPRpageLang.stand');
                 alert(mess);
 
                 var mess2 = Lang.get('monthlyPRpageLang.yellowrepeat');
