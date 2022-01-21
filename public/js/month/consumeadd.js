@@ -378,11 +378,7 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-
-
-
-
-                document.getElementById("loadconsume").disabled = true;
+                $('#loadconsume').remove();
                 alldatas = JSON.parse(JSON.stringify(data.datas));
 
                 if(alldatas.length === 0)

@@ -250,11 +250,17 @@ Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('mont
 //test單耗畫押
 Route::get('/testconsume', function () {
     if (request()->filled('r')) {
-        $email = request()->r;
-        $email = Crypt::decrypt($email);
-        $username = urldecode(request()->u);
-        return view('month.testconsume')->with(['data' => 月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
-        ->with(['email' => $email])->with(['username' => $username]);
+
+        $email = Crypt::decrypt(request()->r);
+        $username = Crypt::decrypt(request()->u);
+        $database = Crypt::decrypt(request()->d);
+
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
+        \DB::purge(env("DB_CONNECTION"));
+        $name = DB::table('login')->where('username', $username)->value('姓名');
+
+        return view('month.testconsume')->with(['data' => 月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)->where("送單人", $username)])
+            ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
     } else {
         return redirect()->route('month.consumeadd');
     }
@@ -270,7 +276,7 @@ Route::get('/teststand', function () {
         $email = Crypt::decrypt($email);
         $username = urldecode(request()->u);
         return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
-        ->with(['email' => $email])->with(['username' => $username]);
+            ->with(['email' => $email])->with(['username' => $username]);
     } else {
         return redirect()->route('month.standadd');
     }

@@ -552,6 +552,9 @@ class MonthController extends Controller
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
+            $name = \Crypt::encrypt(\Auth::user()->姓名);
+            $database = $request->session()->get('databse');
+            $database = \Crypt::encrypt($database);
 
             //delete
             if ($select == "刪除") {
@@ -582,7 +585,7 @@ class MonthController extends Controller
                             ->where('料號', $number[$i])
                             ->update([
                                 '狀態' => "待畫押", '畫押工號' => $jobnumber,
-                                '畫押信箱' => $email, '單耗' => $amount[$i], '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
+                                '畫押信箱' => $email, '單耗' => $amount[$i], '送單時間' => Carbon::now(), '送單人' => \Auth::user()->姓名,
                             ]);
                         DB::commit();
                     } catch (\Exception $e) {
@@ -590,7 +593,7 @@ class MonthController extends Controller
                         return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                     }
                 }
-                self::sendconsumemail($email, $sessemail);
+                self::sendconsumemail($email, $sessemail, $name, $database);
 
                 return \Response::json(['message' => $count, 'status' => 201], /* Status code here default is 200 ok*/);
             }
@@ -794,6 +797,9 @@ class MonthController extends Controller
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
+            $name = \Crypt::encrypt(\Auth::user()->username);
+            $database = $request->session()->get('database');
+            $database = \Crypt::encrypt($database);
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
@@ -832,7 +838,7 @@ class MonthController extends Controller
 
                 } //for
                 DB::commit();
-                self::sendconsumemail($email, $sessemail);
+                self::sendconsumemail($email, $sessemail, $name, $database);
 
                 return \Response::json(['record' => $record, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
@@ -2032,8 +2038,7 @@ class MonthController extends Controller
 
         $now = Carbon::now();
         $count = $request->input('count');
-        $jobnumber = $request->input('jobnumber');
-        Session::put('sender',  $request->input('sender'));
+        $sender = $request->input('sender');
         $Alldata = json_decode($request->input('AllData'));
 
         DB::beginTransaction();
@@ -2043,7 +2048,6 @@ class MonthController extends Controller
                 $machine = $Alldata[3][$i];
                 $production = $Alldata[4][$i];
                 $number = $Alldata[0][$i];
-                $amount = $Alldata[5][$i];
                 $check = $Alldata[6][$i];
 
                 if ($check) {
@@ -2067,8 +2071,7 @@ class MonthController extends Controller
                 }
             } //for
             DB::commit();
-            self::sendcheckconsume($Alldata, $count);
-            Session::forget('sender');
+            self::sendcheckconsume($Alldata, $count, $sender);
 
             return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
@@ -2084,8 +2087,7 @@ class MonthController extends Controller
         if (Session::has('username')) {
             $now = Carbon::now();
             $count = $request->input('count');
-            $jobnumber = $request->input('jobnumber');
-            $email = $request->input('email');
+            $sender = $request->input('sender');
             $Alldata = json_decode($request->input('AllData'));
 
             DB::beginTransaction();
@@ -2096,16 +2098,7 @@ class MonthController extends Controller
                     $machine = $Alldata[3][$i];
                     $production = $Alldata[4][$i];
                     $number = $Alldata[0][$i];
-                    $nowpeople = $Alldata[5][$i];
-                    $nowline = $Alldata[6][$i];
-                    $nowclass = $Alldata[7][$i];
-                    $nowuse = $Alldata[8][$i];
-                    $nowchange = $Alldata[9][$i];
-                    $nextpeople = $Alldata[10][$i];
-                    $nextline = $Alldata[11][$i];
-                    $nextclass = $Alldata[12][$i];
-                    $nextuse = $Alldata[13][$i];
-                    $nextchange = $Alldata[14][$i];
+
                     $check = $Alldata[15][$i];
                     if ($check) {
                         月請購_站位::where('客戶別', $client)
@@ -2126,6 +2119,8 @@ class MonthController extends Controller
                     }
                 } //for
                 DB::commit();
+                self::sendcheckconsume($Alldata, $count, $sender);
+
                 return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
@@ -2311,15 +2306,18 @@ class MonthController extends Controller
     }
 
     //test send consume mail
-    public function sendconsumemail($email, $sessemail)
+    public function sendconsumemail($email, $sessemail, $name, $database)
     {
-        $data = array('email' => $sessemail, 'username' => urlencode(\Auth::user()->姓名));
+        $dename = DB::table('login')->where('username', \Crypt::decrypt($name))->value('姓名');
+
+
+        $data = array('email' => $sessemail, 'username' => $name, 'database' => $database, 'name' => $dename);
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
 
             $message->to($email, 'Tutorials Point')->subject('Check Consume data');
             $message->bcc('Vincent6_Yeh@pegatroncorp.com');
             $message->bcc('Tony_Tseng@pegatroncorp.com');
-            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management(No-Reply)');
+            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
         });
     }
 
@@ -2328,42 +2326,45 @@ class MonthController extends Controller
     {
         $data = array('email' => $sessemail, 'username' => urlencode(\Auth::user()->姓名));
 
-        Mail::send('standcheck', $data,  function ($message) use ($email) {
+        Mail::send('mail/standcheck', $data,  function ($message) use ($email) {
             $message->to($email, 'Tutorials Point')->subject('Check Stand data');
             $message->bcc('Vincent6_Yeh@pegatroncorp.com');
             $message->bcc('Tony_Tseng@pegatroncorp.com');
-            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management(No-Reply)');
+            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
         });
     }
 
     //test send check consume mail
-    public function sendcheckconsume($alldata, $count)
+    public function sendcheckconsume($alldata, $count, $sender)
     {
         $data = array('datas' => $alldata, 'count' => $count);
 
-        Mail::send('markconsume', $data, function ($message) {
-            $email = 't22923200@gmail.com';
-            // $email = DB::table('login')->where('username', Session::get('sender'))->value('信箱');
-            $message->to($email, 'Tutorials Point')->subject('RE:Check Consume data');
-            // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-            $message->bcc('Tony_Tseng@pegatroncorp.com');
-            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management(No-Reply)');
+        Mail::send('mail/markconsume', $data, function ($message) use ($sender) {
+            // $email = 't22923200@gmail.com';
+            $email = DB::table('login')->where('姓名', $sender)->value('信箱');
+            if ($email !== null) {
+                // dd($email);
+                $message->to($email, 'Tutorials Point')->subject('RE:Check Consume data');
+                // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                $message->bcc('Tony_Tseng@pegatroncorp.com');
+                $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+            }
         });
     }
 
 
     //test send check consume mail
-    public function sendcheckstand($alldata, $count)
+    public function sendcheckstand($alldata, $count, $sender)
     {
         $data = array('datas' => $alldata, 'count' => $count);
 
-        Mail::send('markstand', $data, function ($message) {
+        Mail::send('mail/markstand', $data, function ($message) {
             $email = 't22923200@gmail.com';
-            // $email = DB::table('login')->where('username', Session::get('sender'))->value('信箱');
+            // $email = DB::table('login')->where('username', $sender)->value('信箱');
             $message->to($email, 'Tutorials Point')->subject('RE:Check Consume data');
             // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
             $message->bcc('Tony_Tseng@pegatroncorp.com');
-            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management(No-Reply)');
+            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
         });
     }
 

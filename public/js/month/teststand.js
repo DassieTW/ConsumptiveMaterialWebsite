@@ -33,6 +33,8 @@ $('#test').on('submit', function (e) {
     var jobnumber = $("#jobnumber").val();
     var email = $("#email").val();
     var count = $("#count").val();
+    var sender = $("#sender").val();
+
     for (let i = 0; i < count; i++) {
         client.push($("#client" + i).val());
         name.push($("#name" + i).val());
@@ -98,7 +100,7 @@ $('#test').on('submit', function (e) {
                 jobnumber: jobnumber,
                 email: email,
                 count: count,
-                check: check
+                sender: sender,
             },
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
