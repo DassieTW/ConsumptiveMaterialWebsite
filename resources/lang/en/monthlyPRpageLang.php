@@ -119,7 +119,7 @@ return [
     'nomachine' => 'Model does not exist',
     'noproduction' => 'Process does not exist',
     'surepeople' => 'Signatory\'s Staff ID',
-    'surepeopleemail' => 'Signatory\'s email',
+    'surepeopleemail' => 'Signatory\'s Email',
     'nocheck' => 'Please tick the items you want to submit',
     'check' => 'Check',
     'remark' => 'Remarks',

@@ -671,7 +671,6 @@ class MonthController extends Controller
                     return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                 }
                 self::sendstandmail($email, $sessemail);
-
                 return \Response::json(['message' => $count, 'status' => 201], /* Status code here default is 200 ok*/);
             }
         } else {
@@ -2306,7 +2305,7 @@ class MonthController extends Controller
     }
 
     //test send consume mail
-    public function sendconsumemail($email, $sessemail, $name, $database)
+    public static function sendconsumemail($email, $sessemail)
     {
         $dename = DB::table('login')->where('username', \Crypt::decrypt($name))->value('姓名');
 
@@ -2322,7 +2321,7 @@ class MonthController extends Controller
     }
 
     //test send stand mail
-    public function sendstandmail($email, $sessemail)
+    public static function sendstandmail($email, $sessemail)
     {
         $data = array('email' => $sessemail, 'username' => urlencode(\Auth::user()->姓名));
 
@@ -2335,20 +2334,17 @@ class MonthController extends Controller
     }
 
     //test send check consume mail
-    public function sendcheckconsume($alldata, $count, $sender)
+    public static function sendcheckconsume($alldata, $count)
     {
         $data = array('datas' => $alldata, 'count' => $count);
 
-        Mail::send('mail/markconsume', $data, function ($message) use ($sender) {
-            // $email = 't22923200@gmail.com';
-            $email = DB::table('login')->where('姓名', $sender)->value('信箱');
-            if ($email !== null) {
-                // dd($email);
-                $message->to($email, 'Tutorials Point')->subject('RE:Check Consume data');
-                // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-                $message->bcc('Tony_Tseng@pegatroncorp.com');
-                $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-            }
+        Mail::send('markconsume', $data, function ($message) {
+            $email = 't22923200@gmail.com';
+            // $email = DB::table('login')->where('username', Session::get('sender'))->value('信箱');
+            $message->to($email, 'Tutorials Point')->subject('RE:Check Consume data');
+            // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+            $message->bcc('Tony_Tseng@pegatroncorp.com');
+            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
         });
     }
 

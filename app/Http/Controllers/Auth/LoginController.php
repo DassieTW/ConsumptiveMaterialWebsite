@@ -198,12 +198,12 @@ class LoginController extends Controller
                     return \Response::json([]/* Status code here default is 200 ok*/);
                 } else {
                     return \Response::json(['message' => 'passwords are not the same'], 420/* Status code here default is 200 ok*/);
-                }
+                } // else
             } else {
                 return \Response::json(['message' => 'old password is wrong'], 421/* Status code here default is 200 ok*/);
             } // else
         } // if
-        else if( Session::has('username') && $request->has('newEmail') ) {
+        else if (Session::has('username') && $request->has('newEmail')) {
             $this->validate($request, $rules2);
             // if( ) {
 
@@ -211,6 +211,7 @@ class LoginController extends Controller
             // else {
 
             // } // else
+            return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
         } // else if
         else {
             return redirect(route('member.login'));
