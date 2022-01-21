@@ -133,4 +133,13 @@ return [
     'yellowrepeat' => 'Yellow background means the data has been stored in the database',
     'writesrm' => 'Write SRM number',
     'nodata' => 'Nothing to submit',
+    'consumemail' => 'Hi, Please Click this link to check Consume data.',
+    'standemail' => 'Hi, Please Click this link to check Stand data.',
+    'emailsender' => 'Email Sender',
+    'markconsume' => 'If checked, it means that the unit consumption engineer has confirmed it.<br/>
+                    If not checked, it means that the need to re-opened.',
+
+    'loadconsume' => 'Load need to re-opened consume',
+    'loadsuccess' => 'Load Success',
+    'noload' => 'No data load',
 ];

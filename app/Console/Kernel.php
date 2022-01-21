@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Mail;
 
 class Kernel extends ConsoleKernel
 {
@@ -30,6 +31,8 @@ class Kernel extends ConsoleKernel
         //     \Log::info('成功排程');
         // })->everyMinute();
 
+
+        // $schedule->command('post:clear')->everyMinute();
         $schedule->command('logs:clear')->cron('0 3 * */3 *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
         $schedule->command('log:clear')->cron('0 3 * */3 *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
     } // schedule
@@ -41,7 +44,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

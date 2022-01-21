@@ -1,14 +1,12 @@
-
-
 $.ajaxSetup({
     headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-  });
+});
 
 
 
-  $('#test').on('submit', function (e) {
+$('#test').on('submit', function (e) {
     e.preventDefault();
 
     // clean up previous input results
@@ -17,6 +15,7 @@ $.ajaxSetup({
 
 
     var client = [];
+    var name = [];
     var number = [];
     var production = [];
     var machine = [];
@@ -30,23 +29,13 @@ $.ajaxSetup({
     var nextclass = [];
     var nextuse = [];
     var nextchange = [];
-    var comnowpeople = [];
-    var comnowline = [];
-    var comnowclass = [];
-    var comnowuse = [];
-    var comnowchange = [];
-    var comnextpeople = [];
-    var comnextline = [];
-    var comnextclass = [];
-    var comnextuse = [];
-    var comnextchange = [];
     var check = [];
     var jobnumber = $("#jobnumber").val();
     var email = $("#email").val();
     var count = $("#count").val();
-    for(let i = 0 ; i < count ; i++)
-    {
+    for (let i = 0; i < count; i++) {
         client.push($("#client" + i).val());
+        name.push($("#name" + i).val());
         number.push($("#number" + i).val());
         production.push($("#production" + i).val());
         machine.push($("#machine" + i).val());
@@ -60,65 +49,81 @@ $.ajaxSetup({
         nextclass.push($("#nextclass" + i).val());
         nextuse.push($("#nextuse" + i).val());
         nextchange.push($("#nextchange" + i).val());
-        comnowpeople.push($("#comnowpeople" + i).val());
-        comnowline.push($("#comnowline" + i).val());
-        comnowclass.push($("#comnowclass" + i).val());
-        comnowuse.push($("#comnowuse" + i).val());
-        comnowchange.push($("#comnowchange" + i).val());
-        comnextpeople.push($("#comnextpeople" + i).val());
-        comnextline.push($("#comnextline" + i).val());
-        comnextclass.push($("#comnextclass" + i).val());
-        comnextuse.push($("#comnextuse" + i).val());
-        comnextchange.push($("#comnextchange" + i).val());
-
     }
 
-    for(let i = 0 ; i < count ; i++)
-    {
-        if(parseFloat(nowpeople[i]) !== parseFloat(comnowpeople[i]) || parseFloat(nowline[i]) !== parseFloat(comnowline[i]) ||
-        parseFloat(nowclass[i]) !== parseFloat(comnowclass[i]) || parseFloat(nowuse[i]) !== parseFloat(comnowuse[i]) ||
-        parseFloat(nowchange[i]) !== parseFloat(comnowchange[i]) || parseFloat(nextpeople[i]) !== parseFloat(comnextpeople[i]) ||
-        parseFloat(nextline[i]) !== parseFloat(comnowline[i]) || parseFloat(nextclass[i]) !== parseFloat(comnextclass[i]) ||
-        parseFloat(nextuse[i]) !== parseFloat(comnextuse[i]) || parseFloat(nextchange[i]) !== parseFloat(comnextchange[i]))
-        {
-            check[i] = 1;
-        }
-        else
-        {
-            check[i] = 0;
-        }
-    }
-
-    $.ajax({
-      type: 'POST',
-      url: "teststand",
-      data: { client: client, number: number, production: production, machine: machine ,
-        nowpeople :nowpeople , nowline : nowline , nowclass : nowclass , nowuse : nowuse , nowchange : nowchange ,
-        nextpeople :nextpeople , nextline : nextline , nextclass : nextclass , nextuse : nextuse , nextchange : nextchange ,
-        jobnumber:jobnumber , email:email , count : count , check : check},
-      beforeSend: function () {
-        // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-        $('body').loadingModal({
-          text: 'Loading...',
-          animation: 'circle'
+    if (count == undefined) {
+        notyf.open({
+            type: 'warning',
+            message: Lang.get('monthlyPRpageLang.nodata'),
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+                x: "right",
+                y: "bottom"
+            }
         });
-      },
-      complete: function () {
-        $('body').loadingModal('hide');
-        $('body').loadingModal('destroy');
-      },
-      success: function (data) {
-        console.log(data);
-        var mess = Lang.get('monthlyPRpageLang.total')+(data.message)+Lang.get('monthlyPRpageLang.record')
-            +Lang.get('monthlyPRpageLang.success');
-        alert(mess);
-        window.location.href = "/month";
+        return false;
+    }
+    var mess = Lang.get('monthlyPRpageLang.total') + ' ' + count + ' ' +
+        Lang.get('monthlyPRpageLang.record') + ' ' + Lang.get('monthlyPRpageLang.stand');
 
-      },
-      error: function (err) {
-        console.log(err.status);
-        var mess = err.responseJSON.message;
-        alert(mess);
-      }
-    });
-  });
+    var sure = window.confirm(mess);
+
+    data.push(number);
+    data.push(name);
+    data.push(client);
+    data.push(machine);
+    data.push(production);
+    data.push(nowpeople);
+    data.push(nowline);
+    data.push(nowclass);
+    data.push(nowuse);
+    data.push(nowchange);
+    data.push(nextpeople);
+    data.push(nextline);
+    data.push(nextclass);
+    data.push(nextuse);
+    data.push(nextchange);
+    data.push(check);
+
+    if (sure !== true) {
+        return false;
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: "teststand",
+            data: {
+                AllData: JSON.stringify(data),
+                jobnumber: jobnumber,
+                email: email,
+                count: count,
+                check: check
+            },
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
+            },
+            success: function (data) {
+                console.log(data);
+                var mess = Lang.get('monthlyPRpageLang.total') + (data.message) + Lang.get('monthlyPRpageLang.record') +
+                    Lang.get('monthlyPRpageLang.success');
+                alert(mess);
+                window.location.reload();
+
+            },
+            error: function (err) {
+                console.log(err.status);
+                var mess = err.responseJSON.message;
+                alert(mess);
+            }
+        });
+    }
+});

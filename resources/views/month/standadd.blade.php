@@ -108,9 +108,10 @@
                 </table>
             </div>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
-            <input type="text" id="jobnumber" name="jobnumber" required>
+            <input type="text" id="jobnumber" name="jobnumber" required oninput="if(value.length>9)value=value.slice(0,9)">
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
