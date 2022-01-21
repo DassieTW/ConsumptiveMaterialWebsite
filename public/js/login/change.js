@@ -223,7 +223,7 @@ $(document).ready(function () {
                     // display errors on each form field
                     $.each(err.responseJSON.errors, function (i, error) {
                         var el = $(document).find('[name="' + i + '"]');
-                        // console.log(el); // test
+                        console.log(el); // test
                         el.addClass("is-invalid");
                         if (el.siblings(".input-group-text").length > 0) {
                             el.siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
