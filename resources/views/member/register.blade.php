@@ -31,6 +31,7 @@
             top: 0px;
             left: 0px;
         }
+
     </style>
 </head>
 
@@ -42,7 +43,8 @@
         <div class="align-middle">
             <a class="nav-link d-none d-sm-inline-block" href="{{ route('member.index') }}">
                 <i class="align-middle text-dark" data-feather="arrow-left"></i>
-                <u class="text-dark"><span class="align-middle text-dark">{{ __('loginPageLang.pre_page')}}</span></u>
+                <u class="text-dark"><span
+                        class="align-middle text-dark">{{ __('loginPageLang.pre_page') }}</span></u>
             </a>
         </div>
         <div class="navbar-collapse collapse">
@@ -57,8 +59,8 @@
                         data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
                         aria-expanded="false">
                         <i class="align-middle text-dark" data-feather="settings"></i>
-                        <u class="text-dark"><span class="align-middle text-dark">{{
-                                __('loginPageLang.settings')}}</span></u>
+                        <u class="text-dark"><span
+                                class="align-middle text-dark">{{ __('loginPageLang.settings') }}</span></u>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end">
@@ -66,7 +68,7 @@
                             Profile</a>
                         <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu"
                             aria-expanded="false"><i class="align-middle mr-1" data-feather="book-open"></i>
-                            {{ __('templateWords.language')}}</a>
+                            {{ __('templateWords.language') }}</a>
                         <div class="collapse" id="langMenu">
                             <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
                                 English</a>
@@ -120,8 +122,7 @@
                                                 <input
                                                     class="form-control form-control-lg @error('password') is-invalid @enderror"
                                                     type="password" id="password" name="password"
-                                                    placeholder="{!! __('loginPageLang.password_placeholder') !!}"
-                                                    required />
+                                                    placeholder="{!! __('loginPageLang.password_placeholder') !!}" required />
                                                 <div class="input-group-text" id="eye-button"
                                                     style="color: darkblue; border-radius: 5px;">
                                                     <a href="#">
@@ -163,18 +164,22 @@
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.name') !!}</label>
                                             <input class="form-control form-control-lg" type="text" id="name"
-                                                name="name" placeholder="{!! __('loginPageLang.entername') !!}"
-                                                required />
+                                                name="name" placeholder="{!! __('loginPageLang.entername') !!}" required />
 
                                         </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">{!! __('loginPageLang.email') !!}</label>
+                                            <input class="form-control form-control-lg" type="text" id="email"
+                                                name="email" placeholder="{!! __('loginPageLang.enteremail') !!}" />
 
+                                        </div>
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.priority') !!}</label>
 
                                             <select class="form-select form-select-lg" id="priority" name="priority"
                                                 required>
-                                                <option style="display: none" disabled selected value="">{!!
-                                                    __('loginPageLang.enterpriority') !!}</option>
+                                                <option style="display: none" disabled selected value="">
+                                                    {!! __('loginPageLang.enterpriority') !!}</option>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -186,8 +191,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.dep') !!}</label>
                                             <input class="form-control form-control-lg " type="text" id="department"
-                                                name="department" placeholder="{!! __('loginPageLang.enterdep') !!}"
-                                                required>
+                                                name="department" placeholder="{!! __('loginPageLang.enterdep') !!}" required>
                                         </div>
 
                                         <label class="form-label">{!! __('loginPageLang.profile_pic') !!}</label>
@@ -238,9 +242,9 @@
                                             </div>
 
                                             @error('flexRadioDefault')
-                                            <span class="invalid-feedback p-0 m-0" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                                <span class="invalid-feedback p-0 m-0" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
                                             @enderror
                                         </div>
 

@@ -17,7 +17,7 @@ return [
     'logout_btn' => '登出',
     'userManage' => '用戶管理',
     'newUser' => '新增用戶',
-    'changePass' => '密碼修改',
+    'changePass' => '修改密碼/信箱',
     'newPInfo' => '新增人員訊息',
     'PInfo' => '人員訊息(查詢/修改)',
     'UserInfo' => '用戶訊息(查詢/刪除)',

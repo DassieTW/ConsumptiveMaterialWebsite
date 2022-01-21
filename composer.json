@@ -82,6 +82,9 @@
         "sort-packages": true,
         "platform": {
             "php": "7.3.33"
+        },
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
         }
     },
     "minimum-stability": "dev",

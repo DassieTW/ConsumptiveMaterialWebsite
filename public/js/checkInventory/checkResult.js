@@ -98,6 +98,18 @@ $(document).ready(function () {
             $(this).removeClass('active');
         } else {
             $(this).addClass('active');
+            if( $(this).attr('name') === "sortLocBtn" && $(this).hasClass('sortUp') ) {
+                sortTable("asc", "locTable");
+            } // if
+            else if( $(this).attr('name') === "sortISNBtn" && $(this).hasClass('sortUp') ) {
+                sortTable("asc", "isnTable");
+            } // else if
+            else if( $(this).attr('name') === "sortLocBtn" && $(this).hasClass('sortDw') ) {
+                sortTable("dec", "locTable");
+            } // if
+            else if( $(this).attr('name') === "sortISNBtn" && $(this).hasClass('sortDw') ) {
+                sortTable("dec", "isnTable");
+            } // else if
         } // if else
 
         // var clickedElementText = $(this).find('span').text();
@@ -112,7 +124,7 @@ $(document).ready(function () {
         //         } // if
         //     } // if else
         // });
-        sortTable("asc", "locTable"); // test
+        
     });
 
     $(".sortBtn").on('mouseup touchend', function () {
@@ -124,7 +136,7 @@ $(document).ready(function () {
                 $(this).find('i').removeClass('bi-sort-up');
                 $(this).find('i').addClass('bi-sort-down-alt');
             } // if
-            else if ($(this).hasClass('sortBtn')) {
+            else if ($(this).hasClass('sortDw') && $(this).hasClass('sortBtn')) {
                 $(this).removeClass('sortDw');
                 $(this).addClass('sortUp');
 
@@ -212,13 +224,20 @@ $(document).ready(function () {
 
     // ---------------- quick sort --------------
 
-    var swap = function (data, i, j) {
+    var swap = function (data, data2, i, j) {
         var tmp = data[i];
         data[i] = data[j];
         data[j] = tmp;
+
+        if (data2 != null && data2 != undefined) {
+            var tmp2 = data2[i];
+            data2[i] = data2[j];
+            data2[j] = tmp2;
+        } // if
+
     }; // swap
 
-    var partition = function (data, left, right, dir) {
+    var partition = function (data, data2, left, right, dir) {
         var pivot = $(data[right]).find('span').text();
         // console.log(pivot); // test
         var i = left - 1;
@@ -226,47 +245,85 @@ $(document).ready(function () {
             if (dir === "asc") {
                 if ($(data[j]).find('span').text() < pivot) {
                     i++;
-                    swap(data, i, j);
+                    swap(data, data2, i, j);
                 } // if
             } // if sort to ascending
             else {
                 if ($(data[j]).find('span').text() > pivot) {
                     i++;
-                    swap(data, i, j);
+                    swap(data, data2, i, j);
                 } // if
             } // else sort to decending
         } // for
         i++;
-        swap(data, i, right);
+        swap(data, data2, i, right);
         return i;
     }; // partition
 
-    var quickSort = function (data, left, right, dir) {
+    var quickSort = function (data, data2, left, right, dir) { // data2 is only for moving row corresponding to data
         if (left < right) {
-            var pivot = partition(data, left, right, dir);
-            quickSort(data, left, pivot - 1, dir);    // 對左子串列進行快速排序
-            quickSort(data, pivot + 1, right, dir);   // 對右子串列進行快速排序
+            var pivot = partition(data, data2, left, right, dir);
+            quickSort(data, data2, left, pivot - 1, dir);    // 對左子串列進行快速排序
+            quickSort(data, data2, pivot + 1, right, dir);   // 對右子串列進行快速排序
         } // if left < right
     }; // quickSort
 
-    // --------- end of quick sort ---------------- // 
+    // ------------------------ end of quick sort ---------------- // 
 
     function sortTable(dir, tableClass) {
         $("." + tableClass).each(function (index, obj) {
             var table = $(this);
-            // console.log( table.parent().attr("id")); // test
-            var rows = table.find('tr.locRows').toArray();
-            var rowsData = [];
-            $.each(rows, function (i, item) {
-                $(this)
-            });
-            // console.log(rows); // test
-            quickSort(rows, 0, rows.length - 1, dir);
-            // console.log(rows); // test
 
-            console.log($(this).find("tr").toArray()); // test
+            // console.log(table.parent().attr("id")); // test
+            if (tableClass === "locTable") { // if it is a Loc Table
+                var rows = table.find('tr.locRows').toArray();
+                var rowsData = [];
+                $.each(rows, function (i, item) {
+                    rowsData.push($(this).next()[0]); // push the corresponding isn data rows
+                    // next() get the dom as jquery object, while adding[0] gets the pure DOM element
+                });
+                // console.log(rows); // test
+                quickSort(rows, rowsData, 0, rows.length - 1, dir);
+                // console.log(rows); // test
+                // console.log(rowsData); // test
+
+                $.each(rows, function (i, item) {
+                    table.append(this);
+                    table.append(rowsData[i]);
+                });
+                // console.log($(this).find("tr").toArray()); // test
+            } // if
+            else { // if it is an isn Table
+                var rows = table.find('tr.isnRows').toArray();
+
+                // console.log(rows); // test
+                quickSort(rows, null, 0, rows.length - 1, dir);
+                // console.log(rows); // test
+
+                $.each(rows, function (i, item) {
+                    $(this).children(":first").text( (i+1) + ".");
+                    table.append(this);
+                });
+            } // else
+
+
         });
     } // sortTable
+
+    function filterTable(filterType) {
+        if( filterType === "" ) {
+
+        } // if
+        else if( filterType === "" ) {
+
+        }  // else if
+        else if ( filterType === "" ) {
+
+        } // else if
+        else {
+
+        } // else
+    } // filterTable
 
     function getName(id) {
         var name = "";
@@ -282,7 +339,7 @@ $(document).ready(function () {
     function collapseByLoc() {
         // console.log(serialSheetsObj); // test
         // console.log(sheetCreators); // test
-        // $("#appendDataHere").html(""); // clear the table
+        $("#appendDataHere").html(""); // clear the table
         const keys = Object.keys(serialSheetsObj);
         // console.log(keys); // test
         var sheetCount = 0;
@@ -378,7 +435,12 @@ $(document).ready(function () {
             } // else
         } // for
 
+        sortTable("dec", "locTable");
     } // collapseByLoc
+
+    function plainISNTable() {
+
+    } // plainISNTable
 
     $("#DateRangeString").on('change', function () { // trigger ajax post whenever time range is set
         // console.log("time range triggered"); // test
@@ -580,16 +642,20 @@ $(document).ready(function () {
                         } // if else 
                     });
                 } // if error 422
-                else if (err.status == 420) { // else if error 420
+                else if (err.status == 420) { // else if error : No results Found !
                     $('#texBox').addClass("is-invalid");
-                    if ($isIsn) {
-                        // $('#texBox').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('checkInvLang.no_such_isn') + '</strong></span>'));
-                    } else {
-                        // $('#texBox').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('checkInvLang.no_such_loc') + '</strong></span>'));
-                    } // else
+
+                    // if ($isIsn) {
+                    //     // $('#texBox').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('checkInvLang.no_such_isn') + '</strong></span>'));
+                    // } else {
+                    //     // $('#texBox').after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('checkInvLang.no_such_loc') + '</strong></span>'));
+                    // } // else
+                    $("#appendDataHere").html(""); // clear the table
+                    console.log(err.responseJSON.message); // test
                 } // else 
                 else {
                     console.log(err.status); // test
+                    console.log(err.responseJSON.message); // test
                 } // else
             } // error
         }); // ajax

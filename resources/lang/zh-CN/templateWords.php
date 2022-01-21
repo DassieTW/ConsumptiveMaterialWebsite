@@ -18,7 +18,7 @@ return [
     'logout_btn' => '登出',
     'userManage' => '用户管理',
     'newUser' => '新增用户',
-    'changePass' => '密码修改',
+    'changePass' => '修改密码/信箱',
     'newPInfo' => '新增人员讯息',
     'PInfo' => '人员讯息(查询/修改)',
     'UserInfo' => '用户讯息(查询/删除)',

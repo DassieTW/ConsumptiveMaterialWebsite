@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\人員信息;
 use App\Models\Login;
 use Illuminate\Support\Facades\Route;
@@ -33,8 +34,10 @@ Route::get('/login', function () {
 Route::post('/login', [Auth\LoginController::class, 'login'])->name('member.login')->withoutMiddleware('auth');
 
 //change password, Matches The "/member/change" URL
-Route::get('/change', function() {
-    return view('member.change');
+Route::get('/change', function () {
+    $email = \DB::table('login')->select('email')
+        ->where('username', '=', \Auth::user()->username)->get();
+    return view('member.change', ['oldMail' => $email]);
 });
 
 Route::post('/change', [Auth\LoginController::class, 'change'])->name('member.change');
@@ -47,7 +50,7 @@ Route::get('/register', function () {
 Route::post('/register', [Auth\LoginController::class, 'register'])->name('member.register')->middleware('can:create,App\Models\Login');
 
 //new people information
-Route::get('/new', function() {
+Route::get('/new', function () {
     return view('member.new');
 })->name('member.new_get')->middleware('can:newPeopleInfo,App\Models\Login');
 
@@ -70,7 +73,7 @@ Route::get('/number', function () {
 Route::post('/number', [Auth\LoginController::class, 'number'])->name('member.number')->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
 //人員信息查詢
-Route::get('/numbersearch', function (){
+Route::get('/numbersearch', function () {
     return view('member.searchnumberok')->with(['data' => 人員信息::cursor()]);
 })->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
@@ -98,7 +101,7 @@ Route::post('/usernamesearch', [Auth\LoginController::class, 'searchusername'])-
 Route::post('/usernamechangeordel', [Auth\LoginController::class, 'usernamechangeordel'])->name('member.usernamechangeordel')->middleware('can:searchAndUpdateUser,App\Models\Login');
 
 //新增人員信息上傳
-Route::get('/uploadpeople', function() {
+Route::get('/uploadpeople', function () {
     return view('member.new');
 });
 Route::post('/uploadpeople', [Auth\LoginController::class, 'uploadpeople'])->name('member.uploadpeople');

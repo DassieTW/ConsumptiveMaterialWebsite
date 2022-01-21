@@ -30,8 +30,8 @@ class Kernel extends ConsoleKernel
         //     \Log::info('成功排程');
         // })->everyMinute();
 
-        $schedule->command('logs:clear')->cron('0 3 * */3 *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
-        $schedule->command('log:clear')->cron('0 3 * */3 *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
+        $schedule->command('logs:clear')->cron('30 03 01 Jan,Apr,Jul,Oct *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
+        $schedule->command('log:clear')->cron('30 03 01 Jan,Apr,Jul,Oct *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
     } // schedule
 
     /**

@@ -17,7 +17,7 @@ return [
     'logout_btn' => 'Log Out',
     'userManage' => 'User Mgmt.',
     'newUser' => 'Add User',
-    'changePass' => 'Change Password',
+    'changePass' => 'Change <br/> &nbsp;&nbsp;&nbsp; Password / Email',
     'newPInfo' => 'Add Staff Info.',
     'PInfo' => 'Modify Staff Info.',
     'UserInfo' => 'Modify User Info.',
@@ -34,7 +34,7 @@ return [
     'barcode_generator' => 'Barcode Generator',
     'locBarcode' => 'Find Loc. Barcode',
     'isnBarcode' => 'Find Part No. Barcode',
-    'nowuser' => 'Now login user is:',
+    'nowuser' => 'Logged-In User :',
     'checkIvent_create_new_table' => 'Create New Sheet',
 
     'isnConsumeAdd' => 'Unit Consumption <br/> &nbsp;&nbsp;&nbsp; (Add)',

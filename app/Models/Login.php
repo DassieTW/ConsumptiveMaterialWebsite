@@ -30,7 +30,8 @@ class Login extends Authenticatable
         'priority',
         '姓名',
         '部門',
-        'avatarChoice'
+        'avatarChoice',
+        'email'
     ];
 
     /**
