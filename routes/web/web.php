@@ -6,6 +6,7 @@ use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\OwarehouseController;
 use App\Http\Controllers\ImportexcelController;
+use App\Http\Controllers\MailController;
 
 use Illuminate\Http\Request;
 use App\Models;
@@ -93,3 +94,6 @@ Route::get('/debug-sentry', function () {
 
 Route::get('sendbasicemail',[MailController::class, 'basic_email']);
 
+Route::get('/testm',function(){
+    return view('markconsume');
+});

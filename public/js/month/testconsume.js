@@ -16,30 +16,27 @@ $(document).ready(function () {
 
 
         var client = [];
+        var name = [];
         var number = [];
         var production = [];
         var machine = [];
         var amount = [];
         var check = [];
-        var compare = [];
         var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
         var count = $("#count").val();
+        var sender = $("#sender").val();
+
+        var data = [];
+
         for (let i = 0; i < count; i++) {
+            name.push($("#name" + i).val());
             client.push($("#client" + i).val());
             number.push($("#number" + i).val());
             production.push($("#production" + i).val());
             machine.push($("#machine" + i).val());
             amount.push($("#amount" + i).val());
-            compare.push($("#compare" + i).val());
-        }
-
-        for (let i = 0; i < count; i++) {
-            if (parseFloat(amount[i]) !== parseFloat(compare[i])) {
-                check[i] = 1;
-            } else {
-                check[i] = 0;
-            }
+            check.push($("#check" + i).prop('checked'));
         }
 
         if (count == undefined) {
@@ -56,55 +53,56 @@ $(document).ready(function () {
             });
             return false;
         }
+        var mess = Lang.get('monthlyPRpageLang.total') + ' ' + count + ' ' +
+            Lang.get('monthlyPRpageLang.record') + ' ' + Lang.get('monthlyPRpageLang.consume');
 
+        var sure = window.confirm(mess);
 
-        console.log(count);
-        console.log(client);
-        console.log(number);
-        console.log(production);
-        console.log(machine);
-        console.log(amount);
-        console.log(jobnumber);
+        data.push(number);
+        data.push(name);
+        data.push(client);
+        data.push(machine);
+        data.push(production);
+        data.push(amount);
+        data.push(check);
+        if (sure !== true) {
+            return false;
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: "testconsume",
+                data: {
+                    AllData: JSON.stringify(data),
+                    jobnumber: jobnumber,
+                    email: email,
+                    count: count,
+                    sender: sender,
+                },
+                beforeSend: function () {
+                    // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                    $('body').loadingModal({
+                        text: 'Loading...',
+                        animation: 'circle'
+                    });
+                },
+                complete: function () {
+                    $('body').loadingModal('hide');
+                    $('body').loadingModal('destroy');
+                },
+                success: function (data) {
+                    var mess = Lang.get('monthlyPRpageLang.total') + ' ' + (data.message) + ' ' + Lang.get('monthlyPRpageLang.record') + ' ' +
+                        Lang.get('monthlyPRpageLang.success');
+                    alert(mess);
+                    window.location.reload();
+                },
+                error: function (err) {
+                    //transaction error
+                    console.log(err.status);
+                    var mess = err.responseJSON.message;
+                    alert(mess);
+                },
 
-
-        $.ajax({
-            type: 'POST',
-            url: "testconsume",
-            data: {
-                client: client,
-                number: number,
-                production: production,
-                machine: machine,
-                amount: amount,
-                jobnumber: jobnumber,
-                email: email,
-                count: count,
-                check: check,
-            },
-            beforeSend: function () {
-                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                $('body').loadingModal({
-                    text: 'Loading...',
-                    animation: 'circle'
-                });
-            },
-            complete: function () {
-                $('body').loadingModal('hide');
-                $('body').loadingModal('destroy');
-            },
-            success: function (data) {
-                var mess = Lang.get('monthlyPRpageLang.total') + ' ' + (data.message) + ' ' + Lang.get('monthlyPRpageLang.record') + ' ' +
-                    Lang.get('monthlyPRpageLang.success');
-                alert(mess);
-                window.location.reload();
-            },
-            error: function (err) {
-                //transaction error
-                console.log(err.status);
-                var mess = err.responseJSON.message;
-                alert(mess);
-            },
-
-        });
+            });
+        }
     });
 });

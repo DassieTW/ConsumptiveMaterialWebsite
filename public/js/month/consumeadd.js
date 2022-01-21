@@ -6,10 +6,6 @@ $.ajaxSetup({
     }
 });
 
-
-var index = 0;
-var count = 0;
-
 function appenSVg(index) {
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
@@ -33,12 +29,13 @@ function appenSVg(index) {
                 y: "bottom"
             }
         });
-        count = count - 1;
+
         $(this).parent().parent().remove();
     }); // on delete btn click
 } // appenSVg
 
 $(document).ready(function () {
+
 
     $('#consume').on('submit', function (e) {
         e.preventDefault();
@@ -46,6 +43,13 @@ $(document).ready(function () {
         // clean up previous input results
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
+
+
+        if (sessionStorage.getItem("consumecount") === null) {
+            var index = 0;
+        } else {
+            var index = parseInt(sessionStorage.getItem('consumecount'));
+        }
 
         var client = $("#client").val();
         var number = $("#number").val();
@@ -73,7 +77,10 @@ $(document).ready(function () {
                 $('body').loadingModal('destroy');
             },
             success: function (data) {
+
+
                 sessionStorage.setItem('consumecount', index + 1);
+
                 document.getElementById('numbererror').style.display = "none";
                 document.getElementById('numbererror1').style.display = "none";
 
@@ -177,9 +184,6 @@ $(document).ready(function () {
                 tbl.appendChild(body);
                 appenSVg(index);
 
-                index = index + 1;
-                count = count + 1;
-
                 $("input").change(function () {
                     for (let i = 0; i < sessionStorage.getItem('consumecount'); i++) {
                         var nowmps = $("#nowmps" + i).val();
@@ -227,7 +231,30 @@ $(document).ready(function () {
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
-        if (count == 0) {
+
+
+        console.log(sessionStorage.getItem('consumecount'));
+        var client = [];
+        var machine = [];
+        var production = [];
+        var number = [];
+        var consume = [];
+        var row = [];
+        var jobnumber = $("#jobnumber").val();
+        var email = $("#email").val();
+        var count = 0;
+        for (let i = 0; i < sessionStorage.getItem('consumecount'); i++) {
+            if ($("#client" + i).text() !== null && $("#client" + i).text() !== '') {
+                client.push($("#client" + i).text());
+                machine.push($("#machine" + i).text());
+                production.push($("#production" + i).text());
+                number.push($("#number" + i).text());
+                consume.push($("#amount" + i).val());
+                row.push(i.toString());
+            }
+        }
+
+        if (client.length === 0) {
             notyf.open({
                 type: 'warning',
                 message: Lang.get('monthlyPRpageLang.nodata'),
@@ -242,27 +269,7 @@ $(document).ready(function () {
             return false;
         }
 
-        console.log(sessionStorage.getItem('consumecount'));
-        var client = [];
-        var machine = [];
-        var production = [];
-        var number = [];
-        var consume = [];
-        var row = [];
-        var jobnumber = $("#jobnumber").val();
-        var email = $("#email").val();
-
-        for (let i = 0; i < sessionStorage.getItem('consumecount'); i++) {
-            if ($("#client" + i).text() !== null && $("#client" + i).text() !== '') {
-                client.push($("#client" + i).text());
-                machine.push($("#machine" + i).text());
-                production.push($("#production" + i).text());
-                number.push($("#number" + i).text());
-                consume.push($("#amount" + i).val());
-                row.push(i.toString());
-            }
-        }
-
+        count = parseInt(client.length);
         console.log(row);
 
         $.ajax({
@@ -332,8 +339,211 @@ $(document).ready(function () {
                     alert(err.responseJSON.message);
                     window.location.reload();
                 }
+                else{
+                    console.log(err.responseJSON.message);
+                }
             },
         });
     });
 
+    $('#loadconsume').on('click', function (e) {
+        e.preventDefault();
+        var origin = parseInt(sessionStorage.getItem('consumecount'));
+
+        if (sessionStorage.getItem("consumecount") === null) {
+            var j = 0;
+        } else {
+            var j = origin;
+        }
+
+
+        // clean up previous input results
+        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+
+        $('loadconsume').data('clicked', true);
+        $.ajax({
+            type: 'POST',
+            url: "loadconsume",
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
+            },
+            success: function (data) {
+
+
+
+
+
+                document.getElementById("loadconsume").disabled = true;
+                alldatas = JSON.parse(JSON.stringify(data.datas));
+
+                if(alldatas.length === 0)
+                {
+                    notyf.open({
+                        type: 'warning',
+                        message: Lang.get('monthlyPRpageLang.noload'),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom"
+                        }
+                    });
+                }
+                else{
+                    notyf.open({
+                        type: 'success',
+                        message: Lang.get('monthlyPRpageLang.loadsuccess'),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom"
+                        }
+                    });
+                }
+
+                if (sessionStorage.getItem("consumecount") === null) {
+                    sessionStorage.setItem('consumecount', alldatas.length);
+                } else {
+                    var length = parseInt(alldatas.length) + parseInt(sessionStorage.getItem('consumecount'));
+                    sessionStorage.setItem('consumecount', length);
+                }
+
+                document.getElementById('numbererror').style.display = "none";
+                document.getElementById('numbererror1').style.display = "none";
+
+
+                for (let i = 0; i < alldatas.length; i++) {
+
+
+                    var consume = parseFloat(alldatas[i].單耗);
+                    consume = consume.toFixed(10);
+                    document.getElementById('consumeadd').style.display = "block";
+                    var tbl = document.getElementById("consumeaddtable");
+                    var body = document.getElementById("consumeaddbody");
+                    var row = document.createElement("tr");
+
+                    row.setAttribute("id", "row" + j);
+
+                    let rowdelete = document.createElement('td');
+                    rowdelete.innerHTML = "<a id=" + "deleteBtn" + j + "></a>";
+
+                    let rownumber = document.createElement('td');
+                    rownumber.innerHTML = "<span id=" + "number" + j + ">" + alldatas[i].料號 + "</span>";
+
+                    let rowname = document.createElement('td');
+                    rowname.innerHTML = "<span id=" + "name" + j + ">" + alldatas[i].品名 + "</span>";
+
+                    let rowformat = document.createElement('td');
+                    rowformat.innerHTML = "<span id=" + "format" + j + ">" + alldatas[i].規格 + "</span>";
+
+                    let rowunit = document.createElement('td');
+                    rowunit.innerHTML = "<span id=" + "unit" + j + ">" + alldatas[i].單位 + "</span>";
+
+                    let rowlt = document.createElement('td');
+                    rowlt.innerHTML = "<span id=" + "lt" + j + ">" + alldatas[i].LT + "</span>";
+
+                    let rowamount = document.createElement('td');
+                    rowamount.innerHTML = '<input id="amount' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000000001"' + 'value = "' + consume + '"' + 'step = "0.0000000001"' + 'style="width: 200px"' + '">';
+
+                    let rownowneed = document.createElement('td');
+                    rownowneed.innerHTML = '<input id="nowneed' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'style="width: 200px"' + '" readonly>';
+
+                    let rownextneed = document.createElement('td');
+                    rownextneed.innerHTML = '<input id="nextneed' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'style="width: 200px"' + '" readonly>';
+
+                    let rowsafestock = document.createElement('td');
+                    rowsafestock.innerHTML = '<input id="safestock' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'style="width: 200px"' + '" readonly>';
+
+                    let rowclient = document.createElement('td');
+                    rowclient.innerHTML = "<span id=" + "client" + j + ">" + alldatas[i].客戶別 + "</span>";
+
+                    let rowmachine = document.createElement('td');
+                    rowmachine.innerHTML = "<span id=" + "machine" + j + ">" + alldatas[i].機種 + "</span>";
+
+                    let rowproduction = document.createElement('td');
+                    rowproduction.innerHTML = "<span id=" + "production" + j + ">" + alldatas[i].製程 + "</span>";
+
+                    let rownowmps = document.createElement('td');
+                    rownowmps.innerHTML = '<input id="nowmps' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + 0 + '">';
+
+                    let rownowday = document.createElement('td');
+                    rownowday.innerHTML = '<input id="nowday' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + 0 + '">';
+
+                    let rownextmps = document.createElement('td');
+                    rownextmps.innerHTML = '<input id="nextmps' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + 0 + '">';
+
+
+                    let rownextday = document.createElement('td');
+                    rownextday.innerHTML = '<input id="nextday' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + 0 + '">';
+
+                    row.appendChild(rowdelete);
+                    row.appendChild(rownumber);
+                    row.appendChild(rowname);
+                    row.appendChild(rowformat);
+                    row.appendChild(rowunit);
+                    row.appendChild(rowlt);
+                    row.appendChild(rowamount);
+                    row.appendChild(rownowneed);
+                    row.appendChild(rownextneed);
+                    row.appendChild(rowsafestock);
+                    row.appendChild(rowclient);
+                    row.appendChild(rowmachine);
+                    row.appendChild(rowproduction);
+                    row.appendChild(rownowmps);
+                    row.appendChild(rownowday);
+                    row.appendChild(rownextmps);
+                    row.appendChild(rownextday);
+
+                    body.appendChild(row);
+                    tbl.appendChild(body);
+                    appenSVg(j);
+
+                    j = j + 1;
+                    $("input").change(function () {
+                        for (let i = 0; i < sessionStorage.getItem('consumecount'); i++) {
+                            var nowmps = $("#nowmps" + i).val();
+                            var amount = $("#amount" + i).val();
+                            var nowday = $("#nowday" + i).val();
+                            var nextmps = $("#nextmps" + i).val();
+                            var nextday = $("#nextday" + i).val();
+                            var lt = $("#lt" + i).text();
+                            var nowneed = (nowmps * amount) / nowday;
+                            var nextneed = (nextmps * amount) / nextday;
+                            var safe = nextneed * lt;
+                            nowneed = nowneed.toFixed(7);
+                            nextneed = nextneed.toFixed(7);
+                            safe = safe.toFixed(7);
+                            $('#nowneed' + i).val(nowneed);
+                            $('#nextneed' + i).val(nextneed);
+                            $('#safestock' + i).val(safe);
+                        }
+
+                    });
+                }
+
+            },
+            error: function (err) {},
+        });
+
+    }); // on load btn click
 });

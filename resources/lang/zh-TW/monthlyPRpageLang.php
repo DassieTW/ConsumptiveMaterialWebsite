@@ -133,4 +133,12 @@ return [
     'yellowrepeat' => '黃底標表示資料庫已存放在資料庫內',
     'writesrm' => '填寫SRM單號',
     'nodata' => '無資料提交',
+    'consumemail' => '您好，請點擊此鏈接畫押單耗',
+    'standemail' => '您好，請點擊此鏈接畫押站位',
+    'emailsender' => '發信者',
+    'markconsume' => '打勾表示此單耗工程師已確認，未勾選表示須重新開單',
+    'loadconsume' => '載入待重畫押單耗',
+    'loadsuccess' => '載入成功',
+    'noload' => '無資料載入',
+
 ];

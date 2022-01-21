@@ -252,7 +252,9 @@ Route::get('/testconsume', function () {
     if (request()->filled('r')) {
         $email = request()->r;
         $email = Crypt::decrypt($email);
-        return view('month.testconsume')->with(['data' => 月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)]);
+        $username = urldecode(request()->u);
+        return view('month.testconsume')->with(['data' => 月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
+        ->with(['email' => $email])->with(['username' => $username]);
     } else {
         return redirect()->route('month.consumeadd');
     }
@@ -266,7 +268,9 @@ Route::get('/teststand', function () {
     if (request()->filled('r')) {
         $email = request()->r;
         $email = Crypt::decrypt($email);
-        return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)]);
+        $username = urldecode(request()->u);
+        return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
+        ->with(['email' => $email])->with(['username' => $username]);
     } else {
         return redirect()->route('month.standadd');
     }
@@ -283,3 +287,6 @@ Route::post('/download', [MonthController::class, 'download'])->name('month.down
 
 //請購單下載
 Route::post('/buylistdownload', [MonthController::class, 'buylistdownload'])->name('month.buylistdownload');
+
+//load 待重畫單耗
+Route::post('/loadconsume', [MonthController::class, 'loadconsume'])->name('month.loadconsume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
