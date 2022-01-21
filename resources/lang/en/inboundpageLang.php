@@ -44,7 +44,7 @@ return [
     'plz_upload' => 'Upload an Excel File',
     'exampleExcel' => 'Example Template Download',
     'upload' => 'Batch Upload',
-    'pName' => 'MATL.',
+    'pName' => 'Description',
     'format' => 'Specification',
     'nowstock' => 'Nowstock',
     'safe' => 'Safety Stock',

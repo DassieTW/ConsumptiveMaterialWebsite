@@ -117,6 +117,7 @@ $(document).ready(function () {
                 newpassword: newpassword,
                 surepassword: surepassword,
             },
+            dataType: 'json', // expected respose datatype from server
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
                 $("body").loadingModal({
@@ -154,7 +155,89 @@ $(document).ready(function () {
                     document.getElementById("surepassword").classList.add("is-invalid");
                     document.getElementById("surepassword").value = "";
                     document.getElementById("message").style.display = "none";
-                }
+                } // else if
+                else if (err.status == 422) { // when status code is 422, it's a validation issue
+                    // console.log(err.responseJSON.message); // test
+
+                    // you can loop through the errors object and show it to the user
+                    // console.warn(err.responseJSON.errors); // test
+                    // display errors on each form field
+                    $.each(err.responseJSON.errors, function (i, error) {
+                        var el = $(document).find('[name="' + i + '"]');
+                        // console.log(el); // test
+                        el.addClass("is-invalid");
+                        if (el.siblings(".input-group-text").length > 0) {
+                            el.siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
+                        } // if
+                        else {
+                            el.after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
+                        } // if else
+                    });
+                } // if
+                else {
+                    console.log(err.status); // print out other errors 
+                } // else
+            },
+        });
+    });
+
+    $("#changeEmail").on("submit", function (e) {
+        e.preventDefault();
+        // clean up previous input results
+        $(".is-invalid").removeClass("is-invalid");
+        $(".invalid-feedback").remove();
+        var newEmail = $("#newEmail").val();
+        $("#newEmail").val(""); // clean up after input
+        $("#oldEmail").val();
+        $.ajax({
+            type: "POST",
+            url: "change",
+            data: {
+                newEmail: newEmail,
+                oldEmail: oldEmail,
+            },
+            dataType: 'json', // expected respose datatype from server
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
+                });
+            },
+            complete: function () {
+                $("body").loadingModal("hide");
+                $('body').loadingModal('destroy');
+            },
+            success: function (data) {
+                var mess =
+                    Lang.get("loginPageLang.change") +
+                    Lang.get("oboundpageLang.success");
+                alert(mess);
+            },
+            error: function (err) {
+                if (err.status == 422) { // when status code is 422, it's a validation issue
+                    // console.log(err.responseJSON.message); // test
+
+                    // you can loop through the errors object and show it to the user
+                    // console.warn(err.responseJSON.errors); // test
+                    // display errors on each form field
+                    $.each(err.responseJSON.errors, function (i, error) {
+                        var el = $(document).find('[name="' + i + '"]');
+                        // console.log(el.siblings(".input-group-text").length); // test
+                        el.addClass("is-invalid");
+                        if (el.siblings(".input-group-text").length > 0) {
+                            if ($('.invalid-feedback').length === 0) {
+                                el.parent().after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
+                            } // if
+                        } // if
+                        else {
+                            el.after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
+                        } // if else 
+                    });
+                } // if
+                else {
+                    console.log(err.status); // print out other errors 
+                } // else
             },
         });
     });

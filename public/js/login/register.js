@@ -47,6 +47,7 @@ $(document).ready(function () {
         var surepassword = $("#password2").val();
         var priority = $("#priority").val();
         var name = $("#name").val();
+        var email = $("#email").val();
         var department = $("#department").val();
         var profilePic = $('input[name=flexRadioDefault]:checked', '#registerform').val();
 
@@ -67,6 +68,7 @@ $(document).ready(function () {
                 surepassword: surepassword,
                 priority: priority,
                 name: name,
+                email: email,
                 department: department,
                 profilePic: profilePic,
             },

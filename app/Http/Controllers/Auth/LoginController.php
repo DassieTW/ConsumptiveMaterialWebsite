@@ -143,6 +143,7 @@ class LoginController extends Controller
         //$password = Hash::make($request->input('password'));
         $password = $request->input('password');
         $priority = $request->input('priority');
+        $email = $request->input('email');
         $name = $request->input('name');
         $department = $request->input('department');
         $profilePic = intval($request->input('profilePic'));
@@ -159,7 +160,8 @@ class LoginController extends Controller
         DB::table('login')
             ->insert([
                 'username' => $username, 'password' => $password, 'priority' => $priority,
-                '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic/*, 'created_at' => Carbon::now()*/
+                '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic, /*, 'created_at' => Carbon::now(),*/
+                'email' => $email
             ]);
 
         $request->session()->flush();
@@ -170,7 +172,18 @@ class LoginController extends Controller
     //change password
     public function change(Request $request)
     {
-        if (Session::has('username')) {
+        $rules1 = [
+            'password' => ['required'],
+            'newpassword' => ['required'],
+            'surepassword' => ['required'],
+        ];
+
+        $rules2 = [
+            'newEmail' => ['required'],
+        ];
+
+        if (Session::has('username') && $request->has('password')) {
+            $this->validate($request, $rules1);
             if ($request->input('newpassword') === $request->input('surepassword')) {
                 $username = Session::get('username');
                 $password = DB::table('login')->where('username', $username)->value('password');
@@ -184,15 +197,26 @@ class LoginController extends Controller
 
                     return \Response::json([]/* Status code here default is 200 ok*/);
                 } else {
-                    return \Response::json(['message' => 'password no same'], 420/* Status code here default is 200 ok*/);
+                    return \Response::json(['message' => 'passwords are not the same'], 420/* Status code here default is 200 ok*/);
                 }
             } else {
-                return \Response::json(['message' => 'old password wrong'], 421/* Status code here default is 200 ok*/);
-            }
-        } else {
+                return \Response::json(['message' => 'old password is wrong'], 421/* Status code here default is 200 ok*/);
+            } // else
+        } // if
+        else if( Session::has('username') && $request->has('newEmail') ) {
+            $this->validate($request, $rules2);
+            // if( ) {
+
+            // } // if
+            // else {
+
+            // } // else
+        } // else if
+        else {
             return redirect(route('member.login'));
-        }
-    }
+        } // else
+    } // change password
+
 
     //new people information
     public function new(Request $request)

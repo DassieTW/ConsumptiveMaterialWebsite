@@ -36,7 +36,7 @@ return [
     'nostock' => 'The Client & Isn do not have stock,can not bill material requisition',
     'submit' => 'Submit',
     'return' => 'return',
-    'pName' => 'MATL.',
+    'pName' => 'Description',
     'format' => 'Specification',
     'unit' => 'Unit',
     'senddep' => 'Issuing department',
