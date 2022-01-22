@@ -5,7 +5,7 @@
 
 @section('js')
 
-    <script src="{{ asset('/js/login/change.js') }}" defer></script>
+    <script src="{{ asset('/js/login/change.js') }}"></script>
     <!--for this page's sepcified js -->
 
 @endsection

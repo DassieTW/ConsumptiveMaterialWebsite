@@ -179,7 +179,7 @@ class LoginController extends Controller
         ];
 
         $rules2 = [
-            'newEmail' => ['required'],
+            'newMail' => ['required'],
         ];
 
         if (Session::has('username') && $request->has('password')) {
@@ -203,15 +203,20 @@ class LoginController extends Controller
                 return \Response::json(['message' => 'old password is wrong'], 421/* Status code here default is 200 ok*/);
             } // else
         } // if
-        else if (Session::has('username') && $request->has('newEmail')) {
+        else if (Session::has('username') && $request->has('newMail')) {
             $this->validate($request, $rules2);
-            // if( ) {
-
-            // } // if
-            // else {
-
-            // } // else
-            return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
+            if ($request->input('oldMail') === ($request->input('newMail') . "@pegatroncorp.com")) {
+                // dont need to update Email
+                return \Response::json(['message' => 'Email is the same as old one'], 200/* Status code here default is 200 ok*/);
+            } // if
+            else {
+                DB::table('login')
+                    ->where('username', \Auth::user()->username)
+                    // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
+                    ->update(['email' => ($request->input('newMail') . "@pegatroncorp.com")]);
+                return \Response::json(['message' => 'Update successful'], 200/* Status code here default is 200 ok*/);
+            } // else
+            return \Response::json(['message' => 'weird error'], 421/* Status code here default is 200 ok*/);
         } // else if
         else {
             return redirect(route('member.login'));

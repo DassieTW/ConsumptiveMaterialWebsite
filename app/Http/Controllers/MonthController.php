@@ -2306,7 +2306,7 @@ class MonthController extends Controller
     }
 
     //test send consume mail
-    public function sendconsumemail($email, $sessemail, $name, $database)
+    public static function sendconsumemail($email, $sessemail, $name, $database)
     {
         $dename = DB::table('login')->where('username', \Crypt::decrypt($name))->value('姓名');
 
@@ -2322,7 +2322,7 @@ class MonthController extends Controller
     }
 
     //test send stand mail
-    public function sendstandmail($email, $sessemail)
+    public static function sendstandmail($email, $sessemail)
     {
         $data = array('email' => $sessemail, 'username' => urlencode(\Auth::user()->姓名));
 
@@ -2335,7 +2335,7 @@ class MonthController extends Controller
     }
 
     //test send check consume mail
-    public function sendcheckconsume($alldata, $count, $sender)
+    public static function sendcheckconsume($alldata, $count, $sender)
     {
         $data = array('datas' => $alldata, 'count' => $count);
 
@@ -2354,7 +2354,7 @@ class MonthController extends Controller
 
 
     //test send check consume mail
-    public function sendcheckstand($alldata, $count, $sender)
+    public static function sendcheckstand($alldata, $count, $sender)
     {
         $data = array('datas' => $alldata, 'count' => $count);
 

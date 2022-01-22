@@ -186,15 +186,15 @@ $(document).ready(function () {
         $(".is-invalid").removeClass("is-invalid");
         $(".invalid-feedback").remove();
         var newEmail = $("#newMail").val();
-        $("#newEmail").val(""); // clean up after input
+        $("#newMail").val(""); // clean up after input
         var oldEmail = $("#oldMail").val();
-        console.log( oldEmail + "+++" + newEmail + "+++"); // test
+        // console.log( oldEmail + "+++" + newEmail + "+++"); // test
         $.ajax({
             type: "POST",
             url: "change",
             data: {
-                newEmail: newEmail,
-                oldEmail: oldEmail,
+                newMail: newEmail,
+                oldMail: oldEmail,
             },
             dataType: 'json', // expected respose datatype from server
             beforeSend: function () {
@@ -209,10 +209,17 @@ $(document).ready(function () {
                 $('body').loadingModal('destroy');
             },
             success: function (data) {
-                var mess =
-                    Lang.get("loginPageLang.change") +
-                    Lang.get("oboundpageLang.success");
-                alert(mess);
+                $("#oldMail").val( newEmail + "@pegatroncorp.com");
+                notyf.success({
+                    message: Lang.get('loginPageLang.success'),
+                    duration: 5000,   //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
             },
             error: function (err) {
                 if (err.status == 422) { // when status code is 422, it's a validation issue
@@ -223,7 +230,7 @@ $(document).ready(function () {
                     // display errors on each form field
                     $.each(err.responseJSON.errors, function (i, error) {
                         var el = $(document).find('[name="' + i + '"]');
-                        console.log(el); // test
+                        // console.log(i); // test
                         el.addClass("is-invalid");
                         if (el.siblings(".input-group-text").length > 0) {
                             el.siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
@@ -235,6 +242,7 @@ $(document).ready(function () {
                 } // if
                 else {
                     console.log(err.status); // print out other errors 
+                    console.log(err.responseJSON.message); // print out other errors 
                 } // else
             },
         });
