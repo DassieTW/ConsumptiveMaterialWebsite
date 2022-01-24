@@ -34,7 +34,7 @@ class Create月請購站位Table extends Migration
             $table->string('畫押信箱', 45);
             $table->dateTime('畫押時間')->nullable();
             $table->string('紀錄',255)->nullable();
-            $table->string('送單時間', 45);
+            $table->dateTime('送單時間');
             $table->string('送單人', 45);
             //$table->timestamps();
             //$table->softDeletes();
