@@ -49,7 +49,7 @@ return [
     'change' =>'Update',
     'return' =>'return',
     'errorpassword2' =>'The password does not match',
-    'errorpassword' =>'The old password was entered incorrectly',
+    'errorpassword' =>'The old password was incorrect',
     'upload' =>'Batch upload',
     'plz_upload' =>'Please upload an Excel file',
     'exampleExcel' =>'Example format download',

@@ -140,21 +140,20 @@ $(document).ready(function () {
                 window.location.href = "login";
             },
             error: function (err) {
-                //舊密碼輸入錯誤
+                // 舊密碼輸入錯誤
                 if (err.status == 420) {
-                    document.getElementById("message").style.display = "block";
                     document.getElementById("password").classList.add("is-invalid");
                     document.getElementById("password").value = "";
-                    document.getElementById("message2").style.display = "none";
-                }
-                //密碼並不相符
+                    $("#password").siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('loginPageLang.errorpassword') + '</strong></span>'));
+                } // if
+                // 密碼並不相符
                 else if (err.status == 421) {
-                    document.getElementById("message2").style.display = "block";
                     document.getElementById("newpassword").classList.add("is-invalid");
                     document.getElementById("newpassword").value = "";
                     document.getElementById("surepassword").classList.add("is-invalid");
                     document.getElementById("surepassword").value = "";
-                    document.getElementById("message").style.display = "none";
+                    $("#newpassword").siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('loginPageLang.errorpassword2') + '</strong></span>'));
+                    $("#surepassword").siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('loginPageLang.errorpassword2') + '</strong></span>'));
                 } // else if
                 else if (err.status == 422) { // when status code is 422, it's a validation issue
                     // console.log(err.responseJSON.message); // test
@@ -173,7 +172,7 @@ $(document).ready(function () {
                             el.after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
                         } // if else
                     });
-                } // if
+                } // else if
                 else {
                     console.log(err.status); // print out other errors 
                 } // else
@@ -186,15 +185,16 @@ $(document).ready(function () {
         // clean up previous input results
         $(".is-invalid").removeClass("is-invalid");
         $(".invalid-feedback").remove();
-        var newEmail = $("#newEmail").val();
-        $("#newEmail").val(""); // clean up after input
-        $("#oldEmail").val();
+        var newEmail = $("#newMail").val();
+        $("#newMail").val(""); // clean up after input
+        var oldEmail = $("#oldMail").val();
+        // console.log( oldEmail + "+++" + newEmail + "+++"); // test
         $.ajax({
             type: "POST",
             url: "change",
             data: {
-                newEmail: newEmail,
-                oldEmail: oldEmail,
+                newMail: newEmail,
+                oldMail: oldEmail,
             },
             dataType: 'json', // expected respose datatype from server
             beforeSend: function () {
@@ -209,10 +209,17 @@ $(document).ready(function () {
                 $('body').loadingModal('destroy');
             },
             success: function (data) {
-                var mess =
-                    Lang.get("loginPageLang.change") +
-                    Lang.get("oboundpageLang.success");
-                alert(mess);
+                $("#oldMail").val( newEmail + "@pegatroncorp.com");
+                notyf.success({
+                    message: Lang.get('loginPageLang.success'),
+                    duration: 5000,   //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
             },
             error: function (err) {
                 if (err.status == 422) { // when status code is 422, it's a validation issue
@@ -223,20 +230,19 @@ $(document).ready(function () {
                     // display errors on each form field
                     $.each(err.responseJSON.errors, function (i, error) {
                         var el = $(document).find('[name="' + i + '"]');
-                        // console.log(el.siblings(".input-group-text").length); // test
+                        // console.log(i); // test
                         el.addClass("is-invalid");
                         if (el.siblings(".input-group-text").length > 0) {
-                            if ($('.invalid-feedback').length === 0) {
-                                el.parent().after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
-                            } // if
+                            el.siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
                         } // if
                         else {
-                            el.after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
-                        } // if else 
+                            el.after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
+                        } // if else
                     });
                 } // if
                 else {
                     console.log(err.status); // print out other errors 
+                    console.log(err.responseJSON.message); // print out other errors 
                 } // else
             },
         });

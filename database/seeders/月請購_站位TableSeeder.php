@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 use App\Models\月請購_站位;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class 月請購_站位TableSeeder extends Seeder
@@ -34,6 +35,8 @@ class 月請購_站位TableSeeder extends Seeder
         $month->狀態 = '已完成';
         $month->畫押工號 = 'LA2100001';
         $month->畫押信箱 = 'test@pegatroncorp.com';
+        $month->送單時間 = Carbon::now()->format('Y-m-d H:i:s.v');
+        $month->送單人 = "1";
         $month->save();
         //
         $month = new 月請購_站位;
@@ -54,6 +57,8 @@ class 月請購_站位TableSeeder extends Seeder
         $month->狀態 = '已完成';
         $month->畫押工號 = 'LA2100001';
         $month->畫押信箱 = 'test@pegatroncorp.com';
+        $month->送單時間 = Carbon::now()->format('Y-m-d H:i:s.v');
+        $month->送單人 = "1";
         $month->save();
         //
         $month = new 月請購_站位;
@@ -74,6 +79,8 @@ class 月請購_站位TableSeeder extends Seeder
         $month->狀態 = '已完成';
         $month->畫押工號 = 'LA2100001';
         $month->畫押信箱 = 'test@pegatroncorp.com';
+        $month->送單時間 = Carbon::now()->format('Y-m-d H:i:s.v');
+        $month->送單人 = "1";
         $month->save();
     }
 }

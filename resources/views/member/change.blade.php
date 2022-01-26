@@ -5,7 +5,7 @@
 
 @section('js')
 
-    <script src="{{ asset('/js/login/change.js') }}" defer></script>
+    <script src="{{ asset('/js/login/change.js') }}"></script>
     <!--for this page's sepcified js -->
 
 @endsection
@@ -82,9 +82,8 @@
                             <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <div class="input-group" id="show_hide_password2">
-                                    <input class="form-control form-control-lg"
-                                        type="password" id="surepassword" name="surepassword"
-                                        placeholder="{!! __('loginPageLang.enterpassword') !!}" required />
+                                    <input class="form-control form-control-lg" type="password" id="surepassword"
+                                        name="surepassword" placeholder="{!! __('loginPageLang.enterpassword') !!}" required />
                                     <div class="input-group-text" id="eye-button2"
                                         style="color: darkblue; border-radius: 5px;">
                                         <a href="#">
@@ -130,7 +129,7 @@
                             <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg text-center" type="text" id="oldMail"
-                                    placeholder="{!! __('loginPageLang.no_email') !!}" value="@php
+                                    name="oldMail" placeholder="{!! __('loginPageLang.no_email') !!}" value="@php
                                         // echo $oldMail[0]->email; // test
                                         if (count($oldMail) == 0) {
                                             echo '';
@@ -139,7 +138,8 @@
                                         else {
                                             echo $oldMail[0]->email;
                                         } // else
-                                    @endphp" readonly />
+                                    @endphp"
+                                    readonly />
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -148,9 +148,11 @@
                             <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-8">
                                 <div class="input-group">
-                                    <input class="form-control form-control-lg text-center" type="text" id="newMail" name="newMail"
-                                        placeholder="{!! __('loginPageLang.enter_email') !!}" required />
-                                    <span class="input-group-text">@pegatroncorp.com</span>
+                                    <input class="form-control form-control-lg text-center" type="text" id="newMail"
+                                        name="newMail" placeholder="{!! __('loginPageLang.enter_email') !!}" required />
+                                    <div class="input-group-text">
+                                        <span>@pegatroncorp.com</span>
+                                    </div>
                                 </div>
                             </div>
 
