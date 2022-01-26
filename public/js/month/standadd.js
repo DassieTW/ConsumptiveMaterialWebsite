@@ -6,9 +6,6 @@ $.ajaxSetup({
     }
 });
 
-var index = 0;
-var count = 0;
-
 function appenSVg(index) {
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
@@ -32,7 +29,6 @@ function appenSVg(index) {
                 y: "bottom"
             }
         });
-        count = count - 1;
         $(this).parent().parent().remove();
     }); // on delete btn click
 } // appenSVg
@@ -46,10 +42,17 @@ $(document).ready(function () {
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
+        if (sessionStorage.getItem("standcount") === null) {
+            var index = 0;
+        } else {
+            var index = parseInt(sessionStorage.getItem('standcount'));
+        }
+
         var client = $("#client").val();
         var number = $("#number").val();
         var production = $("#production").val();
         var machine = $("#machine").val();
+
         $.ajax({
             type: 'POST',
             url: "standnew",
@@ -113,51 +116,51 @@ $(document).ready(function () {
 
                 let rownowpeople = document.createElement('td');
                 rownowpeople.innerHTML = '<input id="nowpeople' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownowline = document.createElement('td');
                 rownowline.innerHTML = '<input id="nowline' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownowclass = document.createElement('td');
                 rownowclass.innerHTML = '<input id="nowclass' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownowuse = document.createElement('td');
                 rownowuse.innerHTML = '<input id="nowuse' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownowchange = document.createElement('td');
                 rownowchange.innerHTML = '<input id="nowchange' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownowdayneed = document.createElement('td');
                 rownowdayneed.innerHTML = '<input id="nowdayneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'style="width: 200px"' + '" readonly>';
+                    'style="width: 150px"' + '" readonly>';
 
                 let rownextpeople = document.createElement('td');
                 rownextpeople.innerHTML = '<input id="nextpeople' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownextline = document.createElement('td');
                 rownextline.innerHTML = '<input id="nextline' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownextclass = document.createElement('td');
                 rownextclass.innerHTML = '<input id="nextclass' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownextuse = document.createElement('td');
                 rownextuse.innerHTML = '<input id="nextuse' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownextchange = document.createElement('td');
                 rownextchange.innerHTML = '<input id="nextchange' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 150px"' + '" required>';
+                    'min = "0.0000001"' + 'value = "0"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
 
                 let rownextdayneed = document.createElement('td');
                 rownextdayneed.innerHTML = '<input id="nextdayneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'style="width: 200px"' + '" readonly>';
+                    'style="width: 150px"' + '" readonly>';
 
                 let rowsafestock = document.createElement('td');
                 rowsafestock.innerHTML = '<input id="safestock' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
@@ -198,9 +201,6 @@ $(document).ready(function () {
                 body.appendChild(row);
                 tbl.appendChild(body);
                 appenSVg(index);
-
-                index = index + 1;
-                count = count + 1;
 
                 $("input").change(function () {
                     for (let i = 0; i < sessionStorage.getItem('standcount'); i++) {
@@ -255,21 +255,6 @@ $(document).ready(function () {
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
-        if (count == 0) {
-            notyf.open({
-                type: 'warning',
-                message: Lang.get('monthlyPRpageLang.nodata'),
-                duration: 3000, //miliseconds, use 0 for infinite duration
-                ripple: true,
-                dismissible: true,
-                position: {
-                    x: "right",
-                    y: "bottom"
-                }
-            });
-            return false;
-        }
-
         console.log(sessionStorage.getItem('standcount'));
         var row = [];
         var client = [];
@@ -289,6 +274,7 @@ $(document).ready(function () {
 
         var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
+        var count = 0;
 
         for (let i = 0; i < sessionStorage.getItem('standcount'); i++) {
             if ($("#client" + i).text() !== null && $("#client" + i).text() !== '') {
@@ -309,6 +295,23 @@ $(document).ready(function () {
                 row.push(i.toString());
             }
         }
+
+        if (client.length === 0) {
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('monthlyPRpageLang.nodata'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
+            return false;
+        }
+
+        count = parseInt(client.length);
 
         $.ajax({
             type: 'POST',
@@ -389,4 +392,228 @@ $(document).ready(function () {
             },
         });
     });
+
+    $('#loadstand').on('click', function (e) {
+        e.preventDefault();
+        var origin = parseInt(sessionStorage.getItem('standcount'));
+
+        if (sessionStorage.getItem("standcount") === null) {
+            var j = 0;
+        } else {
+            var j = origin;
+        }
+
+
+        // clean up previous input results
+        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+
+        $('loadstand').data('clicked', true);
+        $.ajax({
+            type: 'POST',
+            url: "loadstand",
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
+            },
+            success: function (data) {
+
+                $('#loadstand').remove();
+                alldatas = JSON.parse(JSON.stringify(data.datas));
+
+                if (alldatas.length === 0) {
+                    notyf.open({
+                        type: 'warning',
+                        message: Lang.get('monthlyPRpageLang.noload'),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom"
+                        }
+                    });
+                } else {
+                    notyf.open({
+                        type: 'success',
+                        message: Lang.get('monthlyPRpageLang.loadsuccess'),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom"
+                        }
+                    });
+                }
+
+                if (sessionStorage.getItem("standcount") === null) {
+                    sessionStorage.setItem('standcount', alldatas.length);
+                } else {
+                    var length = parseInt(alldatas.length) + parseInt(sessionStorage.getItem('standcount'));
+                    sessionStorage.setItem('standcount', length);
+                }
+
+                document.getElementById('numbererror').style.display = "none";
+                document.getElementById('numbererror1').style.display = "none";
+
+
+                for (let i = 0; i < alldatas.length; i++) {
+
+
+
+                    document.getElementById('standadd').style.display = "block";
+                    var tbl = document.getElementById("standaddtable");
+                    var body = document.getElementById("standaddbody");
+                    var row = document.createElement("tr");
+
+                    row.setAttribute("id", "row" + j);
+
+                    let rowdelete = document.createElement('td');
+                    rowdelete.innerHTML = "<a id=" + "deleteBtn" + j + "></a>";
+
+                    let rownumber = document.createElement('td');
+                    rownumber.innerHTML = "<span id=" + "number" + j + ">" + alldatas[i].料號 + "</span>";
+
+                    let rowname = document.createElement('td');
+                    rowname.innerHTML = "<span id=" + "name" + j + ">" + alldatas[i].品名 + "</span>";
+
+                    let rowunit = document.createElement('td');
+                    rowunit.innerHTML = "<span id=" + "unit" + j + ">" + alldatas[i].單位 + "</span>";
+
+                    let rowmpq = document.createElement('td');
+                    rowmpq.innerHTML = "<span id=" + "mpq" + j + ">" + alldatas[i].MPQ + "</span>";
+
+                    let rowlt = document.createElement('td');
+                    rowlt.innerHTML = "<span id=" + "lt" + j + ">" + alldatas[i].LT + "</span>";
+
+                    let rownowpeople = document.createElement('td');
+                    rownowpeople.innerHTML = '<input id="nowpeople' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].當月站位人數 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownowline = document.createElement('td');
+                    rownowline.innerHTML = '<input id="nowline' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].當月開線數 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownowclass = document.createElement('td');
+                    rownowclass.innerHTML = '<input id="nowclass' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].當月開班數 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownowuse = document.createElement('td');
+                    rownowuse.innerHTML = '<input id="nowuse' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].當月每人每日需求量 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownowchange = document.createElement('td');
+                    rownowchange.innerHTML = '<input id="nowchange' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].當月每日更換頻率 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownowdayneed = document.createElement('td');
+                    rownowdayneed.innerHTML = '<input id="nowdayneed' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'style="width: 200px"' + '" readonly>';
+
+                    let rownextpeople = document.createElement('td');
+                    rownextpeople.innerHTML = '<input id="nextpeople' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].下月站位人數 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownextline = document.createElement('td');
+                    rownextline.innerHTML = '<input id="nextline' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].下月開線數 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownextclass = document.createElement('td');
+                    rownextclass.innerHTML = '<input id="nextclass' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].下月開班數 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownextuse = document.createElement('td');
+                    rownextuse.innerHTML = '<input id="nextuse' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].下月每人每日需求量 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownextchange = document.createElement('td');
+                    rownextchange.innerHTML = '<input id="nextchange' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'min = "0.0000001"' + 'value = "' + alldatas[i].下月每日更換頻率 + '"' + 'step = "0.0000001"' + 'style="width: 120px"' + '" required>';
+
+                    let rownextdayneed = document.createElement('td');
+                    rownextdayneed.innerHTML = '<input id="nextdayneed' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'style="width: 200px"' + '" readonly>';
+
+                    let rowsafestock = document.createElement('td');
+                    rowsafestock.innerHTML = '<input id="safestock' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                        'style="width: 120px"' + '" readonly>';
+
+                    let rowclient = document.createElement('td');
+                    rowclient.innerHTML = "<span id=" + "client" + j + ">" + alldatas[i].客戶別 + "</span>";
+
+                    let rowmachine = document.createElement('td');
+                    rowmachine.innerHTML = "<span id=" + "machine" + j + ">" + alldatas[i].機種 + "</span>";
+
+                    let rowproduction = document.createElement('td');
+                    rowproduction.innerHTML = "<span id=" + "production" + j + ">" + alldatas[i].製程 + "</span>";
+
+                    row.appendChild(rowdelete);
+                    row.appendChild(rownumber);
+                    row.appendChild(rowname);
+                    row.appendChild(rowunit);
+                    row.appendChild(rowmpq);
+                    row.appendChild(rowlt);
+                    row.appendChild(rownowpeople);
+                    row.appendChild(rownowline);
+                    row.appendChild(rownowclass);
+                    row.appendChild(rownowuse);
+                    row.appendChild(rownowchange);
+                    row.appendChild(rownowdayneed);
+                    row.appendChild(rownextpeople);
+                    row.appendChild(rownextline);
+                    row.appendChild(rownextclass);
+                    row.appendChild(rownextuse);
+                    row.appendChild(rownextchange);
+                    row.appendChild(rownextdayneed);
+                    row.appendChild(rowsafestock);
+                    row.appendChild(rowclient);
+                    row.appendChild(rowmachine);
+                    row.appendChild(rowproduction);
+
+
+                    body.appendChild(row);
+                    tbl.appendChild(body);
+                    appenSVg(j);
+
+                    j = j + 1;
+                    $("input").change(function () {
+                        for (let i = 0; i < sessionStorage.getItem('standcount'); i++) {
+                            var nowpeople = $("#nowpeople" + i).val();
+                            var nowline = $("#nowline" + i).val();
+                            var nowclass = $("#nowclass" + i).val();
+                            var nowuse = $("#nowuse" + i).val();
+                            var nowchange = $("#nowchange" + i).val();
+                            var nextpeople = $("#nextpeople" + i).val();
+                            var nextline = $("#nextline" + i).val();
+                            var nextclass = $("#nextclass" + i).val();
+                            var nextuse = $("#nextuse" + i).val();
+                            var nextchange = $("#nextchange" + i).val();
+                            var mpq = $("#mpq" + i).text();
+                            var lt = $("#lt" + i).text();
+                            var now = (nowpeople * nowclass * nowline * nowuse * nowchange) / mpq;
+                            var next = (nextpeople * nextclass * nextline * nextuse * nextchange) / mpq;
+                            var safe = next * lt;
+                            now = now.toFixed(7);
+                            next = next.toFixed(7);
+                            safe = safe.toFixed(7);
+                            $('#nowdayneed' + i).val(now);
+                            $('#nextdayneed' + i).val(next);
+                            $('#safestock' + i).val(safe);
+                        }
+                    });
+                }
+
+            },
+            error: function (err) {},
+        });
+
+    }); // on load btn click
 });

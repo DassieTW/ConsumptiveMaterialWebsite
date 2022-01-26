@@ -53,7 +53,7 @@
             </div>
             <div class="card">
                 <h3 class="text-center">{!! __('monthlyPRpageLang.emailsender') !!} : {{$username}}</h3>
-                <input type="hidden" id ="sender" value="{{$username}}">
+                <input type="hidden" id="sender" value="{{$username}}">
             </div>
             <div class="card">
                 <div class="card-body">
@@ -82,6 +82,17 @@
                                     @foreach($data as $data)
                                     <?php
                                         $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
+                                        $data->當月站位人數 = round($data->當月站位人數 ,7);
+                                        $data->當月開線數 = round($data->當月開線數 ,7);
+                                        $data->當月開班數 = round($data->當月開班數 ,7);
+                                        $data->當月每人每日需求量 = round($data->當月每人每日需求量 ,7);
+                                        $data->當月每日更換頻率 = round($data->當月每日更換頻率 ,7);
+                                        $data->下月站位人數 = round($data->下月站位人數 ,7);
+                                        $data->下月開線數 = round($data->下月開線數 ,7);
+                                        $data->下月開班數 = round($data->下月開班數 ,7);
+                                        $data->下月每人每日需求量 = round($data->下月每人每日需求量 ,7);
+                                        $data->下月每日更換頻率 = round($data->下月每日更換頻率 ,7);
+
                                     ?>
                                     <tr>
                                         <td><input type="hidden" id="number{{$loop->index}}"
@@ -95,26 +106,36 @@
                                         <td><input type="hidden" id="production{{$loop->index}}"
                                                 name="production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}
                                         </td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nowpeople{{$loop->index}}"
-                                                name="nowpeople{{$loop->index}}" value="{{$data->當月站位人數}}"></td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nowline{{$loop->index}}"
-                                                name="nowline{{$loop->index}}" value="{{$data->當月開線數}}"></td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nowclass{{$loop->index}}"
-                                                name="nowclass{{$loop->index}}" value="{{$data->當月開班數}}"></td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nowuse{{$loop->index}}"
-                                                name="nowuse{{$loop->index}}" value="{{$data->當月每人每日需求量}}"></td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nowchange{{$loop->index}}"
-                                                name="nowchange{{$loop->index}}" value="{{$data->當月每日更換頻率}}"></td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nextpeople{{$loop->index}}"
-                                                name="nextpeople{{$loop->index}}" value="{{$data->下月站位人數}}"></td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nextline{{$loop->index}}"
-                                                name="nextline{{$loop->index}}" value="{{$data->下月開線數}}"></td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nextclass{{$loop->index}}"
-                                                name="nextclass{{$loop->index}}" value="{{$data->下月開班數}}"></td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nextuse{{$loop->index}}"
-                                                name="nextuse{{$loop->index}}" value="{{$data->下月每人每日需求量}}"></td>
-                                        <td><input class = "form-control" style="width: 100px" type="number" id="nextchange{{$loop->index}}"
-                                                name="nextchange{{$loop->index}}" value="{{$data->下月每日更換頻率}}"></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nowpeople{{$loop->index}}" name="nowpeople{{$loop->index}}"
+                                                value="{{$data->當月站位人數}}" step="0.0000001" readonly></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nowline{{$loop->index}}" name="nowline{{$loop->index}}"
+                                                value="{{$data->當月開線數}}" step="0.0000001" readonly></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nowclass{{$loop->index}}" name="nowclass{{$loop->index}}"
+                                                value="{{$data->當月開班數}}" step="0.0000001" readonly></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nowuse{{$loop->index}}" name="nowuse{{$loop->index}}"
+                                                value="{{$data->當月每人每日需求量}}" step="0.0000001" readonly></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nowchange{{$loop->index}}" name="nowchange{{$loop->index}}"
+                                                value="{{$data->當月每日更換頻率}}" step="0.0000001" readonly></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nextpeople{{$loop->index}}" name="nextpeople{{$loop->index}}"
+                                                value="{{$data->下月站位人數}}" step="0.0000001" readonly></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nextline{{$loop->index}}" name="nextline{{$loop->index}}"
+                                                value="{{$data->下月開線數}}" step="0.0000001" readonly></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nextclass{{$loop->index}}" name="nextclass{{$loop->index}}"
+                                                value="{{$data->下月開班數}}" step="0.0000001" readonly></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nextuse{{$loop->index}}" name="nextuse{{$loop->index}}"
+                                                value="{{$data->下月每人每日需求量}}" step="0.0000001" readonly></td>
+                                        <td><input class="form-control" style="width: 120px" type="number"
+                                                id="nextchange{{$loop->index}}" name="nextchange{{$loop->index}}"
+                                                value="{{$data->下月每日更換頻率}}" step="0.0000001" readonly></td>
                                         <td><input class="checkbutton" type="checkbox" id="check{{$loop->index}}"
                                                 name="check{{$loop->index}}"></td>
                                     </tr>

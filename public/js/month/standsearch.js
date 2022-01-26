@@ -136,7 +136,7 @@ $(document).ready(function () {
                 data18.push($("#datas" + check[i]).val());
                 data19.push($("#datat" + check[i]).val());
                 data20.push($("#datau" + check[i]).val());
-                data21.push($("#datav" + check[i]).html());
+                data21.push($("#datav" + check[i]).val());
             }
         } else {
             for (let i = 0; i < count; i++) {
@@ -161,7 +161,7 @@ $(document).ready(function () {
                 data18.push($("#datas" + i).val());
                 data19.push($("#datat" + i).val());
                 data20.push($("#datau" + i).val());
-                data21.push($("#datav" + i).html());
+                data21.push($("#datav" + i).val());
             }
         }
         for (let i = 0; i < titlecount; i++) {

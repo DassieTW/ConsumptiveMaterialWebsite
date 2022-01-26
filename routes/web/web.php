@@ -91,9 +91,3 @@ Route::get('/debug-sentry', function () {
 //     ->update(['最後更新時間' => '2021-08-30 13:24:29.000']);
 // });
 
-
-Route::get('sendbasicemail',[MailController::class, 'basic_email']);
-
-Route::get('/testm',function(){
-    return view('markconsume');
-});

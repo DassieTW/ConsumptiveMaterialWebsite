@@ -70,6 +70,10 @@
                     value="{!! __('outboundpageLang.add') !!}">
             </div>
         </form>
+        <div class="col-auto">
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <button class="btn btn-lg btn-primary" id ="loadstand">{!! __('monthlyPRpageLang.loadstand') !!}</button>
+        </div>
     </div>
 </div>
 

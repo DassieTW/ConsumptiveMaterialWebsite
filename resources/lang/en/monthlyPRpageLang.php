@@ -139,7 +139,12 @@ return [
     'markconsume' => 'If checked, it means that the unit consumption engineer has confirmed it.<br/>
                     If not checked, it means that the need to re-opened.',
 
-    'loadconsume' => 'Load need to re-opened consume',
+    'loadconsume' => 'Load need to re-opened unit consume',
+    'markstand' => 'If checked, it means that the station manpower engineer has confirmed it.<br/>
+                    If not checked, it means that the need to re-opened.',
+
+    'loadstand' => 'Load need to re-opened station manpower',
     'loadsuccess' => 'Load Success',
     'noload' => 'No data load',
+    'clickmail' => 'Click here',
 ];

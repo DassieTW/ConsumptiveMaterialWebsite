@@ -627,6 +627,10 @@ class MonthController extends Controller
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
+            $name = \Crypt::encrypt(\Auth::user()->姓名);
+            $database = $request->session()->get('databse');
+            $database = \Crypt::encrypt($database);
+
 
             //delete
             if ($select == "刪除") {
@@ -670,7 +674,7 @@ class MonthController extends Controller
                     DB::rollback();
                     return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                 }
-                self::sendstandmail($email, $sessemail);
+                self::sendstandmail($email, $sessemail, $name, $database);
 
                 return \Response::json(['message' => $count, 'status' => 201], /* Status code here default is 200 ok*/);
             }
@@ -862,6 +866,10 @@ class MonthController extends Controller
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
+            $name = \Crypt::encrypt(\Auth::user()->username);
+            $database = $request->session()->get('database');
+            $database = \Crypt::encrypt($database);
+
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
@@ -913,7 +921,7 @@ class MonthController extends Controller
                     }
                 } //for
                 DB::commit();
-                self::sendstandmail($email, $sessemail);
+                self::sendstandmail($email, $sessemail, $name, $database);
                 return \Response::json(['record' => $record, 'database' => $database, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
@@ -2119,7 +2127,7 @@ class MonthController extends Controller
                     }
                 } //for
                 DB::commit();
-                self::sendcheckconsume($Alldata, $count, $sender);
+                self::sendcheckstand($Alldata, $count, $sender);
 
                 return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
@@ -2322,9 +2330,10 @@ class MonthController extends Controller
     }
 
     //test send stand mail
-    public function sendstandmail($email, $sessemail)
+    public function sendstandmail($email, $sessemail, $name, $database)
     {
-        $data = array('email' => $sessemail, 'username' => urlencode(\Auth::user()->姓名));
+        $dename = DB::table('login')->where('username', \Crypt::decrypt($name))->value('姓名');
+        $data = array('email' => $sessemail, 'username' => $name, 'database' => $database, 'name' => $dename);
 
         Mail::send('mail/standcheck', $data,  function ($message) use ($email) {
             $message->to($email, 'Tutorials Point')->subject('Check Stand data');
@@ -2341,7 +2350,7 @@ class MonthController extends Controller
 
         Mail::send('mail/markconsume', $data, function ($message) use ($sender) {
             // $email = 't22923200@gmail.com';
-            $email = DB::table('login')->where('姓名', $sender)->value('信箱');
+            $email = DB::table('login')->where('姓名', $sender)->value('email');
             if ($email !== null) {
                 // dd($email);
                 $message->to($email, 'Tutorials Point')->subject('RE:Check Consume data');
@@ -2358,13 +2367,16 @@ class MonthController extends Controller
     {
         $data = array('datas' => $alldata, 'count' => $count);
 
-        Mail::send('mail/markstand', $data, function ($message) {
-            $email = 't22923200@gmail.com';
-            // $email = DB::table('login')->where('username', $sender)->value('信箱');
-            $message->to($email, 'Tutorials Point')->subject('RE:Check Consume data');
-            // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-            $message->bcc('Tony_Tseng@pegatroncorp.com');
-            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+        Mail::send('mail/markstand', $data, function ($message) use ($sender){
+            // $email = 't22923200@gmail.com';
+            $email = DB::table('login')->where('姓名', $sender)->value('email');
+            if ($email !== null) {
+
+                $message->to($email, 'Tutorials Point')->subject('RE:Check Stand data');
+                // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                $message->bcc('Tony_Tseng@pegatroncorp.com');
+                $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+            }
         });
     }
 
@@ -2386,7 +2398,7 @@ class MonthController extends Controller
 
 
 
-    //load re-check consume
+    //load re-check stand
     public function loadstand(Request $request)
     {
         if (Session::has('username')) {

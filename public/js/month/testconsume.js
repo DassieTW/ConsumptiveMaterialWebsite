@@ -91,10 +91,10 @@ $(document).ready(function () {
                 },
                 success: function (data) {
                     console.log(data.message);
-                    // var mess = Lang.get('monthlyPRpageLang.total') + ' ' + (data.message) + ' ' + Lang.get('monthlyPRpageLang.record') + ' ' +
-                    //     Lang.get('monthlyPRpageLang.success');
-                    // alert(mess);
-                    // window.location.reload();
+                    var mess = Lang.get('monthlyPRpageLang.total') + ' ' + (data.message) + ' ' + Lang.get('monthlyPRpageLang.record') + ' ' +
+                        Lang.get('monthlyPRpageLang.success');
+                    alert(mess);
+                    window.location.reload();
                 },
                 error: function (err) {
                     //transaction error

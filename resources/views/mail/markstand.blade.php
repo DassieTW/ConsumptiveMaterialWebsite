@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{ __('monthlyPRpageLang.consumemail')}}</title>
+    <title>{{ __('monthlyPRpageLang.standmail')}}</title>
     <style>
         .form-control {
             display: block;
@@ -41,62 +41,37 @@
                 <th>{!! __('monthlyPRpageLang.nextchange') !!}</th>
             </tr>
 
-            @for ($i = 0; $i < $count; $i++)
-                <tr>
-                    <td><input type="hidden" id="number{{$loop->index}}"
-                            name="number{{$loop->index}}" value="{{$data->料號}}">{{$data->料號}}</td>
-                    <td><input type="hidden" id="name{{$loop->index}}" name="name{{$loop->index}}"
-                            value="{{$name}}">{{$name}}</td>
-                    <td><input type="hidden" id="client{{$loop->index}}"
-                            name="client{{$loop->index}}" value="{{$data->客戶別}}">{{$data->客戶別}}</td>
-                    <td><input type="hidden" id="machine{{$loop->index}}"
-                            name="machine{{$loop->index}}" value="{{$data->機種}}">{{$data->機種}}</td>
-                    <td><input type="hidden" id="production{{$loop->index}}"
-                            name="production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}
-                    </td>
-                    <td><input style="width: 80px" type="number" id="nowpeople{{$loop->index}}"
-                            name="nowpeople{{$loop->index}}" value="{{$data->當月站位人數}}"></td>
-                    <td><input style="width: 80px" type="number" id="nowline{{$loop->index}}"
-                            name="nowline{{$loop->index}}" value="{{$data->當月開線數}}"></td>
-                    <td><input style="width: 80px" type="number" id="nowclass{{$loop->index}}"
-                            name="nowclass{{$loop->index}}" value="{{$data->當月開班數}}"></td>
-                    <td><input style="width: 80px" type="number" id="nowuse{{$loop->index}}"
-                            name="nowuse{{$loop->index}}" value="{{$data->當月每人每日需求量}}"></td>
-                    <td><input style="width: 80px" type="number" id="nowchange{{$loop->index}}"
-                            name="nowchange{{$loop->index}}" value="{{$data->當月每日更換頻率}}"></td>
-                    <td><input style="width: 80px" type="number" id="nextpeople{{$loop->index}}"
-                            name="nextpeople{{$loop->index}}" value="{{$data->下月站位人數}}"></td>
-                    <td><input style="width: 80px" type="number" id="nextline{{$loop->index}}"
-                            name="nextline{{$loop->index}}" value="{{$data->下月開線數}}"></td>
-                    <td><input style="width: 80px" type="number" id="nextclass{{$loop->index}}"
-                            name="nextclass{{$loop->index}}" value="{{$data->下月開班數}}"></td>
-                    <td><input style="width: 80px" type="number" id="nextuse{{$loop->index}}"
-                            name="nextuse{{$loop->index}}" value="{{$data->下月每人每日需求量}}"></td>
-                    <td><input style="width: 80px" type="number" id="nextchange{{$loop->index}}"
-                            name="nextchange{{$loop->index}}" value="{{$data->下月每日更換頻率}}"></td>
+            @for ($i = 0; $i < $count; $i++) <tr>
+                <td><input type="hidden" id="number{{$i}}" name="number{{$i}}"
+                        value="{{$datas[0][$i]}}">{{$datas[0][$i]}}</td>
+                <td><input type="hidden" id="name{{$i}}" name="name{{$i}}" value="{{$datas[1][$i]}}">{{$datas[1][$i]}}
+                </td>
+                <td><input type="hidden" id="client{{$i}}" name="client{{$i}}"
+                        value="{{$datas[2][$i]}}">{{$datas[2][$i]}}</td>
+                <td><input type="hidden" id="machine{{$i}}" name="machine{{$i}}"
+                        value="{{$datas[3][$i]}}">{{$datas[3][$i]}}</td>
+                <td><input type="hidden" id="production{{$i}}" name="production{{$i}}"
+                        value="{{$datas[4][$i]}}">{{$datas[4][$i]}}
+                </td>
 
-                    <td></td><input type="hidden" id="comnowpeople{{$loop->index}}"
-                        name="comnowpeople{{$loop->index}}" value="{{$data->當月站位人數}}">
-                    <input type="hidden" id="comnowline{{$loop->index}}"
-                        name="comnowline{{$loop->index}}" value="{{$data->當月開線數}}">
-                    <input type="hidden" id="comnowclass{{$loop->index}}"
-                        name="comnowclass{{$loop->index}}" value="{{$data->當月開班數}}">
-                    <input type="hidden" id="comnowuse{{$loop->index}}"
-                        name="comnowuse{{$loop->index}}" value="{{$data->當月每人每日需求量}}">
-                    <input type="hidden" id="comnowchange{{$loop->index}}"
-                        name="comnowchange{{$loop->index}}" value="{{$data->當月每日更換頻率}}">
-                    <input type="hidden" id="comnextpeople{{$loop->index}}"
-                        name="comnextpeople{{$loop->index}}" value="{{$data->下月站位人數}}">
-                    <input type="hidden" id="comnextline{{$loop->index}}"
-                        name="comnextline{{$loop->index}}" value="{{$data->下月開線數}}">
-                    <input type="hidden" id="comnextclass{{$loop->index}}"
-                        name="comnextclass{{$loop->index}}" value="{{$data->下月開班數}}">
-                    <input type="hidden" id="comnextuse{{$loop->index}}"
-                        name="comnextuse{{$loop->index}}" value="{{$data->下月每人每日需求量}}">
-                    <input type="hidden" id="comnextchange{{$loop->index}}"
-                        name="comnextchange{{$loop->index}}" value="{{$data->下月每日更換頻率}}">
+                <td><input type="hidden" id="nowpeople{{$i}}" name="nowpeople{{$i}}" value="{{$datas[5][$i]}}">{{$datas[5][$i]}}
+                </td>
+                <td><input type="hidden" id="nowline{{$i}}" name="nowline{{$i}}" value="{{$datas[6][$i]}}">{{$datas[6][$i]}}</td>
+                <td><input type="hidden" id="nowclass{{$i}}" name="nowclass{{$i}}" value="{{$datas[7][$i]}}">{{$datas[7][$i]}}</td>
+                <td><input type="hidden" id="nowuse{{$i}}" name="nowuse{{$i}}" value="{{$datas[8][$i]}}">{{$datas[8][$i]}}</td>
+                <td><input type="hidden" id="nowchange{{$i}}" name="nowchange{{$i}}" value="{{$datas[9][$i]}}">{{$datas[9][$i]}}
+                </td>
+                <td><input type="hidden" id="nextpeople{{$i}}" name="nextpeople{{$i}}" value="{{$datas[10][$i]}}">{{$datas[10][$i]}}
+                </td>
+                <td><input type="hidden" id="nextline{{$i}}" name="nextline{{$i}}" value="{{$datas[11][$i]}}">{{$datas[11][$i]}}</td>
+                <td><input type="hidden" id="nextclass{{$i}}" name="nextclass{{$i}}" value="{{$datas[12][$i]}}">{{$datas[12][$i]}}
+                </td>
+                <td><input type="hidden" id="nextuse{{$i}}" name="nextuse{{$i}}" value="{{$datas[13][$i]}}">{{$datas[13][$i]}}
+                </td>
+                <td><input type="hidden" id="nextchange{{$i}}" name="nextchange{{$i}}"
+                        value="{{$datas[14][$i]}}">{{$datas[14][$i]}}</td>
 
-                    @if ($datas[6][$i])
+                @if ($datas[15][$i])
                 <td> <img src="{{ $message->embed(public_path() . '/admin/img/mail/check.png') }}" width="30px"
                         height="30px" />
 
@@ -115,7 +90,7 @@
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-    <h2>{!! __('monthlyPRpageLang.markconsume')!!}</h2>
+    <h2>{!! __('monthlyPRpageLang.markstand')!!}</h2>
 
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

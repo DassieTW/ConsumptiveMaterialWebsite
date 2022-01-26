@@ -29,7 +29,6 @@ function appenSVg(index) {
                 y: "bottom"
             }
         });
-
         $(this).parent().parent().remove();
     }); // on delete btn click
 } // appenSVg
@@ -231,8 +230,6 @@ $(document).ready(function () {
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
-
-
         console.log(sessionStorage.getItem('consumecount'));
         var client = [];
         var machine = [];
@@ -429,7 +426,6 @@ $(document).ready(function () {
                     var tbl = document.getElementById("consumeaddtable");
                     var body = document.getElementById("consumeaddbody");
                     var row = document.createElement("tr");
-
                     row.setAttribute("id", "row" + j);
 
                     let rowdelete = document.createElement('td');

@@ -138,7 +138,10 @@ return [
     'emailsender' => '发信者',
     'markconsume' => '勾选表示此单耗工程师已确认，未勾选表示须重新开单',
     'loadconsume' => '载入待重画押单耗',
+    'markstand' => '勾选表示此站位工程师已确认，未勾选表示须重新开单',
+    'loadstand' => '载入待重画押站位',
     'loadsuccess' => '载入成功',
     'noload' => '无资料载入',
+    'clickmail' => '点选此网址',
 
 ];

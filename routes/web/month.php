@@ -272,11 +272,16 @@ Route::post('/testconsume', [MonthController::class, 'testconsume'])->name('mont
 //test站位畫押
 Route::get('/teststand', function () {
     if (request()->filled('r')) {
-        $email = request()->r;
-        $email = Crypt::decrypt($email);
-        $username = urldecode(request()->u);
-        return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
-            ->with(['email' => $email])->with(['username' => $username]);
+        $email = Crypt::decrypt(request()->r);
+        $username = Crypt::decrypt(request()->u);
+        $database = Crypt::decrypt(request()->d);
+
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
+        \DB::purge(env("DB_CONNECTION"));
+        $name = DB::table('login')->where('username', $username)->value('姓名');
+
+        return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)->where("送單人", $username)])
+        ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
     } else {
         return redirect()->route('month.standadd');
     }
@@ -296,3 +301,6 @@ Route::post('/buylistdownload', [MonthController::class, 'buylistdownload'])->na
 
 //load 待重畫單耗
 Route::post('/loadconsume', [MonthController::class, 'loadconsume'])->name('month.loadconsume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+
+//load 待重畫站位
+Route::post('/loadstand', [MonthController::class, 'loadstand'])->name('month.loadstand')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
