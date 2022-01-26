@@ -134,7 +134,7 @@ return [
     'writesrm' => 'Write SRM number',
     'nodata' => 'Nothing to submit',
     'consumemail' => 'Hi, Please Click this link to check Consume data.',
-    'standemail' => 'Hi, Please Click this link to check Stand data.',
+    'standmail' => 'Hi, Please Click this link to check Stand data.',
     'emailsender' => 'Email Sender',
     'markconsume' => 'If checked, it means that the unit consumption engineer has confirmed it.<br/>
                     If not checked, it means that the need to re-opened.',

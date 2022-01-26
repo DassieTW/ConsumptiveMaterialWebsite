@@ -85,37 +85,18 @@ class CallController extends Controller
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                     })
-                    ->join('inventory', function ($join) {
-                        $join->on('consumptive_material.料號', '=', 'inventory.料號');
-                    })
-                    ->select(
-                        '月請購_單耗.單耗',
-                        '月請購_單耗.客戶別',
-                        'inventory.料號',
-                        'consumptive_material.品名',
-                        'consumptive_material.規格',
-                        'consumptive_material.MPQ',
-                        'consumptive_material.LT',
-                        'consumptive_material.月請購',
-                        'MPS.下月MPS',
-                        'MPS.下月生產天數',
-
-                        DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
-                    )
-                    ->groupBy(
-                        'inventory.料號',
-                        'consumptive_material.品名',
-                        'consumptive_material.規格',
-                        'consumptive_material.MPQ',
-                        'consumptive_material.LT',
-                        'consumptive_material.月請購',
-                        '月請購_單耗.單耗',
-                        '月請購_單耗.客戶別',
-                        'MPS.下月MPS',
-                        'MPS.下月生產天數',
-                    )
                     ->where('月請購_單耗.狀態', '=', "已完成")
                     ->get();
+                foreach ($datas as $data) {
+
+                    if ($data->月請購 === '否') {
+                        $safe = $data->安全庫存;
+                    } else {
+                        $safe =  $data->LT * $data->單耗 * $data->下月MPS / $data->下月生產天數;
+                    }
+
+                    $data->安全庫存 = $safe;
+                }
 
                 foreach ($datas as $data) {
 
@@ -128,19 +109,20 @@ class CallController extends Controller
                     $data->安全庫存 = round($safe);
                 }
 
-                $datas1 = DB::table('月請購_站位')
-                ->join('MPS', function($join)
-                {
-                    $join->on('MPS.客戶別', '=', '月請購_站位.客戶別')
-                    ->on('MPS.機種', '=', '月請購_站位.機種')
-                    ->on('MPS.製程', '=', '月請購_站位.製程');
-                })
-                ->join('consumptive_material', function($join)
-                {
-                    $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
 
-                })->where('月請購_站位.狀態','=',"已完成")
-                ->get();
+
+
+
+                $datas1 = DB::table('月請購_站位')
+                    ->join('MPS', function ($join) {
+                        $join->on('MPS.客戶別', '=', '月請購_站位.客戶別')
+                            ->on('MPS.機種', '=', '月請購_站位.機種')
+                            ->on('MPS.製程', '=', '月請購_站位.製程');
+                    })
+                    ->join('consumptive_material', function ($join) {
+                        $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
+                    })->where('月請購_站位.狀態', '=', "已完成")
+                    ->get();
 
 
                 foreach ($datas1 as $data) {
@@ -153,8 +135,6 @@ class CallController extends Controller
 
                     $data->安全庫存 = $safe;
                 }
-
-
             } else {
                 $datas = DB::table('月請購_單耗')
                     ->join('MPS', function ($join) {

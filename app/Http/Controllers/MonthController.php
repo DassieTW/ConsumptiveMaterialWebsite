@@ -2317,15 +2317,14 @@ class MonthController extends Controller
     public static function sendconsumemail($email, $sessemail, $name, $database)
     {
         $dename = DB::table('login')->where('username', \Crypt::decrypt($name))->value('姓名');
-
-
         $data = array('email' => $sessemail, 'username' => $name, 'database' => $database, 'name' => $dename);
+
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
 
             $message->to($email, 'Tutorials Point')->subject('Check Consume data');
             $message->bcc('Vincent6_Yeh@pegatroncorp.com');
             $message->bcc('Tony_Tseng@pegatroncorp.com');
-            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+            $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
         });
     }
 
@@ -2339,7 +2338,7 @@ class MonthController extends Controller
             $message->to($email, 'Tutorials Point')->subject('Check Stand data');
             $message->bcc('Vincent6_Yeh@pegatroncorp.com');
             $message->bcc('Tony_Tseng@pegatroncorp.com');
-            $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+            $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
         });
     }
 
@@ -2354,9 +2353,9 @@ class MonthController extends Controller
             if ($email !== null) {
                 // dd($email);
                 $message->to($email, 'Tutorials Point')->subject('RE:Check Consume data');
-                // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                $message->bcc('Vincent6_Yeh@pegatroncorp.com');
                 $message->bcc('Tony_Tseng@pegatroncorp.com');
-                $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+                $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
             }
         });
     }
@@ -2373,9 +2372,9 @@ class MonthController extends Controller
             if ($email !== null) {
 
                 $message->to($email, 'Tutorials Point')->subject('RE:Check Stand data');
-                // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                $message->bcc('Vincent6_Yeh@pegatroncorp.com');
                 $message->bcc('Tony_Tseng@pegatroncorp.com');
-                $message->from('No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+                $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
             }
         });
     }

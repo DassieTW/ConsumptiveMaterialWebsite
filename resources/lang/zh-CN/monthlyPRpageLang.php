@@ -134,7 +134,7 @@ return [
     'writesrm' => '填写SRM单号',
     'nodata' => '无资料提交',
     'consumemail' => '您好，请点击此链接画押单耗',
-    'standemail' => '您好，请点击此链接画押站位',
+    'standmail' => '您好，请点击此链接画押站位',
     'emailsender' => '发信者',
     'markconsume' => '勾选表示此单耗工程师已确认，未勾选表示须重新开单',
     'loadconsume' => '载入待重画押单耗',
