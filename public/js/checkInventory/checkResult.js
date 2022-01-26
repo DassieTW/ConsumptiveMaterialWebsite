@@ -96,18 +96,38 @@ $(document).ready(function () {
     $(".sortBtn").on('mousedown touchstart', function () {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
+            if ($(this).attr('name') === 'sortLocBtn') {
+                plainISNTable();
+                if ($("#sortISNBtn").hasClass("active") && $("#sortISNBtn").hasClass("sortUp")) {
+                    sortTable("asc", "isnTable");
+                } // if
+                else if ($("#sortISNBtn").hasClass("active") && $("#sortISNBtn").hasClass("sortDw")) {
+                    sortTable("dec", "isnTable");
+                } // else if
+            } // if
         } else {
             $(this).addClass('active');
-            if( $(this).attr('name') === "sortLocBtn" && $(this).hasClass('sortUp') ) {
-                sortTable("asc", "locTable");
+            if ($(this).attr('name') === 'sortLocBtn') {
+                collapseByLoc();
+                if ($("#sortISNBtn").hasClass("active") && $("#sortISNBtn").hasClass("sortUp")) {
+                    sortTable("asc", "isnTable");
+                } // if
+                else if ($("#sortISNBtn").hasClass("active") && $("#sortISNBtn").hasClass("sortDw")) {
+                    sortTable("dec", "isnTable");
+                } // else if
+
+                if ($(this).hasClass('sortUp')) {
+                    sortTable("asc", "locTable");
+                } // if
+                else if ($(this).hasClass('sortDw')) {
+                    sortTable("dec", "locTable");
+                } // if
             } // if
-            else if( $(this).attr('name') === "sortISNBtn" && $(this).hasClass('sortUp') ) {
+            
+            if ($(this).attr('name') === "sortISNBtn" && $(this).hasClass('sortUp')) {
                 sortTable("asc", "isnTable");
             } // else if
-            else if( $(this).attr('name') === "sortLocBtn" && $(this).hasClass('sortDw') ) {
-                sortTable("dec", "locTable");
-            } // if
-            else if( $(this).attr('name') === "sortISNBtn" && $(this).hasClass('sortDw') ) {
+            else if ($(this).attr('name') === "sortISNBtn" && $(this).hasClass('sortDw')) {
                 sortTable("dec", "isnTable");
             } // else if
         } // if else
@@ -124,7 +144,7 @@ $(document).ready(function () {
         //         } // if
         //     } // if else
         // });
-        
+
     });
 
     $(".sortBtn").on('mouseup touchend', function () {
@@ -301,23 +321,21 @@ $(document).ready(function () {
                 // console.log(rows); // test
 
                 $.each(rows, function (i, item) {
-                    $(this).children(":first").text( (i+1) + ".");
+                    $(this).children(":first").text((i + 1) + ".");
                     table.append(this);
-                });
+                }); // each
             } // else
-
-
-        });
+        }); // each
     } // sortTable
 
     function filterTable(filterType) {
-        if( filterType === "" ) {
+        if (filterType === "") {
 
         } // if
-        else if( filterType === "" ) {
+        else if (filterType === "") {
 
         }  // else if
-        else if ( filterType === "" ) {
+        else if (filterType === "") {
 
         } // else if
         else {
@@ -343,7 +361,7 @@ $(document).ready(function () {
         const keys = Object.keys(serialSheetsObj);
         // console.log(keys); // test
         var sheetCount = 0;
-        for (let b = 0; b < keys.length; b++) {
+        for (let b = 0; b < keys.length; b++) { // loop thru sheets
             if (!keys[b].includes('_byLoc')) {
                 var serialNumDataRow = $('<tr>', { "data-bs-toggle": "collapse", "data-bs-target": "#sheet" + b, "aria-expanded": "false" }); // create an elemet by jquery
                 serialNumDataRow.append("<td>" + keys[b] + "</td>");
@@ -357,7 +375,7 @@ $(document).ready(function () {
                 var thead = $('<thead>', { "class": "table table-primary table-hover m-0 p-0" });
 
                 var tbody = $('<tbody>', {});
-                for (let c = 0; c < serialSheetsObj[keys[b] + "_byLoc"].length; c++) {
+                for (let c = 0; c < serialSheetsObj[keys[b] + "_byLoc"].length; c++) { // loop thru byLoc arrays
                     var locName = Object.keys(serialSheetsObj[keys[b] + "_byLoc"][c])[0];
                     var dataTR = $('<tr>', { "class": "locRows", "data-bs-toggle": "collapse", "data-bs-target": "#locData" + keys[b].substring(0, keys[b].length - 9) + "_" + c, "aria-expanded": "false" });
                     dataTR.append("<td>&nbsp;</td>");
@@ -385,7 +403,7 @@ $(document).ready(function () {
                     isnTable.append(isnthead);
 
                     var isntbody = $('<tbody>', {});
-                    for (let n = 0; n < serialSheetsObj[keys[b] + "_byLoc"][c][locName].length; n++) {
+                    for (let n = 0; n < serialSheetsObj[keys[b] + "_byLoc"][c][locName].length; n++) { // loop thru isn under the cth byLoc arrays
                         var isnnTR = $('<tr class="align-items-center isnRows" style="vertical-align: middle;">', {});
                         isnnTR.append('<td>' + (n + 1) + "." + '</td>');
                         isnnTR.append('<td><span class="isnTD">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].料號 + '</span><br>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].品名 + '</td>');
@@ -435,11 +453,76 @@ $(document).ready(function () {
             } // else
         } // for
 
-        sortTable("dec", "locTable");
     } // collapseByLoc
 
     function plainISNTable() {
+        $("#appendDataHere").html(""); // clear the table
+        const keys = Object.keys(serialSheetsObj);
+        var sheetCount = 0;
 
+        for (let b = 0; b < keys.length; b++) { // loop thru sheets
+            if (!keys[b].includes('_byLoc')) {
+                var serialNumDataRow = $('<tr>', { "data-bs-toggle": "collapse", "data-bs-target": "#sheet" + b, "aria-expanded": "false" }); // create an elemet by jquery
+                serialNumDataRow.append("<td>" + keys[b] + "</td>");
+                serialNumDataRow.append("<td>" + sheetCreators[sheetCount] + "</td>");
+                serialNumDataRow.append("<td>" + serialSheetsObj[keys[b]][0].created_at + "</td>");
+                serialNumDataRow.append('<td><a class="collapseBtn" disabled style="color: grey;"><i class="bi bi-chevron-down"></i></a></td>');
+                var plainISNCollapseDiv = $('<div>', { "class": "collapse p-0 m-0", "id": "sheet" + b, "aria-expanded": "false" });
+
+                var isnTR = $('<tr>', {});
+                var isnTD = $('<td>', { "colspan": "12", "class": "p-0 m-0" });
+
+                var isnTable = $('<table>', { "class": "table table-success table-hover table-responsive align-items-center m-0 p-0 isnTable" });
+                var isnthead = $('<thead>', {});
+                var tr0 = $('<tr>', { "class": "align-items-center", "style": "vertical-align: middle;" });
+                tr0.append("<th>#</th>");
+                tr0.append('<th class="col col-3">' + Lang.get('checkInvLang.isn') + "<br>" + Lang.get('checkInvLang.product_name') + "</th>");
+                tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.client') + "</th>");
+                tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.loc') + "</th>");
+                tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.stock') + "<br>" + Lang.get('checkInvLang.checking_result') + "</th>");
+                tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.updated_by') + "</th>");
+                tr0.append('<th class="col col-3">' + Lang.get('checkInvLang.updated_at') + "</th>");
+                tr0.append('<th>&nbsp;</th>');
+                isnthead.append(tr0);
+                isnTable.append(isnthead);
+
+                var isntbody = $('<tbody>', {});
+                for (let n = 0; n < serialSheetsObj[keys[b]].length; n++) {
+                    var isnnTR = $('<tr class="align-items-center isnRows" style="vertical-align: middle;">', {});
+                    isnnTR.append('<td>' + (n + 1) + "." + '</td>');
+                    isnnTR.append('<td><span class="isnTD">' + serialSheetsObj[keys[b]][n].料號 + '</span><br>' + serialSheetsObj[keys[b]][n].品名 + '</td>');
+                    isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].客戶別 + '</td>');
+                    isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].儲位 + '</td>');
+                    if (serialSheetsObj[keys[b]][n].盤點 === "" || serialSheetsObj[keys[b]][n].盤點 === null || serialSheetsObj[keys[b]][n].盤點 === "null") {
+                        isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].現有庫存 + "<br>" + Lang.get('checkInvLang.unknown') + '</td>');
+                        isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
+                        isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
+                    } // if
+                    else {
+                        isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].現有庫存 + "<br>" + serialSheetsObj[keys[b]][n].盤點 + '</td>');
+                        isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].姓名 + '</td>');
+                        isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].updated_at + '</td>');
+
+                    } // else
+                    isnnTR.append('<td>' + '<button class="btn btn-success">GO</button>' + '</td>');
+
+                    isntbody.append(isnnTR);
+                } // for
+
+                isnTable.append(isntbody);
+                plainISNCollapseDiv.append(isnTable);
+                isnTD.append(plainISNCollapseDiv);
+                isnTR.append(isnTD);
+
+                $("#appendDataHere").append(serialNumDataRow);
+                $("#appendDataHere").append(isnTR);
+            } // if
+            else {
+                sheetCount++;
+            } // else
+        } // for
+
+        // sortTable("dec", "isnTable");
     } // plainISNTable
 
     $("#DateRangeString").on('change', function () { // trigger ajax post whenever time range is set
@@ -609,6 +692,16 @@ $(document).ready(function () {
 
                 console.log(serialSheetsObj); // test
                 collapseByLoc();
+                if ($("#sortLocBtn").hasClass("sortUp")) {
+                    sortTable("asc", "locTable");
+                } // if
+                else {
+                    sortTable("dec", "locTable");
+                } // else if
+
+                $("#sortISNBtn").removeClass("active"); // deactivate the isn button 
+                $(".filterBtn").removeClass("active"); // deactivate all filter buttons
+                $("#sortLocBtn").addClass("active") ; // activate loc button as default
 
             },
             beforeSend: function () {
