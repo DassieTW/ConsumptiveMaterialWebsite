@@ -227,28 +227,28 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <button type="button" name="sortLocBtn"
+                                    <button type="button" name="sortLocBtn" id="sortLocBtn"
                                         class="sortBtn btn btn-outline-secondary col col-auto p-1 ms-0 me-1 active sortUp">
                                         <i class="bi bi-sort-up"></i>
                                         <span>{!! __('checkInvLang.loc_short') !!}</span>
                                     </button>
                                     <div class="w-100 d-block d-sm-none" style="height: 1ch;"></div>
                                     <!-- Visible only on xs -->
-                                    <button type="button" name="sortISNBtn"
+                                    <button type="button" name="sortISNBtn" id="sortISNBtn"
                                         class="sortBtn btn btn-outline-secondary col col-auto p-1 ms-0 me-1 sortUp">
                                         <i class="bi bi-sort-up"></i>
                                         <span>{!! __('checkInvLang.isn') !!}</span>
                                     </button>
                                     <div class="w-100 d-md-none" style="height: 1ch;"></div>
                                     <!-- hide on md and wider screens -->
-                                    <button type="button" name="sortCheckedBtn"
+                                    <button type="button" name="sortCheckedBtn" id="sortCheckedBtn"
                                         class="filterBtn btn btn-outline-secondary col col-auto p-1 ms-0 me-1">
                                         <i class="bi bi-clipboard-check"></i>
                                         <span>{!! __('checkInvLang.checked') !!}</span>
                                     </button>
                                     <div class="w-100 d-xl-none" style="height: 1ch;"></div>
                                     <!-- hide on md and wider screens -->
-                                    <button type="button" name="sortNotCheckedBtn"
+                                    <button type="button" name="sortNotCheckedBtn" id="sortNotCheckedBtn"
                                         class="filterBtn btn btn-outline-secondary col col-auto p-1 ms-0 me-1">
                                         <i class="bi bi-clipboard"></i>
                                         <span>{!! __('checkInvLang.not_checked') !!}</span>
@@ -257,7 +257,7 @@
                                     <!-- hide on sm and wider screens -->
                                     <div class="w-100 d-none d-xl-block d-xxl-none" style="height: 1ch;"></div>
                                     <!-- Visible only on xl -->
-                                    <button type="button" name="sortNotRightBtn"
+                                    <button type="button" name="sortNotRightBtn" id="sortNotRightBtn"
                                         class="filterBtn2 btn btn-outline-secondary col col-auto p-1 ms-0 me-1">
                                         <i class="bi bi-clipboard-x"></i>
                                         <span>{!! __('checkInvLang.check_not_right_amount') !!}</span>
