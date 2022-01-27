@@ -113,8 +113,9 @@ class CallController extends Controller
                         'MPS.下月MPS',
                         'MPS.下月生產天數',
                     )
-                    ->where('月請購_單耗.狀態', '=', "已完成")
+                    // ->where('月請購_單耗.狀態', '=', "已完成")
                     ->get();
+
 
                 foreach ($datas as $data) {
 
@@ -127,22 +128,17 @@ class CallController extends Controller
                     $data->安全庫存 = round($safe);
                 }
 
-                $sum = 0;
                 foreach ($datas as $key => $value) {
-                    if (isset($value->安全庫存)){
-                        $sum += $value->安全庫存;
-                    }
-                }
-                foreach ($datas as $key => $value) {
+                    for ($i = $key; $i + 1 < count($datas); $i++) {
+                        if ($datas[$i]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$i]->料號 === $datas[$i + 1]->料號) {
 
-                    $value->安全庫存 = round($sum);
-                    if($value->inventory現有庫存 > $sum)
-                    {
-                        unset($datas[$key]);
+
+                            $datas[$i]->安全庫存 += $datas[$i + 1]->安全庫存;
+
+                            unset($datas[$i + 1]);
+                        }
                     }
                 }
-                $datas = $datas->unique('料號')->unique('客戶別');
-                // dd($datas)->unique('料號');
 
                 $datas1 = DB::table('月請購_站位')
                     ->join('MPS', function ($join) {
@@ -187,7 +183,7 @@ class CallController extends Controller
                         '月請購_站位.下月每人每日需求量',
                         '月請購_站位.下月每日更換頻率',
                     )
-                    ->where('月請購_站位.狀態', '=', "已完成")
+                    // ->where('月請購_站位.狀態', '=', "已完成")
                     ->get();
 
                 foreach ($datas1 as $data) {
@@ -201,21 +197,18 @@ class CallController extends Controller
                     $data->安全庫存 = round($safe);
                 }
 
-                $sum = 0;
                 foreach ($datas1 as $key => $value) {
-                    if (isset($value->安全庫存)){
-                        $sum += $value->安全庫存;
-                    }
-                }
-                foreach ($datas1 as $key => $value) {
+                    for ($i = $key; $i + 1 < count($datas1); $i++) {
+                        if ($datas1[$i]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$i]->料號 === $datas1[$i + 1]->料號) {
 
-                    $value->安全庫存 = round($sum);
-                    if($value->inventory現有庫存 > $sum)
-                    {
-                        unset($datas1[$key]);
+
+                            $datas1[$i]->安全庫存 += $datas1[$i + 1]->安全庫存;
+
+                            unset($datas1[$i + 1]);
+                        }
                     }
                 }
-                $datas1 = $datas1->unique('料號')->unique('客戶別');
+
             } else {
                 $datas = DB::table('月請購_單耗')
                     ->join('MPS', function ($join) {
@@ -225,7 +218,7 @@ class CallController extends Controller
                     })
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
-                    })->where('consumptive_material.發料部門',$send)
+                    })
                     ->join('inventory', function ($join) {
                         $join->on('inventory.客戶別', '=', '月請購_單耗.客戶別')
                             ->on('inventory.料號', '=', '月請購_單耗.料號');
@@ -270,15 +263,14 @@ class CallController extends Controller
 
                 $sum = 0;
                 foreach ($datas as $key => $value) {
-                    if (isset($value->安全庫存)){
+                    if (isset($value->安全庫存)) {
                         $sum += $value->安全庫存;
                     }
                 }
                 foreach ($datas as $key => $value) {
 
                     $value->安全庫存 = round($sum);
-                    if($value->inventory現有庫存 > $sum)
-                    {
+                    if ($value->inventory現有庫存 > $sum) {
                         unset($datas[$key]);
                     }
                 }
@@ -293,7 +285,7 @@ class CallController extends Controller
                     })
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
-                    })->where('consumptive_material.發料部門',$send)
+                    })->where('consumptive_material.發料部門', $send)
                     ->join('inventory', function ($join) {
                         $join->on('inventory.客戶別', '=', '月請購_站位.客戶別')
                             ->on('inventory.料號', '=', '月請購_站位.料號');
@@ -344,15 +336,14 @@ class CallController extends Controller
 
                 $sum = 0;
                 foreach ($datas1 as $key => $value) {
-                    if (isset($value->安全庫存)){
+                    if (isset($value->安全庫存)) {
                         $sum += $value->安全庫存;
                     }
                 }
                 foreach ($datas1 as $key => $value) {
 
                     $value->安全庫存 = round($sum);
-                    if($value->inventory現有庫存 > $sum)
-                    {
+                    if ($value->inventory現有庫存 > $sum) {
                         unset($datas1[$key]);
                     }
                 }
@@ -398,8 +389,6 @@ class CallController extends Controller
                     ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
                     ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                     ->get();
-
-
             } else {
                 $datas = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
                     ->select(
