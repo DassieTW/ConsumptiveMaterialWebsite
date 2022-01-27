@@ -2,7 +2,7 @@ $(document).ready(function () {
     var serialSheetsObj = {}; // objs of array of objs
     var allcreators = []; // array of objs
     var sheetCreators = []; // array of objs
-    var serialSheetsObjbyLoc = {};
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -90,25 +90,39 @@ $(document).ready(function () {
 
     $(".sortBtn").on("click", function (e) {
         e.preventDefault();
-
-    });
-
-    $(".sortBtn").on('mousedown touchstart', function () {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
-            if ($(this).attr('name') === 'sortLocBtn') {
-                plainISNTable();
-                if ($("#sortISNBtn").hasClass("active") && $("#sortISNBtn").hasClass("sortUp")) {
-                    sortTable("asc", "isnTable");
-                } // if
-                else if ($("#sortISNBtn").hasClass("active") && $("#sortISNBtn").hasClass("sortDw")) {
-                    sortTable("dec", "isnTable");
-                } // else if
-            } // if
         } else {
             $(this).addClass('active');
+        } // if else
+
+        if ($(this).hasClass('active')) {
+            if ($(this).hasClass('sortUp') && $(this).hasClass('sortBtn')) {
+                $(this).removeClass('sortUp');
+                $(this).addClass('sortDw');
+
+                $(this).find('i').removeClass('bi-sort-up');
+                $(this).find('i').addClass('bi-sort-down-alt');
+
+            } // if
+            else if ($(this).hasClass('sortDw') && $(this).hasClass('sortBtn')) {
+                $(this).removeClass('sortDw');
+                $(this).addClass('sortUp');
+
+                $(this).find('i').removeClass('bi-sort-down-alt');
+                $(this).find('i').addClass('bi-sort-up');
+            } // else if
+
             if ($(this).attr('name') === 'sortLocBtn') {
                 collapseByLoc();
+                $(".filterBtn").removeClass("active");
+                $(".filterBtn2").removeClass("active");
+                $("#texBox").val(""); // clear textbox input
+                if( $("#toggle-state").is(":checked") ) {
+                    $("#toggle-state").prop('checked', false); // switch checkbox to checked
+                    $("#toggle-state").trigger("change"); // trigger the change event
+                } // if
+                
                 if ($("#sortISNBtn").hasClass("active") && $("#sortISNBtn").hasClass("sortUp")) {
                     sortTable("asc", "isnTable");
                 } // if
@@ -123,65 +137,93 @@ $(document).ready(function () {
                     sortTable("dec", "locTable");
                 } // if
             } // if
-            
-            if ($(this).attr('name') === "sortISNBtn" && $(this).hasClass('sortUp')) {
+            else if ($(this).attr('name') === "sortISNBtn" && $(this).hasClass('sortUp')) {
                 sortTable("asc", "isnTable");
             } // else if
             else if ($(this).attr('name') === "sortISNBtn" && $(this).hasClass('sortDw')) {
                 sortTable("dec", "isnTable");
             } // else if
-        } // if else
+        } else {
+            if ($(this).attr('name') === 'sortLocBtn') {
+                plainISNTable();
+                $(".filterBtn").removeClass("active");
+                $(".filterBtn2").removeClass("active");
+                $("#texBox").val(""); // clear textbox input
+                if( ! $("#toggle-state").is(":checked") ) {
+                    $("#toggle-state").prop('checked', true); // switch checkbox to checked
+                    $("#toggle-state").trigger("change"); // trigger the change event
+                } // if
 
-        // var clickedElementText = $(this).find('span').text();
-        // $(".sortBtn").each(function (index, element) {
-        //     // element == this
-        //     if ($(element).find('span').text() === clickedElementText) {
-        //         // skip it
-        //     } // if
-        //     else {
-        //         if ($(element).hasClass('active')) {
-        //             $(element).removeClass('active');
-        //         } // if
-        //     } // if else
-        // });
-
-    });
-
-    $(".sortBtn").on('mouseup touchend', function () {
-        if ($(this).hasClass('active')) {
-            if ($(this).hasClass('sortUp') && $(this).hasClass('sortBtn')) {
-                $(this).removeClass('sortUp');
-                $(this).addClass('sortDw');
-
-                $(this).find('i').removeClass('bi-sort-up');
-                $(this).find('i').addClass('bi-sort-down-alt');
+                if ($("#sortISNBtn").hasClass("active") && $("#sortISNBtn").hasClass("sortUp")) {
+                    sortTable("asc", "isnTable");
+                    // console.log('sortTable("asc", "isnTable")'); // test
+                } // if
+                else if ($("#sortISNBtn").hasClass("active") && $("#sortISNBtn").hasClass("sortDw")) {
+                    sortTable("dec", "isnTable");
+                    // console.log('sortTable("dec", "isnTable")'); // test
+                } // else if
             } // if
-            else if ($(this).hasClass('sortDw') && $(this).hasClass('sortBtn')) {
-                $(this).removeClass('sortDw');
-                $(this).addClass('sortUp');
+        } // if else   
+    }); // sortBtn on click
 
-                $(this).find('i').removeClass('bi-sort-down-alt');
-                $(this).find('i').addClass('bi-sort-up');
-            } // else
-        } else {
-        } // if else    
-    });
-
-    $(".filterBtn").on('mousedown touchstart', function () {
+    $(".filterBtn").on("click", function (e) {
+        e.preventDefault();
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         } else {
             $(this).addClass('active');
         } // if else
-    });
 
-    $(".filterBtn2").on('mousedown touchstart', function () {
+        if ($(this).hasClass('active')) { // enabling a filter
+            if ($(this).attr('name') === 'sortCheckedBtn') {
+                filterTable("filter_checked");
+            } // if
+            else if ($(this).attr('name') === "sortNotCheckedBtn") {
+                filterTable("filter_not_checked");
+            } // else if
+        } else { // disabling a filter
+            filterTable("show_all"); // revert the filters first
+            if ($('#sortCheckedBtn').hasClass("active")) {
+                filterTable("filter_checked");
+            } // if
+
+            if ($('#sortNotCheckedBtn').hasClass("active")) {
+                filterTable("filter_not_checked");
+            } // if
+
+            if ($('#sortNotRightBtn').hasClass("active")) {
+                filterTable("filter_not_right");
+            } // if
+        } // if else   
+    }); // filterBtn on click
+
+    $(".filterBtn2").on("click", function (e) {
+        e.preventDefault();
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         } else {
             $(this).addClass('active');
         } // if else
-    });
+
+        if ($(this).hasClass('active')) { // enabling a filter
+            if ($(this).attr('name') === 'sortNotRightBtn') {
+                filterTable("filter_not_right");
+            } // if
+        } else { // disabling a filter
+            filterTable("show_all"); // revert the filters first
+            if ($('#sortCheckedBtn').hasClass("active")) {
+                filterTable("filter_checked");
+            } // if
+
+            if ($('#sortNotCheckedBtn').hasClass("active")) {
+                filterTable("filter_not_checked");
+            } // if
+
+            if ($('#sortNotRightBtn').hasClass("active")) {
+                filterTable("filter_not_right");
+            } // if
+        } // if else   
+    }); // filterBtn2 on click
 
     (function () { // starting show on document ready
         if (document.getElementById("toggle-state").checked) {
@@ -329,17 +371,91 @@ $(document).ready(function () {
     } // sortTable
 
     function filterTable(filterType) {
-        if (filterType === "") {
+        if (filterType === "filter_checked") {
 
+            $(".isnTable").each(function (index, obj) {
+                var table = $(this);
+                var rows = table.find('tr.isnRows').toArray();
+
+                $.each(rows, function (i, item) {
+                    $(this).children(":first").text((i + 1) + ".");
+                    let tempStr = "";
+                    if ($("#sortLocBtn").hasClass("active")) { // if collapse by loc
+                        tempStr = $(this).children().eq(3).html();
+                    } // if
+                    else {
+                        tempStr = $(this).children().eq(4).html();
+                    } // else
+                    let resultArr = tempStr.split('<hr class="m-0 p-0">');
+                    // console.log(resultArr); // test
+                    if (resultArr[1] === "N/A" && (!$(this).hasClass("d-none"))) {
+                        $(this).addClass("d-none"); // hide the row
+                    } // if
+
+                    table.append(this);
+                }); // each
+            }); // each
         } // if
-        else if (filterType === "") {
+        else if (filterType === "filter_not_checked") {
+            $(".isnTable").each(function (index, obj) {
+                var table = $(this);
+                var rows = table.find('tr.isnRows').toArray();
 
+                $.each(rows, function (i, item) {
+                    $(this).children(":first").text((i + 1) + ".");
+                    let tempStr = "";
+                    if ($("#sortLocBtn").hasClass("active")) { // if collapse by loc
+                        tempStr = $(this).children().eq(3).html();
+                    } // if
+                    else {
+                        tempStr = $(this).children().eq(4).html();
+                    } // else
+                    let resultArr = tempStr.split('<hr class="m-0 p-0">');
+                    if (resultArr[1] !== "N/A" && (!$(this).hasClass("d-none"))) {
+                        $(this).addClass("d-none"); // hide the row
+                    } // if
+
+                    table.append(this);
+                }); // each
+            }); // each
         }  // else if
-        else if (filterType === "") {
+        else if (filterType === "filter_not_right") {
+            $(".isnTable").each(function (index, obj) {
+                var table = $(this);
+                var rows = table.find('tr.isnRows').toArray();
 
+                $.each(rows, function (i, item) {
+                    $(this).children(":first").text((i + 1) + ".");
+                    let tempStr = "";
+                    if ($("#sortLocBtn").hasClass("active")) { // if collapse by loc
+                        tempStr = $(this).children().eq(3).html();
+                    } // if
+                    else {
+                        tempStr = $(this).children().eq(4).html();
+                    } // else
+                    let resultArr = tempStr.split('<hr class="m-0 p-0">');
+                    if (resultArr[1] !== "N/A" && parseInt(resultArr[0], 10) === parseInt(resultArr[1], 10) && (!$(this).hasClass("d-none"))) {
+                        $(this).addClass("d-none"); // hide the row
+                    } // if
+
+                    table.append(this);
+                }); // each
+            }); // each
         } // else if
-        else {
+        else { // filter none, show all rows
+            $(".isnTable").each(function (index, obj) {
+                var table = $(this);
+                var rows = table.find('tr.isnRows').toArray();
 
+                // console.log(rows); // test
+
+                $.each(rows, function (i, item) {
+                    $(this).children(":first").text((i + 1) + ".");
+                    $(this).removeClass("d-none"); // show the rows
+                    table.append(this);
+                }); // each
+                // console.log($(this).find("tr").toArray()); // test
+            }); // each
         } // else
     } // filterTable
 
@@ -393,9 +509,9 @@ $(document).ready(function () {
                     var isnthead = $('<thead>', {});
                     var tr0 = $('<tr>', { "class": "align-items-center", "style": "vertical-align: middle;" });
                     tr0.append("<th>#</th>");
-                    tr0.append('<th class="col col-3">' + Lang.get('checkInvLang.isn') + "<br>" + Lang.get('checkInvLang.product_name') + "</th>");
+                    tr0.append('<th class="col col-3">' + Lang.get('checkInvLang.isn') + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.product_name') + "</th>");
                     tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.client') + "</th>");
-                    tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.stock') + "<br>" + Lang.get('checkInvLang.checking_result') + "</th>");
+                    tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.stock') + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.checking_result') + "</th>");
                     tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.updated_by') + "</th>");
                     tr0.append('<th class="col col-3">' + Lang.get('checkInvLang.updated_at') + "</th>");
                     tr0.append('<th>&nbsp;</th>');
@@ -406,15 +522,20 @@ $(document).ready(function () {
                     for (let n = 0; n < serialSheetsObj[keys[b] + "_byLoc"][c][locName].length; n++) { // loop thru isn under the cth byLoc arrays
                         var isnnTR = $('<tr class="align-items-center isnRows" style="vertical-align: middle;">', {});
                         isnnTR.append('<td>' + (n + 1) + "." + '</td>');
-                        isnnTR.append('<td><span class="isnTD">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].料號 + '</span><br>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].品名 + '</td>');
+                        isnnTR.append('<td><span class="isnTD">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].料號 + '</span><hr class="m-0 p-0">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].品名 + '</td>');
                         isnnTR.append('<td>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].客戶別 + '</td>');
                         if (serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 === "" || serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 === null || serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 === "null") {
-                            isnnTR.append('<td>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + "<br>" + Lang.get('checkInvLang.unknown') + '</td>');
+                            isnnTR.append('<td class="table-danger" style="color: red;">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.unknown') + '</td>');
                             isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
                             isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
                         } // if
                         else {
-                            isnnTR.append('<td>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + "<br>" + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 + '</td>');
+                            if (serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 !== serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 ) {
+                                isnnTR.append('<td class="table-danger" style="color: red;">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 + '</td>');
+                            } else {
+                                isnnTR.append('<td>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 + '</td>');
+                            } // if else
+
                             isnnTR.append('<td>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].姓名 + '</td>');
                             isnnTR.append('<td>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].updated_at + '</td>');
 
@@ -476,10 +597,10 @@ $(document).ready(function () {
                 var isnthead = $('<thead>', {});
                 var tr0 = $('<tr>', { "class": "align-items-center", "style": "vertical-align: middle;" });
                 tr0.append("<th>#</th>");
-                tr0.append('<th class="col col-3">' + Lang.get('checkInvLang.isn') + "<br>" + Lang.get('checkInvLang.product_name') + "</th>");
+                tr0.append('<th class="col col-3">' + Lang.get('checkInvLang.isn') + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.product_name') + "</th>");
                 tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.client') + "</th>");
                 tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.loc') + "</th>");
-                tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.stock') + "<br>" + Lang.get('checkInvLang.checking_result') + "</th>");
+                tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.stock') + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.checking_result') + "</th>");
                 tr0.append('<th class="col col-2">' + Lang.get('checkInvLang.updated_by') + "</th>");
                 tr0.append('<th class="col col-3">' + Lang.get('checkInvLang.updated_at') + "</th>");
                 tr0.append('<th>&nbsp;</th>');
@@ -490,16 +611,21 @@ $(document).ready(function () {
                 for (let n = 0; n < serialSheetsObj[keys[b]].length; n++) {
                     var isnnTR = $('<tr class="align-items-center isnRows" style="vertical-align: middle;">', {});
                     isnnTR.append('<td>' + (n + 1) + "." + '</td>');
-                    isnnTR.append('<td><span class="isnTD">' + serialSheetsObj[keys[b]][n].料號 + '</span><br>' + serialSheetsObj[keys[b]][n].品名 + '</td>');
+                    isnnTR.append('<td><span class="isnTD">' + serialSheetsObj[keys[b]][n].料號 + '</span><hr class="m-0 p-0">' + serialSheetsObj[keys[b]][n].品名 + '</td>');
                     isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].客戶別 + '</td>');
                     isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].儲位 + '</td>');
                     if (serialSheetsObj[keys[b]][n].盤點 === "" || serialSheetsObj[keys[b]][n].盤點 === null || serialSheetsObj[keys[b]][n].盤點 === "null") {
-                        isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].現有庫存 + "<br>" + Lang.get('checkInvLang.unknown') + '</td>');
+                        isnnTR.append('<td class="table-danger" style="color: red;">' + serialSheetsObj[keys[b]][n].現有庫存 + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.unknown') + '</td>');
                         isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
                         isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
                     } // if
                     else {
-                        isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].現有庫存 + "<br>" + serialSheetsObj[keys[b]][n].盤點 + '</td>');
+                        if (parseInt(serialSheetsObj[keys[b]][n].現有庫存, 10) !== parseInt(serialSheetsObj[keys[b]][n].盤點, 10)) {
+                            isnnTR.append('<td class="table-danger" style="color: red;">' + serialSheetsObj[keys[b]][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b]][n].盤點 + '</td>');
+                        } else {
+                            isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b]][n].盤點 + '</td>');
+                        } // if else
+
                         isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].姓名 + '</td>');
                         isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].updated_at + '</td>');
 
@@ -690,7 +816,7 @@ $(document).ready(function () {
                     } // else
                 } // for
 
-                console.log(serialSheetsObj); // test
+                // console.log(serialSheetsObj); // test
                 collapseByLoc();
                 if ($("#sortLocBtn").hasClass("sortUp")) {
                     sortTable("asc", "locTable");
@@ -701,7 +827,7 @@ $(document).ready(function () {
 
                 $("#sortISNBtn").removeClass("active"); // deactivate the isn button 
                 $(".filterBtn").removeClass("active"); // deactivate all filter buttons
-                $("#sortLocBtn").addClass("active") ; // activate loc button as default
+                $("#sortLocBtn").addClass("active"); // activate loc button as default
 
             },
             beforeSend: function () {
