@@ -2324,6 +2324,7 @@ class MonthController extends Controller
             $message->to($email, 'Tutorials Point')->subject('Check Consume data');
             $message->bcc('Vincent6_Yeh@pegatroncorp.com');
             $message->bcc('Tony_Tseng@pegatroncorp.com');
+            // $message->attach(public_path() . '/download/LineExample.xlsx');
             $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
         });
     }

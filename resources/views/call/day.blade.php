@@ -55,9 +55,6 @@
                     <td>{{$data->規格}}</td>
                     <td id="stocka{{$loop->index}}">{{$stock}}</td>
                     <td id="staydaya{{$loop->index}}">{{$stayday}}</td>
-                    @if($stock === 0 || $stock === null)
-                    <td>{!! __('callpageLang.nostock') !!}</td>
-                    @else
                     <td>
                         @foreach ($test as $k=> $a)
                         @if ($a > 0)
@@ -65,7 +62,6 @@
                         @endif
                         @endforeach
                     </td>
-                    @endif
                     <td><input class = "form-control form-control-lg" type="text" style="width:100px;"></td>
                 </tr>
 
