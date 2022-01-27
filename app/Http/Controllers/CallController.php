@@ -76,6 +76,7 @@ class CallController extends Controller
         if (Session::has('username')) {
             $send = $request->input('send');
             if ($send === null) {
+                $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號'))->groupBy('客戶別', '料號');
                 $datas = DB::table('月請購_單耗')
                     ->join('MPS', function ($join) {
                         $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
@@ -85,13 +86,14 @@ class CallController extends Controller
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                     })
-                    ->join('inventory', function ($join) {
-                        $join->on('inventory.客戶別', '=', '月請購_單耗.客戶別')
-                            ->on('inventory.料號', '=', '月請購_單耗.料號');
+                    ->joinSub($inventorys, 'suminventory', function ($join) {
+                        $join->on('月請購_單耗.客戶別', '=', 'suminventory.客戶別');
+                        $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
                     })
+
                     ->select(
-                        'inventory.客戶別',
-                        'inventory.料號',
+                        '月請購_單耗.客戶別',
+                        'consumptive_material.料號',
                         'consumptive_material.品名',
                         'consumptive_material.規格',
                         'consumptive_material.LT',
@@ -100,10 +102,10 @@ class CallController extends Controller
                         '月請購_單耗.單耗',
                         'MPS.下月MPS',
                         'MPS.下月生產天數',
-                        DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                        'inventory現有庫存',
                     )->groupBy(
-                        'inventory.客戶別',
-                        'inventory.料號',
+                        '月請購_單耗.客戶別',
+                        'consumptive_material.料號',
                         'consumptive_material.品名',
                         'consumptive_material.規格',
                         'consumptive_material.LT',
@@ -112,6 +114,7 @@ class CallController extends Controller
                         '月請購_單耗.單耗',
                         'MPS.下月MPS',
                         'MPS.下月生產天數',
+                        'inventory現有庫存',
                     )
                     // ->where('月請購_單耗.狀態', '=', "已完成")
                     ->get();
@@ -126,20 +129,31 @@ class CallController extends Controller
                     }
 
                     $data->安全庫存 = round($safe);
-                }
-
-                foreach ($datas as $key => $value) {
-                    for ($i = $key; $i + 1 < count($datas); $i++) {
-                        if ($datas[$i]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$i]->料號 === $datas[$i + 1]->料號) {
+                } // for each
 
 
-                            $datas[$i]->安全庫存 += $datas[$i + 1]->安全庫存;
+
+                for ($a = 0; $a < count($datas); $a++) {
+                    for ($i = $a; $i + 1 < count($datas); $i++) {
+                        if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
+
+
+                            $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
 
                             unset($datas[$i + 1]);
-                        }
+                        } // if
+                    } // for
+                } // for
+
+                foreach ($datas as $key => $value) {
+
+
+                    if ($value->inventory現有庫存 > $value->安全庫存) {
+                        unset($datas[$key]);
                     }
                 }
 
+                $inventorys1 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號'))->groupBy('客戶別', '料號');
                 $datas1 = DB::table('月請購_站位')
                     ->join('MPS', function ($join) {
                         $join->on('MPS.客戶別', '=', '月請購_站位.客戶別')
@@ -149,13 +163,14 @@ class CallController extends Controller
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
                     })
-                    ->join('inventory', function ($join) {
-                        $join->on('inventory.客戶別', '=', '月請購_站位.客戶別')
-                            ->on('inventory.料號', '=', '月請購_站位.料號');
+                    ->joinSub($inventorys1, 'suminventory', function ($join) {
+                        $join->on('月請購_站位.客戶別', '=', 'suminventory.客戶別');
+                        $join->on('月請購_站位.料號', '=', 'suminventory.料號');
                     })
+
                     ->select(
-                        'inventory.客戶別',
-                        'inventory.料號',
+                        '月請購_站位.客戶別',
+                        'consumptive_material.料號',
                         'consumptive_material.品名',
                         'consumptive_material.規格',
                         'consumptive_material.LT',
@@ -167,10 +182,10 @@ class CallController extends Controller
                         '月請購_站位.下月開班數',
                         '月請購_站位.下月每人每日需求量',
                         '月請購_站位.下月每日更換頻率',
-                        DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                        'inventory現有庫存',
                     )->groupBy(
-                        'inventory.客戶別',
-                        'inventory.料號',
+                        '月請購_站位.客戶別',
+                        'consumptive_material.料號',
                         'consumptive_material.品名',
                         'consumptive_material.規格',
                         'consumptive_material.LT',
@@ -182,33 +197,45 @@ class CallController extends Controller
                         '月請購_站位.下月開班數',
                         '月請購_站位.下月每人每日需求量',
                         '月請購_站位.下月每日更換頻率',
+                        'inventory現有庫存',
                     )
-                    // ->where('月請購_站位.狀態', '=', "已完成")
+                    // ->where('月請購_單耗.狀態', '=', "已完成")
                     ->get();
+
 
                 foreach ($datas1 as $data) {
 
                     if ($data->月請購 === '否') {
                         $safe = $data->安全庫存;
                     } else {
+
                         $safe =  $data->LT * $data->下月站位人數 * $data->下月開線數 * $data->下月開班數 * $data->下月每人每日需求量 * $data->下月每日更換頻率 / $data->MPQ;
                     }
 
                     $data->安全庫存 = round($safe);
                 }
 
-                foreach ($datas1 as $key => $value) {
-                    for ($i = $key; $i + 1 < count($datas1); $i++) {
-                        if ($datas1[$i]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$i]->料號 === $datas1[$i + 1]->料號) {
 
 
-                            $datas1[$i]->安全庫存 += $datas1[$i + 1]->安全庫存;
+                for ($a = 0; $a < count($datas1); $a++) {
+                    for ($i = $a; $i + 1 < count($datas1); $i++) {
+                        if ($datas1[$a]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$a]->料號 === $datas1[$i + 1]->料號) {
+
+
+                            $datas1[$a]->安全庫存 += $datas1[$i + 1]->安全庫存;
 
                             unset($datas1[$i + 1]);
-                        }
+                        } // if
+                    } // for
+                } // for
+
+                foreach ($datas1 as $key => $value) {
+
+
+                    if ($value->inventory現有庫存 > $value->安全庫存) {
+                        unset($datas1[$key]);
                     }
                 }
-
             } else {
                 $datas = DB::table('月請購_單耗')
                     ->join('MPS', function ($join) {
