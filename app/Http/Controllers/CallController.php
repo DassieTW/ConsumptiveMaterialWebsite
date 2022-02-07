@@ -278,8 +278,7 @@ class CallController extends Controller
 
                 foreach ($datas2 as $key => $value) {
 
-
-                    if ($value->inventory現有庫存 > $value->安全庫存) {
+                    if ($value->inventory現有庫存 >= $value->安全庫存) {
                         unset($datas2[$key]);
                     }
                 }
