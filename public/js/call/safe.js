@@ -5,6 +5,8 @@ $(document).ready(function () {
         var safe = $("#safea"+i).html();
         var stock = $("#stocka"+i).html();
         var percent = stock / safe ;
+        console.log(percent);
+
         if(percent < 0.5)
         {
             $("#safea"+i).css("background-color", "red");
@@ -17,6 +19,10 @@ $(document).ready(function () {
         {
             $("#safea"+i).css("background-color", "yellow");
         }
+        else
+        {
+            $("#safea"+i).css("background-color", "red");
+        }
 
     }
 
@@ -25,6 +31,8 @@ $(document).ready(function () {
         var safe = $("#safeb"+i).html();
         var stock = $("#stockb"+i).html();
         var percent = stock / safe ;
+        console.log(percent);
+
         if(percent < 0.5)
         {
             $("#safeb"+i).css("background-color", "red");
@@ -37,6 +45,10 @@ $(document).ready(function () {
         {
             $("#safeb"+i).css("background-color", "yellow");
         }
+        else
+        {
+            $("#safeb"+i).css("background-color", "red");
+        }
 
     }
 
@@ -45,6 +57,7 @@ $(document).ready(function () {
         var safe = $("#safec"+i).html();
         var stock = $("#stockc"+i).html();
         var percent = stock / safe ;
+        console.log(percent);
         if(percent < 0.5)
         {
             $("#safec"+i).css("background-color", "red");
@@ -56,6 +69,10 @@ $(document).ready(function () {
         else if(percent >= 0.8)
         {
             $("#safec"+i).css("background-color", "yellow");
+        }
+        else
+        {
+            $("#safec"+i).css("background-color", "red");
         }
 
     }

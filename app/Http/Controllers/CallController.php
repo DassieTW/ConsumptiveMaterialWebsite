@@ -86,7 +86,7 @@ class CallController extends Controller
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                     })
-                    ->joinSub($inventorys, 'suminventory', function ($join) {
+                    ->leftJoinSub($inventorys, 'suminventory', function ($join) {
                         $join->on('月請購_單耗.客戶別', '=', 'suminventory.客戶別');
                         $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
                     })
@@ -116,8 +116,10 @@ class CallController extends Controller
                         'MPS.下月生產天數',
                         'inventory現有庫存',
                     )
+                    ->where('consumptive_material.月請購', '=', "是")
                     // ->where('月請購_單耗.狀態', '=', "已完成")
                     ->get()->toArray();
+
 
 
                 foreach ($datas as $data) {
@@ -159,7 +161,7 @@ class CallController extends Controller
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
                     })
-                    ->joinSub($inventorys1, 'suminventory', function ($join) {
+                    ->leftJoinSub($inventorys1, 'suminventory', function ($join) {
                         $join->on('月請購_站位.客戶別', '=', 'suminventory.客戶別');
                         $join->on('月請購_站位.料號', '=', 'suminventory.料號');
                     })
@@ -195,7 +197,8 @@ class CallController extends Controller
                         '月請購_站位.下月每日更換頻率',
                         'inventory現有庫存',
                     )
-                    // ->where('月請購_單耗.狀態', '=', "已完成")
+                    ->where('consumptive_material.月請購', '=', "是")
+                    //->where('月請購_單耗.狀態', '=', "已完成")
                     ->get()->toArray();
 
 
@@ -229,7 +232,7 @@ class CallController extends Controller
 
                 $inventorys2 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 ,客戶別  ,料號'))->groupBy('客戶別', '料號');
                 $datas2 = DB::table('consumptive_material')
-                    ->joinSub($inventorys2, 'suminventory', function ($join) {
+                    ->leftJoinSub($inventorys2, 'suminventory', function ($join) {
                         $join->on('consumptive_material.料號', '=', 'suminventory.料號');
                     })
                     ->select(

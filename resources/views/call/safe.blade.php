@@ -50,13 +50,16 @@
                     <td>{{$data->規格}}</td>
                     <td id="stocka{{$loop->index}}">{{$stock}}</td>
                     <td id="safea{{$loop->index}}">{{$data->安全庫存}}</td>
-                    @if($stock === 0 || $stock === null)
+                    @if($stock === 0.0 || $stock === null)
                     <td>{!! __('callpageLang.nostock') !!}</td>
                     @else
                     <td>
                         @foreach ($test as $k=> $a)
                         @if ($a > 0)
                         {!! __('callpageLang.loc') !!} : {{$k}} {!! __('callpageLang.nowstock') !!} : {{$a}}<br>
+                        @else
+                        {!! __('callpageLang.nostock') !!}
+                        @break
                         @endif
                         @endforeach
                     </td>
@@ -83,13 +86,16 @@
                     <td>{{$data->規格}}</td>
                     <td id="stockb{{$loop->index}}">{{$stock1}}</td>
                     <td id="safeb{{$loop->index}}">{{$data->安全庫存}}</td>
-                    @if($stock1 === 0 || $stock1 === null)
+                    @if($stock1 === 0.0 || $stock1 === null)
                     <td>{!! __('callpageLang.nostock') !!}</td>
                     @else
                     <td>
                         @foreach ($test1 as $k=> $a)
                         @if($a > 0)
                         {!! __('callpageLang.loc') !!} : {{$k}} {!! __('callpageLang.nowstock') !!} : {{$a}}<br>
+                        @else
+                        {!! __('callpageLang.nostock') !!}
+                        @break
                         @endif
                         @endforeach
                     </td>
@@ -116,12 +122,17 @@
                     <td>{{$data->規格}}</td>
                     <td id="stockc{{$loop->index}}">{{$stock2}}</td>
                     <td id="safec{{$loop->index}}">{{$data->安全庫存}}</td>
-                    @if($stock2 === 0 || $stock2 === null)
+                    @if($stock2 === 0.0 || $stock2 === null)
                     <td>{!! __('callpageLang.nostock') !!}</td>
                     @else
                     <td>
                         @foreach ($astock2 as $k=> $a)
+                        @if($a->現有庫存 > 0)
                         {!! __('callpageLang.loc') !!} : {{$position2[$k]->儲位}} {!! __('callpageLang.nowstock') !!} : {{$a->現有庫存}}<br>
+                        @else
+                        {!! __('callpageLang.nostock') !!}
+                        @break
+                        @endif
                         @endforeach
                     </td>
                     @endif
