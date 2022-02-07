@@ -125,17 +125,20 @@ class CallController extends Controller
                     $data->安全庫存 = round($safe);
                 } // for each
 
-                for ($i = 0; $i < count($datas) - 1; $i++) {
-                    for ($j = 0; $j < count($datas) - 1 - $i; $j++) {
-                        if ($datas[$j]->客戶別 === $datas[$j + 1]->客戶別 && $datas[$j]->料號 === $datas[$j + 1]->料號) {
+                $count = count($datas);
+                for ($a = 0; $a < $count; $a++) {
+                    for ($i = $a; $i + 1 < $count; $i++) {
+
+                        if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
 
 
-                            $datas[$j]->安全庫存 += $datas[$j + 1]->安全庫存;
-                            unset($datas[$j + 1]);
+                            $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
+                            unset($datas[$i + 1]);
                             $datas = array_values($datas);
                         } // if
                     } // for
                 } // for
+
 
                 foreach ($datas as $key => $value) {
 
@@ -201,16 +204,16 @@ class CallController extends Controller
                     $data->安全庫存 = round($safe);
                 }
 
-                for ($i = 0; $i < count($datas1) - 1; $i++) {
-                    for ($j = 0; $j < count($datas1) - 1 - $i; $j++) {
-                        if ($datas1[$j]->客戶別 === $datas1[$j + 1]->客戶別 && $datas1[$j]->料號 === $datas1[$j + 1]->料號) {
+                $count1 = count($datas1);
+                for ($a = 0; $a < $count1; $a++) {
+                    for ($i = $a; $i + 1 < $count1; $i++) {
+
+                        if ($datas1[$a]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$a]->料號 === $datas1[$i + 1]->料號) {
 
 
-                            $datas1[$j]->安全庫存 += $datas1[$j + 1]->安全庫存;
-
-                            unset($datas1[$j + 1]);
+                            $datas1[$a]->安全庫存 += $datas1[$i + 1]->安全庫存;
+                            unset($datas1[$i + 1]);
                             $datas1 = array_values($datas1);
-
                         } // if
                     } // for
                 } // for
@@ -255,20 +258,20 @@ class CallController extends Controller
                     $data->安全庫存 = round($safe);
                 } // for each
 
-                for ($i = 0; $i < count($datas2) - 1; $i++) {
-                    for ($j = 0; $j < count($datas2) - 1 - $i; $j++) {
+                // for ($i = 0; $i < count($datas2) - 1; $i++) {
+                //     for ($j = 0; $j < count($datas2) - 1 - $i; $j++) {
 
-                        if ($datas2[$j]->料號 === $datas2[$j + 1]->料號) {
+                //         if ($datas2[$j]->料號 === $datas2[$j + 1]->料號) {
 
 
-                            // $datas2[$j]->安全庫存 += $datas2[$j + 1]->安全庫存;
+                //             // $datas2[$j]->安全庫存 += $datas2[$j + 1]->安全庫存;
 
-                            unset($datas2[$j + 1]);
-                            $datas2 = array_values($datas2);
-                        } // if
+                //             unset($datas2[$j + 1]);
+                //             $datas2 = array_values($datas2);
+                //         } // if
 
-                    } // for
-                } // for
+                //     } // for
+                // } // for
 
                 foreach ($datas2 as $key => $value) {
 

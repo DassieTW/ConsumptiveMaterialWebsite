@@ -114,7 +114,7 @@
                     <td>{{$data->規格}}</td>
                     <td id="stockc{{$loop->index}}">{{$stock2}}</td>
                     <td id="safec{{$loop->index}}">{{$data->安全庫存}}</td>
-                    @if($stock === 0 || $stock === null)
+                    @if($stock2 === 0 || $stock2 === null)
                     <td>{!! __('callpageLang.nostock') !!}</td>
                     @else
                     <td>
