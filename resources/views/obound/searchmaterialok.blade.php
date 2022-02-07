@@ -8,7 +8,7 @@
 
 <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
 
-<script  type="text/javascript"> new Tablesort(document.getElementById('material'));</script>
+
 <!--for notifications pop up -->
 @endsection
 @section('content')
@@ -25,7 +25,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="tablesorter" id="material">
+            <table class="table" id="material">
                 <thead>
                     <tr>
 

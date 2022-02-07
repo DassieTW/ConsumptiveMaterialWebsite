@@ -40,4 +40,24 @@ $(document).ready(function () {
 
     }
 
+    var count2 = $("#count2").val();
+    for(var i = 0 ; i < count2 ; i++){
+        var safe = $("#safec"+i).html();
+        var stock = $("#stockc"+i).html();
+        var percent = stock / safe ;
+        if(percent < 0.5)
+        {
+            $("#safec"+i).css("background-color", "red");
+        }
+        else if(percent >= 0.5 && percent < 0.8)
+        {
+            $("#safec"+i).css("background-color", "orange");
+        }
+        else if(percent >= 0.8)
+        {
+            $("#safec"+i).css("background-color", "yellow");
+        }
+
+    }
+
 });
