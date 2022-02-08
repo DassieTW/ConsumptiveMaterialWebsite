@@ -36,7 +36,9 @@
 
                 </tr>
                 @foreach($data as $data)
+
                 <?php
+
                     $maxtime = date_create(date('Y-m-d',strtotime($data->inventory最後更新時間)));
                     $nowtime = date_create(date('Y-m-d',strtotime(\Carbon\Carbon::now())));
                     $interval = date_diff($maxtime ,$nowtime);
@@ -44,8 +46,10 @@
                     $stayday = (int)($interval);
                     $stock = DB::table('inventory')->where('客戶別', $data->客戶別)->where('料號', $data->料號)->sum('現有庫存');
                     $astock = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('現有庫存')->toArray();
+                    $astock=array_map(function($v){return round($v,0);}, $astock);
                     $position = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('儲位')->toArray();
                     $test = array_combine($position, $astock);
+                    $stock = round($stock , 0);
                 ?>
 
                 <tr id="data1{{$loop->index}}">
@@ -62,7 +66,7 @@
                         @endif
                         @endforeach
                     </td>
-                    <td><input class = "form-control form-control-lg" type="text" style="width:100px;"></td>
+                    <td><input class="form-control form-control-lg" type="text" style="width:100px;"></td>
                 </tr>
 
                 <input type="hidden" id="count" name="count" value="{{$loop->count}}">

@@ -40,7 +40,7 @@
                     $astock = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('現有庫存')->toArray();
                     $position = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('儲位')->toArray();
                     $test = array_combine($position, $astock);
-                    $stock = round($stock);
+                    $stock = round($stock , 0);
                 ?>
 
                 <tr id="data{{$loop->index}}">
@@ -76,7 +76,7 @@
                     $astock1 = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('現有庫存')->toArray();
                     $position1 = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('儲位')->toArray();
                     $test1 = array_combine($position1, $astock1);
-                    $stock1 = round($stock1);
+                    $stock1 = round($stock1 , 0);
                 ?>
 
                 <tr id="data1{{$loop->index}}">
@@ -112,7 +112,7 @@
                     $astock2 = DB::table('inventory')->select('現有庫存')->where('料號',$data->料號)->get()->toArray();
                     $position2 = DB::table('inventory')->select('儲位')->where('料號',$data->料號)->get()->toArray();
                     // dd($astock2 , $position2);
-                    $stock2 = round($stock2);
+                    $stock2 = round($stock2 , 0);
                 ?>
 
                 <tr id="data2{{$loop->index}}">
