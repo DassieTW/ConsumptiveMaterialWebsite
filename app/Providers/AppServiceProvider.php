@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
+use App\Services\MailService;
 use App\Helpers;
 use View;
 use Auth;
@@ -19,7 +20,11 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
-        }
+        } // if
+
+        $this->app->singleton( MailService::class, function($app) {
+            return new MailService();
+        });
     }
 
     /**

@@ -57,9 +57,10 @@ class SendSafeStockMail extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct( MailService $mailservice )
     {
         parent::__construct();
+        $this->mailservice = $mailservice;
     }
 
     /**
@@ -69,6 +70,15 @@ class SendSafeStockMail extends Command
      */
     public function handle()
     {
-        return (new MailService())->download();
+        // $posts = Models\Post::onlyTrashed()->get();
+        // var_dump($posts); // test
+        // foreach ($posts as $post) {
+        //     $post->forceDelete();
+        // } // for each
+
+        \Log::channel('dbquerys')->info('---------------------------開始寄信 by Safe Stock Command--------------------------');
+        $this->mailservice->download();
+        \Log::channel('dbquerys')->info('---------------------------寄信結束 by Safe Stock Command--------------------------');
+        return 0;
     } // handle
 }
