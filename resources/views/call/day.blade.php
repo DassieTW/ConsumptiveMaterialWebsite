@@ -62,7 +62,7 @@
                     <td>
                         @foreach ($test as $k=> $a)
                         @if ($a > 0)
-                        {!! __('callpageLang.loc') !!}:{{$k}} {!! __('callpageLang.stock') !!}:{{$a}}<br>
+                        {!! __('callpageLang.loc') !!}:{{$k}} {!! __('callpageLang.nowstock') !!}:{{$a}}<br>
                         @endif
                         @endforeach
                     </td>

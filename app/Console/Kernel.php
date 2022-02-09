@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         // $schedule->call(function () { // test schedule in log file
         //     \Log::info('成功排程');
         // })->everyMinute();
-        $schedule->command('call:safestock --timeout=0 --tries=1')->daily();
+        // $schedule->command('call:safestock')->everyMinute();
         $schedule->command('logs:clear')->cron('30 03 01 Jan,Apr,Jul,Oct *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
         $schedule->command('log:clear')->cron('30 03 01 Jan,Apr,Jul,Oct *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
     } // schedule

@@ -269,9 +269,6 @@ class CallController extends Controller
                 }
                 $datas2 = array_values($datas2);
 
-                dd(($datas2));
-
-
             } else {
                 $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號'))->groupBy('客戶別', '料號');
                 $datas = DB::table('月請購_單耗')

@@ -69,14 +69,6 @@ class SendSafeStockMail extends Command
      */
     public function handle()
     {
-        // $posts = Models\Post::onlyTrashed()->get();
-        // var_dump($posts); // test
-        // foreach ($posts as $post) {
-        //     $post->forceDelete();
-        // } // for each
-
-        // \Log::info('移除所有被刪除文章');
-
         return (new MailService())->download();
     } // handle
 }
