@@ -724,6 +724,7 @@ class InboundController extends Controller
             $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
             $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
             $writer->save('php://output');
+
             $callback = function () use ($writer) {
                 $file = fopen('php://output', 'r');
                 fclose($file);

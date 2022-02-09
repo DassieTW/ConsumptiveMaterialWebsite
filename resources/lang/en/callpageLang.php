@@ -19,7 +19,7 @@ return [
     'isn' =>'Part No.',
     'pName' =>'Description',
     'format' =>'Specification',
-    'stock' =>'Stock',
+    'stock' =>'Total Stock',
     'days' =>'Passive days',
     'loc' =>'Location',
     'mark' =>'Remarks',

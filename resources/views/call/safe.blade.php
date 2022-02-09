@@ -39,6 +39,7 @@
                     $stock = DB::table('inventory')->where('客戶別', $data->客戶別)->where('料號', $data->料號)->sum('現有庫存');
                     $astock = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('現有庫存')->toArray();
                     $position = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('儲位')->toArray();
+                    $astock=array_map(function($v){return round($v,0);}, $astock);
                     $test = array_combine($position, $astock);
                     $stock = round($stock , 0);
                 ?>
@@ -75,6 +76,7 @@
                     $stock1 = DB::table('inventory')->where('客戶別', $data->客戶別)->where('料號', $data->料號)->sum('現有庫存');
                     $astock1 = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('現有庫存')->toArray();
                     $position1 = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('儲位')->toArray();
+                    $astock=array_map(function($v){return round($v,0);}, $astock);
                     $test1 = array_combine($position1, $astock1);
                     $stock1 = round($stock1 , 0);
                 ?>
@@ -112,6 +114,7 @@
                     $astock2 = DB::table('inventory')->select('現有庫存')->where('料號',$data->料號)->get()->toArray();
                     $position2 = DB::table('inventory')->select('儲位')->where('料號',$data->料號)->get()->toArray();
                     // dd($astock2 , $position2);
+                    $astock=array_map(function($v){return round($v,0);}, $astock);
                     $stock2 = round($stock2 , 0);
                 ?>
 

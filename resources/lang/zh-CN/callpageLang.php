@@ -19,7 +19,7 @@ return [
     'isn' => '料号',
     'pName' => '品名',
     'format' => '规格',
-    'stock' => '库存',
+    'stock' => '总库存',
     'days' => '呆滞天数',
     'loc' => '储位',
     'mark' => '备注',

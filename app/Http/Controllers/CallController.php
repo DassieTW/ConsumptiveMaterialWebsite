@@ -31,6 +31,7 @@ use Route;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class CallController extends Controller
 {
@@ -76,7 +77,7 @@ class CallController extends Controller
         if (Session::has('username')) {
             $send = $request->input('send');
             if ($send === null) {
-                $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號'))->groupBy('客戶別', '料號');
+                $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號 '))->groupBy('客戶別', '料號');
                 $datas = DB::table('月請購_單耗')
                     ->join('MPS', function ($join) {
                         $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
@@ -268,7 +269,10 @@ class CallController extends Controller
                 }
                 $datas2 = array_values($datas2);
 
-            } else{
+                dd(($datas2));
+
+
+            } else {
                 $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號'))->groupBy('客戶別', '料號');
                 $datas = DB::table('月請購_單耗')
                     ->join('MPS', function ($join) {
@@ -465,7 +469,6 @@ class CallController extends Controller
                     }
                 }
                 $datas2 = array_values($datas2);
-
             }
             return view('call.safe')->with(['data' => $datas])->with(['data1' => $datas1])->with(['data2' => $datas2]);
         } else {
