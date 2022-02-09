@@ -19,7 +19,7 @@ class MailService
     /**
      * @return string
      */
-    public function download()
+    public function download() // 安全庫存 寄警報信
     {
 
         $databases = [
@@ -303,7 +303,7 @@ class MailService
         }
     }
 
-    public function day()
+    public function day() // 呆滯庫存 寄警報信
     {
 
         $databases = [
@@ -314,6 +314,8 @@ class MailService
         foreach ($databases as $database) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
+            \Log::channel('dbquerys')->info('---------------------------DB :' . $database . '--------------------------');
+
             $datas = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
                 ->select(
                     'inventory.客戶別',

@@ -27,9 +27,10 @@ class SluggishStock extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct( MailService $mailservice )
     {
         parent::__construct();
+        $this->mailservice = $mailservice;
     }
 
     /**
@@ -39,6 +40,9 @@ class SluggishStock extends Command
      */
     public function handle()
     {
-        return (new MailService())->day();
+        \Log::channel('dbquerys')->info('---------------------------開始寄信 by Sluggish Stock Command--------------------------');
+        $this->mailservice->day();
+        \Log::channel('dbquerys')->info('---------------------------寄信結束 by Sluggish Stock Command--------------------------');
+        return 0;
     }
 }
