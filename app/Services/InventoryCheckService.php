@@ -51,7 +51,64 @@ class InventoryCheckService
         return $results;
     } // fetchInventCheckRecord
 
-    public function fetchInventCheckRecordWithinTimeRange(Request $request, $fromTime, $toTime )
+    public function fetchInventCheckRecordWithDetailedConditions(Request $request)
+    {
+        $results = [];
+        $serialNum = filter_input(INPUT_POST, 'tablename', FILTER_SANITIZE_STRING); // 單號
+        $loc = $request->input('loc');
+        $isn = $request->input('isn');
+
+        DB::beginTransaction();
+
+        try {
+
+            if ($loc !== "false" && $isn !== "false") {
+                $results = DB::table('checking_inventory')
+                    ->where([
+                        ['checking_inventory.單號', '=', $serialNum],
+                        ['checking_inventory.儲位', '=', $loc],
+                        ['checking_inventory.料號', '=', $isn],
+                    ])
+                    ->join('consumptive_material', function ($join) {
+                        $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
+                    })
+                    ->get();
+            } // if
+            else if ($loc !== "false") {
+                $results = DB::table('checking_inventory')
+                    ->where([
+                        ['checking_inventory.單號', '=', $serialNum],
+                        ['checking_inventory.儲位', '=', $loc],
+                    ])
+                    ->join('consumptive_material', function ($join) {
+                        $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
+                    })
+                    ->get();
+            } // else if
+            else {
+                $results = DB::table('checking_inventory')
+                    ->where([
+                        ['checking_inventory.單號', '=', $serialNum],
+                    ])
+                    ->join('consumptive_material', function ($join) {
+                        $join->on('checking_inventory.料號', '=', 'consumptive_material.料號');
+                    })
+                    ->get();
+            } // else
+
+            // dd($results); // test
+
+            DB::commit();
+            // all good
+        } catch (\Exception $e) {
+            // DB::rollback(); // select statements dont need to roll back
+            // something went wrong
+        } // try catch
+
+        return $results;
+    } // fetchInventCheckRecordWithDetailedConditions
+
+    public function fetchInventCheckRecordWithinTimeRange(Request $request, $fromTime, $toTime)
     {
         $results = [];
         $onlyCode = filter_input(INPUT_POST, 'texBox', FILTER_SANITIZE_STRING); // the scanned in barcode

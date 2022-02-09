@@ -7,6 +7,8 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -29,7 +31,9 @@
     <script src="{{ asset('/messages.js') }}"></script>
     {{-- for date picker's js --}}
     <script type="text/javascript" href="{{ asset('/js/moment.min.js') }}"></script>
-    <script type="text/javascript" href="{{ asset('/js/tablesort.min.js') }}"></script>
+    {{-- get parameters from url, js version --}}
+    {{-- usage example : var temp = getUrlParameter('parameterName'); --}}
+    <script type="module" src="{{ asset('/js/getUrlParameter.js') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script>
         if (window.history.replaceState) {

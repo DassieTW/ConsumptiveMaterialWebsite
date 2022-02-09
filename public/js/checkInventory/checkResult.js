@@ -168,6 +168,12 @@ $(document).ready(function () {
 
     $(".filterBtn").on("click", function (e) {
         e.preventDefault();
+
+        // zzz = 10 ; // test
+        // console.log(zzz); // test
+        // let zzz ; // test
+        // console.log(zzz); // test
+
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         } else {
@@ -480,9 +486,21 @@ $(document).ready(function () {
         for (let b = 0; b < keys.length; b++) { // loop thru sheets
             if (!keys[b].includes('_byLoc')) {
                 var serialNumDataRow = $('<tr>', { "data-bs-toggle": "collapse", "data-bs-target": "#sheet" + b, "aria-expanded": "false" }); // create an elemet by jquery
-                serialNumDataRow.append("<td>" + keys[b] + "</td>");
-                serialNumDataRow.append("<td>" + sheetCreators[sheetCount] + "</td>");
-                serialNumDataRow.append("<td>" + serialSheetsObj[keys[b]][0].created_at + "</td>");
+                
+                let dateStr = serialSheetsObj[keys[b]][0].created_at.split(" ") ; // split the string to date string and time string
+                let dateCreated = moment(dateStr[0], "YYYY-MM-DD"); // parse the string to date
+                let thisSeasonStartingDate = moment().subtract(3, 'months').startOf('month');
+                if( dateCreated.isBefore(thisSeasonStartingDate) ) { // then this is a old record that shoudnt be changed
+                    serialNumDataRow.append('<td style="color: gray;">' + keys[b] + ' <a href="/checking?sheet=' + keys[b] + '"><i class="bi bi-clipboard-plus" style="color: blue; font-size: 1.2em;"></i></a>' + "</td>");
+                    serialNumDataRow.append('<td style="color: gray;">' + sheetCreators[sheetCount] + "</td>");
+                    serialNumDataRow.append('<td style="color: gray;">' + serialSheetsObj[keys[b]][0].created_at + "</td>");
+                } // if
+                else { // in season records
+                    serialNumDataRow.append("<td>" + keys[b] + ' <a href="/checking?sheet=' + keys[b] + '"><i class="bi bi-clipboard-plus" style="color: blue; font-size: 1.2em;"></i></a>' + "</td>");
+                    serialNumDataRow.append("<td>" + sheetCreators[sheetCount] + "</td>");
+                    serialNumDataRow.append("<td>" + serialSheetsObj[keys[b]][0].created_at + "</td>");
+                } // else
+                
                 serialNumDataRow.append('<td><a class="collapseBtn" disabled style="color: grey;"><i class="bi bi-chevron-down"></i></a></td>');
                 var detailDataRowWithCollapse = $('<tr>', {});
                 var detailTD = $('<td>', { "colspan": "12", "class": "p-0 m-0" });
@@ -497,7 +515,7 @@ $(document).ready(function () {
                     dataTR.append("<td>&nbsp;</td>");
 
                     // console.log(locName); // test
-                    dataTR.append('<td><span class="locTD">' + Object.keys(serialSheetsObj[keys[b] + "_byLoc"][c])[0] + "</td>");
+                    dataTR.append('<td><span class="locTD">' + Object.keys(serialSheetsObj[keys[b] + "_byLoc"][c])[0] + " </span>" + '<a href="/checking?sheet=' + keys[b] + '&loc=' + Object.keys(serialSheetsObj[keys[b] + "_byLoc"][c])[0] + '"><i class="bi bi-clipboard-plus" style="color: blue; font-size: 1.2em;"></i></a>' + "</td>");
                     dataTR.append("<td>" + serialSheetsObj[keys[b] + "_byLoc"][c][locName + "Check"] + "/" + serialSheetsObj[keys[b] + "_byLoc"][c][locName + "All"] + "</td>");
                     dataTR.append('<td><a class="collapseBtn" disabled style="color: grey;"><i class="bi bi-chevron-down"></i></a></td>');
                     tbody.append(dataTR);
@@ -525,13 +543,13 @@ $(document).ready(function () {
                         isnnTR.append('<td><span class="isnTD">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].料號 + '</span><hr class="m-0 p-0">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].品名 + '</td>');
                         isnnTR.append('<td>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].客戶別 + '</td>');
                         if (serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 === "" || serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 === null || serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 === "null") {
-                            isnnTR.append('<td class="table-danger" style="color: red;">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.unknown') + '</td>');
+                            isnnTR.append('<td class="table-danger table-hover" style="color: red;">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.unknown') + '</td>');
                             isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
                             isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
                         } // if
                         else {
                             if (serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 !== serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 ) {
-                                isnnTR.append('<td class="table-danger" style="color: red;">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 + '</td>');
+                                isnnTR.append('<td class="table-danger table-hover" style="color: red;">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 + '</td>');
                             } else {
                                 isnnTR.append('<td>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].盤點 + '</td>');
                             } // if else
@@ -540,7 +558,7 @@ $(document).ready(function () {
                             isnnTR.append('<td>' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].updated_at + '</td>');
 
                         } // else
-                        isnnTR.append('<td>' + '<button class="btn btn-success">GO</button>' + '</td>');
+                        isnnTR.append('<td>' + '<a href="/checking?sheet=' + keys[b] + '&loc=' + Object.keys(serialSheetsObj[keys[b] + "_byLoc"][c])[0] + '&isn=' + serialSheetsObj[keys[b] + "_byLoc"][c][locName][n].料號 + '"><i class="bi bi-clipboard-plus" style="color: blue; font-size: 1.2em;"></i></a>' + '</td>');
 
                         isntbody.append(isnnTR);
                     } // for
@@ -584,9 +602,21 @@ $(document).ready(function () {
         for (let b = 0; b < keys.length; b++) { // loop thru sheets
             if (!keys[b].includes('_byLoc')) {
                 var serialNumDataRow = $('<tr>', { "data-bs-toggle": "collapse", "data-bs-target": "#sheet" + b, "aria-expanded": "false" }); // create an elemet by jquery
-                serialNumDataRow.append("<td>" + keys[b] + "</td>");
-                serialNumDataRow.append("<td>" + sheetCreators[sheetCount] + "</td>");
-                serialNumDataRow.append("<td>" + serialSheetsObj[keys[b]][0].created_at + "</td>");
+                
+                let dateStr = serialSheetsObj[keys[b]][0].created_at.split(" ") ; // split the string to date string and time string
+                let dateCreated = moment(dateStr[0], "YYYY-MM-DD"); // parse the string to date
+                let thisSeasonStartingDate = moment().subtract(3, 'months').startOf('month');
+                if( dateCreated.isBefore(thisSeasonStartingDate) ) { // then this is a old record that shoudnt be changed
+                    serialNumDataRow.append('<td style="color: gray;">' + keys[b] + ' <a href="/checking?sheet=' + keys[b] + '"><i class="bi bi-clipboard-plus" style="color: blue; font-size: 1.2em;"></i></a>' + "</td>");
+                    serialNumDataRow.append('<td style="color: gray;">' + sheetCreators[sheetCount] + "</td>");
+                    serialNumDataRow.append('<td style="color: gray;">' + serialSheetsObj[keys[b]][0].created_at + "</td>");
+                } // if
+                else { // in season records
+                    serialNumDataRow.append("<td>" + keys[b] + ' <a href="/checking?sheet=' + keys[b] + '"><i class="bi bi-clipboard-plus" style="color: blue; font-size: 1.2em;"></i></a>' + "</td>");
+                    serialNumDataRow.append("<td>" + sheetCreators[sheetCount] + "</td>");
+                    serialNumDataRow.append("<td>" + serialSheetsObj[keys[b]][0].created_at + "</td>");
+                } // else
+                
                 serialNumDataRow.append('<td><a class="collapseBtn" disabled style="color: grey;"><i class="bi bi-chevron-down"></i></a></td>');
                 var plainISNCollapseDiv = $('<div>', { "class": "collapse p-0 m-0", "id": "sheet" + b, "aria-expanded": "false" });
 
@@ -615,13 +645,13 @@ $(document).ready(function () {
                     isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].客戶別 + '</td>');
                     isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].儲位 + '</td>');
                     if (serialSheetsObj[keys[b]][n].盤點 === "" || serialSheetsObj[keys[b]][n].盤點 === null || serialSheetsObj[keys[b]][n].盤點 === "null") {
-                        isnnTR.append('<td class="table-danger" style="color: red;">' + serialSheetsObj[keys[b]][n].現有庫存 + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.unknown') + '</td>');
+                        isnnTR.append('<td class="table-danger table-hover" style="color: red;">' + serialSheetsObj[keys[b]][n].現有庫存 + '<hr class="m-0 p-0">' + Lang.get('checkInvLang.unknown') + '</td>');
                         isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
                         isnnTR.append('<td>' + Lang.get('checkInvLang.unknown') + '</td>');
                     } // if
                     else {
                         if (parseInt(serialSheetsObj[keys[b]][n].現有庫存, 10) !== parseInt(serialSheetsObj[keys[b]][n].盤點, 10)) {
-                            isnnTR.append('<td class="table-danger" style="color: red;">' + serialSheetsObj[keys[b]][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b]][n].盤點 + '</td>');
+                            isnnTR.append('<td class="table-danger table-hover" style="color: red;">' + serialSheetsObj[keys[b]][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b]][n].盤點 + '</td>');
                         } else {
                             isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].現有庫存 + '<hr class="m-0 p-0">' + serialSheetsObj[keys[b]][n].盤點 + '</td>');
                         } // if else
@@ -630,7 +660,7 @@ $(document).ready(function () {
                         isnnTR.append('<td>' + serialSheetsObj[keys[b]][n].updated_at + '</td>');
 
                     } // else
-                    isnnTR.append('<td>' + '<button class="btn btn-success">GO</button>' + '</td>');
+                    isnnTR.append('<td>' + '<a href="/checking?sheet=' + keys[b] + '&loc=' + serialSheetsObj[keys[b]][n].儲位 + '&isn=' + serialSheetsObj[keys[b]][n].料號 + '"><i class="bi bi-clipboard-plus" style="color: blue; font-size: 1.2em;"></i></a>' + '</td>');
 
                     isntbody.append(isnnTR);
                 } // for

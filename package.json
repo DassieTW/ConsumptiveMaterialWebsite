@@ -54,7 +54,8 @@
         "notyf": "^3.9.0",
         "popper.js": "1.16.1",
         "simplebar": "5.2.1",
-        "vue": "^3.0.11",
-        "vue-loader": "^16.2.0"
+        "vue": "^3.2.29",
+        "vue-loader": "^17.0.0",
+        "vue-router": "^4.0.12"
     }
 }

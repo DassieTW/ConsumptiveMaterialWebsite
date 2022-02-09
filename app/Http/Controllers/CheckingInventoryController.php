@@ -43,7 +43,16 @@ class CheckingInventoryController extends Controller
         ];
 
         $this->validate($request, $rules);
-        $fetchedData = $this->service->fetchInventCheckRecord($request);
+        $fetchedData = [];
+        // dd($request->input('isDetailed')); // test
+        if( $request->input('isDetailed') === "true" ) { // if coming from result page, its a detailed search
+            $fetchedData = $this->service->fetchInventCheckRecordWithDetailedConditions($request);
+        } // if
+        else {
+            $fetchedData = $this->service->fetchInventCheckRecord($request);
+        } // else
+
+        // dd($fetchedData); // test
 
         if (count($fetchedData) === 0) { // return 420 if the search result length is 0
             return \Response::json(['message' => __('checkInvLang.no_results_found')], 420/* Status code here default is 200 ok*/);

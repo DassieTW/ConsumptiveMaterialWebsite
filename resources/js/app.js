@@ -23,8 +23,11 @@ window.Vue = require('vue').default;
 
 // vue3
 import { createApp } from 'vue';
-import App from './components/ExampleComponent.vue'
-// createApp(App).mount("#app") // vue3
+import router from './vue-router';
+import ExampleComponent from './components/test/ExampleComponent.vue';
+createApp({
+
+}).use(router).mount('#app');
 
 import { Notyf } from 'notyf';
 window.Notyf = Notyf;
