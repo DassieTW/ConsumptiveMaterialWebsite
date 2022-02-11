@@ -552,8 +552,8 @@ class MonthController extends Controller
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
-            $name = \Crypt::encrypt(\Auth::user()->姓名);
-            $database = $request->session()->get('databse');
+            $name = \Crypt::encrypt(\Auth::user()->username);
+            $database = $request->session()->get('database');
             $database = \Crypt::encrypt($database);
 
             //delete
@@ -627,8 +627,8 @@ class MonthController extends Controller
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
-            $name = \Crypt::encrypt(\Auth::user()->姓名);
-            $database = $request->session()->get('databse');
+            $name = \Crypt::encrypt(\Auth::user()->username);
+            $database = $request->session()->get('database');
             $database = \Crypt::encrypt($database);
 
 
@@ -801,7 +801,7 @@ class MonthController extends Controller
             $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
-            $name = \Crypt::encrypt(\Auth::user()->username);
+            $username = \Crypt::encrypt(\Auth::user()->username);
             $database = $request->session()->get('database');
             $database = \Crypt::encrypt($database);
             DB::beginTransaction();
@@ -842,7 +842,7 @@ class MonthController extends Controller
 
                 } //for
                 DB::commit();
-                self::sendconsumemail($email, $sessemail, $name, $database);
+                self::sendconsumemail($email, $sessemail, $username, $database);
 
                 return \Response::json(['record' => $record, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
@@ -2314,10 +2314,10 @@ class MonthController extends Controller
     }
 
     //test send consume mail
-    public static function sendconsumemail($email, $sessemail, $name, $database)
+    public static function sendconsumemail($email, $sessemail, $username, $database)
     {
-        $dename = DB::table('login')->where('username', \Crypt::decrypt($name))->value('姓名');
-        $data = array('email' => $sessemail, 'username' => $name, 'database' => $database, 'name' => $dename);
+        $dename = DB::table('login')->where('username', \Crypt::decrypt($username))->value('姓名');
+        $data = array('email' => $sessemail, 'username' => $username, 'database' => $database, 'name' => $dename);
 
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
 
