@@ -39,13 +39,7 @@ Route::get('/dashboard', function () {
     return view('testTemplate');
 })->name('dashboard');
 
-Route::get('/test', function () { // cursor() : a LazyCollection implement by yield( php original ).
-    return Models\Post::cursor()->filter(function ($post) {
-        return $post->id > 450;
-    });
-});
-
-Route::get('/vuetest', function () { // cursor() : a LazyCollection implement by yield( php original ).
+Route::get('/vuetest/web', function () {
     return view("layouts.app");
 });
 

@@ -165,15 +165,8 @@
             </div>
 
             {{-- this div will not be visible if screen is smaller than lg --}}
-            <div class="col-auto ml-auto text-right mt-n1 d-none d-lg-block">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                        <li class="breadcrumb-item"><a href="#">{!! __('templateWords.websiteName') !!}</a></li>
-                        <li class="breadcrumb-item"><a href="#">{!! __('checkInvLang.page_name') !!}</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{!! __('checkInvLang.check_result') !!}
-                        </li>
-                    </ol>
-                </nav>
+            <div class="col-auto ml-auto text-right mt-n1 d-none d-lg-block" id="breadcrumbnav">
+                <vue-bread-crumb></vue-bread-crumb>
             </div>
         </div>
         <div class="row">
