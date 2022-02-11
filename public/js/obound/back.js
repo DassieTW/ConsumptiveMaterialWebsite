@@ -178,7 +178,17 @@ $(document).ready(function () {
 
         if (count == 0) {
             document.getElementById('numbererror1').style.display = "none";
-            alert('no data');
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nodata'),
+                duration: 3000,   //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
 

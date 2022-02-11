@@ -202,6 +202,12 @@ $(document).ready(function () {
         });
     });
 
+    $('#rfidinpeople').on("input", function () {
+        var rfidpick = $("#rfidinpeople").val();
+        rfidpick = rfidpick.slice(-9);
+        $("#rfidinpeople").val(rfidpick);
+        $("#inpeople").val(rfidpick);
+    });
 
     $('#inboundaddform').on('submit', function (e) {
 
@@ -212,7 +218,17 @@ $(document).ready(function () {
         $(".invalid-feedback").remove();
 
         if (count == 0) {
-            alert('no data');
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nodata'),
+                duration: 3000,   //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
         var inpeo = $("#inpeople").val();

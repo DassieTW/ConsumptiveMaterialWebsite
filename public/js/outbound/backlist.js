@@ -264,9 +264,6 @@ $("#backpeople").on("blur", function () {
 
 $(document).ready(function () {
 
-    var checkrfidpick = false;
-    var checkrfidback = false;
-
     $(".amount").hover(function () {
         $(this).tooltip();
     });
@@ -276,14 +273,12 @@ $(document).ready(function () {
         rfidpick = rfidpick.slice(-9);
         $("#rfidpickpeople").val(rfidpick);
         $("#pickpeople").val(rfidpick);
-        checkrfidpick = true;
     });
     $('#rfidbackpeople').on("input", function () {
         var rfidback = $("#rfidbackpeople").val();
         rfidback = rfidback.slice(-9);
         $("#rfidbackpeople").val(rfidback);
         $("#backpeople").val(rfidback);
-        checkrfidback = true;
     });
 
     $("#backlist").on("submit", function (e) {

@@ -146,6 +146,7 @@
                 </ul>
             </div>
 
+            {{-- rfid --}}
             <input class="form-control form-control-lg rfid" id="rfidinpeople" name="rfidinpeople" width="250"
                 style="width: 250px" placeholder="{!! __('inboundpageLang.rfidinpeople') !!}" type="password">
 

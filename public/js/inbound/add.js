@@ -100,7 +100,6 @@ $("#inpeople").on("blur", function () {
 
 $(document).ready(function () {
 
-    var checkrfidpick = false;
     $('#add').on('submit', function (e) {
 
         e.preventDefault();
@@ -266,7 +265,6 @@ $(document).ready(function () {
         rfidpick = rfidpick.slice(-9);
         $("#rfidinpeople").val(rfidpick);
         $("#inpeople").val(rfidpick);
-        checkrfidpick = true;
     });
 
     $('#inboundaddform').on('submit', function (e) {

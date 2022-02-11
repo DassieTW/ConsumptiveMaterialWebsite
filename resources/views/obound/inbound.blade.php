@@ -119,8 +119,13 @@
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     @endforeach
                 </ul>
-            </div>
 
+
+                {{-- rfid --}}
+                <input class="form-control form-control-lg rfid" id="rfidinpeople" name="rfidinpeople" width="250"
+                    style="width: 250px" placeholder="{!! __('inboundpageLang.rfidinpeople') !!}" type="password">
+
+            </div>
             <div class="row w-100 justify-content-center">
                 <div class="col col-auto">
                     <input type="submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.submit') !!}"

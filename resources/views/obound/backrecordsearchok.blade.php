@@ -78,7 +78,7 @@
                         <td><input type="hidden" id="datab{{$loop->index}}" name="datab{{$loop->index}}"
                                 value="{{$data->機種}}">{{$data->機種}}</td>
                         <td><input type="hidden" id="datac{{$loop->index}}" name="datac{{$loop->index}}"
-                                value="{{$data->制程}}">{{$data->制程}}</td>
+                                value="{{$data->製程}}">{{$data->製程}}</td>
                         <td><input type="hidden" id="datad{{$loop->index}}" name="datad{{$loop->index}}"
                                 value="{{$data->退回原因}}">{{$data->退回原因}}</td>
                         <td><input type="hidden" id="datae{{$loop->index}}" name="datae{{$loop->index}}"

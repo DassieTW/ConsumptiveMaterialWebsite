@@ -264,6 +264,19 @@ $(document).ready(function () {
         $(this).tooltip();
     });
 
+    $('#rfidpickpeople').on("input", function () {
+        var rfidpick = $("#rfidpickpeople").val();
+        rfidpick = rfidpick.slice(-9);
+        $("#rfidpickpeople").val(rfidpick);
+        $("#pickpeople").val(rfidpick);
+    });
+    $('#rfidbackpeople').on("input", function () {
+        var rfidback = $("#rfidbackpeople").val();
+        rfidback = rfidback.slice(-9);
+        $("#rfidbackpeople").val(rfidback);
+        $("#backpeople").val(rfidback);
+    });
+
     $("#backlist").on("submit", function (e) {
         e.preventDefault();
 
@@ -272,8 +285,18 @@ $(document).ready(function () {
         $(".invalid-feedback").remove();
 
         if (count == 0) {
-            alert('no data');
-            window.location.reload();
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nodata'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
+            return false;
         }
 
         var data = [];
@@ -359,7 +382,7 @@ $(document).ready(function () {
         for (let i = 0; i < count; i++) {
             if (status[i] == 'good product' || status == '良品') {
                 status[i] = '良品';
-            } else{
+            } else {
                 status[i] = '不良品';
             }
         }

@@ -247,6 +247,18 @@ $("#pickpeople").on("blur", function () {
 });
 
 $(document).ready(function () {
+    $('#rfidpickpeople').on("input", function () {
+        var rfidpick = $("#rfidpickpeople").val();
+        rfidpick = rfidpick.slice(-9);
+        $("#rfidpickpeople").val(rfidpick);
+        $("#pickpeople").val(rfidpick);
+    });
+    $('#rfidsendpeople').on("input", function () {
+        var rfidsend = $("#rfidsendpeople").val();
+        rfidsend = rfidsend.slice(-9);
+        $("#rfidsendpeople").val(rfidsend);
+        $("#sendpeople").val(rfidsend);
+    });
     $("#picklist").on("submit", function (e) {
 
         e.preventDefault();
@@ -256,8 +268,18 @@ $(document).ready(function () {
         $(".invalid-feedback").remove();
 
         if (count == 0) {
-            alert('no data');
-            window.location.reload();
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nodata'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
+            return false;
         }
 
         var data = [];

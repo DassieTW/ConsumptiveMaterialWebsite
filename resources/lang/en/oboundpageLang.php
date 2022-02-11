@@ -111,8 +111,8 @@ return [
     'searchbacklist' => 'Search return list',
     'deletebacklist' => 'Delete return list',
     'enterstatus' => 'Please select the status',
-    'outpickok' => 'Outbound completed Picklist number: ',
-    'outbackok' => 'Outbound completed Backlist number: ',
+    'outpickok' => 'Outbound completed Picklist number',
+    'outbackok' => 'Outbound completed Backlist number',
     'nowbound' => 'current library',
     'stockless' => 'The inventory is less than the actual requisition quantity and cannot outbound',
     'add' => 'Add',
@@ -139,4 +139,7 @@ return [
     'inputpickpeople' => 'Please input Pickup person job number',
     'inputbackpeople' => 'Please input Return person job number',
     'inputreceivepeople' => 'Please input Receiver job number',
+    'noinpeople' => 'The job number of the inbound people does not exist, please go to User Management-Maintenance of New Person Information',
+    'rfidinpeople' => 'Please click here to to tap the Inbound person\'s ID card',
+
 ];

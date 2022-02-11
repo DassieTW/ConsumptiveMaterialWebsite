@@ -114,6 +114,7 @@
                 <h3 style="color: red">{!! __('oboundpageLang.enterdiffreason') !!}</h3>
             </div>
 
+            {{-- input send people --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('oboundpageLang.sendpeople') !!}</label>
             <input class="form-control form-control-lg" id="sendpeople" name="sendpeople" width="250"
@@ -128,6 +129,11 @@
                 @endforeach
             </ul>
 
+            {{-- rfid sendpeople --}}
+            <input class="form-control form-control-lg rfid" id="rfidsendpeople" name="rfidsendpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputsendpeople') !!}" type="password">
+
+            {{-- input pickpeople --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('oboundpageLang.pickpeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
@@ -141,6 +147,10 @@
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 @endforeach
             </ul>
+
+            {{-- rfid pickpeople --}}
+            <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputpickpeople') !!}" type="password">
 
             {{-- check people --}}
             @foreach($check as $people)

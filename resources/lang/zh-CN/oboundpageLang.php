@@ -111,8 +111,8 @@ return [
     'searchbacklist' => '搜寻退料单',
     'deletebacklist' => '删除退料单',
     'enterstatus' => '请选择功能状况',
-    'outpickok' => '出库完成，领料单号: ',
-    'outbackok' => '出库完成，退料单号: ',
+    'outpickok' => '出库完成，领料单号',
+    'outbackok' => '出库完成，退料单号',
     'nowbound' => '目前库别',
     'stockless'=> '库存小于实际领用数量，无法出库。',
     'add' => '添加',
@@ -139,4 +139,7 @@ return [
     'inputpickpeople' => '请输入领料人员工号',
     'inputbackpeople' => '请输入退料人员工号',
     'inputreceivepeople' => '请输入收料人员工号',
+    'noinpeople' => '入库人员之工号不存在，请先到用户管理-新增人员讯息维护',
+    'rfidinpeople' => '请点这里感应入库人员识别证',
+
 ];

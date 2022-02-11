@@ -133,8 +133,17 @@ $(document).ready(function () {
         $(".invalid-feedback").remove();
 
         if (count == 0) {
-            alert('no data');
-            return false;
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('basicInfoLang.nodata'),
+                duration: 3000,   //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
         }
 
         console.log(sessionStorage.getItem('omaterialcount'));
@@ -178,9 +187,9 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-                var mess = Lang.get('oboundpageLang.total') + ' : ' + count + Lang.get('oboundpageLang.record') +
+                var mess = Lang.get('oboundpageLang.total') + ' : ' + count + ' ' + Lang.get('oboundpageLang.record') + ' ' +
                     Lang.get('oboundpageLang.matsdata') + ' ， ' + Lang.get('oboundpageLang.success') + Lang.get('oboundpageLang.new') +
-                    ' : ' + data.record + Lang.get('oboundpageLang.matsdata');
+                    ' : ' + data.record + ' ' + Lang.get('oboundpageLang.record') + ' ' + Lang.get('oboundpageLang.matsdata');
 
                 alert(mess);
 

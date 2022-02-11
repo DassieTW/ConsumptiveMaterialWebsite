@@ -55,7 +55,7 @@
                                 <tr id = "{{$data->領料單號}}">
                                     <td><input type = "hidden" id = "dataa{{$loop->index}}" name = "dataa{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
                                     <td><input type = "hidden" id = "datab{{$loop->index}}" name = "datab{{$loop->index}}" value = "{{$data->機種}}">{{$data->機種}}</td>
-                                    <td><input type = "hidden" id = "datac{{$loop->index}}" name = "datac{{$loop->index}}" value = "{{$data->制程}}">{{$data->制程}}</td>
+                                    <td><input type = "hidden" id = "datac{{$loop->index}}" name = "datac{{$loop->index}}" value = "{{$data->製程}}">{{$data->製程}}</td>
                                     <td><input type = "hidden" id = "datad{{$loop->index}}" name = "datad{{$loop->index}}" value = "{{$data->領用原因}}">{{$data->領用原因}}</td>
                                     <td><input type = "hidden" id = "datae{{$loop->index}}" name = "datae{{$loop->index}}" value = "{{$data->線別}}">{{$data->線別}}</td>
                                     <td><input type = "hidden" id = "dataf{{$loop->index}}" name = "dataf{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>

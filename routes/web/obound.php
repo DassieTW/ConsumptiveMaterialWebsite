@@ -39,6 +39,8 @@ Route::get('/new', function () {
     return view('obound.new');
 })->name('obound.new')->middleware('can:oboundNewMat,App\Models\O庫');
 
+Route::post('/new', [OboundController::class, 'new'])->name('obound.new')->middleware('can:oboundNewMat,App\Models\O庫');
+
 //新增料件批量上傳
 Route::get('/uploadmaterial', function () {
     return view('obound.new');
