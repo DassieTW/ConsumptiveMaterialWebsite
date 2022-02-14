@@ -52,8 +52,8 @@
                 </p>
             </div>
             <div class="card">
-                <h3 class="text-center">{!! __('monthlyPRpageLang.emailsender') !!} : {{$username}}</h3>
-                <input type="hidden" id="sender" value="{{$username}}">
+                <h3 class="text-center">{!! __('monthlyPRpageLang.emailsender') !!} : {{$username}} ({!! __('basicInfoLang.factory') !!} : {{$database}})</h3>
+                <input type="hidden" id ="sender" value="{{$username}}">
             </div>
             <div class="card">
                 <div class="card-body">

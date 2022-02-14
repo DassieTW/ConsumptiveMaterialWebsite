@@ -349,7 +349,7 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-                var mess = Lang.get('monthlyPRpageLang.total') + ' : ' + count + Lang.get('monthlyPRpageLang.record') + ' ' +
+                var mess = Lang.get('monthlyPRpageLang.total') + ' : ' + count + ' ' + Lang.get('monthlyPRpageLang.record') + ' ' +
                     Lang.get('monthlyPRpageLang.data') + ' ， ' + Lang.get('monthlyPRpageLang.success') + ' ' + Lang.get('monthlyPRpageLang.new') +
                     ' : ' + data.record + ' ' + Lang.get('monthlyPRpageLang.record') + ' ' + Lang.get('monthlyPRpageLang.stand');
                 alert(mess);
