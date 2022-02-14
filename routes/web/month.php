@@ -254,7 +254,6 @@ Route::get('/testconsume', function () {
         $email = Crypt::decrypt(request()->r);
         $username = Crypt::decrypt(request()->u);
         $database = Crypt::decrypt(request()->d);
-
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
         \DB::purge(env("DB_CONNECTION"));
         $name = DB::table('login')->where('username', $username)->value('姓名');
