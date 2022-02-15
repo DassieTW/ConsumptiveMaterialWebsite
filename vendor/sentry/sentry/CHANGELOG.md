@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## 3.3.7 (2022-01-19)
+
+- Fix the serialization of a `callable` when the autoloader throws exceptions (#1280)
+
+## 3.3.6 (2022-01-14)
+
+- Optimize `Span` constructor and add benchmarks (#1274)
+- Handle autoloader that throws an exception while trying to serialize a possible callable (#1276)
+
+## 3.3.5 (2021-12-27)
+
+- Bump the minimum required version of the `jean85/pretty-package-versions` package (#1267)
+
 ## 3.3.4 (2021-11-08)
 
 - Avoid overwriting the error level set by the user on the event when capturing an `ErrorException` exception (#1251)

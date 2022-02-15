@@ -273,7 +273,7 @@ $(document).ready(function () {
         var nextchange = [];
 
         var jobnumber = $("#jobnumber").val();
-        var email = $("#email").val();
+        var email = $("#email").val() + "@pegatroncorp.com";
         var count = 0;
 
         for (let i = 0; i < sessionStorage.getItem('standcount'); i++) {
@@ -386,7 +386,7 @@ $(document).ready(function () {
             error: function (err) {
                 //transaction error
                 if (err.status == 421) {
-                    alert(err.responseJSON.message);
+                    console.log(err.responseJSON.message);
                     window.location.reload();
                 }
             },

@@ -11,5 +11,4 @@ return array(
     'JShrink' => array($vendorDir . '/tedivm/jshrink/src'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'Barryvdh' => array($vendorDir . '/barryvdh/reflection-docblock/src'),
-    'Agomez\\ODBCDriver' => array($vendorDir . '/vmeditab/laravel-odbc-driver/src'),
 );

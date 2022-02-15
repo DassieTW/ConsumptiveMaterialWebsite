@@ -65,7 +65,7 @@ class LoginController extends Controller
     {
         session(['database' => $request->site]);
         // dd(session('database')); // test
-        $request->session()->get('database');
+        // $request->session()->get('database'); // test
     } // authenticated
 
     //login
@@ -93,7 +93,26 @@ class LoginController extends Controller
             Session::put('priority', $prior);
             Session::put('avatarChoice', $avatarChoice);
             $this->authenticated($request, \Auth::user()); // set the login db
-            return \Response::json(['message' => 'Log in successful !']); // Status code here
+
+            DB::beginTransaction();
+
+            try {
+                $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+                $affected = DB::table('login')
+                    ->where('username', '=', \Auth::user()->username)
+                    ->update(['last_login_time' => $datetime]);
+
+                DB::commit();
+                return \Response::json(['message' => 'Log in successful !']); // Status code
+                // all good
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                return \Response::json(['message' => $e], 420); // Status code here
+                // something went wrong
+            } // try catch
+
+            return \Response::json(['message' => \DB::connection()->getDatabaseName()], 420); // Status code here
         } // if
         else { // login failed
             return \Response::json(['message' => \DB::connection()->getDatabaseName()], 420); // Status code here
