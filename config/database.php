@@ -100,15 +100,6 @@ return [
             'prefix_indexes' => true,
             //'isolation_level' => env('DB_ISOLATION_LEVEL', 'COMMITTED READ'),
         ],
-        /*'odbc-connection-name' => [
-            'driver' => 'odbc',
-            'dsn' => 'OdbcConnectionName',
-            'database' => env('DB_DATABASE', 'forge'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-        ],*/
-
     ],
 
     /*

@@ -23,6 +23,16 @@ use Illuminate\Database\Eloquent\Model;
 |
 */
 
+// if using Vue-Router to handle all the front end routes and redirects AKA "SPA, Single Page Application",
+// Laravel should only have API routes, and only this one single web routes.
+// Vue (front-end) gets all the data from API (Laravel, back-end)
+// For authentication, use Laravel Sanctum ( laravel authentication system for SPAs )
+//------------------------------------------------------------------------------------------------------------
+// Route::get('/{any}', function () {
+//     return view('layouts.app');
+// })->where("any", ".*");
+// --------------- the about code gets any url of our website and intended to pass it to Vue Router ----------
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome')->withoutMiddleware('auth');
@@ -77,6 +87,14 @@ Route::get('/lang/{type}', function (Request $request, $type) {
     \App::setLocale($type);
     return Redirect::back();
 })->withoutMiddleware('auth');
+
+Route::post('/lang', function (Request $request, $type) {
+    $session = $request->getSession();
+    $session->put('locale', $type);
+    \App::setLocale($type);
+    return Redirect::back();
+})->withoutMiddleware('auth');
+
 
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');

@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . time() }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.loadingModal.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/check.css') }}">
 

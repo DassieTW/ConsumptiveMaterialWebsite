@@ -2,11 +2,12 @@
 <template>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-      <li v-for="(item, index) in names.slice(0, -1)" :key="index" class="breadcrumb-item">
-        <a :href="item">{!! __("templateWords.websiteName") !!}</a>
+      <li v-for="(item, index) in urls.slice(0, -1)" :key="index" class="breadcrumb-item">
+        <a :href="item">{{ "0.0" }}</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        {{ names[names.length-1] }}
+        {{ $lang.getLocale() }}
+        {{ $t('checkInvLang.page_name') }}
       </li>
     </ol>
   </nav>
@@ -19,11 +20,11 @@ import { onMounted } from "@vue/runtime-core";
 import NowWeAt from "../../composables/now_location";
 export default {
   setup() {
-    const { names, getNames } = NowWeAt();
-    onMounted(getNames);
+    const { urls, getUrl } = NowWeAt();
+    onMounted(getUrl);
     // console.log(names); // test
     return {
-      names,
+      urls,
     };
   },
   mounted() {

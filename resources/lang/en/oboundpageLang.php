@@ -129,7 +129,7 @@ return [
     'timepart' => 'Time period',
     'amount' => 'Amount',
     'matsdata' => 'Material Data',
-    'yellowrepeat' => 'Yellow background means the data has been stored in the database',
+    'yellowrepeat' => 'Yellow background means that the data already exist in the database',
     'data' => 'data',
     'nosendpeople' =>'The job number of the sender does not exist, please go to User Management-Maintenance of New Person Information',
     'nopickpeople' =>'The job number of the picker does not exist, please go to User Management-Maintenance of New Person Information',

@@ -21,6 +21,7 @@ class CreateLoginTable extends Migration
             $table->string('部門',50)->nullable();
             $table->integer('avatarChoice')->nullable();
             $table->string('email', 200)->nullable();
+            $table->dateTime('last_login_time')->nullable();
             // $table->timestamps();
             // $table->softDeletes();
         });

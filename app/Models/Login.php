@@ -31,7 +31,8 @@ class Login extends Authenticatable
         '姓名',
         '部門',
         'avatarChoice',
-        'email'
+        'email',
+        'last_login_time'
     ];
 
     /**

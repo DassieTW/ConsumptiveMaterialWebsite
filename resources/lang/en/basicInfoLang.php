@@ -87,7 +87,7 @@ return [
     'check' => 'Check',
     'submit' =>'Submit',
     'addtodatabase' => 'Add to database',
-    'yellowrepeat' => 'Yellow background means the data has been stored in the database',
+    'yellowrepeat' => 'Yellow background means that the data already exist in the database',
     'data' => 'data',
     'nodata' => 'Nothing to submit',
 ];

@@ -28,8 +28,7 @@
         "sentry/sentry-laravel": "^2.10",
         "symfony/mailer": "^5.4",
         "symfony/polyfill-mbstring": "^1.22",
-        "twbs/bootstrap": "5.0.0",
-        "vmeditab/laravel-odbc-driver": "^2.0"
+        "twbs/bootstrap": "5.0.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -42,6 +41,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         },

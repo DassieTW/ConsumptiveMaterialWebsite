@@ -10,9 +10,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -22,16 +19,12 @@
 </head>
 
 <body>
-    <div id="app">
-        {{-- <router-view /> --}}
-        <vue-example-component></vue-example-component>
+    <!-- vue component example -->
+    <div id="breadcrumbnav">
+        <vue-bread-crumb></vue-bread-crumb>
     </div>
 
-    
-    <!-- vue component example -->
-    <div id="vue-app">
-        <example-component></example-component>
-    </div>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 
 </html>

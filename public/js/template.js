@@ -6,7 +6,6 @@ $(document).ready(function () {
             animation: 'circle'
         });
 
-        // console.log("hiiiiiiiiiiiiiiii"); // test
         window.location.href = "/bu/sluggish";
     });
 }); // on document ready
