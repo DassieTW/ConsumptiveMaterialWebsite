@@ -39,10 +39,21 @@ import "./modules/flatpickr";
 
 // vue3
 import { createApp } from 'vue';
+import Vue3Langjs from 'vue3-langjs';
+import vueTranslations from './vue-translations';
 import router from './vue-router/route';
 import BreadCrumbNav from './components/breadcrumb/BreadCrumbNav.vue';
-createApp({
+
+const app = createApp({
     components: {
-        'vue-bread-crumb' : BreadCrumbNav,
+        'vue-bread-crumb': BreadCrumbNav,
     }
-}).use(router).mount('#breadcrumbnav');
+})
+app.use(Vue3Langjs, {
+    messages: vueTranslations, 
+    // the locale file gen by command "php artisan lang:js resources/js/vue-translations.js --no-lib --quiet"
+    locale: 'zh-TW',
+    fallback: 'en'
+});
+app.use(router);
+app.mount('#breadcrumbnav');

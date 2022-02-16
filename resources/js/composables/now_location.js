@@ -20,7 +20,7 @@ export default function NowWeAt() {
             tempArr[a] = tempArr[a-1] + '/' + tempArr[a];
         } // for
 
-        console.log(Lang.get("checking.page_name")); // test
+        // console.log(this.$trans("checking.page_name")); // test
         urls.value = tempArr;
     } // getUrl()
 

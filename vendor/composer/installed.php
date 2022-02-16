@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'b7f5d6e409fc75ac6efb80d200ba1656eb2dcbd7',
+        'reference' => '8f45eb6a7b34984e8fbfb5fd7ec7d7d67a5fd50f',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -505,15 +505,6 @@
             'reference' => 'ae547e455a3d8babd07b96966b17d7fd21d9c6af',
             'dev_requirement' => false,
         ),
-        'kg-bot/laravel-localization-to-vue' => array(
-            'pretty_version' => 'v1.7.1',
-            'version' => '1.7.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../kg-bot/laravel-localization-to-vue',
-            'aliases' => array(),
-            'reference' => '58e060a6fcd98d770f62a7dc993951ba94a3ae6b',
-            'dev_requirement' => false,
-        ),
         'kodova/hamcrest-php' => array(
             'dev_requirement' => true,
             'replaced' => array(
@@ -535,7 +526,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'b7f5d6e409fc75ac6efb80d200ba1656eb2dcbd7',
+            'reference' => '8f45eb6a7b34984e8fbfb5fd7ec7d7d67a5fd50f',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(

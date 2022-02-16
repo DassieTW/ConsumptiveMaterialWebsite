@@ -22,8 +22,8 @@ class ComposerStaticInita7c9528321f5c9e1d64a95f508950363
         'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '9c67151ae59aff4788964ce8eb2a0f43' => __DIR__ . '/..' . '/clue/stream-filter/src/functions_include.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
@@ -151,10 +151,6 @@ class ComposerStaticInita7c9528321f5c9e1d64a95f508950363
             'Laravel\\Tinker\\' => 15,
             'Laravel\\SerializableClosure\\' => 28,
             'Laravel\\Sail\\' => 13,
-        ),
-        'K' => 
-        array (
-            'KgBot\\LaravelLocalization\\' => 26,
         ),
         'J' => 
         array (
@@ -519,10 +515,6 @@ class ComposerStaticInita7c9528321f5c9e1d64a95f508950363
         'Laravel\\Sail\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/sail/src',
-        ),
-        'KgBot\\LaravelLocalization\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kg-bot/laravel-localization-to-vue/src',
         ),
         'Jean85\\' => 
         array (
@@ -3957,12 +3949,6 @@ class ComposerStaticInita7c9528321f5c9e1d64a95f508950363
         'Jean85\\PrettyVersions' => __DIR__ . '/..' . '/jean85/pretty-package-versions/src/PrettyVersions.php',
         'Jean85\\Version' => __DIR__ . '/..' . '/jean85/pretty-package-versions/src/Version.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
-        'KgBot\\LaravelLocalization\\Classes\\ExportLocalizations' => __DIR__ . '/..' . '/kg-bot/laravel-localization-to-vue/src/Classes/ExportLocalizations.php',
-        'KgBot\\LaravelLocalization\\Console\\Commands\\ExportMessages' => __DIR__ . '/..' . '/kg-bot/laravel-localization-to-vue/src/Console/Commands/ExportMessages.php',
-        'KgBot\\LaravelLocalization\\Console\\Commands\\ExportMessagesToFlat' => __DIR__ . '/..' . '/kg-bot/laravel-localization-to-vue/src/Console/Commands/ExportMessagesToFlat.php',
-        'KgBot\\LaravelLocalization\\Events\\LaravelLocalizationExported' => __DIR__ . '/..' . '/kg-bot/laravel-localization-to-vue/src/Events/LaravelLocalizationExported.php',
-        'KgBot\\LaravelLocalization\\Facades\\ExportLocalizations' => __DIR__ . '/..' . '/kg-bot/laravel-localization-to-vue/src/Facades/ExportLocalizations.php',
-        'KgBot\\LaravelLocalization\\LaravelLocalizationServiceProvider' => __DIR__ . '/..' . '/kg-bot/laravel-localization-to-vue/src/LaravelLocalizationServiceProvider.php',
         'Laravel\\Sail\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/InstallCommand.php',
         'Laravel\\Sail\\Console\\PublishCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/PublishCommand.php',
         'Laravel\\Sail\\SailServiceProvider' => __DIR__ . '/..' . '/laravel/sail/src/SailServiceProvider.php',

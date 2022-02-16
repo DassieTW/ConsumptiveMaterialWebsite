@@ -6,7 +6,8 @@
         <a :href="item">{{ "0.0" }}</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        {{ urls[urls.length-1] }}
+        {{ $lang.getLocale() }}
+        {{ $t('checkInvLang.page_name') }}
       </li>
     </ol>
   </nav>
