@@ -76,7 +76,7 @@
                     $stock1 = DB::table('inventory')->where('客戶別', $data->客戶別)->where('料號', $data->料號)->sum('現有庫存');
                     $astock1 = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('現有庫存')->toArray();
                     $position1 = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->pluck('儲位')->toArray();
-                    $astock=array_map(function($v){return round($v,0);}, $astock);
+                    $astock1=array_map(function($v){return round($v,0);}, $astock1);
                     $test1 = array_combine($position1, $astock1);
                     $stock1 = round($stock1 , 0);
                 ?>
@@ -114,7 +114,6 @@
                     $astock2 = DB::table('inventory')->select('現有庫存')->where('料號',$data->料號)->get()->toArray();
                     $position2 = DB::table('inventory')->select('儲位')->where('料號',$data->料號)->get()->toArray();
                     // dd($astock2 , $position2);
-                    $astock=array_map(function($v){return round($v,0);}, $astock);
                     $stock2 = round($stock2 , 0);
                 ?>
 
@@ -131,7 +130,7 @@
                     <td>
                         @foreach ($astock2 as $k=> $a)
                         @if($a->現有庫存 > 0)
-                        {!! __('callpageLang.loc') !!} : {{$position2[$k]->儲位}} {!! __('callpageLang.nowstock') !!} : {{$a->現有庫存}}<br>
+                        {!! __('callpageLang.loc') !!} : {{$position2[$k]->儲位}} {!! __('callpageLang.nowstock') !!} : {{round($a->現有庫存)}}<br>
                         @else
                         {!! __('callpageLang.nostock') !!}
                         @break

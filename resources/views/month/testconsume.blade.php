@@ -93,7 +93,9 @@
                                             value="{{$data->單耗}}" step="0.0000000001"
                                             oninput="if(value.length>12)value=value.slice(0,12)" readonly></td>
                                     <td><input class = "checkbutton" type="checkbox" id="check{{$loop->index}}" name="check{{$loop->index}}"
-                                            ></td>
+                                    ></td>
+                                    <td><input style="width: 150px;" class = "form-control formcontrol-lg" type="text" id="remark{{$loop->index}}" name="remark{{$loop->index}}"
+                                        required placeholder="{!! __('monthlyPRpageLang.reason') !!}"></td>
                                 </tr>
                                 <input type="hidden" id="count" name="count" value="{{$loop->count}}"></td>
                                 @endforeach

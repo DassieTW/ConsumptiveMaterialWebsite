@@ -143,5 +143,7 @@ return [
     'loadsuccess' => '载入成功',
     'noload' => '无资料载入',
     'clickmail' => '点选此网址',
-
+    'confirmpeople' => '确认者',
+    'confirmemail' => '确认者信箱',
+    'reason' => '请填写原因',
 ];

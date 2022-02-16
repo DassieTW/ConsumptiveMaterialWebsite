@@ -115,7 +115,7 @@
                         <td><input type="hidden" id="datae{{$loop->index}}" name="data4{{$loop->index}}"
                                 value="{{$data->單位}}">{{$data->單位}}</td>
                         <td><input type="hidden" id="dataf{{$loop->index}}" name="data5{{$loop->index}}"
-                                value="{{$data->單價}}">{{$data->單價}}</td>
+                                value="{{$data->單價}}">{{round($data->單價 , 2)}}</td>
                         <td><input type="hidden" id="datag{{$loop->index}}" name="data6{{$loop->index}}"
                                 value="{{$data->幣別}}">{{$data->幣別}}</td>
                         <td><input type="hidden" id="datah{{$loop->index}}" name="data7{{$loop->index}}"
@@ -123,7 +123,7 @@
                         <td><input type="hidden" id="datai{{$loop->index}}" name="data8{{$loop->index}}"
                                 value="{{$data->月請購}}">{{$data->月請購}}</td>
                         <td><input type="hidden" id="dataj{{$loop->index}}" name="data9{{$loop->index}}"
-                                value="{{$data->現有庫存}}">{{$data->現有庫存}}</td>
+                                value="{{$data->現有庫存}}">{{round($data->現有庫存 , 0)}}</td>
                         <td><input type="hidden" id="datak{{$loop->index}}" name="data10{{$loop->index}}"
                                 value="{{$safe}}">{{$safe}}</td>
                         <td><input type="hidden" id="datal{{$loop->index}}" name="data11{{$loop->index}}"

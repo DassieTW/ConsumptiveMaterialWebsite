@@ -123,17 +123,17 @@ $(document).ready(function () {
                 rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
                     'min = "0.0000000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 200px"' + '">';
 
-                let rownowneed = document.createElement('td');
-                rownowneed.innerHTML = '<input id="nowneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'style="width: 200px"' + '" readonly>';
+                // let rownowneed = document.createElement('td');
+                // rownowneed.innerHTML = '<input id="nowneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                //     'style="width: 200px"' + '" readonly>';
 
-                let rownextneed = document.createElement('td');
-                rownextneed.innerHTML = '<input id="nextneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'style="width: 200px"' + '" readonly>';
+                // let rownextneed = document.createElement('td');
+                // rownextneed.innerHTML = '<input id="nextneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                //     'style="width: 200px"' + '" readonly>';
 
-                let rowsafestock = document.createElement('td');
-                rowsafestock.innerHTML = '<input id="safestock' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'style="width: 200px"' + '" readonly>';
+                // let rowsafestock = document.createElement('td');
+                // rowsafestock.innerHTML = '<input id="safestock' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                //     'style="width: 200px"' + '" readonly>';
 
                 let rowclient = document.createElement('td');
                 rowclient.innerHTML = "<span id=" + "client" + index + ">" + data.client + "</span>";
@@ -144,22 +144,22 @@ $(document).ready(function () {
                 let rowproduction = document.createElement('td');
                 rowproduction.innerHTML = "<span id=" + "production" + index + ">" + data.production + "</span>";
 
-                let rownowmps = document.createElement('td');
-                rownowmps.innerHTML = '<input id="nowmps' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nowmps + '">';
+                // let rownowmps = document.createElement('td');
+                // rownowmps.innerHTML = '<input id="nowmps' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                //     'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nowmps + '">';
 
-                let rownowday = document.createElement('td');
-                rownowday.innerHTML = '<input id="nowday' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nowday + '">';
+                // let rownowday = document.createElement('td');
+                // rownowday.innerHTML = '<input id="nowday' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                //     'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nowday + '">';
 
-                let rownextmps = document.createElement('td');
-                rownextmps.innerHTML = '<input id="nextmps' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nextmps + '">';
+                // let rownextmps = document.createElement('td');
+                // rownextmps.innerHTML = '<input id="nextmps' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                //     'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nextmps + '">';
 
 
-                let rownextday = document.createElement('td');
-                rownextday.innerHTML = '<input id="nextday' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nextday + '">';
+                // let rownextday = document.createElement('td');
+                // rownextday.innerHTML = '<input id="nextday' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
+                //     'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nextday + '">';
 
                 row.appendChild(rowdelete);
                 row.appendChild(rownumber);
@@ -168,40 +168,40 @@ $(document).ready(function () {
                 row.appendChild(rowunit);
                 row.appendChild(rowlt);
                 row.appendChild(rowamount);
-                row.appendChild(rownowneed);
-                row.appendChild(rownextneed);
-                row.appendChild(rowsafestock);
+                // row.appendChild(rownowneed);
+                // row.appendChild(rownextneed);
+                // row.appendChild(rowsafestock);
                 row.appendChild(rowclient);
                 row.appendChild(rowmachine);
                 row.appendChild(rowproduction);
-                row.appendChild(rownowmps);
-                row.appendChild(rownowday);
-                row.appendChild(rownextmps);
-                row.appendChild(rownextday);
+                // row.appendChild(rownowmps);
+                // row.appendChild(rownowday);
+                // row.appendChild(rownextmps);
+                // row.appendChild(rownextday);
 
                 body.appendChild(row);
                 tbl.appendChild(body);
                 appenSVg(index);
 
-                $("input").change(function () {
-                    for (let i = 0; i < sessionStorage.getItem('consumecount'); i++) {
-                        var nowmps = $("#nowmps" + i).val();
-                        var amount = $("#amount" + i).val();
-                        var nowday = $("#nowday" + i).val();
-                        var nextmps = $("#nextmps" + i).val();
-                        var nextday = $("#nextday" + i).val();
-                        var lt = $("#lt" + i).text();
-                        var nowneed = (nowmps * amount) / nowday;
-                        var nextneed = (nextmps * amount) / nextday;
-                        var safe = nextneed * lt;
-                        nowneed = nowneed.toFixed(7);
-                        nextneed = nextneed.toFixed(7);
-                        safe = safe.toFixed(7);
-                        $('#nowneed' + i).val(nowneed);
-                        $('#nextneed' + i).val(nextneed);
-                        $('#safestock' + i).val(safe);
-                    }
-                });
+                // $("input").change(function () {
+                //     for (let i = 0; i < sessionStorage.getItem('consumecount'); i++) {
+                //         var nowmps = $("#nowmps" + i).val();
+                //         var amount = $("#amount" + i).val();
+                //         var nowday = $("#nowday" + i).val();
+                //         var nextmps = $("#nextmps" + i).val();
+                //         var nextday = $("#nextday" + i).val();
+                //         var lt = $("#lt" + i).text();
+                //         var nowneed = (nowmps * amount) / nowday;
+                //         var nextneed = (nextmps * amount) / nextday;
+                //         var safe = nextneed * lt;
+                //         nowneed = nowneed.toFixed(7);
+                //         nextneed = nextneed.toFixed(7);
+                //         safe = safe.toFixed(7);
+                //         $('#nowneed' + i).val(nowneed);
+                //         $('#nextneed' + i).val(nextneed);
+                //         $('#safestock' + i).val(safe);
+                //     }
+                // });
             },
             error: function (err) {
                 //料號長度不為12

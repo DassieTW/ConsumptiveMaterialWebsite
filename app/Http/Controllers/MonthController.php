@@ -2057,6 +2057,7 @@ class MonthController extends Controller
                 $production = $Alldata[4][$i];
                 $number = $Alldata[0][$i];
                 $check = $Alldata[6][$i];
+                $reason = $Alldata[7][$i];
 
                 if ($check) {
                     月請購_單耗::where('客戶別', $client)
@@ -2321,7 +2322,7 @@ class MonthController extends Controller
 
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
 
-            $message->to($email, 'Tutorials Point')->subject('Check Consume data');
+            $message->to($email, 'Tutorials Point')->subject('請確認單耗資料');
             $message->bcc('Vincent6_Yeh@pegatroncorp.com');
             $message->bcc('Tony_Tseng@pegatroncorp.com');
             // $message->attach(public_path() . '/download/LineExample.xlsx');
@@ -2336,7 +2337,7 @@ class MonthController extends Controller
         $data = array('email' => $sessemail, 'username' => $name, 'database' => $database, 'name' => $dename);
 
         Mail::send('mail/standcheck', $data,  function ($message) use ($email) {
-            $message->to($email, 'Tutorials Point')->subject('Check Stand data');
+            $message->to($email, 'Tutorials Point')->subject('請確認站位資料');
             $message->bcc('Vincent6_Yeh@pegatroncorp.com');
             $message->bcc('Tony_Tseng@pegatroncorp.com');
             $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
@@ -2353,7 +2354,7 @@ class MonthController extends Controller
             $email = DB::table('login')->where('姓名', $sender)->value('email');
             if ($email !== null) {
                 // dd($email);
-                $message->to($email, 'Tutorials Point')->subject('RE:Check Consume data');
+                $message->to($email, 'Tutorials Point')->subject('RE:請確認單耗資料');
                 $message->bcc('Vincent6_Yeh@pegatroncorp.com');
                 $message->bcc('Tony_Tseng@pegatroncorp.com');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
@@ -2372,7 +2373,7 @@ class MonthController extends Controller
             $email = DB::table('login')->where('姓名', $sender)->value('email');
             if ($email !== null) {
 
-                $message->to($email, 'Tutorials Point')->subject('RE:Check Stand data');
+                $message->to($email, 'Tutorials Point')->subject('RE:請確認站位資料');
                 $message->bcc('Vincent6_Yeh@pegatroncorp.com');
                 $message->bcc('Tony_Tseng@pegatroncorp.com');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');

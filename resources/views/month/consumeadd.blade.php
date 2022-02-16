@@ -92,16 +92,16 @@
                             <th>{!! __('monthlyPRpageLang.unit') !!}</th>
                             <th>{!! __('monthlyPRpageLang.lt') !!}</th>
                             <th>{!! __('monthlyPRpageLang.consume') !!}</th>
-                            <th>{!! __('monthlyPRpageLang.nowneed') !!}</th>
+                            {{-- <th>{!! __('monthlyPRpageLang.nowneed') !!}</th>
                             <th>{!! __('monthlyPRpageLang.nextneed') !!}</th>
-                            <th>{!! __('monthlyPRpageLang.safe') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.safe') !!}</th> --}}
                             <th>{!! __('monthlyPRpageLang.client') !!}</th>
                             <th>{!! __('monthlyPRpageLang.machine') !!}</th>
                             <th>{!! __('monthlyPRpageLang.process') !!}</th>
-                            <th>{!! __('monthlyPRpageLang.nowmps') !!}</th>
+                            {{-- <th>{!! __('monthlyPRpageLang.nowmps') !!}</th>
                             <th>{!! __('monthlyPRpageLang.nowday') !!}</th>
                             <th>{!! __('monthlyPRpageLang.nextmps') !!}</th>
-                            <th>{!! __('monthlyPRpageLang.nextday') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.nextday') !!}</th> --}}
                         </tr>
                     </tbody>
                 </table>

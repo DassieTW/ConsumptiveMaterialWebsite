@@ -52,7 +52,9 @@
                 <td> <img src="{{ $message->embed(public_path() . '/admin/img/mail/x.png') }}" width="30px" height="30px"/>
                 </td>
                 @endif
-
+                <td><input type="hidden" id="remark{{$i}}" name="remark{{$i}}"
+                    value="{{$datas[7][$i]}}">{{$datas[7][$i]}}
+                </td>
                 </tr>
                 @endfor
 

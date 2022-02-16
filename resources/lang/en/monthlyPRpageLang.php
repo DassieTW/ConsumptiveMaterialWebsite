@@ -147,4 +147,8 @@ return [
     'loadsuccess' => 'Load Success',
     'noload' => 'No data load',
     'clickmail' => 'Click here',
+    'confirmpeople' => 'Confirm People',
+    'confirmemail' => 'Confirm Email',
+    'reason' => 'Please input Reason',
+
 ];

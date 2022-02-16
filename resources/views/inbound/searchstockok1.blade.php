@@ -108,13 +108,13 @@
                                     <td><input type = "hidden" id = "datac{{$loop->index}}" name = "data2{{$loop->index}}" value = "{{$name}}">{{$name}}</td>
                                     <td><input type = "hidden" id = "datad{{$loop->index}}" name = "data3{{$loop->index}}" value = "{{$format}}">{{$format}}</td>
                                     <td><input type = "hidden" id = "datae{{$loop->index}}" name = "data4{{$loop->index}}" value = "{{$unit}}">{{$unit}}</td>
-                                    <td><input type = "hidden" id = "dataf{{$loop->index}}" name = "data5{{$loop->index}}" value = "{{$price}}">{{$price}}</td>
+                                    <td><input type = "hidden" id = "dataf{{$loop->index}}" name = "data5{{$loop->index}}" value = "{{$price}}">{{round($price,2)}}</td>
                                     <td><input type = "hidden" id = "datag{{$loop->index}}" name = "data6{{$loop->index}}" value = "{{$money}}">{{$money}}</td>
                                     <td><input type = "hidden" id = "datah{{$loop->index}}" name = "data7{{$loop->index}}" value = "{{$gradea}}">{{$gradea}}</td>
                                     <td><input type = "hidden" id = "datai{{$loop->index}}" name = "data8{{$loop->index}}" value = "{{$month}}">{{$month}}</td>
-                                    <td><input type = "hidden" id = "dataj{{$loop->index}}" name = "data9{{$loop->index}}" value = "{{$data->現有庫存}}">{{$data->現有庫存}}</td>
+                                    <td><input type = "hidden" id = "dataj{{$loop->index}}" name = "data9{{$loop->index}}" value = "{{$data->現有庫存}}">{{round($data->現有庫存,0)}}</td>
                                     <td><input type = "hidden" id = "datak{{$loop->index}}" name = "data10{{$loop->index}}" value = "{{$monthuse}}">{{$monthuse}}</td>
-                                    <td><input type = "hidden" id = "datal{{$loop->index}}" name = "data11{{$loop->index}}" value = "{{$stockmonth}}">{{$stockmonth}}</td>
+                                    <td><input type = "hidden" id = "datal{{$loop->index}}" name = "data11{{$loop->index}}" value = "{{$stockmonth}}">{{round($stockmonth , 1)}}</td>
                                 </tr>
                                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                     @endforeach

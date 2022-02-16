@@ -23,6 +23,7 @@ $('#consume').on('submit', function (e) {
     var check = [];
     var jobnumber = $("#jobnumber").val();
     var email = $("#email").val();
+    email = email + 'pegatroncorp.com';
     $("input:checkbox[name=innumber]:checked").each(function () {
         check.push($(this).val());
     });

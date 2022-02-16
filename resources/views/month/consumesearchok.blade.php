@@ -66,12 +66,12 @@
             </div>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
+            <label class="form-label">{!! __('monthlyPRpageLang.confirmpeople') !!}</label>
             <input type="text" id="jobnumber" name="jobnumber" class="form-control form-control" style="width: 250px">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
-            <input type="email" id="email" name="email" pattern=".+@pegatroncorp\.com"
-                placeholder="xxx@pegartoncorp.com" class="form-control form-control" style="width: 250px">
+            <label class="form-label">{!! __('monthlyPRpageLang.confirmemail') !!}</label>
+            <input type="email" id="email" name="email"
+                class="form-control form-control" style="width: 250px">
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

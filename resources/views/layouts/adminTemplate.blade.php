@@ -302,12 +302,6 @@
                                                     </a>
                                                 </li>
                                                 <li
-                                                    class="sidebar-item {{ isActiveRoute(['month/importnotmonth', 'month/uploadnotmonth','month/notmonthinf']) }}">
-                                                    <a class="sidebar-link" href="{{route('month.importnotmonth')}}">
-                                                        {!! __('templateWords.importNonMonthlyData') !!}
-                                                    </a>
-                                                </li>
-                                                <li
                                                     class="sidebar-item {{ isActiveRoute(['month/importmonth','month/uploadmonth','month/monthinf']) }}">
                                                     <a class="sidebar-link" href="{{route('month.importmonth')}}">
                                                         {!! __('templateWords.importMonthlyData') !!}
@@ -326,6 +320,12 @@
                                                 <li class="sidebar-item {{ isActiveRoute(['month/sxb']) }}">
                                                     <a class="sidebar-link" href="{{route('month.sxb')}}">
                                                         {!! __('monthlyPRpageLang.SXB_search') !!}
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['month/importnotmonth', 'month/uploadnotmonth','month/notmonthinf']) }}">
+                                                    <a class="sidebar-link" href="{{route('month.importnotmonth')}}">
+                                                        {!! __('templateWords.importNonMonthlyData') !!}
                                                     </a>
                                                 </li>
                                                 <li class="sidebar-item {{ isActiveRoute(['month/transit']) }}">

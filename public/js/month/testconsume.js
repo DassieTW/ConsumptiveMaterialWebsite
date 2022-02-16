@@ -7,6 +7,17 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
+    $(".checkbutton").on("change", function () {
+
+        var count = $("#count").val();
+        for (let i = 0; i < count; i++) {
+            if (($("#check" + i).prop('checked'))) {
+                $("#remark" + i).prop('required', false);
+            } else {
+                $("#remark" + i).prop('required', true);
+            }
+        }
+    });
     $('#consumecheck').on('submit', function (e) {
         e.preventDefault();
 
@@ -22,6 +33,7 @@ $(document).ready(function () {
         var machine = [];
         var amount = [];
         var check = [];
+        var reason = [];
         var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
         var count = $("#count").val();
@@ -37,7 +49,10 @@ $(document).ready(function () {
             machine.push($("#machine" + i).val());
             amount.push($("#amount" + i).val());
             check.push($("#check" + i).prop('checked'));
+            reason.push($("#remark" + i).val());
         }
+
+
 
         if (count == undefined) {
             notyf.open({
@@ -65,6 +80,7 @@ $(document).ready(function () {
         data.push(production);
         data.push(amount);
         data.push(check);
+        data.push(reason);
         if (sure !== true) {
             return false;
         } else {
