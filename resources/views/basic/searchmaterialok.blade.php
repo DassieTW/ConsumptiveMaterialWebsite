@@ -72,7 +72,7 @@
                             <tr>
                                 <td class="p-0 m-0"><div class="pb-2"><input class="innumber" type="checkbox" id="innumber" name="innumber" value="{{ $loop->index }}"></div></td>
                                 <td class="p-0 m-0"><input type="hidden" id="number{{ $loop->index }}" name="number{{ $loop->index }}" value="{{ $data->料號 }}">
-                                    <div class="text-nowrap pb-2" style="overflow-x: scroll; width: 100%;">{{ $data->料號 }}</div>
+                                    <div class="text-nowrap pb-2" style="width: 100%;">{{ $data->料號 }}</div>
                                 </td>
                                 <td class="py-0 m-0"><input type="hidden" id="name{{ $loop->index }}" name="name{{ $loop->index }}" value="{{ $data->品名 }}">
                                     <div class="text-nowrap pb-2" style="overflow-x: scroll; width: 100%;">{{ $data->品名 }}</div>
@@ -84,7 +84,7 @@
                                     <select style="width: 6ch;" class="col col-auto form-select form-select-lg p-0 m-0"
                                         id="gradea{{ $loop->index }}" name="gradea{{ $loop->index }}">
                                         <option>{{ $data->A級資材 }}</option>
-                                        <option>{!! __('basicInfoLang.yes') !!}</option>
+                                        <option value="{!! __('basicInfoLang.yes') !!}">{!! __('basicInfoLang.yes') !!}</option>
                                         <option>{!! __('basicInfoLang.no') !!}</option>
                                     </select>
                                 </td>
@@ -147,7 +147,7 @@
                                         value="{{ $data->安全庫存 }}" min="0"></td>
                                     @else
                                         <input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"
-                                        id="safe{{ $loop->index }}" name="safe{{ $loop->index }}" value="{{ "公式" }}" min="0" readonly></td>
+                                        id="safe{{ $loop->index }}" name="safe{{ $loop->index }}" value="" min="0" readonly></td>
                                     @endif
 
                                 <input type="hidden" id="count" name="count" value="{{ $loop->count }}">

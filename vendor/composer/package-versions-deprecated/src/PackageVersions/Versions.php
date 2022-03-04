@@ -62,6 +62,8 @@ final class Versions
   'intervention/image' => '2.7.1@744ebba495319501b873a4e48787759c72e3fb8c',
   'jean85/pretty-package-versions' => '1.6.0@1e0104b46f045868f11942aea058cd7186d6c303',
   'laravel/framework' => 'v8.39.0@0c6f9acb55c8d1621b6f42e3dd5e242cf3b17680',
+  'laravel/sanctum' => 'v2.14.2@dc5d749ba9bfcfd68d8f5c272238f88bea223e66',
+  'laravel/serializable-closure' => 'v1.1.0@65c9faf50d567b65d81764a44526545689e3fe63',
   'laravel/tinker' => 'v2.7.0@5f2f9815b7631b9f586a3de7933c25f9327d4073',
   'laravel/ui' => 'v3.2.1@e2478cd0342a92ec1c8c77422553bda8ee004fd0',
   'league/commonmark' => '1.6.7@2b8185c13bc9578367a5bf901881d1c1b5bbd09b',
@@ -86,7 +88,7 @@ final class Versions
   'php-http/promise' => '1.1.0@4c4c1f9b7289a2ec57cde7f1e9762a5789506f88',
   'phpdocumentor/reflection-common' => '2.2.0@1d01c49d4ed62f25aa84a747ad35d5a16924662b',
   'phpdocumentor/type-resolver' => '1.6.0@93ebd0014cab80c4ea9f5e297ea48672f1b87706',
-  'phpoffice/phpspreadsheet' => '1.21.0@1a359d2ccbb89c05f5dffb32711a95f4afc67964',
+  'phpoffice/phpspreadsheet' => '1.22.0@3a9e29b4f386a08a151a33578e80ef1747037a48',
   'phpoption/phpoption' => '1.8.1@eab7a0df01fe2344d172bff4cd6dbd3f8b84ad15',
   'predis/predis' => 'v1.1.10@a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e',
   'psr/cache' => '1.0.1@d11b50ad223250cf17b86e38383413f5a6764bf8',
@@ -183,7 +185,7 @@ final class Versions
   'sebastian/type' => '2.3.4@b8cd8a1c753c90bc1a0f5372170e3e489136f914',
   'sebastian/version' => '3.0.2@c6c1022351a901512170118436c764e473f6de8c',
   'theseer/tokenizer' => '1.2.1@34a41e998c2183e22995f158c581e7b5e755ab9e',
-  'laravel/laravel' => 'dev-develop@8e62637ab15689fdfb0b94c46a1946ab988c23ed',
+  'laravel/laravel' => 'dev-develop@0b275bf4e67506d796d584dc71b2011f4345af34',
 );
 
     private function __construct()

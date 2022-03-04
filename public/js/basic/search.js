@@ -11,7 +11,7 @@ $(document).ready(function () {
 
         var check = $('input[name=numberradio]:checked').val();
         if (check == 1 ) {
-            $("#number").prop('required', true);
+            // $("#number").prop('required', true);
             $("#numberarea").prop('required', false);
         } else {
             $("#number").prop('required', false);
