@@ -38,135 +38,6 @@ use Mail;
 
 class MonthController extends Controller
 {
-    //
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    /*public function index()
-    {
-        //
-        if(Session::has('username'))
-        {
-            return view('month.index');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//匯入非月請購頁面
-    public function importnotmonth(Request $request)
-    {
-        if(Session::has('username'))
-        {
-            return view('month.importnotmonth')->with(['client' => 客戶別::cursor()]);
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//SRM單數量頁面
-    public function srm(Request $request)
-    {
-        if(Session::has('username'))
-        {
-            return view('month.srm')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//匯入月請購頁面
-    public function importmonth(Request $request)
-    {
-        if(Session::has('username'))
-        {
-            return view('month.importmonth')->with(['client' => 客戶別::cursor()])
-            ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()]);
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//料號單耗(新增)頁面
-    public function consumeadd(Request $request)
-    {
-        if(Session::has('username'))
-        {
-            return view('month.consumeadd')->with(['client' => 客戶別::cursor()])
-            ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()]);
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//站位人力(新增)頁面
-    public function standadd(Request $request)
-    {
-        if(Session::has('username'))
-        {
-            return view('month.standadd')->with(['client' => 客戶別::cursor()])
-            ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()]);
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//料號單耗(查詢與修改)頁面
-    public function consume(Request $request)
-    {
-        if(Session::has('username'))
-        {
-            return view('month.consume')->with(['client' => 客戶別::cursor()])
-            ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//站位人力(查詢與修改)頁面
-    public function stand(Request $request)
-    {
-        if(Session::has('username'))
-        {
-            return view('month.stand')->with(['client' => 客戶別::cursor()])
-            ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);;
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//請購單頁面
-    public function buylist(Request $request)
-    {
-        if(Session::has('username'))
-        {
-            return view('month.buylist')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);;
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
     //料號單耗(查詢)
     public function consumesearch(Request $request)
     {
@@ -1609,8 +1480,9 @@ class MonthController extends Controller
             $rmb = $request->input('rmb');
             $vnd = $request->input('vnd');
             $idr = $request->input('idr');
-            if ($client == "所有客戶" || $client == '所有客户' || $client == 'ALL Client') {
 
+            if ($client == "ALL_CLIENT") {
+                Session::put("clientChoice", "All Clients"); // for Excel Header
                 if ($send === null) {
                     $datas = DB::table('月請購_單耗')
                         ->join('MPS', function ($join) {
@@ -1633,7 +1505,7 @@ class MonthController extends Controller
                             $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                         })->where('consumptive_material.發料部門', $send)
                         ->where('月請購_單耗.狀態', '=', "已完成")->get();
-                }
+                } // if else 
 
                 foreach ($datas as $data) {
                     $test = $data->幣別;
@@ -1679,7 +1551,8 @@ class MonthController extends Controller
                         array_push($array, 1);
                         continue;
                     }
-                }
+                } // for each
+
                 if ($send === null) {
                     $datas2 = DB::table('月請購_站位')
                         ->join('MPS', function ($join) {
@@ -1701,7 +1574,7 @@ class MonthController extends Controller
                             $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
                         })->where('consumptive_material.發料部門', $send)
                         ->get();
-                }
+                } // if else
 
                 foreach ($datas2 as $data) {
                     $test = $data->幣別;
@@ -1742,18 +1615,19 @@ class MonthController extends Controller
                             ]);
                         } else if ($test == "IDR" && $idr != null) {
                             array_push($array1, $idr);
-                        }
+                        } // if else if
                     } else {
                         array_push($array1, 1);
                         continue;
-                    }
-                }
+                    } // if else
+                } // for each
 
                 return view('month.buylistmakeok')->with(['data1' => $datas])->with(['data2' => $datas2])
                     ->with(['dow1' => $datas])->with(['dow2' => $datas2])
                     ->with(['rate1' => $array])->with(['rate2' => $array1])
                     ->with(['drate1' => $array])->with(['drate2' => $array1]);
             } else {
+                Session::put("clientChoice", "All Clients"); // for Excel Header
                 if ($send === null) {
                     $datas = DB::table('月請購_單耗')
                         ->join('MPS', function ($join) {
@@ -1903,7 +1777,7 @@ class MonthController extends Controller
             }
         } else {
             return redirect(route('member.login'));
-        }
+        } // else
     }
 
     //請購單-提交
@@ -2151,6 +2025,7 @@ class MonthController extends Controller
             $title = $request->input('title');
             $count = $request->input('count');
 
+
             //填寫表頭
             for ($i = 0; $i < 22; $i++) {
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
@@ -2190,25 +2065,46 @@ class MonthController extends Controller
     {
         if (Session::has('username')) {
 
+            // Set value binder so that "100%" won't be inserted as string
+            \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
+
             $spreadsheet = new Spreadsheet();
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
             $worksheet = $spreadsheet->getActiveSheet();
             $titlecount = $request->input('titlecount');
             $count = $request->input('count');
             $Alldata = json_decode($request->input('AllData'));
-
+            // dd($Alldata); // test
+            $worksheet->getPageSetup()->setHorizontalCentered(true);
+            // 填寫header & footer of excel when printing
+            $worksheet->getHeaderFooter()->setOddHeader("&C&B" . Session::get("clientChoice") . "  " . Carbon::now()->format('m') . "月耗材匯總");
+            $worksheet->getHeaderFooter()->setOddFooter("&L&B核准：_______________________&C&B審核：_______________________&R&B申請人：_______________________");
+            
             //填寫表頭
             for ($i = 0; $i < $titlecount; $i++) {
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
-            }
+            } // for 
 
             //填寫內容
+            $endOfRow = 0 ;
+            $endOfCol = 0 ;
+            $alphabet = range('A', 'Z'); // A ~ Z
             for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
                     $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
-                }
-            }
+                    $endOfRow = $j ;
+                } // for
 
+                $endOfCol = $i ;
+            } // for
+
+            // dd($endOfRow . "," . $endOfCol); // test
+            
+            $worksheet->setCellValue("A" . ($endOfRow+3), "合計：");
+            $worksheet->mergeCells("A" . ($endOfRow+3) . ":" . $alphabet[$endOfCol-2] . ($endOfRow+3)); // for the SUM row
+            $worksheet->setCellValue( $alphabet[$endOfCol] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol] ."2:" . $alphabet[$endOfCol] . ($endOfRow+2) . ")");
+            $worksheet->setCellValue( $alphabet[$endOfCol-1] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol-1] ."2:" . $alphabet[$endOfCol-1] . ($endOfRow+2) . ")");
+            $worksheet->getStyle( $alphabet[$endOfCol] . "2:" . $alphabet[$endOfCol] . ($endOfRow+3))->getNumberFormat()->setFormatCode('0%');
             // 下載
             $now = Carbon::now()->format('YmdHis');
             $titlename = $request->input('titlename');
@@ -2221,7 +2117,7 @@ class MonthController extends Controller
             $writer->save('php://output');
         } else {
             return redirect(route('member.login'));
-        }
+        } // else
     }
 
     //請購單下載
@@ -2238,6 +2134,7 @@ class MonthController extends Controller
             $Alldata = json_decode($request->input('AllData'));
 
             $i = 2;
+
             //填寫表頭
             $worksheet->setCellValueByColumnAndRow(1, 1, 'Item');
             $worksheet->setCellValueByColumnAndRow(2, 1, 'Part Number');
@@ -2367,7 +2264,7 @@ class MonthController extends Controller
     {
         $data = array('datas' => $alldata, 'count' => $count);
 
-        Mail::send('mail/markstand', $data, function ($message) use ($sender){
+        Mail::send('mail/markstand', $data, function ($message) use ($sender) {
             // $email = 't22923200@gmail.com';
             $email = DB::table('login')->where('姓名', $sender)->value('email');
             if ($email !== null) {

@@ -22,7 +22,7 @@
         <div class="row justify-content-center">
             <div class="card-body">
                 <div class="d-flex w-100">
-                    <form action="{{ route('month.buylistmake') }}" method="POST">
+                    <form id="seaechForm" action="{{ route('month.buylistmake') }}" method="POST">
                         @csrf
                         <div class="row w-100 justify-content-center mb-3">
                             <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>
@@ -35,7 +35,7 @@
                                     @foreach($client as $client)
                                     <option>{{ $client->客戶 }}</option>
                                     @endforeach
-                                    <option>{!! __('monthlyPRpageLang.allclient') !!}</option>
+                                    <option value="ALL_CLIENT">{!! __('monthlyPRpageLang.allclient') !!}</option>
                                 </select>
                             </div>
 

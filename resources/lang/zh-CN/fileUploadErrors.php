@@ -16,6 +16,6 @@ return [
     'No_file_sent' => '没有档案',
     'Exceeded_filesize_limit' => '超过档案大小限制',
     'Unknown_errors' => '未知错误',
-    'Invalid_file_format' => '档案格式错误',
+    'Invalid_file_format' => '请上传.xlsx或.xls档',
     'Failed_to_move_uploaded_file' => '无法移动档案至伺服器资料夹',
 ];

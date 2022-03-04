@@ -149,7 +149,7 @@
                             <div class="col-8">
                                 <div class="input-group">
                                     <input class="form-control form-control-lg text-center" type="text" id="newMail"
-                                        name="newMail" placeholder="{!! __('loginPageLang.enter_email') !!}" required />
+                                        name="newMail" placeholder="{!! __('loginPageLang.enter_email') !!}" />
                                     <div class="input-group-text">
                                         <span>@pegatroncorp.com</span>
                                     </div>

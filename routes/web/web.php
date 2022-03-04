@@ -88,14 +88,6 @@ Route::get('/lang/{type}', function (Request $request, $type) {
     return Redirect::back();
 })->withoutMiddleware('auth');
 
-Route::post('/lang', function (Request $request, $type) {
-    $session = $request->getSession();
-    $session->put('locale', $type);
-    \App::setLocale($type);
-    return Redirect::back();
-})->withoutMiddleware('auth');
-
-
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');
 });

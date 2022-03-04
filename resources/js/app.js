@@ -52,8 +52,6 @@ const app = createApp({
 app.use(Vue3Langjs, {
     messages: vueTranslations, 
     // the locale file gen by command "php artisan lang:js resources/js/vue-translations.js --no-lib --quiet"
-    locale: 'zh-TW',
-    fallback: 'en'
 });
 app.use(router);
 app.mount('#breadcrumbnav');
