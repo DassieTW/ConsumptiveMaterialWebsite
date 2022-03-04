@@ -2359,6 +2359,13 @@ class MonthController extends Controller
                 $message->bcc('Tony_Tseng@pegatroncorp.com');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
             }
+            else
+            {
+                $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
+                $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+
+            }
         });
     }
 
@@ -2377,6 +2384,13 @@ class MonthController extends Controller
                 $message->bcc('Vincent6_Yeh@pegatroncorp.com');
                 $message->bcc('Tony_Tseng@pegatroncorp.com');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+            }
+            else
+            {
+                $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
+                $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+
             }
         });
     }

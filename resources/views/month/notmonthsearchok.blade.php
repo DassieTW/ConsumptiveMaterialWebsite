@@ -18,12 +18,20 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('monthlyPRpageLang.importNonMonthlyData') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <form id = "notmonthform" method="POST">
                 @csrf
                 <input type = "hidden" id = "titlename" name = "titlename" value = "非月請購">
+                <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
+                    value="{!! __('monthlyPRpageLang.download') !!}">
+                    <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importnotmonth')}}'">{!!
+                        __('monthlyPRpageLang.return') !!}</button>
+
                 <table class="table">
                     <tr>
                         <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('monthlyPRpageLang.client') !!}</td>
@@ -36,7 +44,7 @@
                         <input type = "hidden" id = "titlecount" name = "titlecount" value = "7">
                     </tr>
                     @foreach($data as $data)
-                    <tr>
+                    <tr class="isnRows">
                         <td><input type = "hidden" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
                         <td><input type = "hidden" id = "data1{{$loop->index}}" name = "data1{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
                         <td><input type = "hidden" id = "data2{{$loop->index}}" name = "data2{{$loop->index}}" value = "{{$data->品名}}">{{$data->品名}}</td>
@@ -50,14 +58,11 @@
 
 
                 </table>
-                <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-                    value="{!! __('monthlyPRpageLang.download') !!}">
+
 
             </form>
         </div>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importnotmonth')}}'">{!!
-            __('monthlyPRpageLang.return') !!}</button>
     </div>
 </div>
 

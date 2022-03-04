@@ -62,8 +62,6 @@ class LockableFile
      * @param  string  $path
      * @param  string  $mode
      * @return void
-     *
-     * @throws \Exception
      */
     protected function createResource($path, $mode)
     {
@@ -131,8 +129,6 @@ class LockableFile
      *
      * @param  bool  $block
      * @return $this
-     *
-     * @throws \Illuminate\Contracts\Filesystem\LockTimeoutException
      */
     public function getSharedLock($block = false)
     {
@@ -150,8 +146,6 @@ class LockableFile
      *
      * @param  bool  $block
      * @return bool
-     *
-     * @throws \Illuminate\Contracts\Filesystem\LockTimeoutException
      */
     public function getExclusiveLock($block = false)
     {

@@ -106,26 +106,26 @@
                                     __('monthlyPRpageLang.lt') !!}</th>
                                 <th><input type="hidden" id="title5" name="title5" value="單耗">{!!
                                     __('monthlyPRpageLang.consume') !!}</th>
-                                <th><input type="hidden" id="title6" name="title6" value="當月每日需求">{!!
+                                {{-- <th><input type="hidden" id="title6" name="title6" value="當月每日需求">{!!
                                     __('monthlyPRpageLang.nowdayneed') !!}</th>
                                 <th><input type="hidden" id="title7" name="title7" value="下月每日需求">{!!
                                     __('monthlyPRpageLang.nextdayneed') !!}</th>
                                 <th><input type="hidden" id="title8" name="title8" value="安全庫存">{!!
-                                    __('monthlyPRpageLang.safe') !!}</th>
+                                    __('monthlyPRpageLang.safe') !!}</th> --}}
                                 <th><input type="hidden" id="title9" name="title9" value="客戶別">{!!
                                     __('monthlyPRpageLang.client') !!}</th>
                                 <th><input type="hidden" id="title10" name="title10" value="機種">{!!
                                     __('monthlyPRpageLang.machine') !!}</th>
                                 <th><input type="hidden" id="title11" name="title11" value="製程">{!!
                                     __('monthlyPRpageLang.process') !!}</th>
-                                <th><input type="hidden" id="title12" name="title12" value="當月MPS">{!!
+                                {{-- <th><input type="hidden" id="title12" name="title12" value="當月MPS">{!!
                                     __('monthlyPRpageLang.nowmps') !!}</th>
                                 <th><input type="hidden" id="title13" name="title13" value="當月生產天數">{!!
                                     __('monthlyPRpageLang.nowday') !!}</th>
                                 <th><input type="hidden" id="title14" name="title14" value="下月MPS">{!!
                                     __('monthlyPRpageLang.nextmps') !!}</th>
                                 <th><input type="hidden" id="title15" name="title15" value="下月生產天數">{!!
-                                    __('monthlyPRpageLang.nextday') !!}</th>
+                                    __('monthlyPRpageLang.nextday') !!}</th> --}}
                             </tr>
                             @foreach($data as $row)
                             <tr id="row{{$loop->index}}">
@@ -146,7 +146,7 @@
                                 <td><input style="width:200px" type="number" id="datac{{$loop->index}}"
                                         name="datac{{$loop->index}}" step="0.0000000001" required value="{{$row[4]}}"
                                         class="form-control form-control-lg" min="0.0000000001"></td>
-                                <td><input style="width:200px" class="form-control form-control-lg" type="number"
+                                {{-- <td><input style="width:200px" class="form-control form-control-lg" type="number"
                                         id="datad{{$loop->index}}" name="datad{{$loop->index}}" readonly>
                                 </td>
                                 <td><input style="width:200px" type="number" id="datae{{$loop->index}}"
@@ -154,14 +154,14 @@
                                 </td>
                                 <td><input style="width:200px" type="number" id="dataf{{$loop->index}}"
                                         name="dataf{{$loop->index}}" readonly class="form-control form-control-lg">
-                                </td>
+                                </td> --}}
                                 <td><input type="hidden" id="datag{{$loop->index}}" name="datag{{$loop->index}}"
                                         value="{{$row[0]}}">{{$row[0]}}</td>
                                 <td><input type="hidden" id="datah{{$loop->index}}" name="datah{{$loop->index}}"
                                         value="{{$row[1]}}">{{$row[1]}}</td>
                                 <td><input type="hidden" id="datai{{$loop->index}}" name="datai{{$loop->index}}"
                                         value="{{$row[2]}}">{{$row[2]}}</td>
-                                <td><input class="form-control form-control-lg" style="width:85px" type="number"
+                                {{-- <td><input class="form-control form-control-lg" style="width:85px" type="number"
                                         id="dataj{{$loop->index}}" name="dataj{{$loop->index}}" step="0.01" min="0"
                                         value="{{$row[5]}}">
                                 </td>
@@ -176,7 +176,7 @@
                                 <td><input class="form-control form-control-lg" style="width:85px" type="number"
                                         id="datam{{$loop->index}}" name="datam{{$loop->index}}" step="0.01" min="0"
                                         value="{{$row[8]}}">
-                                </td>
+                                </td> --}}
 
                             </tr>
                             <input type="hidden" id="count" name="count" value="{{$loop->count}}">
@@ -187,11 +187,15 @@
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
-                    <input type="text" id="jobnumber" name="jobnumber" required>
+                    <input type="text" class="form-control form-control" id="jobnumber" name="jobnumber"
+                    required placeholder="{!! __('monthlyPRpageLang.nopeople') !!}" style="width: 250px">
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
-                    <input type="email" id="email" name="email" pattern=".+@pegatroncorp\.com" required
-                        placeholder="xxx@pegatroncorp.com">
+                    <div class="input-group" style="width: 410px">
+                        <input type="text" id="email" name="email"
+                            class="form-control form-control" style="width: 150px" placeholder="{!! __('loginPageLang.enter_email') !!}">
+                            <div class="input-group-text"><span class="col col-auto">@pegatroncorp.com</span></div>
+                        </div>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

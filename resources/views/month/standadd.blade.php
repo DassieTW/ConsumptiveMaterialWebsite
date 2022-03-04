@@ -132,7 +132,7 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="row w-100 justify-content-center">
                     <div class="col col-auto">
                         <input type="submit" class="btn btn-lg btn-primary" value="{!! __('outboundpageLang.submit') !!}"

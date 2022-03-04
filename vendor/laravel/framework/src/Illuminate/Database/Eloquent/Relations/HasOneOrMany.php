@@ -80,11 +80,9 @@ abstract class HasOneOrMany extends Relation
     public function addConstraints()
     {
         if (static::$constraints) {
-            $query = $this->getRelationQuery();
+            $this->query->where($this->foreignKey, '=', $this->getParentKey());
 
-            $query->where($this->foreignKey, '=', $this->getParentKey());
-
-            $query->whereNotNull($this->foreignKey);
+            $this->query->whereNotNull($this->foreignKey);
         }
     }
 
@@ -98,7 +96,7 @@ abstract class HasOneOrMany extends Relation
     {
         $whereIn = $this->whereInMethod($this->parent, $this->localKey);
 
-        $this->getRelationQuery()->{$whereIn}(
+        $this->query->{$whereIn}(
             $this->foreignKey, $this->getKeys($models, $this->localKey)
         );
     }
@@ -214,7 +212,7 @@ abstract class HasOneOrMany extends Relation
     public function firstOrNew(array $attributes = [], array $values = [])
     {
         if (is_null($instance = $this->where($attributes)->first())) {
-            $instance = $this->related->newInstance(array_merge($attributes, $values));
+            $instance = $this->related->newInstance($attributes + $values);
 
             $this->setForeignAttributesForCreate($instance);
         }
@@ -232,7 +230,7 @@ abstract class HasOneOrMany extends Relation
     public function firstOrCreate(array $attributes = [], array $values = [])
     {
         if (is_null($instance = $this->where($attributes)->first())) {
-            $instance = $this->create(array_merge($attributes, $values));
+            $instance = $this->create($attributes + $values);
         }
 
         return $instance;

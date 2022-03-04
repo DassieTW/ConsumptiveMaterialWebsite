@@ -485,6 +485,13 @@ class InboundController extends Controller
                         $lt = DB::table('consumptive_material')->where('料號', $number)->value('LT');
                         $month = DB::table('consumptive_material')->where('料號', $number)->value('月請購');
 
+                        $showstock  = '';
+                        $nowstock = DB::table('inventory')->where('料號', $number)->where('客戶別', $client)->where('現有庫存', '>', 0)->pluck('現有庫存')->toArray();
+                        $nowloc = DB::table('inventory')->where('料號', $number)->where('客戶別', $client)->where('現有庫存', '>', 0)->pluck('儲位')->toArray();
+                        $test = array_combine($nowloc, $nowstock);
+                        foreach ($test as $k => $a) {
+                            $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\n";
+                        }
                         //無料號
                         if ($name === null || $format === null) {
                             return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
@@ -530,7 +537,7 @@ class InboundController extends Controller
                                     'type' => 'add',
                                     'number' => $number, 'client' => $client, 'inreason' => $inreason,
                                     'transit' => $amount, 'stock' => $stock, 'safe' => $safe, 'name' => $name,
-                                    'format' => $format, 'unit' => $unit, 'positions' => $positions
+                                    'format' => $format, 'unit' => $unit, 'positions' => $positions ,'showstock' => $showstock,
                                 ]/* Status code here default is 200 ok*/);
                             }
                         }

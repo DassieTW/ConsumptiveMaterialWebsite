@@ -32,9 +32,21 @@ $(".picklist").on("click", function (e) {
 });
 
 $("#pickpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#pickmenu").show();
 });
 $("#pickpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#outmenu").show();
     myFunction();
 });
@@ -43,6 +55,19 @@ $("#pickpeople").on("blur", function () {
 });
 
 $(document).ready(function () {
+
+    $('#pickpeople').on("input", function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var rfidpick = $("#pickpeople").val();
+        rfidpick = rfidpick.slice(-9);
+        // $("#rfidpickpeople").val(rfidpick);
+        $("#pickpeople").val(rfidpick);
+    });
 
     $('#picklist').on('submit', function (e) {
         e.preventDefault();
@@ -76,27 +101,59 @@ $(document).ready(function () {
 
         if (parseInt(realout) != parseInt(realpick)) {
             var mess = Lang.get('bupagelang.realpickamount') + ' != ' + Lang.get('bupagelang.realamount');
-            alert(mess);
+            notyf.open({
+                type: 'warning',
+                message: mess,
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
 
         if (!sure) {
-            var mess = Lang.get('bupagelang.noisn');
-            alert(mess);
-            window.location.href = "/basic/new";
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('bupagelang.noisn'),
+                duration: 5000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
+            setTimeout(function () {
+                window.location.href = "/basic/new";
+            }, 2000);
         } else {
             var mess = Lang.get('bupagelang.realamount') + ' : ' + realout + ' ' + Lang.get('bupagelang.realpickamount') + ' : ' + realpick +
                 ' ' + Lang.get('bupagelang.dblist') + ' : ' + list + '\n' + Lang.get('bupagelang.checkreceive');
             var confirm = window.confirm(mess);
-        }
 
-        var check1 = checkpeople.indexOf(pickpeople);
 
-        //check has people
-        if (check1 == -1) {
-            alert(Lang.get("bupagelang.nopickpeople"));
-            $("#pickpeople").addClass("is-invalid");
-            return false;
+            var check1 = checkpeople.indexOf(pickpeople);
+
+            //check has people
+            if (check1 == -1) {
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('bupagelang.nopickpeople'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
+                $("#pickpeople").addClass("is-invalid");
+                return false;
+            }
         }
 
         if (confirm !== true) {

@@ -5,6 +5,8 @@
 
 @section('js')
 <!--for this page's sepcified js -->
+<script src="{{ asset('js/month/sxbsearch.js') }}"></script>
+
 @endsection
 @section('content')
 <!DOCTYPE html>
@@ -17,6 +19,10 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('monthlyPRpageLang.on_the_way_search') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
+
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -30,12 +36,13 @@
                     <th>{!! __('monthlyPRpageLang.buyamount1') !!}</th>
                 </tr>
                 @foreach($data as $data)
-                <tr>
+                <tr class="isnRows">
                     <?php
                     $data->請購數量 = round($data->請購數量);
                     ?>
                     <td>{{$data->客戶}}</td>
                     <td>{{$data->料號}}</td>
+                    <input type="hidden" id = "dataa{{$loop->index}}" value="{{$data->料號}}">
                     <td>{{$data->品名}}</td>
                     <td>{{$data->單位}}</td>
                     <td>{{$data->請購數量}}</td>

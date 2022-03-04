@@ -91,7 +91,7 @@ function addBtn(index) {
     var tbl = document.getElementById("picklisttable");
     var body = document.getElementById("picklistbody");
     var row = document.createElement("tr");
-
+    row.className  = "isnRows";
     let rowdelete = document.createElement("td");
     rowdelete.innerHTML = "<a id=" + "deleteBtn" + count + " href=javascript:deleteBtn(" + count + ")></a>";
 
@@ -226,9 +226,21 @@ function myFunction2() {
 }
 
 $("#sendpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#sendmenu").show();
 });
 $("#sendpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#sendmenu").show();
     myFunction();
 });
@@ -236,9 +248,21 @@ $("#sendpeople").on("blur", function () {
     $("#sendmenu").hide();
 });
 $("#pickpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#pickmenu").show();
 });
 $("#pickpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#pickmenu").show();
     myFunction2();
 });
@@ -247,16 +271,26 @@ $("#pickpeople").on("blur", function () {
 });
 
 $(document).ready(function () {
-    $('#rfidpickpeople').on("input", function () {
-        var rfidpick = $("#rfidpickpeople").val();
+    $('#pickpeople').on("input", function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var rfidpick = $("#pickpeople").val();
         rfidpick = rfidpick.slice(-9);
-        $("#rfidpickpeople").val(rfidpick);
         $("#pickpeople").val(rfidpick);
     });
-    $('#rfidsendpeople').on("input", function () {
-        var rfidsend = $("#rfidsendpeople").val();
+    $('#sendpeople').on("input", function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var rfidsend = $("#sendpeople").val();
         rfidsend = rfidsend.slice(-9);
-        $("#rfidsendpeople").val(rfidsend);
         $("#sendpeople").val(rfidsend);
     });
     $("#picklist").on("submit", function (e) {
@@ -343,13 +377,33 @@ $(document).ready(function () {
 
         //check has people
         if (check1 == -1) {
-            alert(Lang.get("oboundpageLang.nosendpeople"));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('oboundpageLang.nosendpeople'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             $("#sendpeople").addClass("is-invalid");
             return false;
         }
 
         if (check2 == -1) {
-            alert(Lang.get("oboundpageLang.nopickpeople"));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('oboundpageLang.nopickpeople'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             $("#pickpeople").addClass("is-invalid");
             return false;
         }
@@ -426,7 +480,7 @@ $(document).ready(function () {
                     );
                     $("#lessstock #bound").html(
                         Lang.get("oboundpageLang.nowbound") + " : " +
-                        err.responseJSON.position + "<br>" + Lang.get("oboundpageLang.stockless")
+                        err.responseJSON.bound + "<br>" + Lang.get("oboundpageLang.stockless")
                     );
                     $("#lessstock #nowstock").html(
                         Lang.get("oboundpageLang.nowstock") + " : " + err.responseJSON.nowstock

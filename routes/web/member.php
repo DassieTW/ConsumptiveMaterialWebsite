@@ -4,6 +4,10 @@ use App\Models\人員信息;
 use App\Models\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth;
+use App\Models\Inventory;
+// use DB;
+// use Session;
+
 // use App\Http\Controllers\Auth\LoginController;
 
 /*

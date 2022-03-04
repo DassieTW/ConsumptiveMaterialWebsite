@@ -13,6 +13,34 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
+
+    function quickSearch() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = $("#numbersearch").val();
+        //var isISN = $("#toggle-state").is(":checked");
+        console.log(input); // test
+        // filter = input.value;
+        // Loop through all table rows, and hide those who don't match the search query
+        $('.isnRows').each(function (i, obj) {
+            txtValue = $(this).find("input[id^='datab']").val();
+            // console.log("now checking text : " + txtValue); // test
+            if (txtValue.indexOf(input) > -1) {
+                obj.style.display = "";
+
+            } else {
+                obj.style.display = "none";
+            } // if else
+        });
+    } // quickSearch function
+
+
+    $("#numbersearch").on('input', function (e) {
+        e.preventDefault();
+        quickSearch();
+    });
+
+
     $('#inboundsearch').on('submit', function (e) {
         e.preventDefault();
 
@@ -98,7 +126,17 @@ $(document).ready(function () {
                     if (err.status == 420) {
                         var mess = Lang.get('inboundpageLang.lessstock') + '\n' + Lang.get('inboundpageLang.nowstock') + ' : ' + err.responseJSON.stock + ' ' +
                             Lang.get('inboundpageLang.inboundnum') + ' : ' + err.responseJSON.amount;
-                        alert(mess);
+                        notyf.open({
+                            type: 'warning',
+                            message: mess,
+                            duration: 3000, //miliseconds, use 0 for infinite duration
+                            ripple: true,
+                            dismissible: true,
+                            position: {
+                                x: "right",
+                                y: "bottom"
+                            }
+                        });
                         return false;
                     }
                     //transaction error

@@ -19,11 +19,20 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('bupagelang.sluggish') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <form id="sluggish" method="POST">
                 @csrf
+                <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
+                value="{!! __('bupagelang.submit') !!}">
+            <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
+                value="{!! __('bupagelang.download') !!}">
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                 <input type="hidden" id="title" name="title" value="廠區呆滯庫存">
                 <table class="table table-bordered" id="test">
                     <tr>
@@ -83,7 +92,7 @@
                             }
                         }
                         ?>
-                        <tr>
+                        <tr class="isnRows">
                             <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
                                     name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
                                     value="{{$i}}{{$loop->index}}"></td>
@@ -100,7 +109,7 @@
                             <td><input type="hidden" id="dataf{{$i}}{{$loop->index}}" name="dataf{{$i}}{{$loop->index}}"
                                     value={{$stayday}}>{{$stayday}}</td>
                             <td><input type="hidden" id="datag{{$i}}{{$loop->index}}" name="datag{{$i}}{{$loop->index}}"
-                                    value={{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
+                                    value={{round($data->inventory現有庫存)}}>{{round($data->inventory現有庫存)}}</td>
                             <td><input type="number" id="datah{{$i}}{{$loop->index}}" name="datah{{$i}}{{$loop->index}}"
                                     value="1" min="1" class="form-control formcontrol-lg" style="width:100px;"></td>
                             <td id="datai{{$i}}{{$loop->index}}" name="datai{{$i}}{{$loop->index}}">@foreach ($buytime
@@ -142,12 +151,6 @@
 
                 </table>
         </div>
-        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
-            value="{!! __('bupagelang.submit') !!}">
-        <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-            value="{!! __('bupagelang.download') !!}">
-
         </form>
 
     </div>

@@ -2,12 +2,10 @@
 
 namespace Illuminate\Cache;
 
-use Aws\DynamoDb\DynamoDbClient;
 use Closure;
 use Illuminate\Contracts\Cache\Factory as FactoryContract;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
-use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
 /**
@@ -237,11 +235,9 @@ class CacheManager implements FactoryContract
      */
     protected function createDynamodbDriver(array $config)
     {
-        $client = $this->newDynamodbClient($config);
-
         return $this->repository(
             new DynamoDbStore(
-                $client,
+                $this->app['cache.dynamodb.client'],
                 $config['table'],
                 $config['attributes']['key'] ?? 'key',
                 $config['attributes']['value'] ?? 'value',
@@ -249,28 +245,6 @@ class CacheManager implements FactoryContract
                 $this->getPrefix($config)
             )
         );
-    }
-
-    /**
-     * Create new DynamoDb Client instance.
-     *
-     * @return DynamoDbClient
-     */
-    protected function newDynamodbClient(array $config)
-    {
-        $dynamoConfig = [
-            'region' => $config['region'],
-            'version' => 'latest',
-            'endpoint' => $config['endpoint'] ?? null,
-        ];
-
-        if (isset($config['key']) && isset($config['secret'])) {
-            $dynamoConfig['credentials'] = Arr::only(
-                $config, ['key', 'secret', 'token']
-            );
-        }
-
-        return new DynamoDbClient($dynamoConfig);
     }
 
     /**

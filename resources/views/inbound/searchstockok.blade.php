@@ -18,11 +18,18 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('inboundpageLang.searchstock') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <form id="inboundsearch" method="POST">
                 @csrf
+                <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
+            value="{!! __('inboundpageLang.download') !!}">
+            <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.searchstock')}}'">{!!
+                __('inboundpageLang.return') !!}</button>
                 <input type="hidden" id="titlename" name="titlename" value="庫存">
                 <table class="table">
                     <tr>
@@ -55,7 +62,7 @@
                         <input type="hidden" id="titlecount" name="titlecount" value="13">
                     </tr>
                     @foreach($data as $data)
-                    <tr>
+                    <tr class="isnRows">
                         <?php
                             $maxtime = date_create(date('Y-m-d',strtotime($data->最後更新時間)));
                             $nowtime = date_create(date('Y-m-d',strtotime(\Carbon\Carbon::now())));
@@ -64,7 +71,7 @@
                             $interval = (int)($interval);
                             $belong = $data->耗材歸屬;
                             $lt = $data->LT;
-                            $data->單價 = round($data->單價 , 3);
+                            $data->單價 = round($data->單價 , 2);
 
                             if($belong === '單耗')
                                 {
@@ -115,7 +122,7 @@
                         <td><input type="hidden" id="datae{{$loop->index}}" name="data4{{$loop->index}}"
                                 value="{{$data->單位}}">{{$data->單位}}</td>
                         <td><input type="hidden" id="dataf{{$loop->index}}" name="data5{{$loop->index}}"
-                                value="{{$data->單價}}">{{round($data->單價 , 2)}}</td>
+                                value="{{$data->單價}}">{{$data->單價}}</td>
                         <td><input type="hidden" id="datag{{$loop->index}}" name="data6{{$loop->index}}"
                                 value="{{$data->幣別}}">{{$data->幣別}}</td>
                         <td><input type="hidden" id="datah{{$loop->index}}" name="data7{{$loop->index}}"
@@ -123,7 +130,7 @@
                         <td><input type="hidden" id="datai{{$loop->index}}" name="data8{{$loop->index}}"
                                 value="{{$data->月請購}}">{{$data->月請購}}</td>
                         <td><input type="hidden" id="dataj{{$loop->index}}" name="data9{{$loop->index}}"
-                                value="{{$data->現有庫存}}">{{round($data->現有庫存 , 0)}}</td>
+                                value={{round($data->現有庫存 , 0)}}>{{round($data->現有庫存 , 0)}}</td>
                         <td><input type="hidden" id="datak{{$loop->index}}" name="data10{{$loop->index}}"
                                 value="{{$safe}}">{{$safe}}</td>
                         <td><input type="hidden" id="datal{{$loop->index}}" name="data11{{$loop->index}}"
@@ -138,11 +145,9 @@
         </div>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-        <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-            value="{!! __('inboundpageLang.download') !!}">
+
         </form>
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.searchstock')}}'">{!!
-            __('inboundpageLang.return') !!}</button>
+
     </div>
 </div>
 </div>

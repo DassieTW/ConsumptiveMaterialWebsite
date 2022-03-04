@@ -153,7 +153,8 @@ Route::get('/picklist', function () {
         ->get()->unique('領料單號');
 
     //dd($datas);
-    return view('obound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+    $num = count($datas);
+    return view('obound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->name('obound.picklistpage')->middleware('can:oboundPickupSerialNum,App\Models\O庫');
 
 //Route::post('/picklist', [OboundController::class, 'picklistpage'])->name('outbound.picklistpage');
@@ -167,7 +168,8 @@ Route::get('/picklistsub', function () {
         ->get()->unique('領料單號');
 
     // dd($datas);
-    return view('obound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+    $num = count($datas);
+    return view('obound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->middleware('can:oboundPickupSerialNum,App\Models\O庫');
 
 Route::post('/picklistsub', [OboundController::class, 'picklist'])->name('obound.picklist')->middleware('can:oboundPickupSerialNum,App\Models\O庫');
@@ -179,8 +181,8 @@ Route::get('/backlist', function () {
         ->wherenull('O庫出庫退料.收料人員')
         ->select('O庫出庫退料.*')
         ->get()->unique('退料單號');
-
-    return view('obound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+    $num = count($datas);
+    return view('obound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->name('obound.backlistpage')->middleware('can:oboundReturnSerialNum,App\Models\O庫');
 
 //Route::post('/backlist', [OboundController::class, 'backlistpage'])->name('outbound.backlistpage');
@@ -192,8 +194,8 @@ Route::get('/backlistsub', function(){
         ->wherenull('O庫出庫退料.收料人員')
         ->select('O庫出庫退料.*')
         ->get()->unique('退料單號');
-
-    return view('obound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+        $num = count($datas);
+    return view('obound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->middleware('can:oboundReturnSerialNum,App\Models\O庫');
 
 Route::post('/backlistsub', [OboundController::class, 'backlist'])->name('obound.backlist')->middleware('can:oboundReturnSerialNum,App\Models\O庫');

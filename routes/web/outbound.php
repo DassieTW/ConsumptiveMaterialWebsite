@@ -62,9 +62,9 @@ Route::get('/picklist', function () {
         ->wherenull('outbound.發料人員')
         ->select('outbound.*')
         ->get()->unique('領料單號');
-
+    $num = count($datas);
     // dd($datas);
-    return view('outbound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+    return view('outbound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->name('outbound.picklistpage')->middleware('can:outboundPickupSerialNum,App\Models\Outbound');
 
 //Route::post('/picklist', [OutboundController::class, 'picklistpage'])->name('outbound.picklistpage');
@@ -78,7 +78,8 @@ Route::get('/picklistsub', function () {
         ->get()->unique('領料單號');
 
     // dd($datas);
-    return view('outbound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+    $num = count($datas);
+    return view('outbound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->middleware('can:outboundPickupSerialNum,App\Models\Outbound');
 
 Route::post('/picklistsub', [OutboundController::class, 'picklist'])->name('outbound.picklist')->middleware('can:outboundPickupSerialNum,App\Models\Outbound');
@@ -90,21 +91,21 @@ Route::get('/backlist', function () {
         ->wherenull('出庫退料.收料人員')
         ->select('出庫退料.*')
         ->get()->unique('退料單號');
-
-    return view('outbound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+    $num = count($datas);
+    return view('outbound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->name('outbound.backlistpage')->middleware('can:outboundReturnSerialNum,App\Models\Outbound');
 
 //Route::post('/backlist', [OutboundController::class, 'backlistpage'])->name('outbound.backlistpage');
 
 //出庫-退料單
-Route::get('/backlistsub', function(){
+Route::get('/backlistsub', function () {
     $datas =  DB::table('出庫退料')
         ->join('consumptive_material', '出庫退料.料號', '=', 'consumptive_material.料號')
         ->wherenull('出庫退料.收料人員')
         ->select('出庫退料.*')
         ->get()->unique('退料單號');
-
-    return view('outbound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()]);
+    $num = count($datas);
+    return view('outbound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->middleware('can:outboundReturnSerialNum,App\Models\Outbound');
 
 Route::post('/backlistsub', [OutboundController::class, 'backlist'])->name('outbound.backlist')->middleware('can:outboundReturnSerialNum,App\Models\Outbound');

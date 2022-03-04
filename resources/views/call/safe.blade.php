@@ -19,7 +19,11 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('callpageLang.safealert') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
     </div>
+
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="test">
@@ -44,9 +48,10 @@
                     $stock = round($stock , 0);
                 ?>
 
-                <tr id="data{{$loop->index}}">
+                <tr id="data{{$loop->index}}" class="isnRows">
                     <td>{{$data->客戶別}}</td>
                     <td>{{$data->料號}}</td>
+                    <input type="hidden" id = "data{{$loop->index}}" value="{{$data->料號}}">
                     <td>{{$data->品名}}</td>
                     <td>{{$data->規格}}</td>
                     <td id="stocka{{$loop->index}}">{{$stock}}</td>
@@ -81,9 +86,10 @@
                     $stock1 = round($stock1 , 0);
                 ?>
 
-                <tr id="data1{{$loop->index}}">
+                <tr id="data1{{$loop->index}}" class="isnRows1">
                     <td>{{$data->客戶別}}</td>
                     <td>{{$data->料號}}</td>
+                    <input type="hidden" id = "data1{{$loop->index}}" value="{{$data->料號}}">
                     <td>{{$data->品名}}</td>
                     <td>{{$data->規格}}</td>
                     <td id="stockb{{$loop->index}}">{{$stock1}}</td>
@@ -117,9 +123,10 @@
                     $stock2 = round($stock2 , 0);
                 ?>
 
-                <tr id="data2{{$loop->index}}">
+                <tr id="data2{{$loop->index}}" class="isnRows2">
                     <td>{!! __('callpageLang.notmonth') !!}</td>
                     <td>{{$data->料號}}</td>
+                    <input type="hidden" id = "data2{{$loop->index}}" value="{{$data->料號}}">
                     <td>{{$data->品名}}</td>
                     <td>{{$data->規格}}</td>
                     <td id="stockc{{$loop->index}}">{{$stock2}}</td>

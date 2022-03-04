@@ -1,6 +1,7 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+<link rel="stylesheet" type="text/css" href="../css/tooltip.css">
 @endsection
 
 @section('js')

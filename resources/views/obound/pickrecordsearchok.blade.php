@@ -20,11 +20,16 @@
         <div class="card">
             <div class="card-header">
                 <h3>{!! __('oboundpageLang.pickrecord') !!}</h3>
+                <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
             </div>
             <div class="card-body">
 
                         <form id="picktable" method="POST">
                             @csrf
+                            <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.download') !!}">
+
                             <input type = "hidden" id = "titlename" name = "titlename" value = "O庫領料記錄表">
                             <div class="table-responsive">
                         <table class="table" id = "pickrecordlist">
@@ -52,7 +57,7 @@
                                 <input type = "hidden" id = "titlecount" name = "titlecount" value = "20">
                             </tr>
                                 @foreach($data as $data)
-                                <tr id = "{{$data->領料單號}}">
+                                <tr id = "{{$data->領料單號}}" class="isnRows">
                                     <td><input type = "hidden" id = "dataa{{$loop->index}}" name = "dataa{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
                                     <td><input type = "hidden" id = "datab{{$loop->index}}" name = "datab{{$loop->index}}" value = "{{$data->機種}}">{{$data->機種}}</td>
                                     <td><input type = "hidden" id = "datac{{$loop->index}}" name = "datac{{$loop->index}}" value = "{{$data->製程}}">{{$data->製程}}</td>
@@ -81,7 +86,6 @@
                             </div>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                                <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.download') !!}">
                             </form>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.pickrecord')}}'">{!! __('oboundpageLang.return') !!}</button>

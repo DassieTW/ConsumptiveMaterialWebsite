@@ -71,6 +71,8 @@
                                     <th>{!! __('monthlyPRpageLang.machine') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.process') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.consume') !!}</th>
+                                    <th></th>
+                                    <th>{!! __('monthlyPRpageLang.reason') !!}</th>
                                 </tr>
                                 @foreach($data as $data)
                                 <?php

@@ -19,10 +19,22 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('monthlyPRpageLang.isnConsumeUpdate') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
     </div>
     <div class="card-body" id="consumebody">
         <form id="consume" method="POST">
             @csrf
+            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                value="{!! __('monthlyPRpageLang.delete') !!}">
+
+            <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
+                value="{!! __('monthlyPRpageLang.change') !!}">
+
+                <input type="submit" id="return" name="return" class="btn btn-lg btn-primary"
+                value="{!! __('monthlyPRpageLang.return') !!}">
+
             <div class="table-responsive">
                 <table class="table">
                     <tr>
@@ -42,7 +54,7 @@
                         $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
                         $data->單耗 = round($data->單耗 , 10);
                     ?>
-                    <tr id="{{$loop->index}}">
+                    <tr id="{{$loop->index}}" class="isnRows">
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                 style="width:20px;height:20px;" value="{{$loop->index}}"></td>
                         <td><input type="hidden" id="client{{$loop->index}}" name="client{{$loop->index}}"
@@ -66,24 +78,21 @@
             </div>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <label class="form-label">{!! __('monthlyPRpageLang.confirmpeople') !!}</label>
-            <input type="text" id="jobnumber" name="jobnumber" class="form-control form-control" style="width: 250px">
+            <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
+            <input type="text" id="jobnumber" name="jobnumber" class="form-control form-control" style="width: 250px" placeholder="{!! __('monthlyPRpageLang.nopeople') !!}">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <label class="form-label">{!! __('monthlyPRpageLang.confirmemail') !!}</label>
-            <input type="email" id="email" name="email"
-                class="form-control form-control" style="width: 250px">
+            <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
+            <div class="input-group" style="width: 410px">
+            <input type="text" id="email" name="email"
+                class="form-control form-control" style="width: 150px" placeholder="{!! __('loginPageLang.enter_email') !!}">
+                <div class="input-group-text"><span class="col col-auto">@pegatroncorp.com</span></div>
+            </div>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
-                value="{!! __('monthlyPRpageLang.delete') !!}">
-            &emsp;
-            <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
-                value="{!! __('monthlyPRpageLang.change') !!}">
+
         </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.consume')}}'">{!!
-            __('monthlyPRpageLang.return') !!}</button>
     </div>
 </div>
 

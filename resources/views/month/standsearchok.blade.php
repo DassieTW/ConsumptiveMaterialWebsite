@@ -19,12 +19,25 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('monthlyPRpageLang.standUpdate') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
     </div>
     <div class="card-body" id="standbody">
 
         <form id="stand" method="POST">
             @csrf
             <input type="hidden" id="titlename" name="titlename" value="站位人力">
+
+            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                value="{!! __('monthlyPRpageLang.delete') !!}">
+            <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
+                value="{!! __('monthlyPRpageLang.change') !!}">
+            <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
+                value="{!! __('monthlyPRpageLang.download') !!}">
+                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.stand')}}'">{!!
+                    __('monthlyPRpageLang.return') !!}</button>
+
             <div class="table-responsive">
                 <table class="table">
                     <tr>
@@ -90,7 +103,7 @@
                         $data->下月每日更換頻率 = round($data->下月每日更換頻率 ,7);
                         // $test = str_replace(";","<br>",$data->紀錄) ;
                     ?>
-                    <tr>
+                    <tr class="isnRows">
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                 style="width:20px;height:20px;" value="{{$loop->index}}"></td>
                         <td><input type="hidden" id="dataa{{$loop->index}}" name="dataa{{$loop->index}}"
@@ -161,24 +174,20 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
-            <input type="text" id="jobnumber" name="jobnumber" class="form-control form-control" style="width: 250px">
+            <input type="text" id="jobnumber" name="jobnumber" class="form-control form-control" style="width: 250px" placeholder="{!! __('monthlyPRpageLang.nopeople') !!}">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
-            <input type="email" id="email" name="email" pattern=".+@pegatroncorp\.com"
-                placeholder="xxx@pegatroncorp.com" class="form-control form-control" style="width: 250px">
+            <div class="input-group" style="width: 410px">
+                <input type="text" id="email" name="email"
+                    class="form-control form-control" style="width: 150px" placeholder="{!! __('loginPageLang.enter_email') !!}">
+                    <div class="input-group-text"><span class="col col-auto">@pegatroncorp.com</span></div>
+                </div>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
-                value="{!! __('monthlyPRpageLang.delete') !!}">
-            <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
-                value="{!! __('monthlyPRpageLang.change') !!}">
-            <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-                value="{!! __('monthlyPRpageLang.download') !!}">
+
         </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.stand')}}'">{!!
-            __('monthlyPRpageLang.return') !!}</button>
     </div>
 </div>
 

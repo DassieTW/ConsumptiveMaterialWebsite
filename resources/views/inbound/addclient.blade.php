@@ -1,6 +1,8 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<link rel="stylesheet" type="text/css" href="../css/tooltip.css">
+
 @endsection
 
 @section('js')
@@ -161,6 +163,15 @@
                                     $safe = $lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange / $mpq;
                                 }
                             }
+
+                            $showstock  = '';
+                            $nowstock = DB::table('inventory')->where('料號', $data->料號)->where('客戶別',  $data->客戶)->where('現有庫存', '>', 0)->pluck('現有庫存')->toArray();
+                            $nowloc = DB::table('inventory')->where('料號',  $data->料號)->where('客戶別',  $data->客戶)->where('現有庫存', '>', 0)->pluck('儲位')->toArray();
+                            $test = array_combine($nowloc, $nowstock);
+                            foreach ($test as $k => $a) {
+                                $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\n";
+                            }
+
                         ?>
                             <td><a id="deleteBtn{{$loop->index}}" href="javascript:deleteBtn({{$loop->index}})"><svg
                                         width="16" height="16" fill="#c94466" class="bi bi-x-circle-fill"
@@ -177,8 +188,18 @@
                             <td><span id="transit{{$loop->index}}">{{$data->請購數量}}</td>
                             <td><span id="stock{{$loop->index}}">{{$stock}}</td>
                             <td><span id="safe{{$loop->index}}">{{$safe}}</td>
-                            <td><input class="form-control" type="number" id="amount{{$loop->index}}"
-                                    name="amount{{$loop->index}}" required value="1" min="1" style="width: 100px"></td>
+                            <td>
+
+                            <div class="tooltip1">
+                                <input class="form-control amount" style="width:100px" type="number"
+                                    id="amount{{$loop->index}}" name="amount{{$loop->index}}" required
+                                    value="1" min="1">
+
+                                        <span class="tooltip1text tooltip1-top">{{$showstock}}</span>
+                                      </div>
+                            </td>
+
+
                             <td><span id="inreason{{$loop->index}}">{{$inreason}}</td>
                             <td>
                                 <input type="hidden" id="oldposition{{$loop->index}}" name="oldposition{{$loop->index}}"
@@ -232,8 +253,9 @@
                 </ul>
             </div>
 
-            <input class="form-control form-control-lg rfid" id="rfidinpeople" name="rfidinpeople" width="250"
-                style="width: 250px" placeholder="{!! __('inboundpageLang.rfidinpeople') !!}" type="password">
+            {{-- rfid --}}
+            {{-- <input class="form-control form-control-lg rfid" id="rfidinpeople" name="rfidinpeople" width="250"
+                style="width: 250px" placeholder="{!! __('inboundpageLang.rfidinpeople') !!}" type="password"> --}}
 
 
             <div class="row w-100 justify-content-center">

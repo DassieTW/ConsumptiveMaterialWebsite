@@ -88,8 +88,6 @@ class CallQueuedHandler
      *
      * @param  array  $data
      * @return mixed
-     *
-     * @throws \RuntimeException
      */
     protected function getCommand(array $data)
     {

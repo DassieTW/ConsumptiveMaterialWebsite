@@ -1,6 +1,7 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<link rel="stylesheet" type="text/css" href="../css/tooltip.css">
 @endsection
 
 @section('js')
@@ -82,9 +83,15 @@
                             <td><span id="format{{$loop->index}}">{{$data->規格}}</span></td>
                             <td><span id="unit{{$loop->index}}">{{$data->單位}}</span></td>
                             <td><span id="advance{{$loop->index}}">{{$data->預退數量}}</span></td>
-                            <td><input class="form-control amount" style="width:100px" type="number"
+                            <td><div class="tooltip1">
+                                <input class="form-control amount" style="width:100px" type="number"
                                     id="amount{{$loop->index}}" name="amount{{$loop->index}}" required
-                                    value="{{$data->實際退回數量}}" title="{{$showstock}}" min="1"></td>
+                                    value="{{$data->實際退回數量}}" min="1">
+
+                                        <span class="tooltip1text tooltip1-top">{{$showstock}}</span>
+                                      </div>
+                            </td>
+
                             <input type="hidden" id="amounttitle{{$loop->index}}" value="{{$showstock}}">
                             <td><span id="remark{{$loop->index}}">{{$data->備註}}</span></td>
                             <td><input class="form-control reason" style="width:100px" type="text"
@@ -132,8 +139,8 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.receivepeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.inputreceivepeople') !!}"
-                oninput="if(value.length>9)value=value.slice(0,9)">
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputreceivepeople') !!}" {{--
+                oninput="if(value.length>9)value=value.slice(0,9)"> --}}>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="receivemenu" style="display: none;" class="list-group">
                 @foreach($people as $people)
@@ -143,17 +150,17 @@
                 @endforeach
             </ul>
 
-            {{-- rfid pickpeople --}}
+            {{-- rfid pickpeople
             <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
                 style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
-                type="password" >
+                type="password"> --}}
 
             {{-- input backpeople --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('outboundpageLang.backpeople') !!}</label>
             <input class="form-control form-control-lg" id="backpeople" name="backpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.inputbackpeople') !!}"
-                oninput="if(value.length>9)value=value.slice(0,9)">
+                style="width: 250px" placeholder="{!! __('outboundpageLang.inputbackpeople') !!}" {{--
+                oninput="if(value.length>9)value=value.slice(0,9)"> --}}>
             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterbackpeople')
                 !!}</option>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -166,10 +173,10 @@
                 @endforeach
             </ul>
 
-            {{-- rfid backpeople --}}
+            {{-- rfid backpeople
             <input class="form-control form-control-lg rfid" id="rfidbackpeople" name="rfidbackpeople" width="250"
-            style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}"
-            type="password" >
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}" type="password">
+            --}}
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

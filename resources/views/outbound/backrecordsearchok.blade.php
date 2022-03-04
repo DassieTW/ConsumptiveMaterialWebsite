@@ -18,12 +18,20 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('outboundpageLang.backrecord') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
     </div>
     <div class="card-body">
 
         <form id = "backtable" method="POST">
             @csrf
             <input type="hidden" id="titlename" name="titlename" value="退料記錄表">
+            <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
+            value="{!! __('outboundpageLang.download') !!}">
+            <button class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.backrecord')}}'">{!!
+                __('outboundpageLang.return') !!}</button>
+
             <div class="table-responsive">
                 <table class="table" id="pickrecordlist">
                     <tr id="require">
@@ -75,7 +83,7 @@
                         <input type="hidden" id="titlecount" name="titlecount" value="22">
                     </tr>
                     @foreach($data as $data)
-                    <tr id="{{$data->退料單號}}">
+                    <tr id="{{$data->退料單號}}" class="isnRows">
                         <td><input type="hidden" id="dataa{{$loop->index}}" name="dataa{{$loop->index}}"
                                 value="{{$data->客戶別}}">{{$data->客戶別}}</td>
                         <td><input type="hidden" id="datab{{$loop->index}}" name="datab{{$loop->index}}"
@@ -128,13 +136,9 @@
             </div>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-            <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-                value="{!! __('outboundpageLang.download') !!}">
         </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.backrecord')}}'">{!!
-            __('outboundpageLang.return') !!}</button>
     </div>
 </div>
 

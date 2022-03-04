@@ -17,11 +17,18 @@
         <div class="card">
             <div class="card-header">
                 <h3>{!! __('bupagelang.searchlist') !!}</h3>
+                <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                        <form action="{{ route('bu.delete') }}" method="POST" id = "bulist">
+
+
+                        <form  method="POST" id = "bulist">
                             @csrf
+                            <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('bupagelang.delete') !!}">
+                    <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('bupagelang.download') !!}">
                             <input type = "hidden" id = "titlename" name = "titlename" value = "調撥單查詢">
                         <table class="table" id = "inboundsearch">
                             <tr id = "require">
@@ -46,7 +53,7 @@
                                 <input type = "hidden" id = "titlecount" name = "titlecount" value = "17">
                             </tr>
                                 @foreach($data as $data)
-                                <tr id= "list{{$loop->index}}">
+                                <tr id= "list{{$loop->index}}" class="isnRows">
                                     <td><input class ="basic" type="checkbox" id="check{{$loop->index}}" name="check{{$loop->index}}" style="width:20px;height:20px;"  value="{{$loop->index}}"></td>
                                     <td><input type = "hidden" id = "dataa{{$loop->index}}" name = "dataa{{$loop->index}}" value = "{{$data->調撥單號}}">{{$data->調撥單號}}</td>
                                     <td><input type = "hidden" id = "datab{{$loop->index}}" name = "datab{{$loop->index}}" value = "{{$data->狀態}}">{{$data->狀態}}</td>
@@ -72,8 +79,6 @@
                             </table>
                         </div>
                         <br>
-                            <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('bupagelang.delete') !!}">
-                            <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('bupagelang.download') !!}">
                         </form>
                 <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.searchlist')}}'">{!! __('bupagelang.return') !!}</button>
             </div>

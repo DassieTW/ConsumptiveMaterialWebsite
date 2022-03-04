@@ -1,6 +1,8 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<link rel="stylesheet" type="text/css" href="../css/tooltip.css">
+
 @endsection
 
 @section('js')
@@ -119,7 +121,7 @@
             <label class="form-label">{!! __('outboundpageLang.sendpeople') !!}</label>
             <input class="form-control form-control-lg" id="sendpeople" name="sendpeople" width="250"
                 style="width: 250px" placeholder="{!! __('outboundpageLang.inputsendpeople') !!}" required
-                oninput="if(value.length>9)value=value.slice(0,9)">
+                {{-- oninput="if(value.length>9)value=value.slice(0,9)"> --}}>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="sendmenu" style="display: none;" class="list-group">
                 @foreach($people as $people)
@@ -129,9 +131,9 @@
                 @endforeach
             </ul>
 
-            {{-- rfid sendpeople --}}
+            {{-- rfid sendpeople
             <input class="form-control form-control-lg rfid" id="rfidsendpeople" name="rfidsendpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputsendpeople') !!}" type="password">
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputsendpeople') !!}" type="password"> --}}
 
 
             {{-- input pickpeople --}}
@@ -139,7 +141,7 @@
             <label class="form-label">{!! __('outboundpageLang.pickpeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
                 style="width: 250px" placeholder="{!! __('outboundpageLang.inputpickpeople') !!}" required
-                oninput="if(value.length>9)value=value.slice(0,9)">
+                {{-- oninput="if(value.length>9)value=value.slice(0,9)"> --}}>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="pickmenu" style="display: none;" class="list-group">
                 @foreach($people1 as $people)
@@ -149,9 +151,9 @@
                 @endforeach
             </ul>
 
-            {{-- rfid pickpeople --}}
+            {{-- rfid pickpeople
             <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputpickpeople') !!}" type="password">
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputpickpeople') !!}" type="password"> --}}
 
             {{-- check people --}}
             @foreach($check as $people)

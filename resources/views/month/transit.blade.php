@@ -5,6 +5,7 @@
 
 @section('js')
 <!--for this page's sepcified js -->
+
 @endsection
 @section('content')
 <!DOCTYPE html>

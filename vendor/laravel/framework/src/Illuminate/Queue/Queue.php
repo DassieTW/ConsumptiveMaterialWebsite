@@ -102,7 +102,7 @@ abstract class Queue
             $job = CallQueuedClosure::create($job);
         }
 
-        $payload = json_encode($this->createPayloadArray($job, $queue, $data), \JSON_UNESCAPED_UNICODE);
+        $payload = json_encode($this->createPayloadArray($job, $queue, $data));
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new InvalidPayloadException(
@@ -143,7 +143,6 @@ abstract class Queue
             'job' => 'Illuminate\Queue\CallQueuedHandler@call',
             'maxTries' => $job->tries ?? null,
             'maxExceptions' => $job->maxExceptions ?? null,
-            'failOnTimeout' => $job->failOnTimeout ?? false,
             'backoff' => $this->getJobBackoff($job),
             'timeout' => $job->timeout ?? null,
             'retryUntil' => $this->getJobExpiration($job),
@@ -189,11 +188,7 @@ abstract class Queue
             return;
         }
 
-        if (is_null($backoff = $job->backoff ?? $job->backoff())) {
-            return;
-        }
-
-        return collect(Arr::wrap($backoff))
+        return collect(Arr::wrap($job->backoff ?? $job->backoff()))
             ->map(function ($backoff) {
                 return $backoff instanceof DateTimeInterface
                                 ? $this->secondsUntil($backoff) : $backoff;
@@ -249,7 +244,6 @@ abstract class Queue
             'job' => $job,
             'maxTries' => null,
             'maxExceptions' => null,
-            'failOnTimeout' => false,
             'backoff' => null,
             'timeout' => null,
             'data' => $data,

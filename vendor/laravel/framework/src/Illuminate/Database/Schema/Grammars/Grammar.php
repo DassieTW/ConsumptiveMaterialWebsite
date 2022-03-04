@@ -33,9 +33,7 @@ abstract class Grammar extends BaseGrammar
      *
      * @param  string  $name
      * @param  \Illuminate\Database\Connection  $connection
-     * @return void
-     *
-     * @throws \LogicException
+     * @return string
      */
     public function compileCreateDatabase($name, $connection)
     {
@@ -46,9 +44,7 @@ abstract class Grammar extends BaseGrammar
      * Compile a drop database if exists command.
      *
      * @param  string  $name
-     * @return void
-     *
-     * @throws \LogicException
+     * @return string
      */
     public function compileDropDatabaseIfExists($name)
     {
@@ -81,32 +77,6 @@ abstract class Grammar extends BaseGrammar
     public function compileChange(Blueprint $blueprint, Fluent $command, Connection $connection)
     {
         return ChangeColumn::compile($this, $blueprint, $command, $connection);
-    }
-
-    /**
-     * Compile a fulltext index key command.
-     *
-     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
-     * @param  \Illuminate\Support\Fluent  $command
-     * @return string
-     *
-     * @throws \RuntimeException
-     */
-    public function compileFulltext(Blueprint $blueprint, Fluent $command)
-    {
-        throw new RuntimeException('This database driver does not support fulltext index creation.');
-    }
-
-    /**
-     * Compile a drop fulltext index command.
-     *
-     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
-     * @param  \Illuminate\Support\Fluent  $command
-     * @return string
-     */
-    public function compileDropFullText(Blueprint $blueprint, Fluent $command)
-    {
-        throw new RuntimeException('This database driver does not support fulltext index creation.');
     }
 
     /**

@@ -30,6 +30,33 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
+
+    function quickSearch() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = $("#numbersearch").val();
+        //var isISN = $("#toggle-state").is(":checked");
+        console.log(input); // test
+        // filter = input.value;
+        // Loop through all table rows, and hide those who don't match the search query
+        $('.isnRows').each(function (i, obj) {
+            txtValue = $(this).find("input[id^='dataa']").val();
+            // console.log("now checking text : " + txtValue); // test
+            if (txtValue.indexOf(input) > -1) {
+                obj.style.display = "";
+
+            } else {
+                obj.style.display = "none";
+            } // if else
+        });
+    } // quickSearch function
+
+
+    $("#numbersearch").on('input', function (e) {
+        e.preventDefault();
+        quickSearch();
+    });
+
     $("input").change(function () {
 
         for (var i = 0; i < count; i++) {
@@ -96,6 +123,7 @@ $(document).ready(function () {
         var titlename = $("#titlename").val();
         var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
+        email = email + '@pegatroncorp.com';
         var titlecount = $("#titlecount").val();
         $("input:checkbox[name=innumber]:checked").each(function () {
             check.push($(this).val());
@@ -199,11 +227,31 @@ $(document).ready(function () {
         }
         if (select == "更新" || select == "Update") {
             if (!jobnumber) {
-                alert(Lang.get('monthlyPRpageLang.nopeople'));
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('monthlyPRpageLang.nopeople'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 document.getElementById('jobnumber').classList.add("is-invalid");
                 return false;
             } else if (!email) {
-                alert(Lang.get('monthlyPRpageLang.noemail'));
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('monthlyPRpageLang.noemail'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 document.getElementById('email').classList.add("is-invalid");
                 return false;
             }
@@ -211,7 +259,17 @@ $(document).ready(function () {
         }
         if (select == "刪除" || select == "更新") {
             if (!checked) {
-                alert(Lang.get('monthlyPRpageLang.nocheck'));
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('monthlyPRpageLang.nocheck'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             }
             $.ajax({
@@ -240,6 +298,7 @@ $(document).ready(function () {
                 success: function (data) {
 
                     console.log(data);
+                    // update
                     if (data.status == 201) {
                         var mess = Lang.get('monthlyPRpageLang.total') + ' ' + (data.message) + ' ' + Lang.get('monthlyPRpageLang.record') + ' ' +
                             Lang.get('monthlyPRpageLang.stand') + ' ' +
@@ -247,7 +306,9 @@ $(document).ready(function () {
                         alert(mess);
                         window.location.href = "stand";
 
-                    } else {
+                    }
+                    // delete
+                    else {
                         var mess = Lang.get('monthlyPRpageLang.total') + ' ' + (data.message) + ' ' + Lang.get('monthlyPRpageLang.record') + ' ' +
                             Lang.get('monthlyPRpageLang.stand') + ' ' +
                             Lang.get('monthlyPRpageLang.delete') + ' ' + Lang.get('monthlyPRpageLang.success');

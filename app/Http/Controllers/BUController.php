@@ -634,7 +634,7 @@ class BUController extends Controller
                     }
                 }
 
-                for ($i = 0; $i < 5; $i++) {
+                for ($i = 0; $i < $count; $i++) {
                     if (isset($Alldata[8][$i]) != 0) {
                         for ($j = 0; $j < count($Alldata[8][$i]); $j++) {
                             $test = $test . $Alldata[8][$i][$j];

@@ -69,9 +69,21 @@ function myFunction() {
 
 
 $("#inpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#inboundmenu").show();
 });
 $("#inpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#inboundmenu").show();
     myFunction();
 });
@@ -88,18 +100,23 @@ $.ajaxSetup({
 var index = 0;
 var count = $("#count").val();
 count = parseInt(count);
-if(isNaN(count))
-{
+if (isNaN(count)) {
     count = 0;
 }
 sessionStorage.setItem('addclient', count);
 
 $(document).ready(function () {
 
-    $('#rfidinpeople').on("input", function () {
-        var rfidpick = $("#rfidinpeople").val();
+    $('#inpeople').on("input", function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var rfidpick = $("#inpeople").val();
         rfidpick = rfidpick.slice(-9);
-        $("#rfidinpeople").val(rfidpick);
+        // $("#rfidinpeople").val(rfidpick);
         $("#inpeople").val(rfidpick);
         checkrfidpick = true;
     });
@@ -224,8 +241,7 @@ $(document).ready(function () {
                     count = count + 1;
 
 
-                }
-                else if (data.type == 'client') {
+                } else if (data.type == 'client') {
                     window.location.href = "/inbound/addclient";
                 }
 
@@ -301,7 +317,18 @@ $(document).ready(function () {
         var check1 = checkpeople.indexOf(inpeople);
 
         if (check1 == -1) {
-            alert(Lang.get("inboundpageLang.noinpeople"));
+            // alert(Lang.get("inboundpageLang.noinpeople"));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('inboundpageLang.noinpeople'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             $("#inpeople").addClass("is-invalid");
             return false;
         }
@@ -324,6 +351,7 @@ $(document).ready(function () {
                 amount.push(parseInt($("#amount" + i).val()));
                 position.push($("#newposition" + i).val());
                 inreason.push($("#inreason" + i).text());
+                j = j + 1;
             }
         }
 
@@ -332,8 +360,19 @@ $(document).ready(function () {
             if (amount[i] > transit[i] && inreason[i] != '調撥' && inreason[i] != '退庫') {
                 $("#amount" + row[i]).addClass("is-invalid");
                 var row = i + 1;
-                var mess = Lang.get('inboundpageLang.row') + ' : ' + row + Lang.get('inboundpageLang.transiterror');
-                alert(mess);
+                var mess = Lang.get('inboundpageLang.row') + ' : ' + row + ' ' + Lang.get('inboundpageLang.transiterror');
+                // alert(mess);
+                notyf.open({
+                    type: 'warning',
+                    message: mess,
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             }
         }
@@ -366,7 +405,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 var mess = Lang.get('inboundpageLang.total') + ' : ' + data.record + Lang.get('inboundpageLang.record') + ' ' +
-                Lang.get('inboundpageLang.add') + Lang.get('inboundpageLang.success') + ' ' + Lang.get('inboundpageLang.inlist') + ' : ' + data.message;
+                    Lang.get('inboundpageLang.add') + Lang.get('inboundpageLang.success') + ' ' + Lang.get('inboundpageLang.inlist') + ' : ' + data.message;
                 alert(mess);
                 window.location.href = "/inbound/add";
 

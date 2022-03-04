@@ -18,6 +18,9 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('inboundpageLang.locationchange') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -35,10 +38,13 @@
                         <th>{!! __('inboundpageLang.newloc') !!}</th>
                     </tr>
                     @foreach($data as $data)
-                    <tr id="{{$loop->index}}">
+                    <tr id="{{$loop->index}}" class="isnRows">
                         <?php $position =  DB::table('儲位')->pluck('儲存位置');?>
-                        <td><input class="basic" type="checkbox" id="submit{{$loop->index}}"
-                                name="submit{{$loop->index}}" style="width:20px;height:20px;" value="{{$loop->index}}">
+                        <td><button class="basic btn btn-primary" id="submit{{$loop->index}}" value="{{$loop->index}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                                  </svg></button>
                         </td>
                         <td><input type="hidden" id="number{{$loop->index}}" name="number{{$loop->index}}"
                                 value="{{$data->料號}}">{{$data->料號}}</td>
@@ -72,9 +78,6 @@
 
         </div>
         <br>
-
-        <input type="submit" id="search" name="search" class="btn btn-lg btn-primary"
-            value="{!! __('inboundpageLang.submit') !!}">
         </form>
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.positionchange')}}'">{!!
             __('inboundpageLang.return') !!}</button>

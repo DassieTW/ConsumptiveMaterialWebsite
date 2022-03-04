@@ -17,6 +17,9 @@
         <div class="card">
             <div class="card-header">
                 <h3>{!! __('bupagelang.searchdetail') !!}</h3>
+                <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -48,28 +51,28 @@
                                 @endif
                             </tr>
                                 @foreach($data as $data)
-                                <tr id= "{{$loop->index}}">
-                                    <td><input type = "hidden" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$data->調撥單號}}">{{$data->調撥單號}}</td>
-                                    <td><input type = "hidden" id = "data1{{$loop->index}}" name = "data1{{$loop->index}}" value = "{{$data->撥出廠區}}">{{$data->撥出廠區}}</td>
-                                    <td><input type = "hidden" id = "data2{{$loop->index}}" name = "data2{{$loop->index}}" value = "{{$data->接收廠區}}">{{$data->接收廠區}}</td>
-                                    <td><input type = "hidden" id = "data3{{$loop->index}}" name = "data3{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
-                                    <td><input type = "hidden" id = "data4{{$loop->index}}" name = "data4{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
-                                    <td><input type = "hidden" id = "data5{{$loop->index}}" name = "data5{{$loop->index}}" value = "{{$data->品名}}">{{$data->品名}}</td>
-                                    <td><input type = "hidden" id = "data6{{$loop->index}}" name = "data6{{$loop->index}}" value = "{{$data->規格}}">{{$data->規格}}</td>
+                                <tr id= "{{$loop->index}}" class="isnRows">
+                                    <td><input type = "hidden" id = "dataa{{$loop->index}}" name = "dataa{{$loop->index}}" value = "{{$data->調撥單號}}">{{$data->調撥單號}}</td>
+                                    <td><input type = "hidden" id = "datab{{$loop->index}}" name = "datab{{$loop->index}}" value = "{{$data->撥出廠區}}">{{$data->撥出廠區}}</td>
+                                    <td><input type = "hidden" id = "datac{{$loop->index}}" name = "datac{{$loop->index}}" value = "{{$data->接收廠區}}">{{$data->接收廠區}}</td>
+                                    <td><input type = "hidden" id = "datad{{$loop->index}}" name = "datad{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
+                                    <td><input type = "hidden" id = "datae{{$loop->index}}" name = "datae{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
+                                    <td><input type = "hidden" id = "dataf{{$loop->index}}" name = "dataf{{$loop->index}}" value = "{{$data->品名}}">{{$data->品名}}</td>
+                                    <td><input type = "hidden" id = "datag{{$loop->index}}" name = "datag{{$loop->index}}" value = "{{$data->規格}}">{{$data->規格}}</td>
                                     @if ($choose === 'out')
-                                    <td><input type = "hidden" id = "data7{{$loop->index}}" name = "data7{{$loop->index}}" value = "{{$data->現有庫存}}">{{$data->現有庫存}}</td>
+                                    <td><input type = "hidden" id = "datah{{$loop->index}}" name = "datah{{$loop->index}}" value = "{{$data->現有庫存}}">{{$data->現有庫存}}</td>
                                     @else
-                                    <td><input type = "hidden" id = "data7{{$loop->index}}" name = "data7{{$loop->index}}" value = "{{$data->實際接收數量}}">{{$data->實際接收數量}}</td>
+                                    <td><input type = "hidden" id = "datah{{$loop->index}}" name = "datah{{$loop->index}}" value = "{{$data->實際接收數量}}">{{$data->實際接收數量}}</td>
                                     @endif
-                                    <td><input type = "hidden" id = "data8{{$loop->index}}" name = "data8{{$loop->index}}" value = "{{$data->實際撥出數量}}">{{$data->實際撥出數量}}</td>
-                                    <td><input type = "hidden" id = "data9{{$loop->index}}" name = "data9{{$loop->index}}" value = "{{$data->儲位}}">{{$data->儲位}}</td>
+                                    <td><input type = "hidden" id = "datai{{$loop->index}}" name = "datai{{$loop->index}}" value = "{{$data->實際撥出數量}}">{{$data->實際撥出數量}}</td>
+                                    <td><input type = "hidden" id = "dataj{{$loop->index}}" name = "dataj{{$loop->index}}" value = "{{$data->儲位}}">{{$data->儲位}}</td>
                                     @if ($choose === 'out')
-                                    <td><input type = "hidden" id = "data10{{$loop->index}}" name = "data10{{$loop->index}}" value = "{{$data->預計撥出數量}}">{{$data->預計撥出數量}}</td>
-                                    <td><input type = "hidden" id = "data11{{$loop->index}}" name = "data11{{$loop->index}}" value = "{{$data->調撥人}}">{{$data->調撥人}}</td>
-                                    <td><input type = "hidden" id = "data12{{$loop->index}}" name = "data12{{$loop->index}}" value = "{{$data->撥出時間}}">{{$data->撥出時間}}</td>
+                                    <td><input type = "hidden" id = "datak{{$loop->index}}" name = "datak{{$loop->index}}" value = "{{$data->預計撥出數量}}">{{$data->預計撥出數量}}</td>
+                                    <td><input type = "hidden" id = "datal{{$loop->index}}" name = "datal{{$loop->index}}" value = "{{$data->調撥人}}">{{$data->調撥人}}</td>
+                                    <td><input type = "hidden" id = "datam{{$loop->index}}" name = "datam{{$loop->index}}" value = "{{$data->撥出時間}}">{{$data->撥出時間}}</td>
                                     @else
-                                    <td><input type = "hidden" id = "data13{{$loop->index}}" name = "data13{{$loop->index}}" value = "{{$data->接收人}}">{{$data->接收人}}</td>
-                                    <td><input type = "hidden" id = "data14{{$loop->index}}" name = "data14{{$loop->index}}" value = "{{$data->接收時間}}">{{$data->接收時間}}</td>
+                                    <td><input type = "hidden" id = "datan{{$loop->index}}" name = "datan{{$loop->index}}" value = "{{$data->接收人}}">{{$data->接收人}}</td>
+                                    <td><input type = "hidden" id = "datao{{$loop->index}}" name = "datao{{$loop->index}}" value = "{{$data->接收時間}}">{{$data->接收時間}}</td>
                                     @endif
 
                                 </tr>

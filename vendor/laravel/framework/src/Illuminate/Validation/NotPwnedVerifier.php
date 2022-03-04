@@ -16,23 +16,14 @@ class NotPwnedVerifier implements UncompromisedVerifier
     protected $factory;
 
     /**
-     * The number of seconds the request can run before timing out.
-     *
-     * @var int
-     */
-    protected $timeout;
-
-    /**
      * Create a new uncompromised verifier.
      *
      * @param  \Illuminate\Http\Client\Factory  $factory
-     * @param  int|null  $timeout
      * @return void
      */
-    public function __construct($factory, $timeout = null)
+    public function __construct($factory)
     {
         $this->factory = $factory;
-        $this->timeout = $timeout ?? 30;
     }
 
     /**
@@ -86,7 +77,7 @@ class NotPwnedVerifier implements UncompromisedVerifier
         try {
             $response = $this->factory->withHeaders([
                 'Add-Padding' => true,
-            ])->timeout($this->timeout)->get(
+            ])->get(
                 'https://api.pwnedpasswords.com/range/'.$hashPrefix
             );
         } catch (Exception $e) {

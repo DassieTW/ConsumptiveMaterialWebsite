@@ -9,7 +9,11 @@
 @section('content')
 <!DOCTYPE html>
 <html>
-
+    @if ($num > 0)
+    <audio controls autoplay hidden >
+        <source id="audio_1" src="/sound/backlist.mp3" type="audio/mpeg">
+    </audio>
+    @endif
 <head>
     <meta charset="utf-8">
 </head>

@@ -22,6 +22,11 @@
     <div class="card-body">
         <form id="monthsearch" method="POST">
             @csrf
+            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                value="{!! __('monthlyPRpageLang.delete') !!}">
+                <input type="submit" id="return" name="return" class="btn btn-lg btn-primary"
+                value="{!! __('monthlyPRpageLang.return') !!}">
+
             <div class="table-responsive">
                 <table class="table">
                     <tr>
@@ -62,12 +67,9 @@
                 </table>
             </div>
             <br>
-            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
-                value="{!! __('monthlyPRpageLang.delete') !!}">
+
         </form>
         <br>
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importmonth')}}'">{!!
-            __('monthlyPRpageLang.return') !!}</button>
     </div>
 </div>
 

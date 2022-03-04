@@ -24,6 +24,12 @@
         <div class="table-responsive">
             <form id="sluggish" method="POST">
                 @csrf
+                <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
+            value="{!! __('bupagelang.submit') !!}">
+        <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
+            value="{!! __('bupagelang.download') !!}">
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                 <input type="hidden" id="title" name="title" value="廠區呆滯庫存">
                 <table class="table table-bordered" id="test">
                     <tr>
@@ -196,10 +202,7 @@
                 </table>
         </div>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
-            value="{!! __('bupagelang.submit') !!}">
-        <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-            value="{!! __('bupagelang.download') !!}">
+
 
         </form>
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.index')}}'">{!!

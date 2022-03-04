@@ -1,6 +1,7 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<link rel="stylesheet" type="text/css" href="../css/tooltip.css">
 @endsection
 
 @section('js')
@@ -48,7 +49,7 @@
                             <th>{!! __('oboundpageLang.bound') !!}</th>
                         </tr>
                         @foreach($data as $data)
-                        <tr>
+                        <tr class="isnRows">
                             <?php
                                         $showstock  = '';
                                         $nowstock = DB::table('O庫inventory')->where('料號', $data->料號)->where('客戶別',  $data->客戶別)->where('現有庫存', '>', 0)->pluck('現有庫存')->toArray();
@@ -82,9 +83,14 @@
                             <td><span id="name{{$loop->index}}">{{$data->品名}}</span></td>
                             <td><span id="format{{$loop->index}}">{{$data->規格}}</span></td>
                             <td><span id="advance{{$loop->index}}">{{$data->預退數量}}</span></td>
-                            <td><input class="form-control amount" style="width:100px" type="number"
+                            <td><div class="tooltip1">
+                                <input class="form-control amount" style="width:100px" type="number"
                                     id="amount{{$loop->index}}" name="amount{{$loop->index}}" required
-                                    value="{{$data->實際退回數量}}" title="{{$showstock}}" min="1"></td>
+                                    value="{{$data->實際退回數量}}" min="1">
+
+                                        <span class="tooltip1text tooltip1-top">{{$showstock}}</span>
+                                      </div>
+                            </td>
                             <input type="hidden" id="amounttitle{{$loop->index}}" value="{{$showstock}}">
                             <td><span id="remark{{$loop->index}}">{{$data->備註}}</span></td>
                             <td><input class="form-control reason" style="width:100px" type="text"
@@ -132,8 +138,7 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('oboundpageLang.receivepeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" required width="250"
-                style="width: 250px" placeholder="{!! __('oboundpageLang.inputreceivepeople') !!}"
-                oninput="if(value.length>9)value=value.slice(0,9)">
+                style="width: 250px" placeholder="{!! __('oboundpageLang.inputreceivepeople') !!}">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="receivemenu" style="display: none;" class="list-group">
                 @foreach($people as $people)
@@ -144,16 +149,15 @@
             </ul>
 
             {{-- rfid pickpeople --}}
-            <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
+            {{-- <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
                 style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputreceivepeople') !!}"
-                type="password">
+                type="password"> --}}
 
             {{-- input backpeople --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('oboundpageLang.backpeople') !!}</label>
             <input class="form-control form-control-lg" id="backpeople" name="backpeople" required width="250"
-                style="width: 250px" placeholder="{!! __('oboundpageLang.inputbackpeople') !!}"
-                oninput="if(value.length>9)value=value.slice(0,9)">
+                style="width: 250px" placeholder="{!! __('oboundpageLang.inputbackpeople') !!}">
             <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterbackpeople')
                 !!}</option>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -167,9 +171,8 @@
             </ul>
 
             {{-- rfid backpeople --}}
-            <input class="form-control form-control-lg rfid" id="rfidbackpeople" name="rfidbackpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}" type="password">
-
+            {{-- <input class="form-control form-control-lg rfid" id="rfidbackpeople" name="rfidbackpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputbackpeople') !!}" type="password">--}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             {{-- check people --}}

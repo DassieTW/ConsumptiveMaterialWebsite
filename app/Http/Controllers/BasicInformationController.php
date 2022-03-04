@@ -436,11 +436,10 @@ class BasicInformationController extends Controller
     //料件信息查詢修改
     public function searchmaterial(Request $request)
     {
+
         if (Session::has('username')) {
-            if ($request->input('number') === null) {
-                return view('basic.searchmaterialok')->with(['data' => ConsumptiveMaterial::cursor()])
-                    ->with(['data1' => ConsumptiveMaterial::cursor()])->with(['sends' => 發料部門::cursor()]);
-            } else if ($request->input('number') !== null && strlen($request->input('number')) <= 12) {
+            if($request->input('numberradio') === "1")
+            {
                 $input = $request->input('number');
 
                 $datas = DB::table('consumptive_material')
@@ -451,10 +450,15 @@ class BasicInformationController extends Controller
                     ->with(['data' => $datas])
                     ->with(['sends' => 發料部門::cursor()]);
             } else {
-                return back()->withErrors([
+                $input = $request->input('numberarea');
+                $input = (explode("\r\n" , $input));
+                $datas = DB::table('consumptive_material')
+                    ->whereIn('料號', $input)
+                    ->get();
 
-                    'number' => trans('basicInfoLang.isnlength'),
-                ]);
+                return view("basic.searchmaterialok")
+                    ->with(['data' => $datas])
+                    ->with(['sends' => 發料部門::cursor()]);
             }
         } else {
             return redirect(route('member.login'));

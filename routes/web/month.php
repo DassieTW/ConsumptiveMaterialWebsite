@@ -70,6 +70,11 @@ Route::post('/notmonthsearch', function (Request $request) {
     return \Response::json(['client' => $request->input('client'), 'number' => $request->input('number')]/* Status code here default is 200 ok*/);
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
+
+Route::get('/notmonthsearchok', function (Request $request) {
+    return view('month.importnotmonth')->with(['client' => 客戶別::cursor()]);
+})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+
 Route::post('/notmonthsearchok', function (Request $request) {
 
     if ($request->input('varr1') === null && $request->input('varr2') === null) {
@@ -280,7 +285,7 @@ Route::get('/teststand', function () {
         $name = DB::table('login')->where('username', $username)->value('姓名');
 
         return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)->where("送單人", $username)])
-        ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
+            ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
     } else {
         return redirect()->route('month.standadd');
     }

@@ -118,8 +118,7 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('oboundpageLang.sendpeople') !!}</label>
             <input class="form-control form-control-lg" id="sendpeople" name="sendpeople" width="250"
-                style="width: 250px" placeholder="{!! __('oboundpageLang.inputsendpeople') !!}" required
-                oninput="if(value.length>9)value=value.slice(0,9)">
+                style="width: 250px" placeholder="{!! __('oboundpageLang.inputsendpeople') !!}" required>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="sendmenu" style="display: none;" class="list-group">
                 @foreach($people as $people)
@@ -130,15 +129,14 @@
             </ul>
 
             {{-- rfid sendpeople --}}
-            <input class="form-control form-control-lg rfid" id="rfidsendpeople" name="rfidsendpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputsendpeople') !!}" type="password">
+            {{-- <input class="form-control form-control-lg rfid" id="rfidsendpeople" name="rfidsendpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputsendpeople') !!}" type="password"> --}}
 
             {{-- input pickpeople --}}
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <label class="form-label">{!! __('oboundpageLang.pickpeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
-                style="width: 250px" placeholder="{!! __('oboundpageLang.inputpickpeople') !!}" required
-                oninput="if(value.length>9)value=value.slice(0,9)">
+                style="width: 250px" placeholder="{!! __('oboundpageLang.inputpickpeople') !!}" required>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="pickmenu" style="display: none;" class="list-group">
                 @foreach($people1 as $people)
@@ -149,8 +147,8 @@
             </ul>
 
             {{-- rfid pickpeople --}}
-            <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
-                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputpickpeople') !!}" type="password">
+            {{-- <input class="form-control form-control-lg rfid" id="rfidpickpeople" name="rfidpickpeople" width="250"
+                style="width: 250px" placeholder="{!! __('outboundpageLang.rfidinputpickpeople') !!}" type="password"> --}}
 
             {{-- check people --}}
             @foreach($check as $people)
@@ -175,7 +173,7 @@
                 value="{!! __('oboundpageLang.submit') !!}">
         </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.picklistpage')}}'">{!!
+        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.picklistpage')}}'">{!!
             __('oboundpageLang.return') !!}</button>
     </div>
 </div>

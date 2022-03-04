@@ -44,28 +44,39 @@
                             $database = $data->接收廠區;
                             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
                             \DB::purge(env("DB_CONNECTION"));
-
-                            $client = DB::table('inventory')->where('料號',$data->料號)->where('現有庫存','>',0)->pluck('客戶別')->toArray();
-                            $nowstock = DB::table('inventory')->where('料號',$data->料號)->where('現有庫存','>',0)->pluck('現有庫存')->toArray();
-                            $position = DB::table('inventory')->where('料號',$data->料號)->where('現有庫存','>',0)->pluck('儲位')->toArray();
-
-                            $loc = DB::table('儲位')->pluck('儲存位置')->toArray();
-                            $customer = DB::table('客戶別')->pluck('客戶')->toArray();
                             $sure = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
+
+                            $client = DB::table('客戶別')->pluck('客戶')->toArray();
+                            $nowstock = DB::table('inventory')->where('料號',$data->料號)->where('現有庫存','>',0)->pluck('現有庫存')->toArray();
+                            $position = DB::table('儲位')->pluck('儲存位置')->toArray();
+
+                            $count = count($nowstock);
+
+                            if($sure !== null)
+                            {
+                                if($nowstock !== [])
+                                {
+                                    for ($x = 0; $x < $count; $x++)
+                                    {
+                                        $keys[] = 'u'.$x;
+                                    }
+                                    $result = array_merge_recursive(
+                                            array_combine($keys, $client),
+                                            array_combine($keys, $nowstock),
+                                            array_combine($keys, $position)
+                                    );
+                                }
+                                else {
+                                    $keys[0] = 'u0';
+                                }
+                            }
+                            else {
+                                $keys[0] = 'u0';
+                            }
+
                             $jobnumber = DB::table('人員信息')->pluck('工號')->toArray();
                             $name = DB::table('人員信息')->pluck('姓名')->toArray();
                             $test = array_combine($jobnumber, $name);
-                            $count = count($client);
-                            for ($x = 0; $x < $count; $x++)
-                            {
-                                $keys[] = 'u'.$x;
-                            }
-                            $result = array_merge_recursive(
-                                        array_combine($keys, $client),
-                                        array_combine($keys, $nowstock),
-                                        array_combine($keys, $position)
-                                    );
-
                         ?>
 
                         <td><input type="hidden" id="data0{{$loop->index}}" name="data0{{$loop->index}}"
@@ -87,18 +98,23 @@
                                 value="{{$data->接收廠區}}">{{$data->接收廠區}}</td>
                         <input type="hidden" id="sure" name="sure" value="{{$sure}}">
                         <td>
+                            @if ($sure !== null)
+                            @if ($nowstock !== [])
                             @foreach($result as $k)
                             {!! __('bupagelang.client') !!} : {{$k[0]}} {!! __('bupagelang.loc') !!} : {{$k[2]}} {!!
                             __('bupagelang.nowstock') !!} : {{$k[1]}} <div class="w-100" style="height: 1ch;"></div>
                             <!-- </div>breaks cols to a new line-->
                             @endforeach
+                            @else
+                            @endif
+                            @endif
                         </td>
                         <td>
                             <select class="form-select form-select-lg" id="position" name="position" required
                                 style="width: 150px">
                                 <option style="display: none" disabled selected value="">{!! __('bupagelang.enterloc')
                                     !!}</option>
-                                @foreach($loc as $x)
+                                @foreach($position as $x)
                                 <option>{{$x}}</option>
                                 @endforeach
                             </select>
@@ -108,7 +124,7 @@
                                 style="width: 150px">
                                 <option style="display: none" disabled selected value="">{!!
                                     __('bupagelang.enterclient') !!}</option>
-                                @foreach($customer as $x)
+                                @foreach($client as $x)
                                 <option>{{$x}}</option>
                                 @endforeach
                             </select>
@@ -132,7 +148,7 @@
 
             <label class="form-label">{!! __('bupagelang.receivepeople') !!}</label>
             <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" style="width: 250px"
-                placeholder="{!! __('bupagelang.enteroutpeople') !!}" required oninput="if(value.length>9)value=value.slice(0,9)">
+                placeholder="{!! __('bupagelang.enteroutpeople') !!}" required >
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <ul id="pickmenu" style="display: none;" class="list-group">
                 @foreach($test as $k=> $a)

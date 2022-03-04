@@ -74,7 +74,8 @@
                             $amounta = round($amounta,0);
                             $nextneeda = ($data->下月MPS ) * $data->單耗;
                             $nowneeda = ($data->本月MPS ) * $data->單耗;
-                            $safea = $nextneeda * ($data->LT ) / $data->下月生產天數;
+                            $safea = $data->下月生產天數 <= 0 ? 0:($nextneeda * ($data->LT ) / $data->下月生產天數);
+                            $safea = round($safea, 3);
                             $realneeda = $nextneeda + $nowneeda + $safea - $stocka - $amounta;
                             $realneeda = round($realneeda,0);
                             $real = $realneeda < 0 ? 0:$realneeda;
@@ -97,15 +98,15 @@
                         <td><input type="hidden" id="safea{{$loop->index}}" name="safea{{$loop->index}}"
                                 value="{{$safea}}">{{$safea}}</td>
                         <td><input type="hidden" id="pricea{{$loop->index}}" name="pricea{{$loop->index}}"
-                                value="{{$data->單價}}">{{$data->單價}}</td>
+                                value="{{$data->單價}}">{{round($data->單價 , 0)}}</td>
                         <td><input type="hidden" id="moneya{{$loop->index}}" name="moneya{{$loop->index}}"
                                 value="{{$data->幣別}}">{{$data->幣別}}</td>
                         <td><input type="hidden" id="ratea{{$loop->index}}" name="ratea{{$loop->index}}"
                                 value="{{$rate1[$loop->index]}}">{{$rate1[$loop->index]}}</td>
                         <td><input type="hidden" id="amounta{{$loop->index}}" name="amounta{{$loop->index}}"
-                                value="{{$amounta}}">{{$amounta}}</td>
+                                value="{{$amounta}}">{{round($amounta , 0)}}</td>
                         <td><input type="hidden" id="stocka{{$loop->index}}" name="stocka{{$loop->index}}"
-                                value="{{$stocka}}">{{$stocka}}</td>
+                                value="{{$stocka}}">{{round($stocka ,0)}}</td>
                         <td><input class="form-control form-control-lg" type="number" id="buyamounta{{$loop->index}}"
                                 name="buyamounta{{$loop->index}}" required value="{{$real}}" min="0"
                                 style="width:100px"></td>
@@ -126,11 +127,13 @@
                     <?php
                         $amountb = DB::table('在途量')->where('料號',$data->料號)->where('客戶',$data->客戶別)->sum('請購數量');
                         $stockb = DB::table('inventory')->where('料號',$data->料號)->where('客戶別',$data->客戶別)->sum('現有庫存');
+
                         $nowneedb = ($data->當月站位人數 ) * ($data->當月開線數 ) * ($data->當月開班數 ) *
                         ($data->當月每人每日需求量 ) * ($data->當月每日更換頻率 )  * ($data->本月生產天數 ) / ($data->MPQ );
                         $nextneedb = ($data->下月站位人數 ) * ($data->下月開線數 ) * ($data->下月開班數 ) *
                         ($data->下月每人每日需求量 ) * ($data->下月每日更換頻率 )  * ($data->下月生產天數 ) / ($data->MPQ );
-                        $safeb = $nextneedb * ($data->LT ) /  ($data->MPQ ) / $data->下月生產天數;
+                        $safeb = $data->下月生產天數 <= 0 ? 0:($nextneedb * ($data->LT ) /  ($data->MPQ ) / $data->下月生產天數);
+                        $safeb = round($safeb);
                         $realneedb = $nextneedb + $nowneedb + $safeb - $stockb - $amountb;
                         $realneedb = round($realneedb,0);
                         $real = $realneedb < 0 ? 0:$realneedb;
@@ -153,15 +156,15 @@
                         <td><input type="hidden" id="safeb{{$loop->index}}" name="safeb{{$loop->index}}"
                                 value="{{$safeb}}">{{$safeb}}</td>
                         <td><input type="hidden" id="priceb{{$loop->index}}" name="priceb{{$loop->index}}"
-                                value="{{$data->單價}}">{{$data->單價}}</td>
+                                value="{{$data->單價}}">{{round($data->單價 , 2)}}</td>
                         <td><input type="hidden" id="moneyb{{$loop->index}}" name="moneyb{{$loop->index}}"
                                 value="{{$data->幣別}}">{{$data->幣別}}</td>
                         <td><input type="hidden" id="rateb{{$loop->index}}" name="rateb{{$loop->index}}"
                                 value="{{$rate2[$loop->index]}}">{{$rate2[$loop->index]}}</td>
                         <td><input type="hidden" id="amountb{{$loop->index}}" name="amountb{{$loop->index}}"
-                                value="{{$amountb}}">{{$amountb}}</td>
+                                value="{{$amountb}}">{{round($amountb ,0)}}</td>
                         <td><input type="hidden" id="stockb{{$loop->index}}" name="stockb{{$loop->index}}"
-                                value="{{$stockb}}">{{$stockb}}</td>
+                                value="{{$stockb}}">{{round($stockb ,0)}}</td>
                         <td><input class="form-control form-control-lg" type="number" id="buyamountb{{$loop->index}}"
                                 name="buyamountb{{$loop->index}}" required value="{{$real}}" min="0"
                                 style="width:100px"></td>

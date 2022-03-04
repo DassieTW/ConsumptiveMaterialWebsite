@@ -12,7 +12,6 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Localizable;
 use PHPUnit\Framework\Assert as PHPUnit;
@@ -21,7 +20,7 @@ use ReflectionProperty;
 
 class Mailable implements MailableContract, Renderable
 {
-    use Conditionable, ForwardsCalls, Localizable;
+    use ForwardsCalls, Localizable;
 
     /**
      * The locale of the message.
@@ -77,7 +76,7 @@ class Mailable implements MailableContract, Renderable
      *
      * @var string
      */
-    public $markdown;
+    protected $markdown;
 
     /**
      * The HTML to use for the message.
@@ -234,11 +233,7 @@ class Mailable implements MailableContract, Renderable
      */
     protected function newQueuedJob()
     {
-        return (new SendQueuedMailable($this))
-                    ->through(array_merge(
-                        method_exists($this, 'middleware') ? $this->middleware() : [],
-                        $this->middleware ?? []
-                    ));
+        return new SendQueuedMailable($this);
     }
 
     /**
@@ -618,10 +613,6 @@ class Mailable implements MailableContract, Renderable
      */
     protected function setAddress($address, $name = null, $property = 'to')
     {
-        if (empty($address)) {
-            return $this;
-        }
-
         foreach ($this->addressesToArray($address, $name) as $recipient) {
             $recipient = $this->normalizeRecipient($recipient);
 
@@ -683,10 +674,6 @@ class Mailable implements MailableContract, Renderable
      */
     protected function hasRecipient($address, $name = null, $property = 'to')
     {
-        if (empty($address)) {
-            return false;
-        }
-
         $expected = $this->normalizeRecipient(
             $this->addressesToArray($address, $name)[0]
         );
@@ -870,7 +857,7 @@ class Mailable implements MailableContract, Renderable
      * Assert that the given text is present in the HTML email body.
      *
      * @param  string  $string
-     * @return $this
+     * @return void
      */
     public function assertSeeInHtml($string)
     {
@@ -880,15 +867,13 @@ class Mailable implements MailableContract, Renderable
             Str::contains($html, $string),
             "Did not see expected text [{$string}] within email body."
         );
-
-        return $this;
     }
 
     /**
      * Assert that the given text is not present in the HTML email body.
      *
      * @param  string  $string
-     * @return $this
+     * @return void
      */
     public function assertDontSeeInHtml($string)
     {
@@ -898,15 +883,13 @@ class Mailable implements MailableContract, Renderable
             Str::contains($html, $string),
             "Saw unexpected text [{$string}] within email body."
         );
-
-        return $this;
     }
 
     /**
      * Assert that the given text is present in the plain-text email body.
      *
      * @param  string  $string
-     * @return $this
+     * @return void
      */
     public function assertSeeInText($string)
     {
@@ -916,15 +899,13 @@ class Mailable implements MailableContract, Renderable
             Str::contains($text, $string),
             "Did not see expected text [{$string}] within text email body."
         );
-
-        return $this;
     }
 
     /**
      * Assert that the given text is not present in the plain-text email body.
      *
      * @param  string  $string
-     * @return $this
+     * @return void
      */
     public function assertDontSeeInText($string)
     {
@@ -934,8 +915,6 @@ class Mailable implements MailableContract, Renderable
             Str::contains($text, $string),
             "Saw unexpected text [{$string}] within text email body."
         );
-
-        return $this;
     }
 
     /**
@@ -1009,6 +988,25 @@ class Mailable implements MailableContract, Renderable
     public static function buildViewDataUsing(callable $callback)
     {
         static::$viewDataCallback = $callback;
+    }
+
+    /**
+     * Apply the callback's message changes if the given "value" is true.
+     *
+     * @param  mixed  $value
+     * @param  callable  $callback
+     * @param  mixed  $default
+     * @return mixed|$this
+     */
+    public function when($value, $callback, $default = null)
+    {
+        if ($value) {
+            return $callback($this, $value) ?: $this;
+        } elseif ($default) {
+            return $default($this, $value) ?: $this;
+        }
+
+        return $this;
     }
 
     /**

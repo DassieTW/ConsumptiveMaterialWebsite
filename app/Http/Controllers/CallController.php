@@ -467,6 +467,7 @@ class CallController extends Controller
                 }
                 $datas2 = array_values($datas2);
             }
+
             return view('call.safe')->with(['data' => $datas])->with(['data1' => $datas1])->with(['data2' => $datas2]);
         } else {
             return redirect(route('member.login'));
@@ -524,7 +525,8 @@ class CallController extends Controller
                     ->get();
             }
             // dd($datas);
-            return view('call.day')->with(['data' => $datas]);
+            $num = count($datas);
+            return view('call.day')->with(['data' => $datas])->with(['num' => $num]);
         } else {
             return redirect(route('member.login'));
         }

@@ -12,14 +12,33 @@ $('#monthsearch').on('submit', function (e) {
     // clean up previous input results
     $('.is-invalid').removeClass('is-invalid');
     $(".invalid-feedback").remove();
+    var select = ($(document.activeElement).val());
+
+    if (select == "返回" || select == "return") {
+        window.location.href = "importmonth";
+    }
 
     var check = [];
     checked = $("input[type=checkbox]:checked").length;
 
+
     if (!checked) {
-        alert(Lang.get('monthlyPRpageLang.nocheck'));
-        return false;
+        if (select == "刪除" || select == "删除" || select == "Delete") {
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('monthlyPRpageLang.nocheck'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
+            return false;
+        }
     }
+
 
     $("input:checkbox[name='innumber']:checked").each(function () {
         check.push($(this).val());

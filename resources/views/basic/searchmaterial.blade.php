@@ -4,6 +4,7 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('js/basic/search.js') }}"></script>
 <!--for this page's sepcified js -->
 @endsection
 @section('content')
@@ -30,18 +31,32 @@
                             <label class="col col-auto form-label">{!! __('basicInfoLang.matssearch') !!}</label>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" name="numberradio" id="numberradio" checked value="1">
                                 <input
                                     class="form-control form-control-lg col col-auto @error('number') is-invalid @enderror"
-                                    type="text" id="number" name="number"
-                                    placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
+                                    type="text" id="number" name="number" for="numberradio"
+                                    placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)" required>
                                 @error('number')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
+                                </div>
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+                            <div class="col-lg-6  col-md-12 col-sm-12">
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" name="numberradio" id="numberradio1" value="2">
+                                <textarea
+                                    class="form-control form-control-lg col col-auto "
+                                    id="numberarea" name="numberarea" for="numberradio1" rows="10"
+                                    placeholder="{!! __('basicInfoLang.enterisn') !!}"></textarea>
+                                </div>
+                            </div>
+
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         </div>

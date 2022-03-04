@@ -120,10 +120,14 @@ $(document).ready(function () {
     $("#writesrm").click(function () {
         var writesrm = prompt(Lang.get('monthlyPRpageLang.writesrm'));
         for (let i = 0; i < counta; i++) {
-            $("#srmnumbera" + i).val(writesrm);
+            if ($("#buyamounta" + i).val() > 0) {
+                $("#srmnumbera" + i).val(writesrm);
+            }
         }
         for (let i = 0; i < countb; i++) {
-            $("#srmnumberb" + i).val(writesrm);
+            if ($("#buyamountb" + i).val() > 0) {
+                $("#srmnumberb" + i).val(writesrm);
+            }
         }
     });
 
@@ -261,8 +265,7 @@ $(document).ready(function () {
                 }
             }
 
-            if(check1 == count)
-            {
+            if (check1 == count) {
                 notyf.open({
                     type: 'warning',
                     message: Lang.get('monthlyPRpageLang.nodata'),

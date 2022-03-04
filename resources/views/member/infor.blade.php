@@ -16,7 +16,9 @@ use Carbon\Carbon;
     $database = session('database');
     echo __('templateWords.nowuser') .' '. $username.'<br>'.$database;
 ?>
+
 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
 <div class="row">
     <div class="col col-auto">
         <a href="http://eip.tw.pegatroncorp.com/" target="_blank">{!!
@@ -43,4 +45,5 @@ use Carbon\Carbon;
             __('templateWords.west') !!}</a>
     </div>
 </div>
+
 @endsection

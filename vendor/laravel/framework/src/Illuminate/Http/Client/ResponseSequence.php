@@ -140,8 +140,6 @@ class ResponseSequence
      * Get the next response in the sequence.
      *
      * @return mixed
-     *
-     * @throws \OutOfBoundsException
      */
     public function __invoke()
     {

@@ -19,6 +19,9 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('callpageLang.dayalert') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
     </div>
     <div class="card-body">
 
@@ -52,9 +55,10 @@
                     $stock = round($stock , 0);
                 ?>
 
-                <tr id="data1{{$loop->index}}">
+                <tr id="data1{{$loop->index}}" class="isnRows">
                     <td>{{$data->客戶別}}</td>
                     <td>{{$data->料號}}</td>
+                    <input type="hidden" id = "data{{$loop->index}}" value="{{$data->料號}}">
                     <td>{{$data->品名}}</td>
                     <td>{{$data->規格}}</td>
                     <td id="stocka{{$loop->index}}">{{$stock}}</td>

@@ -6,8 +6,34 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
-    var downloadcount = ($("#count").val());
 
+    function quickSearch() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = $("#numbersearch").val();
+        //var isISN = $("#toggle-state").is(":checked");
+        console.log(input); // test
+        // filter = input.value;
+        // Loop through all table rows, and hide those who don't match the search query
+        $('.isnRows').each(function (i, obj) {
+            txtValue = $(this).find("input[id^='number']").val();
+            // console.log("now checking text : " + txtValue); // test
+            if (txtValue.indexOf(input) > -1) {
+                obj.style.display = "";
+
+            } else {
+                obj.style.display = "none";
+            } // if else
+        });
+    } // quickSearch function
+
+
+    $("#numbersearch").on('input', function (e) {
+        e.preventDefault();
+        quickSearch();
+    });
+
+    var downloadcount = ($("#count").val());
     var data = [];
     var title = [];
     var data0 = [];
@@ -29,29 +55,31 @@ $(document).ready(function () {
     for (let i = 0; i < 14; i++) {
         title.push($("#title" + i).val());
     }
-    //download data
-    for (let i = 0; i < downloadcount; i++) {
-        data0.push($("#number" + i).val());
-        data1.push($("#name" + i).val());
-        data2.push($("#format" + i).val());
-        data3.push($("#gradea" + i).val());
-        data4.push($("#month" + i).val());
-        data5.push($("#send" + i).val());
-        data6.push($("#belong" + i).val());
-        data7.push($("#price" + i).val());
-        data8.push($("#money" + i).val());
-        data9.push($("#unit" + i).val());
-        data10.push($("#mpq" + i).val());
-        data11.push($("#moq" + i).val());
-        data12.push($("#lt" + i).val());
-        data13.push($("#safe" + i).val());
-    }
+
     $("#materialsearch").on("submit", function (e) {
         e.preventDefault();
 
         // clean up previous input results
         $(".is-invalid").removeClass("is-invalid");
         $(".invalid-feedback").remove();
+
+        //download data
+        for (let i = 0; i < downloadcount; i++) {
+            data0.push($("#number" + i).val());
+            data1.push($("#name" + i).val());
+            data2.push($("#format" + i).val());
+            data3.push($("#gradea" + i).val());
+            data4.push($("#month" + i).val());
+            data5.push($("#send" + i).val());
+            data6.push($("#belong" + i).val());
+            data7.push($("#price" + i).val());
+            data8.push($("#money" + i).val());
+            data9.push($("#unit" + i).val());
+            data10.push($("#mpq" + i).val());
+            data11.push($("#moq" + i).val());
+            data12.push($("#lt" + i).val());
+            data13.push($("#safe" + i).val());
+        }
 
         var select = ($(document.activeElement).val());
         var row = 0;
@@ -101,15 +129,6 @@ $(document).ready(function () {
         }
 
         for (let i = 0; i < count; i++) {
-            if (gradea[i] === 'Yes') gradea[i] = '是';
-            if (gradea[i] === 'No') gradea[i] = '否';
-            if (month[i] === 'Yes') month[i] = '是';
-            if (month[i] === 'No') month[i] = '否';
-            if (belong[i] === 'Unit consumption' || belong[i] === '单耗') belong[i] = '單耗';
-            if (belong[i] === 'Station') belong[i] = '站位';
-        }
-
-        for (let i = 0; i < count; i++) {
             if (month[i] == '否' && safe[i] == '') {
                 row = parseInt(check[i]) + 1;
                 var mess = Lang.get("basicInfoLang.row") + ' : ' + row + ' ' + Lang.get("basicInfoLang.safeerror");
@@ -122,7 +141,17 @@ $(document).ready(function () {
         checked = ("input[type=checkbox]:checked").length;
 
         if (count == 0 && select != "下載") {
-            alert(Lang.get("basicInfoLang.nocheck"));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('inboundpageLang.nocheck'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
 
@@ -139,8 +168,7 @@ $(document).ready(function () {
             data.push(moq);
             data.push(lt);
             data.push(safe);
-        }
-        else{
+        } else {
             data.push(data0);
             data.push(data1);
             data.push(data2);
@@ -181,7 +209,7 @@ $(document).ready(function () {
                     $("body").loadingModal("hide");
                 },
                 success: function (data) {
-                    console.log(data.boolean);
+
 
                     var mess =
                         Lang.get("basicInfoLang.change") +
@@ -268,6 +296,8 @@ $(document).ready(function () {
                             URL.revokeObjectURL(downloadUrl);
                         }, 100); // cleanup
                     }
+
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
 

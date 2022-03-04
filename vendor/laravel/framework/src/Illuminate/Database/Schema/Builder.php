@@ -3,10 +3,11 @@
 namespace Illuminate\Database\Schema;
 
 use Closure;
-use Illuminate\Container\Container;
+use Doctrine\DBAL\Types\Type;
 use Illuminate\Database\Connection;
 use InvalidArgumentException;
 use LogicException;
+use RuntimeException;
 
 class Builder
 {
@@ -73,8 +74,6 @@ class Builder
      *
      * @param  string  $type
      * @return void
-     *
-     * @throws \InvalidArgumentException
      */
     public static function defaultMorphKeyType(string $type)
     {
@@ -100,8 +99,6 @@ class Builder
      *
      * @param  string  $name
      * @return bool
-     *
-     * @throws \LogicException
      */
     public function createDatabase($name)
     {
@@ -113,8 +110,6 @@ class Builder
      *
      * @param  string  $name
      * @return bool
-     *
-     * @throws \LogicException
      */
     public function dropDatabaseIfExists($name)
     {
@@ -381,7 +376,7 @@ class Builder
             return call_user_func($this->resolver, $table, $callback, $prefix);
         }
 
-        return Container::getInstance()->make(Blueprint::class, compact('table', 'callback', 'prefix'));
+        return new Blueprint($table, $callback, $prefix);
     }
 
     /**
@@ -391,10 +386,26 @@ class Builder
      * @param  string  $name
      * @param  string  $type
      * @return void
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \RuntimeException
      */
     public function registerCustomDoctrineType($class, $name, $type)
     {
-        $this->connection->registerDoctrineType($class, $name, $type);
+        if (! $this->connection->isDoctrineAvailable()) {
+            throw new RuntimeException(
+                'Registering a custom Doctrine type requires Doctrine DBAL (doctrine/dbal).'
+            );
+        }
+
+        if (! Type::hasType($name)) {
+            Type::addType($name, $class);
+
+            $this->connection
+                ->getDoctrineSchemaManager()
+                ->getDatabasePlatform()
+                ->registerDoctrineTypeMapping($type, $name);
+        }
     }
 
     /**

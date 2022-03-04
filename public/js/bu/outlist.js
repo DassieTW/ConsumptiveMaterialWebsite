@@ -33,9 +33,21 @@ $(".outlist").on("click", function (e) {
 });
 
 $("#outpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#outmenu").show();
 });
 $("#outpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#outmenu").show();
     myFunction();
 });
@@ -44,6 +56,21 @@ $("#outpeople").on("blur", function () {
 });
 
 $(document).ready(function () {
+
+
+    $('#outpeople').on("input", function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var rfidpick = $("#outpeople").val();
+        rfidpick = rfidpick.slice(-9);
+        // $("#rfidpickpeople").val(rfidpick);
+        $("#outpeople").val(rfidpick);
+    });
+
     $('#outlist').on('submit', function (e) {
         e.preventDefault();
 
@@ -106,7 +133,17 @@ $(document).ready(function () {
 
         //check has people
         if (check1 == -1) {
-            alert(Lang.get("bupagelang.nooutpeople"));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('bupagelang.nooutpeople'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             $("#outpeople").addClass("is-invalid");
             return false;
         }

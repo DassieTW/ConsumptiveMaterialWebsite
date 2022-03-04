@@ -19,9 +19,9 @@ count = parseInt(count);
 
 function appenSVg(count) {
 
-    $(".amount").hover(function () {
-        $(this).tooltip();
-    });
+    // $(".amount").hover(function () {
+    //     $(this).tooltip();
+    // });
 
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -139,8 +139,8 @@ function addBtn(index) {
     rowadvance.innerHTML = "<span id=" + "advance" + count + ">" + $("#advance" + index).text() + "</span>";
 
     let rowamount = document.createElement("td");
-    rowamount.innerHTML = '<input id="amount' + count + '"' + 'type = "number"' + 'class = "form-control amount"' + 'min = "1"' +
-        'value = "' + $("#amount" + index).val() + '"style="width: 100px"' + 'title="' + $("#amounttitle" + index).val() + '">';
+    rowamount.innerHTML = '<div class="tooltip1"><input id="amount' + count + '"' + 'type = "number"' + 'class = "form-control amount"' + 'min = "1"' +
+        'value = "' + $("#amount" + index).val() + '"style="width: 100px"' + '"><span class="tooltip1text tooltip1-top"> ' + $("#amounttitle" + index).val() + "</span></div>";
 
     let rowremark = document.createElement("td");
     rowremark.innerHTML = "<span id=" + "remark" + count + ">" + $("#remark" + index).text() + "</span>";
@@ -242,9 +242,21 @@ function myFunction2() {
 }
 
 $("#pickpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#receivemenu").show();
 });
 $("#pickpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#receivemenu").show();
     myFunction();
 });
@@ -252,9 +264,21 @@ $("#pickpeople").on("blur", function () {
     $("#receivemenu").hide();
 });
 $("#backpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#backmenu").show();
 });
 $("#backpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#backmenu").show();
     myFunction2();
 });
@@ -264,20 +288,20 @@ $("#backpeople").on("blur", function () {
 
 $(document).ready(function () {
 
-    $(".amount").hover(function () {
-        $(this).tooltip();
-    });
+    // $(".amount").hover(function () {
+    //     $(this).tooltip();
+    // });
 
-    $('#rfidpickpeople').on("input", function () {
-        var rfidpick = $("#rfidpickpeople").val();
+    $('#pickpeople').on("input", function () {
+        var rfidpick = $("#pickpeople").val();
         rfidpick = rfidpick.slice(-9);
-        $("#rfidpickpeople").val(rfidpick);
+        // $("#rfidpickpeople").val(rfidpick);
         $("#pickpeople").val(rfidpick);
     });
-    $('#rfidbackpeople').on("input", function () {
-        var rfidback = $("#rfidbackpeople").val();
+    $('#backpeople').on("input", function () {
+        var rfidback = $("#backpeople").val();
         rfidback = rfidback.slice(-9);
-        $("#rfidbackpeople").val(rfidback);
+        // $("#rfidbackpeople").val(rfidback);
         $("#backpeople").val(rfidback);
     });
 

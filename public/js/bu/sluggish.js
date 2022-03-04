@@ -18,6 +18,34 @@ $(window).on('load', function () {
     $('body').loadingModal('destroy');
 });
 $(document).ready(function () {
+
+    function quickSearch() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = $("#numbersearch").val();
+        //var isISN = $("#toggle-state").is(":checked");
+        console.log(input); // test
+        // filter = input.value;
+        // Loop through all table rows, and hide those who don't match the search query
+        $('.isnRows').each(function (i, obj) {
+            txtValue = $(this).find("input[id^='datab']").val();
+            // console.log("now checking text : " + txtValue); // test
+            if (txtValue.indexOf(input) > -1) {
+                obj.style.display = "";
+
+            } else {
+                obj.style.display = "none";
+            } // if else
+        });
+    } // quickSearch function
+
+
+    $("#numbersearch").on('input', function (e) {
+        e.preventDefault();
+        quickSearch();
+    });
+
+
     $('#sluggish').on('submit', function (e) {
         e.preventDefault();
 
@@ -29,7 +57,7 @@ $(document).ready(function () {
 
         var i = $("input:checked").val();
 
-        console.log(i);
+
         var factory = $("#dataa" + i).val();
         var number = $("#datab" + i).val();
         var name = $("#datac" + i).val();
@@ -83,24 +111,64 @@ $(document).ready(function () {
 
         if (select == '提交' || select == 'Submit') {
             if (!checked) {
-                alert(Lang.get('bupagelang.nocheck1'));
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('bupagelang.nocheck1'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             }
 
             if (amount === '') {
 
                 document.getElementById("datah" + i).classList.add("is-invalid");
-                alert(Lang.get('bupagelang.enteramount'));
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('bupagelang.enteramount'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             }
             if (receive === null) {
                 document.getElementById("dataj" + i).classList.add("is-invalid");
-                alert(Lang.get('bupagelang.enterfactory'));
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('bupagelang.enterfactory'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             }
 
             if (parseInt(amount) > parseInt(oldstock) || parseInt(amount) <= 0) {
-                alert(Lang.get('bupagelang.amounterr'));
+                notyf.open({
+                    type: 'warning',
+                    message: Lang.get('bupagelang.amounterr'),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             }
         }
@@ -141,7 +209,7 @@ $(document).ready(function () {
                 error: function (err) {
                     //transaction error
                     if (err.status == 420) {
-                        var mess = err.message;
+                        var mess = err.responseJSON.message;
                         alert(mess);
                         window.location.reload();
                     }

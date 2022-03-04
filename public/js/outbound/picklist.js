@@ -230,9 +230,22 @@ function myFunction2() {
 }
 
 $("#sendpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#sendmenu").show();
 });
 $("#sendpeople").on("input", function () {
+
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#sendmenu").show();
     myFunction();
 });
@@ -240,9 +253,21 @@ $("#sendpeople").on("blur", function () {
     $("#sendmenu").hide();
 });
 $("#pickpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#pickmenu").show();
 });
 $("#pickpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#pickmenu").show();
     myFunction2();
 });
@@ -250,18 +275,36 @@ $("#pickpeople").on("blur", function () {
     $("#pickmenu").hide();
 });
 
+// $(document).keypress(
+//     function(event){
+//       if (event.which == '13') {
+//         event.preventDefault();
+//       }
+//   });
+
 $(document).ready(function () {
 
-    $('#rfidpickpeople').on("input", function () {
-        var rfidpick = $("#rfidpickpeople").val();
+    $('#pickpeople').on("input", function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var rfidpick = $("#pickpeople").val();
         rfidpick = rfidpick.slice(-9);
-        $("#rfidpickpeople").val(rfidpick);
+        // $("#rfidpickpeople").val(rfidpick);
         $("#pickpeople").val(rfidpick);
     });
-    $('#rfidsendpeople').on("input", function () {
-        var rfidsend = $("#rfidsendpeople").val();
+    $('#sendpeople').on("input", function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var rfidsend = $("#sendpeople").val();
         rfidsend = rfidsend.slice(-9);
-        $("#rfidsendpeople").val(rfidsend);
         $("#sendpeople").val(rfidsend);
     });
 
@@ -349,13 +392,33 @@ $(document).ready(function () {
 
         //check has people
         if (check1 == -1) {
-            alert(Lang.get("outboundpageLang.nosendpeople"));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('outboundpageLang.nosendpeople'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             $("#sendpeople").addClass("is-invalid");
             return false;
         }
 
         if (check2 == -1) {
-            alert(Lang.get("outboundpageLang.nopickpeople"));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('outboundpageLang.nopickpeople'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             $("#pickpeople").addClass("is-invalid");
             return false;
         }

@@ -88,9 +88,21 @@ function myFunction() {
 }
 
 $("#inpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#inboundmenu").show();
 });
 $("#inpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#inboundmenu").show();
     myFunction();
 });
@@ -188,7 +200,11 @@ $(document).ready(function () {
                     rowsafe.innerHTML = "<span id=" + "safe" + index + ">" + data.safe + "</span>";
 
                     let rowamount = document.createElement('td');
-                    rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control"' + 'min = "1"' + 'value = "1"' + 'style="width: 100px"' + '>';
+                    // rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control"' + 'min = "1"' + 'value = "1"' + 'style="width: 100px"' + '>';
+
+                    rowamount.innerHTML = '<div class="tooltip1"><input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control amount"' + 'min = "1"' +
+                        'value = "1' + '"style="width: 100px"' + '"><span class="tooltip1text tooltip1-top"> ' + data.showstock + "</span></div>";
+
 
                     let rowinreason = document.createElement('td');
                     rowinreason.innerHTML = "<span id=" + "inreason" + index + ">" + data.inreason + "</span>";
@@ -260,10 +276,16 @@ $(document).ready(function () {
         });
     });
 
-    $('#rfidinpeople').on("input", function () {
-        var rfidpick = $("#rfidinpeople").val();
+    $('#inpeople').on("input", function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var rfidpick = $("#inpeople").val();
         rfidpick = rfidpick.slice(-9);
-        $("#rfidinpeople").val(rfidpick);
+        // $("#rfidinpeople").val(rfidpick);
         $("#inpeople").val(rfidpick);
     });
 
@@ -302,7 +324,19 @@ $(document).ready(function () {
         var check1 = checkpeople.indexOf(inpeople);
 
         if (check1 == -1) {
-            alert(Lang.get("inboundpageLang.noinpeople"));
+
+            //alert(Lang.get("inboundpageLang.noinpeople"));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('inboundpageLang.noinpeople'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             $("#inpeople").addClass("is-invalid");
             return false;
         }
@@ -334,8 +368,18 @@ $(document).ready(function () {
             if (amount[i] > transit[i] && inreason[i] != '調撥' && inreason[i] != '退庫') {
                 $("#amount" + row[i]).addClass("is-invalid");
                 var row = i + 1;
-                var mess = Lang.get('inboundpageLang.row') + ' : ' + row + Lang.get('inboundpageLang.transiterror');
-                alert(mess);
+                var mess = Lang.get('inboundpageLang.row') + ' : ' + row + ' ' + Lang.get('inboundpageLang.transiterror');
+                notyf.open({
+                    type: 'warning',
+                    message: mess,
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             }
         }
@@ -373,16 +417,16 @@ $(document).ready(function () {
 
             },
             error: function (err) {
-                //入庫數量大於在途量
-                if (err.status == 420) {
-                    let j = err.responseJSON.row - 1;
-                    var mess = Lang.get('inboundpageLang.row') + ' : ' + err.responseJSON.row + Lang.get('inboundpageLang.transiterror') +
-                        ' ' + Lang.get('inboundpageLang.client') + ' : ' + err.responseJSON.client + ' ' + Lang.get('inboundpageLang.isn') + ' : ' +
-                        err.responseJSON.number;
-                    alert(mess);
-                    $("#amount" + row[j]).addClass("is-invalid");
-                    return false;
-                }
+                // //入庫數量大於在途量
+                // if (err.status == 420) {
+                //     let j = err.responseJSON.row - 1;
+                //     var mess = Lang.get('inboundpageLang.row') + ' : ' + err.responseJSON.row + Lang.get('inboundpageLang.transiterror') +
+                //         ' ' + Lang.get('inboundpageLang.client') + ' : ' + err.responseJSON.client + ' ' + Lang.get('inboundpageLang.isn') + ' : ' +
+                //         err.responseJSON.number;
+                //     alert(mess);
+                //     $("#amount" + row[j]).addClass("is-invalid");
+                //     return false;
+                // }
                 //transaction error
                 if (err.status == 421) {
                     alert(err.responseJSON.message);

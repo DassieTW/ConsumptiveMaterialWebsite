@@ -601,7 +601,7 @@ class OutboundController extends Controller
                     $nowloc = DB::table('inventory')->where('料號', $number)->where('客戶別', $client)->where('現有庫存', '>', 0)->pluck('儲位')->toArray();
                     $test = array_combine($nowloc, $nowstock);
                     foreach ($test as $k => $a) {
-                        $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\n";
+                        $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\r\n";
                     }
 
                     if ($name !== null && $format !== null) {

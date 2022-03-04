@@ -69,7 +69,14 @@ Route::get('/upload', function(){
 
 
 //料件信息查詢
-Route::get('/materialsearch', [BasicInformationController::class, 'searchmaterial'])->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+Route::get('/materialsearch', function(){
+    $datas = DB::table('consumptive_material')->get();
+
+                return view("basic.searchmaterialok")
+                    ->with(['data' => $datas])
+                    ->with(['sends' => 發料部門::cursor()]);
+
+})->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 Route::post('/materialsearch', [BasicInformationController::class, 'searchmaterial'])->name('basic.searchmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
