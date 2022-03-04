@@ -133,7 +133,6 @@ $(document).ready(function () {
 
     $('#buylist').on('submit', function (e) {
         e.preventDefault();
-
         var select = ($(document.activeElement).val());
         // clean up previous input results
         $('.is-invalid').removeClass('is-invalid');
@@ -235,7 +234,7 @@ $(document).ready(function () {
                     continue;
                 }
             }
-        }
+        } // if clicked submit
 
 
         data.push(srm);
@@ -326,7 +325,6 @@ $(document).ready(function () {
 
             if (select == '匯出' || select == 'Export' || select == '汇出') {
                 var titlename = $("#titlename").val();
-
                 $.ajax({
                     type: 'POST',
                     url: "download",
@@ -335,7 +333,7 @@ $(document).ready(function () {
                         titlecount: titlecount,
                         AllData: JSON.stringify(data),
                         count: count,
-                        titlename: titlename,
+                        titlename: titlename
                     },
                     xhrFields: {
                         responseType: 'blob', // to avoid binary data being mangled on charset conversion
@@ -478,12 +476,7 @@ $(document).ready(function () {
                         alert(errorThrown);
                     }
                 });
-            }
-
-
-
-
-
+            } // if else
         }
     });
 });

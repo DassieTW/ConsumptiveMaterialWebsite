@@ -198,7 +198,7 @@ class LoginController extends Controller
         ];
 
         $rules2 = [
-            'newMail' => ['required'],
+            'newMail' => [],
         ];
 
         if (Session::has('username') && $request->has('password')) {
@@ -229,10 +229,19 @@ class LoginController extends Controller
                 return \Response::json(['message' => 'Email is the same as old one'], 200/* Status code here default is 200 ok*/);
             } // if
             else {
-                DB::table('login')
+                if( $request->input('newMail') === null || $request->input('newMail') === "") { // delete the old email
+                    DB::table('login')
+                    ->where('username', \Auth::user()->username)
+                    // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
+                    ->update(['email' => NULL]);
+                } // if
+                else {
+                    DB::table('login')
                     ->where('username', \Auth::user()->username)
                     // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
                     ->update(['email' => ($request->input('newMail') . "@pegatroncorp.com")]);
+                } // else
+                
                 return \Response::json(['message' => 'Update successful'], 200/* Status code here default is 200 ok*/);
             } // else
             return \Response::json(['message' => 'weird error'], 421/* Status code here default is 200 ok*/);

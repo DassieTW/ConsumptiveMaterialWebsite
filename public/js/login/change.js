@@ -209,7 +209,13 @@ $(document).ready(function () {
                 $('body').loadingModal('destroy');
             },
             success: function (data) {
-                $("#oldMail").val( newEmail + "@pegatroncorp.com");
+                if( newEmail !== "" && newEmail !== null) {
+                    $("#oldMail").val( newEmail + "@pegatroncorp.com");
+                } // if
+                else {
+                    $("#oldMail").val("");
+                } // if
+                
                 notyf.success({
                     message: Lang.get('loginPageLang.success'),
                     duration: 5000,   //miliseconds, use 0 for infinite duration
