@@ -28,6 +28,21 @@ $(document).ready(function () {
     } // quickSearch function
 
 
+    $(".month").on("change", function () {
+
+        for (let i = 0; i < $("#count").val(); i++) {
+
+            if($("#month" + i).val() == '否')
+            {
+                $("#safe" + i).attr("readonly", false);
+            }
+            else
+            {
+                $("#safe" + i).attr("readonly", true);
+            }
+        }
+    });
+
     $("#numbersearch").on('input', function (e) {
         e.preventDefault();
         quickSearch();
@@ -132,7 +147,17 @@ $(document).ready(function () {
             if (month[i] == '否' && safe[i] == '') {
                 row = parseInt(check[i]) + 1;
                 var mess = Lang.get("basicInfoLang.row") + ' : ' + row + ' ' + Lang.get("basicInfoLang.safeerror");
-                alert(mess);
+                notyf.open({
+                    type: 'warning',
+                    message: mess,
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 $("#safe" + check[i]).addClass("is-invalid");
                 return false;
             }

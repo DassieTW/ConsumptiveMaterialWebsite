@@ -256,12 +256,12 @@ class BasicInformationController extends Controller
 
                         $check = $request->input('check');
 
-                        if ($gradea === 'Yes') $gradea = '是';
-                        if ($gradea === 'No') $gradea = '否';
-                        if ($month === 'Yes') $month = '是';
-                        if ($month === 'No') $month = '否';
-                        if ($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
-                        if ($belong === 'Station') $belong = '站位';
+                        // if ($gradea === 'Yes') $gradea = '是';
+                        // if ($gradea === 'No') $gradea = '否';
+                        // if ($month === 'Yes') $month = '是';
+                        // if ($month === 'No') $month = '否';
+                        // if ($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
+                        // if ($belong === 'Station') $belong = '站位';
 
                         DB::table('consumptive_material')
                             ->where('料號', $number)

@@ -33,6 +33,13 @@
 
             <form id="materialsearch" method="POST">
                 @csrf
+                <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                    value="{!! __('basicInfoLang.delete') !!}">
+                <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
+                    value="{!! __('basicInfoLang.change') !!}">
+                <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
+                    value="{!! __('basicInfoLang.download') !!}">
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="tabvle table-responsive">
                     <table class="table table-bordered table-hover align-items-center text-nowrap align-middle text-center justify-content-center" id="test">
                         <tr>
@@ -68,8 +75,9 @@
                             <?php
                             $data->單價 = round($data->單價, 3);
                             $data->LT = round($data->LT, 3);
+                            $currency = array('0' => 'RMB', '1' => 'USD', '2' => 'JPY', '3' => 'TWD', '4' => 'VND', '5' => 'IDR');
                             ?>
-                            <tr>
+                            <tr class="isnRows">
                                 <td class="p-0 m-0"><div class="pb-2"><input class="innumber" type="checkbox" id="innumber" name="innumber" value="{{ $loop->index }}"></div></td>
                                 <td class="p-0 m-0"><input type="hidden" id="number{{ $loop->index }}" name="number{{ $loop->index }}" value="{{ $data->料號 }}">
                                     <div class="text-nowrap pb-2" style="width: 100%;">{{ $data->料號 }}</div>
@@ -83,34 +91,50 @@
                                 <td class="p-0 m-0" align="center">
                                     <select style="width: 6ch;" class="col col-auto form-select form-select-lg p-0 m-0"
                                         id="gradea{{ $loop->index }}" name="gradea{{ $loop->index }}">
-                                        <option>{{ $data->A級資材 }}</option>
-                                        <option value="{!! __('basicInfoLang.yes') !!}">{!! __('basicInfoLang.yes') !!}</option>
-                                        <option>{!! __('basicInfoLang.no') !!}</option>
+                                        @if($data->A級資材 === "是")
+                                        <option selected value="是">{!! __('basicInfoLang.yes') !!}</option>
+                                        <option value="否">{!! __('basicInfoLang.no') !!}</option>
+                                        @else
+                                        <option value="是">{!! __('basicInfoLang.yes') !!}</option>
+                                        <option selected value="否">{!! __('basicInfoLang.no') !!}</option>
+                                        @endif
                                     </select>
                                 </td>
-                                <td class="p-0 m-0" align="center">
+                                <td class="p-0 m-0 month" align="center">
                                     <select style="width: 6ch;" class="form-select form-select-lg p-0 m-0"
                                         id="month{{ $loop->index }}" name="month{{ $loop->index }}">
-                                        <option>{{ $data->月請購 }}</option>
-                                        <option>{!! __('basicInfoLang.yes') !!}</option>
-                                        <option>{!! __('basicInfoLang.no') !!}</option>
+                                        @if($data->月請購 === "是")
+                                        <option selected value="是">{!! __('basicInfoLang.yes') !!}</option>
+                                        <option value="否">{!! __('basicInfoLang.no') !!}</option>
+                                        @else
+                                        <option value="是">{!! __('basicInfoLang.yes') !!}</option>
+                                        <option selected value="否">{!! __('basicInfoLang.no') !!}</option>
+                                        @endif
                                     </select>
                                 </td>
                                 <td class="p-0 m-0" align="center">
                                     <select style="width: 13ch;" class="form-select form-select-lg p-0 m-0"
                                         id="send{{ $loop->index }}" name="send{{ $loop->index }}">
-                                        <option>{{ $data->發料部門 }}</option>
+                                        {{-- <option>{{ $data->發料部門 }}</option> --}}
                                         @foreach ($sends as $send)
+                                            @if ($data->發料部門 === $send->發料部門)
+                                            <option selected>{{ $send->發料部門 }}</option>
+                                            @else
                                             <option>{{ $send->發料部門 }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </td>
                                 <td class="p-0 m-0" align="center">
                                     <select style="width: 10ch;" class="form-select form-select-lg p-0 m-0"
                                         id="belong{{ $loop->index }}" name="belong{{ $loop->index }}">
-                                        <option>{{ $data->耗材歸屬 }}</option>
-                                        <option>{!! __('basicInfoLang.consume') !!}</option>
-                                        <option>{!! __('basicInfoLang.stand') !!}</option>
+                                        @if($data->耗材歸屬 === "單耗")
+                                        <option selected value="單耗">{!! __('basicInfoLang.consume') !!}</option>
+                                        <option value="站位">{!! __('basicInfoLang.stand') !!}</option>
+                                        @else
+                                        <option value="單耗">{!! __('basicInfoLang.consume') !!}</option>
+                                        <option selected value="站位">{!! __('basicInfoLang.stand') !!}</option>
+                                        @endif
                                     </select>
                                 </td>
                                 <td class="p-0 m-0" align="center"><input style="width: 7ch;" type="number" id="price{{ $loop->index }}"
@@ -119,13 +143,13 @@
                                 <td class="p-0 m-0" align="center">
                                     <select style="width: 8ch;" class="form-select form-select-lg p-0 m-0"
                                         id="money{{ $loop->index }}" name="money{{ $loop->index }}">
-                                        <option>{{ $data->幣別 }}</option>
-                                        <option>RMB</option>
-                                        <option>USD</option>
-                                        <option>JPY</option>
-                                        <option>TWD</option>
-                                        <option>VND</option>
-                                        <option>IDR</option>
+                                        @foreach ($currency as $currency)
+                                            @if ($data->幣別 === $currency)
+                                            <option selected>{{ $currency }}</option>
+                                            @else
+                                            <option>{{ $currency }}</option>
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </td>
                                 <td class="p-0 m-0" align="center"><input style="width:5ch;" type="text" id="unit{{ $loop->index }}"
@@ -140,7 +164,7 @@
                                 <td class="p-0 m-0" align="center"><input style="width:8ch;" type="number" id="lt{{ $loop->index }}"
                                         name="lt{{ $loop->index }}" value="{{ $data->LT }}"
                                         class="form-control text-center p-0 m-0" min="0"></td>
-                                <td class="p-0 m-0" align="center">
+                                <td class="p-0 m-0 month" align="center">
                                     @if ( $data->月請購 === "否" )
                                         <input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"
                                         id="safe{{ $loop->index }}" name="safe{{ $loop->index }}"
@@ -158,12 +182,7 @@
 
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
-                    value="{!! __('basicInfoLang.delete') !!}">
-                <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
-                    value="{!! __('basicInfoLang.change') !!}">
-                <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-                    value="{!! __('basicInfoLang.download') !!}">
+
             </form>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
