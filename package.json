@@ -58,6 +58,7 @@
         "vue": "^3.2.29",
         "vue-loader": "^17.0.0",
         "vue-router": "^4.0.12",
-        "vue3-langjs": "^1.0.2"
+        "vue3-langjs": "^1.0.2",
+        "vue3-table-lite": "^1.1.7-1"
     }
 }

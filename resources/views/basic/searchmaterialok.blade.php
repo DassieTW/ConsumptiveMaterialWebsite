@@ -36,32 +36,32 @@
                 <div class="tabvle table-responsive">
                     <table class="table table-bordered table-hover align-items-center text-nowrap align-middle text-center justify-content-center" id="test">
                         <tr>
-                            <th style="width: 3ch;">#</th>
-                            <th style="width: 13ch;"><input type="hidden" id="title0" name="title0"
+                            <th class="p-0 m-0" style="width: 3ch;">#</th>
+                            <th class="p-0 m-0" style="width: 13ch;"><input type="hidden" id="title0" name="title0"
                                     value="料號">{!! __('basicInfoLang.isn') !!}
                             </th>
-                            <th style="width: 13ch;"><input type="hidden" id="title1" name="title1" value="品名">{!! __('basicInfoLang.pName') !!}
+                            <th class="p-0 m-0" style="width: 13ch;"><input type="hidden" id="title1" name="title1" value="品名">{!! __('basicInfoLang.pName') !!}
                             </th>
-                            <th style="width: 13ch;"><input type="hidden" id="title2" name="title2"    value="規格">{!! __('basicInfoLang.format') !!}
+                            <th class="p-0 m-0" style="width: 13ch;"><input type="hidden" id="title2" name="title2"    value="規格">{!! __('basicInfoLang.format') !!}
                             </th>
-                            <th style="width: 15ch;"><input type="hidden" id="title3" name="title3" value="A級資材">{!! __('basicInfoLang.gradea') !!}</th>
-                            <th style="width: 13ch;"><input type="hidden" id="title4" name="title4" value="月請購">{!! __('basicInfoLang.month') !!}
+                            <th class="p-0 m-0" style="width: 15ch;"><input type="hidden" id="title3" name="title3" value="A級資材">{!! __('basicInfoLang.gradea') !!}</th>
+                            <th class="p-0 m-0" style="width: 13ch;"><input type="hidden" id="title4" name="title4" value="月請購">{!! __('basicInfoLang.month') !!}
                             </th>
-                            <th style="width: 15ch;"><input type="hidden" id="title5" name="title5" value="發料部門">{!! __('basicInfoLang.senddep') !!}</th>
-                            <th style="width: 13ch;"><input type="hidden" id="title6" name="title6" value="耗材歸屬">{!! __('basicInfoLang.belong') !!}</th>
-                            <th style="width: 13ch;"><input type="hidden" id="title7" name="title7" value="單價">{!! __('basicInfoLang.price') !!}
+                            <th class="p-0 m-0" style="width: 15ch;"><input type="hidden" id="title5" name="title5" value="發料部門">{!! __('basicInfoLang.senddep') !!}</th>
+                            <th class="p-0 m-0" style="width: 13ch;"><input type="hidden" id="title6" name="title6" value="耗材歸屬">{!! __('basicInfoLang.belong') !!}</th>
+                            <th class="p-0 m-0" style="width: 13ch;"><input type="hidden" id="title7" name="title7" value="單價">{!! __('basicInfoLang.price') !!}
                             </th>
-                            <th style="width: 13ch;"><input type="hidden" id="title8" name="title8" value="幣別">{!! __('basicInfoLang.money') !!}
+                            <th class="p-0 m-0" style="width: 13ch;"><input type="hidden" id="title8" name="title8" value="幣別">{!! __('basicInfoLang.money') !!}
                             </th>
-                            <th style="width: 8ch;"><input type="hidden" id="title9" name="title9" value="單位">{!! __('basicInfoLang.unit') !!}
+                            <th class="p-0 m-0" style="width: 8ch;"><input type="hidden" id="title9" name="title9" value="單位">{!! __('basicInfoLang.unit') !!}
                             </th>
-                            <th style="width: 8ch;"><input type="hidden" id="title10" name="title10" value="MPQ">{!! __('basicInfoLang.mpq') !!}
+                            <th class="p-0 m-0" style="width: 8ch;"><input type="hidden" id="title10" name="title10" value="MPQ">{!! __('basicInfoLang.mpq') !!}
                             </th>
-                            <th style="width: 8ch;"><input type="hidden" id="title11" name="title11" value="MOQ">{!! __('basicInfoLang.moq') !!}
+                            <th class="p-0 m-0" style="width: 8ch;"><input type="hidden" id="title11" name="title11" value="MOQ">{!! __('basicInfoLang.moq') !!}
                             </th>
-                            <th style="width: 8ch;"><input type="hidden" id="title12" name="title12" value="LT">{!! __('basicInfoLang.lt') !!}
+                            <th class="p-0 m-0" style="width: 8ch;"><input type="hidden" id="title12" name="title12" value="LT">{!! __('basicInfoLang.lt') !!}
                             </th>
-                            <th style="width: 13ch;"><input type="hidden" id="title13" name="title13" value="安全庫存">{!! __('basicInfoLang.safe') !!}</th>
+                            <th class="p-0 m-0" style="width: 13ch;"><input type="hidden" id="title13" name="title13" value="安全庫存">{!! __('basicInfoLang.safe') !!}</th>
                             <input type="hidden" id="time" name="time" value="14">
                         </tr>
                         @foreach ($data as $data)
@@ -75,10 +75,10 @@
                                     <div class="text-nowrap pb-2" style="width: 100%;">{{ $data->料號 }}</div>
                                 </td>
                                 <td class="py-0 m-0"><input type="hidden" id="name{{ $loop->index }}" name="name{{ $loop->index }}" value="{{ $data->品名 }}">
-                                    <div class="text-nowrap pb-2" style="overflow-x: scroll; width: 100%;">{{ $data->品名 }}</div>
+                                    <div class="text-nowrap pb-2" style="overflow-x: auto; width: 100%;">{{ $data->品名 }}</div>
                                 </td>
                                 <td class="py-0 m-0"><input type="hidden" id="format{{ $loop->index }}" name="format{{ $loop->index }}" value="{{ $data->規格 }}">
-                                    <div class="text-nowrap pb-2" style="overflow-x: scroll; width: 100%;">{{ $data->規格 }}</div>
+                                    <div class="text-nowrap pb-2" style="overflow-x: auto; width: 100%;">{{ $data->規格 }}</div>
                                 </td>
                                 <td class="p-0 m-0" align="center">
                                     <select style="width: 6ch;" class="col col-auto form-select form-select-lg p-0 m-0"

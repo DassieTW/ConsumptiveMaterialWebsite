@@ -2102,10 +2102,14 @@ class MonthController extends Controller
             // dd($endOfRow . "," . $endOfCol); // test
             
             $worksheet->setCellValue("A" . ($endOfRow+3), "合計：");
-            $worksheet->mergeCells("A" . ($endOfRow+3) . ":" . $alphabet[$endOfCol-2] . ($endOfRow+3)); // for the SUM row
+            $worksheet->mergeCells("A" . ($endOfRow+3) . ":" . $alphabet[$endOfCol-4] . ($endOfRow+3)); // for the SUM row
             $worksheet->setCellValue( $alphabet[$endOfCol] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol] ."2:" . $alphabet[$endOfCol] . ($endOfRow+2) . ")");
             $worksheet->setCellValue( $alphabet[$endOfCol-1] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol-1] ."2:" . $alphabet[$endOfCol-1] . ($endOfRow+2) . ")");
             $worksheet->getStyle( $alphabet[$endOfCol] . "2:" . $alphabet[$endOfCol] . ($endOfRow+3))->getNumberFormat()->setFormatCode('0%');
+            $worksheet->setCellValue( $alphabet[$endOfCol-2] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol-2] ."2:" . $alphabet[$endOfCol-2] . ($endOfRow+2) . ")");
+            $worksheet->setCellValue( $alphabet[$endOfCol-3] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol-3] ."2:" . $alphabet[$endOfCol-3] . ($endOfRow+2) . ")");
+            $worksheet->getStyle( $alphabet[$endOfCol-2] . "2:" . $alphabet[$endOfCol-2] . ($endOfRow+3))->getNumberFormat()->setFormatCode('0%');
+
             // 下載
             $now = Carbon::now()->format('YmdHis');
             $titlename = $request->input('titlename');
@@ -2119,7 +2123,7 @@ class MonthController extends Controller
         } else {
             return redirect(route('member.login'));
         } // else
-    }
+    } // export excel function
 
     //請購單下載
     public function buylistdownload(Request $request)
