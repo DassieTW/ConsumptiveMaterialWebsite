@@ -43,15 +43,19 @@ import Vue3Langjs from 'vue3-langjs';
 import vueTranslations from './vue-translations';
 import router from './vue-router/route';
 import BreadCrumbNav from './components/breadcrumb/BreadCrumbNav.vue';
+import BasicInfoTable from './components/reusableUtilities/BasicInfoTable.vue';
 
 const app = createApp({
     components: {
         'vue-bread-crumb': BreadCrumbNav,
+        'basic-info-table': BasicInfoTable
     }
-})
+});
+
 app.use(Vue3Langjs, {
     messages: vueTranslations, 
     // the locale file gen by command "php artisan lang:js resources/js/vue-translations.js --no-lib --quiet"
 });
+
 app.use(router);
-app.mount('#breadcrumbnav');
+app.mount('#mountingPoint');

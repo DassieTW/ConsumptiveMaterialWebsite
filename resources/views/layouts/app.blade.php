@@ -20,8 +20,9 @@
 
 <body>
     <!-- vue component example -->
-    <div id="breadcrumbnav">
+    <div id="mountingPoint">
         <vue-bread-crumb></vue-bread-crumb>
+        <basic-info-table></basic-info-table>
     </div>
 
     <script src="{{ mix('js/app.js') }}"></script>

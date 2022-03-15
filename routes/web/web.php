@@ -49,25 +49,14 @@ Route::get('/dashboard', function () {
     return view('testTemplate');
 })->name('dashboard');
 
-Route::get('/vuetest/web', function () {
+Route::get('/vuetest', function () {
+    // dd( \Auth::user()->username ); // test
     return view("layouts.app");
-});
+})->withoutMiddleware('auth');
 
 Route::get('/phpinfo', function () {
     phpinfo();
 })->withoutMiddleware('auth');
-
-Route::get('/test2', function () {
-    // \Log::info('觸發 Test2'); // test
-    // App::setLocale('en');
-    // return trans('auth.throttle', ['seconds' => 5]);
-    // return trans('auth.failed');
-    // $author = Models\User::find(2);
-    // $posts = $author->posts;
-    // return $posts;
-    $mats = Models\ConsumptiveMaterial::first();
-    return $mats;
-});
 
 Route::get('/import_excel', [ImportexcelController::class, 'index']);
 
@@ -90,5 +79,9 @@ Route::get('/lang/{type}', function (Request $request, $type) {
 
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');
+});
+
+Route::post('/getCurrentDB', function () {
+    return DB::connection()->getDatabaseName();
 });
 

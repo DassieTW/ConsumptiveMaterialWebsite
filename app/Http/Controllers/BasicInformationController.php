@@ -35,30 +35,6 @@ class BasicInformationController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    /*public function index()
-    {
-        //
-        if (Session::has('username'))
-        {
-            return view('basic.index')->with(['factorys' => 廠別::cursor()])
-            ->with(['clients' => 客戶別::cursor()])
-            ->with(['machines' => 機種::cursor()])
-            ->with(['productions' => 製程::cursor()])
-            ->with(['lines' => 線別::cursor()])
-            ->with(['uses' => 領用部門::cursor()])
-            ->with(['usereasons' => 領用原因::cursor()])
-            ->with(['inreasons' => 入庫原因::cursor()])
-            ->with(['positions' => 儲位::cursor()])
-            ->with(['sends' => 發料部門::cursor()])
-            ->with(['os' => O庫::cursor()])
-            ->with(['backs' => 退回原因::cursor()]);
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
     //基礎信息更新或刪除
     public function changeordelete(Request $request)
     {
