@@ -77,9 +77,21 @@ function myFunction() {
 }
 
 $("#inpeople").on("focus", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#inboundmenu").show();
 });
 $("#inpeople").on("input", function () {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
     $("#inboundmenu").show();
     myFunction();
 });
@@ -202,10 +214,15 @@ $(document).ready(function () {
         });
     });
 
-    $('#rfidinpeople').on("input", function () {
-        var rfidpick = $("#rfidinpeople").val();
+    $('#inpeople').on("input", function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var rfidpick = $("#inpeople").val();
         rfidpick = rfidpick.slice(-9);
-        $("#rfidinpeople").val(rfidpick);
         $("#inpeople").val(rfidpick);
     });
 
@@ -244,7 +261,17 @@ $(document).ready(function () {
         var check1 = checkpeople.indexOf(inpeople);
 
         if (check1 == -1) {
-            alert(Lang.get("oboundpageLang.noinpeople"));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('oboundpageLang.noinpeople'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             $("#inpeople").addClass("is-invalid");
             return false;
         }

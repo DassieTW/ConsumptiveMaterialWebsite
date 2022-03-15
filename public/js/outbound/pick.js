@@ -141,7 +141,6 @@ $(document).ready(function () {
 
                 let rowamount = document.createElement('td');
 
-
                 rowamount.innerHTML = '<div class="tooltip1"><input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control amount"' + 'min = "1"' +
                     'value = "1' + '"style="width: 100px"' + '"><span class="tooltip1text tooltip1-top"> ' + data.showstock + "</span></div>";
 

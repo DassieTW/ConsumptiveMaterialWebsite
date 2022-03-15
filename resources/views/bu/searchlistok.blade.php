@@ -23,12 +23,10 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-
-
                         <form  method="POST" id = "bulist">
                             @csrf
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('bupagelang.delete') !!}">
-                    <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('bupagelang.download') !!}">
+                            <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('bupagelang.download') !!}">
                             <input type = "hidden" id = "titlename" name = "titlename" value = "調撥單查詢">
                         <table class="table" id = "inboundsearch">
                             <tr id = "require">

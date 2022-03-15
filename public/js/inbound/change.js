@@ -56,7 +56,6 @@ $(document).ready(function () {
             document.getElementById("newposition" + j).style.borderColor = "";
         }
 
-        console.log($(this).val());
         var i = $(this).val();
         var number = $("#number" + i).val();
         var stock = $("#stock" + i).val();

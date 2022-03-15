@@ -24,10 +24,8 @@
         <div class="table-responsive">
             <form id="sluggish" method="POST">
                 @csrf
-                <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
-            value="{!! __('bupagelang.submit') !!}">
-        <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-            value="{!! __('bupagelang.download') !!}">
+                <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
+                    value="{!! __('bupagelang.download') !!}">
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                 <input type="hidden" id="title" name="title" value="廠區呆滯庫存">
@@ -96,9 +94,10 @@
                         @if(isset($table))
                         @if($database[$i] === $table)
                         <tr>
-                            <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
-                                    name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
-                                    value="{{$i}}{{$loop->index}}"></td>
+                            <td><button class="basic btn btn-info btn-lg m-0 p-0 rounded-circle" id="submit{{$i}}{{$loop->index}}" value="{{$i}}{{$loop->index}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                </svg></button></td>
                             <td><input type="hidden" id="dataa{{$i}}{{$loop->index}}" name="dataa{{$i}}{{$loop->index}}"
                                     value="{{$database[$i]}}">{{$database[$i]}}</td>
                             <td><input type="hidden" id="datab{{$i}}{{$loop->index}}" name="datab{{$i}}{{$loop->index}}"
@@ -145,9 +144,10 @@
                         @endif
                         @else
                         <tr>
-                            <td><input class="basic" type="checkbox" id="check{{$i}}{{$loop->index}}"
-                                    name="check{{$i}}{{$loop->index}}" style="width:20px;height:20px;"
-                                    value="{{$i}}{{$loop->index}}"></td>
+                            <td><button class="basic btn btn-info btn-lg m-0 p-0 rounded-circle" id="submit{{$i}}{{$loop->index}}" value="{{$i}}{{$loop->index}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                </svg></button></td>
                             <td><input type="hidden" id="dataa{{$i}}{{$loop->index}}" name="dataa{{$i}}{{$loop->index}}"
                                     value={{$database[$i]}}>{{$database[$i]}}</td>
                             <td><input type="hidden" id="datab{{$i}}{{$loop->index}}" name="datab{{$i}}{{$loop->index}}"
@@ -205,8 +205,6 @@
 
 
         </form>
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.index')}}'">{!!
-            __('bupagelang.return') !!}</button>
     </div>
 </div>
 

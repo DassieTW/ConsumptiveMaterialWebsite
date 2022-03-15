@@ -133,8 +133,11 @@ $(document).ready(function () {
 
                 let rowamount = document.createElement('td');
 
-                rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control amount"' +
-                    'min = "1"' + 'value = "1"' + 'style="width: 100px"' + 'title="' + data.showstock + '">';
+                // rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control amount"' +
+                //     'min = "1"' + 'value = "1"' + 'style="width: 100px"' + 'title="' + data.showstock + '">';
+                rowamount.innerHTML = '<div class="tooltip1"><input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control amount"' + 'min = "1"' +
+                'value = "1' + '"style="width: 100px"' + '"><span class="tooltip1text tooltip1-top"> ' + data.showstock + "</span></div>";
+
 
                 let rowremark = document.createElement('td');
                 rowremark.innerHTML = '<input id="remark' + index + '"' + 'type = "text"' + 'class = "form-control"' + 'style="width: 100px"' + '>';

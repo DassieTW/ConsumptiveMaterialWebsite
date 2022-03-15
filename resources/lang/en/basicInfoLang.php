@@ -90,4 +90,6 @@ return [
     'yellowrepeat' => 'Yellow background means that the data already exist in the database',
     'data' => 'data',
     'nodata' => 'Nothing to submit',
+    'searchisn' => 'Search all directly, or enter the part number to search at the beginning',
+    'searchisn1' => 'Enter multiple item numbers for query, separated by newlines',
 ];

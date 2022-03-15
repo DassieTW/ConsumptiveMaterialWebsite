@@ -21,11 +21,18 @@
 <div class="card">
     <div class="card-header">
         <h3>{!! __('oboundpageLang.inboundsearch') !!}</h3>
+        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
+
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <form id="inboundsearch" method="POST">
                 @csrf
+                <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                value="{!! __('oboundpageLang.delete') !!}">
+
                 <input type="hidden" id="titlename" name="titlename" value="O庫入庫查詢">
 
                 <table class="table">
@@ -56,7 +63,7 @@
                         <input type="hidden" id="titlecount" name="titlecount" value="11">
                     </tr>
                     @foreach($data as $data)
-                    <tr id="{{$loop->index}}">
+                    <tr id="{{$loop->index}}" class="isnRows">
                         <td><input class ="innumber" type="checkbox" id="innumber" name="innumber" style="width:20px;height:20px;" value="{{$loop->index}}"></td>
                         <td><input type = "hidden" id = "dataa{{$loop->index}}" name = "dataa{{$loop->index}}" value = "{{$data->入庫單號}}">{{$data->入庫單號}}</td>
                         <td><input type = "hidden" id = "datab{{$loop->index}}" name = "datab{{$loop->index}}" value = "{{$data->料號}}">{{$data->料號}}</td>
@@ -76,11 +83,7 @@
                 </table>
         </div>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
-            value="{!! __('oboundpageLang.delete') !!}">
         </form>
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('obound.inboundsearch')}}'">{!!
-            __('oboundpageLang.return') !!}</button>
     </div>
 </div>
 

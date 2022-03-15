@@ -134,7 +134,6 @@ class CallController extends Controller
 
                         if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
 
-
                             $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
                             unset($datas[$i + 1]);
                             $datas = array_values($datas);

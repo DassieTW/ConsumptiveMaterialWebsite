@@ -456,7 +456,7 @@ class MonthController extends Controller
                             ->where('料號', $number[$i])
                             ->update([
                                 '狀態' => "待畫押", '畫押工號' => $jobnumber,
-                                '畫押信箱' => $email, '單耗' => $amount[$i], '送單時間' => Carbon::now(), '送單人' => \Auth::user()->姓名,
+                                '畫押信箱' => $email, '單耗' => $amount[$i], '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
                             ]);
                         DB::commit();
                     } catch (\Exception $e) {
@@ -1505,7 +1505,7 @@ class MonthController extends Controller
                             $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                         })->where('consumptive_material.發料部門', $send)
                         ->where('月請購_單耗.狀態', '=', "已完成")->get();
-                } // if else 
+                } // if else
 
                 foreach ($datas as $data) {
                     $test = $data->幣別;
@@ -2080,11 +2080,11 @@ class MonthController extends Controller
             // 填寫header & footer of excel when printing
             $worksheet->getHeaderFooter()->setOddHeader("&C&B" . Session::get("clientChoice") . "  " . Carbon::now()->format('m') . "月耗材匯總");
             $worksheet->getHeaderFooter()->setOddFooter("&L&B核准：_______________________&C&B審核：_______________________&R&B申請人：_______________________");
-            
+
             //填寫表頭
             for ($i = 0; $i < $titlecount; $i++) {
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
-            } // for 
+            } // for
 
             //填寫內容
             $endOfRow = 0 ;
@@ -2100,7 +2100,7 @@ class MonthController extends Controller
             } // for
 
             // dd($endOfRow . "," . $endOfCol); // test
-            
+
             $worksheet->setCellValue("A" . ($endOfRow+3), "合計：");
             $worksheet->mergeCells("A" . ($endOfRow+3) . ":" . $alphabet[$endOfCol-4] . ($endOfRow+3)); // for the SUM row
             $worksheet->setCellValue( $alphabet[$endOfCol] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol] ."2:" . $alphabet[$endOfCol] . ($endOfRow+2) . ")");

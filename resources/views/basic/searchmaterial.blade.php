@@ -32,16 +32,12 @@
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <div class="form-check">
-                                <input class="form-check-input" type="radio" name="numberradio" id="numberradio" checked value="1">
-                                <input
-                                    class="form-control form-control-lg col col-auto @error('number') is-invalid @enderror"
-                                    type="text" id="number" name="number" for="numberradio"
-                                    placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
-                                @error('number')
-                                <span class="invalid-feedback d-block" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    <input class="form-check-input" type="radio" name="numberradio" id="numberradio" checked value="1">
+                                    <input
+                                        class="form-control form-control-lg col col-auto"
+                                        type="text" id="number" name="number"
+                                        placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
+                                        <span style="color: red;font-size:11px;">&nbsp;{!! __('basicInfoLang.searchisn') !!}</span>
                                 </div>
                             </div>
 
@@ -51,14 +47,12 @@
                                 <div class="form-check">
                                 <input class="form-check-input" type="radio" name="numberradio" id="numberradio1" value="2">
                                 <textarea
-                                    class="form-control form-control-lg col col-auto "
+                                    class="form-control form-control-lg col col-auto"
                                     id="numberarea" name="numberarea" for="numberradio1" rows="10"
                                     placeholder="{!! __('basicInfoLang.enterisn') !!}"></textarea>
+                                    <span style="color: red;font-size:11px;">&nbsp;{!! __('basicInfoLang.searchisn1') !!}</span>
                                 </div>
                             </div>
-
-
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         </div>
                         <div class="row w-100 justify-content-center">
                             <div class="col col-auto">

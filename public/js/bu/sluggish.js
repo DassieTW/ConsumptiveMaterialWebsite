@@ -47,32 +47,21 @@ $(document).ready(function () {
 
 
     $('#sluggish').on('submit', function (e) {
-        e.preventDefault();
 
+        e.preventDefault();
         // clean up previous input results
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
-        var i = $("input:checked").val();
 
-        var factory = $("#dataa" + i).val();
-        var number = $("#datab" + i).val();
-        var name = $("#datac" + i).val();
-        var format = $("#datad" + i).val();
-        var unit = $("#datae" + i).val();
-        var oldstock = $("#datag" + i).val();
-        var amount = $("#datah" + i).val();
-        var receive = $("#dataj" + i).val();
         var title = [];
         for (var k = 0; k < 10; k++) {
             title[k] = $("#title" + k).val();
         }
 
         var record = []; {
-            $('#sluggish :checkbox').each(function () {
-                //if(values.indexOf($(this).val()) === -1){
+            $('.basic').each(function () {
                 record.push($(this).val());
-                // }
             });
         }
 
@@ -104,258 +93,118 @@ $(document).ready(function () {
             data9.push($("#dataj" + record[k]).val());
         }
 
-        checked = $("input[type=checkbox]:checked").length;
+        var data = [];
 
-        if (select == '提交' || select == 'Submit') {
-            if (!checked) {
-                notyf.open({
-                    type: 'warning',
-                    message: Lang.get('bupagelang.nocheck1'),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom"
-                    }
+        var count = data0.length;
+        data.push(data0);
+        data.push(data1);
+        data.push(data2);
+        data.push(data3);
+        data.push(data4);
+        data.push(data5);
+        data.push(data6);
+        data.push(data7);
+        data.push(data8);
+        data.push(data9);
+
+        $.ajax({
+            type: 'POST',
+            url: "download",
+            data: {
+                AllData: JSON.stringify(data),
+                title: title,
+                count: count,
+            },
+            xhrFields: {
+                responseType: 'blob', // to avoid binary data being mangled on charset conversion
+            },
+            //dataType: 'json', // let's set the expected response format  // test
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
                 });
-                return false;
-            }
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
+            },
 
-            if (amount === '') {
+            success: function (blob, status, xhr) {
 
-                document.getElementById("datah" + i).classList.add("is-invalid");
-                notyf.open({
-                    type: 'warning',
-                    message: Lang.get('bupagelang.enteramount'),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom"
-                    }
-                });
-                return false;
-            }
-            if (receive === null) {
-                document.getElementById("dataj" + i).classList.add("is-invalid");
-                notyf.open({
-                    type: 'warning',
-                    message: Lang.get('bupagelang.enterfactory'),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom"
-                    }
-                });
-                return false;
-            }
+                console.log(status); // test
+                // check for a filename
 
-            if (parseInt(amount) > parseInt(oldstock) || parseInt(amount) <= 0) {
-                notyf.open({
-                    type: 'warning',
-                    message: Lang.get('bupagelang.amounterr'),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom"
-                    }
-                });
-                return false;
-            }
-        }
-        if (select == '提交' || select == 'Submit') {
-            console.log(factory);
-            $.ajax({
-                type: 'POST',
-                url: "transsluggish",
-                data: {
-                    factory: factory,
-                    number: number,
-                    name: name,
-                    format: format,
-                    unit: unit,
-                    oldstock: oldstock,
-                    amount: amount,
-                    receive: receive
-                },
-                dataType: 'json', // let's set the expected response format
-                beforeSend: function () {
-                    // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                    $('body').loadingModal({
-                        text: 'Loading...',
-                        animation: 'circle'
-                    });
-                },
-                complete: function () {
-                    $('body').loadingModal('hide');
-                    $('body').loadingModal('destroy');
-                },
-
-                success: function (data) {
-                    var mess = Lang.get('bupagelang.dbadd') + ' ' + Lang.get('bupagelang.success') + ' ' +
-                        Lang.get('bupagelang.dblist') + ' : ' + data.message;
-                    alert(mess);
-                    window.location.href = "/bu";
-                },
-                error: function (err) {
-                    //transaction error
-                    if (err.status == 420) {
-                        var mess = err.responseJSON.message;
-                        alert(mess);
-                        window.location.reload();
-                    }
-                    //庫存異動
-                    else if (err.status == 421) {
-                        var mess = Lang.get('bupagelang.inventoryerr') + ' ' + err.responseJSON.message;
-                        alert(mess);
-                        return false;
-                    }
-                    else{
-                        var mess = err.responseJSON.message;
-                        alert(mess);
-                    }
-                },
-            });
-        } else {
-
-            var data = [];
-
-            var count = data0.length;
-            data.push(data0);
-            data.push(data1);
-            data.push(data2);
-            data.push(data3);
-            data.push(data4);
-            data.push(data5);
-            data.push(data6);
-            data.push(data7);
-            data.push(data8);
-            data.push(data9);
-
-            $.ajax({
-                type: 'POST',
-                url: "download",
-                data: {
-                    AllData: JSON.stringify(data),
-                    title: title,
-                    count:count,
-                },
-                xhrFields: {
-                    responseType: 'blob', // to avoid binary data being mangled on charset conversion
-                },
-                //dataType: 'json', // let's set the expected response format  // test
-                beforeSend: function () {
-                    // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                    $('body').loadingModal({
-                        text: 'Loading...',
-                        animation: 'circle'
-                    });
-                },
-                complete: function () {
-                    $('body').loadingModal('hide');
-                    $('body').loadingModal('destroy');
-                },
-
-                success: function (blob, status, xhr) {
-
-                    console.log(status); // test
-                    // check for a filename
-
-                    var filename = "";
-                    var disposition = xhr.getResponseHeader('Content-Disposition');
-                    if (disposition && disposition.indexOf('attachment') !== -1) {
-                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                        var matches = filenameRegex.exec(disposition);
-                        if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                    }
-
-                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                        // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                        window.navigator.msSaveBlob(blob, filename);
-                    } else {
-                        var URL = window.URL || window.webkitURL;
-                        var downloadUrl = URL.createObjectURL(blob);
-
-                        if (filename) {
-                            // use HTML5 a[download] attribute to specify filename
-                            var a = document.createElement("a");
-                            // safari doesn't support this yet
-                            if (typeof a.download === 'undefined') {
-                                window.location.href = downloadUrl;
-                            } else {
-                                a.href = downloadUrl;
-                                a.download = decodeURIComponent(filename);
-                                console.log(decodeURIComponent(filename));
-                                document.body.appendChild(a);
-                                a.click();
-                            }
-                        } else {
-                            window.location.href = downloadUrl;
-                        }
-
-                        setTimeout(function () {
-                            URL.revokeObjectURL(downloadUrl);
-                        }, 100); // cleanup
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-
-                    console.warn(jqXHR.responseText);
-                    alert(errorThrown);
+                var filename = "";
+                var disposition = xhr.getResponseHeader('Content-Disposition');
+                if (disposition && disposition.indexOf('attachment') !== -1) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(disposition);
+                    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
                 }
-            });
-        }
+
+                if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                    window.navigator.msSaveBlob(blob, filename);
+                } else {
+                    var URL = window.URL || window.webkitURL;
+                    var downloadUrl = URL.createObjectURL(blob);
+
+                    if (filename) {
+                        // use HTML5 a[download] attribute to specify filename
+                        var a = document.createElement("a");
+                        // safari doesn't support this yet
+                        if (typeof a.download === 'undefined') {
+                            window.location.href = downloadUrl;
+                        } else {
+                            a.href = downloadUrl;
+                            a.download = decodeURIComponent(filename);
+                            console.log(decodeURIComponent(filename));
+                            document.body.appendChild(a);
+                            a.click();
+                        }
+                    } else {
+                        window.location.href = downloadUrl;
+                    }
+
+                    setTimeout(function () {
+                        URL.revokeObjectURL(downloadUrl);
+                    }, 100); // cleanup
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+                console.warn(jqXHR.responseText);
+                alert(errorThrown);
+            }
+        });
+
     });
 
     $('.basic').on('click', function (e) {
         e.preventDefault();
 
-
         // clean up previous input results
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
-        for (var j = 0; j < count; j++) {
-            document.getElementById("amount" + j).style.borderColor = "";
-            document.getElementById("newposition" + j).style.borderColor = "";
-        }
-
-        console.log($(this).val());
         var i = $(this).val();
-        var number = $("#number" + i).val();
-        var stock = $("#stock" + i).val();
-        var oldposition = $("#oldposition" + i).val();
-        var client = $("#client" + i).val();
-        var amount = $("#amount" + i).val();
-        var newposition = $("#newposition" + i).val();
 
-        // checked = $("input[type=checkbox]:checked").length;
+        var factory = $("#dataa" + i).val();
+        var number = $("#datab" + i).val();
+        var name = $("#datac" + i).val();
+        var format = $("#datad" + i).val();
+        var unit = $("#datae" + i).val();
+        var oldstock = $("#datag" + i).val();
+        var amount = $("#datah" + i).val();
+        var receive = $("#dataj" + i).val();
 
-        // if (!checked) {
-        //     notyf.open({
-        //         type: 'warning',
-        //         message: Lang.get('inboundpageLang.nocheck'),
-        //         duration: 3000, //miliseconds, use 0 for infinite duration
-        //         ripple: true,
-        //         dismissible: true,
-        //         position: {
-        //             x: "right",
-        //             y: "bottom"
-        //         }
-        //     });
-        //     return false;
-        // }
         if (amount === '') {
-            document.getElementById("amount" + i).classList.add("is-invalid");
+            document.getElementById("datah" + i).classList.add("is-invalid");
             notyf.open({
                 type: 'warning',
-                message: Lang.get('inboundpageLang.enteramount'),
+                message: Lang.get('bupagelang.enteramount'),
                 duration: 3000, //miliseconds, use 0 for infinite duration
                 ripple: true,
                 dismissible: true,
@@ -366,11 +215,11 @@ $(document).ready(function () {
             });
             return false;
         }
-        if (newposition === null) {
-            document.getElementById("newposition" + i).classList.add("is-invalid");
+        if (receive === null) {
+            document.getElementById("dataj" + i).classList.add("is-invalid");
             notyf.open({
                 type: 'warning',
-                message: Lang.get('inboundpageLang.enterloc'),
+                message: Lang.get('bupagelang.enterfactory'),
                 duration: 3000, //miliseconds, use 0 for infinite duration
                 ripple: true,
                 dismissible: true,
@@ -382,10 +231,11 @@ $(document).ready(function () {
             return false;
         }
 
-        if (parseInt(amount) > parseInt(stock)) {
+        if (parseInt(amount) > parseInt(oldstock) || parseInt(amount) <= 0) {
+            document.getElementById("datah" + i).classList.add("is-invalid");
             notyf.open({
                 type: 'warning',
-                message: Lang.get('inboundpageLang.locchangeerr'),
+                message: Lang.get('bupagelang.amounterr'),
                 duration: 3000, //miliseconds, use 0 for infinite duration
                 ripple: true,
                 dismissible: true,
@@ -394,56 +244,58 @@ $(document).ready(function () {
                     y: "bottom"
                 }
             });
-            document.getElementById("amount" + i).classList.add("is-invalid");
             return false;
-        } else {
-            var mess = Lang.get('inboundpageLang.coming') + ' : ' + oldposition + ' ' + Lang.get('inboundpageLang.transfer') + ' : ' + number + ' : ' +
-                amount + ' ' + Lang.get('inboundpageLang.to') + ' ' + newposition + '\n' + Lang.get('inboundpageLang.client') + ' : ' + client;
-            var sure = window.confirm(mess);
         }
 
-        if (sure !== true) {
-            return false;
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: "changesubmit",
-                data: {
-                    client: client,
-                    number: number,
-                    oldposition: oldposition,
-                    amount: amount,
-                    newposition: newposition,
-                    stock: stock
-                },
+        $.ajax({
+            type: 'POST',
+            url: "transsluggish",
+            data: {
+                factory: factory,
+                number: number,
+                name: name,
+                format: format,
+                unit: unit,
+                oldstock: oldstock,
+                amount: amount,
+                receive: receive
+            },
+            dataType: 'json', // let's set the expected response format
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
+            },
 
-                beforeSend: function () {
-                    // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                    $('body').loadingModal({
-                        text: 'Loading...',
-                        animation: 'circle'
-                    });
-
-                },
-                complete: function () {
-                    $('body').loadingModal('hide');
-                    $('body').loadingModal('destroy');
-                },
-
-                success: function (data) {
-                    console.log(data.boolean);
-                    var mess = Lang.get('inboundpageLang.locationchange') + ' ' + Lang.get('inboundpageLang.success');
+            success: function (data) {
+                var mess = Lang.get('bupagelang.dbadd') + ' ' + Lang.get('bupagelang.success') + ' ' +
+                    Lang.get('bupagelang.dblist') + ' : ' + data.message;
+                alert(mess);
+                window.location.href = "/bu";
+            },
+            error: function (err) {
+                //transaction error
+                if (err.status == 420) {
+                    var mess = err.responseJSON.message;
                     alert(mess);
                     window.location.reload();
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.warn(jqXHR.responseText);
-                    alert(errorThrown);
-                    window.location.reload();
                 }
-            });
-        }
+                //庫存異動
+                else if (err.status == 421) {
+                    var mess = Lang.get('bupagelang.inventoryerr') + ' ' + err.responseJSON.message;
+                    alert(mess);
+                    return false;
+                } else {
+                    var mess = err.responseJSON.message;
+                    alert(mess);
+                }
+            },
+        });
     });
-
 });

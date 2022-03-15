@@ -4,7 +4,7 @@
 @endsection
 
 @section('js')
-
+<script src="{{ asset('js/obound/search.js') }}"></script>
 <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
 <!--for notifications pop up -->
 @endsection
@@ -18,6 +18,9 @@
         <div class="card">
             <div class="card-header">
                 <h3>{!! __('oboundpageLang.searchstock') !!}</h3>
+                <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -34,8 +37,9 @@
                                 <input type = "hidden" id = "time" name = "time" value = "13">
                             </tr>
                                 @foreach($data as $data)
-                                <tr>
+                                <tr class="isnRows">
                                     <td>{{$data->料號}}</td>
+                                    <input type="hidden" id = "number{{$loop->index}}" value="{{$data->料號}}">
                                     <td>{{$data->現有庫存}}</td>
                                     <td>{{$data->客戶別}}</td>
                                     <td>{{$data->庫別}}</td>
