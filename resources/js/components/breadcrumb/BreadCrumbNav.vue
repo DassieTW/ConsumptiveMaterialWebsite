@@ -31,8 +31,7 @@ export default {
     var thisHtmlLang = document.getElementsByTagName("HTML")[0].getAttribute("lang"); 
     // get the current locale from html tag
     this.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
-    console.log("The current locale is : " + this.$lang.getLocale()); // test
-    
+    // console.log("The current locale is : " + this.$lang.getLocale()); // test
   },
 };
 </script>

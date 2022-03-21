@@ -16,7 +16,7 @@
 </head>
 <h2>{!! __('basicInfoLang.newMats') !!}</h2>
 <div class="row justify-content-center">
-    <div class="card w-50">
+    <div class="card w-100">
         <div class="card-header">
             <h3>{!! __('basicInfoLang.matsInfo') !!}</h3>
         </div>
@@ -30,7 +30,7 @@
 
                             <label class="col col-auto form-label">{!! __('basicInfoLang.matssearch') !!}</label>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                            <div class="col-lg-6  col-md-12 col-sm-12">
+                            <div class="col-12">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="numberradio" id="numberradio" checked value="1">
                                     <input
@@ -43,7 +43,7 @@
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                            <div class="col-lg-6  col-md-12 col-sm-12">
+                            <div class="col-12">
                                 <div class="form-check">
                                 <input class="form-check-input" type="radio" name="numberradio" id="numberradio1" value="2">
                                 <textarea

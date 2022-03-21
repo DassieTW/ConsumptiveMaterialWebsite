@@ -902,3 +902,6 @@ $(document).ready(function () {
     });
 }); // on document ready
 
+$(window).on('beforeunload', function() {
+    sessionStorage.clear();
+});
