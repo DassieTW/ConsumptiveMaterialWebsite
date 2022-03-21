@@ -16,10 +16,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
 </head>
 
 <body>
     <!-- vue component example -->
+
+
     <div id="mountingPoint">
         <vue-bread-crumb></vue-bread-crumb>
         <basic-info-table></basic-info-table>

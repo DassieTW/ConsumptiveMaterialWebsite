@@ -2,15 +2,19 @@
   <div style="text-align: left">
     <label>SearchBy:</label><input v-model="searchTerm" />
   </div>
+  <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
   <table-lite
-    :is-slot-mode="true"
+    :is-static-mode="true"
     :hasCheckbox="true"
     :isLoading="table.isLoading"
     :messages="table.messages"
     :columns="table.columns"
     :rows="table.rows"
     :total="table.totalRecordCount"
+    :page-options="table.pageOptions"
     :sortable="table.sortable"
+    @is-finished="table.isLoading = false"
+    @return-checked-rows="updateCheckedRows"
   ></table-lite>
 </template>
 
@@ -24,7 +28,6 @@ import {
 } from "@vue/runtime-core";
 import TableLite from "./TableLite.vue";
 import useConsumptiveMaterials from "../../composables/ConsumptiveMaterials.ts";
-
 export default defineComponent({
   name: "App",
   components: { TableLite },
@@ -78,7 +81,8 @@ export default defineComponent({
           display: function(row, i) {
             return (
               '<input type="hidden" id="name' + i +'" name="name' + i +'" value="' + row.品名 + '">' +
-              '<div class="text-nowrap pb-2" style="overflow-x: auto; width: 100%;">' + row.品名 + '</div>'
+              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' + row.品名 + '</div>'
             ) ; 
           }
         },
@@ -92,7 +96,8 @@ export default defineComponent({
           display: function (row, i) {
             return (
               '<input type="hidden" id="format' + i +'" name="format' + i +'" value="' + row.規格 + '">' +
-              '<div class="text-nowrap pb-2" style="overflow-x: auto; width: 100%;">' + row.規格 + '</div>'
+              '<div class="scrollableWithoutScrollbar text-nowrap"' + 
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' + row.規格 + '</div>'
             ) ; 
           }
         },
@@ -242,8 +247,8 @@ export default defineComponent({
           display: function (row, i) {
             return (
               '<input style="width: 10ch;" type="number" id="price' + i +'"' +
-              ' class="form-control text-center p-0 m-0" name="price{{ $loop->index }}"' +
-              ' value="' +  parseFloat(row.單價).toFixed(2) +'" step="0.01" min="0">'
+              ' class="form-control text-center p-0 m-0" name="price'+ i +'"' +
+              ' value="' +  parseFloat(row.單價) + '">'
             ) ; 
           }
         },
@@ -286,12 +291,12 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.mpq"),
           field: "MPQ",
-          width: "8ch",
+          width: "10ch",
           sortable: true,
           display: function (row, i) {
             return (
-              '<input style="width:8ch;" type="number" id="mpq{{ $loop->index }}"' +
-              ' name="mpq{{ $loop->index }}" value="{{ $data->MPQ }}"' +
+              '<input style="width:8ch;" type="number" id="mpq' + i +'"' +
+              ' name="mpq'+ i +'" value="'+ row.MPQ + '"' +
               ' class="form-control text-center p-0 m-0" min="0">'
             ) ; 
           }
@@ -299,15 +304,29 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.moq"),
           field: "MOQ",
-          width: "8ch",
+          width: "10ch",
           sortable: true,
+          display: function (row, i) {
+            return (
+              '<input style="width:8ch;" type="number" id="moq' + i +'"' +
+              ' name="moq'+ i +'" value="'+ row.MOQ + '"' +
+              ' class="form-control text-center p-0 m-0" min="0">'
+            ) ; 
+          }
         },
         {
           label:
             app.appContext.config.globalProperties.$t("basicInfoLang.lt"),
           field: "LT",
-          width: "8ch",
+          width: "10ch",
           sortable: true,
+          display: function (row, i) {
+            return (
+              '<input style="width:8ch;" type="number" id="lt' + i +'"' +
+              ' name="lt'+ i +'" value="'+ row.LT + '"' +
+              ' class="form-control text-center p-0 m-0" min="0">'
+            ) ; 
+          }
         },
         {
           label:
@@ -315,13 +334,29 @@ export default defineComponent({
           field: "安全庫存",
           width: "13ch",
           sortable: true,
+          display: function (row, i) {
+            let returnStr = "";
+            // console.log(row); // test
+            if (row.月請購 === "否") {
+              returnStr =
+                '<input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"' +
+                ' id="safe' + i + '" name="safe' + i + '"' +
+                ' value="' + row.安全庫存 + '" min="0">' ;
+            } // if
+            else {
+              returnStr =
+                '<input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"' +
+                ' id="safe' + i + '" name="safe' + i + '" value="" min="0" disabled>' ;
+            } // else
+
+            return returnStr;
+          } // display
         },
       ],
       rows: computed(() => {
         return data.filter(
           (x) =>
-            x.料號.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-            x.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+            x.料號.toLowerCase().includes(searchTerm.value.toLowerCase())
         );
       }),
       totalRecordCount: computed(() => {
@@ -332,17 +367,51 @@ export default defineComponent({
         sort: "asc",
       },
       messages: {
-        pagingInfo: "",
-        pageSizeChangeLabel: "",
-        gotoPageLabel: "",
-        noDateAvailable: "",
+        pagingInfo: app.appContext.config.globalProperties.$t("basicInfoLang.now_showing") + " {0} ~ {1} " +
+                    app.appContext.config.globalProperties.$t("basicInfoLang.record") + ", " + 
+                    app.appContext.config.globalProperties.$t("basicInfoLang.total") + " {2} " + app.appContext.config.globalProperties.$t("basicInfoLang.record"),
+        pageSizeChangeLabel: app.appContext.config.globalProperties.$t("basicInfoLang.records_per_page"),
+        gotoPageLabel: app.appContext.config.globalProperties.$t("basicInfoLang.go_to_page"),
+        noDateAvailable: app.appContext.config.globalProperties.$t("basicInfoLang.search_with_no_data_returned"),
       },
+      pageOptions: [
+        {
+          value: 20,
+          text: 20
+        },
+        {
+          value: 40,
+          text: 40
+        },
+        {
+          value: 60,
+          text: 60
+        }
+      ]
     });
+
+    const updateCheckedRows = (rowsKey) => {
+      console.log(rowsKey);
+    };
 
     return {
       searchTerm,
       table,
+      updateCheckedRows,
     };
   }, // setup
 });
 </script>
+
+<style scoped>
+/* hide scrollbar but still scrollable */
+.scrollableWithoutScrollbar { 
+  overflow-x: scroll !important;
+  width: 100%;
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* FireFox */
+}
+.scrollableWithoutScrollbar::-webkit-scrollbar { /* Chrome, Safari and Opera */
+  display: none !important;
+}
+</style>

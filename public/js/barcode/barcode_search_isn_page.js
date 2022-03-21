@@ -328,3 +328,7 @@ $(document).ready(function () {
         localStorage.clear();
     });
 }); // on document ready
+
+$(window).on('beforeunload', function() {
+    sessionStorage.clear();
+});
