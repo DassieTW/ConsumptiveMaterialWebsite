@@ -27,7 +27,7 @@
                         <form id = "inboundsearch" method="POST">
                             @csrf
                             <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.download') !!}">
-                            <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.searchstock')}}'">{!! __('inboundpageLang.return') !!}</button>
+                            {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.searchstock')}}'">{!! __('inboundpageLang.return') !!}</button> --}}
                             <input type = "hidden" id = "titlename" name = "titlename" value = "庫存使用月數">
                         <table class="table">
                             <tr id = "require">

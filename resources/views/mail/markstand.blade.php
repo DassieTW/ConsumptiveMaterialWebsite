@@ -81,7 +81,9 @@
                         height="30px" />
                 </td>
                 @endif
-
+                <td><input type="hidden" id="remark{{$i}}" name="remark{{$i}}"
+                    value="{{$datas[16][$i]}}">{{$datas[16][$i]}}
+                </td>
                 </tr>
                 @endfor
 

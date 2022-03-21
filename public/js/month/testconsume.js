@@ -34,7 +34,7 @@ $(document).ready(function () {
         var amount = [];
         var check = [];
         var reason = [];
-        var jobnumber = $("#jobnumber").val();
+        // var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
         var count = $("#count").val();
         var sender = $("#sender").val();
@@ -89,7 +89,7 @@ $(document).ready(function () {
                 url: "testconsume",
                 data: {
                     AllData: JSON.stringify(data),
-                    jobnumber: jobnumber,
+                    // jobnumber: jobnumber,
                     email: email,
                     count: count,
                     sender: sender,

@@ -52,7 +52,8 @@
                     <?php
                         $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
                         $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
-                        $data->單耗 = round($data->單耗 , 10);
+                        $data->單耗 = floatval($data->單耗);
+
                     ?>
                     <tr id="{{$loop->index}}" class="isnRows">
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"

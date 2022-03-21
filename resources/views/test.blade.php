@@ -1,78 +1,215 @@
-<!DOCTYPE html>
-<html>
- <head>
-  <title>Import Excel File in Laravel</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
- </head>
- <body>
-  <br />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="{{ asset('js/test.js') }}"></script>
+<style>
+body {
+  font-size: 0.8em;
+  font-family: Sans-Serif;
+}
 
-  <div class="container">
-   <h3 align="center">Import Excel File in Laravel</h3>
-    <br />
-   @if(count($errors) > 0)
-    <div class="alert alert-danger">
-     Upload Validation Error<br><br>
-     <ul>
-      @foreach($errors->all() as $error)
-      <li>{{ $error }}</li>
-      @endforeach
-     </ul>
+form {
+  background-color: #cccccc;
+  border-radius: 0.3em;
+  display: inline-block;
+  margin-bottom: 0.5em;
+  padding: 1em;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+input {
+  padding: 0.3em;
+  border-color: #cccccc;
+  border-radius: 0.3em;
+}
+
+.required:after {
+  content: "*";
+  color: red;
+}
+
+.button-pane {
+  margin-top: 1em;
+}
+
+#pub-viewer {
+  float: right;
+  width: 48%;
+  height: 20em;
+  border: solid #d092ff 0.1em;
+}
+#pub-viewer iframe {
+  width: 100%;
+  height: 100%;
+}
+
+#pub-list {
+  width: 46%;
+  background-color: #eeeeee;
+  border-radius: 0.3em;
+}
+#pub-list li {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-right: 0.5em;
+}
+
+#msg {
+  margin-bottom: 1em;
+}
+
+.action-success {
+  padding: 0.5em;
+  color: #00d21e;
+  background-color: #eeeeee;
+  border-radius: 0.2em;
+}
+
+.action-failure {
+  padding: 0.5em;
+  color: #ff1408;
+  background-color: #eeeeee;
+  border-radius: 0.2em;
+}
+
+.note {
+  font-size: smaller;
+}
+
+.destructive {
+  background-color: orange;
+}
+.destructive:hover {
+  background-color: #ff8000;
+}
+.destructive:active {
+  background-color: red;
+}
+
+</style>
+<h1>IndexedDB Demo: storing blobs, e-publication example</h1>
+<div class="note">
+    <p>
+        Works and tested with:
+    </p>
+    <div id="compat">
     </div>
-   @endif
+</div>
 
-   @if($message = Session::get('success'))
-   <div class="alert alert-success alert-block">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-           <strong>{{ $message }}</strong>
-   </div>
-   @endif
-   <form method="post" enctype="multipart/form-data" action="{{ url('/import_excel/import') }}">
-    {{ csrf_field() }}
-    <div class="form-group">
-     <table class="table">
-      <tr>
-       <td width="40%" align="right"><label>Select File for Upload</label></td>
-       <td width="30">
-        <input type="file" name="select_file" />
-       </td>
-       <td width="30%" align="left">
-        <input type="submit" name="upload" class="btn btn-primary" value="Upload">
-       </td>
-      </tr>
-      <tr>
-       <td width="40%" align="right"></td>
-       <td width="30"><span class="text-muted">.xls, .xslx</span></td>
-       <td width="30%" align="left"></td>
-      </tr>
-     </table>
+<div id="msg">
+</div>
+
+<form id="register-form">
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <label for="pub-title" class="required">
+                        Title:
+                    </label>
+                </td>
+                <td>
+                    <input type="text" id="pub-title" name="pub-title" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="pub-biblioid" class="required">
+                        Bibliographic ID:<br />
+                        <span class="note">(ISBN, ISSN, etc.)</span>
+                    </label>
+                </td>
+                <td>
+                    <input type="text" id="pub-biblioid" name="pub-biblioid" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="pub-year">
+                        Year:
+                    </label>
+                </td>
+                <td>
+                    <input type="number" id="pub-year" name="pub-year" />
+                </td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td>
+                    <label for="pub-file">
+                        File image:
+                    </label>
+                </td>
+                <td>
+                    <input type="file" id="pub-file" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="pub-file-url">
+                        Online-file image URL:<br />
+                        <span class="note">(same origin URL)</span>
+                    </label>
+                </td>
+                <td>
+                    <input type="text" id="pub-file-url" name="pub-file-url" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="button-pane">
+        <input type="button" id="add-button" value="Add Publication" />
+        <input type="reset" id="register-form-reset" />
     </div>
-   </form>
+</form>
 
-   <br />
-   <div class="panel panel-default">
-    <div class="panel-heading">
-     <h3 class="panel-title">Customer Data</h3>
+<form id="delete-form">
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <label for="pub-biblioid-to-delete">
+                        Bibliographic ID:<br />
+                        <span class="note">(ISBN, ISSN, etc.)</span>
+                    </label>
+                </td>
+                <td>
+                    <input type="text" id="pub-biblioid-to-delete" name="pub-biblioid-to-delete" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="key-to-delete">
+                        Key:<br />
+                        <span class="note">(for example 1, 2, 3, etc.)</span>
+                    </label>
+                </td>
+                <td>
+                    <input type="text" id="key-to-delete" name="key-to-delete" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="button-pane">
+        <input type="button" id="delete-button" value="Delete Publication" />
+        <input type="button" id="clear-store-button" value="Clear the whole store" class="destructive" />
     </div>
-    <div class="panel-body">
-     <div class="table-responsive">
-      <table class="table table-bordered table-striped" >
-       <tr>
-        <th>Customer Name</th>
-        <th>Gender</th>
-        <th>Address</th>
-        <th>City</th>
-        <th>Postal Code</th>
-        <th>Country</th>
-       </tr>
+</form>
 
-      </table>
-     </div>
+<form id="search-form">
+    <div class="button-pane">
+        <input type="button" id="search-list-button" value="List database content" />
     </div>
-   </div>
-  </div>
- </body>
-</html>
+</form>
 
+<div>
+    <div id="pub-msg">
+    </div>
+    <div id="pub-viewer">
+    </div>
+    <ul id="pub-list">
+    </ul>
+</div>

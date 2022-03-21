@@ -20,6 +20,26 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.loadingModal.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/check.css') }}">
 
+    <style>
+        /* for single line table with over-flow , SAP style as asked */
+        table {
+            table-layout: fixed;
+            /* width: 900px; */
+        }
+
+        .table-responsive {
+            height: 600px;
+        }
+
+        thead tr:nth-child(1) th {
+            background: rgb(241, 228, 202);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+    </style>
+
     <script>
         if (window.history.replaceState) {
             // java script to prvent "confirm form resubmission" dialog
@@ -27,6 +47,7 @@
             // (避免重新提交表單)
             window.history.replaceState(null, null, window.location.href);
         } // if
+
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -43,19 +64,22 @@
     <main class="d-flex">
         <div class="container d-flex flex-column">
             <!-- </div>breaks cols to a new line-->
-            <div class="text-center mt-4">
-                <h1 class="h2 d-none d-sm-inline-block">
-                    {!! __('templateWords.monthly') !!}
-                </h1>
-                <br>
-                <p class="lead d-none d-sm-inline-block">
-                    {!! __('monthlyPRpageLang.consume') !!}
-                </p>
-            </div>
-
             <div class="card">
-                <h3 class="text-center">{!! __('monthlyPRpageLang.emailsender') !!} : {{$username}} ({!! __('basicInfoLang.factory') !!} : {{$database}})</h3>
-                <input type="hidden" id ="sender" value="{{$username}}">
+                <div class="text-center mt-4">
+                    <h1 class="h2 d-none d-sm-inline-block">
+                        {!! __('templateWords.monthly') !!}
+                    </h1>
+                    <br>
+                    <p class="lead d-none d-sm-inline-block">
+                        {!! __('monthlyPRpageLang.consume') !!}
+                    </p>
+                </div>
+
+                <div class="card-header">
+                    <h3 class="text-center">{!! __('monthlyPRpageLang.emailsender') !!} : {{$username}} ({!!
+                        __('basicInfoLang.factory') !!} : {{$database}})</h3>
+                    <input type="hidden" id="sender" value="{{$username}}">
+                </div>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -64,54 +88,55 @@
                         @csrf
                         <div class="table-responsive">
                             <table class="table">
-                                <tr>
-                                    <th>{!! __('monthlyPRpageLang.isn') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.pName') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.client') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.machine') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.process') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.consume') !!}</th>
-                                    <th></th>
-                                    <th>{!! __('monthlyPRpageLang.reason') !!}</th>
-                                </tr>
+                                <thead>
+                                    <tr>
+                                        <th>{!! __('monthlyPRpageLang.isn') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.pName') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.client') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.machine') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.process') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.consume') !!}</th>
+                                        <th></th>
+                                        <th>{!! __('monthlyPRpageLang.reason') !!}</th>
+                                    </tr>
+                                </thead>
                                 @foreach($data as $data)
                                 <?php
-                                    $data->單耗 = round($data->單耗 , 10);
+                                    $data->單耗 = floatval($data->單耗);
                                     $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
                                 ?>
-                                <tr>
-                                    <td><input type="hidden" id="number{{$loop->index}}" name="number{{$loop->index}}"
-                                            value="{{$data->料號}}">{{$data->料號}}</td>
-                                    <td><input type="hidden" id="name{{$loop->index}}" name="name{{$loop->index}}"
-                                            value="{{$name}}">{{$name}}</td>
-                                    <td><input type="hidden" id="client{{$loop->index}}" name="client{{$loop->index}}"
-                                            value="{{$data->客戶別}}">{{$data->客戶別}}</td>
-                                    <td><input type="hidden" id="machine{{$loop->index}}" name="machine{{$loop->index}}"
-                                            value="{{$data->機種}}">{{$data->機種}}</td>
-                                    <td><input type="hidden" id="production{{$loop->index}}"
-                                            name="production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}
-                                    </td>
-                                    <td><input style="width: 200px;" class="form-control form-control-lg " type="number"
-                                            id="amount{{$loop->index}}" name="amount{{$loop->index}}"
-                                            value="{{$data->單耗}}" step="0.0000000001"
-                                            oninput="if(value.length>12)value=value.slice(0,12)" readonly></td>
-                                    <td><input class = "checkbutton" type="checkbox" id="check{{$loop->index}}" name="check{{$loop->index}}"
-                                    ></td>
-                                    <td><input style="width: 150px;" class = "form-control formcontrol-lg" type="text" id="remark{{$loop->index}}" name="remark{{$loop->index}}"
-                                        required placeholder="{!! __('monthlyPRpageLang.reason') !!}"></td>
-                                </tr>
-                                <input type="hidden" id="count" name="count" value="{{$loop->count}}"></td>
-                                @endforeach
-
+                                <tbody>
+                                    <tr>
+                                        <td><input type="hidden" id="number{{$loop->index}}"
+                                                name="number{{$loop->index}}" value="{{$data->料號}}">{{$data->料號}}</td>
+                                        <td><input type="hidden" id="name{{$loop->index}}" name="name{{$loop->index}}"
+                                                value="{{$name}}">{{$name}}</td>
+                                        <td><input type="hidden" id="client{{$loop->index}}"
+                                                name="client{{$loop->index}}" value="{{$data->客戶別}}">{{$data->客戶別}}</td>
+                                        <td><input type="hidden" id="machine{{$loop->index}}"
+                                                name="machine{{$loop->index}}" value="{{$data->機種}}">{{$data->機種}}</td>
+                                        <td><input type="hidden" id="production{{$loop->index}}"
+                                                name="production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}
+                                        </td>
+                                        <td class="table-light">{{$data->單耗}}</td>
+                                        <td><input class="checkbutton" type="checkbox" id="check{{$loop->index}}"
+                                                name="check{{$loop->index}}"></td>
+                                        <td><input style="width: 120px;" class="form-control formcontrol-lg" type="text"
+                                                id="remark{{$loop->index}}" name="remark{{$loop->index}}" required
+                                                placeholder="{!! __('monthlyPRpageLang.reason') !!}"></td>
+                                    </tr>
+                                    <input type="hidden" id="count" name="count" value="{{$loop->count}}"></td>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
 
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                        <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
+                        {{-- <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
                         <input class="form-control form-control-lg" type="text" id="jobnumber" name="jobnumber" required
                             style="width: 250px" oninput="if(value.length>9)value=value.slice(0,9)">
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
                         <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
                         <input class="form-control form-control-lg" type="email" id="email" name="email"
                             pattern=".+@pegatroncorp\.com" readonly style="width: 250px"

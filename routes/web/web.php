@@ -65,8 +65,7 @@ Route::get('/test2', function () {
     // $author = Models\User::find(2);
     // $posts = $author->posts;
     // return $posts;
-    $mats = Models\ConsumptiveMaterial::first();
-    return $mats;
+   return view('test');
 });
 
 Route::get('/import_excel', [ImportexcelController::class, 'index']);

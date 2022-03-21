@@ -547,43 +547,43 @@ class BasicInformationController extends Controller
         }
     }*/
 
-    //資料下載
-    public function download(Request $request)
-    {
-        if (Session::has('username')) {
+    // //資料下載
+    // public function download(Request $request)
+    // {
+    //     if (Session::has('username')) {
 
-            $spreadsheet = new Spreadsheet();
-            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
-            $worksheet = $spreadsheet->getActiveSheet();
-            $time = $request->input('time');
-            $count = $request->input('count');
-            //填寫表頭
-            for ($i = 0; $i < $time; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title' . $i));
-            }
+    //         $spreadsheet = new Spreadsheet();
+    //         $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
+    //         $worksheet = $spreadsheet->getActiveSheet();
+    //         $time = $request->input('time');
+    //         $count = $request->input('count');
+    //         //填寫表頭
+    //         for ($i = 0; $i < $time; $i++) {
+    //             $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title' . $i));
+    //         }
 
-            //填寫內容
-            for ($i = 0; $i < $time; $i++) {
-                for ($j = 0; $j < $count; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
-                }
-            }
+    //         //填寫內容
+    //         for ($i = 0; $i < $time; $i++) {
+    //             for ($j = 0; $j < $count; $j++) {
+    //                 $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i . $j));
+    //             }
+    //         }
 
 
-            // 下載
-            $now = Carbon::now()->format('YmdHis');
-            $title = $request->input('title');
-            $filename = $title . $now . '.xlsx';
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="' . $filename . '"');
-            header('Cache-Control: max-age=0');
+    //         // 下載
+    //         $now = Carbon::now()->format('YmdHis');
+    //         $title = $request->input('title');
+    //         $filename = $title . $now . '.xlsx';
+    //         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    //         header('Content-Disposition: attachment;filename="' . $filename . '"');
+    //         header('Cache-Control: max-age=0');
 
-            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $writer->save('php://output');
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
+    //         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+    //         $writer->save('php://output');
+    //     } else {
+    //         return redirect(route('member.login'));
+    //     }
+    // }
 
     //新增料件上傳
     public function uploadmaterial(Request $request)

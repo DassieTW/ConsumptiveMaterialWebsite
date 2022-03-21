@@ -27,6 +27,7 @@
             <div class="table-responsive">
                 <table class="table">
                     <tr>
+                        <td>{!! __('monthlyPRpageLang.check')!!}</td>
                         <td><input type="hidden" id="title0" name="title0" value="SRM單號">{!! __('monthlyPRpageLang.srm')
                             !!}</td>
                         <td><input type="hidden" id="title1" name="title1" value="客戶別">{!!
@@ -81,6 +82,7 @@
                             $real = $realneeda < 0 ? 0:$realneeda;
                     ?>
                     <tr>
+                        <td><input class ="innumber" type="checkbox" id="innumbera" name="innumbera" style="width:20px;height:20px;" value="{{$loop->index}}"></td>
                         <td><input class="form-control form-control-lg" type="text" id="srmnumbera{{$loop->index}}"
                                 name="srmnumbera{{$loop->index}}" style="width:100px"></td>
                         <td><input type="hidden" id="clienta{{$loop->index}}" name="clienta{{$loop->index}}"
@@ -108,8 +110,8 @@
                         <td><input type="hidden" id="stocka{{$loop->index}}" name="stocka{{$loop->index}}"
                                 value="{{$stocka}}">{{round($stocka ,0)}}</td>
                         <td><input class="form-control form-control-lg" type="number" id="buyamounta{{$loop->index}}"
-                                name="buyamounta{{$loop->index}}" required value="{{$real}}" min="0"
-                                style="width:100px"></td>
+                                name="buyamounta{{$loop->index}}" required value="{{$real}}" min="0" max = "{{$real}}"
+                                style="width:120px"></td>
                         <td><input type="hidden" id="realneeda{{$loop->index}}" name="realneeda{{$loop->index}}"
                                 value="{{$realneeda}}">{{$realneeda}}</td>
                         <td><input class="form-control form-control-lg" id="buymoneya{{$loop->index}}"
@@ -139,6 +141,7 @@
                         $real = $realneedb < 0 ? 0:$realneedb;
                     ?>
                     <tr>
+                        <td><input class ="innumber" type="checkbox" id="innumberb" name="innumberb" style="width:20px;height:20px;" value="{{$loop->index}}"></td>
                         <td><input class="form-control form-control-lg" type="text" id="srmnumberb{{$loop->index}}"
                                 name="srmnumberb{{$loop->index}}" style="width:100px"></td>
                         <td><input type="hidden" id="clientb{{$loop->index}}" name="clientb{{$loop->index}}"
@@ -166,8 +169,8 @@
                         <td><input type="hidden" id="stockb{{$loop->index}}" name="stockb{{$loop->index}}"
                                 value="{{$stockb}}">{{round($stockb ,0)}}</td>
                         <td><input class="form-control form-control-lg" type="number" id="buyamountb{{$loop->index}}"
-                                name="buyamountb{{$loop->index}}" required value="{{$real}}" min="0"
-                                style="width:100px"></td>
+                                name="buyamountb{{$loop->index}}" required value="{{$real}}" min="0" max = "{{$real}}"
+                                style="width:120px"></td>
                         <td><input type="hidden" id="realneedb{{$loop->index}}" name="realneedb{{$loop->index}}"
                                 value="{{$realneedb}}">{{$realneedb}}</td>
                         <td><input class="form-control form-control-lg" id="buymoneyb{{$loop->index}}"

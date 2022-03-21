@@ -118,17 +118,27 @@ $(document).ready(function () {
     });
 
     $("#writesrm").click(function () {
+        var checka = [];
+        $("input:checkbox[name=innumbera]:checked").each(function () {
+            checka.push($(this).val());
+        });
+        var checkb = [];
+        $("input:checkbox[name=innumberb]:checked").each(function () {
+            checkb.push($(this).val());
+        });
+
+        var checkcounta = checka.length;
+        var checkcountb = checkb.length;
+
         var writesrm = prompt(Lang.get('monthlyPRpageLang.writesrm'));
-        for (let i = 0; i < counta; i++) {
-            if ($("#buyamounta" + i).val() > 0) {
-                $("#srmnumbera" + i).val(writesrm);
-            }
+        for (let i = 0; i < checkcounta; i++) {
+            $("#srmnumbera" + checka[i]).val(writesrm);
         }
-        for (let i = 0; i < countb; i++) {
-            if ($("#buyamountb" + i).val() > 0) {
-                $("#srmnumberb" + i).val(writesrm);
-            }
+        for (let i = 0; i < checkcountb; i++) {
+            $("#srmnumberb" + checkb[i]).val(writesrm);
         }
+        $(".innumber").prop('checked', false);
+
     });
 
     $('#buylist').on('submit', function (e) {

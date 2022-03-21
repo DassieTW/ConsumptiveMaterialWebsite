@@ -1,6 +1,32 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        table-layout: fixed;
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    form input {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -16,51 +42,66 @@
 </head>
 <h2>{!! __('templateWords.inbound') !!}</h2>
 <div class="card">
-    <div class="card-header">
-        <h3>{!! __('inboundpageLang.searchstock') !!}</h3>
-        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+    <form id="inboundsearch" method="POST">
+        @csrf
+        <div class="card-header">
+            <h3>{!! __('inboundpageLang.searchstock') !!}</h3>
+            <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
                 placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
                 style="width: 200px">
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <form id="inboundsearch" method="POST">
-                @csrf
-                <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-            value="{!! __('inboundpageLang.download') !!}">
-            <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.searchstock')}}'">{!!
-                __('inboundpageLang.return') !!}</button>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
+                value="{!! __('inboundpageLang.download') !!}">
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
                 <input type="hidden" id="titlename" name="titlename" value="庫存">
-                <table class="table">
-                    <tr>
-                        <th><input type="hidden" id="title0" name="title0" value="客戶別">{!! __('inboundpageLang.client')
-                            !!}</th>
-                        <th><input type="hidden" id="title1" name="title1" value="料號">{!! __('inboundpageLang.isn') !!}
-                        </th>
-                        <th><input type="hidden" id="title2" name="title2" value="品名">{!! __('inboundpageLang.pName')
-                            !!}</th>
-                        <th><input type="hidden" id="title3" name="title3" value="規格">{!! __('inboundpageLang.format')
-                            !!}</th>
-                        <th><input type="hidden" id="title4" name="title4" value="單位">{!! __('inboundpageLang.unit') !!}
-                        </th>
-                        <th><input type="hidden" id="title5" name="title5" value="單價">{!! __('inboundpageLang.price')
-                            !!}</th>
-                        <th><input type="hidden" id="title6" name="title6" value="幣別">{!! __('inboundpageLang.money')
-                            !!}</th>
-                        <th><input type="hidden" id="title7" name="title7" value="A級資材">{!! __('inboundpageLang.gradea')
-                            !!}</th>
-                        <th><input type="hidden" id="title8" name="title8" value="月請購">{!! __('inboundpageLang.month')
-                            !!}</th>
-                        <th><input type="hidden" id="title9" name="title9" value="庫存">{!! __('inboundpageLang.stock')
-                            !!}</th>
-                        <th><input type="hidden" id="title10" name="title10" value="安全庫存">{!! __('inboundpageLang.safe')
-                            !!}</th>
-                        <th><input type="hidden" id="title11" name="title11" value="儲位">{!! __('inboundpageLang.loc')
-                            !!}</th>
-                        <th><input type="hidden" id="title12" name="title12" value="呆滯天數">{!! __('inboundpageLang.days')
-                            !!}</th>
-                        <input type="hidden" id="titlecount" name="titlecount" value="13">
-                    </tr>
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th><input type="hidden" id="title0" name="title0" value="客戶別">{!!
+                                __('inboundpageLang.client')
+                                !!}</th>
+                            <th><input type="hidden" id="title1" name="title1" value="料號">{!! __('inboundpageLang.isn')
+                                !!}
+                            </th>
+                            <th><input type="hidden" id="title2" name="title2" value="品名">{!!
+                                __('inboundpageLang.pName')
+                                !!}</th>
+                            <th><input type="hidden" id="title3" name="title3" value="規格">{!!
+                                __('inboundpageLang.format')
+                                !!}</th>
+                            <th><input type="hidden" id="title4" name="title4" value="單位">{!! __('inboundpageLang.unit')
+                                !!}
+                            </th>
+                            <th><input type="hidden" id="title5" name="title5" value="單價">{!!
+                                __('inboundpageLang.price')
+                                !!}</th>
+                            <th><input type="hidden" id="title6" name="title6" value="幣別">{!!
+                                __('inboundpageLang.money')
+                                !!}</th>
+                            <th><input type="hidden" id="title7" name="title7" value="A級資材">{!!
+                                __('inboundpageLang.gradea')
+                                !!}</th>
+                            <th><input type="hidden" id="title8" name="title8" value="月請購">{!!
+                                __('inboundpageLang.month')
+                                !!}</th>
+                            <th><input type="hidden" id="title9" name="title9" value="庫存">{!!
+                                __('inboundpageLang.stock')
+                                !!}</th>
+                            <th><input type="hidden" id="title10" name="title10" value="安全庫存">{!!
+                                __('inboundpageLang.safe')
+                                !!}</th>
+                            <th><input type="hidden" id="title11" name="title11" value="儲位">{!!
+                                __('inboundpageLang.loc')
+                                !!}</th>
+                            <th><input type="hidden" id="title12" name="title12" value="呆滯天數">{!!
+                                __('inboundpageLang.days')
+                                !!}</th>
+                            <input type="hidden" id="titlecount" name="titlecount" value="13">
+                        </tr>
+                    </thead>
                     @foreach($data as $data)
                     <tr class="isnRows">
                         <?php
@@ -71,7 +112,7 @@
                             $interval = (int)($interval);
                             $belong = $data->耗材歸屬;
                             $lt = $data->LT;
-                            $data->單價 = round($data->單價 , 2);
+                            $data->單價 = floatval($data->單價);
 
                             if($belong === '單耗')
                                 {
@@ -142,13 +183,13 @@
                     @endforeach
 
                 </table>
-        </div>
-        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            </div>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
 
-        </form>
+    </form>
 
-    </div>
+</div>
 </div>
 </div>
 

@@ -578,24 +578,24 @@ class MonthController extends Controller
                     $lt = DB::table('consumptive_material')->where('料號', $number)
                         ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('LT');
 
-                    $nowmps = DB::table('MPS')->where('客戶別', $client)
-                        ->where('機種', $machine)->where('製程', $production)->value('本月MPS');
+                    // $nowmps = DB::table('MPS')->where('客戶別', $client)
+                    //     ->where('機種', $machine)->where('製程', $production)->value('本月MPS');
 
-                    $nowday = DB::table('MPS')->where('客戶別', $client)
-                        ->where('機種', $machine)->where('製程', $production)->value('本月生產天數');
+                    // $nowday = DB::table('MPS')->where('客戶別', $client)
+                    //     ->where('機種', $machine)->where('製程', $production)->value('本月生產天數');
 
-                    $nextmps = DB::table('MPS')->where('客戶別', $client)
-                        ->where('機種', $machine)->where('製程', $production)->value('下月MPS');
+                    // $nextmps = DB::table('MPS')->where('客戶別', $client)
+                    //     ->where('機種', $machine)->where('製程', $production)->value('下月MPS');
 
-                    $nextday = DB::table('MPS')->where('客戶別', $client)
-                        ->where('機種', $machine)->where('製程', $production)->value('下月生產天數');
+                    // $nextday = DB::table('MPS')->where('客戶別', $client)
+                    //     ->where('機種', $machine)->where('製程', $production)->value('下月生產天數');
 
                     $lt = round($lt, 3);
                     if ($name !== null && $format !== null) {
                         return \Response::json([
                             'client' => $client, 'machine' => $machine, 'production' => $production, 'number' => $number,
-                            'name' => $name, 'format' => $format, 'unit' => $unit, 'lt' => $lt, 'nowmps' => $nowmps, 'nowday' => $nowday,
-                            'nextmps' => $nextmps, 'nextday' => $nextday,
+                            'name' => $name, 'format' => $format, 'unit' => $unit, 'lt' => $lt, /*'nowmps' => $nowmps, 'nowday' => $nowday,
+                            'nextmps' => $nextmps, 'nextday' => $nextday,*/
                         ]/* Status code here default is 200 ok*/);
                     }
                     //沒有料號
@@ -1787,7 +1787,6 @@ class MonthController extends Controller
             //submit
 
             $now = Carbon::now();
-            $check = $request->input('check');
             $count = $request->input('count');
             $Alldata = json_decode($request->input('AllData'));
             $record = 0;
@@ -1813,15 +1812,13 @@ class MonthController extends Controller
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
-                    if ($check[$i] == 1) {
-                        DB::table('請購單')
-                            ->insert([
-                                'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '安全庫存' => $safe[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '實際需求' => $realneed[$i], '請購金額' => $buymoney[$i], '請購占比' => $buyper[$i], '需求金額' => $needmoney[$i], '需求占比' => $needper[$i], '請購時間' => $now
-                            ]);
-                        $record++;
-                    } else {
-                        continue;
-                    }
+
+                    DB::table('請購單')
+                        ->insert([
+                            'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '安全庫存' => $safe[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '實際需求' => $realneed[$i], '請購金額' => $buymoney[$i], '請購占比' => $buyper[$i], '需求金額' => $needmoney[$i], '需求占比' => $needper[$i], '請購時間' => $now
+                        ]);
+                    $record++;
+
                 }
                 DB::commit();
                 return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
@@ -1931,7 +1928,6 @@ class MonthController extends Controller
                 $production = $Alldata[4][$i];
                 $number = $Alldata[0][$i];
                 $check = $Alldata[6][$i];
-                $reason = $Alldata[7][$i];
 
                 if ($check) {
                     月請購_單耗::where('客戶別', $client)
@@ -2263,7 +2259,7 @@ class MonthController extends Controller
             else
             {
                 $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
-                $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                $message->to('Vincent6_Yeh@pegatroncorp.com')->subject('無信箱');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
 
             }
@@ -2289,7 +2285,7 @@ class MonthController extends Controller
             else
             {
                 $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
-                $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                $message->to('Vincent6_Yeh@pegatroncorp.com')->subject('無信箱');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
 
             }

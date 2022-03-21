@@ -28,7 +28,7 @@
                             <input type = "hidden" id = "titlename" name = "titlename" value = "入庫查詢">
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.delete') !!}">
                             <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.download') !!}">
-                            <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.search')}}'">{!! __('inboundpageLang.return') !!}</button>
+                            {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.search')}}'">{!! __('inboundpageLang.return') !!}</button> --}}
 
                             <table class="table" >
                             <tr>

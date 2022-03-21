@@ -7,6 +7,18 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
+    $(".checkbutton").on("change", function () {
+
+        var count = $("#count").val();
+        for (let i = 0; i < count; i++) {
+            if (($("#check" + i).prop('checked'))) {
+                $("#remark" + i).prop('required', false);
+            } else {
+                $("#remark" + i).prop('required', true);
+            }
+        }
+    });
+
     $('#standcheck').on('submit', function (e) {
         e.preventDefault();
 
@@ -31,7 +43,8 @@ $(document).ready(function () {
         var nextuse = [];
         var nextchange = [];
         var check = [];
-        var jobnumber = $("#jobnumber").val();
+        var reason = [];
+        // var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
         var count = $("#count").val();
         var sender = $("#sender").val();
@@ -55,6 +68,7 @@ $(document).ready(function () {
             nextuse.push($("#nextuse" + i).val());
             nextchange.push($("#nextchange" + i).val());
             check.push($("#check" + i).prop('checked'));
+            reason.push($("#remark" + i).val());
         }
 
         if (count == undefined) {
@@ -92,6 +106,7 @@ $(document).ready(function () {
         data.push(nextuse);
         data.push(nextchange);
         data.push(check);
+        data.push(reason);
 
         if (sure !== true) {
             return false;
@@ -101,7 +116,7 @@ $(document).ready(function () {
                 url: "teststand",
                 data: {
                     AllData: JSON.stringify(data),
-                    jobnumber: jobnumber,
+                    // jobnumber: jobnumber,
                     email: email,
                     count: count,
                     sender: sender,
