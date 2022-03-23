@@ -31,7 +31,7 @@
     </head>
     <h2>{!! __('basicInfoLang.basicInfo') !!}</h2>
     <div id="mountingPoint">
-        <vue-bread-crumb></vue-bread-crumb>
+        {{-- <vue-bread-crumb></vue-bread-crumb> --}}
         <div class="card">
             <div class="card-body">
                 <form id="materialsearch" method="POST">
