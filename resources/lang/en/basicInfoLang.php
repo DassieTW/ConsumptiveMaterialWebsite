@@ -66,7 +66,7 @@ return [
     'yes' => 'Yes',
     'no' => 'No',
     'add' => 'Add',
-    'matssearch' => 'Part No. Search',
+    'matssearch' => 'Search By',
     'download' => 'Download Excel',
     'newbasicInfo' => 'New Basic Info.',
     'isnlength' =>'Part No. length is not 12',

@@ -150,7 +150,7 @@
     </div>
     <div class="vtl-paging row" v-if="rows.length > 0">
       <template v-if="!setting.isHidePaging">
-        <div class="vtl-paging-info col-auto">
+        <div class="vtl-paging-info col col-auto p-0 m-0">
           <div role="status" aria-live="polite">
             {{
               stringFormat(
@@ -162,209 +162,212 @@
             }}
           </div>
         </div>
-        <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-        <div class="vtl-paging-change-div col-sm-12 col-md-4">
-          <div class="row">
-            <span class="vtl-paging-count-label col col-auto pe-0">{{
-              messages.pageSizeChangeLabel
-            }}</span>
-            <select
-              class="vtl-paging-count-dropdown col col-auto"
-              v-model="setting.pageSize"
-            >
-              <option
-                v-for="pageOption in pageOptions"
-                :value="pageOption.value"
-                :key="pageOption.value"
+        <div class="w-100" style="height: 1ch"></div>
+        <!-- </div>breaks cols to a new line-->
+        <div class="row justify-content-between align-items-center p-0 m-0">
+          <div class="vtl-paging-change-div col col-auto p-0 m-0">
+            <div class="row">
+              <span class="vtl-paging-count-label col col-auto pe-0">{{
+                messages.pageSizeChangeLabel
+              }}</span>
+              <select
+                class="vtl-paging-count-dropdown col col-auto"
+                v-model="setting.pageSize"
               >
-                {{ pageOption.text }}
-              </option>
-            </select>
-            <span class="vtl-paging-page-label col col-auto pe-0">{{
-              messages.gotoPageLabel
-            }}</span>
-            <select
-              class="vtl-paging-page-dropdown col col-auto"
-              v-model="setting.page"
-            >
-              <option
-                v-for="n in setting.maxPage"
-                :key="n"
-                :value="parseInt(n)"
+                <option
+                  v-for="pageOption in pageOptions"
+                  :value="pageOption.value"
+                  :key="pageOption.value"
+                >
+                  {{ pageOption.text }}
+                </option>
+              </select>
+              <span class="vtl-paging-page-label col col-auto pe-0">{{
+                messages.gotoPageLabel
+              }}</span>
+              <select
+                class="vtl-paging-page-dropdown col col-auto"
+                v-model="setting.page"
               >
-                {{ n }}
-              </option>
-            </select>
+                <option
+                  v-for="n in setting.maxPage"
+                  :key="n"
+                  :value="parseInt(n)"
+                >
+                  {{ n }}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="vtl-paging-pagination-div col-sm-12 col-md-4">
-          <div
-            class="dataTables_paginate paging_simple_numbers"
-            id="dataTables-example_paginate"
-          >
-            <ul class="vtl-paging-pagination-ul pagination">
-              <li
-                class="
-                  vtl-paging-pagination-page-li
-                  vtl-paging-pagination-page-li-first
-                  page-item
-                "
-                :class="{ disabled: setting.page <= 1 }"
-              >
-                <a
+          <div class="vtl-paging-pagination-div align-items-center col col-auto p-0 m-0">
+            <div
+              class="dataTables_paginate paging_simple_numbers"
+              id="dataTables-example_paginate"
+            >
+              <ul class="vtl-paging-pagination-ul pagination p-0 m-0">
+                <li
                   class="
-                    vtl-paging-pagination-page-link
-                    vtl-paging-pagination-page-link-first
-                    page-link
+                    vtl-paging-pagination-page-li
+                    vtl-paging-pagination-page-li-first
+                    page-item
                   "
-                  href="javascript:void(0)"
-                  aria-label="Previous"
-                  @click="setting.page = 1"
+                  :class="{ disabled: setting.page <= 1 }"
                 >
-                  <span aria-hidden="true">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-skip-start-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M4 4a.5.5 0 0 1 1 0v3.248l6.267-3.636c.54-.313 1.232.066 1.232.696v7.384c0 .63-.692 1.01-1.232.697L5 8.753V12a.5.5 0 0 1-1 0V4z"
-                      />
-                    </svg>
-                  </span>
-                  <span class="sr-only">First</span>
-                </a>
-              </li>
-              <li
-                class="
-                  vtl-paging-pagination-page-li
-                  vtl-paging-pagination-page-li-prev
-                  page-item
-                "
-                :class="{ disabled: setting.page <= 1 }"
-              >
-                <a
+                  <a
+                    class="
+                      vtl-paging-pagination-page-link
+                      vtl-paging-pagination-page-link-first
+                      page-link
+                    "
+                    href="javascript:void(0)"
+                    aria-label="Previous"
+                    @click="setting.page = 1"
+                  >
+                    <span aria-hidden="true">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-skip-start-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M4 4a.5.5 0 0 1 1 0v3.248l6.267-3.636c.54-.313 1.232.066 1.232.696v7.384c0 .63-.692 1.01-1.232.697L5 8.753V12a.5.5 0 0 1-1 0V4z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="sr-only">First</span>
+                  </a>
+                </li>
+                <li
                   class="
-                    vtl-paging-pagination-page-link
-                    vtl-paging-pagination-page-link-prev
-                    page-link
+                    vtl-paging-pagination-page-li
+                    vtl-paging-pagination-page-li-prev
+                    page-item
                   "
-                  href="javascript:void(0)"
-                  aria-label="Previous"
-                  @click="prevPage"
+                  :class="{ disabled: setting.page <= 1 }"
                 >
-                  <span aria-hidden="true">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-caret-left-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
-                      />
-                    </svg>
-                  </span>
-                  <span class="sr-only">Prev</span>
-                </a>
-              </li>
-              <li
-                class="
-                  vtl-paging-pagination-page-li
-                  vtl-paging-pagination-page-li-number
-                  page-item
-                "
-                v-for="n in setting.paging"
-                :key="n"
-                :class="{ disabled: setting.page === n }"
-              >
-                <a
+                  <a
+                    class="
+                      vtl-paging-pagination-page-link
+                      vtl-paging-pagination-page-link-prev
+                      page-link
+                    "
+                    href="javascript:void(0)"
+                    aria-label="Previous"
+                    @click="prevPage"
+                  >
+                    <span aria-hidden="true">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-caret-left-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Prev</span>
+                  </a>
+                </li>
+                <li
                   class="
-                    vtl-paging-pagination-page-link
-                    vtl-paging-pagination-page-link-number
-                    page-link
+                    vtl-paging-pagination-page-li
+                    vtl-paging-pagination-page-li-number
+                    page-item
                   "
-                  href="javascript:void(0)"
-                  @click="movePage(n)"
-                  >{{ n }}</a
+                  v-for="n in setting.paging"
+                  :key="n"
+                  :class="{ disabled: setting.page === n }"
                 >
-              </li>
-              <li
-                class="
-                  vtl-paging-pagination-page-li
-                  vtl-paging-pagination-page-li-next
-                  page-item
-                "
-                :class="{ disabled: setting.page >= setting.maxPage }"
-              >
-                <a
+                  <a
+                    class="
+                      vtl-paging-pagination-page-link
+                      vtl-paging-pagination-page-link-number
+                      page-link
+                    "
+                    href="javascript:void(0)"
+                    @click="movePage(n)"
+                    >{{ n }}</a
+                  >
+                </li>
+                <li
                   class="
-                    vtl-paging-pagination-page-link
-                    vtl-paging-pagination-page-link-next
-                    page-link
+                    vtl-paging-pagination-page-li
+                    vtl-paging-pagination-page-li-next
+                    page-item
                   "
-                  href="javascript:void(0)"
-                  aria-label="Next"
-                  @click="nextPage"
+                  :class="{ disabled: setting.page >= setting.maxPage }"
                 >
-                  <span aria-hidden="true">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-caret-right-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
-                      />
-                    </svg>
-                  </span>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-              <li
-                class="
-                  vtl-paging-pagination-page-li
-                  vtl-paging-pagination-page-li-last
-                  page-item
-                "
-                :class="{ disabled: setting.page >= setting.maxPage }"
-              >
-                <a
+                  <a
+                    class="
+                      vtl-paging-pagination-page-link
+                      vtl-paging-pagination-page-link-next
+                      page-link
+                    "
+                    href="javascript:void(0)"
+                    aria-label="Next"
+                    @click="nextPage"
+                  >
+                    <span aria-hidden="true">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-caret-right-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+                <li
                   class="
-                    vtl-paging-pagination-page-link
-                    vtl-paging-pagination-page-link-last
-                    page-link
+                    vtl-paging-pagination-page-li
+                    vtl-paging-pagination-page-li-last
+                    page-item
                   "
-                  href="javascript:void(0)"
-                  aria-label="Next"
-                  @click="setting.page = setting.maxPage"
+                  :class="{ disabled: setting.page >= setting.maxPage }"
                 >
-                  <span aria-hidden="true">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-skip-end-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M12.5 4a.5.5 0 0 0-1 0v3.248L5.233 3.612C4.693 3.3 4 3.678 4 4.308v7.384c0 .63.692 1.01 1.233.697L11.5 8.753V12a.5.5 0 0 0 1 0V4z"
-                      />
-                    </svg>
-                  </span>
-                  <span class="sr-only">Last</span>
-                </a>
-              </li>
-            </ul>
+                  <a
+                    class="
+                      vtl-paging-pagination-page-link
+                      vtl-paging-pagination-page-link-last
+                      page-link
+                    "
+                    href="javascript:void(0)"
+                    aria-label="Next"
+                    @click="setting.page = setting.maxPage"
+                  >
+                    <span aria-hidden="true">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-skip-end-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M12.5 4a.5.5 0 0 0-1 0v3.248L5.233 3.612C4.693 3.3 4 3.678 4 4.308v7.384c0 .63.692 1.01 1.233.697L11.5 8.753V12a.5.5 0 0 0 1 0V4z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Last</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </template>
@@ -1047,15 +1050,4 @@ a:focus {
     max-width: 33.333333%;
   }
 } */
-
-/* hide scrollbar but still scrollable */
-.scrollableWithoutScrollbar {
-  overflow-x: scroll !important;
-  width: 100%;
-  -ms-overflow-style: none !important; /* IE and Edge */
-  scrollbar-width: none !important; /* FireFox */
-}
-.scrollableWithoutScrollbar::-webkit-scrollbar { /* Chrome, Safari and Opera */
-  display: none !important;
-}
 </style>
