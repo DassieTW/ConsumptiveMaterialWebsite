@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        table-layout: fixed;
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -24,22 +44,25 @@
             @csrf
             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.delete') !!}">
-                <input type="submit" id="return" name="return" class="btn btn-lg btn-primary"
-                value="{!! __('monthlyPRpageLang.return') !!}">
+                {{-- <input type="submit" id="return" name="return" class="btn btn-lg btn-primary"
+                value="{!! __('monthlyPRpageLang.return') !!}"> --}}
 
             <div class="table-responsive">
                 <table class="table">
+                    <thead>
                     <tr>
-                        <td>{!! __('monthlyPRpageLang.delete') !!}</td>
-                        <td>{!! __('monthlyPRpageLang.client') !!}</td>
-                        <td>{!! __('monthlyPRpageLang.machine') !!}</td>
-                        <td>{!! __('monthlyPRpageLang.process') !!}</td>
-                        <td>{!! __('monthlyPRpageLang.nextmps') !!}</td>
-                        <td>{!! __('monthlyPRpageLang.nextday') !!}</td>
-                        <td>{!! __('monthlyPRpageLang.nowmps') !!}</td>
-                        <td>{!! __('monthlyPRpageLang.nowday') !!}</td>
-                        <td>{!! __('monthlyPRpageLang.writetime') !!}</td>
+                        <th>{!! __('monthlyPRpageLang.delete') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.client') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.machine') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.process') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.nextmps') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.nextday') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.nowmps') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.nowday') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.writetime') !!}</th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach($data as $data)
                     <tr>
                         <?php
@@ -64,12 +87,13 @@
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     @endforeach
+                </tbody>
                 </table>
             </div>
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
         </form>
-        <br>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
     </div>
 </div>
 

@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+    <style>
+        /* for single line table with over-flow , SAP style as asked */
+        table {
+            table-layout: fixed;
+            /* width: 900px; */
+        }
+
+        .table-responsive {
+            height: 600px;
+            overflow: scroll;
+        }
+
+        thead tr:nth-child(1) th {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+    </style>
 @endsection
 
 @section('js')
@@ -27,6 +47,7 @@
             <div class="table-responsive">
 
                 <table class="table">
+                    <thead>
                     <tr>
                         <th>{!! __('monthlyPRpageLang.sxb') !!}</th>
                         <th>{!! __('monthlyPRpageLang.srm') !!}</th>
@@ -36,6 +57,8 @@
                         <th>{!! __('monthlyPRpageLang.buyamount') !!}</th>
                         <th>{!! __('monthlyPRpageLang.buytime') !!}</th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach ($data as $data)
                         <tr class="isnRows">
                             <?php $data->本次請購數量 = round($data->本次請購數量); ?>
@@ -68,7 +91,7 @@
                             <td>{{ $data->上傳時間 }}</td>
                         </tr>
                     @endforeach
-
+                </tbody>
                 </table>
             </div>
             <button class="btn btn-lg btn-primary"

@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        table-layout: fixed;
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -27,7 +47,8 @@
             <form id="change" method="POST">
                 @csrf
                 <table class="table" id="inboundsearch">
-                    <tr id="require">
+                    <thead>
+                    <tr>
                         <th>{!! __('inboundpageLang.check') !!}</th>
                         <th>{!! __('inboundpageLang.isn') !!}</th>
                         <th>{!! __('inboundpageLang.nowstock') !!}</th>
@@ -37,6 +58,8 @@
                         <th>{!! __('inboundpageLang.transferamount') !!}</th>
                         <th>{!! __('inboundpageLang.newloc') !!}</th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach($data as $data)
                     <tr id="{{$loop->index}}" class="isnRows">
                         <?php $position =  DB::table('儲位')->pluck('儲存位置');?>
@@ -72,6 +95,7 @@
                             </select>
                         </td>
                     </tr>
+                </tbody>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
 
                     @endforeach

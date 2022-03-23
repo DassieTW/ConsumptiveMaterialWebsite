@@ -1,6 +1,6 @@
 <template>
   <div style="text-align: left">
-    <label>SearchBy:</label><input v-model="searchTerm" />
+    <label>Search By:</label><input v-model="searchTerm" />
   </div>
   <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
   <table-lite
@@ -58,6 +58,7 @@ export default defineComponent({
       for (let i = 0; i < allRowsObj.datas.length; i++) {
         data.push(allRowsObj.datas[i]);
       } // for
+
     }); // watch for data change
 
     // Table config
@@ -70,6 +71,13 @@ export default defineComponent({
           width: "13ch",
           sortable: true,
           isKey: true,
+          display: function(row, i) {
+            return (
+              '<input type="hidden" id="number' + i +'" name="number' + i +'" value="' + row.料號 + '">' +
+              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' + row.料號 + '</div>'
+            ) ;
+          }
         },
         {
           label: app.appContext.config.globalProperties.$t(
@@ -83,7 +91,7 @@ export default defineComponent({
               '<input type="hidden" id="name' + i +'" name="name' + i +'" value="' + row.品名 + '">' +
               '<div class="text-nowrap scrollableWithoutScrollbar"' +
               ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' + row.品名 + '</div>'
-            ) ; 
+            ) ;
           }
         },
         {
@@ -96,9 +104,9 @@ export default defineComponent({
           display: function (row, i) {
             return (
               '<input type="hidden" id="format' + i +'" name="format' + i +'" value="' + row.規格 + '">' +
-              '<div class="scrollableWithoutScrollbar text-nowrap"' + 
+              '<div class="scrollableWithoutScrollbar text-nowrap"' +
               ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' + row.規格 + '</div>'
-            ) ; 
+            ) ;
           }
         },
         {
@@ -151,9 +159,9 @@ export default defineComponent({
             // console.log(row); // test
             if (row.月請購 === "是") {
               returnStr =
-                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="month' + i + '" name="month' + i + '">' +
-                '<option value="是" selected>' +
+                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"'  +
+                ' id="month' + i + '" name="month' + i +'">' +
+                '<option value="是" selected >' +
                 app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
                 "</option>" +
                 '<option value="否">' +
@@ -249,7 +257,7 @@ export default defineComponent({
               '<input style="width: 10ch;" type="number" id="price' + i +'"' +
               ' class="form-control text-center p-0 m-0" name="price'+ i +'"' +
               ' value="' +  parseFloat(row.單價) + '">'
-            ) ; 
+            ) ;
           }
         },
         {
@@ -272,7 +280,7 @@ export default defineComponent({
               } // else
             }); // for each in sender array
             returnStr += '</select>'
-            return returnStr; 
+            return returnStr;
           }
         },
         {
@@ -282,10 +290,10 @@ export default defineComponent({
           sortable: true,
           display: function (row, i) {
             return (
-              '<input style="width:5ch;" type="text" id="unit'+ i +'"' + 
+              '<input style="width:5ch;" type="text" id="unit'+ i +'"' +
               ' name="unit'+ i +'" value="'+ row.單位 +'"' +
               ' class="form-control text-center p-0 m-0">'
-            ) ; 
+            ) ;
           }
         },
         {
@@ -298,7 +306,7 @@ export default defineComponent({
               '<input style="width:8ch;" type="number" id="mpq' + i +'"' +
               ' name="mpq'+ i +'" value="'+ row.MPQ + '"' +
               ' class="form-control text-center p-0 m-0" min="0">'
-            ) ; 
+            ) ;
           }
         },
         {
@@ -311,7 +319,7 @@ export default defineComponent({
               '<input style="width:8ch;" type="number" id="moq' + i +'"' +
               ' name="moq'+ i +'" value="'+ row.MOQ + '"' +
               ' class="form-control text-center p-0 m-0" min="0">'
-            ) ; 
+            ) ;
           }
         },
         {
@@ -325,7 +333,7 @@ export default defineComponent({
               '<input style="width:8ch;" type="number" id="lt' + i +'"' +
               ' name="lt'+ i +'" value="'+ row.LT + '"' +
               ' class="form-control text-center p-0 m-0" min="0">'
-            ) ; 
+            ) ;
           }
         },
         {
@@ -346,7 +354,7 @@ export default defineComponent({
             else {
               returnStr =
                 '<input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"' +
-                ' id="safe' + i + '" name="safe' + i + '" value="" min="0" disabled>' ;
+                ' id="safe' + i + '" name="safe' + i + '" value="" min="0">' ;
             } // else
 
             return returnStr;
@@ -368,7 +376,7 @@ export default defineComponent({
       },
       messages: {
         pagingInfo: app.appContext.config.globalProperties.$t("basicInfoLang.now_showing") + " {0} ~ {1} " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.record") + ", " + 
+                    app.appContext.config.globalProperties.$t("basicInfoLang.record") + ", " +
                     app.appContext.config.globalProperties.$t("basicInfoLang.total") + " {2} " + app.appContext.config.globalProperties.$t("basicInfoLang.record"),
         pageSizeChangeLabel: app.appContext.config.globalProperties.$t("basicInfoLang.records_per_page"),
         gotoPageLabel: app.appContext.config.globalProperties.$t("basicInfoLang.go_to_page"),
@@ -405,13 +413,13 @@ export default defineComponent({
 
 <style scoped>
 /* hide scrollbar but still scrollable */
-.scrollableWithoutScrollbar { 
+.scrollableWithoutScrollbar {
   overflow-x: scroll !important;
   width: 100%;
   -ms-overflow-style: none !important; /* IE and Edge */
   scrollbar-width: none !important; /* FireFox */
 }
-.scrollableWithoutScrollbar::-webkit-scrollbar { /* Chrome, Safari and Opera */
-  display: none !important;
+.scrollableWithoutScrollbar::-webkit-scrollbar {
+  display: none;
 }
 </style>

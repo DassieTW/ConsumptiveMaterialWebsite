@@ -79,6 +79,8 @@ Route::get('/materialsearch', function () {
 
 Route::post('/materialsearch', [BasicInformationController::class, 'searchmaterial'])->name('basic.searchmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
+
+
 //料件信息刪除或修改
 Route::post('/materialchangeordel', [BasicInformationController::class, 'materialchangeordel'])->name('basic.materialchangeordel')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 

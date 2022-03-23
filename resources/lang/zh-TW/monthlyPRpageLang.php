@@ -144,4 +144,6 @@ return [
     'noload' => '無資料載入',
     'clickmail' => '點選此網址',
     'reason' => '請填寫原因',
+    'submitspan' => '僅會提交有填寫SRM以及本次請購數量>0那一列',
+    'srmspan' => '僅會填寫至打勾的那一列',
 ];

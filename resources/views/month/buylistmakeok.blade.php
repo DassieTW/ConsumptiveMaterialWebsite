@@ -24,7 +24,7 @@
             @csrf
             <input type="hidden" id="titlename" name="titlename" value="請購單">
             <input type="hidden" id="titlename1" name="titlename1" value="請購單上傳">
-            <div class="table-responsive">
+            <div class="table-responsive text-nowrap">
                 <table class="table">
                     <tr>
                         <td>{!! __('monthlyPRpageLang.check')!!}</td>
@@ -190,15 +190,21 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
+            <span style="color: red;">{!! __('monthlyPRpageLang.submitspan') !!}</span>
+
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <input type="submit" id="inser" name="insert" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.submit') !!}">
+                &emsp13;
             <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.export') !!}">
+                &emsp13;
             <input type="submit" id="download1" name="download1" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.export1') !!}">
         </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
+        <span style="color: red;">{!! __('monthlyPRpageLang.srmspan') !!}</span>
+        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <button class="btn btn-primary" id="writesrm">{!! __('monthlyPRpageLang.writesrm') !!}</button>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

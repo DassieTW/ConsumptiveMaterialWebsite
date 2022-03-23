@@ -150,5 +150,6 @@ return [
     'confirmpeople' => 'Confirm People',
     'confirmemail' => 'Confirm Email',
     'reason' => 'Please input Reason',
-
+    'submitspan' => 'Only the column filled with SRM and This time buy amount > 0 will be submitted',
+    'srmspan' => 'Only fill in the tick column',
 ];

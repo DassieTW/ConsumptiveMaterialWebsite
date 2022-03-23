@@ -10,7 +10,8 @@ export default function useConsumptiveMaterials() {
     const getMats = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        // console.log(getDB); // test
+        // let gettest = await axios.post('/basic/materialsearch');
+        // console.log(gettest); // test
         try {
             let response = await axios.post('/api/basic/mats', {DB: getDB.data});
             mats.value =JSON.stringify(response.data);

@@ -20,6 +20,7 @@ Route::post('/mats', function (Request $request) {
     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
     \DB::purge(env("DB_CONNECTION"));
     $dbName = DB::connection()->getDatabaseName();
+    //dd($request->all());
     $datas = DB::table('consumptive_material')->get();
     $senders = DB::table("發料部門")->pluck("發料部門");
 

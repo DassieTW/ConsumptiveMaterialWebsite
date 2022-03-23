@@ -69,7 +69,7 @@
                   align="center"
                 >
                   <div>
-                    <input
+                    <!-- <input
                       type="checkbox"
                       class="vtl-tbody-checkbox"
                       :ref="
@@ -78,6 +78,17 @@
                         }
                       "
                       :value="row[setting.keyColumn]"
+                      @click="checked"
+                    /> -->
+                    <input
+                      type="checkbox"
+                      class="vtl-tbody-checkbox"
+                      :ref="
+                        (el) => {
+                          rowCheckbox[i] = el;
+                        }
+                      "
+                      :value="i"
                       @click="checked"
                     />
                   </div>
@@ -1038,7 +1049,7 @@ a:focus {
 } */
 
 /* hide scrollbar but still scrollable */
-.scrollableWithoutScrollbar { 
+.scrollableWithoutScrollbar {
   overflow-x: scroll !important;
   width: 100%;
   -ms-overflow-style: none !important; /* IE and Edge */

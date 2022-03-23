@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        /* table-layout: fixed; */
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -32,9 +52,10 @@
             {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('outbound.backrecord')}}'">{!!
                 __('outboundpageLang.return') !!}</button> --}}
 
-            <div class="table-responsive">
+            <div class="table-responsive text-nowrap">
                 <table class="table" id="pickrecordlist">
-                    <tr id="require">
+                    <thead>
+                    <tr>
 
                         <th><input type="hidden" id="title0" name="title0" value="客戶別">{!! __('outboundpageLang.client')
                             !!}</th>
@@ -82,6 +103,8 @@
                             __('outboundpageLang.status') !!}</th>
                         <input type="hidden" id="titlecount" name="titlecount" value="22">
                     </tr>
+                </thead>
+                <tbody>
                     @foreach($data as $data)
                     <tr id="{{$data->退料單號}}" class="isnRows">
                         <td><input type="hidden" id="dataa{{$loop->index}}" name="dataa{{$loop->index}}"
@@ -131,7 +154,7 @@
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     @endforeach
-
+                </tbody>
                 </table>
             </div>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

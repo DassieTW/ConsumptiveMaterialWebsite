@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        table-layout: fixed;
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -29,10 +49,11 @@
                 <input type = "hidden" id = "titlename" name = "titlename" value = "非月請購">
                 <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                     value="{!! __('monthlyPRpageLang.download') !!}">
-                    <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importnotmonth')}}'">{!!
-                        __('monthlyPRpageLang.return') !!}</button>
+                    {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.importnotmonth')}}'">{!!
+                        __('monthlyPRpageLang.return') !!}</button> --}}
 
                 <table class="table">
+                    <thead>
                     <tr>
                         <th><input type = "hidden" id = "title0" name = "title0" value = "客戶別">{!! __('monthlyPRpageLang.client') !!}</td>
                         <th><input type = "hidden" id = "title1" name = "title1" value = "料號">{!! __('monthlyPRpageLang.isn') !!}</td>
@@ -43,6 +64,8 @@
                         <th><input type = "hidden" id = "title6" name = "title6" value = "SXB單號">{!! __('monthlyPRpageLang.sxb') !!}</td>
                         <input type = "hidden" id = "titlecount" name = "titlecount" value = "7">
                     </tr>
+                </thead>
+                <tbody>
                     @foreach($data as $data)
                     <tr class="isnRows">
                         <td><input type = "hidden" id = "data0{{$loop->index}}" name = "data0{{$loop->index}}" value = "{{$data->客戶別}}">{{$data->客戶別}}</td>
@@ -56,7 +79,7 @@
                     <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                     @endforeach
 
-
+                </tbody>
                 </table>
 
 

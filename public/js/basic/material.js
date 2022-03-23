@@ -6,49 +6,23 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
+    // $(".month").on("change", function () {
 
-    function quickSearch() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue;
-        input = $("#numbersearch").val();
-        //var isISN = $("#toggle-state").is(":checked");
-        console.log(input); // test
-        // filter = input.value;
-        // Loop through all table rows, and hide those who don't match the search query
-        $('.isnRows').each(function (i, obj) {
-            txtValue = $(this).find("input[id^='number']").val();
-            // console.log("now checking text : " + txtValue); // test
-            if (txtValue.indexOf(input) > -1) {
-                obj.style.display = "";
+    //     console.log($("#month6").val());
+    //     for (let i = 0; i < 60; i++) {
 
-            } else {
-                obj.style.display = "none";
-            } // if else
-        });
-    } // quickSearch function
+    //         if ($('#month' + i).val()) {
+    //             if ($("#month" + i).val() == '否') {
+    //                 $("#safe" + i).prop("disabled", false);
+    //             } else {
+    //                 $("#safe" + i).prop("disabled", true);
+    //             }
+    //         } else {
+    //             continue;
+    //         }
+    //     }
+    // });
 
-
-    $(".month").on("change", function () {
-
-        for (let i = 0; i < $("#count").val(); i++) {
-
-            if($("#month" + i).val() == '否')
-            {
-                $("#safe" + i).attr("readonly", false);
-            }
-            else
-            {
-                $("#safe" + i).attr("readonly", true);
-            }
-        }
-    });
-
-    $("#numbersearch").on('input', function (e) {
-        e.preventDefault();
-        quickSearch();
-    });
-
-    var downloadcount = ($("#count").val());
     var data = [];
     var title = [];
     var data0 = [];
@@ -68,7 +42,7 @@ $(document).ready(function () {
 
     //download title
     for (let i = 0; i < 14; i++) {
-        title.push($("#title" + i).val());
+        title.push($(".vtl-thead-th").eq(i + 1).text());
     }
 
     $("#materialsearch").on("submit", function (e) {
@@ -77,24 +51,6 @@ $(document).ready(function () {
         // clean up previous input results
         $(".is-invalid").removeClass("is-invalid");
         $(".invalid-feedback").remove();
-
-        //download data
-        for (let i = 0; i < downloadcount; i++) {
-            data0.push($("#number" + i).val());
-            data1.push($("#name" + i).val());
-            data2.push($("#format" + i).val());
-            data3.push($("#gradea" + i).val());
-            data4.push($("#month" + i).val());
-            data5.push($("#send" + i).val());
-            data6.push($("#belong" + i).val());
-            data7.push($("#price" + i).val());
-            data8.push($("#money" + i).val());
-            data9.push($("#unit" + i).val());
-            data10.push($("#mpq" + i).val());
-            data11.push($("#moq" + i).val());
-            data12.push($("#lt" + i).val());
-            data13.push($("#safe" + i).val());
-        }
 
         var select = ($(document.activeElement).val());
         var row = 0;
@@ -112,7 +68,7 @@ $(document).ready(function () {
         var lt = [];
         var safe = [];
 
-        $("input:checkbox[name=innumber]:checked").each(function () {
+        $("input:checkbox:checked").each(function () {
             check.push($(this).val());
         });
 
@@ -163,8 +119,6 @@ $(document).ready(function () {
             }
         }
 
-        checked = ("input[type=checkbox]:checked").length;
-
         if (count == 0 && select != "下載") {
             notyf.open({
                 type: 'warning',
@@ -193,23 +147,7 @@ $(document).ready(function () {
             data.push(moq);
             data.push(lt);
             data.push(safe);
-        } else {
-            data.push(data0);
-            data.push(data1);
-            data.push(data2);
-            data.push(data3);
-            data.push(data4);
-            data.push(data5);
-            data.push(data6);
-            data.push(data7);
-            data.push(data8);
-            data.push(data9);
-            data.push(data10);
-            data.push(data11);
-            data.push(data12);
-            data.push(data13);
         }
-
         if (select != "下載") {
             $.ajax({
                 type: "POST",
@@ -255,14 +193,13 @@ $(document).ready(function () {
             });
         } else {
 
+
             $.ajax({
                 type: 'POST',
                 url: "materialchangeordel",
                 data: {
                     title: title,
-                    AllData: JSON.stringify(data),
                     select: select,
-                    downloadcount: downloadcount
                 },
                 xhrFields: {
                     responseType: 'blob', // to avoid binary data being mangled on charset conversion

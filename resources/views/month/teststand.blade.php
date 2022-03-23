@@ -24,11 +24,11 @@
         /* for single line table with over-flow , SAP style as asked */
         table {
             table-layout: fixed;
-            /* width: 900px; */
+            /* width: 300px; */
         }
 
         .table-responsive {
-            height: 600px;
+            height: 650px;
         }
 
         thead tr:nth-child(1) th {
@@ -85,9 +85,9 @@
                 <div class="card-body">
                     <form id="standcheck" method="POST">
                         @csrf
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="thead-dark">
+                        <div class="table-responsive ">
+                            <table class = "table">
+                                <thead>
                                     <tr>
                                         <th>{!! __('monthlyPRpageLang.isn') !!}</th>
                                         <th>{!! __('monthlyPRpageLang.pName') !!}</th>

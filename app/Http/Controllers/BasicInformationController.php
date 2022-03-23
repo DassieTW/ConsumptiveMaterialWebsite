@@ -265,18 +265,20 @@ class BasicInformationController extends Controller
                 $spreadsheet = new Spreadsheet();
                 $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
                 $worksheet = $spreadsheet->getActiveSheet();
-                $downloadcount = $request->input('downloadcount');
-                $Alldata = json_decode($request->input('AllData'));
+                $Alldata = DB::table('consumptive_material')->get();
+                $downloadcount = count($Alldata);
+                $arr = ['料號', '品名', '規格', 'A級資材', '月請購', '發料部門', '耗材歸屬', '單價', '幣別', '單位', 'MPQ', 'MOQ', 'LT', '安全庫存'];
 
                 //填寫表頭
                 for ($i = 0; $i < 14; $i++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
+                    $worksheet->setCellValueByColumnAndRow($i + 1, 1, $arr[$i]);
                 }
 
                 //填寫內容
                 for ($i = 0; $i < 14; $i++) {
+                    $string  = $arr[$i];
                     for ($j = 0; $j < $downloadcount; $j++) {
-                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
+                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
                     }
                 }
 
@@ -412,29 +414,29 @@ class BasicInformationController extends Controller
     //料件信息查詢修改
     public function searchmaterial(Request $request)
     {
-
         if (Session::has('username')) {
-            if($request->input('numberradio') === "1")
-            {
-                $input = $request->input('number');
+            $input = $request->input('input');
+            if ($request->input('radio') === "1") {
+
 
                 $datas = DB::table('consumptive_material')
                     ->where('料號', 'like', $input . '%')
                     ->get();
+                // return view("basic.searchmaterialok")
+                //     ->with(['data' => $datas])
+                //     ->with(['sends' => 發料部門::cursor()]);
+                return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
 
-                return view("basic.searchmaterialok")
-                    ->with(['data' => $datas])
-                    ->with(['sends' => 發料部門::cursor()]);
             } else {
-                $input = $request->input('numberarea');
-                $input = (explode("\r\n" , $input));
+
                 $datas = DB::table('consumptive_material')
                     ->whereIn('料號', $input)
                     ->get();
+                // return view("basic.searchmaterialok")
+                //     ->with(['data' => $datas])
+                //     ->with(['sends' => 發料部門::cursor()]);
+                return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
 
-                return view("basic.searchmaterialok")
-                    ->with(['data' => $datas])
-                    ->with(['sends' => 發料部門::cursor()]);
             }
         } else {
             return redirect(route('member.login'));
@@ -731,14 +733,14 @@ class BasicInformationController extends Controller
                     if ($test[$i] == 1) {
                         DB::table($choose)
                             ->insert([$chooseindex => $data]);
-                            $record++;
-                            array_push($check, $row[$i]);
+                        $record++;
+                        array_push($check, $row[$i]);
                     } else {
                         continue;
                     }
                 }
                 DB::commit();
-                return \Response::json(['record' => $record, 'choose' => $choose , 'check' => $check]/* Status code here default is 200 ok*/);
+                return \Response::json(['record' => $record, 'choose' => $choose, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);

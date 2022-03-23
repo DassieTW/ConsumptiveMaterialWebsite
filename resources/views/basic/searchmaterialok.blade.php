@@ -1,6 +1,18 @@
 @extends('layouts.adminTemplate')
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+    <style>
+        /* hide scrollbar but still scrollable */
+        .scrollableWithoutScrollbar {
+          overflow-x: scroll !important;
+          width: 100%;
+          -ms-overflow-style: none !important; /* IE and Edge */
+          scrollbar-width: none !important; /* FireFox */
+        }
+        .scrollableWithoutScrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        </style>
 @endsection
 
 @section('js')
@@ -18,9 +30,9 @@
     <div class="card">
         <div class="card-header">
             <h3>{!! __('basicInfoLang.matssearch') !!}</h3>
-            <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+            {{-- <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
                 placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
-                style="width: 200px">
+                style="width: 200px"> --}}
         </div>
         <div class="card-body">
 
@@ -39,9 +51,6 @@
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             </form>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-            <button class="btn btn-lg btn-primary"
-                onclick="location.href='{{ route('basic.material') }}'">{!! __('basicInfoLang.return') !!}</button>
         </div>
     </div>
 

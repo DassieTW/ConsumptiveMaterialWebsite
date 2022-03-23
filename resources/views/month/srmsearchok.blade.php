@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        /* table-layout: fixed; */
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -23,7 +43,8 @@
 
         <form id = "srmsubmit" method="POST">
             @csrf
-            <div class="table-responsive">
+            <div class="table-responsive text-nowrap">
+                <thead>
                 <table class="table">
                     <tr>
                         <th>{!! __('monthlyPRpageLang.check')!!}</th>
@@ -50,6 +71,8 @@
                         <th>{!! __('monthlyPRpageLang.needper') !!}</th>
                         <th>{!! __('monthlyPRpageLang.buyper') !!}</th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach($data as $data)
                     <tr>
                         <?php
@@ -93,15 +116,16 @@
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     @endforeach
+                </tbody>
                 </table>
             </div>
-            <br>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.submit') !!}">
         </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.srm')}}'">{!!
-            __('monthlyPRpageLang.return') !!}</button>
+        {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.srm')}}'">{!!
+            __('monthlyPRpageLang.return') !!}</button> --}}
     </div>
 </div>
 

@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        /* table-layout: fixed; */
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -35,11 +55,12 @@
                 value="{!! __('monthlyPRpageLang.change') !!}">
             <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.download') !!}">
-                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.stand')}}'">{!!
-                    __('monthlyPRpageLang.return') !!}</button>
+                {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.stand')}}'">{!!
+                    __('monthlyPRpageLang.return') !!}</button> --}}
 
-            <div class="table-responsive">
+            <div class="table-responsive text-nowrap">
                 <table class="table">
+                    <thead>
                     <tr>
                         <th>{!! __('monthlyPRpageLang.check') !!}</th>
                         <th><input type="hidden" id="title0" name="title0" value="料號">{!! __('monthlyPRpageLang.isn')
@@ -88,6 +109,8 @@
                             __('monthlyPRpageLang.remark') !!}</th>
                         <input type="hidden" id="titlecount" name="titlecount" value="22">
                     </tr>
+                </thead>
+                <tbody>
                     @foreach($data as $data)
                     <?php
 
@@ -122,40 +145,40 @@
                                 value="{{$data->機種}}">{{$data->機種}}</td>
                         <td><input type="hidden" id="datah{{$loop->index}}" name="datah{{$loop->index}}"
                                 value="{{$data->製程}}">{{$data->製程}}</td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="datai{{$loop->index}}" name="datai{{$loop->index}}" value="{{$data->當月站位人數}}" step="0.0000001"
                                  min="0"></td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="dataj{{$loop->index}}" name="dataj{{$loop->index}}" value="{{$data->當月開線數}}" step="0.0000001"
                                  min="0"></td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="datak{{$loop->index}}" name="datak{{$loop->index}}" value="{{$data->當月開班數}}" step="0.0000001"
                                  min="0"></td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="datal{{$loop->index}}" name="datal{{$loop->index}}" value="{{$data->當月每人每日需求量}}" step="0.0000001"
                                  min="0">
                         </td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="datam{{$loop->index}}" name="datam{{$loop->index}}" value="{{$data->當月每日更換頻率}}" step="0.0000001"
                                  min="0">
                         </td>
                         <td><input style="width:120px" class="form-control form-control-lg" type="number"
                                 id="datan{{$loop->index}}" name="datan{{$loop->index}}" readonly></td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="datao{{$loop->index}}" name="datao{{$loop->index}}" value="{{$data->下月站位人數}}" step="0.0000001"
                                  min="0">
                         </td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="datap{{$loop->index}}" name="datap{{$loop->index}}" value="{{$data->下月開線數}}" step="0.0000001"
                                  min="0"></td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="dataq{{$loop->index}}" name="dataq{{$loop->index}}" value="{{$data->下月開班數}}" step="0.0000001"
                                  min="0"></td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="datar{{$loop->index}}" name="datar{{$loop->index}}" value="{{$data->下月每人每日需求量}}" step="0.0000001"
                                  min="0">
                         </td>
-                        <td><input style="width:120px" class="form-control form-control-lg" type="number"
+                        <td><input style="width:100px" class="form-control form-control-lg" type="number"
                                 id="datas{{$loop->index}}" name="datas{{$loop->index}}" value="{{$data->下月每日更換頻率}}" step="0.0000001"
                                  min="0">
                         </td>
@@ -168,7 +191,7 @@
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     @endforeach
-
+                </tbody>
                 </table>
             </div>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

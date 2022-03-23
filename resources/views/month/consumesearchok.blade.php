@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        /* table-layout: fixed; */
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -31,12 +51,13 @@
 
             <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.change') !!}">
-
+{{--
                 <input type="submit" id="return" name="return" class="btn btn-lg btn-primary"
-                value="{!! __('monthlyPRpageLang.return') !!}">
+                value="{!! __('monthlyPRpageLang.return') !!}"> --}}
 
             <div class="table-responsive">
                 <table class="table">
+                    <thead>
                     <tr>
                         <th>{!! __('monthlyPRpageLang.check') !!}</th>
                         <th>{!! __('monthlyPRpageLang.client') !!}</th>
@@ -48,6 +69,8 @@
                         <th>{!! __('monthlyPRpageLang.consume') !!}</th>
                         <th>{!! __('monthlyPRpageLang.remark') !!}</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     @foreach($data as $data)
                     <?php
                         $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
@@ -73,6 +96,7 @@
                                 step="0.0000000001" oninput="if(value.length>12)value=value.slice(0,12)" min="0"></td>
                         <td>{{$data->狀態}}</td>
                     </tr>
+                    </tbody>
                     @endforeach
 
                 </table>
