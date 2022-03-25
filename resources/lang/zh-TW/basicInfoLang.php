@@ -66,7 +66,7 @@ return [
     'yes' => '是',
     'no' => '否',
     'add' => '添加',
-    'matssearch' => '料號查詢',
+    'matssearch' => '快速查詢',
     'download' => '下載',
     'newbasicInfo' => '新增基礎信息',
     'isnlength' => '料號長度不為12',
