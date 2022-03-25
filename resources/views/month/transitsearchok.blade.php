@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        table-layout: fixed;
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -20,39 +40,42 @@
     <div class="card-header">
         <h3>{!! __('monthlyPRpageLang.on_the_way_search') !!}</h3>
         <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
-                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
-                style="width: 200px">
+            placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+            style="width: 200px">
 
     </div>
     <div class="card-body">
         <div class="table-responsive">
 
             <table class="table">
-                <tr>
-                    <th>{!! __('monthlyPRpageLang.client') !!}</th>
-                    <th>{!! __('monthlyPRpageLang.isn') !!}</th>
-                    <th>{!! __('monthlyPRpageLang.pName') !!}</th>
-                    <th>{!! __('monthlyPRpageLang.unit') !!}</th>
-                    <th>{!! __('monthlyPRpageLang.buyamount1') !!}</th>
-                </tr>
-                @foreach($data as $data)
-                <tr class="isnRows">
-                    <?php
+                <thead>
+                    <tr>
+                        <th>{!! __('monthlyPRpageLang.client') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.isn') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.pName') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.unit') !!}</th>
+                        <th>{!! __('monthlyPRpageLang.buyamount1') !!}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($data as $data)
+                    <tr class="isnRows">
+                        <?php
                     $data->請購數量 = round($data->請購數量);
                     ?>
-                    <td>{{$data->客戶}}</td>
-                    <td>{{$data->料號}}</td>
-                    <input type="hidden" id = "dataa{{$loop->index}}" value="{{$data->料號}}">
-                    <td>{{$data->品名}}</td>
-                    <td>{{$data->單位}}</td>
-                    <td>{{$data->請購數量}}</td>
-                </tr>
-                @endforeach
-
+                        <td>{{$data->客戶}}</td>
+                        <td>{{$data->料號}}</td>
+                        <input type="hidden" id="dataa{{$loop->index}}" value="{{$data->料號}}">
+                        <td>{{$data->品名}}</td>
+                        <td>{{$data->單位}}</td>
+                        <td>{{$data->請購數量}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.transit')}}'">{!!
-            __('monthlyPRpageLang.return') !!}</button>
+        {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.transit')}}'">{!!
+            __('monthlyPRpageLang.return') !!}</button> --}}
     </div>
 </div>
 

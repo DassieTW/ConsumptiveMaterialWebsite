@@ -1,6 +1,25 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -22,13 +41,14 @@
                 style="width: 200px">
             </div>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-responsive text-nowrap">
                         <form  method="POST" id = "bulist">
                             @csrf
                             <input type = "submit" id = "delete" name = "delete" class="btn btn-lg btn-primary" value="{!! __('bupagelang.delete') !!}">
                             <input type = "submit" id = "download" name = "download" class="btn btn-lg btn-primary" value="{!! __('bupagelang.download') !!}">
                             <input type = "hidden" id = "titlename" name = "titlename" value = "調撥單查詢">
                         <table class="table" id = "inboundsearch">
+                            <thead>
                             <tr id = "require">
                                 <th>{!! __('bupagelang.delete') !!}</th>
                                 <th><input type = "hidden" id = "title0" name = "title0" value = "調撥單號">{!! __('bupagelang.dblist') !!}</th>
@@ -50,6 +70,8 @@
                                 <th><input type = "hidden" id = "title16" name = "title16" value = "入庫時間">{!! __('bupagelang.inboundtime') !!}</th>
                                 <input type = "hidden" id = "titlecount" name = "titlecount" value = "17">
                             </tr>
+                        </thead>
+                        <tbody>
                                 @foreach($data as $data)
                                 <tr id= "list{{$loop->index}}" class="isnRows">
                                     <td><input class ="basic" type="checkbox" id="check{{$loop->index}}" name="check{{$loop->index}}" style="width:20px;height:20px;"  value="{{$loop->index}}"></td>
@@ -73,12 +95,12 @@
                                 </tr>
                                 <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                 @endforeach
-
+                            </tbody>
                             </table>
                         </div>
-                        <br>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         </form>
-                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.searchlist')}}'">{!! __('bupagelang.return') !!}</button>
+                {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.searchlist')}}'">{!! __('bupagelang.return') !!}</button> --}}
             </div>
         </div>
 </html>

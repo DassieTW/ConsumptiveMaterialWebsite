@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        table-layout: fixed;
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -29,7 +49,8 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                 <input type="hidden" id="title" name="title" value="廠區呆滯庫存">
-                <table class="table table-bordered" id="test">
+                <table class="table" id="test">
+                    <thead>
                     <tr>
                         <th>{!! __('bupagelang.check') !!}</th>
                         <th><input type="hidden" id="title0" name="title0" value="廠區">{!! __('bupagelang.factory') !!}
@@ -51,7 +72,8 @@
                         <th><input type="hidden" id="title9" name="title9" value="接收廠區">{!! __('bupagelang.receivefac')
                             !!}</th>
                     </tr>
-
+                </thead>
+                <tbody>
                     <?php $i = 0 ; $data = ''; $record = array(array());
 
                     ?>
@@ -113,7 +135,7 @@
                             <td><input type="hidden" id="datag{{$i}}{{$loop->index}}" name="datag{{$i}}{{$loop->index}}"
                                     value={{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
                             <td><input type="number" id="datah{{$i}}{{$loop->index}}" name="data7{{$i}}{{$loop->index}}"
-                                    value="1" style="width:100px;" min="0"></td>
+                                    value="1" style="width:70px;" min="0"></td>
                             <td id="datai{{$i}}{{$loop->index}}" name="datai{{$i}}{{$loop->index}}">@foreach ($buytime
                                 as $buytime)
                                 @if( $buytime[2] != null)
@@ -132,7 +154,7 @@
                             </td>
                             <td>
                                 <select class="form-select form-select-lg" id="dataj{{$i}}{{$loop->index}}"
-                                    name="dataj{{$i}}{{$loop->index}}" style="width: 200px">
+                                    name="dataj{{$i}}{{$loop->index}}" style="width: 150px">
                                     <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
                                         !!}</option>
                                     @foreach($buytimeco as $buytime)
@@ -164,7 +186,7 @@
                                     value={{$data->inventory現有庫存}}>{{$data->inventory現有庫存}}</td>
                             <td><input type="number" class="form-control form-control-lg"
                                     id="datah{{$i}}{{$loop->index}}" name="datah{{$i}}{{$loop->index}}" value="1"
-                                    style="width:100px;" min="0"></td>
+                                    style="width:70px;" min="0"></td>
                             <td id="datai{{$i}}{{$loop->index}}" name="datai{{$i}}{{$loop->index}}">@foreach ($buytime
                                 as $buytime)
                                 @if( $buytime[2] != null)
@@ -183,7 +205,7 @@
                             </td>
                             <td>
                                 <select class="form-select form-select-lg" id="dataj{{$i}}{{$loop->index}}"
-                                    name="dataj{{$i}}{{$loop->index}}" style="width: 200px">
+                                    name="dataj{{$i}}{{$loop->index}}" style="width: 150px">
                                     <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
                                         !!}</option>
                                     @foreach($buytimeco as $buytime)
@@ -199,6 +221,7 @@
                         @endif
                         @endforeach
                         @endfor
+                    </tbody>
                 </table>
         </div>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

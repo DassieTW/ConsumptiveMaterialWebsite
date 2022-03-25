@@ -66,7 +66,7 @@ return [
     'yes' => 'Yes',
     'no' => 'No',
     'add' => 'Add',
-    'matssearch' => 'Search By',
+    'matssearch' => 'Part No. Search',
     'download' => 'Download Excel',
     'newbasicInfo' => 'New Basic Info.',
     'isnlength' =>'Part No. length is not 12',
@@ -96,5 +96,6 @@ return [
     'search_with_no_data_returned' => 'No Data Found',
     'searchisn' => 'Search all directly, or enter the part number to search at the beginning',
     'searchisn1' => 'Enter multiple item numbers for query, separated by newlines(Enter-key)',
+    'quicksearch' => 'Search By',
 
 ];

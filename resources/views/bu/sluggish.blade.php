@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        table-layout: fixed;
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -20,45 +40,56 @@
     <div class="card-header">
         <h3>{!! __('bupagelang.sluggish') !!}</h3>
         <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
-                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
-                style="width: 200px">
+            placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+            style="width: 200px">
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <form id="sluggish" method="POST">
-                @csrf
-                {{-- <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
+        <form id="sluggish" method="POST">
+            @csrf
+            {{-- <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
                 value="{!! __('bupagelang.submit') !!}"> --}}
             <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                 value="{!! __('bupagelang.download') !!}">
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                <input type="hidden" id="title" name="title" value="廠區呆滯庫存">
-                <table class="table table-bordered" id="test">
-                    <tr>
-                        <th>{!! __('bupagelang.check') !!}</th>
-                        <th><input type="hidden" id="title0" name="title0" value="廠區">{!! __('bupagelang.factory') !!}
-                        </th>
-                        <th><input type="hidden" id="title1" name="title1" value="料號">{!! __('bupagelang.isn') !!}</th>
-                        <th><input type="hidden" id="title2" name="title2" value="品名">{!! __('bupagelang.pName') !!}
-                        </th>
-                        <th><input type="hidden" id="title3" name="title3" value="規格">{!! __('bupagelang.format') !!}
-                        </th>
-                        <th><input type="hidden" id="title4" name="title4" value="單位">{!! __('bupagelang.unit') !!}</th>
-                        <th><input type="hidden" id="title5" name="title5" value="呆滯天數">{!! __('bupagelang.days') !!}
-                        </th>
-                        <th><input type="hidden" id="title6" name="title6" value="庫存">{!! __('bupagelang.stock') !!}
-                        </th>
-                        <th><input type="hidden" id="title7" name="title7" value="撥出數量">{!! __('bupagelang.transamount')
-                            !!}</th>
-                        <th><input type="hidden" id="title8" name="title8" value="近期請購紀錄">{!! __('bupagelang.buyrecord')
-                            !!}</th>
-                        <th><input type="hidden" id="title9" name="title9" value="接收廠區">{!! __('bupagelang.receivefac')
-                            !!}</th>
-                    </tr>
+            <input type="hidden" id="title" name="title" value="廠區呆滯庫存">
+            <div class="table-responsive">
 
-                    <?php $i = 0 ; $data = ''; $record = array(array());?>
-                    @for($i = 0 ; $i < 6 ; $i++) @foreach($test[$i] as $data) <?php
+                <table class="table" id="test">
+                    <thead>
+                        <tr>
+                            <th>{!! __('bupagelang.check') !!}</th>
+                            <th><input type="hidden" id="title0" name="title0" value="廠區">{!! __('bupagelang.factory')
+                                !!}
+                            </th>
+                            <th><input type="hidden" id="title1" name="title1" value="料號">{!! __('bupagelang.isn') !!}
+                            </th>
+                            <th><input type="hidden" id="title2" name="title2" value="品名">{!! __('bupagelang.pName') !!}
+                            </th>
+                            <th><input type="hidden" id="title3" name="title3" value="規格">{!! __('bupagelang.format')
+                                !!}
+                            </th>
+                            <th><input type="hidden" id="title4" name="title4" value="單位">{!! __('bupagelang.unit') !!}
+                            </th>
+                            <th><input type="hidden" id="title5" name="title5" value="呆滯天數">{!! __('bupagelang.days')
+                                !!}
+                            </th>
+                            <th><input type="hidden" id="title6" name="title6" value="庫存">{!! __('bupagelang.stock') !!}
+                            </th>
+                            <th><input type="hidden" id="title7" name="title7" value="撥出數量">{!!
+                                __('bupagelang.transamount')
+                                !!}</th>
+                            <th><input type="hidden" id="title8" name="title8" value="近期請購紀錄">{!!
+                                __('bupagelang.buyrecord')
+                                !!}</th>
+                            <th><input type="hidden" id="title9" name="title9" value="接收廠區">{!!
+                                __('bupagelang.receivefac')
+                                !!}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i = 0 ; $data = ''; $record = array(array());?>
+                        @for($i = 0 ; $i < 6 ; $i++) @foreach($test[$i] as $data) <?php
                         $maxtime = date_create(date('Y-m-d',strtotime($data->inventory最後更新時間)));
                         $nowtime = date_create(date('Y-m-d',strtotime(\Carbon\Carbon::now())));
                         $interval = date_diff($maxtime ,$nowtime);
@@ -91,12 +122,14 @@
                             $buytimeco1[$key][2] = DB::table('非月請購')->where('料號', $data->料號)->max('上傳時間');
                             }
                         }
-                        ?>
-                        <tr class="isnRows">
+                        ?> <tr class="isnRows">
                             <td>
-                                <button class="basic btn btn-info btn-lg m-0 p-0 rounded-circle" id="submit{{$i}}{{$loop->index}}" value="{{$i}}{{$loop->index}}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                <button class="basic btn btn-info btn-lg m-0 p-0 rounded-circle"
+                                    id="submit{{$i}}{{$loop->index}}" value="{{$i}}{{$loop->index}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                                        class="bi bi-check-lg" viewBox="0 0 16 16">
+                                        <path
+                                            d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
                                     </svg></button>
                             </td>
                             <td><input type="hidden" id="dataa{{$i}}{{$loop->index}}" name="dataa{{$i}}{{$loop->index}}"
@@ -114,7 +147,7 @@
                             <td><input type="hidden" id="datag{{$i}}{{$loop->index}}" name="datag{{$i}}{{$loop->index}}"
                                     value={{round($data->inventory現有庫存)}}>{{round($data->inventory現有庫存)}}</td>
                             <td><input type="number" id="datah{{$i}}{{$loop->index}}" name="datah{{$i}}{{$loop->index}}"
-                                    value="1" min="1" class="form-control formcontrol-lg" style="width:100px;"></td>
+                                    value="1" min="1" class="form-control formcontrol-lg" style="width:70px;"></td>
                             <td id="datai{{$i}}{{$loop->index}}" name="datai{{$i}}{{$loop->index}}">@foreach ($buytime
                                 as $buytime)
                                 @if( $buytime[2] != null)
@@ -133,7 +166,7 @@
                             </td>
                             <td>
                                 <select class="form-select form-select-lg" id="dataj{{$i}}{{$loop->index}}"
-                                    name="dataj{{$i}}{{$loop->index}}" style="width: 200px">
+                                    name="dataj{{$i}}{{$loop->index}}" style="width: 150px">
                                     <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
                                         !!}</option>
                                     @foreach($buytimeco as $buytime)
@@ -148,14 +181,13 @@
                                     @endforeach
                                 </select>
                             </td>
-                        </tr>
-                        @endforeach
-                        @endfor
-
+                            </tr>
+                            @endforeach
+                            @endfor
+                    </tbody>
                 </table>
-        </div>
+            </div>
         </form>
-
     </div>
 </div>
 

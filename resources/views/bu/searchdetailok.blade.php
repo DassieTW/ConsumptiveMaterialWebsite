@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        /* table-layout: fixed; */
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -22,8 +42,9 @@
                 style="width: 200px">
             </div>
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-responsive text-nowrap">
                         <table class="table">
+                            <thead>
                             <tr>
                                 <th><input type = "hidden" id = "title0" name = "title0" value = "調撥單號">{!! __('bupagelang.dblist') !!}</th>
                                 <th><input type = "hidden" id = "title1" name = "title1" value = "撥出廠區">{!! __('bupagelang.outfactory') !!}</th>
@@ -50,6 +71,8 @@
                                 <th><input type = "hidden" id = "title12" name = "title12" value = "接收時間">{!! __('bupagelang.receivetime') !!}</th>
                                 @endif
                             </tr>
+                        </thead>
+                        <tbody>
                                 @foreach($data as $data)
                                 <tr id= "{{$loop->index}}" class="isnRows">
                                     <td><input type = "hidden" id = "dataa{{$loop->index}}" name = "dataa{{$loop->index}}" value = "{{$data->調撥單號}}">{{$data->調撥單號}}</td>
@@ -78,11 +101,11 @@
                                 </tr>
                                 <input type = "hidden" id="count" name = "count" value="{{$loop->count}}">
                                 @endforeach
-
+                            </tbody>
                             </table>
                         </div>
-                        <br>
-                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.searchdetail')}}'">{!! __('bupagelang.return') !!}</button>
+                        {{-- <br>
+                <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.searchdetail')}}'">{!! __('bupagelang.return') !!}</button> --}}
             </div>
         </div>
 </html>

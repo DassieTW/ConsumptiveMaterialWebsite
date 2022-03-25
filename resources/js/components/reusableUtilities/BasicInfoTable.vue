@@ -2,7 +2,7 @@
   <div class="row" style="text-align: left">
     <div class="col col-auto">
       <label for="pnInput" class="col-form-label"
-        >{{ $t("basicInfoLang.matssearch") }} :</label
+        >{{ $t("basicInfoLang.quicksearch") }} :</label
       >
     </div>
     <div class="col col-3 p-0 m-0">

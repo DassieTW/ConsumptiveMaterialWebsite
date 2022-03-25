@@ -66,7 +66,7 @@ return [
     'yes' => '是',
     'no' => '否',
     'add' => '添加',
-    'matssearch' => '快速查詢',
+    'matssearch' => '料號查詢',
     'download' => '下載',
     'newbasicInfo' => '新增基礎信息',
     'isnlength' => '料號長度不為12',
@@ -96,4 +96,5 @@ return [
     'search_with_no_data_returned' => '查無資料',
     'searchisn' => '直接搜尋全部，或輸入料號開頭搜尋',
     'searchisn1' => '輸入多筆料號查詢，使用換行隔開',
+    'quicksearch' => '快速查詢',
 ];

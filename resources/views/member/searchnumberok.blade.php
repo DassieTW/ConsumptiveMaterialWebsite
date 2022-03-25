@@ -21,6 +21,11 @@
     </div>
     <div class="card-body">
         <form id="searchnumber" method="POST">
+            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                value="{!! __('loginPageLang.delete') !!}">
+            &emsp;
+            <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
+                value="{!! __('loginPageLang.change') !!}">
             @csrf
             <div class="table-responsive">
                 <table class="table">
@@ -51,11 +56,7 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
-                value="{!! __('loginPageLang.delete') !!}">
-            &emsp;
-            <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
-                value="{!! __('loginPageLang.change') !!}">
+
 
         </form>
         {{-- <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}

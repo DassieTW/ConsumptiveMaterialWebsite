@@ -22,6 +22,9 @@
     <div class="card-body">
 
         <form id="searchusername" method="POST">
+            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+            value="{!! __('loginPageLang.delete') !!}">
+
             @csrf
             <div class="table-responsive">
                 <table class="table" id="test">
@@ -51,9 +54,6 @@
 
                 </table>
             </div>
-            <br>
-            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
-                value="{!! __('loginPageLang.delete') !!}">
         </form>
         {{-- <br> --}}
         {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('member.username')}}'">{!!

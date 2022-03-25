@@ -323,7 +323,7 @@
                                                     </a>
                                                 </li>
                                                 <li
-                                                    class="sidebar-item {{ isActiveRoute(['month/importnotmonth', 'month/uploadnotmonth','month/notmonthinf']) }}">
+                                                    class="sidebar-item {{ isActiveRoute(['month/importnotmonth', 'month/uploadnotmonth','month/notmonthinf','month/notmonthsearchok']) }}">
                                                     <a class="sidebar-link" href="{{route('month.importnotmonth')}}">
                                                         {!! __('templateWords.importNonMonthlyData') !!}
                                                     </a>
