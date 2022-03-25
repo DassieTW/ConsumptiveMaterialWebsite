@@ -1,6 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        table-layout: fixed;
+        /* width: 900px; */
+    }
+
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
+
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+</style>
 @endsection
 
 @section('js')
@@ -27,6 +47,7 @@
 
         <div class="table-responsive">
             <table class="table table-bordered" id="test">
+                <thead>
                 <tr>
                     <th>{!! __('callpageLang.client') !!}</th>
                     <th>{!! __('callpageLang.isn') !!}</th>
@@ -38,6 +59,8 @@
                     <th>{!! __('callpageLang.mark') !!}</th>
 
                 </tr>
+            </thead>
+            <tbody>
                 @foreach($data as $data)
 
                 <?php
@@ -75,11 +98,12 @@
 
                 <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                 @endforeach
+            </tbody>
             </table>
         </div>
-        <br>
+        {{-- <br>
         <button class="btn btn-lg btn-primary" onclick="location.href='{{route('call.day')}}'">{!!
-            __('callpageLang.return') !!}</button>
+            __('callpageLang.return') !!}</button> --}}
     </div>
 </div>
 

@@ -73,20 +73,17 @@ Route::get('/safe', function () {
     $count = count($datas);
     for ($a = 0; $a < $count; $a++) {
         for ($i = $a; $i + 1 < $count; $i++) {
-
-            if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
-
-
-                $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
-                unset($datas[$i + 1]);
-                $datas = array_values($datas);
+            if ((isset($datas[$a])) && (isset($datas[$i + 1]))) {
+                if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
+                    $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
+                    unset($datas[$i + 1]);
+                    $datas = array_values($datas);
+                } // if
             } // if
         } // for
     } // for
 
     foreach ($datas as $key => $value) {
-
-
         if ($value->inventory現有庫存 > $value->安全庫存) {
             unset($datas[$key]);
         }
@@ -152,20 +149,17 @@ Route::get('/safe', function () {
     $count1 = count($datas1);
     for ($a = 0; $a < $count1; $a++) {
         for ($i = $a; $i + 1 < $count1; $i++) {
-
-            if ($datas1[$a]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$a]->料號 === $datas1[$i + 1]->料號) {
-
-
-                $datas1[$a]->安全庫存 += $datas1[$i + 1]->安全庫存;
-                unset($datas1[$i + 1]);
-                $datas1 = array_values($datas1);
+            if ((isset($datas1[$a])) && (isset($datas1[$i + 1]))) {
+                if ($datas1[$a]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$a]->料號 === $datas1[$i + 1]->料號) {
+                    $datas1[$a]->安全庫存 += $datas1[$i + 1]->安全庫存;
+                    unset($datas1[$i + 1]);
+                    $datas1 = array_values($datas1);
+                } // if
             } // if
         } // for
     } // for
 
     foreach ($datas1 as $key => $value) {
-
-
         if ($value->inventory現有庫存 > $value->安全庫存) {
             unset($datas1[$key]);
         }
@@ -238,7 +232,6 @@ Route::get('/day', function () {
 
     $num = count($datas);
     return view('call.daypage')->with(['sends' => 發料部門::cursor()])->with(['num' => $num]);
-
 })->name('call.day')->middleware('can:viewAlarm,App\Models\Inventory');
 //呆滯天數警報
 Route::get('/daysubmit', [CallController::class, 'daysubmit'])->middleware('can:viewAlarm,App\Models\Inventory');

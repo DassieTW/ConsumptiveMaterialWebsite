@@ -85,20 +85,17 @@ class MailService
             $count = count($datas);
             for ($a = 0; $a < $count; $a++) {
                 for ($i = $a; $i + 1 < $count; $i++) {
-
-                    if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
-
-
-                        $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
-                        unset($datas[$i + 1]);
-                        $datas = array_values($datas);
+                    if ((isset($datas[$a])) && (isset($datas[$i + 1]))) {
+                        if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
+                            $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
+                            unset($datas[$i + 1]);
+                            $datas = array_values($datas);
+                        } // if
                     } // if
                 } // for
             } // for
 
             foreach ($datas as $key => $value) {
-
-
                 if ($value->inventory現有庫存 > $value->安全庫存) {
                     unset($datas[$key]);
                 }
@@ -164,20 +161,17 @@ class MailService
             $count1 = count($datas1);
             for ($a = 0; $a < $count1; $a++) {
                 for ($i = $a; $i + 1 < $count1; $i++) {
-
-                    if ($datas1[$a]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$a]->料號 === $datas1[$i + 1]->料號) {
-
-
-                        $datas1[$a]->安全庫存 += $datas1[$i + 1]->安全庫存;
-                        unset($datas1[$i + 1]);
-                        $datas1 = array_values($datas1);
+                    if ((isset($datas1[$a])) && (isset($datas1[$i + 1]))) {
+                        if ($datas1[$a]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$a]->料號 === $datas1[$i + 1]->料號) {
+                            $datas1[$a]->安全庫存 += $datas1[$i + 1]->安全庫存;
+                            unset($datas1[$i + 1]);
+                            $datas1 = array_values($datas1);
+                        } // if
                     } // if
                 } // for
             } // for
 
             foreach ($datas1 as $key => $value) {
-
-
                 if ($value->inventory現有庫存 > $value->安全庫存) {
                     unset($datas1[$key]);
                 }
@@ -216,10 +210,7 @@ class MailService
                 $data->安全庫存 = round($safe);
             } // for each
 
-
-
             foreach ($datas2 as $key => $value) {
-
                 if ($value->inventory現有庫存 >= $value->安全庫存) {
                     unset($datas2[$key]);
                 }
@@ -281,29 +272,29 @@ class MailService
             $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
             $writer->save(public_path() . "/excel/" . $filename);
 
+            $num = count($datas) + count($datas1) + count($datas2);
 
-            Mail::send('mail/safestock', [], function ($message) use ($now, $database) {
-                // $email = 't22923200@gmail.com';
-                $emails = DB::table('login')->select('email')->whereNotNull('email')->where('priority', '<', 4)->get()->toArray();
+            if ($num > 0) {
+                Mail::send('mail/safestock', [], function ($message) use ($now, $database) {
+                    $emails = DB::table('login')->select('email')->whereNotNull('email')->where('priority', '<', 4)->get()->toArray();
 
-                foreach ($emails as $email) {
+                    foreach ($emails as $email) {
 
-                    $message->to($email->email)->subject('Safe Stock');
-                }
+                        $message->to($email->email)->subject('Safe Stock');
+                    }
+                    $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                    $message->bcc('Tony_Tseng@pegatroncorp.com');
 
-                // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-                // $message->bcc('Tony_Tseng@pegatroncorp.com');
-                // $message->bcc('t22923200@gmail.com');
-
-                $message->attach(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
-                $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-            });
+                    $message->attach(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
+                    $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+                });
+            }
 
             File::delete(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
         }
     }
 
-    public function day() // 呆滯庫存 寄警報信
+    public function day() // 呆滯天數 寄警報信
     {
 
         $databases = [
@@ -375,22 +366,24 @@ class MailService
             $writer->save(public_path() . "/excel/" . $filename);
 
 
-            Mail::send('mail/safestock', [], function ($message) use ($now, $database) {
-                // $email = 't22923200@gmail.com';
-                $emails = DB::table('login')->select('email')->whereNotNull('email')->where('priority', '<', 4)->get()->toArray();
+            $num = count($datas);
 
-                foreach ($emails as $email) {
+            if ($num > 0) {
+                Mail::send('mail/safestock', [], function ($message) use ($now, $database) {
+                    $emails = DB::table('login')->select('email')->whereNotNull('email')->where('priority', '<', 4)->get()->toArray();
 
-                    $message->to($email->email)->subject('Passive Day');
-                }
+                    foreach ($emails as $email) {
 
-                // $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-                // $message->bcc('Tony_Tseng@pegatroncorp.com');
-                // $message->bcc('t22923200@gmail.com');
+                        $message->to($email->email)->subject('Passive Day');
+                    }
 
-                $message->attach(public_path() . '/excel/' . $database . 'Passive Day' . $now . '.xlsx');
-                $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-            });
+                    $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                    $message->bcc('Tony_Tseng@pegatroncorp.com');
+
+                    $message->attach(public_path() . '/excel/' . $database . 'Passive Day' . $now . '.xlsx');
+                    $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+                });
+            }
 
             File::delete(public_path() . '/excel/' . $database . 'Passive Day' . $now . '.xlsx');
         }

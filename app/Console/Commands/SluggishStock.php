@@ -20,7 +20,7 @@ class SluggishStock extends Command
      *
      * @var string
      */
-    protected $description = '呆滯庫存';
+    protected $description = '呆滯天數';
 
     /**
      * Create a new command instance.

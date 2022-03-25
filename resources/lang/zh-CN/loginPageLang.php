@@ -78,4 +78,5 @@ return [
     'pre_page' => '返回',
     'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
     'data' => '资料',
+    'mail' => '信箱',
 ];

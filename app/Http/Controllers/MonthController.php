@@ -455,7 +455,7 @@ class MonthController extends Controller
                             ->where('製程', $production[$i])
                             ->where('料號', $number[$i])
                             ->update([
-                                '狀態' => "待畫押", '畫押工號' => $jobnumber,
+                                '狀態' => "待畫押", //'畫押工號' => $jobnumber,
                                 '畫押信箱' => $email, '單耗' => $amount[$i], '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
                             ]);
                         DB::commit();
@@ -533,7 +533,7 @@ class MonthController extends Controller
                             ->where('製程', $production[$i])
                             ->where('料號', $number[$i])
                             ->update([
-                                '狀態' => "待畫押", '畫押工號' => $jobnumber,
+                                '狀態' => "待畫押", //'畫押工號' => $jobnumber,
                                 '畫押信箱' => $email, '當月站位人數' => $nowpeople[$i], '當月開線數' => $nowline[$i],
                                 '當月開班數' => $nowclass[$i], '當月每人每日需求量' => $nowdayneed[$i], '下月站位人數' => $nextpeople[$i],
                                 '下月開線數' => $nextline[$i], '下月開班數' => $nextclass[$i], '下月每人每日需求量' => $nextdayneed[$i],
@@ -669,7 +669,7 @@ class MonthController extends Controller
             $row = $request->input('row');
             $record = 0;
             $check = array();
-            $jobnumber = $request->input('jobnumber');
+            //$jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
             $username = \Crypt::encrypt(\Auth::user()->username);
@@ -691,7 +691,7 @@ class MonthController extends Controller
                         DB::table('月請購_單耗')
                             ->insert([
                                 '料號' => $number, '客戶別' => $client, '機種' => $machine, '製程' => $production,
-                                '單耗' => $consume, '畫押工號' => $jobnumber,
+                                '單耗' => $consume, //'畫押工號' => $jobnumber,
                                 '畫押信箱' => $email, '狀態' => "待畫押", '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
                             ]);
                         $record++;
@@ -702,7 +702,7 @@ class MonthController extends Controller
                             ->where('製程', $production)
                             ->where('料號', $number)
                             ->update([
-                                '狀態' => "待畫押", '畫押工號' => $jobnumber,
+                                '狀態' => "待畫押", //'畫押工號' => $jobnumber,
                                 '畫押信箱' => $email, '單耗' => $consume, '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
                             ]);
                         $record++;
@@ -769,7 +769,7 @@ class MonthController extends Controller
                                 '料號' => $number, '客戶別' => $client, '機種' => $machine, '製程' => $production, '當月站位人數' => $nowpeople,
                                 '當月開線數' => $nowline, '當月開班數' => $nowclass, '當月每人每日需求量' => $nowuse, '當月每日更換頻率' => $nowchange,
                                 '下月站位人數' => $nextpeople, '下月開線數' => $nextline, '下月開班數' => $nextclass, '下月每人每日需求量' => $nextuse,
-                                '下月每日更換頻率' => $nextchange, '狀態' => "待畫押", '畫押工號' => $jobnumber, '畫押信箱' => $email, '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
+                                '下月每日更換頻率' => $nextchange, '狀態' => "待畫押"/*'畫押工號' => $jobnumber*/, '畫押信箱' => $email, '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
                             ]);
                         $record++;
                         array_push($check, $row[$i]);
@@ -779,7 +779,7 @@ class MonthController extends Controller
                             ->where('製程', $production)
                             ->where('料號', $number)
                             ->update([
-                                '狀態' => "待畫押", '畫押工號' => $jobnumber,
+                                '狀態' => "待畫押", /*'畫押工號' => $jobnumber,*/
                                 '畫押信箱' => $email, '當月站位人數' => $nowpeople, '當月開線數' => $nowline,
                                 '當月開班數' => $nowclass, '當月每人每日需求量' => $nowuse, '下月站位人數' => $nextpeople,
                                 '下月開線數' => $nextline, '下月開班數' => $nextclass, '下月每人每日需求量' => $nextuse,
@@ -2220,8 +2220,8 @@ class MonthController extends Controller
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
 
             $message->to($email, 'Tutorials Point')->subject('請確認單耗資料');
-            $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-            $message->bcc('Tony_Tseng@pegatroncorp.com');
+            $message->bcc('vincent6_yeh@pegatroncorp.com');
+            $message->bcc('tony_tseng@pegatroncorp.com');
             // $message->attach(public_path() . '/download/LineExample.xlsx');
             $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
         });

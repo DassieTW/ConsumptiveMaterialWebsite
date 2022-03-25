@@ -109,14 +109,14 @@
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                <div class="row">
+                {{-- <div class="row">
                     <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
                     <div class="col col-4">
                         <input type="text" class="form-control form-control-lg text-center" id="jobnumber" name="jobnumber"
                             required oninput="if(value.length>9)value=value.slice(0,9)">
 
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

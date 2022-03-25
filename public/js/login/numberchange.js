@@ -36,8 +36,20 @@ $(document).ready(function () {
         checked = $("input[type=checkbox]:checked").length;
 
         if (!checked) {
-            alert(Lang.get('loginPageLang.nocheck'));
+            // alert(Lang.get('loginPageLang.nocheck'));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('loginPageLang.nocheck'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
+            //return false;
         }
 
         if (select == "刪除" || select == "删除" || select == "Delete") {

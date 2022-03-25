@@ -32,6 +32,7 @@
                         <th>{!! __('loginPageLang.priority') !!}</th>
                         <th>{!! __('loginPageLang.name') !!}</th>
                         <th>{!! __('loginPageLang.dep') !!}</th>
+                        <th>{!! __('loginPageLang.mail') !!}</th>
                     </tr>
                     @foreach($data as $data)
                     <tr>
@@ -43,6 +44,7 @@
                         <td>{{$data->priority}}</td>
                         <td>{{$data->姓名}}</td>
                         <td>{{$data->部門}}</td>
+                        <td>{{$data->email}}</td>
                     </tr>
                     <input type="hidden" id="count" name="count" value="{{$loop->count}}">
                     @endforeach
@@ -53,9 +55,9 @@
             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
                 value="{!! __('loginPageLang.delete') !!}">
         </form>
-        <br>
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('member.username')}}'">{!!
-            __('loginPageLang.return') !!}</button>
+        {{-- <br> --}}
+        {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('member.username')}}'">{!!
+            __('loginPageLang.return') !!}</button> --}}
     </div>
 </div>
 

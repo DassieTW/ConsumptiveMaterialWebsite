@@ -238,7 +238,8 @@ $(document).ready(function () {
         var consume = [];
         var row = [];
         var jobnumber = $("#jobnumber").val();
-        var email = $("#email").val() + "@pegatroncorp.com";
+        var email = $("#email").val().toLowerCase() + "@pegatroncorp.com";
+
         var count = 0;
         for (let i = 0; i < sessionStorage.getItem('consumecount'); i++) {
             if ($("#client" + i).text() !== null && $("#client" + i).text() !== '') {

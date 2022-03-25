@@ -78,4 +78,5 @@ return [
     'pre_page' => 'Prev.',
     'yellowrepeat' => 'Yellow background means that the data already exist in the database',
     'data' => 'data',
+    'mail' => 'email',
 ];
