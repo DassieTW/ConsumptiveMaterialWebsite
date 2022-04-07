@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AlarmRemarks extends Model
+class SafeStockAlarmRemarks extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = "報警備註";
+    protected $table = "safestock報警備註";
 
     protected $primaryKey = ['料號','客戶別'];
 
