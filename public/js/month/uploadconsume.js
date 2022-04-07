@@ -1,4 +1,4 @@
-var count = $("#count").val();
+
 // for (var i = 0; i < count; i++) {
 //     var nowmps = $("#dataj" + i).val();
 //     var nowday = $("#datak" + i).val();
@@ -39,7 +39,7 @@ $(document).ready(function () {
 
     // });
 
-
+    var count = $("#count").val();
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

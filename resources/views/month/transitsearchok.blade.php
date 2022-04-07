@@ -35,47 +35,54 @@
 <head>
     <meta charset="utf-8">
 </head>
-<h2>{!! __('templateWords.monthly') !!}</h2>
-<div class="card">
-    <div class="card-header">
-        <h3>{!! __('monthlyPRpageLang.on_the_way_search') !!}</h3>
-        <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
-            placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
-            style="width: 200px">
-
+<div id="mountingPoint">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
+        <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+            <vue-bread-crumb></vue-bread-crumb>
+        </div>
     </div>
-    <div class="card-body">
-        <div class="table-responsive">
+    <div class="card">
+        <div class="card-header">
+            <h3>{!! __('monthlyPRpageLang.on_the_way_search') !!}</h3>
+            <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                style="width: 200px">
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>{!! __('monthlyPRpageLang.client') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.isn') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.pName') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.unit') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.buyamount1') !!}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($data as $data)
-                    <tr class="isnRows">
-                        <?php
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{!! __('monthlyPRpageLang.client') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.isn') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.pName') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.unit') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.buyamount1') !!}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($data as $data)
+                        <tr class="isnRows">
+                            <?php
                     $data->請購數量 = round($data->請購數量);
                     ?>
-                        <td>{{$data->客戶}}</td>
-                        <td>{{$data->料號}}</td>
-                        <input type="hidden" id="dataa{{$loop->index}}" value="{{$data->料號}}">
-                        <td>{{$data->品名}}</td>
-                        <td>{{$data->單位}}</td>
-                        <td>{{$data->請購數量}}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.transit')}}'">{!!
+                            <td>{{$data->客戶}}</td>
+                            <td>{{$data->料號}}</td>
+                            <input type="hidden" id="dataa{{$loop->index}}" value="{{$data->料號}}">
+                            <td>{{$data->品名}}</td>
+                            <td>{{$data->單位}}</td>
+                            <td>{{$data->請購數量}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.transit')}}'">{!!
             __('monthlyPRpageLang.return') !!}</button> --}}
+        </div>
     </div>
 </div>
 

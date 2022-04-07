@@ -1,20 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
-    <script src="{{ asset('js/basic/search.js') }}"></script>
-    <!--for this page's sepcified js -->
+<script src="{{ asset('js/basic/search.js') }}"></script>
+<!--for this page's sepcified js -->
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <meta charset="utf-8">
-    </head>
-    <h2>{!! __('basicInfoLang.newMats') !!}</h2>
+<head>
+    <meta charset="utf-8">
+</head>
+<div id="mountingPoint">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
+        <h2 class="col-auto">{!! __('basicInfoLang.newMats') !!}</h2>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+            <vue-bread-crumb></vue-bread-crumb>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="card w-100">
             <div class="card-header">
@@ -23,7 +29,7 @@
             <div class="row justify-content-center">
                 <div class="card-body">
                     <div class=" w-100">
-                        <form action="{{ route('basic.searchmaterial') }}"  method="POST" id="form1">
+                        <form action="{{ route('basic.searchmaterial') }}" method="POST" id="form1">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -37,7 +43,8 @@
                                         <input class="form-control form-control-lg col col-auto" type="text" id="number"
                                             name="number" placeholder="{!! __('basicInfoLang.enterisn') !!}"
                                             oninput="if(value.length>12)value=value.slice(0,12)">
-                                        <span style="color: red;font-size:11px;">&nbsp;{!! __('basicInfoLang.searchisn') !!}</span>
+                                        <span style="color: red;font-size:11px;">&nbsp;{!! __('basicInfoLang.searchisn')
+                                            !!}</span>
                                     </div>
                                 </div>
 
@@ -45,12 +52,13 @@
 
                                 <div class="col-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="numberradio" id="numberradio1"
-                                            value="2">
+                                        <input class="form-check-input" type="radio" name="numberradio"
+                                            id="numberradio1" value="2">
                                         <textarea class="form-control form-control-lg col col-auto" id="numberarea"
                                             name="numberarea" for="numberradio1" rows="10"
                                             placeholder="{!! __('basicInfoLang.enterisn') !!}"></textarea>
-                                        <span style="color: red;font-size:11px;">&nbsp;{!! __('basicInfoLang.searchisn1') !!}</span>
+                                        <span style="color: red;font-size:11px;">&nbsp;{!!
+                                            __('basicInfoLang.searchisn1') !!}</span>
                                     </div>
                                 </div>
                             </div>
@@ -67,6 +75,7 @@
             </div>
         </div>
     </div>
+</div>
 
-    </html>
+</html>
 @endsection

@@ -624,8 +624,8 @@ class BasicInformationController extends Controller
                     if ($month === 'Yes') $month = '是';
                     if ($month === 'No') $month = '否';
 
-                    if ($belong === 'Unit consumption' || $belong === '单耗') $belong = '單耗';
-                    if ($belong === 'Station') $belong = '站位';
+                    // if ($belong === 'Unit Cons.' || $belong === '单耗') $belong = '單耗';
+                    // if ($belong === 'Station') $belong = '站位';
 
                     if ($safe === '') $safe = null;
 
@@ -633,6 +633,18 @@ class BasicInformationController extends Controller
                         $row = $i + 1;
                         return \Response::json(['message' => $row], 422/* Status code here default is 200 ok*/);
                     }
+
+                    // $in = iconv('UTF-8//IGNORE', 'GB2312//IGNORE', $name);
+
+                    // $in = iconv('GB2312//IGNORE', 'BIG5//IGNORE', $in);
+
+                    // $out = iconv('BIG5//IGNORE', 'UTF-8//IGNORE', $in);
+
+                    // $in1 = iconv('UTF-8//IGNORE', 'GB2312//IGNORE', $format);
+
+                    // $in1 = iconv('GB2312//IGNORE', 'BIG5//IGNORE', $in1);
+
+                    // $out1 = iconv('BIG5//IGNORE', 'UTF-8//IGNORE', $in1);
 
                     if ($test === null) {
                         DB::table('consumptive_material')

@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'User Mgmt.',
     'username' => 'Username',
     'password' => 'Password',
     'site' => 'Site',

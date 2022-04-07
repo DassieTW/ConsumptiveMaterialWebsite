@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'Alarm system',
     'safealert' =>'Safety Stock Alert',
     'dayalert' =>'Passive Day Alert',
     'callsys' =>'Alarm system',
@@ -31,4 +32,5 @@ return [
     'nostock' =>'There is no stock at present',
     'notmonth' =>'Non-monthly purchase consumables',
     'nowstock' =>'Available Stock',
+    'submit' =>'Submit',
 ];

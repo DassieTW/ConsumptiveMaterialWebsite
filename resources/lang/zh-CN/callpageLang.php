@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => '报警系统',
     'safealert' => '安全库存警报',
     'dayalert' => '呆滞天数警报',
     'callsys' => '报警系统',
@@ -31,4 +32,5 @@ return [
     'nostock' => '目前无任何库存',
     'notmonth' => '非月请购耗材',
     'nowstock' => '现有库存',
+    'submit' =>'送出',
 ];

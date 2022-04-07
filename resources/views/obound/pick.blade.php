@@ -17,7 +17,14 @@
 <head>
     <meta charset="utf-8">
 </head>
-<h2>{!! __('templateWords.obound') !!}</h2>
+<div id="mountingPoint">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
+        <h2 class="col-auto">{!! __('templateWords.obound') !!}</h2>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+            <vue-bread-crumb></vue-bread-crumb>
+        </div>
+    </div>
+</div>
 <div class="card w-100">
     <div class="card-header">
         <h3>{!! __('oboundpageLang.pick') !!}</h3>

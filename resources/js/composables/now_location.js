@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 export default function NowWeAt() {
     const urls = ref([]); // the names to show on the breadcrumb nav
     const errors = ref('');
-
+    const whereurl = ref('');
     const router = useRouter();
 
     const getUrl = function () {
@@ -20,7 +20,7 @@ export default function NowWeAt() {
             tempArr[a] = tempArr[a-1] + '/' + tempArr[a];
         } // for
 
-        // console.log(this.$trans("checking.page_name")); // test
+        //console.log(this.$trans("checking.page_name")); // test
         urls.value = tempArr;
     } // getUrl()
 
@@ -60,17 +60,21 @@ export default function NowWeAt() {
             else if ( tempArr[0] === "outbound" ) {
                 LangPage = "outboundpageLang";
             } // else if
-          
+
             for( let a = 1 ; a < tempArr.length ; a++ ) {
-                
+
             } // for
+
+            whereurl.value = LangPage;
         } // if
 
     } // getPageNames()
 
     return {
         urls,
+        whereurl,
         getUrl,
+        getPageNames,
         errors
     } // return
 

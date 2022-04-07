@@ -38,7 +38,17 @@ $('#uploadnotmonth').on('submit', function (e) {
                 $("#data4" + i).addClass("is-invalid");
                 i++;
                 var mess = Lang.get('monthlyPRpageLang.row') + ' ' + i + ' ' + Lang.get('monthlyPRpageLang.errormonth');
-                alert(mess);
+                notyf.open({
+                    type: 'warning',
+                    message: mess,
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
             } else {
                 continue;

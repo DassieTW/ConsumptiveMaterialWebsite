@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'Outbound',
     'pick' => 'Pick Material',
     'picklist' => 'Pick Material List',
     'pickrecord' => 'Pick Material Record',

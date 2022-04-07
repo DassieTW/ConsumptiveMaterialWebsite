@@ -14,7 +14,15 @@
 <head>
     <meta charset="utf-8">
 </head>
-<h2>{!! __('templateWords.monthly') !!}</h2>
+
+<div id="mountingPoint">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
+        <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+            <vue-bread-crumb></vue-bread-crumb>
+        </div>
+    </div>
+</div>
 <div class="card">
     <div class="card-header">
         <h3>{!! __('monthlyPRpageLang.PR') !!}</h3>
@@ -208,10 +216,8 @@
         <button class="btn btn-primary" id="writesrm">{!! __('monthlyPRpageLang.writesrm') !!}</button>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('month.buylist')}}'">{!!
-            __('monthlyPRpageLang.return') !!}</button>
     </div>
 </div>
-
+</div>
 </html>
 @endsection

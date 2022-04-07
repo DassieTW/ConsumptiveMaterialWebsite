@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'Vendor Stock',
     'newMats' => 'Add Material',
     'matsInfo' => 'Material Info.(Search)',
     'inbound' => 'Inbound',

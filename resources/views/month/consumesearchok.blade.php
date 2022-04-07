@@ -34,8 +34,13 @@
 <head>
     <meta charset="utf-8">
 </head>
-<h2>{!! __('templateWords.monthly') !!}</h2>
-<div id="url"></div>
+<div id="mountingPoint">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
+        <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+            <vue-bread-crumb></vue-bread-crumb>
+        </div>
+    </div>
 <div class="card">
     <div class="card-header">
         <h3>{!! __('monthlyPRpageLang.isnConsumeUpdate') !!}</h3>
@@ -48,13 +53,16 @@
             @csrf
             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.delete') !!}">
-
+            &nbsp;
             <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
                 value="{!! __('monthlyPRpageLang.change') !!}">
-{{--
-                <input type="submit" id="return" name="return" class="btn btn-lg btn-primary"
-                value="{!! __('monthlyPRpageLang.return') !!}"> --}}
-
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
+                <div class="input-group" style="width: 410px">
+                <input type="text" id="email" name="email"
+                    class="form-control form-control" style="width: 150px" placeholder="{!! __('loginPageLang.enter_email') !!}">
+                    <div class="input-group-text"><span class="col col-auto">@pegatroncorp.com</span></div>
+                </div>
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -102,11 +110,11 @@
                 </table>
             </div>
 
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
+            {{-- <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
+            {{-- <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
             <input type="text" id="jobnumber" name="jobnumber" class="form-control form-control" style="width: 250px" placeholder="{!! __('monthlyPRpageLang.nopeople') !!}">
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
+            {{-- <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
             <div class="input-group" style="width: 410px">
             <input type="text" id="email" name="email"
                 class="form-control form-control" style="width: 150px" placeholder="{!! __('loginPageLang.enter_email') !!}">
@@ -114,12 +122,12 @@
             </div>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
 
         </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
     </div>
 </div>
-
+</div>
 </html>
 @endsection

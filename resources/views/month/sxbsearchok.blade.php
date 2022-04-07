@@ -1,41 +1,47 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
-    <style>
-        /* for single line table with over-flow , SAP style as asked */
-        table {
-            table-layout: fixed;
-            /* width: 900px; */
-        }
+<link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
+<style>
+    /* for single line table with over-flow , SAP style as asked */
+    table {
+        table-layout: fixed;
+        /* width: 900px; */
+    }
 
-        .table-responsive {
-            height: 600px;
-            overflow: scroll;
-        }
+    .table-responsive {
+        height: 600px;
+        overflow: scroll;
+    }
 
-        thead tr:nth-child(1) th {
-            background: white;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+    thead tr:nth-child(1) th {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
 
-    </style>
+</style>
 @endsection
 
 @section('js')
-    <!--for this page's sepcified js -->
-    <script src="{{ asset('js/month/sxbsearch.js') }}"></script>
+<!--for this page's sepcified js -->
+<script src="{{ asset('js/month/sxbsearch.js') }}"></script>
 
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <meta charset="utf-8">
-    </head>
-    <h2>{!! __('templateWords.monthly') !!}</h2>
+<head>
+    <meta charset="utf-8">
+</head>
+<div id="mountingPoint">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
+        <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+            <vue-bread-crumb></vue-bread-crumb>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header">
             <h3>{!! __('monthlyPRpageLang.SXB_search') !!}</h3>
@@ -48,18 +54,18 @@
 
                 <table class="table">
                     <thead>
-                    <tr>
-                        <th>{!! __('monthlyPRpageLang.sxb') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.srm') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.client') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.isn') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.pName') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.buyamount') !!}</th>
-                        <th>{!! __('monthlyPRpageLang.buytime') !!}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $data)
+                        <tr>
+                            <th>{!! __('monthlyPRpageLang.sxb') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.srm') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.client') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.isn') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.pName') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.buyamount') !!}</th>
+                            <th>{!! __('monthlyPRpageLang.buytime') !!}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data as $data)
                         <tr class="isnRows">
                             <?php $data->本次請購數量 = round($data->本次請購數量); ?>
                             <td>{{ $data->SXB單號 }}</td>
@@ -71,9 +77,9 @@
                             <td>{{ $data->本次請購數量 }}</td>
                             <td>{{ $data->請購時間 }}</td>
                         </tr>
-                    @endforeach
+                        @endforeach
 
-                    @foreach ($data1 as $data)
+                        @foreach ($data1 as $data)
                         <?php
                         $name = DB::table('consumptive_material')
                         ->where('料號', $data->料號)
@@ -90,14 +96,13 @@
                             <td>{{ $data->請購數量 }}</td>
                             <td>{{ $data->上傳時間 }}</td>
                         </tr>
-                    @endforeach
-                </tbody>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
-            <button class="btn btn-lg btn-primary"
-                onclick="location.href='{{ route('month.sxb') }}'">{!! __('monthlyPRpageLang.return') !!}</button>
         </div>
     </div>
+</div>
 
-    </html>
+</html>
 @endsection

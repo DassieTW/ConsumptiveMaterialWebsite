@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'Basic Info.',
     'basicInfo' => 'Basic Info.',
     'newMats' => 'Add Material',
     'matsInfo' => 'Material Info. <br/> &nbsp;&nbsp;&nbsp; (Search & Update)',

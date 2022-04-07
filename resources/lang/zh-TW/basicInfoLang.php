@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => '基礎資料',
     'basicInfo' => '基礎信息',
     'newMats' => '新增料件',
     'matsInfo' => '料件信息(查詢/修改)',

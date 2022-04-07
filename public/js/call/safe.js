@@ -1,5 +1,10 @@
-$(document).ready(function () {
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
+$(document).ready(function () {
 
     function quickSearch() {
         // Declare variables
@@ -124,5 +129,22 @@ $(document).ready(function () {
         }
 
     }
+
+    var number = [];
+    var client = [];
+    var remark = [];
+
+    for (let i = 0; i < count; i++) {
+        if($("#remark" + i).val() !== ""){
+            client.push($("#client" + i).val());
+            number.push($("#number" + i).val());
+            remark.push($("#remark" + i).val());
+        }
+    }
+
+
+
+
+
 
 });

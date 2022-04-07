@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'Monthly PR',
     'isnConsumeAdd' => 'Unit Consumption (Add)',
     'isnConsumeUpdate' => 'Unit Consumption (Search & Update)',
     'standAdd' => 'Station Manpower (Add)',

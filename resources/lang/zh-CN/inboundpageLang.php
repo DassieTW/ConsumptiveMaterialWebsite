@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => '入库',
     'new' => '新增',
     'search' => '查询',
     'searchstock' => '库存查询',

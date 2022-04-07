@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'BU耗材管理',
     'bu' => 'BU耗材管理',
     'sluggish' => '呆滯庫存',
     'searchlist' => '調撥單查詢',

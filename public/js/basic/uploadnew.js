@@ -58,20 +58,45 @@ $(document).ready(function () {
                 var row = i + 1;
                 var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.isnlength');
                 $("#data0a" + i).addClass("is-invalid");
-                window.alert(mess);
+
+
+                notyf.open({
+                    type: 'warning',
+                    message: mess,
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
+
             }
             if (month[i] == '否' || month[i] == 'No' && safe[i] == "") {
                 var row = i + 1;
                 var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.safeerror');
                 $("#data13a" + i).addClass("is-invalid");
-                window.alert(mess);
+
+
+                notyf.open({
+                    type: 'warning',
+                    message: mess,
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
                 return false;
+
             }
         } // for
 
-        if(number.length == 0)
-        {
+        if (number.length == 0) {
             notyf.open({
                 type: 'warning',
                 message: Lang.get('basicInfoLang.nodata'),
@@ -124,9 +149,9 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-                var mess = Lang.get('basicInfoLang.total') + ' : ' + row.length + Lang.get('basicInfoLang.record') + ' ' +
+                var mess = Lang.get('basicInfoLang.total') + ' : ' + row.length + ' ' + Lang.get('basicInfoLang.record') + ' ' +
                     Lang.get('basicInfoLang.matsdata') + ' ， ' + Lang.get('basicInfoLang.success') + ' ' + Lang.get('basicInfoLang.new') +
-                    ' : ' + data.record + Lang.get('basicInfoLang.matsdata');
+                    ' : ' + data.record + ' ' + Lang.get('basicInfoLang.matsdata');
 
                 alert(mess);
 
@@ -145,7 +170,7 @@ $(document).ready(function () {
                 }
                 for (let i = 0; i < same.length; i++) {
                     $('#row' + same[i]).remove();
-                    count = count -1;
+                    count = count - 1;
                 }
                 for (let i = 0; i < diff.length; i++) {
 

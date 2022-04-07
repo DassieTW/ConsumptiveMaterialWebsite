@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => '用户管理',
     'username' => '帐号',
     'password' => '密码',
     'site' => '厂区',

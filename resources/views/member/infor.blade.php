@@ -19,7 +19,7 @@ use Carbon\Carbon;
 
 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-<div class="row">
+{{-- <div class="row">
     <div class="col col-auto">
         <a href="http://eip.tw.pegatroncorp.com/" target="_blank">{!!
             __('templateWords.taipei') !!}</a>
@@ -44,6 +44,6 @@ use Carbon\Carbon;
         <a href="http://eip.cq.pegatroncorp.com/Home.aspx" target="_blank">{!!
             __('templateWords.west') !!}</a>
     </div>
-</div>
+</div> --}}
 
 @endsection

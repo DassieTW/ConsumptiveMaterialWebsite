@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page.name' => '出库',
     'pick' => '领料',
     'picklist' => '领料单',
     'pickrecord' => '领料记录表',

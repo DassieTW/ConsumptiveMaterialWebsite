@@ -37,9 +37,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome')->withoutMiddleware('auth');
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home')->withoutMiddleware('auth');
+Route::get('/testwebsql', function () {
+    return view('websql');
+})->withoutMiddleware('auth');
 
 Route::get('/template_test', function () {
     return view('templateChart');
@@ -76,6 +76,10 @@ Route::get('/lang/{type}', function (Request $request, $type) {
     \App::setLocale($type);
     return Redirect::back();
 })->withoutMiddleware('auth');
+
+Route::get('/home', function () {
+    return view("home");
+})->name('home');
 
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');

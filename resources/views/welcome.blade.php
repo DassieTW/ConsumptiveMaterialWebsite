@@ -464,7 +464,7 @@
                 </a>
 
                 @if (Auth::check())
-                <a href="{{ route('member.index') }}"
+                <a href="{{ url('home') }}"
                     class="text-lg text-gray-700 dark:text-white underline d-none d-sm-none d-md-block">{{ __('welcomePageLang.menu')}}</a>
                 @else
                 <a href="{{ url('/member/login') }}"
@@ -554,7 +554,7 @@
                                     d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/member') }}" class="underline text-gray-900 dark:text-black">耗材管理</a>
+                                <a href="{{ url('/home') }}" class="underline text-gray-900 dark:text-black">耗材管理</a>
                             </div>
                         </div>
 

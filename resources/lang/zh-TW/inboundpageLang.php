@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => '入庫',
     'new' => '新增',
     'search' => '查詢',
     'searchstock' => '庫存查詢',

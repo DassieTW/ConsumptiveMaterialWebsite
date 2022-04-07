@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => '条码',
     'barcode_gening' => '条码生成',
     'isn_gen_barcode' => '产生料号条码',
     'isn' => '料号',

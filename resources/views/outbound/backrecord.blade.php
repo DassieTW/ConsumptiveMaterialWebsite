@@ -13,7 +13,15 @@
 <head>
     <meta charset="utf-8">
 </head>
-<h2>{!! __('templateWords.outbound') !!}</h2>
+
+<div id="mountingPoint">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
+        <h2 class="col-auto">{!! __('templateWords.outbound') !!}</h2>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+            <vue-bread-crumb></vue-bread-crumb>
+        </div>
+    </div>
+
 <div class="row justify-content-center">
     <div class="card w-75">
         <div class="card-header">

@@ -121,8 +121,8 @@ $(document).ready(function () {
         var check = [];
         var title = [];
         var titlename = $("#titlename").val();
-        var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
+        var email1 = $("#email").val();
         email = email + '@pegatroncorp.com';
         var titlecount = $("#titlecount").val();
         $("input:checkbox[name=innumber]:checked").each(function () {
@@ -226,10 +226,10 @@ $(document).ready(function () {
             select = "刪除";
         }
         if (select == "更新" || select == "Update") {
-            if (!jobnumber) {
+            if (!checked) {
                 notyf.open({
                     type: 'warning',
-                    message: Lang.get('monthlyPRpageLang.nopeople'),
+                    message: Lang.get('monthlyPRpageLang.nocheck'),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
@@ -238,9 +238,9 @@ $(document).ready(function () {
                         y: "bottom"
                     }
                 });
-                document.getElementById('jobnumber').classList.add("is-invalid");
                 return false;
-            } else if (!email) {
+            }
+            if (!email1) {
                 notyf.open({
                     type: 'warning',
                     message: Lang.get('monthlyPRpageLang.noemail'),
@@ -281,7 +281,6 @@ $(document).ready(function () {
                     count: count,
                     title: title,
                     titlename: titlename,
-                    jobnumber: jobnumber,
                     email: email
                 },
                 beforeSend: function () {

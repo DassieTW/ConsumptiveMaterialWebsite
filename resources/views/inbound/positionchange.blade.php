@@ -13,14 +13,21 @@
 <head>
     <meta charset="utf-8">
 </head>
-<h2>{!! __('templateWords.inbound') !!}</h2>
-<div class="row justify-content-center">
-    <div class="card w-75">
-        <div class="card-header">
-            <h3>{!! __('inboundpageLang.locationchange') !!}</h3>
+
+<div id="mountingPoint">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
+        <h2 class="col-auto">{!! __('templateWords.inbound') !!}</h2>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+            <vue-bread-crumb></vue-bread-crumb>
         </div>
-        <div class="row justify-content-center">
-            <div class="card-body">
+    </div>
+    <div class="row justify-content-center">
+        <div class="card w-75">
+            <div class="card-header">
+                <h3>{!! __('inboundpageLang.locationchange') !!}</h3>
+            </div>
+            <div class="row justify-content-center">
+                <div class="card-body">
                     <form action="{{ route('inbound.change') }}" method="POST">
                         @csrf
                         <div class="row w-100 justify-content-center mb-3">
@@ -59,7 +66,8 @@
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg @error('number') is-invalid @enderror"
                                     type="text" id="number" name="number"
-                                    placeholder="{!! __('inboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
+                                    placeholder="{!! __('inboundpageLang.enterisn') !!}"
+                                    oninput="if(value.length>12)value=value.slice(0,12)">
                                 @error('number')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>

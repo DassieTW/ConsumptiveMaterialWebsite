@@ -50,7 +50,17 @@ $(document).ready(function () {
         checked = $("input[type=checkbox]:checked").length;
 
         if (!checked) {
-            alert(Lang.get('oboundpageLang.nocheck'));
+            notyf.open({
+                type: 'warning',
+                message: Lang.get('oboundpageLang.nocheck'),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
+            });
             return false;
         }
 

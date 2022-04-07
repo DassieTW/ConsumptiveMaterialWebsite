@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'O库',
     'newMats' => '新增料件',
     'matsInfo' => '料件信息(查询)',
     'inbound' => '入库',

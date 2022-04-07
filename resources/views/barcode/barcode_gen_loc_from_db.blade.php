@@ -17,17 +17,8 @@
         <div class="col-auto">
             <h2 class="pb-3">{!! __('templateWords.locBarcode') !!}</h2>
         </div>
-
-        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                    <li class="breadcrumb-item"><a href="#shouldbeDashboard">{!! __('templateWords.websiteName') !!}</a>
-                    </li>
-                    <li class="breadcrumb-item"><a href="#">{!! __('templateWords.barcode_gen') !!}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{!! __('templateWords.locBarcode') !!}
-                    </li>
-                </ol>
-            </nav>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block" id="mountingPoint">
+            <vue-bread-crumb></vue-bread-crumb>
         </div>
     </div>
     <div class="row">

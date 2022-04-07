@@ -29,11 +29,21 @@
     <head>
         <meta charset="utf-8">
     </head>
-    <h2>{!! __('basicInfoLang.basicInfo') !!}</h2>
+
+
     <div id="mountingPoint">
-        {{-- <vue-bread-crumb></vue-bread-crumb> --}}
+        <div class="row mb-2 mb-xl-3 justify-content-between">
+
+            <h2 class="col-auto">{!! __('basicInfoLang.basicInfo') !!}</h2>
+            <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+                <vue-bread-crumb></vue-bread-crumb>
+            </div>
+        </div>
         <div class="card">
             <div class="card-body">
+
+
+
                 <form id="materialsearch" method="POST">
                     @csrf
                     <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"

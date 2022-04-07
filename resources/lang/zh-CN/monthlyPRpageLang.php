@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => '月请购',
     'isnConsumeAdd' => '料号单耗(新增)',
     'isnConsumeUpdate' => '料号单耗(查询与修改)',
     'standAdd' => '站位人力(新增)',

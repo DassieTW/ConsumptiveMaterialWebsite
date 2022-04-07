@@ -420,7 +420,6 @@ class MonthController extends Controller
             $production = $request->input('production');
             $number = $request->input('number');
             $amount = $request->input('amount');
-            $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
             $name = \Crypt::encrypt(\Auth::user()->username);
@@ -495,7 +494,7 @@ class MonthController extends Controller
             $nextclass = $Alldata[16];
             $nextdayneed = $Alldata[17];
             $nextchange = $Alldata[18];
-            $jobnumber = $request->input('jobnumber');
+            // $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
             $name = \Crypt::encrypt(\Auth::user()->username);
@@ -734,7 +733,7 @@ class MonthController extends Controller
             $record = 0;
             $check = array();
             $database = $request->session()->get('database');
-            $jobnumber = $request->input('jobnumber');
+            // $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = \Crypt::encrypt($email);
             $name = \Crypt::encrypt(\Auth::user()->username);
@@ -1809,16 +1808,18 @@ class MonthController extends Controller
             $buyper = $Alldata[16];
             $needmoney = $Alldata[17];
             $needper = $Alldata[18];
+            $check = $request->input('check');
+
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
-
-                    DB::table('請購單')
-                        ->insert([
-                            'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '安全庫存' => $safe[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '實際需求' => $realneed[$i], '請購金額' => $buymoney[$i], '請購占比' => $buyper[$i], '需求金額' => $needmoney[$i], '需求占比' => $needper[$i], '請購時間' => $now
-                        ]);
-                    $record++;
-
+                    if ($check[$i] !== '0') {
+                        DB::table('請購單')
+                            ->insert([
+                                'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '安全庫存' => $safe[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '實際需求' => $realneed[$i], '請購金額' => $buymoney[$i], '請購占比' => $buyper[$i], '需求金額' => $needmoney[$i], '需求占比' => $needper[$i], '請購時間' => $now
+                            ]);
+                        $record++;
+                    }
                 }
                 DB::commit();
                 return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
@@ -2083,28 +2084,28 @@ class MonthController extends Controller
             } // for
 
             //填寫內容
-            $endOfRow = 0 ;
-            $endOfCol = 0 ;
+            $endOfRow = 0;
+            $endOfCol = 0;
             $alphabet = range('A', 'Z'); // A ~ Z
             for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
                     $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
-                    $endOfRow = $j ;
+                    $endOfRow = $j;
                 } // for
 
-                $endOfCol = $i ;
+                $endOfCol = $i;
             } // for
 
             // dd($endOfRow . "," . $endOfCol); // test
 
-            $worksheet->setCellValue("A" . ($endOfRow+3), "合計：");
-            $worksheet->mergeCells("A" . ($endOfRow+3) . ":" . $alphabet[$endOfCol-4] . ($endOfRow+3)); // for the SUM row
-            $worksheet->setCellValue( $alphabet[$endOfCol] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol] ."2:" . $alphabet[$endOfCol] . ($endOfRow+2) . ")");
-            $worksheet->setCellValue( $alphabet[$endOfCol-1] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol-1] ."2:" . $alphabet[$endOfCol-1] . ($endOfRow+2) . ")");
-            $worksheet->getStyle( $alphabet[$endOfCol] . "2:" . $alphabet[$endOfCol] . ($endOfRow+3))->getNumberFormat()->setFormatCode('0%');
-            $worksheet->setCellValue( $alphabet[$endOfCol-2] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol-2] ."2:" . $alphabet[$endOfCol-2] . ($endOfRow+2) . ")");
-            $worksheet->setCellValue( $alphabet[$endOfCol-3] . ($endOfRow+3), "=SUM(" . $alphabet[$endOfCol-3] ."2:" . $alphabet[$endOfCol-3] . ($endOfRow+2) . ")");
-            $worksheet->getStyle( $alphabet[$endOfCol-2] . "2:" . $alphabet[$endOfCol-2] . ($endOfRow+3))->getNumberFormat()->setFormatCode('0%');
+            $worksheet->setCellValue("A" . ($endOfRow + 3), "合計：");
+            $worksheet->mergeCells("A" . ($endOfRow + 3) . ":" . $alphabet[$endOfCol - 4] . ($endOfRow + 3)); // for the SUM row
+            $worksheet->setCellValue($alphabet[$endOfCol] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol] . "2:" . $alphabet[$endOfCol] . ($endOfRow + 2) . ")");
+            $worksheet->setCellValue($alphabet[$endOfCol - 1] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol - 1] . "2:" . $alphabet[$endOfCol - 1] . ($endOfRow + 2) . ")");
+            $worksheet->getStyle($alphabet[$endOfCol] . "2:" . $alphabet[$endOfCol] . ($endOfRow + 3))->getNumberFormat()->setFormatCode('0%');
+            $worksheet->setCellValue($alphabet[$endOfCol - 2] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol - 2] . "2:" . $alphabet[$endOfCol - 2] . ($endOfRow + 2) . ")");
+            $worksheet->setCellValue($alphabet[$endOfCol - 3] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol - 3] . "2:" . $alphabet[$endOfCol - 3] . ($endOfRow + 2) . ")");
+            $worksheet->getStyle($alphabet[$endOfCol - 2] . "2:" . $alphabet[$endOfCol - 2] . ($endOfRow + 3))->getNumberFormat()->setFormatCode('0%');
 
             // 下載
             $now = Carbon::now()->format('YmdHis');
@@ -2255,13 +2256,10 @@ class MonthController extends Controller
                 $message->bcc('Vincent6_Yeh@pegatroncorp.com');
                 $message->bcc('Tony_Tseng@pegatroncorp.com');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-            }
-            else
-            {
+            } else {
                 $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
                 $message->to('Vincent6_Yeh@pegatroncorp.com')->subject('無信箱');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-
             }
         });
     }
@@ -2281,13 +2279,10 @@ class MonthController extends Controller
                 $message->bcc('Vincent6_Yeh@pegatroncorp.com');
                 $message->bcc('Tony_Tseng@pegatroncorp.com');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-            }
-            else
-            {
+            } else {
                 $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
                 $message->to('Vincent6_Yeh@pegatroncorp.com')->subject('無信箱');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-
             }
         });
     }

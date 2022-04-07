@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'page_name' => 'BU Consumable Mgmt.',
     'bu' =>'BU Consumable Mgmt.',
     'sluggish' =>'Passive stock',
     'searchlist' =>'Transfer list search',

@@ -83,8 +83,8 @@ $(document).ready(function () {
         var nextclass = [];
         var nextuse = [];
         var nextchange = [];
-        var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
+        email = email + '@pegatroncorp.com';
 
         var count = $("#count").val();
 
@@ -130,7 +130,6 @@ $(document).ready(function () {
                 nextclass: nextclass,
                 nextuse: nextuse,
                 nextchange: nextchange,
-                jobnumber: jobnumber,
                 email: email,
                 count: count,
                 row: row,

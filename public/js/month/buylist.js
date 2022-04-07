@@ -235,7 +235,17 @@ $(document).ready(function () {
                     }
                     i++;
                     var mess = Lang.get('monthlyPRpageLang.row') + ' ' + i + ' ' + Lang.get('monthlyPRpageLang.nowrite') + Lang.get('monthlyPRpageLang.srm');
-                    alert(mess);
+                    notyf.open({
+                        type: 'warning',
+                        message: mess,
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom"
+                        }
+                    });
                     return false;
                 } else if (parseInt(buyamount[i]) === 0) {
                     check.push(0);
@@ -266,6 +276,9 @@ $(document).ready(function () {
         data.push(buyper);
         data.push(needmoney);
         data.push(needper);
+
+
+
 
         if (select == '提交' || select == 'Submit') {
             for (let i = 0; i < (counta + countb); i++) {
