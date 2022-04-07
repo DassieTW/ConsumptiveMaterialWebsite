@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Create報警備註Table extends Migration
+class CreateSafestock報警備註Table extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class Create報警備註Table extends Migration
      */
     public function up()
     {
-        Schema::create('報警備註', function (Blueprint $table) {
+        Schema::create('safestock報警備註', function (Blueprint $table) {
             $table->string('料號', 12);
             $table->string('客戶別', 45);
             $table->primary(['料號','客戶別']);
@@ -28,6 +28,6 @@ class Create報警備註Table extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('safestock報警備註');
     }
 }
