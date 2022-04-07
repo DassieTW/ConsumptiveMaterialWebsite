@@ -832,6 +832,7 @@ class ComposerStaticInit3a337aa382200259a249a8921ee7c950
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Services\\BarWebDisplay' => __DIR__ . '/../..' . '/app/Services/BarWebDisplay.php',
+        'App\\Services\\Barcode39' => __DIR__ . '/../..' . '/app/Services/Barcode39.php',
         'App\\Services\\InventoryCheckService' => __DIR__ . '/../..' . '/app/Services/InventoryCheckService.php',
         'App\\Services\\MailService' => __DIR__ . '/../..' . '/app/Services/MailService.php',
         'Asm89\\Stack\\Cors' => __DIR__ . '/..' . '/asm89/stack-cors/src/Cors.php',

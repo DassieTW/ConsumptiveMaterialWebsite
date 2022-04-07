@@ -12,7 +12,7 @@ class BarWebDisplay
     {
         if (filter_input(INPUT_POST, 'isIsn', FILTER_VALIDATE_BOOLEAN) === true) { // isn pic
             // set Barcode39 object
-            $barcode1 = trim(filter_input(INPUT_POST, 'barcode1', FILTER_SANITIZE_STRING));
+            // $barcode1 = trim(filter_input(INPUT_POST, 'barcode1', FILTER_SANITIZE_STRING));
             if (null !== filter_input(INPUT_POST, 'barcode2', FILTER_SANITIZE_STRING)) {
                 $barcode2 = trim(filter_input(INPUT_POST, 'barcode2', FILTER_SANITIZE_STRING));
             } // if
@@ -22,7 +22,8 @@ class BarWebDisplay
             $fName = $_POST['fName'];
 
 
-            $bc = new Barcode39($barcode1 . "-" . $barcode2);
+            // $bc = new Barcode39($barcode1 . "-" . $barcode2);
+            $bc = new Barcode39($barcode2);
             $bc->setUseSession($toSession);
             $bc->setMaterialName($productName);
             $bc->setIsItISN($isThisIsn);

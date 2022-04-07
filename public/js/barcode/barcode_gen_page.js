@@ -141,7 +141,7 @@ function UpdateTempField() {
     var isnSepCount = JSON.parse(sessionStorage.getItem('isnSepCount'));
 
     for (let ty = 0; ty < isnCount; ty++) {
-        $('#tableHead').after($('<tr class="barcodePreview align-items-center" id="' + isnArray[ty] + '__' + isnName[ty] + '">' +
+        $('#tableHead').after($('<tr class="barcodePreview isn align-items-center" id="' + isnArray[ty] + '__' + isnName[ty] + '">' +
             '<td class="col col-auto align-items-center px-0 m-0"><a class="deleteBtn" id="' + isnArray[ty] + '__' + isnName[ty] + '" value="' + isnArray[ty] + '__' + isnName[ty] + '">' +
             '</a></td>' +
             '<td class="col col-auto align-items-center px-0 m-0"><span>' +
@@ -161,7 +161,7 @@ function UpdateTempField() {
     var locSepCount = JSON.parse(sessionStorage.getItem('locSepCount'));
 
     for (let ty = 0; ty < locCount; ty++) {
-        $('#tableHead2').after($('<tr class="barcodePreview align-items-center" id="' + locArray[ty] + '">' +
+        $('#tableHead2').after($('<tr class="barcodePreview loc align-items-center" id="' + locArray[ty] + '">' +
             '<td class="col col-auto align-items-center px-0 m-0"><a class="deleteBtn" id="' + locArray[ty] + '" value="' + locArray[ty] + '">' +
             '</a></td>' +
             '<td class="col col-auto align-items-center px-0 m-0"><span>' +
@@ -387,20 +387,11 @@ function CallPhpSpreadSheetToGetData(fileName) {
 
 } // CallPhpSpreadSheetToGetData
 
+var AllMatsData;
 $(document).ready(function () {
+
     (function () {
         if (sessionStorage.hasOwnProperty('isnCount')) {
-            notyf.success({
-                message: Lang.get('barcodeGenerator.temp_save_success'),
-                duration: 5000,   //miliseconds, use 0 for infinite duration
-                ripple: true,
-                dismissible: true,
-                position: {
-                    x: "right",
-                    y: "bottom"
-                }
-            });
-
             var DelorNot = true;
             var isISN = true;
             $.ajaxSetup({
@@ -413,16 +404,16 @@ $(document).ready(function () {
                 url: "/barcode/seenDelete",  // refer to the route name in web.php
                 data: { DelorNot: DelorNot, isISN: isISN },
                 dataType: 'json',              // let's set the expected response format
-                beforeSend: function () {
-                    $('body').loadingModal({
-                        text: 'Loading...',
-                        animation: 'circle'
-                    });
-                },
-                complete: function () {
-                    $('body').loadingModal('hide');
-                    $('body').loadingModal('destroy');
-                },
+                // beforeSend: function () {
+                //     $('body').loadingModal({
+                //         text: 'Loading...',
+                //         animation: 'circle'
+                //     });
+                // },
+                // complete: function () {
+                //     $('body').loadingModal('hide');
+                //     $('body').loadingModal('destroy');
+                // },
                 success: function (data) {
                     console.log(data.message);
                 },
@@ -433,17 +424,6 @@ $(document).ready(function () {
         } // if
 
         if (sessionStorage.hasOwnProperty('locCount')) {
-            notyf.success({
-                message: Lang.get('barcodeGenerator.temp_save_success'),
-                duration: 5000,   //miliseconds, use 0 for infinite duration
-                ripple: true,
-                dismissible: true,
-                position: {
-                    x: "right",
-                    y: "bottom"
-                }
-            });
-
             var DelorNot = true;
             var isISN = false;
             $.ajaxSetup({
@@ -456,6 +436,36 @@ $(document).ready(function () {
                 url: "/barcode/seenDelete",  // refer to the route name in web.php
                 data: { DelorNot: DelorNot, isISN: isISN },
                 dataType: 'json',              // let's set the expected response format
+                // beforeSend: function () {
+                //     $('body').loadingModal({
+                //         text: 'Loading...',
+                //         animation: 'circle'
+                //     });
+                // },
+                // complete: function () {
+                //     $('body').loadingModal('hide');
+                //     $('body').loadingModal('destroy');
+                // },
+                success: function (data) {
+                    console.log(data.message);
+                },
+                error: function (err) {
+                    console.warn(err);
+                } // error
+            });
+        } // if
+
+        if (! sessionStorage.hasOwnProperty('allMats')) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({   // get all isn and pName for bringing out pName if it existed in database
+                type: "post",
+                url: "/barcode/search_isn",
+                data: { searchIn: "" },
+                dataType: 'json',              // let's set the expected response format
                 beforeSend: function () {
                     $('body').loadingModal({
                         text: 'Loading...',
@@ -466,12 +476,31 @@ $(document).ready(function () {
                     $('body').loadingModal('hide');
                     $('body').loadingModal('destroy');
                 },
-                success: function (data) {
-                    console.log(data.message);
+                success: function (response) {
+                    AllMatsData = JSON.parse(JSON.stringify(response.data));
+                    sessionStorage.setItem("allMats", JSON.stringify(response.data));
+                    // console.log(AllMatsData); // test
                 },
                 error: function (err) {
-                    console.warn(err);
+                    console.log(err.status); // test
+                    // console.log(err); // test
                 } // error
+            }); // end of ajax
+        } // if
+        else {
+            AllMatsData = JSON.parse(sessionStorage.getItem("allMats"));
+        } // else
+
+        if( sessionStorage.hasOwnProperty('locCount') || sessionStorage.hasOwnProperty('isnCount') ) {
+            notyf.success({
+                message: Lang.get('barcodeGenerator.temp_save_success'),
+                duration: 5000,   //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom"
+                }
             });
         } // if
     })();
@@ -483,8 +512,8 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        var barcode1 = $("#barcode1").val();
-        var barcode2 = $("#barcode2").val();
+        // var barcode1 = $("#barcode1").val();
+        var barcode2 = $("#barcode2").val().toUpperCase();
         var pName = $("#pName").val();
         var isIsn = $("#isIsn").val();
         var toSess = $("#toSess").val();
@@ -497,7 +526,7 @@ $(document).ready(function () {
         $.ajax({
             type: "post",
             url: "/barcode/barcode_isn",
-            data: { barcode1: barcode1, barcode2: barcode2, pName: pName, isIsn: isIsn, toSess: toSess, fName: fName },
+            data: { barcode2: barcode2, pName: pName, isIsn: isIsn, toSess: toSess, fName: fName },
             dataType: 'json',              // let's set the expected response format
             beforeSend: function () {
                 console.log('sup, loading modal triggered !');
@@ -519,7 +548,8 @@ $(document).ready(function () {
                         var nameArray = JSON.parse(sessionStorage.getItem('isnName'));
                         var combination = mergeTwoArrays(isnArray, nameArray);
 
-                        var keyy = $.inArray(barcode1 + '-' + barcode2 + pName, combination);
+                        // var keyy = $.inArray(barcode1 + '-' + barcode2 + pName, combination);
+                        var keyy = $.inArray(barcode2 + pName, combination);
                         if (keyy !== -1) {
                             var tt = JSON.parse(sessionStorage.getItem('isnSepCount'));
                             tt[keyy] = tt[keyy] + 1;
@@ -531,7 +561,8 @@ $(document).ready(function () {
                             sessionStorage.setItem('isnCount', JSON.stringify(a));
 
                             var b = JSON.parse(sessionStorage.getItem('isnArray'));
-                            b.push(barcode1 + '-' + barcode2);
+                            // b.push(barcode1 + '-' + barcode2);
+                            b.push(barcode2);
                             sessionStorage.setItem('isnArray', JSON.stringify(b));
 
                             var c = JSON.parse(sessionStorage.getItem('isnSepCount'));
@@ -545,7 +576,8 @@ $(document).ready(function () {
                     } // if
                     else if (isIsn === 'true' && !sessionStorage.hasOwnProperty('isnCount')) {
                         sessionStorage.setItem('isnCount', 1);
-                        var iisn = barcode1 + '-' + barcode2;
+                        // var iisn = barcode1 + '-' + barcode2;
+                        var iisn = barcode2;
                         var e = [iisn,];
                         sessionStorage.setItem('isnArray', JSON.stringify(e));
                         e = [1,];
@@ -585,6 +617,29 @@ $(document).ready(function () {
             }
         }); // end of ajax
     }); // on isnForm submit
+
+    $('#isnForm').on('input', function (e) {
+        if ($('#barcode2').val().length === 12) { // when it fits the the 12 digits isn
+            var searchIn = $("#barcode2").val().toUpperCase();
+            // clean up previous input results
+            $('.is-invalid').removeClass('is-invalid');
+            $(".invalid-feedback").remove();
+
+            let i = 0;
+            for (i = 0; i < AllMatsData.length; i++) {
+                if (searchIn === AllMatsData[i].料號) {
+                    $("#pName").val(AllMatsData[i].品名);
+                    $("#pName").focus();
+                    break;
+                } // if
+            } // for
+
+            if (i === AllMatsData.length) { // isn not found in database
+                $("#pName").focus();
+            } // if
+
+        } // if
+    }); // on isnForm input
 
     $('#locForm').on('submit', function (e) {
         e.preventDefault();
@@ -900,8 +955,29 @@ $(document).ready(function () {
         localStorage.clear();
         UpdateTempField();
     });
+
+    $("#cleanupISNbtn").on('click', function (e) {
+        e.preventDefault();
+        // sessionStorage.removeItem("allMats");
+        sessionStorage.removeItem("isnArray");
+        sessionStorage.removeItem("isnCount");
+        sessionStorage.removeItem("isnName");
+        sessionStorage.removeItem("isnSepCount");
+        $('.barcodePreview.isn').remove();
+        // location.reload();
+    });
+
+    $("#cleanupLOCbtn").on('click', function (e) {
+        e.preventDefault();
+        // sessionStorage.removeItem("allMats");
+        sessionStorage.removeItem("locArray");
+        sessionStorage.removeItem("locCount");
+        sessionStorage.removeItem("locSepCount");
+        $('.barcodePreview.loc').remove();
+        // location.reload();
+    });
 }); // on document ready
 
-$(window).on('beforeunload', function() {
-    sessionStorage.clear();
-});
+// $(window).on('beforeunload', function() {
+//     sessionStorage.clear();
+// });

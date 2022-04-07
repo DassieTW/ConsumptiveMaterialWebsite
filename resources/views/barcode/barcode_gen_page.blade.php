@@ -42,18 +42,13 @@
                         @csrf
                         <div class="row justify-content-center align-items-center">
                             <div class="col col-auto p-0 m-0">
-                                <label for="barcode1" class="col-form-label">{!! __('barcodeGenerator.isn')
-                                    !!}:&nbsp;&nbsp;</label>
+                                <label for="barcode1" class="col-form-label">{!! __('barcodeGenerator.isn') !!}:&nbsp;&nbsp;</label>
                             </div>
                             <div class="col col-auto p-0 m-0">
                                 <div class="input-group has-validation col col-auto">
-                                    <input type="text" id="barcode1" name="barcode1" class="form-control p-1"
-                                        maxlength="4" style="width: 7ch; text-align: center;" placeholder="1234"
-                                        pattern="[0-9A-Za-z]{4,4}" required>
-                                    <span class="input-group-text p-1" id=""><strong>-</strong></span>
                                     <input type="text" id="barcode2" name="barcode2" class="form-control p-1"
-                                        maxlength="7" style="width: 10ch; text-align: center;" placeholder="12AB345"
-                                        pattern="[a-zA-Z0-9]{7,7}" required>
+                                        maxlength="12" style="width: 17ch; text-align: center;" placeholder="{!! __('barcodeGenerator.enter_isn') !!}"
+                                        pattern="[a-zA-Z0-9\-]{12,12}" required>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +60,7 @@
                             <div class="col col-auto p-0">
                                 <input type="text" id="pName" name="pName" class="form-control p-1" maxlength="15"
                                     style="width: 15ch; text-align: center;"
-                                    placeholder="{!! __('barcodeGenerator.electric_screwdriver_bits') !!}">
+                                    placeholder="{!! __('barcodeGenerator.enter_pName') !!}">
                                 <input type="hidden" name="isIsn" id="isIsn" value="true">
                                 <input type="hidden" name="toSess" id="toSess" value="true">
                                 <input type="hidden" name="fName" id="fName" value="{!! \Session::getId() !!}">
@@ -82,7 +77,7 @@
                     <div class="row justify-content-center align-items-center mt-3">
                         <div id="img-div" class="col-auto">
                             <span>{{\Session::get('toSess')}}</span>
-                            <img src="{{asset('storage/barcodeImg/' . \Session::getId() . '.png')}}">
+                            <img src="{{asset('storage/barcodeImg/' . \Session::getId() . '.png')}}" onerror="this.style.display='none'">
                             <!-- delete temp file in js -->
                         </div>
                     </div>
@@ -109,7 +104,7 @@
 
                             <div class="col col-auto p-0">
                                 <input type="text" name="barcode3" class="form-control p-1" id="barcode3" maxlength="11"
-                                    style="width: 11ch; text-align: center;" placeholder="7-A000"
+                                    style="width: 11ch; text-align: center;" placeholder="{!! __('barcodeGenerator.enter_loc') !!}"
                                     pattern="[a-zA-Z0-9._%+-]{1,11}" required>
 
                                 <input type="hidden" name="isIsn" id="isIsn2" value="false">
@@ -127,7 +122,7 @@
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <div class="row justify-content-center align-items-center">
                         <div id="img-div2" class="col-auto">
-                            <img src="{{asset('storage/barcodeImg/' . \Session::getId() . '-2.png')}}">
+                            <img src="{{asset('storage/barcodeImg/' . \Session::getId() . '-2.png')}}" onerror="this.style.display='none'">
                             <!-- delete temp file in js -->
                         </div>
                     </div>
@@ -143,7 +138,6 @@
                     <div class="card-header mt-0">
                         <h3 class="card-title">{!! __('barcodeGenerator.batch_upload') !!}</h3>
                     </div>
-
 
                     <form class="text-center needs-validation" id="fileUpForm" method="post"
                         enctype="multipart/form-data" novalidate autocomplete="off">
@@ -190,7 +184,12 @@
                             <table class="table align-items-center">
                                 <tbody>
                                     <tr id="tableHead" class="table-primary align-items-center">
-                                        <th class="col col-auto align-items-center px-0 m-0"><span>&nbsp;</span>
+                                        <th class="col col-auto align-items-center px-0 m-0">
+                                            <a id="cleanupISNbtn" style="color: rgb(255, 60, 0);">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                                                </svg>
+                                            </a>
                                         </th>
                                         <th class="col col-auto align-items-center px-0 m-0"><span>{!!
                                                 __('barcodeGenerator.isn') !!}</span>
@@ -201,7 +200,12 @@
                                     </tr>
                                     {{-- the content here is generated by js --}}
                                     <tr id="tableHead2" class="table-secondary align-items-center">
-                                        <th class="col col-auto align-items-center px-0 m-0"><span>&nbsp;</span>
+                                        <th class="col col-auto align-items-center px-0 m-0">
+                                            <a id="cleanupLOCbtn" style="color: rgb(255, 60, 0);">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                                                </svg>
+                                            </a>
                                         </th>
                                         <th class="col col-auto align-items-center px-0 m-0"><span>{!!
                                                 __('barcodeGenerator.loc') !!}</span>

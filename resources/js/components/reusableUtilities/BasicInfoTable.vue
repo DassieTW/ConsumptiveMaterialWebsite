@@ -71,7 +71,6 @@ export default defineComponent({
       for (let i = 0; i < allRowsObj.datas.length; i++) {
         data.push(allRowsObj.datas[i]);
       } // for
-
     }); // watch for data change
 
     // Table config
@@ -84,13 +83,21 @@ export default defineComponent({
           width: "13ch",
           sortable: true,
           isKey: true,
-          display: function(row, i) {
+          display: function (row, i) {
             return (
-              '<input type="hidden" id="number' + i +'" name="number' + i +'" value="' + row.料號 + '">' +
+              '<input type="hidden" id="number' +
+              i +
+              '" name="number' +
+              i +
+              '" value="' +
+              row.料號 +
+              '">' +
               '<div class="text-nowrap scrollableWithoutScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' + row.料號 + '</div>'
-            ) ;
-          }
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              row.料號 +
+              "</div>"
+            );
+          },
         },
         {
           label: app.appContext.config.globalProperties.$t(

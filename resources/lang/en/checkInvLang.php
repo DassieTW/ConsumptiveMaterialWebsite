@@ -12,9 +12,9 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'page_name' => 'Checking Inv.',
-    'check' => 'Check',
-    'check_result' => 'Check Result',
+    'page_name' => 'Stock-taking',
+    'check' => 'Stocktake',
+    'check_result' => 'Result of Stocktaking',
     'no_table_found' => 'No table Found',
     'create_new_table' => 'Create New Table',
     'input_isn_barcode' => 'Scan In Part No. Barcode',
@@ -39,7 +39,7 @@ return [
     'edit' => 'Edit',
     'this' => 'This',
     'has' => 'Also',
-    'unchecked' => 'not yet checked !',
+    'unchecked' => 'not yet stocktaked !',
     'update_success' => 'Update Success!',
     'update_failed' => 'Update Failed.',
     'value_not_changed' => 'The inventory result has not changed. Are you sure to send it?',
@@ -58,8 +58,8 @@ return [
 
     //check result lang
     'time_range' => 'Time Range',
-    'checked' => 'Checked',
-    'not_checked' => 'Not Checked',
+    'checked' => 'Stocktaked',
+    'not_checked' => 'Not Stocktaked',
     'check_not_right_amount' => 'Excess/Short',
     'search_by' => 'Search by',
     'sort_by' => 'Sort by',

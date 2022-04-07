@@ -42,34 +42,6 @@ class CallController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    /*public function index()
-    {
-        //
-        if(Session::has('username'))
-        {
-            return view('call.index');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    /*//安全庫存警報頁面
-    public function safe()
-    {
-        //
-        if(Session::has('username'))
-        {
-            return view('call.safepage');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-
     //安全庫存警報
     public function safesubmit(Request $request)
     {
@@ -461,21 +433,7 @@ class CallController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
-
-    /*//呆滯天數警報頁面
-    public function day()
-    {
-        //
-        if(Session::has('username'))
-        {
-            return view('call.daypage');
-        }
-        else
-        {
-            return redirect(route('member.login'));
-        }
-    }*/
+    }  
 
     //呆滯天數警報
     public function daysubmit(Request $request)

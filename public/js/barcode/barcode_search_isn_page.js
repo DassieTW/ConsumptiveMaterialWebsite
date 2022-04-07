@@ -103,9 +103,9 @@ function UpdateTempField() {
             isnArray[ty] +
             '</span><br><span>' +
             isnName[ty] +
-            '</span></td><td class="col col-auto align-items-center px-0 m-0"><span>' +
-            isnSpec[ty] +
-            '</span></td><td class="col col-auto align-items-center px-0 m-0">'+
+            '</span></td>' +
+            // '<td class="col col-auto align-items-center px-0 m-0"><span>' + isnSpec[ty] + '</span></td>' +
+            '<td class="col col-auto align-items-center px-0 m-0">'+
             '<input inputmode="numeric" type="number" min="0" id="' + isnArray[ty] + '__' + isnName[ty] + '__' + isnSpec[ty] + '" class="printNum" name="printNum" style="width: 6ch;"value="' +
             isnSepCount[ty] + '">'
             + '</td></tr>'
@@ -245,6 +245,7 @@ $(document).ready(function () {
         }); // end of ajax
     }); // on isnForm submit
 
+    sessionStorage.clear();
     UpdateTempField(); // do it once on page load to make sure it shows correct info
 
     $('#printBtn').on('click', function (e) {  // print all barcodes in the temp field
@@ -326,6 +327,18 @@ $(document).ready(function () {
 
         sessionStorage.clear();
         localStorage.clear();
+    });
+
+    $("#cleanupISNbtn").on('click', function (e) {
+        e.preventDefault();
+        // sessionStorage.removeItem("allMats");
+        sessionStorage.removeItem("isnArray");
+        sessionStorage.removeItem("isnCount");
+        sessionStorage.removeItem("isnName");
+        sessionStorage.removeItem("isnSepCount");
+        sessionStorage.removeItem("isnSpec");
+        $('.barcodePreview').remove();
+        // location.reload();
     });
 }); // on document ready
 
