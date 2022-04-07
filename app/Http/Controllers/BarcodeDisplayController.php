@@ -26,29 +26,46 @@ class BarcodeDisplayController extends Controller
           $post->status = $input['status'];
           $post->save();
         */
+        $message = "temp img delete successful !";
 
         if ($request->boolean('DelorNot') && $request->boolean('isISN')) { // DelorNot is true and isISN is true
-            unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '.png'));
+            if (file_exists(storage_path('app/public/barcodeImg/' . \Session::getId() . '.png'))) {
+                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '.png'));
+            } // if
+            else {
+                $message = "isn temp img already gone from the server";
+            } // else
+
             $request->session()->forget('imgg');
         } // if
         else if ($request->boolean('DelorNot') && !$request->boolean('isISN')) { // DelorNot is true and it is a loc pic
-            unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '-2.png'));
+            if (file_exists(storage_path('app/public/barcodeImg/' . \Session::getId() . '-2.png'))) {
+                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '-2.png'));
+            } // if
+            else {
+                $message = "loc temp img already gone from the server";
+            } // else
+
             $request->session()->forget('imgg2');
         } // if else if
 
 
         // Sending json response to client
-        return \Response::json(['message' => 'temp img delete successful !']); // Status code here
-    }
+        return \Response::json(['message' => $message]); // Status code here
+    }  // delTempImg
 
     /**
      * go back when post
      */
     public function postBack(Request $request)
     {
+        // $rules = [
+        //     'barcode1' => ['required', 'regex:/[0-9A-Za-z]{4,4}/'],
+        //     'barcode2' => ['required', 'regex:/[a-zA-Z0-9]{7,7}/'],
+        // ];
+
         $rules = [
-            'barcode1' => ['required', 'regex:/[0-9A-Za-z]{4,4}/'],
-            'barcode2' => ['required', 'regex:/[a-zA-Z0-9]{7,7}/'],
+            'barcode2' => ['required', 'regex:/[a-zA-Z0-9\-]{12,12}/'],
         ];
 
 

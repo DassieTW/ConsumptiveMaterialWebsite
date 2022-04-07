@@ -194,6 +194,9 @@ $(document).ready(function () {
         }); // end of ajax
     }); // on searchForm Submit
 
+    sessionStorage.clear();
+    UpdateTempField(); // do it once on page load to make sure it shows correct info
+    
     $('#printBtn').on('click', function (e) {  // print all barcodes in the temp field
         e.preventDefault();
         $.ajaxSetup({
@@ -270,6 +273,16 @@ $(document).ready(function () {
 
         sessionStorage.clear();
         localStorage.clear();
+    });
+
+    $("#cleanupLOCbtn").on('click', function (e) {
+        e.preventDefault();
+        // sessionStorage.removeItem("allMats");
+        sessionStorage.removeItem("locArray");
+        sessionStorage.removeItem("locCount");
+        sessionStorage.removeItem("locSepCount");
+        $('.barcodePreview').remove();
+        // location.reload();
     });
 }); // on document ready
 

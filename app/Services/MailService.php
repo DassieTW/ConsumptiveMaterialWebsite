@@ -27,6 +27,7 @@ class MailService
             '巴淡-LOT11 Consumables management', '巴淡-LOT2 Consumables management', '巴淡-PTSN Consumables management'
         ];
 
+        \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
         foreach ($databases as $database) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
@@ -291,8 +292,8 @@ class MailService
             }
 
             File::delete(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
-        }
-    }
+        } // for each
+    } // 安全庫存 寄警報信
 
     public function day() // 呆滯天數 寄警報信
     {
@@ -386,6 +387,6 @@ class MailService
             }
 
             File::delete(public_path() . '/excel/' . $database . 'Passive Day' . $now . '.xlsx');
-        }
-    }
-}
+        } // foreach
+    } // 呆滯庫存 寄警報信
+} // end of class

@@ -51,7 +51,8 @@ Route::get('/dashboard', function () {
 
 Route::get('/vuetest', function () {
     // dd( \Auth::user()->username ); // test
-    return view("layouts.app");
+    // return view("layouts.app");
+    dd( config('database_list.databases') ); // test
 })->withoutMiddleware('auth');
 
 Route::get('/phpinfo', function () {

@@ -98,6 +98,7 @@ return array(
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Services\\BarWebDisplay' => $baseDir . '/app/Services/BarWebDisplay.php',
+    'App\\Services\\Barcode39' => $baseDir . '/app/Services/Barcode39.php',
     'App\\Services\\InventoryCheckService' => $baseDir . '/app/Services/InventoryCheckService.php',
     'App\\Services\\MailService' => $baseDir . '/app/Services/MailService.php',
     'Asm89\\Stack\\Cors' => $vendorDir . '/asm89/stack-cors/src/Cors.php',
