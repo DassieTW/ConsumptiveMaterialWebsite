@@ -1,3 +1,11 @@
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+
+
 $(document).ready(function () {
 
 
@@ -40,4 +48,58 @@ $(document).ready(function () {
         }
 
     }
+
+    $('#day').on('submit', function (e) {
+        e.preventDefault();
+
+        var count = $("#count").val();
+
+        var number = [];
+        var client = [];
+        var remark = [];
+
+        for (let i = 0; i < count; i++) {
+            if ($("#remark" + i).val() !== "") {
+                client.push($("#client" + i).val());
+                number.push($("#number" + i).val());
+                remark.push($("#remark" + i).val());
+            }
+        }
+        $.ajax({
+            type: 'POST',
+            url: "dayremark",
+            data: {
+                client: client,
+                number: number,
+                remark: remark,
+            },
+
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
+            },
+
+            success: function (data) {
+                console.log(data.boolean);
+                var mess = Lang.get('callpageLang.saveremark') + ' ' + Lang.get('callpageLang.success');
+                alert(mess);
+                window.location.reload();
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.warn(jqXHR.responseText);
+                alert(errorThrown);
+                window.location.reload();
+            }
+        });
+
+    });
 });

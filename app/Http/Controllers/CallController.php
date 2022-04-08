@@ -59,11 +59,14 @@ class CallController extends Controller
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                     })
+                    ->leftjoin('safestock報警備註', function ($join) {
+                        $join->on('safestock報警備註.料號', '=', '月請購_單耗.料號');
+                        $join->on('safestock報警備註.客戶別', '=', '月請購_單耗.客戶別');
+                    })
                     ->leftJoinSub($inventorys, 'suminventory', function ($join) {
                         $join->on('月請購_單耗.客戶別', '=', 'suminventory.客戶別');
                         $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
                     })
-
                     ->select(
                         '月請購_單耗.客戶別',
                         'consumptive_material.料號',
@@ -76,6 +79,7 @@ class CallController extends Controller
                         'MPS.下月MPS',
                         'MPS.下月生產天數',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )->groupBy(
                         '月請購_單耗.客戶別',
                         'consumptive_material.料號',
@@ -88,6 +92,7 @@ class CallController extends Controller
                         'MPS.下月MPS',
                         'MPS.下月生產天數',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )
                     ->where('consumptive_material.月請購', '=', "是")
                     ->where('月請購_單耗.狀態', '=', "已完成")
@@ -130,6 +135,11 @@ class CallController extends Controller
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
                     })
+                    ->leftjoin('safestock報警備註', function ($join) {
+                        $join->on('safestock報警備註.料號', '=', '月請購_站位.料號');
+                        $join->on('safestock報警備註.客戶別', '=', '月請購_站位.客戶別');
+                    })
+
                     ->leftJoinSub($inventorys1, 'suminventory', function ($join) {
                         $join->on('月請購_站位.客戶別', '=', 'suminventory.客戶別');
                         $join->on('月請購_站位.料號', '=', 'suminventory.料號');
@@ -150,6 +160,7 @@ class CallController extends Controller
                         '月請購_站位.下月每人每日需求量',
                         '月請購_站位.下月每日更換頻率',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )->groupBy(
                         '月請購_站位.客戶別',
                         'consumptive_material.料號',
@@ -165,6 +176,7 @@ class CallController extends Controller
                         '月請購_站位.下月每人每日需求量',
                         '月請購_站位.下月每日更換頻率',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )
                     ->where('consumptive_material.月請購', '=', "是")
                     ->where('月請購_站位.狀態', '=', "已完成")
@@ -201,23 +213,25 @@ class CallController extends Controller
                     ->leftJoinSub($inventorys2, 'suminventory', function ($join) {
                         $join->on('consumptive_material.料號', '=', 'suminventory.料號');
                     })
+                    ->leftjoin('safestock報警備註', function ($join) {
+                        $join->on('safestock報警備註.料號', '=', 'consumptive_material.料號');
+                    })
                     ->select(
-                        '客戶別',
                         'consumptive_material.料號',
                         'consumptive_material.品名',
                         'consumptive_material.規格',
                         'consumptive_material.安全庫存',
                         'consumptive_material.月請購',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )->groupBy(
-                        '客戶別',
                         'consumptive_material.料號',
                         'consumptive_material.品名',
                         'consumptive_material.規格',
                         'consumptive_material.安全庫存',
                         'consumptive_material.月請購',
                         'inventory現有庫存',
-
+                        'safestock報警備註.備註',
                     )
                     ->where('consumptive_material.月請購', '=', "否")
                     ->get()->unique('料號')->toArray();
@@ -245,11 +259,14 @@ class CallController extends Controller
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                     })
+                    ->leftjoin('safestock報警備註', function ($join) {
+                        $join->on('safestock報警備註.料號', '=', '月請購_單耗.料號');
+                        $join->on('safestock報警備註.客戶別', '=', '月請購_單耗.客戶別');
+                    })
                     ->leftJoinSub($inventorys, 'suminventory', function ($join) {
                         $join->on('月請購_單耗.客戶別', '=', 'suminventory.客戶別');
                         $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
                     })
-
                     ->select(
                         '月請購_單耗.客戶別',
                         'consumptive_material.料號',
@@ -262,6 +279,7 @@ class CallController extends Controller
                         'MPS.下月MPS',
                         'MPS.下月生產天數',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )->groupBy(
                         '月請購_單耗.客戶別',
                         'consumptive_material.料號',
@@ -274,6 +292,7 @@ class CallController extends Controller
                         'MPS.下月MPS',
                         'MPS.下月生產天數',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )
                     ->where('consumptive_material.月請購', '=', "是")
                     ->where('consumptive_material.發料部門', $send)
@@ -317,6 +336,10 @@ class CallController extends Controller
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
                     })
+                    ->leftjoin('safestock報警備註', function ($join) {
+                        $join->on('safestock報警備註.料號', '=', '月請購_站位.料號');
+                        $join->on('safestock報警備註.客戶別', '=', '月請購_站位.客戶別');
+                    })
                     ->leftJoinSub($inventorys1, 'suminventory', function ($join) {
                         $join->on('月請購_站位.客戶別', '=', 'suminventory.客戶別');
                         $join->on('月請購_站位.料號', '=', 'suminventory.料號');
@@ -337,6 +360,7 @@ class CallController extends Controller
                         '月請購_站位.下月每人每日需求量',
                         '月請購_站位.下月每日更換頻率',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )->groupBy(
                         '月請購_站位.客戶別',
                         'consumptive_material.料號',
@@ -352,6 +376,7 @@ class CallController extends Controller
                         '月請購_站位.下月每人每日需求量',
                         '月請購_站位.下月每日更換頻率',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )
                     ->where('consumptive_material.月請購', '=', "是")
                     ->where('consumptive_material.發料部門', $send)
@@ -391,8 +416,10 @@ class CallController extends Controller
                     ->leftJoinSub($inventorys2, 'suminventory', function ($join) {
                         $join->on('consumptive_material.料號', '=', 'suminventory.料號');
                     })
+                    ->leftjoin('safestock報警備註', function ($join) {
+                        $join->on('safestock報警備註.料號', '=', 'consumptive_material.料號');
+                    })
                     ->select(
-                        '客戶別',
                         'consumptive_material.料號',
                         'consumptive_material.品名',
                         'consumptive_material.規格',
@@ -400,8 +427,8 @@ class CallController extends Controller
                         'consumptive_material.月請購',
                         'consumptive_material.發料部門',
                         'inventory現有庫存',
+                        'safestock報警備註.備註',
                     )->groupBy(
-                        '客戶別',
                         'consumptive_material.料號',
                         'consumptive_material.品名',
                         'consumptive_material.規格',
@@ -409,7 +436,7 @@ class CallController extends Controller
                         'consumptive_material.月請購',
                         'consumptive_material.發料部門',
                         'inventory現有庫存',
-
+                        'safestock報警備註.備註',
                     )
                     ->where('consumptive_material.月請購', '=', "否")
                     ->where('consumptive_material.發料部門', $send)
@@ -433,7 +460,7 @@ class CallController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }  
+    }
 
     //呆滯天數警報
     public function daysubmit(Request $request)
@@ -450,8 +477,13 @@ class CallController extends Controller
                         DB::raw('sum(inventory.現有庫存) as inventory現有庫存'),
                         'consumptive_material.品名',
                         'consumptive_material.規格',
+                        'sluggish報警備註.備註',
                     )
-                    ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格',)
+                    ->leftjoin('sluggish報警備註', function ($join) {
+                        $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
+                        $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
+                    })
+                    ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格','sluggish報警備註.備註')
                     ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
                     ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                     ->get();
@@ -464,8 +496,13 @@ class CallController extends Controller
                         DB::raw('sum(inventory.現有庫存) as inventory現有庫存'),
                         'consumptive_material.品名',
                         'consumptive_material.規格',
+                        'sluggish報警備註.備註',
                     )
-                    ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格',)
+                    ->leftjoin('sluggish報警備註', function ($join) {
+                        $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
+                        $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
+                    })
+                    ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格','sluggish報警備註.備註')
                     ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
                     ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                     ->where('consumptive_material.發料部門', $send)
@@ -474,6 +511,80 @@ class CallController extends Controller
             // dd($datas);
             $num = count($datas);
             return view('call.day')->with(['data' => $datas])->with(['num' => $num]);
+        } else {
+            return redirect(route('member.login'));
+        }
+    }
+
+    //安全庫存備註
+    public function saferemark(Request $request)
+    {
+
+        if (Session::has('username')) {
+            $number = $request->input('number');
+            $remark = $request->input('remark');
+            $client = $request->input('client');
+            if ($number === null) {
+                return \Response::json([]/* Status code here default is 200 ok*/);
+            } else {
+                $count = count($number);
+                DB::beginTransaction();
+                try {
+                    for ($i = 0; $i < $count; $i++) {
+                        $number = $request->input('number')[$i];
+                        $remark = $request->input('remark')[$i];
+                        $client = $request->input('client')[$i];
+
+
+                        DB::table('safestock報警備註')->upsert([
+                            ['料號' => $number, '客戶別' => $client, '備註' => $remark],
+                        ], ['料號', '客戶別'], ['備註']);
+                    } //for
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    $mess = $e->getMessage();
+                    return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
+                }
+
+                return \Response::json([]/* Status code here default is 200 ok*/);
+            }
+        } else {
+            return redirect(route('member.login'));
+        }
+    }
+
+    //呆滯天數備註
+    public function dayremark(Request $request)
+    {
+
+        if (Session::has('username')) {
+            $number = $request->input('number');
+            $remark = $request->input('remark');
+            $client = $request->input('client');
+            if ($number === null) {
+                return \Response::json([]/* Status code here default is 200 ok*/);
+            } else {
+                $count = count($number);
+                DB::beginTransaction();
+                try {
+                    for ($i = 0; $i < $count; $i++) {
+                        $number = $request->input('number')[$i];
+                        $remark = $request->input('remark')[$i];
+                        $client = $request->input('client')[$i];
+                        DB::table('sluggish報警備註')->upsert([
+                            ['料號' => $number, '客戶別' => $client, '備註' => $remark],
+                        ], ['料號', '客戶別'], ['備註']);
+                    } //for
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    $mess = $e->getMessage();
+                    return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
+                }
+
+                return \Response::json([]/* Status code here default is 200 ok*/);
+            }
         } else {
             return redirect(route('member.login'));
         }

@@ -32,5 +32,6 @@ return [
     'nostock' =>'There is no stock at present',
     'notmonth' =>'Non-monthly purchase consumables',
     'nowstock' =>'Available Stock',
-    'submit' =>'Submit',
+    'saveremark' =>'Save Remark',
+    'success' => 'Success',
 ];

@@ -237,3 +237,9 @@ Route::get('/day', function () {
 Route::get('/daysubmit', [CallController::class, 'daysubmit'])->middleware('can:viewAlarm,App\Models\Inventory');
 
 Route::post('/daysubmit', [CallController::class, 'daysubmit'])->name('call.daysubmit')->middleware('can:viewAlarm,App\Models\Inventory');
+
+
+//安全庫存備註
+Route::post('/saferemark', [CallController::class, 'saferemark'])->name('call.saferemark')->middleware('can:viewAlarm,App\Models\Inventory');
+//呆滯天數備註
+Route::post('/dayremark', [CallController::class, 'dayremark'])->name('call.dayremark')->middleware('can:viewAlarm,App\Models\Inventory');

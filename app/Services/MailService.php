@@ -42,11 +42,14 @@ class MailService
                 ->join('consumptive_material', function ($join) {
                     $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                 })
+                ->leftjoin('safestock報警備註', function ($join) {
+                    $join->on('safestock報警備註.料號', '=', '月請購_單耗.料號');
+                    $join->on('safestock報警備註.客戶別', '=', '月請購_單耗.客戶別');
+                })
                 ->leftJoinSub($inventorys, 'suminventory', function ($join) {
                     $join->on('月請購_單耗.客戶別', '=', 'suminventory.客戶別');
                     $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
                 })
-
                 ->select(
                     '月請購_單耗.客戶別',
                     'consumptive_material.料號',
@@ -59,6 +62,7 @@ class MailService
                     'MPS.下月MPS',
                     'MPS.下月生產天數',
                     'inventory現有庫存',
+                    'safestock報警備註.備註',
                 )->groupBy(
                     '月請購_單耗.客戶別',
                     'consumptive_material.料號',
@@ -71,6 +75,7 @@ class MailService
                     'MPS.下月MPS',
                     'MPS.下月生產天數',
                     'inventory現有庫存',
+                    'safestock報警備註.備註',
                 )
                 ->where('consumptive_material.月請購', '=', "是")
                 ->where('月請購_單耗.狀態', '=', "已完成")
@@ -113,11 +118,14 @@ class MailService
                 ->join('consumptive_material', function ($join) {
                     $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
                 })
+                ->leftjoin('safestock報警備註', function ($join) {
+                    $join->on('safestock報警備註.料號', '=', '月請購_站位.料號');
+                    $join->on('safestock報警備註.客戶別', '=', '月請購_站位.客戶別');
+                })
                 ->leftJoinSub($inventorys1, 'suminventory', function ($join) {
                     $join->on('月請購_站位.客戶別', '=', 'suminventory.客戶別');
                     $join->on('月請購_站位.料號', '=', 'suminventory.料號');
                 })
-
                 ->select(
                     '月請購_站位.客戶別',
                     'consumptive_material.料號',
@@ -133,6 +141,7 @@ class MailService
                     '月請購_站位.下月每人每日需求量',
                     '月請購_站位.下月每日更換頻率',
                     'inventory現有庫存',
+                    'safestock報警備註.備註',
                 )->groupBy(
                     '月請購_站位.客戶別',
                     'consumptive_material.料號',
@@ -148,6 +157,7 @@ class MailService
                     '月請購_站位.下月每人每日需求量',
                     '月請購_站位.下月每日更換頻率',
                     'inventory現有庫存',
+                    'safestock報警備註.備註',
                 )
                 ->where('consumptive_material.月請購', '=', "是")
                 ->where('月請購_站位.狀態', '=', "已完成")
@@ -185,23 +195,25 @@ class MailService
                 ->leftJoinSub($inventorys2, 'suminventory', function ($join) {
                     $join->on('consumptive_material.料號', '=', 'suminventory.料號');
                 })
+                ->leftjoin('safestock報警備註', function ($join) {
+                    $join->on('safestock報警備註.料號', '=', 'consumptive_material.料號');
+                })
                 ->select(
-                    '客戶別',
                     'consumptive_material.料號',
                     'consumptive_material.品名',
                     'consumptive_material.規格',
                     'consumptive_material.安全庫存',
                     'consumptive_material.月請購',
                     'inventory現有庫存',
+                    'safestock報警備註.備註',
                 )->groupBy(
-                    '客戶別',
                     'consumptive_material.料號',
                     'consumptive_material.品名',
                     'consumptive_material.規格',
                     'consumptive_material.安全庫存',
                     'consumptive_material.月請購',
                     'inventory現有庫存',
-
+                    'safestock報警備註.備註',
                 )
                 ->where('consumptive_material.月請購', '=', "否")
                 ->get()->unique('料號')->toArray();
@@ -244,6 +256,7 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(4, $j + 2, $datas[$j]->規格);
                 $worksheet->setCellValueByColumnAndRow(5, $j + 2, $datas[$j]->inventory現有庫存);
                 $worksheet->setCellValueByColumnAndRow(6, $j + 2, $datas[$j]->安全庫存);
+                $worksheet->setCellValueByColumnAndRow(7, $j + 2, $datas[$j]->備註);
             }
             //填寫內容
             for ($i = count($datas), $j = 0; $j < count($datas1); $i++, $j++) {
@@ -253,6 +266,7 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(4, $i + 2, $datas1[$j]->規格);
                 $worksheet->setCellValueByColumnAndRow(5, $i + 2, $datas1[$j]->inventory現有庫存);
                 $worksheet->setCellValueByColumnAndRow(6, $i + 2, $datas1[$j]->安全庫存);
+                $worksheet->setCellValueByColumnAndRow(7, $i + 2, $datas1[$j]->備註);
             }
             //填寫內容
             for ($i = $count2, $j = 0; $j < count($datas2); $i++, $j++) {
@@ -262,6 +276,7 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(4, $i + 2, $datas2[$j]->規格);
                 $worksheet->setCellValueByColumnAndRow(5, $i + 2, $datas2[$j]->inventory現有庫存);
                 $worksheet->setCellValueByColumnAndRow(6, $i + 2, $datas2[$j]->安全庫存);
+                $worksheet->setCellValueByColumnAndRow(7, $i + 2, $datas2[$j]->備註);
             }
             // 下載
             $now = Carbon::now()->format('Ymd');
@@ -317,7 +332,11 @@ class MailService
                     'consumptive_material.品名',
                     'consumptive_material.規格',
                 )
-                ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格',)
+                ->leftjoin('sluggish報警備註', function ($join) {
+                    $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
+                    $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
+                })
+                ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格','sluggish報警備註.備註')
                 ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間), getdate())>30')
                 ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                 ->get();
@@ -355,6 +374,7 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(4, $j + 2, $datas[$j]->規格);
                 $worksheet->setCellValueByColumnAndRow(5, $j + 2, $datas[$j]->inventory現有庫存);
                 $worksheet->setCellValueByColumnAndRow(6, $j + 2, $datas[$j]->inventory最後更新時間);
+                $worksheet->setCellValueByColumnAndRow(7, $j + 2, $datas[$j]->備註);
             }
 
             $now = Carbon::now()->format('Ymd');

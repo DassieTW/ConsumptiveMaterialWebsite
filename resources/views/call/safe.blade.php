@@ -55,7 +55,7 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
-            value="{!! __('callpageLang.submit') !!}">
+            value="{!! __('callpageLang.saveremark') !!}">
 
     </div>
 
@@ -110,7 +110,7 @@
                             </td>
                             @endif
                             <td><input class="form-control form-control-lg" type="text" style="width:100px"
-                                    id="remark{{$loop->index}}"></td>
+                                    id="remark{{$loop->index}}" value="{{$data->備註}}"></td>
                         </tr>
 
                         <input type="hidden" id="count" name="count" value="{{$loop->count}}">
@@ -150,7 +150,7 @@
                             </td>
                             @endif
                             <td><input class="form-control form-control-lg" type="text" style="width:100px"
-                                    id="remarka{{$loop->index}}"></td>
+                                    id="remarka{{$loop->index}}" value="{{$data->備註}}"></td>
                         </tr>
 
                         <input type="hidden" id="count1" name="count1" value="{{$loop->count}}">
@@ -168,7 +168,6 @@
                         <tr id="datab{{$loop->index}}" class="isnRows2">
                             <td>{!! __('callpageLang.notmonth') !!}</td>
                             <td>{{$data->料號}}</td>
-                            <input type="hidden" id="clientb{{$loop->index}}" value="{{$data->客戶別}}">
                             <input type="hidden" id="numberb{{$loop->index}}" value="{{$data->料號}}">
                             <td>{{$data->品名}}</td>
                             <td>{{$data->規格}}</td>
@@ -190,7 +189,7 @@
                             </td>
                             @endif
                             <td><input class="form-control form-control-lg" type="text" style="width:100px"
-                                    id="remarkb{{$loop->index}}"></td>
+                                    id="remarkb{{$loop->index}}" value="{{$data->備註}}"></td>
                         </tr>
 
                         <input type="hidden" id="count2" name="count2" value="{{$loop->count}}">

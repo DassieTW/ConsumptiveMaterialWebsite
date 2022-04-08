@@ -138,6 +138,41 @@ $(document).ready(function () {
             }
         }
 
+        $.ajax({
+            type: 'POST',
+            url: "saferemark",
+            data: {
+                client: client,
+                number: number,
+                remark: remark,
+            },
+
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $('body').loadingModal({
+                    text: 'Loading...',
+                    animation: 'circle'
+                });
+
+            },
+            complete: function () {
+                $('body').loadingModal('hide');
+                $('body').loadingModal('destroy');
+            },
+
+            success: function (data) {
+                console.log(data.boolean);
+                var mess = Lang.get('callpageLang.saveremark') + ' ' + Lang.get('callpageLang.success');
+                alert(mess);
+                window.location.reload();
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.warn(jqXHR.responseText);
+                alert(errorThrown);
+                window.location.reload();
+            }
+        });
 
     });
 

@@ -32,5 +32,6 @@ return [
     'nostock' => '目前無任何庫存',
     'notmonth' => '非月請購耗材',
     'nowstock' => '現有庫存',
-    'submit' =>'送出',
+    'saveremark' =>'保存備註',
+    'success' => '成功',
 ];
