@@ -98,7 +98,7 @@ class CallController extends Controller
                     ->where('月請購_單耗.狀態', '=', "已完成")
                     ->get()->toArray();
 
-                        dd($datas); // test
+                        //dd($datas); // test
 
                 foreach ($datas as $data) {
                     $safe =  $data->LT * $data->單耗 * $data->下月MPS / $data->下月生產天數;

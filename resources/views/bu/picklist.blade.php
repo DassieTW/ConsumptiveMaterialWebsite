@@ -55,6 +55,8 @@
 
                             $client = DB::table('客戶別')->pluck('客戶')->toArray();
                             $nowstock = DB::table('inventory')->where('料號',$data->料號)->where('現有庫存','>',0)->pluck('現有庫存')->toArray();
+                            $nowclient = DB::table('inventory')->where('料號',$data->料號)->where('現有庫存','>',0)->pluck('客戶別')->toArray();
+                            $nowloc = DB::table('inventory')->where('料號',$data->料號)->where('現有庫存','>',0)->pluck('儲位')->toArray();
                             $position = DB::table('儲位')->pluck('儲存位置')->toArray();
 
                             $count = count($nowstock);
@@ -63,14 +65,16 @@
                             {
                                 if($nowstock !== [])
                                 {
+
                                     for ($x = 0; $x < $count; $x++)
                                     {
                                         $keys[] = 'u'.$x;
                                     }
+
                                     $result = array_merge_recursive(
-                                            array_combine($keys, $client),
+                                            array_combine($keys, $nowclient),
                                             array_combine($keys, $nowstock),
-                                            array_combine($keys, $position)
+                                            array_combine($keys, $nowloc)
                                     );
                                 }
                                 else {
@@ -80,6 +84,8 @@
                             else {
                                 $keys[0] = 'u0';
                             }
+
+
 
                             $jobnumber = DB::table('人員信息')->pluck('工號')->toArray();
                             $name = DB::table('人員信息')->pluck('姓名')->toArray();
@@ -171,8 +177,8 @@
                 value="{!! __('bupagelang.submit') !!}">
         </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.picklistpage')}}'">{!!
-            __('bupagelang.return') !!}</button>
+        {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.picklistpage')}}'">{!!
+            __('bupagelang.return') !!}</button> --}}
     </div>
 </div>
 
