@@ -59,10 +59,7 @@ class BUController extends Controller
         //
         if (Session::has('username')) {
 
-            $database = [
-                'M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management',
-                '巴淡-LOT11 Consumables management', '巴淡-LOT2 Consumables management', '巴淡-PTSN Consumables management'
-            ];
+            $database = config('database_list.databases');
 
             foreach ($database as $key => $value) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
@@ -110,6 +107,7 @@ class BUController extends Controller
     //調撥單新增and提交
     public function transsluggish(Request $request)
     {
+        $database_list = config('database_list.databases');
         if (Session::has('username')) {
             /*$count = $request->input('check'.'4'.'0');
             dd($count);*/
@@ -126,7 +124,7 @@ class BUController extends Controller
             $receive = $request->input('receive');
             $nowstock = DB::table('inventory')->where('料號', $number)->sum('現有庫存');
             if ($oldstock == $nowstock) {
-                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
                 \DB::purge(env("DB_CONNECTION"));
                 $z = '0001';
                 $max = DB::table('調撥單')->max('開單時間');
@@ -180,8 +178,9 @@ class BUController extends Controller
     //調撥單查詢
     public function searchlistsub(Request $request)
     {
+        $database_list = config('database_list.databases');
         if (Session::has('username')) {
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
             $begin = date($request->input('begin'));
             $endDate = strtotime($request->input('end'));
@@ -276,13 +275,14 @@ class BUController extends Controller
     //調撥單刪除
     public function delete(Request $request)
     {
+        $database_list = config('database_list.databases');
         if (Session::has('username')) {
 
             $list = $request->input('list');
 
             DB::beginTransaction();
             try {
-                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
                 \DB::purge(env("DB_CONNECTION"));
                 DB::table('調撥單')
                     ->where('調撥單號', $list)
@@ -301,28 +301,15 @@ class BUController extends Controller
         }
     }
 
-    /*//調撥_撥出單頁面
-    public function outlistpage(Request $request)
-    {
-        if (Session::has('username')) {
-
-            $database = $request->session()->get('database');
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
-            \DB::purge(env("DB_CONNECTION"));
-            return view('bu.outlistpage')->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
     //調撥_撥出單
     public function outlist(Request $request)
     {
+        $database_list = config('database_list.databases');
         if (Session::has('username')) {
             $list = $request->input('list');
 
             $database = $request->session()->get('database');
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
             return view('bu.outlist')
                 ->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')->where('調撥單號', $list)]);
@@ -334,8 +321,9 @@ class BUController extends Controller
     //調撥-撥出單提交
     public function outlistsubmit(Request $request)
     {
+        $database_list = config('database_list.databases');
         if (Session::has('username')) {
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
             $list = $request->input('list');
             $name = $request->input('name');
@@ -387,28 +375,15 @@ class BUController extends Controller
         }
     }
 
-    /*//調撥_接收單頁面
-    public function picklistpage(Request $request)
-    {
-        if (Session::has('username')) {
-
-            $database = $request->session()->get('database');
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
-            \DB::purge(env("DB_CONNECTION"));
-            return view('bu.picklistpage')->with(['data' => 調撥單::cursor()->where('接收廠區', $database)->where('狀態', '待接收')]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
     //調撥_接收單
     public function picklist(Request $request)
     {
+        $database_list = config('database_list.databases');
         if (Session::has('username')) {
             $list = $request->input('list');
 
             $database = $request->session()->get('database');
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
             return view('bu.picklist')->with(['data' => 調撥單::cursor()->where('接收廠區', $database)->where('狀態', '待接收')->where('調撥單號', $list)]);
         } else {
@@ -419,6 +394,7 @@ class BUController extends Controller
     //調撥-接收單提交
     public function picklistsubmit(Request $request)
     {
+        $database_list = config('database_list.databases');
         if (Session::has('username')) {
 
             $now = Carbon::now();
@@ -431,7 +407,7 @@ class BUController extends Controller
             $pickpeople = $request->input('pickpeople');
             $name = $request->input('name');
             $format = $request->input('format');
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
 
             $outclients = DB::table('撥出明細')->where('料號', $number)->where('調撥單號', $list)->pluck('客戶別')->toarray();
@@ -494,7 +470,7 @@ class BUController extends Controller
                             ->insert(['料號' => $number, '現有庫存' => $realpick, '儲位' => $position, '客戶別' => $client, '最後更新時間' => $now]);
                     }
 
-                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
                     \DB::purge(env("DB_CONNECTION"));
 
                     DB::table('接收明細')
@@ -537,8 +513,9 @@ class BUController extends Controller
     //調撥明細查詢
     public function searchdetailsub(Request $request)
     {
+        $database_list = config('database_list.databases');
         if (Session::has('username')) {
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
             $begin = date($request->input('begin'));
             $endDate = strtotime($request->input('end'));
@@ -728,19 +705,6 @@ class BUController extends Controller
         } // if else
     }
 
-    /*//廠區庫存調撥頁面
-    public function material(Request $request)
-    {
-        if (Session::has('username')) {
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
-            \DB::purge(env("DB_CONNECTION"));
-            return view('bu.material')->with(['factory' => 廠別::cursor()]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-
     public function sluggishmaterial(Request $request)
     {
         //
@@ -754,10 +718,7 @@ class BUController extends Controller
                     'number' => trans('bupagelang.isnlength'),
                 ]);
             } else {
-                $database = [
-                    'M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management',
-                    '巴淡-LOT11 Consumables management', '巴淡-LOT2 Consumables management', '巴淡-PTSN Consumables management'
-                ];
+                $database = config('database_list.databases');
 
                 foreach ($database as $key => $value) {
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);

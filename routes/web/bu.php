@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\入庫原因;
 use App\Models\客戶別;
 use App\Models\發料部門;
@@ -24,7 +25,7 @@ use App\Http\Controllers\BUController;
 */
 
 //index
-Route::get('/',function () {
+Route::get('/', function () {
     return view('bu.index');
 })->name('bu.index');
 
@@ -32,14 +33,23 @@ Route::get('/',function () {
 Route::get('/sluggish', [BUController::class, 'sluggish'])->name('bu.sluggish');
 
 //廠區庫存調撥
-Route::get('/sluggishmaterial', function(){
+Route::get('/sluggishmaterial', function () {
+    $database_list = config('database_list.databases');
+    $database_names = array();
+    foreach ($database_list as $value) {
+        $temp = str_replace(" Consumables management", "", $value);
+        array_push($database_names, $temp);
+    } // for each
+
+    unset($value); // unset the var created in the foreach loop
+
     if (Session::has('username')) {
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
         \DB::purge(env("DB_CONNECTION"));
-        return view('bu.material');
+        return view('bu.material')->with(['database_list' => $database_list, 'database_names' => $database_names]);
     } else {
         return redirect(route('member.login'));
-    }
+    } // if else
 });
 
 Route::post('/sluggishmaterial', [BUController::class, 'sluggishmaterial'])->name('bu.sluggishmaterial');
@@ -50,10 +60,19 @@ Route::post('/transsluggish', [BUController::class, 'transsluggish'])->name('bu.
 //調撥單查詢頁面
 Route::get('/searchlist', function () {
     if (Session::has('username')) {
-        return view('bu.searchlist');
-    }else {
+        $database_list = config('database_list.databases');
+        $database_names = array();
+        foreach( $database_list as $value ) {
+            $temp = str_replace(" Consumables management", "", $value);
+            array_push( $database_names, $temp );
+        } // for each
+
+        unset($value); // unset the var created in the foreach loop
+
+        return view('bu.searchlist')->with(['database_list' => $database_list, 'database_names' => $database_names]);
+    } else {
         return redirect(route('member.login'));
-    }
+    } // if else
 })->name('bu.searchlist');
 
 //調撥單查詢
@@ -65,10 +84,11 @@ Route::post('/searchlistsub', [BUController::class, 'searchlistsub'])->name('bu.
 Route::post('/delete', [BUController::class, 'delete'])->name('bu.delete');
 
 //調撥_撥出單頁面
-Route::get('/outlist', function(){
+Route::get('/outlist', function () {
     if (Session::has('username')) {
         $database = Session::get('database');
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        $database_list = config('database_list.databases');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
         \DB::purge(env("DB_CONNECTION"));
         return view('bu.outlistpage')->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')]);
     } else {
@@ -77,10 +97,11 @@ Route::get('/outlist', function(){
 })->name('bu.outlistpage');
 
 //調撥_撥出單
-Route::get('/outlistsub', function(){
+Route::get('/outlistsub', function () {
     if (Session::has('username')) {
         $database = Session::get('database');
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        $database_list = config('database_list.databases');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
         \DB::purge(env("DB_CONNECTION"));
         return view('bu.outlistpage')->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')]);
     } else {
@@ -94,10 +115,11 @@ Route::post('/outlistsub', [BUController::class, 'outlist'])->name('bu.outlist')
 Route::post('/outlistsubmit', [BUController::class, 'outlistsubmit'])->name('bu.outlistsubmit');
 
 //調撥_接收單頁面
-Route::get('/picklist', function(){
+Route::get('/picklist', function () {
     if (Session::has('username')) {
         $database = Session::get('database');
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        $database_list = config('database_list.databases');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
         \DB::purge(env("DB_CONNECTION"));
         return view('bu.picklistpage')->with(['data' => 調撥單::cursor()->where('接收廠區', $database)->where('狀態', '待接收')]);
     } else {
@@ -106,10 +128,11 @@ Route::get('/picklist', function(){
 })->name('bu.picklistpage');
 
 //調撥_接收單
-Route::get('/picklistsub', function(){
+Route::get('/picklistsub', function () {
     if (Session::has('username')) {
         $database = Session::get('database');
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        $database_list = config('database_list.databases');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
         \DB::purge(env("DB_CONNECTION"));
         return view('bu.picklistpage')->with(['data' => 調撥單::cursor()->where('接收廠區', $database)->where('狀態', '待接收')]);
     } else {
@@ -124,7 +147,7 @@ Route::post('/picklistsubmit', [BUController::class, 'picklistsubmit'])->name('b
 
 
 //調撥明細查詢頁面
-Route::get('/searchdetail', function(){
+Route::get('/searchdetail', function () {
     if (Session::has('username')) {
         return view('bu.searchdetail');
     } else {
@@ -133,7 +156,7 @@ Route::get('/searchdetail', function(){
 })->name('bu.searchdetail');
 
 //調撥明細查詢
-Route::get('/searchdetailsub', function(){
+Route::get('/searchdetailsub', function () {
     if (Session::has('username')) {
         return view('bu.searchdetail');
     } else {
@@ -150,14 +173,23 @@ Route::post('/download', [BUController::class, 'download'])->name('bu.download')
 Route::post('/downloadlist', [BUController::class, 'downloadlist'])->name('bu.downloadlist');
 
 //廠區庫存調撥頁面
-Route::get('/material',function(){
+Route::get('/material', function () {
+    $database_list = config('database_list.databases');
+    $database_names = array();
+    foreach ($database_list as $value) {
+        $temp = str_replace(" Consumables management", "", $value);
+        array_push($database_names, $temp);
+    } // for each
+
+    unset($value); // unset the var created in the foreach loop
+
     if (Session::has('username')) {
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', 'M2_TEST_1112');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
         \DB::purge(env("DB_CONNECTION"));
-        return view('bu.material');
+        return view('bu.material')->with(['database_list' => $database_list, 'database_names' => $database_names]);
     } else {
         return redirect(route('member.login'));
-    }
+    } // if else
 })->name('bu.material');
 
 /*//廠區庫存調撥

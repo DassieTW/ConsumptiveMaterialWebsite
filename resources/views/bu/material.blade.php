@@ -38,9 +38,9 @@
                             <select class="form-select form-select-lg" id="table" name="table">
                                 <option style="display: none" disabled selected value="">{!!
                                     __('bupagelang.enterfactory') !!}</option>
-                                <option value="M2_TEST_1112">M2_TEST</option>
-                                <option value="巴淡SMT1214">巴淡SMT_TEST</option>
-                                <option value="BB1_1214 Consumables management">BB1_TEST</option>
+                                @for( $i = 0 ; $i < count($database_list) ; $i++ )
+                                    <option value="{{ $database_list[$i] }}">{{ $database_names[$i] }}</option>
+                                @endfor
                             </select>
                         </div>
 

@@ -52,7 +52,9 @@ Route::get('/dashboard', function () {
 Route::get('/vuetest', function () {
     // dd( \Auth::user()->username ); // test
     // return view("layouts.app");
-    dd( config('database_list.databases') ); // test
+    $databases = config('database_list.databases');
+
+    dd( $databases[0] ); // test
 })->withoutMiddleware('auth');
 
 Route::get('/phpinfo', function () {

@@ -94,8 +94,7 @@
                         $buytime1 = array();
                         $buytimeco = array();
                         $buytimeco1 = array();
-                        $database = ['M2_TEST_1112','巴淡SMT1214','BB1_1214 Consumables management' ,
-                        '巴淡-LOT11 Consumables management' , '巴淡-LOT2 Consumables management' , '巴淡-PTSN Consumables management'];
+                        $database = config('database_list.databases');
                         foreach ($database as $key => $value) {
                         if($value != $database[$i]){
                         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);

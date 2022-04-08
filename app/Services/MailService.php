@@ -22,10 +22,7 @@ class MailService
     public function download() // 安全庫存 寄警報信
     {
 
-        $databases = [
-            'M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management',
-            '巴淡-LOT11 Consumables management', '巴淡-LOT2 Consumables management', '巴淡-PTSN Consumables management'
-        ];
+        $databases = config('database_list.databases');
 
         \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
         foreach ($databases as $database) {
@@ -312,11 +309,7 @@ class MailService
 
     public function day() // 呆滯天數 寄警報信
     {
-
-        $databases = [
-            'M2_TEST_1112', '巴淡SMT1214', 'BB1_1214 Consumables management',
-            '巴淡-LOT11 Consumables management', '巴淡-LOT2 Consumables management', '巴淡-PTSN Consumables management'
-        ];
+        $databases = config('database_list.databases');
         $now = strtotime(Carbon::now()->format('Ymd'));
         foreach ($databases as $database) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
