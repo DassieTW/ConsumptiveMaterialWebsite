@@ -229,7 +229,7 @@ $(document).ready(function () {
                 }
             });
             return false;
-        }
+        } // if
 
         if (parseInt(amount) > parseInt(oldstock) || parseInt(amount) <= 0) {
             document.getElementById("datah" + i).classList.add("is-invalid");

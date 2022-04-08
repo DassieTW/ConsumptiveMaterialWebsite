@@ -164,7 +164,7 @@
                                     <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
                                         !!}</option>
                                     @foreach($buytimeco as $buytime)
-                                    <option>{{ $buytime[0] }}</option>
+                                    <option>{{ str_replace(" Consumables management", "", $buytime[0]) }}</option>
                                     @endforeach
 
                             </td>
@@ -215,7 +215,7 @@
                                     <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory')
                                         !!}</option>
                                     @foreach($buytimeco as $buytime)
-                                    <option>{{ $buytime[0] }}</option>
+                                    <option>{{ str_replace(" Consumables management", "", $buytime[0]) }}</option>
                                     @endforeach
 
                             </td>
