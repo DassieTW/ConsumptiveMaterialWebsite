@@ -42,8 +42,8 @@
     <script>
         //place your code to be executed early here
         $('body').loadingModal({
-          text: 'Loading...',
-          animation: 'circle'
+            text: 'Loading...',
+            animation: 'circle'
         });
     </script>
     <nav class="navbar navbar-expand fixed-top navbar-light navbar-bg p-0 m-0">
@@ -53,7 +53,7 @@
         <div class="align-middle">
             <a class="nav-link d-none d-sm-inline-block" href="{{ route('welcome') }}">
                 <i class="align-middle text-dark" data-feather="home"></i>
-                <u class="text-dark"><span class="align-middle text-dark">{{ __('loginPageLang.home')}}</span></u>
+                <u class="text-dark"><span class="align-middle text-dark">{{ __('loginPageLang.home') }}</span></u>
             </a>
         </div>
         <div class="navbar-collapse collapse">
@@ -68,8 +68,7 @@
                         data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
                         aria-expanded="false">
                         <i class="align-middle text-dark" data-feather="settings"></i>
-                        <u class="text-dark"><span class="align-middle text-dark">{{
-                                __('loginPageLang.settings')}}</span></u>
+                        <u class="text-dark"><span class="align-middle text-dark">{{ __('loginPageLang.settings') }}</span></u>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end">
@@ -77,7 +76,7 @@
                             Profile</a>
                         <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu"
                             aria-expanded="false"><i class="align-middle mr-1" data-feather="book-open"></i>
-                            {{ __('templateWords.language')}}</a>
+                            {{ __('templateWords.language') }}</a>
                         <div class="collapse" id="langMenu">
                             <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
                                 English</a>
@@ -106,11 +105,11 @@
                         <!-- </div>breaks cols to a new line-->
                         <div class="text-center mt-4">
                             <h1 class="h2 d-none d-sm-inline-block">
-                                {{ __('loginPageLang.welcome')}}
+                                {{ __('loginPageLang.welcome') }}
                             </h1>
                             <br>
                             <p class="lead d-none d-sm-inline-block">
-                                {{ __('loginPageLang.welcome_msg')}}
+                                {{ __('loginPageLang.welcome_msg') }}
                             </p>
                         </div>
 
@@ -125,41 +124,28 @@
                                         novalidate>
                                         @csrf
                                         <div class="mb-3">
-                                            <label class="form-label">{{ __('loginPageLang.site')}}</label>
+                                            <label class="form-label">{{ __('loginPageLang.site') }}</label>
                                             <select class="form-select form-select-lg" id="site" name="site" required>
-                                                <option value="" selected>{{ __('loginPageLang.site_placeholder')}}
-                                                </option>
-                                                <option value="M2_TEST_1112">M2_TEST</option>
-                                                <option value="巴淡SMT1214">巴淡SMT_TEST</option>
-                                                <option value="BB1_1214 Consumables management">BB1_TEST</option>
-                                                <option value="巴淡-LOT11 Consumables management">巴淡-LOT11</option>
-                                                <option value="巴淡-LOT2 Consumables management">巴淡-LOT2</option>
-                                                <option value="巴淡-PTSN Consumables management">巴淡-PTSN</option>
-                                                {{--
-                                                <option value="testing">TEST</option>
-                                                <option value="default">Default</option>
-                                                <option value="BB1">BB1</option>
-                                                <option value="BB4">BB4</option>
-                                                <option value="M1">M1</option>
-                                                <option value="M2">M2</option>
-                                                <option value="M3">M3</option>
-                                                <option value="SMT">SMT</option> --}}
+                                                <option value="" selected>{{ __('loginPageLang.site_placeholder') }}</option>
+                                                @for( $i = 0 ; $i < count($database_list) ; $i++ )
+                                                    <option value="{{ $database_list[$i] }}">{{ $database_names[$i] }}</option>
+                                                @endfor
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">{{ __('loginPageLang.username')}}</label>
+                                            <label class="form-label">{{ __('loginPageLang.username') }}</label>
                                             <input class="form-control form-control-lg" type="text" id="username"
                                                 name="username"
-                                                placeholder="{{ __('loginPageLang.username_placeholder')}}" required
+                                                placeholder="{{ __('loginPageLang.username_placeholder') }}" required
                                                 autocomplete="username" autofocus />
 
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">{{ __('loginPageLang.password')}}</label>
+                                            <label class="form-label">{{ __('loginPageLang.password') }}</label>
                                             <div class="input-group" id="show_hide_password">
                                                 <input class="form-control form-control-lg" type="password"
                                                     id="password" name="password"
-                                                    placeholder="{{ __('loginPageLang.password_placeholder')}}"
+                                                    placeholder="{{ __('loginPageLang.password_placeholder') }}"
                                                     required />
                                                 <div class="input-group-text" id="eye-button"
                                                     style="color: darkblue; border-radius: 5px;">
@@ -177,7 +163,7 @@
                                         </div>
                                         <div class="text-center mt-3">
                                             <input type="submit" class="btn btn-lg btn-primary"
-                                                value="{{ __('loginPageLang.login_btn')}}">
+                                                value="{{ __('loginPageLang.login_btn') }}">
                                         </div>
                                     </form>
                                 </div>

@@ -17,7 +17,7 @@ class CreateSafestock報警備註Table extends Migration
             $table->string('料號', 12);
             $table->string('客戶別', 45);
             $table->primary(['料號','客戶別']);
-            $table->string('備註', 255);
+            $table->string('備註', 255)->nullable();
         });
     }
 
