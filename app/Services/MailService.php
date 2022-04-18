@@ -10,6 +10,8 @@ use DB;
 use Mail;
 use File;
 use App\Models\Inventory;
+use App\Models\whereInMultiCol;
+use Sentry\Util\JSON;
 
 /**
  * Class MailService
@@ -23,6 +25,7 @@ class MailService
     {
 
         $databases = config('database_list.databases');
+        $AllISNClientsPairs = array("isn" => array(), "client" => array());
 
         \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
         foreach ($databases as $database) {
@@ -244,6 +247,7 @@ class MailService
             $worksheet->setCellValueByColumnAndRow(4, 1, \Lang::get('callpageLang.format'));
             $worksheet->setCellValueByColumnAndRow(5, 1, \Lang::get('callpageLang.stock'));
             $worksheet->setCellValueByColumnAndRow(6, 1, \Lang::get('callpageLang.safe'));
+            $worksheet->setCellValueByColumnAndRow(7, 1, \Lang::get('callpageLang.mark'));
 
             //填寫內容
             for ($j = 0; $j < count($datas); $j++) {
@@ -254,7 +258,10 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(5, $j + 2, $datas[$j]->inventory現有庫存);
                 $worksheet->setCellValueByColumnAndRow(6, $j + 2, $datas[$j]->安全庫存);
                 $worksheet->setCellValueByColumnAndRow(7, $j + 2, $datas[$j]->備註);
-            }
+
+                array_push($AllISNClientsPairs["isn"], $datas[$j]->料號);
+                array_push($AllISNClientsPairs["client"], $datas[$j]->客戶別);
+            } // for
             //填寫內容
             for ($i = count($datas), $j = 0; $j < count($datas1); $i++, $j++) {
                 $worksheet->setCellValueByColumnAndRow(1, $i + 2, $datas1[$j]->客戶別);
@@ -264,7 +271,10 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(5, $i + 2, $datas1[$j]->inventory現有庫存);
                 $worksheet->setCellValueByColumnAndRow(6, $i + 2, $datas1[$j]->安全庫存);
                 $worksheet->setCellValueByColumnAndRow(7, $i + 2, $datas1[$j]->備註);
-            }
+
+                array_push($AllISNClientsPairs["isn"], $datas1[$j]->料號);
+                array_push($AllISNClientsPairs["client"], $datas1[$j]->客戶別);
+            } // for
             //填寫內容
             for ($i = $count2, $j = 0; $j < count($datas2); $i++, $j++) {
                 $worksheet->setCellValueByColumnAndRow(1, $i + 2, $notmonth);
@@ -274,7 +284,11 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(5, $i + 2, $datas2[$j]->inventory現有庫存);
                 $worksheet->setCellValueByColumnAndRow(6, $i + 2, $datas2[$j]->安全庫存);
                 $worksheet->setCellValueByColumnAndRow(7, $i + 2, $datas2[$j]->備註);
-            }
+
+                array_push($AllISNClientsPairs["isn"], $datas2[$j]->料號);
+                array_push($AllISNClientsPairs["client"], "非月請購");
+            } // for
+
             // 下載
             $now = Carbon::now()->format('Ymd');
             $filename = $database . 'Safe Stock' . $now . '.xlsx';
@@ -304,13 +318,48 @@ class MailService
             }
 
             File::delete(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
+
+            // ------ delete unused comment ----------
+            $value_pairs = array();
+
+            for ($i = 0; $i < count($AllISNClientsPairs['isn']); $i++) {
+                array_push($value_pairs, [$AllISNClientsPairs['isn'][$i], $AllISNClientsPairs['client'][$i]]);
+            } // for
+
+            $all_remarks = DB::table('safestock報警備註')->select('料號', '客戶別')->get();
+            $all_remarks_pairs = array();
+
+            foreach ($all_remarks as $remark) {
+                array_push($all_remarks_pairs, [$remark->料號, $remark->客戶別]);
+            } // foreach
+
+            // dd($all_remarks_pairs, $value_pairs); // test
+
+            // Compare all values by a json_encode
+            $diff = array_diff(array_map('json_encode', $all_remarks_pairs), array_map('json_encode', $value_pairs));
+
+            // Json decode the result
+            $diff = array_map('json_decode', $diff);
+            // dd($all_remarks_pairs, $value_pairs, $diff); // test
+
+            $rowsAffected = DB::table('safestock報警備註')
+                ->where(function ($query) use ($diff) {
+                    whereInMultiCol::scopeWhereInMultiple($query, ['料號', '客戶別'], $diff);
+                })
+                ->delete();
+
+            \Log::channel('dbquerys')->info('--------------------------deleted ' . $rowsAffected . ' rows in ' . $database . ' 安全庫存備註Table--------------------------');
         } // for each
+
+
     } // 安全庫存 寄警報信
 
     public function day() // 呆滯天數 寄警報信
     {
         $databases = config('database_list.databases');
         $now = strtotime(Carbon::now()->format('Ymd'));
+        $AllISNClientsPairsDay = array("isn" => array(), "client" => array());
+
         foreach ($databases as $database) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
@@ -329,7 +378,7 @@ class MailService
                     $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
                     $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
                 })
-                ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格','sluggish報警備註.備註')
+                ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'sluggish報警備註.備註')
                 ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間), getdate())>30')
                 ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                 ->get();
@@ -358,6 +407,7 @@ class MailService
             $worksheet->setCellValueByColumnAndRow(4, 1, \Lang::get('callpageLang.format'));
             $worksheet->setCellValueByColumnAndRow(5, 1, \Lang::get('callpageLang.stock'));
             $worksheet->setCellValueByColumnAndRow(6, 1, \Lang::get('callpageLang.days'));
+            $worksheet->setCellValueByColumnAndRow(7, 1, \Lang::get('callpageLang.mark'));
 
             //填寫內容
             for ($j = 0; $j < count($datas); $j++) {
@@ -368,7 +418,10 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(5, $j + 2, $datas[$j]->inventory現有庫存);
                 $worksheet->setCellValueByColumnAndRow(6, $j + 2, $datas[$j]->inventory最後更新時間);
                 $worksheet->setCellValueByColumnAndRow(7, $j + 2, $datas[$j]->備註);
-            }
+
+                array_push($AllISNClientsPairsDay["isn"], $datas[$j]->料號);
+                array_push($AllISNClientsPairsDay["client"], $datas[$j]->客戶別);
+            } // for
 
             $now = Carbon::now()->format('Ymd');
             $filename = $database . 'Passive Day' . $now . '.xlsx';
@@ -383,7 +436,7 @@ class MailService
             $num = count($datas);
 
             if ($num > 0) {
-                Mail::send('mail/safestock', [], function ($message) use ($now, $database) {
+                Mail::send('mail/sluggishstock', [], function ($message) use ($now, $database) {
                     $emails = DB::table('login')->select('email')->whereNotNull('email')->where('priority', '<', 4)->get()->toArray();
 
                     foreach ($emails as $email) {
@@ -397,9 +450,39 @@ class MailService
                     $message->attach(public_path() . '/excel/' . $database . 'Passive Day' . $now . '.xlsx');
                     $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
                 });
-            }
+            } // if
 
             File::delete(public_path() . '/excel/' . $database . 'Passive Day' . $now . '.xlsx');
+
+            // ------ delete unused comment ----------
+
+            $value_pairs_day = array();
+
+            for ($i = 0; $i < count($AllISNClientsPairsDay['isn']); $i++) {
+                array_push($value_pairs_day, [$AllISNClientsPairsDay['isn'][$i], $AllISNClientsPairsDay['client'][$i]]);
+            } // for
+
+            $all_remarks_day = DB::table('sluggish報警備註')->select('料號', '客戶別')->get();
+            $all_remarks_pairs_day = array();
+
+            foreach ($all_remarks_day as $remark) {
+                array_push($all_remarks_pairs_day, [$remark->料號, $remark->客戶別]);
+            } // foreach
+
+            // Compare all values by a json_encode
+            $diff_day = array_diff(array_map('json_encode', $all_remarks_pairs_day), array_map('json_encode', $value_pairs_day));
+
+            // Json decode the result
+            $diff_day = array_map('json_decode', $diff_day);
+            // dd($all_remarks_pairs, $value_pairs, $diff); // test
+
+            $rowsAffected = DB::table('sluggish報警備註')
+                ->where(function ($query) use ($diff_day) {
+                    whereInMultiCol::scopeWhereInMultiple($query, ['料號', '客戶別'], $diff_day);
+                })
+                ->delete();
+
+            \Log::channel('dbquerys')->info('--------------------------deleted ' . $rowsAffected . ' rows in ' . $database . ' 呆滯庫存備註Table--------------------------');
         } // foreach
     } // 呆滯庫存 寄警報信
 } // end of class

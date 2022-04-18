@@ -14,7 +14,7 @@ class 月請購_單耗 extends Model
     public $timestamps = false;
     protected $table = "月請購_單耗";
 
-    protected $primaryKey = ['料號','客戶別','機種','製程'];
+    protected $primaryKey = ['料號', '客戶別', '機種', '製程'];
 
     protected $keyType = 'string';
 
@@ -35,4 +35,13 @@ class 月請購_單耗 extends Model
         '送單時間',
         '送單人',
     ];
+
+    /**
+     * Get the material info that has the same PN.
+     */
+    public function materials()
+    {
+        // Post::class, 'foreign_key', 'owner_key'
+        return $this->belongsTo(ConsumptiveMaterial::class, '料號', '料號');
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\CallController;
 use App\Http\Controllers\OwarehouseController;
 use App\Http\Controllers\ImportexcelController;
 use App\Http\Controllers\MailController;
+use App\Services\MailService; // for testing only
 
 use Illuminate\Http\Request;
 use App\Models;
@@ -54,7 +55,7 @@ Route::get('/vuetest', function () {
     // return view("layouts.app");
     $databases = config('database_list.databases');
 
-    dd( $databases[0] ); // test
+    MailService::day(); // test
 })->withoutMiddleware('auth');
 
 Route::get('/phpinfo', function () {

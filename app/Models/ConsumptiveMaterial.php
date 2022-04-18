@@ -70,4 +70,12 @@ class ConsumptiveMaterial extends Model
         '安全庫存',
     ];
 
-}
+    /**
+     * Get the 月請購＿單耗s for this 料號.
+     */
+    public function monthly_unit()
+    {
+        return $this->hasMany(月請購_單耗::class, '料號', '料號'); // Comment::class, 'foreign_key', 'local_key'
+    } // monthly_unit
+
+} // end of class

@@ -490,7 +490,7 @@ class CallController extends Controller
             } else {
                 $datas = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
                     ->select(
-                        '客戶別',
+                        'inventory.客戶別',
                         'inventory.料號',
                         DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
                         DB::raw('sum(inventory.現有庫存) as inventory現有庫存'),

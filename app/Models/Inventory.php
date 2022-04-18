@@ -14,7 +14,7 @@ class Inventory extends Model
     public $timestamps = false;
     protected $table = "inventory";
 
-    protected $primaryKey = ['料號','儲位' , '客戶別'];
+    protected $primaryKey = ['料號', '儲位', '客戶別'];
 
     protected $keyType = 'string';
 
