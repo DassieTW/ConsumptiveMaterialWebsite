@@ -11,8 +11,12 @@ class whereInMultiCol extends Model
     protected $fillable = ['morphable_type', 'morphable_id'];
 
     /**
-     * @param  array  $columns
-     * @param  array  $values
+     * @param  array  $columns ex. ['料號', '客戶別']
+     * @param  array  $values ex. [
+     *                              ['4017-0052000', 'Fendi'],
+     *                              ['4017-0052000', 'Gucci'],
+     *                              ['4017-0052003', 'Fendi'],
+     *                            ]
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */

@@ -24,7 +24,6 @@ class Checking_inventory extends Model
      *
      * @var string
      */
-    // protected $primaryKey = ['id','單號'];
     // laravel model doesn't support Composite Primary Keys
 
     /**

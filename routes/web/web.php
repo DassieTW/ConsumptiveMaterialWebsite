@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\OwarehouseController;
-use App\Http\Controllers\ImportexcelController;
+use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\MailController;
 use App\Services\MailService; // for testing only
 
@@ -62,10 +62,10 @@ Route::get('/phpinfo', function () {
     phpinfo();
 })->withoutMiddleware('auth');
 
-Route::get('/import_excel', [ImportexcelController::class, 'index']);
+Route::get('/import_excel', [ImportExcelController::class, 'index']);
 
-Route::get('/import_excel/import', [ImportexcelController::class, 'index']);
-Route::post('/import_excel/import', [ImportexcelController::class, 'import']);
+Route::get('/import_excel/import', [ImportExcelController::class, 'index']);
+Route::post('/import_excel/import', [ImportExcelController::class, 'import']);
 
 
 //Route::middleware('priority')->get('member/call', [PriorityController::class, 'call'])->name('member.call');
