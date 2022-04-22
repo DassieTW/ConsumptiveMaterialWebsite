@@ -109,7 +109,7 @@
                         $database = config('database_list.databases');
                         foreach ($database as $key => $value) {
 
-                            if($value != $database[$i])
+                            if($value != $database[$i] && $database[$i] !== 'Consumables management')
                             {
                             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
                             \DB::purge(env("DB_CONNECTION"));
