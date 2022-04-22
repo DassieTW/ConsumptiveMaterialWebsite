@@ -12,12 +12,20 @@ return [
     */
 
     'databases' => [
-        'M2_TEST_1112',
-        '巴淡SMT1214',
-        'BB1_1214 Consumables management',
-        '巴淡-LOT11 Consumables management',
+        'BB1 Consumables management',
+        'BB4 Consumables management',
+        'Consumables management',
+        'M1 Consumables management',
+        'M2 Consumables management',
+        'M3-名碩 Consumables management',
+        'M3-康碩 Consumables management',
+        'SMT Consumables management',
         '巴淡-LOT2 Consumables management',
+        '巴淡-LOT11 Consumables management',
         '巴淡-PTSN Consumables management',
+        '巴淡-SMT Consumables management',
+        '越南 Consumables management',
+        '新店 Consumables management',
     ],
 
 ];
