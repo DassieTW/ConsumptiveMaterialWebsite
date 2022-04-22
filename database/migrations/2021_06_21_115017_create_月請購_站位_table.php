@@ -30,7 +30,7 @@ class Create月請購站位Table extends Migration
             $table->double('下月每人每日需求量');
             $table->double('下月每日更換頻率');
             $table->string('狀態', 45);
-            $table->string('畫押工號', 45);
+            $table->string('畫押工號', 45)->nullable();
             $table->string('畫押信箱', 45);
             $table->dateTime('畫押時間')->nullable();
             $table->string('紀錄',255)->nullable();
