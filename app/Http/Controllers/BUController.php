@@ -656,7 +656,7 @@ class BUController extends Controller
         } else {
             return redirect(route('member.login'));
         } // if else
-    }
+    } // download
 
     //調撥單查詢下載
     public function downloadlist(Request $request)
