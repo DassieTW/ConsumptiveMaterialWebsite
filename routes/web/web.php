@@ -55,7 +55,7 @@ Route::get('/vuetest', function () {
     // return view("layouts.app");
     $databases = config('database_list.databases');
 
-    MailService::day(); // test
+    //MailService::day(); // test
 })->withoutMiddleware('auth');
 
 Route::get('/phpinfo', function () {

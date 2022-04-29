@@ -25,43 +25,43 @@
     </div>
     <div class="card w-100">
         <div class="card-body">
-            <form id="newmaterial" class="row gx-6 gy-1 align-items-center">
+            <form id="newmaterial" class="row gx-6 gy-1 align-items-center justify-content-between">
                 @csrf
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.isn') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.isn') !!}</label>
                     <input class="form-control form-control-lg" type="text" id="number" name="number"
                         placeholder="{!! __('basicInfoLang.enterisn') !!}" required
-                        oninput="if(value.length>12)value=value.slice(0,12)" style="width: 200px" />
+                        oninput="if(value.length>12)value=value.slice(0,12)" style="width: 150px" />
                     <div id="numbererror" style="display:none; color:red;">{!! __('basicInfoLang.isnrepeat')
                         !!}</div>
                     <div id="numbererror1" style="display:none; color:red;">{!!
                         __('basicInfoLang.isnlength') !!}</div>
                 </div>
 
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.pName') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.pName') !!}</label>
                     <input class="form-control form-control-lg" type="text" id="name" name="name"
                         placeholder="{!! __('basicInfoLang.enterpName') !!}" required style="width: 150px" />
                 </div>
 
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.format') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.format') !!}</label>
                     <input class="form-control form-control-lg" type="text" id="format" name="format"
                         placeholder="{!! __('basicInfoLang.enterformat') !!}" required style="width: 150px" />
                 </div>
 
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.price') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.price') !!}</label>
                     <input class="form-control form-control-lg" type="number" id="price" name="price" step="0.00001"
                         placeholder="{!! __('basicInfoLang.enterprice') !!}" required min="0" style="width: 150px" />
                 </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.unit') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.unit') !!}</label>
                     <input class="form-control form-control-lg " type="text" id="unit" name="unit"
                         placeholder="{!! __('basicInfoLang.enterunit') !!}" required style="width: 150px" />
                 </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.money') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.money') !!}</label>
                     <select class="form-select form-select-lg " id="money" name="money" required style="width: 150px">
                         <option style="display: none" disabled selected value="">{!!
                             __('basicInfoLang.entermoney') !!}</option>
@@ -73,24 +73,24 @@
                         <option>IDR</option>
                     </select>
                 </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.mpq') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.mpq') !!}</label>
                     <input class="form-control form-control-lg" type="number" id="mpq" name="mpq"
                         placeholder="{!! __('basicInfoLang.entermpq') !!}" min="0" required style="width: 150px" />
                 </div>
 
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.moq') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.moq') !!}</label>
                     <input class="form-control form-control-lg" type="number" id="moq" name="moq"
                         placeholder="{!! __('basicInfoLang.entermoq') !!}" min="0" required style="width: 150px" />
                 </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.lt') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.lt') !!}</label>
                     <input class="form-control form-control-lg" type="number" id="lt" name="lt"
                         placeholder="{!! __('basicInfoLang.enterlt') !!}" min="0" required style="width: 150px" />
                 </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.gradea') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.gradea') !!}</label>
                     <select class="form-select form-select-lg" id="gradea" name="gradea" required style="width: 150px">
                         <option style="display: none" disabled selected value="">{!!
                             __('basicInfoLang.enteryorn') !!}</option>
@@ -99,8 +99,8 @@
                     </select>
                 </div>
 
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.belong') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.belong') !!}</label>
                     <select class="form-select form-select-lg" id="belong" name="belong" required style="width: 150px">
                         <option style="display: none" disabled selected value="">{!!
                             __('basicInfoLang.enterbelong') !!}</option>
@@ -108,8 +108,8 @@
                         <option value="站位">{!! __('basicInfoLang.stand') !!}</option>
                     </select>
                 </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.month') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.month') !!}</label>
                     <select class="form-select form-select-lg" id="month" name="month" required style="width: 150px">
                         <option style="display: none" disabled selected value="">{!!
                             __('basicInfoLang.enteryorn') !!}</option>
@@ -117,8 +117,8 @@
                         <option value="否">{!! __('basicInfoLang.no') !!}</option>
                     </select>
                 </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.senddep') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.senddep') !!}</label>
                     <select class="form-select form-select-lg" id="send" name="send" required style="width: 150px">
                         <option style="display: none" disabled selected value="">{!!
                             __('basicInfoLang.entersenddep') !!}</option>
@@ -127,18 +127,18 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('basicInfoLang.safe') !!}</label>
+                <div class="col-auto pb-1">
+                    <label class="col col-lg-12 form-label p-0 m-0">{!! __('basicInfoLang.safe') !!}</label>
                     <input class="form-control form-control-lg" type="number" id="safe" name="safe"
                         placeholder="{!! __('basicInfoLang.entersafe') !!}" min="0" style="width: 150px" />
                     <div id="safeerror" style="display:none; color:red;">{!! __('basicInfoLang.safeerror')
                         !!}</div>
                 </div>
 
-                <div class="col-auto">
-                    <label class="col col-auto form-label"></label>
-                    <input type="submit" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.add') !!}">
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
+                <div class="row justify-content-center">
+                    <input type="submit" class="btn btn-lg btn-primary col col-auto" value="{!! __('basicInfoLang.add') !!}">
                 </div>
 
             </form>
@@ -205,7 +205,7 @@
 
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                                <label class="col col-auto form-label">{!! __('basicInfoLang.plz_upload')
+                                <label class="col col-auto form-label p-0 m-0">{!! __('basicInfoLang.plz_upload')
                                     !!}</label>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 

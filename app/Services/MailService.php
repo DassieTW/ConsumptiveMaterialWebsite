@@ -25,6 +25,7 @@ class MailService
     {
 
         $databases = config('database_list.databases');
+        array_shift($databases); // remove the 'Consumables management' db from array
         $AllISNClientsPairs = array("isn" => array(), "client" => array());
 
         \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
@@ -357,6 +358,7 @@ class MailService
     public function day() // 呆滯天數 寄警報信
     {
         $databases = config('database_list.databases');
+        array_shift($databases); // remove the 'Consumables management' db from array
         $now = strtotime(Carbon::now()->format('Ymd'));
         $AllISNClientsPairsDay = array("isn" => array(), "client" => array());
 

@@ -12,9 +12,9 @@ return [
     */
 
     'databases' => [
+        'Consumables management',
         'BB1 Consumables management',
         'BB4 Consumables management',
-        'Consumables management',
         'M1 Consumables management',
         'M2 Consumables management',
         'M3-名碩 Consumables management',

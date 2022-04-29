@@ -127,7 +127,7 @@
                                             <label class="form-label">{{ __('loginPageLang.site') }}</label>
                                             <select class="form-select form-select-lg" id="site" name="site" required>
                                                 <option value="" selected>{{ __('loginPageLang.site_placeholder') }}</option>
-                                                @for( $i = 0 ; $i < count($database_list) ; $i++ )
+                                                @for( $i = 1 ; $i < count($database_list) ; $i++ )
                                                     <option value="{{ $database_list[$i] }}">{{ $database_names[$i] }}</option>
                                                 @endfor
                                             </select>

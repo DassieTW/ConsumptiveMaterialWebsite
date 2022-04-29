@@ -62,10 +62,11 @@ class BUController extends Controller
             $database = config('database_list.databases');
 
             foreach ($database as $key => $value) {
-                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
-                \DB::purge(env("DB_CONNECTION"));
+                if ($value !== 'Consumables management') {
+                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
+                    \DB::purge(env("DB_CONNECTION"));
 
-               /* $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
+                    /* $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
                     ->select(
                         'inventory.料號',
                         'consumptive_material.品名',
@@ -79,20 +80,21 @@ class BUController extends Controller
                     ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
                     ->get();*/
 
-                $datas[$key] = DB::table('inventory')->join('consumptive_material', 'consumptive_material.料號', '=', 'inventory.料號')
-                    ->select(
-                        'inventory.料號',
-                        'consumptive_material.品名',
-                        'consumptive_material.規格',
-                        'consumptive_material.單位',
-                        DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
-                        DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
-                    )
-                    ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
-                    ->havingRaw('sum(inventory.現有庫存) > ?', [0])
-                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
-                    ->get();
-            }
+                    $datas[$key] = DB::table('inventory')->join('consumptive_material', 'consumptive_material.料號', '=', 'inventory.料號')
+                        ->select(
+                            'inventory.料號',
+                            'consumptive_material.品名',
+                            'consumptive_material.規格',
+                            'consumptive_material.單位',
+                            DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                            DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                        )
+                        ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
+                        ->havingRaw('sum(inventory.現有庫存) > ?', [0])
+                        ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
+                        ->get();
+                } // if
+            } // for each
 
 
             //dd($datas[1]);
@@ -654,7 +656,7 @@ class BUController extends Controller
         } else {
             return redirect(route('member.login'));
         } // if else
-    }
+    } // download
 
     //調撥單查詢下載
     public function downloadlist(Request $request)
@@ -721,23 +723,25 @@ class BUController extends Controller
                 $database = config('database_list.databases');
 
                 foreach ($database as $key => $value) {
-                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
-                    \DB::purge(env("DB_CONNECTION"));
-                    $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
-                        ->select(
-                            'inventory.料號',
-                            'consumptive_material.品名',
-                            'consumptive_material.規格',
-                            'consumptive_material.單位',
-                            DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
-                            DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
-                        )
-                        ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
-                        ->havingRaw('sum(inventory.現有庫存) > ?', [0])
-                        ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
-                        ->where('inventory.料號', '=', $number)
-                        ->get();
-                }
+                    if ($value !== 'Consumables management') {
+                        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
+                        \DB::purge(env("DB_CONNECTION"));
+                        $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
+                            ->select(
+                                'inventory.料號',
+                                'consumptive_material.品名',
+                                'consumptive_material.規格',
+                                'consumptive_material.單位',
+                                DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                                DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                            )
+                            ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
+                            ->havingRaw('sum(inventory.現有庫存) > ?', [0])
+                            ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
+                            ->where('inventory.料號', '=', $number)
+                            ->get();
+                    } // if
+                } // foreach
 
                 return view('bu.sluggish1')->with(['test' => $datas])
                     ->with(['table' => $table]);

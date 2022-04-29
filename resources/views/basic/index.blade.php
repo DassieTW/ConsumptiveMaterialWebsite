@@ -22,7 +22,7 @@
         <div class="card w-75">
             <div class="card-body">
 
-                <form id="basicdata">
+                <form id="basicdata" class="justify-content-center">
                     @csrf
                     <ul id="myTab" name="myTab" class="nav nav-tabs justify-content-center">
                         <li class="nav-item" id="FactoryExample">
@@ -321,13 +321,12 @@
                     </div>
 
                     <div class="row w-100 justify-content-center">
-                        <div class="col col-auto">
+                        <div class="col col-auto justify-content-between p-0 m-0">
                             <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
                                 value="{!! __('basicInfoLang.change') !!}">
                             &emsp;
                             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
                                 value="{!! __('basicInfoLang.delete') !!}">
-                            &emsp;
                         </div>
                     </div>
                 </form>
