@@ -94,7 +94,7 @@
                                     <div class="tooltip1">
                                         <input class="form-control amount" style="width:100px" type="number"
                                             id="amount{{$loop->index}}" name="amount{{$loop->index}}" required
-                                            value="{{$data->實際退回數量}}" min="1">
+                                            value="{{$data->實際退回數量}}" min="0">
 
                                         <span class="tooltip1text tooltip1-top">{{$showstock}}</span>
                                     </div>

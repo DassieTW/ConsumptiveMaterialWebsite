@@ -75,10 +75,10 @@
                             <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
                                 value="{!! __('outboundpageLang.searchbacklist') !!}">
                             &emsp;
-                            @can('deletepicklist', App\Models\Outbound::class )
+                            {{-- @can('deletepicklist', App\Models\Outbound::class )
                             <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
                                 value="{!! __('outboundpageLang.deletebacklist') !!}">
-                            @endcan
+                            @endcan --}}
                         </div>
                     </div>
                 </form>
