@@ -13,23 +13,24 @@ export default function useConsumptiveMaterials() {
         let getDB = await axios.post('/getCurrentDB');
         let lookInTargets = sessionStorage.getItem("lookInTargets");
         let lookInType = sessionStorage.getItem("lookInType");
-        sessionStorage.removeItem("lookInTargets");
-        sessionStorage.removeItem("lookInType");
+        console.log(lookInTargets); // test
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
-        try {
-            axios.interceptors.request.use(function () {
-                // do sth before request is sent
-                $("body").loadingModal({
-                    text: "Loading...",
-                    animation: "circle",
-                });
-            }, function (error) {
-                // do sth with request error
-                console.log(error); // test
-                return Promise.reject(error);
+        axios.interceptors.request.use(function (config) {
+            // do sth before request is sent
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
             });
 
+            return config;
+        }, function (error) {
+            // do sth with request error
+            console.log(error); // test
+            return Promise.reject(error);
+        });
+
+        try {
             let response = await axios.post('/api/basic/mats', { DB: getDB.data, LookInTargets: lookInTargets, LookInType: lookInType });
 
             $('body').loadingModal('hide');

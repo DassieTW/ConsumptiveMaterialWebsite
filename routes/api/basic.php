@@ -9,8 +9,8 @@ use App\Http\Controllers\BasicInformationController;
 | API Routes
 |--------------------------------------------------------------------------
 |
-|                 !!!!! NOTICE !!!!!
-|         !!! API CANNOT ACCESS SESSION !!!
+|                                !!!!! NOTICE !!!!!
+|                        !!! API CANNOT ACCESS SESSION !!!
 |
 |
 */
@@ -23,7 +23,7 @@ Route::post('/mats', function (Request $request) {
 
     $input = json_decode($request->input('LookInTargets'));
     $datas = [];
-    // dd(json_decode($request->input('LookInType'))); // test
+    // dd(json_decode($request->input('LookInTargets'))); // test
     if (json_decode($request->input('LookInType')) === "1") {
         $datas = DB::table('consumptive_material')
             ->where('料號', 'like', $input . '%')
