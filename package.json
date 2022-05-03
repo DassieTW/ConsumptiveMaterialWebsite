@@ -11,6 +11,7 @@
         "clear:babel-cache": "rimraf -rf ./node_modules/.cache/babel-loader/*"
     },
     "devDependencies": {
+        "@types/jquery": "^3.5.14",
         "autoprefixer": "^10.2.5",
         "axios": "^0.21.4",
         "copy-webpack-plugin": "6.1.0",

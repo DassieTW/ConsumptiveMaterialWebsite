@@ -24,7 +24,7 @@
           id="dataTables-example"
           ref="localTable"
         >
-          <thead class="vtl-thead thead-dark sticky-top">
+          <thead class="vtl-thead thead-dark sticky-top" style="z-index: 100;">
             <tr class="vtl-thead-tr">
               <th
                 v-if="hasCheckbox"

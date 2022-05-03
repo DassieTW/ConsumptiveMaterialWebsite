@@ -19,9 +19,21 @@ use App\Http\Controllers\BasicInformationController;
 Route::post('/mats', function (Request $request) {
     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
     \DB::purge(env("DB_CONNECTION"));
-    $dbName = DB::connection()->getDatabaseName();
-    //dd($request->all());
-    $datas = DB::table('consumptive_material')->get();
+    $dbName = DB::connection()->getDatabaseName(); // test
+
+    $input = json_decode($request->input('LookInTargets'));
+    $datas = [];
+    // dd(json_decode($request->input('LookInType'))); // test
+    if (json_decode($request->input('LookInType')) === "1") {
+        $datas = DB::table('consumptive_material')
+            ->where('料號', 'like', $input . '%')
+            ->get();
+    } else {
+        $datas = DB::table('consumptive_material')
+            ->whereIn('料號', $input)
+            ->get();
+    } // if else
+
     $senders = DB::table("發料部門")->pluck("發料部門");
 
     return \Response::json(['datas' => $datas, 'senders' => $senders, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);

@@ -10,7 +10,7 @@ $(document).ready(function () {
     $(".form-check-input").on("change", function () {
 
         var check = $('input[name=numberradio]:checked').val();
-        if (check == 1 ) {
+        if (check == 1) {
             // $("#number").prop('required', true);
             $("#numberarea").prop('required', false);
         } else {
@@ -34,54 +34,19 @@ $(document).ready(function () {
         $(".invalid-feedback").remove();
 
         var radio = $('input[name=numberradio]:checked', '#form1').val();
-        var input ;
+        var input;
 
-        if(radio == 1)
-        {
+        if (radio == 1) {
             input = $("#number").val();
-        }
-        else
-        {
+        } // if
+        else {
             input = $("#numberarea").val().split(/\r?\n/);
+        } // else
 
-        }
+        sessionStorage.setItem("lookInType", JSON.stringify(radio)); // for later vue to post request
+        sessionStorage.setItem("lookInTargets", JSON.stringify(input)); // for later vue to post request
 
-
-        $.ajax({
-            type: "POST",
-            url: "materialsearch",
-            data: {
-                input: input,
-                radio: radio,
-            },
-            dataType: "json", // expected respose datatype from server
-            //async: false,
-
-            beforeSend: function () {
-                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                $("body").loadingModal({
-                    text: "Loading...",
-                    animation: "circle",
-                });
-            },
-            complete: function () {
-                $("body").loadingModal("hide");
-            },
-            success: function (data) {
-
-                //console.log(data.input)
-                window.location.href = "materialsearch";
-
-            },
-            error: function (err) {
-                //transaction error
-                if (err.status == 409) {
-                    console.log(err.status);
-                }
-            },
-        });
-
-
+        window.location.href = "materialsearch";
     });
 
 });
