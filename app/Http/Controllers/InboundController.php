@@ -27,6 +27,7 @@ use Route;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -537,7 +538,7 @@ class InboundController extends Controller
                                     'type' => 'add',
                                     'number' => $number, 'client' => $client, 'inreason' => $inreason,
                                     'transit' => $amount, 'stock' => $stock, 'safe' => $safe, 'name' => $name,
-                                    'format' => $format, 'unit' => $unit, 'positions' => $positions ,'showstock' => $showstock,
+                                    'format' => $format, 'unit' => $unit, 'positions' => $positions, 'showstock' => $showstock,
                                 ]/* Status code here default is 200 ok*/);
                             }
                         }
@@ -708,6 +709,10 @@ class InboundController extends Controller
             $count = $request->input('count');
             $Alldata = json_decode($request->input('AllData'));
 
+            $stringValueBinder = new StringValueBinder();
+            $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+            \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+            
             //填寫表頭
             for ($i = 0; $i < $titlecount; $i++) {
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
@@ -775,8 +780,7 @@ class InboundController extends Controller
             try {
                 for ($i = 0; $i < $count; $i++) {
 
-                    if(!(in_array($Alldata[3][$i],$positions)))
-                    {
+                    if (!(in_array($Alldata[3][$i], $positions))) {
                         DB::table('儲位')
                             ->insert(['儲存位置' => $Alldata[5][$i]]);
                     }
