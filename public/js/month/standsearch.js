@@ -327,7 +327,7 @@ $(document).ready(function () {
         } else {
             $.ajax({
                 type: 'POST',
-                url: "download",
+                url: "standdownload",
                 data: {
                     AllData: JSON.stringify(data),
                     count: count,

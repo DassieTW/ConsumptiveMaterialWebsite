@@ -30,6 +30,7 @@ use Route;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -599,6 +600,10 @@ class BUController extends Controller
             $Alldata = json_decode($request->input('AllData'));
             $count = $request->input('count');
             $test = "";
+            $stringValueBinder = new StringValueBinder();
+            $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+            \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+
 
             try {
                 //填寫表頭
@@ -671,6 +676,11 @@ class BUController extends Controller
             $titlecount = $request->input('titlecount');
             $count = $request->input('count');
             $Alldata = json_decode($request->input('AllData'));
+
+            // $stringValueBinder = new StringValueBinder();
+            // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+            // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+
 
 
             //填寫表頭

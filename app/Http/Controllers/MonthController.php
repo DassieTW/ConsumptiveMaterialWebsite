@@ -32,6 +32,7 @@ use Route;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Mail;
@@ -2022,6 +2023,10 @@ class MonthController extends Controller
 
             $title = $request->input('title');
             $count = $request->input('count');
+            $Alldata = json_decode($request->input('AllData'));
+            // $stringValueBinder = new StringValueBinder();
+            // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+            // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
 
 
             //填寫表頭
@@ -2033,7 +2038,7 @@ class MonthController extends Controller
             for ($i = 0; $i < 22; $i++) {
                 for ($j = 0; $j < $count; $j++) {
 
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $request->input('data' . $i)[$j]);
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
                 }
             }
 
@@ -2077,6 +2082,10 @@ class MonthController extends Controller
             // 填寫header & footer of excel when printing
             $worksheet->getHeaderFooter()->setOddHeader("&C&B" . Session::get("clientChoice") . "  " . Carbon::now()->format('m') . "月耗材匯總");
             $worksheet->getHeaderFooter()->setOddFooter("&L&B核准：_______________________&C&B審核：_______________________&R&B申請人：_______________________");
+
+            // $stringValueBinder = new StringValueBinder();
+            // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+            // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
 
             //填寫表頭
             for ($i = 0; $i < $titlecount; $i++) {
@@ -2134,6 +2143,9 @@ class MonthController extends Controller
 
             $count = $request->input('count');
             $Alldata = json_decode($request->input('AllData'));
+            // $stringValueBinder = new StringValueBinder();
+            // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+            // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
 
             $i = 2;
 

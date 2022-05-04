@@ -16,7 +16,7 @@ use App\Models\儲位;
 use App\Models\退回原因;
 use App\Models\O庫;
 use App\Models\ConsumptiveMaterial;
-
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use DB;
@@ -75,7 +75,7 @@ class CheckingInventoryController extends Controller
         $pieces = explode(" ", $temp);
         // dd($pieces[2] . " " . $formatStr ) ; // test
         $rangeStrFrom = Carbon::parse($pieces[0])->format('Y-m-d H:i:s.v'); // starting date string
-        $rangeObjFrom = Carbon::createFromFormat('Y-m-d H:i:s.v', $rangeStrFrom)->subDay()->endOfDay() ; // covert to datetime obj 
+        $rangeObjFrom = Carbon::createFromFormat('Y-m-d H:i:s.v', $rangeStrFrom)->subDay()->endOfDay() ; // covert to datetime obj
         $rangeStrTo = Carbon::parse($pieces[2])->format('Y-m-d H:i:s.v'); // ending date string
         $rangeObjTo = Carbon::createFromFormat('Y-m-d H:i:s.v', $rangeStrTo)->addDay()->startOfDay() ; // covert to datetime obj
         $fetchedData = $this->service->fetchInventCheckRecordWithinTimeRange($request, $rangeObjFrom, $rangeObjTo);

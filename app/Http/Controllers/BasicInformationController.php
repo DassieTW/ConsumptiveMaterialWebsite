@@ -16,6 +16,7 @@ use App\Models\儲位;
 use App\Models\退回原因;
 use App\Models\O庫;
 use App\Models\ConsumptiveMaterial;
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use DB;
@@ -268,6 +269,11 @@ class BasicInformationController extends Controller
                 $Alldata = DB::table('consumptive_material')->get();
                 $downloadcount = count($Alldata);
                 $arr = ['料號', '品名', '規格', 'A級資材', '月請購', '發料部門', '耗材歸屬', '單價', '幣別', '單位', 'MPQ', 'MOQ', 'LT', '安全庫存'];
+
+                // $stringValueBinder = new StringValueBinder();
+                // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+                // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+
 
                 //填寫表頭
                 for ($i = 0; $i < 14; $i++) {
