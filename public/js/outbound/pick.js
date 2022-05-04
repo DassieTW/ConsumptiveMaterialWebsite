@@ -267,7 +267,7 @@ $(document).ready(function () {
                 format.push($("#format" + i).text());
                 unit.push($("#unit" + i).text());
                 amount.push($("#amount" + i).val());
-                remark.push($("#remark" + i).text());
+                remark.push($("#remark" + i).val());
             }
         }
 
