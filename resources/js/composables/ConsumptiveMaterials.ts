@@ -1,7 +1,6 @@
 import { ref, Ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
-// import { loadingModal } from "../../../public/js/jquery.loadingModal.ts";
 
 export default function useConsumptiveMaterials() {
     const mats = ref("");
@@ -23,7 +22,7 @@ export default function useConsumptiveMaterials() {
                 animation: "circle",
             });
 
-            return config;
+            return config; // this config does nothing for us atm
         }, function (error) {
             // do sth with request error
             console.log(error); // test
