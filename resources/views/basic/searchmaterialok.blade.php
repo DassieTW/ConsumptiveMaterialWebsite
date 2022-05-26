@@ -41,9 +41,6 @@
         </div>
         <div class="card">
             <div class="card-body">
-
-
-
                 <form id="materialsearch" method="POST">
                     @csrf
                     <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
