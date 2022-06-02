@@ -6,13 +6,8 @@
 @section('js')
 <!--for this page's sepcified js -->
 @endsection
-@section('content')
-<!DOCTYPE html>
-<html>
 
-<head>
-    <meta charset="utf-8">
-</head>
+@section('content')
 <div id="mountingPoint">
     <div class="row mb-2 mb-xl-3 justify-content-between">
 
@@ -118,6 +113,4 @@
         </div>
     </div>
 </div>
-
-</html>
 @endsection

@@ -293,7 +293,7 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    } // inquire
 
     //入庫-庫存查詢
     public function searchstocksubmit(Request $request)
@@ -459,7 +459,7 @@ class InboundController extends Controller
             }
         } else {
             return redirect(route('member.login'));
-        }
+        } // else
     }
 
     //入庫-新增

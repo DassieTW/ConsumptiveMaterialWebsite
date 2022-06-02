@@ -1,0 +1,53 @@
+import { ref, Ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+
+export default function useInboundList() {
+    const mats = ref("");
+    const errors = ref("");
+    const router = useRouter();
+
+    const getLists = async () => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        let lookInTargets = sessionStorage.getItem("lookInTargets");
+        let lookInType = sessionStorage.getItem("lookInType");
+        console.log(lookInTargets); // test
+        // let gettest = await axios.post('/basic/materialsearch');
+        // console.log(gettest); // test
+        axios.interceptors.request.use(function (config) {
+            // do sth before request is sent
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            return config; // this config does nothing for us atm
+        }, function (error) {
+            // do sth with request error
+            console.log(error); // test
+            return Promise.reject(error);
+        });
+
+        try {
+            let response = await axios.post('/api/basic/mats', { DB: getDB.data, LookInTargets: lookInTargets, LookInType: lookInType });
+
+            $('body').loadingModal('hide');
+            $('body').loadingModal('destroy');
+            mats.value = JSON.stringify(response.data);
+            // console.log( JSON.parse(mats.value)); // test
+        } catch (e) {
+            console.log(e); // test
+            for (const key in e.response.data.errors) {
+                errors.value += e.response.data.errors[key][0] + '  ';
+            } // for each errors
+
+            console.log(errors.value); // test
+        } // try catch
+    } // get mats
+
+    return {
+        mats,
+        getLists
+    } // return
+} // useConsumptiveMaterials
