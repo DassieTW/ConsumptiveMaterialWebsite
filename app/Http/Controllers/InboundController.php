@@ -293,7 +293,7 @@ class InboundController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
+    } // inquire
 
     //入庫-庫存查詢
     public function searchstocksubmit(Request $request)
@@ -459,7 +459,7 @@ class InboundController extends Controller
             }
         } else {
             return redirect(route('member.login'));
-        }
+        } // else
     }
 
     //入庫-新增
@@ -709,10 +709,10 @@ class InboundController extends Controller
             $count = $request->input('count');
             $Alldata = json_decode($request->input('AllData'));
 
-            $stringValueBinder = new StringValueBinder();
-            $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
-            \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
-            
+            // $stringValueBinder = new StringValueBinder();
+            // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+            // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+
             //填寫表頭
             for ($i = 0; $i < $titlecount; $i++) {
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);

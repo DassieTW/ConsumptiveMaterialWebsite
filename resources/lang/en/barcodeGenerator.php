@@ -14,8 +14,8 @@ return [
     */
     'page_name' => 'Barcode',
     'barcode_gening' => 'Barcode Generate',
-    'isn_gen_barcode' => 'Generate Part No. Barcode',
-    'isn' => 'Part No.',
+    'isn_gen_barcode' => 'Generate PN Barcode',
+    'isn' => 'PN',
     'enter_isn' => 'Enter a PN.',
     'loc_gen_barcode' => 'Generate Loc. Barcode',
     'loc' => 'Location',
@@ -37,7 +37,7 @@ return [
     'leaving_page_alert' => 'Leaving the page will clean up all inputs, are you sure?',
 
     // search isn/loc barcodes page lang
-    'search_isn' => 'Search Part No. ',
+    'search_isn' => 'Search PN ',
     'search' => 'Search',
     'spec' => 'Specification',
     'search_loc' => 'Search Location ',

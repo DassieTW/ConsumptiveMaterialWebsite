@@ -17,7 +17,7 @@ return [
     'dayalert' =>'Passive Day Alert',
     'callsys' =>'Alarm system',
     'client' =>'Client',
-    'isn' =>'Part No.',
+    'isn' =>'PN',
     'pName' =>'Description',
     'format' =>'Specification',
     'stock' =>'Total Stock',

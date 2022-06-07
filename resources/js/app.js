@@ -44,11 +44,13 @@ import vueTranslations from './vue-translations';
 import router from './vue-router/route';
 import BreadCrumbNav from './components/breadcrumb/BreadCrumbNav.vue';
 import BasicInfoTable from './components/reusableUtilities/BasicInfoTable.vue';
+import InboundSearchTable from './components/reusableUtilities/InboundSearchTable.vue';
 
 const app = createApp({
     components: {
         'vue-bread-crumb': BreadCrumbNav,
-        'basic-info-table': BasicInfoTable
+        'basic-info-table': BasicInfoTable,
+        'inbound-search-table': InboundSearchTable
     }
 });
 
