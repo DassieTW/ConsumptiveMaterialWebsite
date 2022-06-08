@@ -15,7 +15,7 @@ class CreateO庫MaterialTable extends Migration
     {
         //
         Schema::create('O庫_material', function (Blueprint $table) {
-            $table->string('料號',50)->primary();
+            $table->string('料號',45)->primary();
             $table->string('品名',100);
             $table->string('規格',100);
             //$table->timestamps();
