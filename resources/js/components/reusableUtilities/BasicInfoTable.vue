@@ -17,6 +17,7 @@
   <div class="w-100" style="height: 1ch"></div>
   <!-- </div>breaks cols to a new line-->
   <table-lite
+    :is-fixed-first-column="true"
     :is-static-mode="true"
     :hasCheckbox="true"
     :isLoading="table.isLoading"
@@ -438,7 +439,7 @@ export default defineComponent({
               ' name="lt' +
               i +
               '" value="' +
-              row.LT +
+              Math.round(row.LT) +
               '"' +
               ' class="form-control text-center p-0 m-0" min="0">'
             );
@@ -513,6 +514,10 @@ export default defineComponent({
         ),
       },
       pageOptions: [
+        {
+          value: 10,
+          text: 10,
+        },
         {
           value: 20,
           text: 20,
