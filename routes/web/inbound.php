@@ -101,7 +101,7 @@ Route::post('/delete', [InboundController::class, 'delete'])->name('inbound.dele
 //入庫-儲位調撥頁面
 Route::get('/positionchange', function () {
     return view('inbound.positionchange')->with(['client' => 客戶別::cursor()])
-        ->with(['position' => 儲位::cursor()]);
+        ->with(['position' => 儲位::cursor()])->with(['send' => 發料部門::cursor()]);
 })->middleware('can:viewInbound,App\Models\Inbound');
 
 Route::post('/positionchange', [InboundController::class, 'positionchange'])->name('inbound.positionchange')->middleware('can:viewInbound,App\Models\Inbound');

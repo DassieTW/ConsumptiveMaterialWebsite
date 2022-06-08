@@ -104,73 +104,103 @@
                                         $belong = $data->耗材歸屬;
                                         $lt = $data->LT;
                                         $data->單價 = floatval($data->單價);
-                                        
+                                        $safe = 0;
                                         if ($belong === '單耗') {
-                                            $machine = DB::table('月請購_單耗')
-                                                ->where('料號', $data->料號)
+                                            $machine = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
-                                                ->value('機種');
-                                            $production = DB::table('月請購_單耗')
-                                                ->where('料號', $data->料號)
+                                                ->get('機種');
+                                            $howmany = count($machine);
+
+                                            $production = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
-                                                ->value('製程');
-                                            $consume = DB::table('月請購_單耗')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('單耗');
-                                            $nextmps = DB::table('MPS')
-                                                ->where('機種', $machine)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->where('製程', $production)
-                                                ->value('下月MPS');
-                                            $nextday = DB::table('MPS')
-                                                ->where('機種', $machine)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->where('製程', $production)
-                                                ->value('下月生產天數');
-                                        
-                                            if ($nextday == 0) {
-                                                $safe = 0;
-                                            } else {
-                                                $safe = ($lt * $consume * $nextmps) / $nextday;
-                                            } // if else
+                                                ->get('製程');
+
+
+                                            for($i = 0 ; $i < $howmany ; $i++)
+                                            {
+                                                $nextmps = DB::table('MPS')
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('下月MPS');
+
+                                                $consume = DB::table('月請購_單耗')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('單耗');
+
+                                                $nextday = DB::table('MPS')
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('下月生產天數');
+
+                                                if ($nextday == 0) {
+                                                    $safe = $safe + 0;
+                                                } else {
+                                                    $safe = $safe + (($lt * $consume * $nextmps) / $nextday);
+                                                } // if else
+                                            }
+
                                         } else {
-                                            $machine = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
+                                            $machine = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
-                                                ->value('機種');
-                                            $production = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
+                                                ->get('機種');
+                                            $howmany = count($machine);
+
+                                            $production = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
-                                                ->value('製程');
-                                            $nextstand = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('下月站位人數');
-                                            $nextline = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('下月開線數');
-                                            $nextclass = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('下月開班數');
-                                            $nextuse = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('下月每人每日需求量');
-                                            $nextchange = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('下月每日更換頻率');
+                                                ->get('製程');
                                             $mpq = $data->MPQ;
-                                            if ($mpq == 0) {
-                                                $safe = 0;
-                                            } else {
-                                                $safe = ($lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange) / $mpq;
-                                            } // if else
+                                            $lt = $data->LT;
+                                            for($i = 0 ; $i < $howmany ; $i++)
+                                            {
+                                                $nextday = DB::table('MPS')
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('下月生產天數');
+                                                $nextstand = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('下月站位人數');
+                                                $nextline = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('下月開線數');
+                                                $nextclass = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('下月開班數');
+                                                $nextneed = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('下月每人每日需求量');
+                                                $nextchange = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('下月每日更換頻率');
+
+                                                if ($mpq == 0) {
+                                                    $safe = $safe +0;
+                                                } else {
+                                                    $safe = $safe + (($lt * $nextstand * $nextline * $nextclass * $nextneed * $nextchange) / $mpq);
+                                                } // if else
+                                            }
                                         } // if else 單耗 or 站位
-                                        
+
                                         if ($data->月請購 == '否') {
                                             $safe = $data->安全庫存;
                                         } // if
@@ -208,7 +238,7 @@
                                                 value={{ round($data->現有庫存, 0) }}>{{ round($data->現有庫存, 0) }}</td>
                                         <td><input type="hidden" id="datak{{ $loop->index }}"
                                                 name="data10{{ $loop->index }}"
-                                                value="{{ $safe }}">{{ $safe }}</td>
+                                                value="{{ round($safe,3) }}">{{ round($safe,3) }}</td>
                                         <td><input type="hidden" id="datal{{ $loop->index }}"
                                                 name="data11{{ $loop->index }}"
                                                 value="{{ $data->儲位 }}">{{ $data->儲位 }}</td>

@@ -83,8 +83,11 @@
                     <?php
                         $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
                         $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
-                        $data->單耗 = floatval($data->單耗);
-
+                        $data->單耗 = doubleval($data->單耗);
+                        if (strlen(strval($data->單耗)) > 8)
+                        {
+                            $data->單耗 = number_format($data->單耗,12);
+                        }
                     ?>
                     <tr id="{{$loop->index}}" class="isnRows">
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
@@ -101,7 +104,7 @@
                         <td>{{$format}}</td>
                         <td><input style="width: 200px;" class="form-control form-control-lg " type="number"
                                 id="amount{{$loop->index}}" name="amount{{$loop->index}}" value="{{$data->單耗}}"
-                                step="0.0000000001" oninput="if(value.length>12)value=value.slice(0,12)" min="0"></td>
+                                step="0.000000000001" oninput="if(value.length>12)value=value.slice(0,12)" min="0"></td>
                         <td>{{$data->狀態}}</td>
                     </tr>
                     </tbody>

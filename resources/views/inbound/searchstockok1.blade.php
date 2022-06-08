@@ -94,101 +94,112 @@
                                 @foreach ($data as $data)
                                     <tr class="isnRows">
                                         <?php
-                                        $name = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('品名');
-                                        $format = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('規格');
-                                        $unit = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('單位');
-                                        $price = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('單價');
+                                        $name = $data->品名;
+                                        $format = $data->規格;
+                                        $unit = $data->單位;
+                                        $price = $data->單價;
                                         $price = round($price, 2);
-                                        $money = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('幣別');
-                                        $gradea = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('A級資材');
-                                        $month = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('月請購');
-                                        $belong = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('耗材歸屬');
-                                        $lt = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('LT');
+                                        $money = $data->幣別;
+                                        $gradea = $data->A級資材;
+                                        $month = $data->月請購;
+                                        $belong = $data->耗材歸屬;
+                                        $lt = $data->LT;
+                                        $monthuse = 0;
                                         if ($belong === '單耗') {
-                                            $machine = DB::table('月請購_單耗')
-                                                ->where('料號', $data->料號)
+
+                                            $machine = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
-                                                ->value('機種');
-                                            $production = DB::table('月請購_單耗')
-                                                ->where('料號', $data->料號)
+                                                ->get('機種');
+                                            $howmany = count($machine);
+
+                                            $production = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
-                                                ->value('製程');
-                                            $consume = DB::table('月請購_單耗')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('單耗');
-                                            $nowmps = DB::table('MPS')
-                                                ->where('機種', $machine)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->where('製程', $production)
-                                                ->value('本月MPS');
-                                        
-                                            $monthuse = $consume * $nowmps;
+                                                ->get('製程');
+
+
+                                            for($i = 0 ; $i < $howmany ; $i++)
+                                            {
+                                                $nowmps = DB::table('MPS')
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('本月MPS');
+
+                                                $consume = DB::table('月請購_單耗')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('單耗');
+
+                                                $monthuse = $monthuse + ($consume * $nowmps);
+                                            }
+
                                             if ($monthuse != 0) {
                                                 $stockmonth = $data->現有庫存 / $monthuse;
                                             } else {
                                                 $stockmonth = 0;
                                             }
+
+
                                         } else {
-                                            $machine = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
+                                            $machine = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
-                                                ->value('機種');
-                                            $production = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
+                                                ->get('機種');
+                                            $howmany = count($machine);
+
+                                            $production = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
-                                                ->value('製程');
-                                            $nowday = DB::table('MPS')
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('本月生產天數');
-                                            $nowstand = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('當月站位人數');
-                                            $nowline = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('當月開線數');
-                                            $nowclass = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('當月開班數');
-                                            $nowneed = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('當月每人每日需求量');
-                                            $nowchange = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶別)
-                                                ->value('當月每日更換頻率');
+                                                ->get('製程');
                                             $mpq = DB::table('consumptive_material')
                                                 ->where('料號', $data->料號)
                                                 ->value('MPQ');
-                                        
-                                            if ($mpq != 0 || $mpq != null) {
-                                                $monthuse = ($nowday * $nowstand * $nowline * $nowclass * $nowneed * $nowchange) / $mpq;
-                                            } else {
-                                                $monthuse = 0;
+                                            for($i = 0 ; $i < $howmany ; $i++)
+                                            {
+
+                                                $nowday = DB::table('MPS')
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('本月生產天數');
+                                                $nowstand = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('當月站位人數');
+                                                $nowline = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('當月開線數');
+                                                $nowclass = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('當月開班數');
+                                                $nowneed = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('當月每人每日需求量');
+                                                $nowchange = DB::table('月請購_站位')
+                                                    ->where('料號', $data->料號)
+                                                    ->where('客戶別', $data->客戶別)
+                                                    ->where('製程', $production[$i]->製程)
+                                                    ->where('機種', $machine[$i]->機種)
+                                                    ->value('當月每日更換頻率');
+
+                                                if ($mpq != 0 || $mpq != null) {
+                                                    $monthuse = $monthuse + (($nowday * $nowstand * $nowline * $nowclass * $nowneed * $nowchange) / $mpq);
+                                                } else {
+                                                    $monthuse = $monthuse + 0;
+                                                }
                                             }
-                                        
+
                                             if ($monthuse != 0) {
                                                 $stockmonth = $data->現有庫存 / $monthuse;
                                             } else {
@@ -231,7 +242,7 @@
                                                 value="{{ $monthuse }}">{{ $monthuse }}</td>
                                         <td><input type="hidden" id="datal{{ $loop->index }}"
                                                 name="data11{{ $loop->index }}"
-                                                value="{{ round($stockmonth, 1) }}">{{ round($stockmonth, 1) }}</td>
+                                                value="{{ round($stockmonth,5) }}">{{ round($stockmonth,5) }}</td>
                                     </tr>
                             </tbody>
                             <input type="hidden" id="count" name="count" value="{{ $loop->count }}">

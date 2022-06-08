@@ -1,3 +1,5 @@
+
+
 sessionStorage.clear();
 
 $.ajaxSetup({
@@ -331,7 +333,6 @@ $(document).ready(function () {
                 nextclass: nextclass,
                 nextuse: nextuse,
                 nextchange: nextchange,
-                jobnumber: jobnumber,
                 email: email,
                 count: count,
                 row: row,
@@ -386,8 +387,9 @@ $(document).ready(function () {
             error: function (err) {
                 //transaction error
                 if (err.status == 421) {
+                    alert(Lang.get('monthlyPRpageLang.yellowrepeat'));
                     console.log(err.responseJSON.message);
-                    window.location.reload();
+                    //window.location.reload();
                 }
             },
         });

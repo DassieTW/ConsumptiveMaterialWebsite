@@ -102,7 +102,8 @@
                                 </thead>
                                 @foreach($data as $data)
                                 <?php
-                                    $data->單耗 = floatval($data->單耗);
+                                    $data->單耗 = number_format(floatval($data->單耗),12);
+
                                     $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
                                 ?>
                                 <tbody>
@@ -118,7 +119,7 @@
                                         <td><input type="hidden" id="production{{$loop->index}}"
                                                 name="production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}
                                         </td>
-                                        <td class="table-light">{{$data->單耗}}</td>
+                                        <td class="table-light" id="amount{{$loop->index}}">{{ ($data->單耗)}}</td>
                                         <td><input class="checkbutton" type="checkbox" id="check{{$loop->index}}"
                                                 name="check{{$loop->index}}"></td>
                                         <td><input style="width: 120px;" class="form-control formcontrol-lg" type="text"

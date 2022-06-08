@@ -45,45 +45,56 @@ class InboundController extends Controller
     {
         if (Session::has('username')) {
             if ($request->input('number') !== null) {
-                $datas = DB::table('inventory')
-                    ->where('料號', 'like', $request->input('number') . '%')
+                $datas = DB::table('consumptive_material')
+                    ->join('inventory', 'consumptive_material.料號', '=', 'inventory.料號')
+                    ->where('inventory.料號', 'like', $request->input('number') . '%')
+                    ->where('現有庫存', '>', 0)
+                    ->select('inventory.*', 'consumptive_material.發料部門')
+                    ->get();
+            }
+            else{
+                $datas = DB::table('consumptive_material')
+                    ->join('inventory', 'consumptive_material.料號', '=', 'inventory.料號')
+                    ->where('現有庫存', '>', 0)
+                    ->select('inventory.*', 'consumptive_material.發料部門')
                     ->get();
             }
             //all empty
-            if ($request->input('client') === null && $request->input('position') === null && $request->input('number') === null) {
-                return view('inbound.change')->with(['data' => Inventory::cursor()->where('現有庫存', '>', 0)]);
+            if ($request->input('client') === null && $request->input('position') === null && $request->input('send') === null) {
+                return view('inbound.change')->with(['data' => $datas]);
             }
             //select client
-            else if ($request->input('client') !== null && $request->input('position') === null && $request->input('number') === null) {
-                return view('inbound.change')->with(['data' => Inventory::cursor()->where('客戶別', $request->input('client'))->where('現有庫存', '>', 0)]);
+            else if ($request->input('client') !== null && $request->input('position') === null && $request->input('send') === null) {
+                return view('inbound.change')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
             }
             //select position
-            else if ($request->input('client') === null && $request->input('position') !== null && $request->input('number') === null) {
-                return view('inbound.change')->with(['data' => Inventory::cursor()->where('儲位', $request->input('position'))->where('現有庫存', '>', 0)]);
+            else if ($request->input('client') === null && $request->input('position') !== null && $request->input('send') === null) {
+                return view('inbound.change')->with(['data' => $datas->where('儲位', $request->input('position'))]);
             }
-            //input material number
-            else if ($request->input('client') === null && $request->input('position') === null && $request->input('number') !== null) {
-                return view('inbound.change')->with(['data' => $datas->where('現有庫存', '>', 0)]);
+            //select senddep
+            else if ($request->input('client') === null && $request->input('position') === null && $request->input('send') !== null) {
+                return view('inbound.change')->with(['data' => $datas->where('發料部門', $request->input('send'))]);
             }
             //select client and position
-            else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('number') === null) {
-                return view('inbound.change')->with(['data' => Inventory::cursor()
-                    ->where('客戶別', $request->input('client'))->where('儲位', $request->input('position'))->where('現有庫存', '>', 0)]);
+            else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('send') === null) {
+                return view('inbound.change')->with(['data' => $datas
+                    ->where('客戶別', $request->input('client'))->where('儲位', $request->input('position'))]);
             }
-            //select client and number
-            else if ($request->input('client') !== null && $request->input('position') === null && $request->input('number') !== null) {
-                return view('inbound.change')->with(['data' => $datas->where('客戶別', $request->input('client'))->where('現有庫存', '>', 0)]);
+            //select client and senddep
+            else if ($request->input('client') !== null && $request->input('position') === null && $request->input('send') !== null) {
+                return view('inbound.change')->with(['data' => $datas
+                    ->where('客戶別', $request->input('client'))->where('發料部門', $request->input('send'))]);
             }
-            //select position and number
-            else if ($request->input('client') === null && $request->input('position') !== null && $request->input('number') !== null) {
-
-                return view('inbound.change')->with(['data' => $datas->where('料號', $request->input('number'))->where('儲位', $request->input('position'))->where('現有庫存', '>', 0)]);
+            //select position and senddep
+            else if ($request->input('client') === null && $request->input('position') !== null && $request->input('send') !== null) {
+                return view('inbound.change')->with(['data' => $datas
+                    ->where('發料部門', $request->input('send'))->where('儲位', $request->input('position'))]);
             }
             //select all
-            else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('number') !== null) {
+            else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('send') !== null) {
                 return view('inbound.change')->with(['data' => $datas
                     ->where('客戶別', $request->input('client'))->where('儲位', $request->input('position'))
-                    ->where('現有庫存', '>', 0)]);
+                    ->where('發料部門', $request->input('send'))]);
             }
         } else {
             return redirect(route('member.login'));

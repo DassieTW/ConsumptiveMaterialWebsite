@@ -104,7 +104,7 @@
                         <div class="w-100 d-none d-sm-inline-block" style="height: 2ch;"></div>
                         <!-- </div>breaks cols to a new line-->
                         <div class="text-center mt-4">
-                            <h1 class="h2 d-none d-sm-inline-block">
+                            <h1 class="h2 d-none d-sm-inline-block" id = "fordatabase">
                                 {{ __('loginPageLang.welcome') }}
                             </h1>
                             <br>
@@ -118,7 +118,7 @@
                                 <div class="m-sm-4">
                                     <div class="text-center">
                                         <img src="../admin/img/avatars/avatarBot.png" alt="Charles"
-                                            class="img-fluid rounded-circle" width="132" height="132" />
+                                            class="img-fluid rounded-circle" width="132" height="132"/>
                                     </div>
                                     <form id="loginForm" class="needs-validation" method="post" accept-charset="utf-8"
                                         novalidate>

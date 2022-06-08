@@ -27,6 +27,7 @@ class MailService
 
         $databases = config('database_list.databases');
         array_shift($databases); // remove the 'Consumables management' db from array
+        // $databases = ["M2 Consumables management"];
         $AllISNClientsPairs = array("isn" => array(), "client" => array());
 
         \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
@@ -360,6 +361,7 @@ class MailService
     {
         $databases = config('database_list.databases');
         array_shift($databases); // remove the 'Consumables management' db from array
+        // $databases = ["M2 Consumables management"];
         $now = strtotime(Carbon::now()->format('Ymd'));
         $AllISNClientsPairsDay = array("isn" => array(), "client" => array());
 
@@ -369,6 +371,10 @@ class MailService
             \Log::channel('dbquerys')->info('---------------------------DB :' . $database . '--------------------------');
 
             $datas = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
+                ->leftjoin('sluggish報警備註', function ($join) {
+                    $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
+                    $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
+                })
                 ->select(
                     'inventory.客戶別',
                     'inventory.料號',
@@ -376,17 +382,12 @@ class MailService
                     DB::raw('sum(inventory.現有庫存) as inventory現有庫存'),
                     'consumptive_material.品名',
                     'consumptive_material.規格',
+                    'sluggish報警備註.備註',
                 )
-                ->leftjoin('sluggish報警備註', function ($join) {
-                    $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
-                    $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
-                })
                 ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'sluggish報警備註.備註')
                 ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間), getdate())>30')
                 ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                 ->get();
-
-
 
             foreach ($datas as $data) {
                 $maxtime = date_create(date('Y-m-d', strtotime($data->inventory最後更新時間)));

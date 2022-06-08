@@ -47,7 +47,7 @@ $(document).ready(function () {
             number.push($("#number" + i).val());
             production.push($("#production" + i).val());
             machine.push($("#machine" + i).val());
-            amount.push($("#amount" + i).val());
+            amount.push($("#amount" + i).html());
             check.push($("#check" + i).prop('checked'));
             reason.push($("#remark" + i).val());
         }

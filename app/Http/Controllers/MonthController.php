@@ -2277,7 +2277,7 @@ class MonthController extends Controller
     }
 
 
-    //test send check consume mail
+    //test send check ㄎ mail
     public static function sendcheckstand($alldata, $count, $sender)
     {
         $data = array('datas' => $alldata, 'count' => $count);

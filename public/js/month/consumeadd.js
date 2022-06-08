@@ -237,7 +237,7 @@ $(document).ready(function () {
         var number = [];
         var consume = [];
         var row = [];
-        var jobnumber = $("#jobnumber").val();
+        // var jobnumber = $("#jobnumber").val();
         var email = $("#email").val().toLowerCase() + "@pegatroncorp.com";
 
         var count = 0;
@@ -279,7 +279,6 @@ $(document).ready(function () {
                 production: production,
                 number: number,
                 consume: consume,
-                jobnumber: jobnumber,
                 email: email,
                 count: count,
                 row: row,

@@ -61,6 +61,20 @@
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
+                            <label class="col col-auto form-label">{!! __('inboundpageLang.senddep') !!}</label>
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <div class="col-lg-6  col-md-12 col-sm-12">
+                                <select class="form-select form-select-lg" id="send" name="send">
+                                    <option style="display: none" disabled selected>{!!
+                                        __('inboundpageLang.entersenddep') !!}</option>
+                                    @foreach($send as $send)
+                                    <option>{{ $send->發料部門 }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                             <label class="col col-auto form-label">{!! __('inboundpageLang.isn') !!}</label>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
