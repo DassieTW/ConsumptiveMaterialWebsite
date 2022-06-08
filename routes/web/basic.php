@@ -60,7 +60,7 @@ Route::post('/materialaddsubmit', [BasicInformationController::class, 'materiala
 
 //料件信息查詢頁面
 Route::get('/material', function () {
-    return view('basic.searchmaterial');
+    return view('basic.searchmaterial')->with(['data' => 發料部門::cursor()]);
 })->name('basic.material')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 Route::get('/upload', function () {

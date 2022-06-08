@@ -422,27 +422,56 @@ class BasicInformationController extends Controller
     {
         if (Session::has('username')) {
             $input = $request->input('input');
+            $send = $request->input('send');
+            dd($send);
             if ($request->input('radio') === "1") {
-
-
-                $datas = DB::table('consumptive_material')
+                if($send !== null)
+                {
+                    $datas = DB::table('consumptive_material')
+                    ->where('發料部門', '=', $send)
                     ->where('料號', 'like', $input . '%')
                     ->get();
-                // return view("basic.searchmaterialok")
-                //     ->with(['data' => $datas])
-                //     ->with(['sends' => 發料部門::cursor()]);
-                return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
+                    // return view("basic.searchmaterialok")
+                    //     ->with(['data' => $datas])
+                    //     ->with(['sends' => 發料部門::cursor()]);
+                    return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
 
+                }
+                else
+                {
+
+                    $datas = DB::table('consumptive_material')
+                        ->where('料號', 'like', $input . '%')
+                        ->get();
+                    // return view("basic.searchmaterialok")
+                    //     ->with(['data' => $datas])
+                    //     ->with(['sends' => 發料部門::cursor()]);
+                    return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
+                }
             } else {
 
-                $datas = DB::table('consumptive_material')
+                if($send !== null)
+                {
+                    $datas = DB::table('consumptive_material')
+                    ->where('發料部門', '=', $send)
                     ->whereIn('料號', $input)
                     ->get();
-                // return view("basic.searchmaterialok")
-                //     ->with(['data' => $datas])
-                //     ->with(['sends' => 發料部門::cursor()]);
-                return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
+                    // return view("basic.searchmaterialok")
+                    //     ->with(['data' => $datas])
+                    //     ->with(['sends' => 發料部門::cursor()]);
+                    return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
 
+                }
+                else
+                {
+                    $datas = DB::table('consumptive_material')
+                        ->whereIn('料號', $input)
+                        ->get();
+                    // return view("basic.searchmaterialok")
+                    //     ->with(['data' => $datas])
+                    //     ->with(['sends' => 發料部門::cursor()]);
+                    return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
+                }
             }
         } else {
             return redirect(route('member.login'));

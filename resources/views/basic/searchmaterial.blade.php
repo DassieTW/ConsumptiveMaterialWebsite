@@ -29,7 +29,7 @@
             <div class="row justify-content-center">
                 <div class="card-body">
                     <div class=" w-100">
-                        <form action="{{ route('basic.searchmaterial') }}" method="POST" id="form1">
+                        <form method="POST" id="form1">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -61,13 +61,31 @@
                                             __('basicInfoLang.searchisn1') !!}</span>
                                     </div>
                                 </div>
+
+                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <div class="col-lg-6  col-md-12 col-sm-12">
+                                            <select class="form-select form-select-lg" id="send" name="send">
+                                                <option style="display: none" disabled selected>{!!
+                                                    __('inboundpageLang.entersenddep') !!}</option>
+                                                @foreach($data as $data)
+                                                <option>{{ $data->發料部門 }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
+
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     <input type="submit" id="search" name="search" class="btn btn-lg btn-primary"
                                         value="{!! __('basicInfoLang.matssearch') !!}">
                                 </div>
                             </div>
+
                         </form>
 
                     </div>
