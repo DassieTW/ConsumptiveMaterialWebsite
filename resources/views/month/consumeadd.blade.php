@@ -1,26 +1,26 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
-    <!--for this page's sepcified js -->
-    <script src="{{ asset('js/month/consumeadd.js') }}"></script>
+<!--for this page's sepcified js -->
+<script src="{{ asset('js/month/consumeadd.js') }}"></script>
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <meta charset="utf-8">
-    </head>
-    <div id="mountingPoint">
-        <div class="row mb-2 mb-xl-3 justify-content-between">
-            <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
-            <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
-                <vue-bread-crumb></vue-bread-crumb>
-            </div>
+<head>
+    <meta charset="utf-8">
+</head>
+<div id="mountingPoint">
+    <div class="row mb-2 mb-xl-3 justify-content-between">
+        <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
+        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+            <vue-bread-crumb></vue-bread-crumb>
         </div>
+    </div>
     <div class="card w-100" id="consumehead">
         <div class="card-header">
             <h3>{!! __('monthlyPRpageLang.isnConsumeAdd') !!}</h3>
@@ -31,27 +31,30 @@
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.client') !!}</label>
                     <select class="form-select form-select-lg" id="client" name="client" required>
-                        <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterclient') !!}</option>
+                        <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterclient')
+                            !!}</option>
                         @foreach ($client as $client)
-                            <option>{{ $client->客戶 }}</option>
+                        <option>{{ $client->客戶 }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.machine') !!}</label>
                     <select class="form-select form-select-lg" id="machine" name="machine" required>
-                        <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.entermachine') !!}</option>
+                        <option style="display: none" disabled selected value="">{!!
+                            __('monthlyPRpageLang.entermachine') !!}</option>
                         @foreach ($machine as $machine)
-                            <option>{{ $machine->機種 }}</option>
+                        <option>{{ $machine->機種 }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.process') !!}</label>
                     <select class="form-select form-select-lg " id="production" name="production" required>
-                        <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterprocess') !!}</option>
+                        <option style="display: none" disabled selected value="">{!!
+                            __('monthlyPRpageLang.enterprocess') !!}</option>
                         @foreach ($production as $production)
-                            <option>{{ $production->制程 }}</option>
+                        <option>{{ $production->制程 }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -59,8 +62,10 @@
                 <div class="col-auto">
                     <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
                     <input class="form-control form-control-lg " type="text" id="number" name="number" required
-                        placeholder="{!! __('monthlyPRpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
-                    <div id="numbererror" style="display:none; color:red;">{!! __('monthlyPRpageLang.isnlength') !!}</div>
+                        placeholder="{!! __('monthlyPRpageLang.enterisn') !!}"
+                        oninput="if(value.length>12)value=value.slice(0,12)">
+                    <div id="numbererror" style="display:none; color:red;">{!! __('monthlyPRpageLang.isnlength') !!}
+                    </div>
                     <div id="numbererror1" style="display:none; color:red;">{!! __('monthlyPRpageLang.noisn') !!}
                     </div>
                 </div>
@@ -73,7 +78,8 @@
             </form>
             <div class="col-auto">
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <button class="btn btn-lg btn-primary" id="loadconsume">{!! __('monthlyPRpageLang.loadconsume') !!}</button>
+                <button class="btn btn-lg btn-primary" id="loadconsume">{!! __('monthlyPRpageLang.loadconsume')
+                    !!}</button>
             </div>
         </div>
     </div>
@@ -92,32 +98,16 @@
                                 <th>{!! __('monthlyPRpageLang.unit') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.lt') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.consume') !!}</th>
-                                {{-- <th>{!! __('monthlyPRpageLang.nowneed') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.nextneed') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.safe') !!}</th> --}}
                                 <th>{!! __('monthlyPRpageLang.client') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.machine') !!}</th>
                                 <th>{!! __('monthlyPRpageLang.process') !!}</th>
-                                {{-- <th>{!! __('monthlyPRpageLang.nowmps') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.nowday') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.nextmps') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.nextday') !!}</th> --}}
+
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                {{-- <div class="row">
-                    <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
-                    <div class="col col-4">
-                        <input type="text" class="form-control form-control-lg text-center" id="jobnumber" name="jobnumber"
-                            required oninput="if(value.length>9)value=value.slice(0,9)" placeholder="{!! __('monthlyPRpageLang.nopeople') !!}">
 
-                    </div>
-                </div> --}}
-
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="row">
                     <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
                     <div class="col col-6">
@@ -135,8 +125,8 @@
 
                 <div class="row w-100 justify-content-center">
                     <div class="col col-auto">
-                        <input type="submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}"
-                            style="width: 80px">
+                        <input type="submit" class="btn btn-lg btn-primary"
+                            value="{!! __('monthlyPRpageLang.submit') !!}" style="width: 80px">
                     </div>
                 </div>
             </form>
@@ -156,14 +146,15 @@
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
                                 <div class="col col-auto ">
-                                    <a href="{{ asset('download/ConsumeExample.xlsx') }}"
-                                        download>{!! __('monthlyPRpageLang.exampleExcel') !!}</a>
+                                    <a href="{{ asset('download/ConsumeExample.xlsx') }}" download>{!!
+                                        __('monthlyPRpageLang.exampleExcel') !!}</a>
                                 </div>
 
                                 <div class="w-100" style="height: 1ch;"></div>
                                 <!-- </div>breaks cols to a new line-->
 
-                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.plz_upload') !!}</label>
+                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.plz_upload')
+                                    !!}</label>
                                 <div class="w-100" style="height: 1ch;"></div>
                                 <!-- </div>breaks cols to a new line-->
 
@@ -171,9 +162,9 @@
                                     <input class="form-control @error('select_file') is-invalid @enderror" type="file"
                                         name="select_file" />
                                     @error('select_file')
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
 
@@ -192,6 +183,7 @@
             </div>
         </div>
     </div>
-    </div>
-    </html>
+</div>
+
+</html>
 @endsection

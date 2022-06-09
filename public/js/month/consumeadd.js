@@ -336,7 +336,7 @@ $(document).ready(function () {
                     console.log(err.responseJSON.message);
                     window.location.reload();
                 }
-                else{
+                else {
                     console.log(err.responseJSON.message);
                 }
             },
@@ -378,8 +378,7 @@ $(document).ready(function () {
                 $('#loadconsume').remove();
                 alldatas = JSON.parse(JSON.stringify(data.datas));
 
-                if(alldatas.length === 0)
-                {
+                if (alldatas.length === 0) {
                     notyf.open({
                         type: 'warning',
                         message: Lang.get('monthlyPRpageLang.noload'),
@@ -392,7 +391,7 @@ $(document).ready(function () {
                         }
                     });
                 }
-                else{
+                else {
                     notyf.open({
                         type: 'success',
                         message: Lang.get('monthlyPRpageLang.loadsuccess'),
@@ -421,7 +420,7 @@ $(document).ready(function () {
 
 
                     var consume = parseFloat(alldatas[i].單耗);
-                    consume = consume.toFixed(10);
+                    //consume = consume.toFixed(10);
                     document.getElementById('consumeadd').style.display = "block";
                     var tbl = document.getElementById("consumeaddtable");
                     var body = document.getElementById("consumeaddbody");
@@ -449,8 +448,6 @@ $(document).ready(function () {
                     let rowamount = document.createElement('td');
                     rowamount.innerHTML = '<input id="amount' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
                         'min = "0.0000000001"' + 'value = "' + consume + '"' + 'step = "0.0000000001"' + 'style="width: 200px"' + '">';
-
-
 
                     let rowclient = document.createElement('td');
                     rowclient.innerHTML = "<span id=" + "client" + j + ">" + alldatas[i].客戶別 + "</span>";
@@ -481,7 +478,7 @@ $(document).ready(function () {
                 }
 
             },
-            error: function (err) {},
+            error: function (err) { },
         });
 
     }); // on load btn click
