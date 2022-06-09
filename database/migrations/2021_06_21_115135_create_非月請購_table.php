@@ -15,12 +15,12 @@ class Create非月請購Table extends Migration
     {
         //
         Schema::create('非月請購', function (Blueprint $table) {
-            $table->string('客戶別',30);
+            $table->string('客戶別',45);
             $table->string('料號',12);
             $table->integer('請購數量');
             $table->dateTime('上傳時間');
-            $table->string('說明',50)->nullable();
-            $table->string('SXB單號',50)->nullable();
+            $table->string('說明',45)->nullable();
+            $table->string('SXB單號',45)->nullable();
             //$table->timestamps();
             //$table->softDeletes();
         });

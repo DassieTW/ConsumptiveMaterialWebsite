@@ -21,10 +21,8 @@ class Create月請購單耗Table extends Migration
             $table->primary(['料號','客戶別','機種','製程']);
             $table->double('單耗');
             $table->string('狀態', 45);
-            $table->string('畫押工號', 45)->nullable();
             $table->string('畫押信箱', 45);
             $table->dateTime('畫押時間')->nullable();
-            $table->string('紀錄',255)->nullable();
             $table->dateTime('送單時間');
             $table->string('送單人', 45);
             //$table->timestamps();

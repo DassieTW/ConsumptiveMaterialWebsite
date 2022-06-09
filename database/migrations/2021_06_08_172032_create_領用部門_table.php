@@ -14,7 +14,7 @@ class Create領用部門Table extends Migration
     public function up()
     {
         Schema::create('領用部門', function (Blueprint $table) {
-            $table->string('領用部門',30)->primary();
+            $table->string('領用部門',45)->primary();
             //$table->timestamps();
             //$table->softDeletes();
         });

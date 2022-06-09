@@ -23,7 +23,7 @@ class Create接收明細Table extends Migration
             $table->string('規格', 100);
             $table->integer('實際接收數量');
             $table->integer('實際撥出數量');
-            $table->string('儲位',50);
+            $table->string('儲位',45);
             $table->string('接收人',45);
             $table->dateTime('接收時間');
             //$table->timestamps();

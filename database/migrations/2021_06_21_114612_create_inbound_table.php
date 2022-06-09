@@ -15,7 +15,7 @@ class CreateInboundTable extends Migration
     {
         Schema::create('inbound', function (Blueprint $table) {
             $table->string('入庫單號', 45);
-            $table->string('料號', 45);
+            $table->string('料號', 12);
             $table->integer('入庫數量');
             $table->string('儲位', 10);
             $table->string('入庫人員', 45);

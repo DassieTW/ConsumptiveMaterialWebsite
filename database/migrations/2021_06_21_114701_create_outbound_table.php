@@ -14,11 +14,11 @@ class CreateOutboundTable extends Migration
     public function up()
     {
         Schema::create('outbound', function (Blueprint $table) {
-            $table->string('客戶別', 30);
-            $table->string('機種', 30);
-            $table->string('製程', 30);
-            $table->string('領用原因', 30);
-            $table->string('線別', 30);
+            $table->string('客戶別', 45);
+            $table->string('機種', 45);
+            $table->string('製程', 45);
+            $table->string('領用原因', 45);
+            $table->string('線別', 45);
             $table->string('料號', 12);
             $table->string('品名', 100);
             $table->string('規格', 100);
