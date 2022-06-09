@@ -81,7 +81,7 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.isn"),
           field: "料號",
-          width: "13ch",
+          width: "14ch",
           sortable: true,
           isKey: true,
           display: function (row, i) {
@@ -151,7 +151,7 @@ export default defineComponent({
             "basicInfoLang.gradea"
           ),
           field: "A級資材",
-          width: "15ch",
+          width: "9ch",
           sortable: true,
           display: function (row, i) {
             let returnStr = "";
@@ -197,7 +197,7 @@ export default defineComponent({
             "basicInfoLang.month"
           ),
           field: "月請購",
-          width: "13ch",
+          width: "12ch",
           sortable: true,
           display: function (row, i) {
             let returnStr = "";
@@ -243,12 +243,12 @@ export default defineComponent({
             "basicInfoLang.senddep"
           ),
           field: "發料部門",
-          width: "15ch",
+          width: "10ch",
           sortable: true,
           display: function (row, i) {
             let returnStr = "";
             returnStr +=
-              '<select style="width: 13ch;" class="form-select form-select-lg p-0 m-0" id="send' +
+              '<select style="width: 10ch;" class="form-select form-select-lg p-0 m-0" id="send' +
               i +
               '" name="send' +
               i +
@@ -270,14 +270,14 @@ export default defineComponent({
             "basicInfoLang.belong"
           ),
           field: "耗材歸屬",
-          width: "15ch",
+          width: "10ch",
           sortable: true,
           display: function (row, i) {
             let returnStr = "";
             // console.log(row); // test
             if (row.耗材歸屬 === "單耗") {
               returnStr =
-                '<select style="width: 12ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
                 ' id="belong' +
                 i +
                 '" name="belong' +
@@ -297,7 +297,7 @@ export default defineComponent({
             } // if
             else {
               returnStr =
-                '<select style="width: 12ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
                 ' id="belong' +
                 i +
                 '" name="belong' +
@@ -345,7 +345,7 @@ export default defineComponent({
             "basicInfoLang.money"
           ),
           field: "幣別",
-          width: "13ch",
+          width: "10ch",
           sortable: true,
           display: function (row, i) {
             let currencyDict = ["RMB", "USD", "JPY", "TWD", "VND", "IDR"];
@@ -391,7 +391,7 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.mpq"),
           field: "MPQ",
-          width: "10ch",
+          width: "8ch",
           sortable: true,
           display: function (row, i) {
             return (
@@ -410,7 +410,7 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.moq"),
           field: "MOQ",
-          width: "10ch",
+          width: "8ch",
           sortable: true,
           display: function (row, i) {
             return (
@@ -429,7 +429,7 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.lt"),
           field: "LT",
-          width: "10ch",
+          width: "8ch",
           sortable: true,
           display: function (row, i) {
             return (
@@ -467,13 +467,7 @@ export default defineComponent({
                 '" min="0">';
             } // if
             else {
-              returnStr =
-                '<input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"' +
-                ' id="safe' +
-                i +
-                '" name="safe' +
-                i +
-                '" value="" min="0">';
+              returnStr = app.appContext.config.globalProperties.$t("basicInfoLang.differ_by_client");
             } // else
 
             return returnStr;
