@@ -98,4 +98,5 @@ return [
     'searchisn' => '直接搜索全部，或输入料号开头搜索',
     'searchisn1' => '输入多笔料号查询，使用换行隔开',
     'quicksearch' => '快速查询',
+    'differ_by_client' => '因客户而不同',
 ];

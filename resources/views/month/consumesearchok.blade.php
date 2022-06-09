@@ -83,16 +83,15 @@
                     <?php
                         $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
                         $format = DB::table('consumptive_material')->where('料號',$data->料號)->value('規格');
-                        // $data->單耗 = floatval($data->單耗);
-                        // if (strlen(strval($data->單耗)) > 7)
-                        // {
-                        //     $data->單耗 = number_format($data->單耗,12);
-                        // }
-                        $data->單耗 = abs((float)($data->單耗)) < 1e-20 ? '0' : rtrim(sprintf('%.10F',((float)($data->單耗))), '0');
 
-                        if (abs((float)($data->單耗)) >= 1) {
+                        $unitConsume = abs((float)($data->單耗)) < 1e-20 ? '0' : rtrim(sprintf('%.10F',((float)($data->單耗))), '0');
+
+                        if ( strlen($unitConsume) == 2 ) { // if the result is 5.  (should be like 5.0)
                             $data->單耗 = sprintf('%.1F',((float)($data->單耗)));
                         } // if
+                        else {
+                            $data->單耗 = $unitConsume;
+                        } // else
                     ?>
                     <tr id="{{$loop->index}}" class="isnRows">
                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
