@@ -140,7 +140,7 @@ $(document).ready(function () {
 
                 let rowamount = document.createElement('td');
                 rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                    'min = "0.0000000001"' + 'value = "0"' + 'step = "0.01"' + 'style="width: 200px"' + '">';
+                    'min = "0.0000000001"' + 'value = "0"' + 'step = "0.0000000001"' + 'style="width: 200px"' + '">';
 
                 // let rownowneed = document.createElement('td');
                 // rownowneed.innerHTML = '<input id="nowneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
@@ -415,7 +415,8 @@ $(document).ready(function () {
 
                     let rowamount = document.createElement('td');
                     rowamount.innerHTML = '<input id="amount' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                        'min = "0.0000000001"' + 'value = "' + ScientificNotaionToFixed(consume) + '"' + 'step = "0.01"' + 'style="width: 200px"' + '">';
+                        'min = "0.0000000001"' + 'value = "' + ScientificNotaionToFixed
+                            (consume) + '"' + 'step = "0.0000000001"' + 'style="width: 200px"' + '">';
 
                     let rowclient = document.createElement('td');
                     rowclient.innerHTML = "<span id=" + "client" + j + ">" + alldatas[i].客戶別 + "</span>";

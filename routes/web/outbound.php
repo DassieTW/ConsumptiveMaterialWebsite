@@ -119,7 +119,9 @@ Route::get('/pickrecord', function () {
 //Route::post('/pickrecord', [OutboundController::class, 'pickrecord'])->name('outbound.pickrecord');
 
 //出庫-領料紀錄表查詢
-Route::get('/pickrecordsearch', [OutboundController::class, 'pickrecordsearch'])->middleware('can:outboundPickupRecord,App\Models\Outbound');
+Route::get('/pickrecordsearch', function () {
+    return view("outbound.pickrecordsearchok");
+})->middleware('can:outboundPickupRecord,App\Models\Outbound');
 
 Route::post('/pickrecordsearch', [OutboundController::class, 'pickrecordsearch'])->name('outbound.pickrecordsearch')->middleware('can:outboundPickupRecord,App\Models\Outbound');
 
@@ -132,7 +134,9 @@ Route::get('/backrecord', function () {
 //Route::post('/backrecord', [OutboundController::class, 'backrecord'])->name('outbound.backrecord');
 
 //出庫-退料紀錄表查詢
-Route::get('/backrecordsearch', [OutboundController::class, 'backrecordsearch'])->middleware('can:outboundReturnRecord,App\Models\Outbound');
+Route::get('/backrecordsearch', function () {
+    return view("outbound.backrecordsearchok");
+})->middleware('can:outboundReturnRecord,App\Models\Outbound');
 
 Route::post('/backrecordsearch', [OutboundController::class, 'backrecordsearch'])->name('outbound.backrecordsearch')->middleware('can:outboundReturnRecord,App\Models\Outbound');
 

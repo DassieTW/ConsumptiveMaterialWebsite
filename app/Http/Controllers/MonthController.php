@@ -578,18 +578,6 @@ class MonthController extends Controller
                     $lt = DB::table('consumptive_material')->where('料號', $number)
                         ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('LT');
 
-                    // $nowmps = DB::table('MPS')->where('客戶別', $client)
-                    //     ->where('機種', $machine)->where('製程', $production)->value('本月MPS');
-
-                    // $nowday = DB::table('MPS')->where('客戶別', $client)
-                    //     ->where('機種', $machine)->where('製程', $production)->value('本月生產天數');
-
-                    // $nextmps = DB::table('MPS')->where('客戶別', $client)
-                    //     ->where('機種', $machine)->where('製程', $production)->value('下月MPS');
-
-                    // $nextday = DB::table('MPS')->where('客戶別', $client)
-                    //     ->where('機種', $machine)->where('製程', $production)->value('下月生產天數');
-
                     $lt = round($lt, 3);
                     if ($name !== null && $format !== null) {
                         return \Response::json([

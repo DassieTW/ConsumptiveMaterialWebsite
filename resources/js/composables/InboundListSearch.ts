@@ -1,18 +1,26 @@
-import { ref, Ref } from "vue";
+import {
+    ref,
+    Ref
+} from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
+import {
+    useRouter
+} from "vue-router";
 
-export default function useInboundList() {
+export default function useInboundListSearch() {
     const mats = ref("");
     const errors = ref("");
     const router = useRouter();
 
-    const getLists = async () => {
+    const getMats = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        let lookInTargets = sessionStorage.getItem("lookInTargets");
-        let lookInType = sessionStorage.getItem("lookInType");
-        console.log(lookInTargets); // test
+        let inboundclient = sessionStorage.getItem("inboundclient");
+        let inboundisn = sessionStorage.getItem("inboundisn");
+        let inboundlist = sessionStorage.getItem("inboundlist");
+        let inboundcheck = sessionStorage.getItem("inboundcheck");
+        let inboundbegin = sessionStorage.getItem("inboundbegin");
+        let inboundend = sessionStorage.getItem("inboundend");
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
         axios.interceptors.request.use(function (config) {
@@ -30,7 +38,15 @@ export default function useInboundList() {
         });
 
         try {
-            let response = await axios.post('/api/basic/mats', { DB: getDB.data, LookInTargets: lookInTargets, LookInType: lookInType });
+            let response = await axios.post('/api/inbound/search', {
+                DB: getDB.data,
+                inboundclient: inboundclient,
+                inboundisn: inboundisn,
+                inboundlist: inboundlist,
+                inboundcheck: inboundcheck,
+                inboundbegin: inboundbegin,
+                inboundend: inboundend
+            });
 
             $('body').loadingModal('hide');
             $('body').loadingModal('destroy');
@@ -48,6 +64,6 @@ export default function useInboundList() {
 
     return {
         mats,
-        getLists
+        getMats
     } // return
 } // useConsumptiveMaterials

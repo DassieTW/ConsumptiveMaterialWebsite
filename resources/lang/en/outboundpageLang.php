@@ -61,7 +61,7 @@ return [
     'sendpeoplenum' => 'Send person\'s ID',
     'picklistnum' => 'Pickup list number',
     'opentime' => 'Open list time',
-    'outboundtime' => 'outbound time',
+    'outboundtime' => 'Outbound time',
     'download' => 'download',
     'enterloc' => 'Please select Location',
     'enterdiffreason' => 'Please input the reason',

@@ -4,6 +4,7 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('js/inbound/search.js') }}"></script>
 <!--for this page's sepcified js -->
 @endsection
 
@@ -24,7 +25,7 @@
             <div class="row justify-content-center">
                 <div class="card-body">
 
-                    <form action="{{ route('inbound.inquire') }}" method="POST">
+                    <form id="form1" method="POST">
                         @csrf
                         <div class="row w-100 justify-content-center mb-3">
                             <label class="col col-auto form-label">{!! __('inboundpageLang.client') !!}</label>
@@ -63,14 +64,12 @@
                             <div class="col-lg-6  col-md-12 col-sm-12">
 
                                 <input class="form-control form-control-lg @error('innumber') is-invalid @enderror"
-                                    type="text" id="innumber" name="innumber"
+                                    type="number" id="innumber" name="innumber"
                                     placeholder="{!! __('inboundpageLang.enterinlist') !!}"
                                     oninput="if(value.length>12)value=value.slice(0,12)">
-                                @error('innumber')
-                                <span class="invalid-feedback d-block" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                <div id="innumbererror" style="display:none; color:red;">{!!
+                                    __('validation.regex')
+                                    !!}</div>
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

@@ -45,17 +45,21 @@ import router from './vue-router/route';
 import BreadCrumbNav from './components/breadcrumb/BreadCrumbNav.vue';
 import BasicInfoTable from './components/reusableUtilities/BasicInfoTable.vue';
 import InboundSearchTable from './components/reusableUtilities/InboundSearchTable.vue';
+import OutboundPickrecordTable from './components/reusableUtilities/OutboundPickrecordTable.vue';
+import OutboundBackrecordTable from './components/reusableUtilities/OutboundBackrecordTable.vue';
 
 const app = createApp({
     components: {
         'vue-bread-crumb': BreadCrumbNav,
         'basic-info-table': BasicInfoTable,
-        'inbound-search-table': InboundSearchTable
+        'inbound-search-table': InboundSearchTable,
+        'outbound-pickrecord-table': OutboundPickrecordTable,
+        'outbound-backrecord-table': OutboundBackrecordTable
     }
 });
 
 app.use(Vue3Langjs, {
-    messages: vueTranslations, 
+    messages: vueTranslations,
     // the locale file gen by command "php artisan lang:js resources/js/vue-translations.js --no-lib --quiet"
 });
 

@@ -1,19 +1,19 @@
 <template>
-  <!-- <div class="w-100" style="height: 1ch"></div> -->
+  <div class="row" style="text-align: left">
+    <div class="col col-auto">
+      <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+    </div>
+    <div class="col col-3 p-0 m-0">
+      <input id="pnInput" class="text-center form-control form-control-lg"
+        v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+    </div>
+  </div>
+  <div class="w-100" style="height: 1ch"></div>
   <!-- </div>breaks cols to a new line-->
-  <table-lite
-    :is-static-mode="true"
-    :hasCheckbox="true"
-    :isLoading="table.isLoading"
-    :messages="table.messages"
-    :columns="table.columns"
-    :rows="table.rows"
-    :total="table.totalRecordCount"
-    :page-options="table.pageOptions"
-    :sortable="table.sortable"
-    @is-finished="table.isLoading = false"
-    @return-checked-rows="updateCheckedRows"
-  ></table-lite>
+  <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true" :isLoading="table.isLoading"
+    :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+    :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
+    @return-checked-rows="updateCheckedRows"></table-lite>
 </template>
 
 <script>
@@ -25,14 +25,14 @@ import {
   watch,
 } from "@vue/runtime-core";
 import TableLite from "./TableLite.vue";
-import useInboundList from "../../composables/InboundListSearch.ts";
+import useInboundListSearch from "../../composables/InboundListSearch.ts";
 export default defineComponent({
   name: "App",
   components: { TableLite },
   setup() {
-    const { mats, getLists } = useInboundList(); // axios post to get the data
+    const { mats, getMats } = useInboundListSearch(); // axios get the mats data
 
-    onMounted(getLists);
+    onMounted(getMats);
 
     const searchTerm = ref(""); // Search text
     const app = getCurrentInstance(); // get the current instance
@@ -44,15 +44,12 @@ export default defineComponent({
 
     // pour the data in
     const data = reactive([]);
-    const senders = reactive([]); // access the value by snders[0], senders[1] ...
+    // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
     watch(mats, () => {
       console.log(JSON.parse(mats.value)); // test
       let allRowsObj = JSON.parse(mats.value);
-      for (let i = 0; i < allRowsObj.senders.length; i++) {
-        senders.push(allRowsObj.senders[i]);
-      } // for
-
+      //console.log(allRowsObj.datas.length);
       for (let i = 0; i < allRowsObj.datas.length; i++) {
         data.push(allRowsObj.datas[i]);
       } // for
@@ -63,11 +60,34 @@ export default defineComponent({
       isLoading: false,
       columns: [
         {
-          label: app.appContext.config.globalProperties.$t("basicInfoLang.isn"),
-          field: "料號",
-          width: "13ch",
+          label: app.appContext.config.globalProperties.$t("inboundpageLang.inlist"),
+          field: "入庫單號",
+          width: "14ch",
           sortable: true,
           isKey: true,
+          display: function (row, i) {
+            return (
+              '<input type="hidden" id="inboundlist' +
+              i +
+              '" name="inboundlist' +
+              i +
+              '" value="' +
+              row.入庫單號 +
+              '">' +
+              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              row.入庫單號 +
+              "</div>"
+            );
+          },
+        },
+        {
+          label: app.appContext.config.globalProperties.$t(
+            "inboundpageLang.isn"
+          ),
+          field: "料號",
+          width: "15ch",
+          sortable: true,
           display: function (row, i) {
             return (
               '<input type="hidden" id="number' +
@@ -78,7 +98,7 @@ export default defineComponent({
               row.料號 +
               '">' +
               '<div class="text-nowrap scrollableWithoutScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              ' style="overflow-x: auto; width: 100%;">' +
               row.料號 +
               "</div>"
             );
@@ -86,382 +106,165 @@ export default defineComponent({
         },
         {
           label: app.appContext.config.globalProperties.$t(
-            "basicInfoLang.pName"
+            "inboundpageLang.inboundnum"
           ),
-          field: "品名",
-          width: "13ch",
+          field: "入庫數量",
+          width: "14ch",
           sortable: true,
           display: function (row, i) {
             return (
-              '<input type="hidden" id="name' +
+              '<input type="hidden" id="inboundnum' +
               i +
-              '" name="name' +
-              i +
-              '" value="' +
-              row.品名 +
-              '">' +
-              '<div class="text-nowrap scrollableWithoutScrollbar"' +
-              ' style="overflow-x: auto; width: 100%;">' +
-              row.品名 +
-              "</div>"
-            );
-          },
-        },
-        {
-          label: app.appContext.config.globalProperties.$t(
-            "basicInfoLang.format"
-          ),
-          field: "規格",
-          width: "13ch",
-          sortable: true,
-          display: function (row, i) {
-            return (
-              '<input type="hidden" id="format' +
-              i +
-              '" name="format' +
+              '" name="inboundnum' +
               i +
               '" value="' +
-              row.規格 +
+              row.入庫數量 +
               '">' +
               '<div class="scrollableWithoutScrollbar text-nowrap"' +
               ' style="overflow-x: auto; width: 100%;">' +
-              row.規格 +
+              row.入庫數量 +
               "</div>"
             );
           },
         },
         {
           label: app.appContext.config.globalProperties.$t(
-            "basicInfoLang.gradea"
+            "inboundpageLang.loc"
           ),
-          field: "A級資材",
-          width: "15ch",
-          sortable: true,
-          display: function (row, i) {
-            let returnStr = "";
-            // console.log(row); // test
-            if (row.A級資材 === "是") {
-              returnStr =
-                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="gradea' +
-                i +
-                '" name="gradea' +
-                i +
-                '">' +
-                '<option value="是" selected>' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
-                "</option>" +
-                '<option value="否">' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.no") +
-                "</option>" +
-                "</select>";
-            } // if
-            else {
-              returnStr =
-                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="gradea' +
-                i +
-                '" name="gradea' +
-                i +
-                '">' +
-                '<option value="是">' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
-                "</option>" +
-                '<option value="否" selected>' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.no") +
-                "</option>" +
-                "</select>";
-            } // else
-
-            return returnStr;
-          },
-        },
-        {
-          label: app.appContext.config.globalProperties.$t(
-            "basicInfoLang.month"
-          ),
-          field: "月請購",
-          width: "13ch",
-          sortable: true,
-          display: function (row, i) {
-            let returnStr = "";
-            // console.log(row); // test
-            if (row.月請購 === "是") {
-              returnStr =
-                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="month' +
-                i +
-                '" name="month' +
-                i +
-                '">' +
-                '<option value="是" selected>' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
-                "</option>" +
-                '<option value="否">' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.no") +
-                "</option>" +
-                "</select>";
-            } // if
-            else {
-              returnStr =
-                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="month' +
-                i +
-                '" name="month' +
-                i +
-                '">' +
-                '<option value="是">' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
-                "</option>" +
-                '<option value="否" selected>' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.no") +
-                "</option>" +
-                "</select>";
-            } // else
-
-            return returnStr;
-          }, // display
-        },
-        {
-          label: app.appContext.config.globalProperties.$t(
-            "basicInfoLang.senddep"
-          ),
-          field: "發料部門",
-          width: "15ch",
-          sortable: true,
-          display: function (row, i) {
-            let returnStr = "";
-            returnStr +=
-              '<select style="width: 13ch;" class="form-select form-select-lg p-0 m-0" id="send' +
-              i +
-              '" name="send' +
-              i +
-              '">';
-            senders.forEach((element) => {
-              if (row.發料部門 === element) {
-                returnStr += "<option selected>" + element + "</option>";
-              } // if
-              else {
-                returnStr += "<option>" + element + "</option>";
-              } // else
-            }); // for each in sender array
-            returnStr += "</select>";
-            return returnStr; // return
-          },
-        },
-        {
-          label: app.appContext.config.globalProperties.$t(
-            "basicInfoLang.belong"
-          ),
-          field: "耗材歸屬",
-          width: "15ch",
-          sortable: true,
-          display: function (row, i) {
-            let returnStr = "";
-            // console.log(row); // test
-            if (row.耗材歸屬 === "單耗") {
-              returnStr =
-                '<select style="width: 12ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="belong' +
-                i +
-                '" name="belong' +
-                i +
-                '">' +
-                '<option value="單耗" selected>' +
-                app.appContext.config.globalProperties.$t(
-                  "basicInfoLang.consume"
-                ) +
-                "</option>" +
-                '<option value="站位">' +
-                app.appContext.config.globalProperties.$t(
-                  "basicInfoLang.stand"
-                ) +
-                "</option>" +
-                "</select>";
-            } // if
-            else {
-              returnStr =
-                '<select style="width: 12ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="belong' +
-                i +
-                '" name="belong' +
-                i +
-                '">' +
-                '<option value="單耗">' +
-                app.appContext.config.globalProperties.$t(
-                  "basicInfoLang.consume"
-                ) +
-                "</option>" +
-                '<option value="站位" selected>' +
-                app.appContext.config.globalProperties.$t(
-                  "basicInfoLang.stand"
-                ) +
-                "</option>" +
-                "</select>";
-            } // else
-
-            return returnStr;
-          },
-        },
-        {
-          label: app.appContext.config.globalProperties.$t(
-            "basicInfoLang.price"
-          ),
-          field: "單價",
-          width: "13ch",
-          sortable: true,
-          display: function (row, i) {
-            return (
-              '<input style="width: 10ch;" type="number" id="price' +
-              i +
-              '"' +
-              ' class="form-control text-center p-0 m-0" name="price' +
-              i +
-              '"' +
-              ' value="' +
-              parseFloat(row.單價) +
-              '">'
-            );
-          },
-        },
-        {
-          label: app.appContext.config.globalProperties.$t(
-            "basicInfoLang.money"
-          ),
-          field: "幣別",
-          width: "13ch",
-          sortable: true,
-          display: function (row, i) {
-            let currencyDict = ["RMB", "USD", "JPY", "TWD", "VND", "IDR"];
-            let returnStr = "";
-            returnStr +=
-              '<select style="width: 8ch;" class="form-select form-select-lg p-0 m-0" id="money' +
-              i +
-              '" name="money' +
-              i +
-              '">';
-            currencyDict.forEach((element) => {
-              if (row.幣別 === element) {
-                returnStr += "<option selected>" + element + "</option>";
-              } // if
-              else {
-                returnStr += "<option>" + element + "</option>";
-              } // else
-            }); // for each in sender array
-            returnStr += "</select>";
-            return returnStr;
-          },
-        },
-        {
-          label:
-            app.appContext.config.globalProperties.$t("basicInfoLang.unit"),
-          field: "單位",
-          width: "8ch",
-          sortable: true,
-          display: function (row, i) {
-            return (
-              '<input style="width:5ch;" type="text" id="unit' +
-              i +
-              '"' +
-              ' name="unit' +
-              i +
-              '" value="' +
-              row.單位 +
-              '"' +
-              ' class="form-control text-center p-0 m-0">'
-            );
-          },
-        },
-        {
-          label: app.appContext.config.globalProperties.$t("basicInfoLang.mpq"),
-          field: "MPQ",
+          field: "儲位",
           width: "10ch",
           sortable: true,
           display: function (row, i) {
             return (
-              '<input style="width:8ch;" type="number" id="mpq' +
+              '<input type="hidden" id="position' +
               i +
-              '"' +
-              ' name="mpq' +
+              '" name="position' +
               i +
               '" value="' +
-              row.MPQ +
-              '"' +
-              ' class="form-control text-center p-0 m-0" min="0">'
+              row.儲位 +
+              '">' +
+              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              row.儲位 +
+              "</div>"
             );
           },
         },
         {
-          label: app.appContext.config.globalProperties.$t("basicInfoLang.moq"),
-          field: "MOQ",
-          width: "10ch",
+          label: app.appContext.config.globalProperties.$t(
+            "inboundpageLang.inpeople"
+          ),
+          field: "入庫人員",
+          width: "14ch",
           sortable: true,
           display: function (row, i) {
             return (
-              '<input style="width:8ch;" type="number" id="moq' +
+              '<input type="hidden" id="inboundpeople' +
               i +
-              '"' +
-              ' name="moq' +
+              '" name="inboundpeople' +
               i +
               '" value="' +
-              row.MOQ +
-              '"' +
-              ' class="form-control text-center p-0 m-0" min="0">'
+              row.入庫人員 +
+              '">' +
+              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              row.入庫人員 +
+              "</div>"
             );
           },
         },
         {
-          label: app.appContext.config.globalProperties.$t("basicInfoLang.lt"),
-          field: "LT",
-          width: "10ch",
+          label: app.appContext.config.globalProperties.$t(
+            "inboundpageLang.client"
+          ),
+          field: "客戶別",
+          width: "12ch",
           sortable: true,
           display: function (row, i) {
             return (
-              '<input style="width:8ch;" type="number" id="lt' +
+              '<input type="hidden" id="client' +
               i +
-              '"' +
-              ' name="lt' +
+              '" name="client' +
               i +
               '" value="' +
-              row.LT +
-              '"' +
-              ' class="form-control text-center p-0 m-0" min="0">'
+              row.客戶別 +
+              '">' +
+              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              row.客戶別 +
+              "</div>"
             );
           },
         },
         {
-          label:
-            app.appContext.config.globalProperties.$t("basicInfoLang.safe"),
-          field: "安全庫存",
-          width: "13ch",
+          label: app.appContext.config.globalProperties.$t(
+            "inboundpageLang.inreason"
+          ),
+          field: "入庫原因",
+          width: "15ch",
           sortable: true,
           display: function (row, i) {
-            let returnStr = "";
-            // console.log(row); // test
-            if (row.月請購 === "否") {
-              returnStr =
-                '<input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"' +
-                ' id="safe' +
-                i +
-                '" name="safe' +
-                i +
-                '"' +
-                ' value="' +
-                row.安全庫存 +
-                '" min="0">';
-            } // if
-            else {
-              returnStr =
-                '<input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"' +
-                ' id="safe' +
-                i +
-                '" name="safe' +
-                i +
-                '" value="" min="0">';
-            } // else
-
-            return returnStr;
-          }, // display
+            return (
+              '<input type="hidden" id="inboundreason' +
+              i +
+              '" name="inboundreason' +
+              i +
+              '" value="' +
+              row.入庫原因 +
+              '">' +
+              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              row.入庫原因 +
+              "</div>"
+            );
+          },
+        },
+        {
+          label: app.appContext.config.globalProperties.$t(
+            "inboundpageLang.inboundtime"
+          ),
+          field: "入庫時間",
+          width: "12ch",
+          sortable: true,
+          display: function (row, i) {
+            return (
+              '<input type="hidden" id="inboundtime' +
+              i +
+              '" name="inboundtime' +
+              i +
+              '" value="' +
+              row.入庫時間 +
+              '">' +
+              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              row.入庫時間 +
+              "</div>"
+            );
+          },
+        },
+        {
+          label: app.appContext.config.globalProperties.$t(
+            "inboundpageLang.mark"
+          ),
+          field: "備註",
+          width: "10ch",
+          sortable: true,
+          display: function (row, i) {
+            if (row.備註 === null) row.備註 = "";
+            return (
+              '<input type="hidden" id="remark' +
+              i +
+              '" name="remark' +
+              i +
+              '" value="' +
+              row.備註 +
+              '">' +
+              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              row.備註 +
+              "</div>"
+            );
+          },
         },
       ],
       rows: computed(() => {
@@ -499,6 +302,10 @@ export default defineComponent({
       },
       pageOptions: [
         {
+          value: 10,
+          text: 10,
+        },
+        {
           value: 20,
           text: 20,
         },
@@ -514,9 +321,23 @@ export default defineComponent({
     });
 
     const updateCheckedRows = (rowsKey) => {
-      console.log(rowsKey);
-    };
-
+      console.log(rowsKey)
+      // only check one 
+      let count = ($('.vtl-paging-count-dropdown').val());
+      rowsKey = parseInt(rowsKey);
+      for (let i = 0; i < count; i++) {
+        if (i !== rowsKey) {
+          $("#checkbox" + i).prop("disabled", true);
+        }
+        else {
+          $("#checkbox" + i).prop("disabled", false);
+        }
+      };
+      if (isNaN(rowsKey)) {
+        console.log(1);
+        $('.vtl-tbody-checkbox').prop("disabled", false);
+      }
+    }
     return {
       searchTerm,
       table,

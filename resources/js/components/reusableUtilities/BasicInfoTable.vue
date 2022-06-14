@@ -1,35 +1,19 @@
 <template>
   <div class="row" style="text-align: left">
     <div class="col col-auto">
-      <label for="pnInput" class="col-form-label"
-        >{{ $t("basicInfoLang.quicksearch") }} :</label
-      >
+      <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
     </div>
     <div class="col col-3 p-0 m-0">
-      <input
-        id="pnInput"
-        class="text-center form-control form-control-lg"
-        v-bind:placeholder="$t('basicInfoLang.enterisn')"
-        v-model="searchTerm"
-      />
+      <input id="pnInput" class="text-center form-control form-control-lg"
+        v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
     </div>
   </div>
   <div class="w-100" style="height: 1ch"></div>
   <!-- </div>breaks cols to a new line-->
-  <table-lite
-    :is-fixed-first-column="true"
-    :is-static-mode="true"
-    :hasCheckbox="true"
-    :isLoading="table.isLoading"
-    :messages="table.messages"
-    :columns="table.columns"
-    :rows="table.rows"
-    :total="table.totalRecordCount"
-    :page-options="table.pageOptions"
-    :sortable="table.sortable"
-    @is-finished="table.isLoading = false"
-    @return-checked-rows="updateCheckedRows"
-  ></table-lite>
+  <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true" :isLoading="table.isLoading"
+    :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+    :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
+    @return-checked-rows="updateCheckedRows"></table-lite>
 </template>
 
 <script>
@@ -60,11 +44,12 @@ export default defineComponent({
 
     // pour the data in
     const data = reactive([]);
-    const senders = reactive([]); // access the value by snders[0], senders[1] ...
+    const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
     watch(mats, () => {
       console.log(JSON.parse(mats.value)); // test
       let allRowsObj = JSON.parse(mats.value);
+      console.log(allRowsObj.datas.length);
       for (let i = 0; i < allRowsObj.senders.length; i++) {
         senders.push(allRowsObj.senders[i]);
       } // for
@@ -85,6 +70,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row, i) {
+            console.log(row);
             return (
               '<input type="hidden" id="number' +
               i +

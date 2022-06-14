@@ -1,118 +1,26 @@
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
 });
+
 $(document).ready(function () {
 
-    function quickSearch() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue;
-        input = $("#numbersearch").val();
-        //var isISN = $("#toggle-state").is(":checked");
-        console.log(input); // test
-        // filter = input.value;
-        // Loop through all table rows, and hide those who don't match the search query
-        $('.isnRows').each(function (i, obj) {
-            txtValue = $(this).find("input[id^='dataf']").val();
-            // console.log("now checking text : " + txtValue); // test
-            if (txtValue.indexOf(input) > -1) {
-                obj.style.display = "";
+    var title = [];
 
-            } else {
-                obj.style.display = "none";
-            } // if else
-        });
-    } // quickSearch function
-
-
-    $("#numbersearch").on('input', function (e) {
+    $("#picktable").on("submit", function (e) {
         e.preventDefault();
-        quickSearch();
-    });
-
-    $('#picktable').on('submit', function (e) {
-        e.preventDefault();
+        var titlecount = 21;
+        var titlename = "領料記錄表查詢"
+        //download title
+        for (let i = 0; i < 21; i++) {
+            title.push($(".vtl-thead-th").eq(i).text());
+        }
 
         // clean up previous input results
-        $('.is-invalid').removeClass('is-invalid');
+        $(".is-invalid").removeClass("is-invalid");
         $(".invalid-feedback").remove();
 
-
-        var titlecount = $("#titlecount").val();
-        var count = $("#count").val();
-        var titlename = $("#titlename").val();
-        var title = [];
-        for (let i = 0; i < titlecount; i++) {
-            title.push($("#title" + i).val());
-        }
-        var data = [];
-        var data0 = [];
-        var data1 = [];
-        var data2 = [];
-        var data3 = [];
-        var data4 = [];
-        var data5 = [];
-        var data6 = [];
-        var data7 = [];
-        var data8 = [];
-        var data9 = [];
-        var data10 = [];
-        var data11 = [];
-        var data12 = [];
-        var data13 = [];
-        var data14 = [];
-        var data15 = [];
-        var data16 = [];
-        var data17 = [];
-        var data18 = [];
-        var data19 = [];
-        var data20 = [];
-        for (let i = 0; i < count; i++) {
-            data0.push($("#dataa" + i).val());
-            data1.push($("#datab" + i).val());
-            data2.push($("#datac" + i).val());
-            data3.push($("#datad" + i).val());
-            data4.push($("#datae" + i).val());
-            data5.push($("#dataf" + i).val());
-            data6.push($("#datag" + i).val());
-            data7.push($("#datah" + i).val());
-            data8.push($("#datai" + i).val());
-            data9.push($("#dataj" + i).val());
-            data10.push($("#datak" + i).val());
-            data11.push($("#datal" + i).val());
-            data12.push($("#datam" + i).val());
-            data13.push($("#datan" + i).val());
-            data14.push($("#datao" + i).val());
-            data15.push($("#datap" + i).val());
-            data16.push($("#dataq" + i).val());
-            data17.push($("#datar" + i).val());
-            data18.push($("#datas" + i).val());
-            data19.push($("#datat" + i).val());
-            data20.push($("#datau" + i).val());
-
-        }
-        data.push(data0);
-        data.push(data1);
-        data.push(data2);
-        data.push(data3);
-        data.push(data4);
-        data.push(data5);
-        data.push(data6);
-        data.push(data7);
-        data.push(data8);
-        data.push(data9);
-        data.push(data10);
-        data.push(data11);
-        data.push(data12);
-        data.push(data13);
-        data.push(data14);
-        data.push(data15);
-        data.push(data16);
-        data.push(data17);
-        data.push(data18);
-        data.push(data19);
-        data.push(data20);
         $.ajax({
             type: 'POST',
             url: "download",
@@ -120,8 +28,6 @@ $(document).ready(function () {
                 title: title,
                 titlecount: titlecount,
                 titlename: titlename,
-                AllData: JSON.stringify(data),
-                count: count,
             },
             xhrFields: {
                 responseType: 'blob', // to avoid binary data being mangled on charset conversion
@@ -180,6 +86,8 @@ $(document).ready(function () {
                         URL.revokeObjectURL(downloadUrl);
                     }, 100); // cleanup
                 }
+
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
 
@@ -189,91 +97,18 @@ $(document).ready(function () {
         });
     });
 
-    $('#backtable').on('submit', function (e) {
+    $("#backtable").on("submit", function (e) {
         e.preventDefault();
+        var titlecount = 21;
+        var titlename = "領料記錄表查詢"
+        //download title
+        for (let i = 0; i < 21; i++) {
+            title.push($(".vtl-thead-th").eq(i).text());
+        }
 
         // clean up previous input results
-        $('.is-invalid').removeClass('is-invalid');
+        $(".is-invalid").removeClass("is-invalid");
         $(".invalid-feedback").remove();
-
-
-        var titlecount = $("#titlecount").val();
-        var count = $("#count").val();
-        var titlename = $("#titlename").val();
-        var title = [];
-        for (let i = 0; i < titlecount; i++) {
-            title.push($("#title" + i).val());
-        }
-        var data = [];
-        var data0 = [];
-        var data1 = [];
-        var data2 = [];
-        var data3 = [];
-        var data4 = [];
-        var data5 = [];
-        var data6 = [];
-        var data7 = [];
-        var data8 = [];
-        var data9 = [];
-        var data10 = [];
-        var data11 = [];
-        var data12 = [];
-        var data13 = [];
-        var data14 = [];
-        var data15 = [];
-        var data16 = [];
-        var data17 = [];
-        var data18 = [];
-        var data19 = [];
-        var data20 = [];
-        var data21 = [];
-        for (let i = 0; i < count; i++) {
-            data0.push($("#dataa" + i).val());
-            data1.push($("#datab" + i).val());
-            data2.push($("#datac" + i).val());
-            data3.push($("#datad" + i).val());
-            data4.push($("#datae" + i).val());
-            data5.push($("#dataf" + i).val());
-            data6.push($("#datag" + i).val());
-            data7.push($("#datah" + i).val());
-            data8.push($("#datai" + i).val());
-            data9.push($("#dataj" + i).val());
-            data10.push($("#datak" + i).val());
-            data11.push($("#datal" + i).val());
-            data12.push($("#datam" + i).val());
-            data13.push($("#datan" + i).val());
-            data14.push($("#datao" + i).val());
-            data15.push($("#datap" + i).val());
-            data16.push($("#dataq" + i).val());
-            data17.push($("#datar" + i).val());
-            data18.push($("#datas" + i).val());
-            data19.push($("#datat" + i).val());
-            data20.push($("#datau" + i).val());
-            data21.push($("#datav" + i).val());
-
-        }
-        data.push(data0);
-        data.push(data1);
-        data.push(data2);
-        data.push(data3);
-        data.push(data4);
-        data.push(data5);
-        data.push(data6);
-        data.push(data7);
-        data.push(data8);
-        data.push(data9);
-        data.push(data10);
-        data.push(data11);
-        data.push(data12);
-        data.push(data13);
-        data.push(data14);
-        data.push(data15);
-        data.push(data16);
-        data.push(data17);
-        data.push(data18);
-        data.push(data19);
-        data.push(data20);
-        data.push(data21);
 
         $.ajax({
             type: 'POST',
@@ -282,8 +117,6 @@ $(document).ready(function () {
                 title: title,
                 titlecount: titlecount,
                 titlename: titlename,
-                AllData: JSON.stringify(data),
-                count: count,
             },
             xhrFields: {
                 responseType: 'blob', // to avoid binary data being mangled on charset conversion
@@ -342,6 +175,8 @@ $(document).ready(function () {
                         URL.revokeObjectURL(downloadUrl);
                     }, 100); // cleanup
                 }
+
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
 
@@ -350,11 +185,4 @@ $(document).ready(function () {
             }
         });
     });
-});
-
-$(window).on('load', function () {
-    // PAGE IS FULLY LOADED
-    // FADE OUT YOUR OVERLAYING DIV
-    $('body').loadingModal('hide');
-    $('body').loadingModal('destroy');
 });
