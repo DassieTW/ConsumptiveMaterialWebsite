@@ -70,7 +70,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row, i) {
-            console.log(row);
+             // console.log(row);
             return (
               '<input type="hidden" id="number' +
               i +
