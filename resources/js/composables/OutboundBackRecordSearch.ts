@@ -15,12 +15,13 @@ export default function useOutboundBackRecord() {
     const getMats = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        let inboundclient = sessionStorage.getItem("inboundclient");
-        let inboundisn = sessionStorage.getItem("inboundisn");
-        let inboundlist = sessionStorage.getItem("inboundlist");
-        let inboundcheck = sessionStorage.getItem("inboundcheck");
-        let inboundbegin = sessionStorage.getItem("inboundbegin");
-        let inboundend = sessionStorage.getItem("inboundend");
+        let backrecordclient = sessionStorage.getItem("backrecordclient");
+        let backrecordproduction = sessionStorage.getItem("backrecordproduction");
+        let backrecordsend = sessionStorage.getItem("backrecordsend");
+        let backrecordisn = sessionStorage.getItem("backrecordisn");
+        let backrecordcheck = sessionStorage.getItem("backrecordcheck");
+        let backrecordbegin = sessionStorage.getItem("backrecordbegin");
+        let backrecordend = sessionStorage.getItem("backrecordend");
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
         axios.interceptors.request.use(function (config) {
@@ -38,14 +39,15 @@ export default function useOutboundBackRecord() {
         });
 
         try {
-            let response = await axios.post('/api/inbound/search', {
+            let response = await axios.post('/api/outbound/backrecord', {
                 DB: getDB.data,
-                inboundclient: inboundclient,
-                inboundisn: inboundisn,
-                inboundlist: inboundlist,
-                inboundcheck: inboundcheck,
-                inboundbegin: inboundbegin,
-                inboundend: inboundend
+                backrecordclient: backrecordclient,
+                backrecordproduction: backrecordproduction,
+                backrecordsend: backrecordsend,
+                backrecordisn: backrecordisn,
+                backrecordcheck: backrecordcheck,
+                backrecordbegin: backrecordbegin,
+                backrecordend: backrecordend
             });
 
             $('body').loadingModal('hide');

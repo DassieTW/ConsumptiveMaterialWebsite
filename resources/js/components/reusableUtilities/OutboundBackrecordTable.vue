@@ -10,7 +10,7 @@
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true" :isLoading="table.isLoading"
+    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
         :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
         @return-checked-rows="updateCheckedRows"></table-lite>
@@ -60,126 +60,11 @@ export default defineComponent({
             isLoading: false,
             columns: [
                 {
-                    label: app.appContext.config.globalProperties.$t("inboundpageLang.inlist"),
-                    field: "入庫單號",
-                    width: "14ch",
-                    sortable: true,
-                    isKey: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="inboundlist' +
-                            i +
-                            '" name="inboundlist' +
-                            i +
-                            '" value="' +
-                            row.入庫單號 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.入庫單號 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.isn"
-                    ),
-                    field: "料號",
-                    width: "15ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="number' +
-                            i +
-                            '" name="number' +
-                            i +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.料號 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.inboundnum"
-                    ),
-                    field: "入庫數量",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="inboundnum' +
-                            i +
-                            '" name="inboundnum' +
-                            i +
-                            '" value="' +
-                            row.入庫數量 +
-                            '">' +
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.入庫數量 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.loc"
-                    ),
-                    field: "儲位",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="position' +
-                            i +
-                            '" name="position' +
-                            i +
-                            '" value="' +
-                            row.儲位 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.儲位 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.inpeople"
-                    ),
-                    field: "入庫人員",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="inboundpeople' +
-                            i +
-                            '" name="inboundpeople' +
-                            i +
-                            '" value="' +
-                            row.入庫人員 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.入庫人員 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.client"
-                    ),
+                    label: app.appContext.config.globalProperties.$t("outboundpageLang.client"),
                     field: "客戶別",
                     width: "12ch",
                     sortable: true,
+                    isKey: true,
                     display: function (row, i) {
                         return (
                             '<input type="hidden" id="client' +
@@ -198,33 +83,449 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.inreason"
+                        "outboundpageLang.machine"
                     ),
-                    field: "入庫原因",
-                    width: "15ch",
+                    field: "機種",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="inboundreason' +
+                            '<input type="hidden" id="machine' +
                             i +
-                            '" name="inboundreason' +
+                            '" name="machine' +
                             i +
                             '" value="' +
-                            row.入庫原因 +
+                            row.機種 +
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.入庫原因 +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.機種 +
                             "</div>"
                         );
                     },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.inboundtime"
+                        "outboundpageLang.process"
+                    ),
+                    field: "製程",
+                    width: "12ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="production' +
+                            i +
+                            '" name="production' +
+                            i +
+                            '" value="' +
+                            row.製程 +
+                            '">' +
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.製程 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.backreason"
+                    ),
+                    field: "退回原因",
+                    width: "14ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="backreason' +
+                            i +
+                            '" name="backreason' +
+                            i +
+                            '" value="' +
+                            row.退回原因 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.退回原因 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.line"
+                    ),
+                    field: "線別",
+                    width: "9ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="line' +
+                            i +
+                            '" name="line' +
+                            i +
+                            '" value="' +
+                            row.線別 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.線別 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.isn"
+                    ),
+                    field: "料號",
+                    width: "15ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="number' +
+                            i +
+                            '" name="number' +
+                            i +
+                            '" value="' +
+                            row.料號 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.料號 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.pName"
+                    ),
+                    field: "品名",
+                    width: "14ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="name' +
+                            i +
+                            '" name="name' +
+                            i +
+                            '" value="' +
+                            row.品名 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.品名 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.format"
+                    ),
+                    field: "規格",
+                    width: "14ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="format' +
+                            i +
+                            '" name="format' +
+                            i +
+                            '" value="' +
+                            row.規格 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.規格 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.unit"
+                    ),
+                    field: "單位",
+                    width: "9ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="unit' +
+                            i +
+                            '" name="unit' +
+                            i +
+                            '" value="' +
+                            row.單位 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.單位 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.backamount"
+                    ),
+                    field: "預退數量",
+                    width: "17ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="backamount' +
+                            i +
+                            '" name="backamount' +
+                            i +
+                            '" value="' +
+                            row.預退數量 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.預退數量 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.realbackamount"
+                    ),
+                    field: "實際退回數量",
+                    width: "22ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="realbackamount' +
+                            i +
+                            '" name="realbackamount' +
+                            i +
+                            '" value="' +
+                            row.實際退回數量 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.實際退回數量 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.mark"
+                    ),
+                    field: "備註",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.備註 === null) row.備註 = "";
+                        return (
+                            '<input type="hidden" id="remark' +
+                            i +
+                            '" name="remark' +
+                            i +
+                            '" value="' +
+                            row.備註 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.備註 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.backdiffreason"
+                    ),
+                    field: "實退差異原因",
+                    width: "26ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.實退差異原因 === null) row.實退差異原因 = "";
+                        return (
+                            '<input type="hidden" id="backdiffreason' +
+                            i +
+                            '" name="backdiffreason' +
+                            i +
+                            '" value="' +
+                            row.實退差異原因 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.實退差異原因 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.loc"
+                    ),
+                    field: "儲位",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="location' +
+                            i +
+                            '" name="location' +
+                            i +
+                            '" value="' +
+                            row.儲位 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.儲位 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.receivepeople"
+                    ),
+                    field: "收料人員",
+                    width: "14ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="receivepeople' +
+                            i +
+                            '" name="receivepeople' +
+                            i +
+                            '" value="' +
+                            row.收料人員 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.收料人員 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.receivepeoplenum"
+                    ),
+                    field: "收料人員工號",
+                    width: "17ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="receivepeoplenum' +
+                            i +
+                            '" name="receivepeoplenum' +
+                            i +
+                            '" value="' +
+                            row.收料人員工號 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.收料人員工號 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.backpeople"
+                    ),
+                    field: "退料人員",
+                    width: "14ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="backpeople' +
+                            i +
+                            '" name="backpeople' +
+                            i +
+                            '" value="' +
+                            row.退料人員 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.退料人員 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.backpeoplenum"
+                    ),
+                    field: "退料人員工號",
+                    width: "17ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="backpeoplenum' +
+                            i +
+                            '" name="backpeoplenum' +
+                            i +
+                            '" value="' +
+                            row.退料人員工號 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.退料人員工號 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.backlistnum"
+                    ),
+                    field: "退料單號",
+                    width: "17ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="backlistnum' +
+                            i +
+                            '" name="backlistnum' +
+                            i +
+                            '" value="' +
+                            row.退料單號 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.退料單號 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.opentime"
+                    ),
+                    field: "開單時間",
+                    width: "14ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="opentime' +
+                            i +
+                            '" name="opentime' +
+                            i +
+                            '" value="' +
+                            row.開單時間 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.開單時間 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.inboundtime"
                     ),
                     field: "入庫時間",
-                    width: "12ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -244,24 +545,23 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.mark"
+                        "outboundpageLang.status"
                     ),
-                    field: "備註",
-                    width: "10ch",
+                    field: "功能狀況",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.備註 === null) row.備註 = "";
                         return (
-                            '<input type="hidden" id="remark' +
+                            '<input type="hidden" id="status' +
                             i +
-                            '" name="remark' +
+                            '" name="status' +
                             i +
                             '" value="' +
-                            row.備註 +
+                            row.功能狀況 +
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.備註 +
+                            row.功能狀況 +
                             "</div>"
                         );
                     },
@@ -322,21 +622,6 @@ export default defineComponent({
 
         const updateCheckedRows = (rowsKey) => {
             console.log(rowsKey)
-            // only check one 
-            let count = ($('.vtl-paging-count-dropdown').val());
-            rowsKey = parseInt(rowsKey);
-            for (let i = 0; i < count; i++) {
-                if (i !== rowsKey) {
-                    $("#checkbox" + i).prop("disabled", true);
-                }
-                else {
-                    $("#checkbox" + i).prop("disabled", false);
-                }
-            };
-            if (isNaN(rowsKey)) {
-                console.log(1);
-                $('.vtl-tbody-checkbox').prop("disabled", false);
-            }
         }
         return {
             searchTerm,

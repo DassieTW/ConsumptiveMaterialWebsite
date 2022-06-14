@@ -993,7 +993,7 @@ class OutboundController extends Controller
             $worksheet = $spreadsheet->getActiveSheet();
             $titlecount = $request->input('titlecount');
             $titlename = $request->input('titlename');
-            if ($titlename === "領料記錄表查詢") {
+            if ($titlename === "領料記錄表") {
                 $Alldata = DB::table('consumptive_material')
                     ->join('outbound', function ($join) {
                         $join->on('outbound.料號', '=', 'consumptive_material.料號')
@@ -1016,8 +1016,9 @@ class OutboundController extends Controller
 
             //填寫內容
             for ($i = 0; $i < $titlecount; $i++) {
+                $string = $request->input('title')[$i];
                 for ($j = 0; $j < $count; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
                 }
             }
 

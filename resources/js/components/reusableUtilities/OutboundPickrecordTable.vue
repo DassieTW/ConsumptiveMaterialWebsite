@@ -296,7 +296,6 @@ export default defineComponent({
                     width: "22ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.備註 === null) row.備註 = "";
                         return (
                             '<input type="hidden" id="realpickamount' +
                             i +
@@ -391,7 +390,6 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.備註 === null) row.備註 = "";
                         return (
                             '<input type="hidden" id="pickpeople' +
                             i +
@@ -415,7 +413,6 @@ export default defineComponent({
                     width: "17ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.備註 === null) row.備註 = "";
                         return (
                             '<input type="hidden" id="pickpeoplenum' +
                             i +
@@ -439,7 +436,6 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.備註 === null) row.備註 = "";
                         return (
                             '<input type="hidden" id="sendpeople' +
                             i +

@@ -11,7 +11,7 @@ $(document).ready(function () {
     $("#picktable").on("submit", function (e) {
         e.preventDefault();
         var titlecount = 21;
-        var titlename = "領料記錄表查詢"
+        var titlename = $("#titlename").val();
         //download title
         for (let i = 0; i < 21; i++) {
             title.push($(".vtl-thead-th").eq(i).text());
@@ -99,10 +99,10 @@ $(document).ready(function () {
 
     $("#backtable").on("submit", function (e) {
         e.preventDefault();
-        var titlecount = 21;
-        var titlename = "領料記錄表查詢"
+        var titlecount = 22;
+        var titlename = $("#titlename").val();
         //download title
-        for (let i = 0; i < 21; i++) {
+        for (let i = 0; i < 22; i++) {
             title.push($(".vtl-thead-th").eq(i).text());
         }
 
