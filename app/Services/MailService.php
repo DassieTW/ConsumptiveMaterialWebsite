@@ -310,7 +310,10 @@ class MailService
 
                     foreach ($emails as $email) {
 
-                        $message->to($email->email)->subject('Safe Stock');
+                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            // valid emailaddress
+                            $message->to($email->email)->subject('Safe Stock');
+                        }
                     }
                     $message->bcc('Vincent6_Yeh@pegatroncorp.com');
                     $message->bcc('Tony_Tseng@pegatroncorp.com');
@@ -445,7 +448,10 @@ class MailService
 
                     foreach ($emails as $email) {
 
-                        $message->to($email->email)->subject('Passive Day');
+                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            // valid emailaddress
+                            $message->to($email->email)->subject('Passive Day');
+                        }
                     }
 
                     $message->bcc('Vincent6_Yeh@pegatroncorp.com');
