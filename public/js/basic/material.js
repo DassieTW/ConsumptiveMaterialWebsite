@@ -5,24 +5,6 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
-
-    // $(".month").on("change", function () {
-
-    //     console.log($("#month6").val());
-    //     for (let i = 0; i < 60; i++) {
-
-    //         if ($('#month' + i).val()) {
-    //             if ($("#month" + i).val() == '否') {
-    //                 $("#safe" + i).prop("disabled", false);
-    //             } else {
-    //                 $("#safe" + i).prop("disabled", true);
-    //             }
-    //         } else {
-    //             continue;
-    //         }
-    //     }
-    // });
-
     var data = [];
     var title = [];
     var data0 = [];
