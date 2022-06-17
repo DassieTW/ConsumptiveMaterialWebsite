@@ -76,6 +76,7 @@ class CallController extends Controller
                         'consumptive_material.LT',
                         'consumptive_material.月請購',
                         'consumptive_material.安全庫存',
+                        'consumptive_material.耗材歸屬',
                         '月請購_單耗.單耗',
                         'MPS.下月MPS',
                         'MPS.下月生產天數',
@@ -89,6 +90,7 @@ class CallController extends Controller
                         'consumptive_material.LT',
                         'consumptive_material.月請購',
                         'consumptive_material.安全庫存',
+                        'consumptive_material.耗材歸屬',
                         '月請購_單耗.單耗',
                         'MPS.下月MPS',
                         'MPS.下月生產天數',
@@ -96,10 +98,11 @@ class CallController extends Controller
                         'safestock報警備註.備註',
                     )
                     ->where('consumptive_material.月請購', '=', "是")
+                    ->where('consumptive_material.耗材歸屬', '=', "單耗")
                     ->where('月請購_單耗.狀態', '=', "已完成")
                     ->get()->toArray();
 
-                        //dd($datas); // test
+                // dd($datas); // test
 
                 foreach ($datas as $data) {
                     $safe =  $data->LT * $data->單耗 * $data->下月MPS / $data->下月生產天數;
@@ -140,7 +143,6 @@ class CallController extends Controller
                         $join->on('safestock報警備註.料號', '=', '月請購_站位.料號');
                         $join->on('safestock報警備註.客戶別', '=', '月請購_站位.客戶別');
                     })
-
                     ->leftJoinSub($inventorys1, 'suminventory', function ($join) {
                         $join->on('月請購_站位.客戶別', '=', 'suminventory.客戶別');
                         $join->on('月請購_站位.料號', '=', 'suminventory.料號');
@@ -155,6 +157,7 @@ class CallController extends Controller
                         'consumptive_material.月請購',
                         'consumptive_material.MPQ',
                         'consumptive_material.安全庫存',
+                        'consumptive_material.耗材歸屬',
                         '月請購_站位.下月站位人數',
                         '月請購_站位.下月開線數',
                         '月請購_站位.下月開班數',
@@ -171,6 +174,7 @@ class CallController extends Controller
                         'consumptive_material.月請購',
                         'consumptive_material.MPQ',
                         'consumptive_material.安全庫存',
+                        'consumptive_material.耗材歸屬',
                         '月請購_站位.下月站位人數',
                         '月請購_站位.下月開線數',
                         '月請購_站位.下月開班數',
@@ -180,9 +184,9 @@ class CallController extends Controller
                         'safestock報警備註.備註',
                     )
                     ->where('consumptive_material.月請購', '=', "是")
+                    ->where('consumptive_material.耗材歸屬', '=', "站位")
                     ->where('月請購_站位.狀態', '=', "已完成")
                     ->get()->toArray();
-
 
                 foreach ($datas1 as $data) {
                     $safe =  $data->LT * $data->下月站位人數 * $data->下月開線數 * $data->下月開班數 * $data->下月每人每日需求量 * $data->下月每日更換頻率 / $data->MPQ;
@@ -484,7 +488,7 @@ class CallController extends Controller
                         $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
                         $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
                     })
-                    ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格','sluggish報警備註.備註')
+                    ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'sluggish報警備註.備註')
                     ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
                     ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                     ->get();
@@ -503,7 +507,7 @@ class CallController extends Controller
                         $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
                         $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
                     })
-                    ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格','sluggish報警備註.備註')
+                    ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'sluggish報警備註.備註')
                     ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
                     ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                     ->where('consumptive_material.發料部門', $send)

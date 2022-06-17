@@ -25,9 +25,9 @@ class MailService
     public function download() // 安全庫存 寄警報信
     {
 
-        $databases = config('database_list.databases');
-        array_shift($databases); // remove the 'Consumables management' db from array
-        // $databases = ["M2 Consumables management"];
+        // $databases = config('database_list.databases');
+        // array_shift($databases); // remove the 'Consumables management' db from array
+        $databases = ["M2 Consumables management"];
         $AllISNClientsPairs = array("isn" => array(), "client" => array());
 
         \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
@@ -310,8 +310,9 @@ class MailService
 
                     foreach ($emails as $email) {
 
-                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        if (!empty($email->email) && filter_var($email->email, FILTER_VALIDATE_EMAIL)) {
                             // valid emailaddress
+                            //dd($email);
                             $message->to($email->email)->subject('Safe Stock');
                         }
                     }
@@ -448,7 +449,7 @@ class MailService
 
                     foreach ($emails as $email) {
 
-                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        if (!empty($email->email) && filter_var($email->email, FILTER_VALIDATE_EMAIL)) {
                             // valid emailaddress
                             $message->to($email->email)->subject('Passive Day');
                         }
