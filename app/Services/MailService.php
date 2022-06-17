@@ -25,9 +25,9 @@ class MailService
     public function download() // 安全庫存 寄警報信
     {
 
-        // $databases = config('database_list.databases');
-        // array_shift($databases); // remove the 'Consumables management' db from array
-        $databases = ["M2 Consumables management"];
+        $databases = config('database_list.databases');
+        array_shift($databases); // remove the 'Consumables management' db from array
+        // $databases = ["M2 Consumables management"];
         $AllISNClientsPairs = array("isn" => array(), "client" => array());
 
         \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
@@ -61,6 +61,7 @@ class MailService
                     'consumptive_material.LT',
                     'consumptive_material.月請購',
                     'consumptive_material.安全庫存',
+                    'consumptive_material.耗材歸屬',
                     '月請購_單耗.單耗',
                     'MPS.下月MPS',
                     'MPS.下月生產天數',
@@ -74,6 +75,7 @@ class MailService
                     'consumptive_material.LT',
                     'consumptive_material.月請購',
                     'consumptive_material.安全庫存',
+                    'consumptive_material.耗材歸屬',
                     '月請購_單耗.單耗',
                     'MPS.下月MPS',
                     'MPS.下月生產天數',
@@ -81,6 +83,7 @@ class MailService
                     'safestock報警備註.備註',
                 )
                 ->where('consumptive_material.月請購', '=', "是")
+                ->where('consumptive_material.耗材歸屬', '=', "單耗")
                 ->where('月請購_單耗.狀態', '=', "已完成")
                 ->get()->toArray();
 
@@ -138,6 +141,7 @@ class MailService
                     'consumptive_material.月請購',
                     'consumptive_material.MPQ',
                     'consumptive_material.安全庫存',
+                    'consumptive_material.耗材歸屬',
                     '月請購_站位.下月站位人數',
                     '月請購_站位.下月開線數',
                     '月請購_站位.下月開班數',
@@ -154,6 +158,7 @@ class MailService
                     'consumptive_material.月請購',
                     'consumptive_material.MPQ',
                     'consumptive_material.安全庫存',
+                    'consumptive_material.耗材歸屬',
                     '月請購_站位.下月站位人數',
                     '月請購_站位.下月開線數',
                     '月請購_站位.下月開班數',
@@ -163,6 +168,7 @@ class MailService
                     'safestock報警備註.備註',
                 )
                 ->where('consumptive_material.月請購', '=', "是")
+                ->where('consumptive_material.耗材歸屬', '=', "站位")
                 ->where('月請購_站位.狀態', '=', "已完成")
                 ->get()->toArray();
 
