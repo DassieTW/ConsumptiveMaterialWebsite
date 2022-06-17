@@ -82,7 +82,7 @@
                     <div v-if="col.display" v-html="col.display(row, i)"></div>
                     <template v-else>
                       <div v-if="setting.isSlotMode && slots[col.field]">
-                        <slot :name="col.field" :value="row"></slot>
+                        <slot :name="col.field" :row="row" :key="i"></slot>
                       </div>
                       <span v-else>{{ row[col.field] }}</span>
                     </template>
@@ -109,7 +109,7 @@
                     <div v-if="col.display" v-html="col.display(row, i)"></div>
                     <div v-else>
                       <div v-if="setting.isSlotMode && slots[col.field]">
-                        <slot :name="col.field" :value="row"></slot>
+                        <slot :name="col.field" :row="row" :key="i"></slot>
                       </div>
                       <span v-else>{{ row[col.field] }}</span>
                     </div>

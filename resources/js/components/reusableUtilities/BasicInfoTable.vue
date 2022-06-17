@@ -1,19 +1,76 @@
 <template>
   <div class="row" style="text-align: left">
     <div class="col col-auto">
-      <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+      <label for="pnInput" class="col-form-label"
+        >{{ $t("basicInfoLang.quicksearch") }} :</label
+      >
     </div>
     <div class="col col-3 p-0 m-0">
-      <input id="pnInput" class="text-center form-control form-control-lg"
-        v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+      <input
+        id="pnInput"
+        class="text-center form-control form-control-lg"
+        v-bind:placeholder="$t('basicInfoLang.enterisn')"
+        v-model="searchTerm"
+      />
     </div>
   </div>
   <div class="w-100" style="height: 1ch"></div>
   <!-- </div>breaks cols to a new line-->
-  <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true" :isLoading="table.isLoading"
-    :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-    :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
-    @return-checked-rows="updateCheckedRows"></table-lite>
+  <table-lite
+    :is-fixed-first-column="true"
+    :isStaticMode="true"
+    :isSlotMode="true"
+    :hasCheckbox="true"
+    :messages="table.messages"
+    :columns="table.columns"
+    :rows="table.rows"
+    :total="table.totalRecordCount"
+    :page-options="table.pageOptions"
+    :sortable="table.sortable"
+    @do-search="doSearch"
+    @is-finished="table.isLoading = false"
+    @return-checked-rows="updateCheckedRows"
+  >
+    <template v-slot:月請購="{ row, key }">
+      <div v-if="row.月請購 == '是'">
+        <select @change="event => row.月請購 = event.target.value"
+          style="width: 7ch"
+          class="col col-auto form-select form-select-lg p-0 m-0"
+          :id="'month' + key"
+          :name="'month' + key"
+        >
+          <option value="是" selected>{{ $t("basicInfoLang.yes") }}</option>
+          <option value="否">{{ $t("basicInfoLang.no") }}</option>
+        </select>
+      </div>
+      <div v-else>
+        <select @change="event => row.月請購 = event.target.value"
+          style="width: 7ch"
+          class="col col-auto form-select form-select-lg p-0 m-0"
+          :id="'month' + key"
+          :name="'month' + key"
+        >
+          <option value="是">{{ $t("basicInfoLang.yes") }}</option>
+          <option value="否" selected>{{ $t("basicInfoLang.no") }}</option>
+        </select>
+      </div>
+    </template>
+
+    <template v-slot:安全庫存="{ row, key }">
+      <div v-if="row.月請購 == '否'">
+        <input
+          class="form-control text-center p-0 m-0"
+          style="width: 8ch"
+          type="number"
+          :id="'safe' + key"
+          :name="'safe' + key"
+          :value="row.安全庫存"
+          min="0"
+        />
+      </div>
+      <div v-else>{{ $t("basicInfoLang.differ_by_client") }}</div>
+    </template>
+  </table-lite>
 </template>
 
 <script>
@@ -70,7 +127,7 @@ export default defineComponent({
           sortable: true,
           isKey: true,
           display: function (row, i) {
-             // console.log(row);
+            // console.log(row);
             return (
               '<input type="hidden" id="number' +
               i +
@@ -185,44 +242,6 @@ export default defineComponent({
           field: "月請購",
           width: "12ch",
           sortable: true,
-          display: function (row, i) {
-            let returnStr = "";
-            // console.log(row); // test
-            if (row.月請購 === "是") {
-              returnStr =
-                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="month' +
-                i +
-                '" name="month' +
-                i +
-                '">' +
-                '<option value="是" selected>' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
-                "</option>" +
-                '<option value="否">' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.no") +
-                "</option>" +
-                "</select>";
-            } // if
-            else {
-              returnStr =
-                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="month' +
-                i +
-                '" name="month' +
-                i +
-                '">' +
-                '<option value="是">' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
-                "</option>" +
-                '<option value="否" selected>' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.no") +
-                "</option>" +
-                "</select>";
-            } // else
-
-            return returnStr;
-          }, // display
         },
         {
           label: app.appContext.config.globalProperties.$t(
@@ -437,27 +456,6 @@ export default defineComponent({
           field: "安全庫存",
           width: "13ch",
           sortable: true,
-          display: function (row, i) {
-            let returnStr = "";
-            // console.log(row); // test
-            if (row.月請購 === "否") {
-              returnStr =
-                '<input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"' +
-                ' id="safe' +
-                i +
-                '" name="safe' +
-                i +
-                '"' +
-                ' value="' +
-                row.安全庫存 +
-                '" min="0">';
-            } // if
-            else {
-              returnStr = app.appContext.config.globalProperties.$t("basicInfoLang.differ_by_client");
-            } // else
-
-            return returnStr;
-          }, // display
         },
       ],
       rows: computed(() => {
