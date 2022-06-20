@@ -817,7 +817,7 @@ class MonthController extends Controller
     public function notmonthsubmit(Request $request)
     {
         if (Session::has('username')) {
-            $count = count($request->input('client'));
+            $count = $request->input('count');
             $now = Carbon::now();
             DB::beginTransaction();
             try {
@@ -827,9 +827,7 @@ class MonthController extends Controller
                     $amount = $request->input('amount')[$i];
                     $sxb = $request->input('sxb')[$i];
                     $say = $request->input('say')[$i];
-                    $reason = $request->input('reason')[$i];
                     $test = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
-                    $say = $reason . ' ' . $say;
                     if ($test === null) {
                         DB::table('在途量')
                             ->insert(['客戶' => $client, '料號' => $number, '請購數量' => $amount/*, 'created_at' => $now*/]);

@@ -5,7 +5,7 @@
 
 @section('js')
 <!--for this page's sepcified js -->
-
+<script src="{{ asset('js/month/transit.js') }}"></script>
 @endsection
 @section('content')
 <!DOCTYPE html>
@@ -29,7 +29,7 @@
             <div class="row justify-content-center">
                 <div class="card-body">
                     <div class="w-100">
-                        <form action="{{ route('month.transitsearch') }}" method="POST">
+                        <form id="form1" method="POST">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
                                 <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>
@@ -39,7 +39,7 @@
                                         <option style="display: none" disabled selected>{!!
                                             __('monthlyPRpageLang.enterclient') !!}</option>
                                         @foreach($client as $client)
-                                        <option>{{  $client->客戶 }}</option>
+                                        <option>{{ $client->客戶 }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -69,7 +69,7 @@
                                         <option style="display: none" disabled selected>{!!
                                             __('monthlyPRpageLang.entersenddep') !!}</option>
                                         @foreach($send as $send)
-                                        <option>{{  $send->發料部門 }}</option>
+                                        <option>{{ $send->發料部門 }}</option>
                                         @endforeach
                                     </select>
                                 </div>

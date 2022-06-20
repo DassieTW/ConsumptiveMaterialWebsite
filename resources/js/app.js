@@ -47,6 +47,7 @@ import BasicInfoTable from './components/reusableUtilities/BasicInfoTable.vue';
 import InboundSearchTable from './components/reusableUtilities/InboundSearchTable.vue';
 import OutboundPickrecordTable from './components/reusableUtilities/OutboundPickrecordTable.vue';
 import OutboundBackrecordTable from './components/reusableUtilities/OutboundBackrecordTable.vue';
+import TransitSearchTable from './components/reusableUtilities/TransitSearchTable.vue';
 
 const app = createApp({
     components: {
@@ -54,7 +55,8 @@ const app = createApp({
         'basic-info-table': BasicInfoTable,
         'inbound-search-table': InboundSearchTable,
         'outbound-pickrecord-table': OutboundPickrecordTable,
-        'outbound-backrecord-table': OutboundBackrecordTable
+        'outbound-backrecord-table': OutboundBackrecordTable,
+        'transit-search-table': TransitSearchTable
     }
 });
 
