@@ -521,9 +521,6 @@ class BasicInformationController extends Controller
                 //check 非月請購是否有填安全庫存
                 if ($request->input('month') === '否' && $request->input('safe') === null) {
                     return \Response::json(['message' => 'no write safe'], 422/* Status code here default is 200 ok*/);
-                    /*return back()->withErrors([
-                        'safe' => '非月請購之安全庫存為必填項目',
-                    ]);*/
                 }
 
                 return \Response::json([

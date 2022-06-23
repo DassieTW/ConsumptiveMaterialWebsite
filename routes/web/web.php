@@ -93,3 +93,18 @@ Route::post('/getCurrentDB', function () {
     return DB::connection()->getDatabaseName();
 });
 
+Route::get('/storage/barcodeImg/{filename}', function ($filename) { 
+    // due to multiple project nginx settings, the php artisan storage:link won't work
+    // so we get the storage path ourselves
+    $path = storage_path('app/public/barcodeImg/' . $filename);
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    if (!File::exists($path)) {
+        abort(404);
+    } // if
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+    return $response;
+});

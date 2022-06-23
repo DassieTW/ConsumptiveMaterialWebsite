@@ -399,28 +399,18 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $.ajax({
-                type: 'POST',
-                url: "/barcode/seenDelete",  // refer to the route name in web.php
-                data: { DelorNot: DelorNot, isISN: isISN },
-                dataType: 'json',              // let's set the expected response format
-                // beforeSend: function () {
-                //     $('body').loadingModal({
-                //         text: 'Loading...',
-                //         animation: 'circle'
-                //     });
-                // },
-                // complete: function () {
-                //     $('body').loadingModal('hide');
-                //     $('body').loadingModal('destroy');
-                // },
-                success: function (data) {
-                    console.log(data.message);
-                },
-                error: function (err) {
-                    console.warn(err);
-                } // error
-            });
+            // $.ajax({
+            //     type: 'POST',
+            //     url: "/barcode/seenDelete",  // refer to the route name in web.php
+            //     data: { DelorNot: DelorNot, isISN: isISN },
+            //     dataType: 'json',              // let's set the expected response format
+            //     success: function (data) {
+            //         console.log(data.message);
+            //     },
+            //     error: function (err) {
+            //         console.warn(err);
+            //     } // error
+            // });
         } // if
 
         if (sessionStorage.hasOwnProperty('locCount')) {
@@ -431,28 +421,28 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $.ajax({
-                type: 'POST',
-                url: "/barcode/seenDelete",  // refer to the route name in web.php
-                data: { DelorNot: DelorNot, isISN: isISN },
-                dataType: 'json',              // let's set the expected response format
-                // beforeSend: function () {
-                //     $('body').loadingModal({
-                //         text: 'Loading...',
-                //         animation: 'circle'
-                //     });
-                // },
-                // complete: function () {
-                //     $('body').loadingModal('hide');
-                //     $('body').loadingModal('destroy');
-                // },
-                success: function (data) {
-                    console.log(data.message);
-                },
-                error: function (err) {
-                    console.warn(err);
-                } // error
-            });
+            // $.ajax({
+            //     type: 'POST',
+            //     url: "/barcode/seenDelete",  // refer to the route name in web.php
+            //     data: { DelorNot: DelorNot, isISN: isISN },
+            //     dataType: 'json',              // let's set the expected response format
+            //     // beforeSend: function () {
+            //     //     $('body').loadingModal({
+            //     //         text: 'Loading...',
+            //     //         animation: 'circle'
+            //     //     });
+            //     // },
+            //     // complete: function () {
+            //     //     $('body').loadingModal('hide');
+            //     //     $('body').loadingModal('destroy');
+            //     // },
+            //     success: function (data) {
+            //         console.log(data.message);
+            //     },
+            //     error: function (err) {
+            //         console.warn(err);
+            //     } // error
+            // });
         } // if
 
         if (! sessionStorage.hasOwnProperty('allMats')) {

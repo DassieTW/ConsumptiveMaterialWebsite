@@ -46,3 +46,46 @@ Route::post('/search', function (Request $request) {
     }
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
+
+// 入庫 庫存查詢送出
+Route::post('/searchstocksubmit', function (Request $request) {
+    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+    \DB::purge(env("DB_CONNECTION"));
+    // $dbName = DB::connection()->getDatabaseName(); // test
+
+    $input = json_decode($request->input('LookInTargets'));
+    $send = json_decode($request->input('LookInSend'));
+    // dd($send);
+    $datas = [];
+    // dd(json_decode($request->input('LookInTargets'))); // test
+    if (json_decode($request->input('LookInType')) === "1") {
+        if($send !== null){
+            $datas = DB::table('consumptive_material')
+                ->where('料號', 'like', $input . '%')
+                ->where('發料部門', '=', $send)
+                ->get();
+        }
+        else{
+            $datas = DB::table('consumptive_material')
+                ->where('料號', 'like', $input . '%')
+                ->get();
+        }
+    } else {
+        if($send !== null){
+            $datas = DB::table('consumptive_material')
+                ->where('發料部門', '=', $send)
+                ->whereIn('料號', $input)
+                ->get();
+        }
+        else
+        {
+            $datas = DB::table('consumptive_material')
+                ->whereIn('料號', $input)
+                ->get();
+        }
+    } // if else
+
+    $senders = DB::table("發料部門")->pluck("發料部門");
+
+    return \Response::json(['datas' => $datas, 'senders' => $senders], 200/* Status code here default is 200 ok*/);
+});
