@@ -653,11 +653,11 @@ class BasicInformationController extends Controller
                     /*$delete = ConsumptiveMaterial::onlyTrashed()
                         ->where('料號', $number)->get();*/
 
-                    if ($gradea === 'Yes') $gradea = '是';
-                    if ($gradea === 'No') $gradea = '否';
+                    // if ($gradea === 'Yes') $gradea = '是';
+                    // if ($gradea === 'No') $gradea = '否';
 
-                    if ($month === 'Yes') $month = '是';
-                    if ($month === 'No') $month = '否';
+                    // if ($month === 'Yes') $month = '是';
+                    // if ($month === 'No') $month = '否';
 
                     // if ($belong === 'Unit Cons.' || $belong === '单耗') $belong = '單耗';
                     // if ($belong === 'Station') $belong = '站位';

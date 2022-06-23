@@ -113,4 +113,5 @@ return [
     'rfidinputbackpeople' => '请点这里感应退料人员识别证',
     'rfidinputsendpeople' => '请点这里感应发料人员识别证',
     'rfidinputpickpeople' => '请点这里感应领料人员识别证',
+    'realpickzero' => '实际领用数量为0',
 ];

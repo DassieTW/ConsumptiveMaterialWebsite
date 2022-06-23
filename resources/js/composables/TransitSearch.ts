@@ -38,8 +38,8 @@ export default function useTransitSearch() {
             let response = await axios.post('/api/month/transit', {
                 DB: getDB.data,
                 transitclient: transitclient,
-                transitisn: transitclient,
-                transitsend: transitclient,
+                transitisn: transitisn,
+                transitsend: transitsend,
             });
 
             $('body').loadingModal('hide');

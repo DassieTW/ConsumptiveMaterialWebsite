@@ -59,7 +59,6 @@ $(document).ready(function () {
                 var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.isnlength');
                 $("#data0a" + i).addClass("is-invalid");
 
-
                 notyf.open({
                     type: 'warning',
                     message: mess,
@@ -74,11 +73,10 @@ $(document).ready(function () {
                 return false;
 
             }
-            if (month[i] == '否' || month[i] == 'No' && safe[i] == "") {
+            if (month[i] == '否' && safe[i] == "") {
                 var row = i + 1;
                 var mess = Lang.get('basicInfoLang.row') + ' : ' + row + ' ' + Lang.get('basicInfoLang.safeerror');
                 $("#data13a" + i).addClass("is-invalid");
-
 
                 notyf.open({
                     type: 'warning',

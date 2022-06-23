@@ -113,4 +113,5 @@ return [
     'rfidinputbackpeople' => 'Please click here to to tap the Return person\'s ID card',
     'rfidinputsendpeople' => 'Please click here to tap the Send person\'s ID card',
     'rfidinputpickpeople' => 'Please click here to tap the Pickup person\'s ID card',
+    'realpickzero' => 'Actual collected quantity is 0',
 ];

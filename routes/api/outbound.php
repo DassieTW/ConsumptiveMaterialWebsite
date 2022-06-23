@@ -34,85 +34,19 @@ Route::post('/pickrecord', function (Request $request) {
     // dd($send);
     $datas = [];
     // dd(json_decode($request->input('LookInTargets'))); // test
-    if ($pickrecordisn !== null) {
-        $datas = DB::table('consumptive_material')
-            ->join('outbound', function ($join) {
-                $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                    ->whereNotNull('領料人員');
-            })->where('consumptive_material.料號', 'like', $pickrecordisn . '%')->get();
-    } else {
-        $datas = DB::table('consumptive_material')
-            ->join('outbound', function ($join) {
-                $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                    ->whereNotNull('領料人員');
-            })->get();
-    }
-    if ($pickrecordcheck) {
-        //select all
-        if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend !== null) {
-            $datas = $datas->where('客戶別', $pickrecordclient)->whereBetween('出庫時間', [$pickrecordbegin, $end])->where('製程', $pickrecordproduction)->where('發料部門', $pickrecordsend)->values();
-        }
-        // select client and production 
-        else if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend === null) {
-            $datas = $datas->where('客戶別', $pickrecordclient)->whereBetween('出庫時間', [$pickrecordbegin, $end])->where('製程', $pickrecordproduction)->values();
-        }
-        //select client and send 
-        else if ($pickrecordclient !== null && $pickrecordproduction === null && $pickrecordsend !== null) {
-            $datas = $datas->where('客戶別', $pickrecordclient)->whereBetween('出庫時間', [$pickrecordbegin, $end])->where('發料部門', $pickrecordsend)->values();
-        }
-        // select production and send 
-        else if ($pickrecordclient === null && $pickrecordproduction !== null && $pickrecordsend !== null) {
-            $datas = $datas->whereBetween('出庫時間', [$pickrecordbegin, $end])->where('製程', $pickrecordproduction)->where('發料部門', $pickrecordsend)->values();
-        }
-        // select send 
-        else if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend === null) {
-            $datas = $datas->whereBetween('出庫時間', [$pickrecordbegin, $end])->where('發料部門', $pickrecordsend)->values();
-        }
-        //select production 
-        else if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend === null) {
-            $datas = $datas->whereBetween('出庫時間', [$pickrecordbegin, $end])->where('製程', $pickrecordproduction)->values();
-        }
-        //select client 
-        else if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend === null) {
-            $datas = $datas->where('客戶別', $pickrecordclient)->whereBetween('出庫時間', [$pickrecordbegin, $end])->values();
-        } else {
-            $datas = $datas->whereBetween('出庫時間', [$pickrecordbegin, $end])->values();
-        }
-    } else {
-        //select all
-        if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend !== null) {
-            $datas = $datas->where('客戶別', $pickrecordclient)->where('製程', $pickrecordproduction)->where('發料部門', $pickrecordsend)->values();
-        }
-        // select client and production 
-        else if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend === null) {
-            $datas = $datas->where('客戶別', $pickrecordclient)->where('製程', $pickrecordproduction)->values();
-        }
-        //select client and send 
-        else if ($pickrecordclient !== null && $pickrecordproduction === null && $pickrecordsend !== null) {
-            $datas = $datas->where('客戶別', $pickrecordclient)->where('發料部門', $pickrecordsend)->values();
-        }
-        // select production and send 
-        else if ($pickrecordclient === null && $pickrecordproduction !== null && $pickrecordsend !== null) {
-            $datas = $datas->where('製程', $pickrecordproduction)->where('發料部門', $pickrecordsend)->values();
-        }
-        // select send 
-        else if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend === null) {
-            $datas = $datas->where('發料部門', $pickrecordsend)->values();
-        }
-        //select production 
-        else if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend === null) {
-            $datas = $datas->where('製程', $pickrecordproduction)->values();
-        }
-        //select client 
-        else if ($pickrecordclient !== null && $pickrecordproduction !== null && $pickrecordsend === null) {
-            $datas = $datas->where('客戶別', $pickrecordclient)->values();
-        } else {
-            $datas = $datas->values();
-        }
-    } // if else
 
-    // $senders = DB::table("發料部門")->pluck("發料部門");
-    //dd($datas);
+    $datas = DB::table('consumptive_material')
+        ->join('outbound', function ($join) {
+            $join->on('outbound.料號', '=', 'consumptive_material.料號')
+                ->whereNotNull('領料人員');
+        })->where('consumptive_material.料號', 'like', $pickrecordisn . '%')
+        ->where('outbound.客戶別', 'like', $pickrecordclient . '%')
+        ->where('outbound.製程', 'like', $pickrecordproduction . '%')
+        ->where('consumptive_material.發料部門', 'like', $pickrecordsend . '%')->get();
+
+    if ($pickrecordcheck) {
+        $datas = $datas->whereBetween('出庫時間', [$pickrecordbegin, $end])->values();
+    }
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
 
@@ -133,85 +67,19 @@ Route::post('/backrecord', function (Request $request) {
 
     // dd($send);
     $datas = [];
-    // dd(json_decode($request->input('LookInTargets'))); // test
-    if ($backrecordisn !== null) {
-        $datas = DB::table('consumptive_material')
-            ->join('出庫退料', function ($join) {
-                $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                    ->whereNotNull('收料人員');
-            })->where('consumptive_material.料號', 'like', $backrecordisn . '%')->get();
-    } else {
-        $datas = DB::table('consumptive_material')
-            ->join('出庫退料', function ($join) {
-                $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                    ->whereNotNull('收料人員');
-            })->get();
-    }
-    if ($backrecordcheck) {
-        //select all
-        if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend !== null) {
-            $datas = $datas->where('客戶別', $backrecordclient)->whereBetween('入庫時間', [$backrecordbegin, $end])->where('製程', $backrecordproduction)->where('發料部門', $backrecordsend)->values();
-        }
-        // select client and production 
-        else if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend === null) {
-            $datas = $datas->where('客戶別', $backrecordclient)->whereBetween('入庫時間', [$backrecordbegin, $end])->where('製程', $backrecordproduction)->values();
-        }
-        //select client and send 
-        else if ($backrecordclient !== null && $backrecordproduction === null && $backrecordsend !== null) {
-            $datas = $datas->where('客戶別', $backrecordclient)->whereBetween('入庫時間', [$backrecordbegin, $end])->where('發料部門', $backrecordsend)->values();
-        }
-        // select production and send 
-        else if ($backrecordclient === null && $backrecordproduction !== null && $backrecordsend !== null) {
-            $datas = $datas->whereBetween('入庫時間', [$backrecordbegin, $end])->where('製程', $backrecordproduction)->where('發料部門', $backrecordsend)->values();
-        }
-        // select send 
-        else if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend === null) {
-            $datas = $datas->whereBetween('入庫時間', [$backrecordbegin, $end])->where('發料部門', $backrecordsend)->values();
-        }
-        //select production 
-        else if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend === null) {
-            $datas = $datas->whereBetween('入庫時間', [$backrecordbegin, $end])->where('製程', $backrecordproduction)->values();
-        }
-        //select client 
-        else if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend === null) {
-            $datas = $datas->where('客戶別', $backrecordclient)->whereBetween('入庫時間', [$backrecordbegin, $end])->values();
-        } else {
-            $datas = $datas->whereBetween('入庫時間', [$backrecordbegin, $end])->values();
-        }
-    } else {
-        //select all
-        if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend !== null) {
-            $datas = $datas->where('客戶別', $backrecordclient)->where('製程', $backrecordproduction)->where('發料部門', $backrecordsend)->values();
-        }
-        // select client and production 
-        else if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend === null) {
-            $datas = $datas->where('客戶別', $backrecordclient)->where('製程', $backrecordproduction)->values();
-        }
-        //select client and send 
-        else if ($backrecordclient !== null && $backrecordproduction === null && $backrecordsend !== null) {
-            $datas = $datas->where('客戶別', $backrecordclient)->where('發料部門', $backrecordsend)->values();
-        }
-        // select production and send 
-        else if ($backrecordclient === null && $backrecordproduction !== null && $backrecordsend !== null) {
-            $datas = $datas->where('製程', $backrecordproduction)->where('發料部門', $backrecordsend)->values();
-        }
-        // select send 
-        else if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend === null) {
-            $datas = $datas->where('發料部門', $backrecordsend)->values();
-        }
-        //select production 
-        else if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend === null) {
-            $datas = $datas->where('製程', $backrecordproduction)->values();
-        }
-        //select client 
-        else if ($backrecordclient !== null && $backrecordproduction !== null && $backrecordsend === null) {
-            $datas = $datas->where('客戶別', $backrecordclient)->values();
-        } else {
-            $datas = $datas->values();
-        }
-    } // if else
 
-    // $senders = DB::table("發料部門")->pluck("發料部門");
-    //dd($datas);
+    $datas = DB::table('consumptive_material')
+        ->join('出庫退料', function ($join) {
+            $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
+                ->whereNotNull('收料人員');
+        })->where('consumptive_material.料號', 'like', $backrecordisn . '%')
+        ->where('出庫退料.客戶別', 'like', $backrecordclient . '%')
+        ->where('出庫退料.製程', 'like', $backrecordproduction . '%')
+        ->where('consumptive_material.發料部門', 'like', $backrecordsend . '%')->get();
+
+    if ($backrecordcheck) {
+        $datas = $datas->whereBetween('入庫時間', [$backrecordbegin, $end])->values();
+    }
+
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });

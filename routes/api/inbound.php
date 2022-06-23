@@ -33,40 +33,16 @@ Route::post('/search', function (Request $request) {
     //dd($inboundclient);
     $datas = [];
     // dd(json_decode($request->input('LookInTargets'))); // test
-    if ($inboundisn !== null) {
-        $datas = DB::table('inbound')
-            ->where('料號', 'like', $inboundisn . '%')
-            ->get();
-    } else {
-        $datas = DB::table('inbound')
-            ->get();
-    }
+
+    $datas = DB::table('inbound')
+        ->where('料號', 'like', $inboundisn . '%')
+        ->where('客戶別', 'like', $inboundclient . '%')
+        ->where('入庫單號', 'like', $inboundlist . '%')
+        ->get();
     //$datas = $datas->where('客戶別', "Fendi");
     //dd($datas);
     if ($inboundcheck) {
-
-        if ($inboundclient !== null && $inboundlist !== null) {
-            $datas = $datas->where('客戶別', $inboundclient)->whereBetween('入庫時間', [$inboundbegin, $end])->where('入庫單號', $inboundlist)->values();
-        } else if ($inboundclient !== null && $inboundlist === null) {
-            $datas = $datas->where('客戶別', $inboundclient)->whereBetween('入庫時間', [$inboundbegin, $end])->values();
-        } else if ($inboundclient === null && $inboundlist !== null) {
-            $datas = $datas->whereBetween('入庫時間', [$inboundbegin, $end])->where('入庫單號', $inboundlist)->values();
-        } else {
-            $datas = $datas->whereBetween('入庫時間', [$inboundbegin, $end])->values();
-        }
-    } else {
-        if ($inboundclient !== null && $inboundlist !== null) {
-            $datas = $datas->where('客戶別', $inboundclient)->where('入庫單號', $inboundlist)->values();
-        } else if ($inboundclient !== null && $inboundlist === null) {
-            $datas = $datas->where('客戶別', $inboundclient)->values();
-        } else if ($inboundclient === null && $inboundlist !== null) {
-            $datas = $datas->where('入庫單號', $inboundlist)->values();
-        } else {
-            $datas = $datas->values();
-        }
-    } // if else
-
-    // $senders = DB::table("發料部門")->pluck("發料部門");
-
+        $datas = $datas->whereBetween('入庫時間', [$inboundbegin, $end])->values();
+    }
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
