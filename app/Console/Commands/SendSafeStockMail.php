@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
-
+use Exception;
 use Illuminate\Console\Command;
 use App\Models;
 use Illuminate\Http\Request;
@@ -57,7 +57,7 @@ class SendSafeStockMail extends Command
      *
      * @return void
      */
-    public function __construct( MailService $mailservice )
+    public function __construct(MailService $mailservice)
     {
         parent::__construct();
         $this->mailservice = $mailservice;
@@ -76,9 +76,15 @@ class SendSafeStockMail extends Command
         //     $post->forceDelete();
         // } // for each
 
-        \Log::channel('dbquerys')->info('---------------------------開始寄信 by Safe Stock Command--------------------------');
-        $this->mailservice->download();
-        \Log::channel('dbquerys')->info('---------------------------寄信結束 by Safe Stock Command--------------------------');
+        try {
+            \Log::channel('dbquerys')->info('---------------------------開始寄信 by Safe Stock Command--------------------------');
+            $this->mailservice->download();
+            \Log::channel('dbquerys')->info('---------------------------寄信結束 by Safe Stock Command--------------------------');
+            $this->info("Command executed successfully!");
+        } catch (Exception $e) {
+            $this->error("Command execution failed with error : " . $e->getMessage());
+        } // try - catch
+        
         return 0;
     } // handle
 }
