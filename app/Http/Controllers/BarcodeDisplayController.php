@@ -272,7 +272,7 @@ class BarcodeDisplayController extends Controller
 
 
         // Sending json response to client
-        return \Response::json(['message' => 'all temp record deleted in session !']); // Status code here
+        return \Response::json(['message' => 'all temp records deleted in session !']); // Status code here
     } // cleanupAllBarcodes
 
     public function searchISN(Request $request)

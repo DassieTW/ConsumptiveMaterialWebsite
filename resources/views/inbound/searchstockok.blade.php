@@ -42,15 +42,9 @@
             </div>
         </div>
         <div class="card">
-
-            <div class="card-header">
-                <h3>{!! __('inboundpageLang.searchstock') !!}</h3>
-                <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
-                    placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
-                    style="width: 200px">
-            </div>
             <div class="card-body">
                 <div class="table-responsive">
+                    <inbound-stocksearch-table></inbound-stocksearch-table>
                     <form id="inboundsearch" method="POST">
                         @csrf
                         <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
