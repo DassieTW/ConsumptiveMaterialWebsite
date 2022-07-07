@@ -86,11 +86,12 @@
         </div>
 
 
-        <form style="display: none" action="{{ route('month.notmonthsearch') }}" method="POST" id="notmonthsearchform">
+        {{-- <form style="display: none" action="{{ route('month.notmonthsearch') }}" method="POST"
+            id="notmonthsearchform">
             @csrf
             <input type="hidden" id="varr1" name="varr1" value="" />
             <input type="hidden" id="varr2" name="varr2" value="" />
-        </form>
+        </form> --}}
 
         <form style="display: none" action="{{ route('month.notmonthadd') }}" method="POST" id="notmonthaddform">
             @csrf

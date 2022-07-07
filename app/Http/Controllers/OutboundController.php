@@ -639,7 +639,7 @@ class OutboundController extends Controller
 
             //填寫內容
             for ($i = 0; $i < $titlecount; $i++) {
-                $string = $request->input('title')[$i];
+                $string = $request->input('titlecol')[$i];
                 for ($j = 0; $j < $count; $j++) {
                     $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
                 }

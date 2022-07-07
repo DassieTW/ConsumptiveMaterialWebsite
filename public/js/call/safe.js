@@ -3,7 +3,12 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-
+$(window).on('load', function () {
+    // PAGE IS FULLY LOADED
+    // FADE OUT YOUR OVERLAYING DIV
+    $('body').loadingModal('hide');
+    $('body').loadingModal('destroy');
+});
 $(document).ready(function () {
 
     function quickSearch() {
@@ -15,7 +20,7 @@ $(document).ready(function () {
         // filter = input.value;
         // Loop through all table rows, and hide those who don't match the search query
         $('.isnRows').each(function (i, obj) {
-            txtValue = $(this).find("input[id^='data']").val();
+            txtValue = $(this).find("input[id^='number']").val();
             // console.log("now checking text : " + txtValue); // test
             if (txtValue.indexOf(input) > -1) {
                 obj.style.display = "";
@@ -25,7 +30,7 @@ $(document).ready(function () {
             } // if else
         });
         $('.isnRows1').each(function (i, obj) {
-            txtValue = $(this).find("input[id^='data1']").val();
+            txtValue = $(this).find("input[id^='numbera']").val();
             // console.log("now checking text : " + txtValue); // test
             if (txtValue.indexOf(input) > -1) {
                 obj.style.display = "";
@@ -35,7 +40,7 @@ $(document).ready(function () {
             } // if else
         });
         $('.isnRows2').each(function (i, obj) {
-            txtValue = $(this).find("input[id^='data2']").val();
+            txtValue = $(this).find("input[id^='numberb']").val();
             // console.log("now checking text : " + txtValue); // test
             if (txtValue.indexOf(input) > -1) {
                 obj.style.display = "";

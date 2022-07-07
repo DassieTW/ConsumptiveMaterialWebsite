@@ -19,8 +19,6 @@
 
 @section('js')
 <!--for this page's sepcified js -->
-<script src="{{ asset('js/month/sxbsearch.js') }}"></script>
-
 @endsection
 @section('content')
 <!DOCTYPE html>

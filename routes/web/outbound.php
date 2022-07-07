@@ -123,7 +123,7 @@ Route::get('/pickrecordsearch', function () {
     return view("outbound.pickrecordsearchok");
 })->middleware('can:outboundPickupRecord,App\Models\Outbound');
 
-Route::post('/pickrecordsearch', [OutboundController::class, 'pickrecordsearch'])->name('outbound.pickrecordsearch')->middleware('can:outboundPickupRecord,App\Models\Outbound');
+// Route::post('/pickrecordsearch', [OutboundController::class, 'pickrecordsearch'])->name('outbound.pickrecordsearch')->middleware('can:outboundPickupRecord,App\Models\Outbound');
 
 //出庫-退料紀錄表
 Route::get('/backrecord', function () {

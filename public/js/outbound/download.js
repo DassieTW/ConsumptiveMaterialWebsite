@@ -7,15 +7,38 @@ $.ajaxSetup({
 $(document).ready(function () {
 
     var title = [];
-
+    var titlecol = [];
     $("#picktable").on("submit", function (e) {
         e.preventDefault();
         var titlecount = 21;
         var titlename = $("#titlename").val();
         //download title
+
         for (let i = 0; i < 21; i++) {
             title.push($(".vtl-thead-th").eq(i).text());
         }
+
+        titlecol.push('客戶別');
+        titlecol.push('機種');
+        titlecol.push('製程');
+        titlecol.push('領用原因');
+        titlecol.push('線別');
+        titlecol.push('料號');
+        titlecol.push('品名');
+        titlecol.push('規格');
+        titlecol.push('單位');
+        titlecol.push('預領數量');
+        titlecol.push('實際領用數量');
+        titlecol.push('備註');
+        titlecol.push('實領差異原因');
+        titlecol.push('儲位');
+        titlecol.push('領料人員');
+        titlecol.push('領料人員工號');
+        titlecol.push('發料人員');
+        titlecol.push('發料人員工號');
+        titlecol.push('領料單號');
+        titlecol.push('開單時間');
+        titlecol.push('出庫時間');
 
         // clean up previous input results
         $(".is-invalid").removeClass("is-invalid");
@@ -28,6 +51,7 @@ $(document).ready(function () {
                 title: title,
                 titlecount: titlecount,
                 titlename: titlename,
+                titlecol: titlecol,
             },
             xhrFields: {
                 responseType: 'blob', // to avoid binary data being mangled on charset conversion
@@ -106,6 +130,29 @@ $(document).ready(function () {
             title.push($(".vtl-thead-th").eq(i).text());
         }
 
+        titlecol.push('客戶別');
+        titlecol.push('機種');
+        titlecol.push('製程');
+        titlecol.push('退回原因');
+        titlecol.push('線別');
+        titlecol.push('料號');
+        titlecol.push('品名');
+        titlecol.push('規格');
+        titlecol.push('單位');
+        titlecol.push('預退數量');
+        titlecol.push('實際退回數量');
+        titlecol.push('備註');
+        titlecol.push('實退差異原因');
+        titlecol.push('儲位');
+        titlecol.push('收料人員');
+        titlecol.push('收料人員工號');
+        titlecol.push('退料人員');
+        titlecol.push('退料人員工號');
+        titlecol.push('退料單號');
+        titlecol.push('開單時間');
+        titlecol.push('入庫時間');
+        titlecol.push('功能狀況');
+
         // clean up previous input results
         $(".is-invalid").removeClass("is-invalid");
         $(".invalid-feedback").remove();
@@ -117,6 +164,7 @@ $(document).ready(function () {
                 title: title,
                 titlecount: titlecount,
                 titlename: titlename,
+                titlecol: titlecol,
             },
             xhrFields: {
                 responseType: 'blob', // to avoid binary data being mangled on charset conversion

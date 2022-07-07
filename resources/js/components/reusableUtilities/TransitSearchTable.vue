@@ -10,7 +10,7 @@
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true" :isLoading="table.isLoading"
+    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
         :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
         @return-checked-rows="updateCheckedRows"></table-lite>
@@ -231,20 +231,6 @@ export default defineComponent({
         const updateCheckedRows = (rowsKey) => {
             console.log(rowsKey)
             // only check one 
-            let count = ($('.vtl-paging-count-dropdown').val());
-            rowsKey = parseInt(rowsKey);
-            for (let i = 0; i < count; i++) {
-                if (i !== rowsKey) {
-                    $("#checkbox" + i).prop("disabled", true);
-                }
-                else {
-                    $("#checkbox" + i).prop("disabled", false);
-                }
-            };
-            if (isNaN(rowsKey)) {
-                console.log(1);
-                $('.vtl-tbody-checkbox').prop("disabled", false);
-            }
         }
         return {
             searchTerm,

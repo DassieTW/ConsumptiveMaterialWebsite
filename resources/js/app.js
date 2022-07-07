@@ -48,6 +48,8 @@ import InboundSearchTable from './components/reusableUtilities/InboundSearchTabl
 import OutboundPickrecordTable from './components/reusableUtilities/OutboundPickrecordTable.vue';
 import OutboundBackrecordTable from './components/reusableUtilities/OutboundBackrecordTable.vue';
 import TransitSearchTable from './components/reusableUtilities/TransitSearchTable.vue';
+import SxbSearchTable from './components/reusableUtilities/SxbSearchTable.vue';
+import NotmonthSearchTable from './components/reusableUtilities/NotmonthSearchTable.vue';
 
 const app = createApp({
     components: {
@@ -56,7 +58,9 @@ const app = createApp({
         'inbound-search-table': InboundSearchTable,
         'outbound-pickrecord-table': OutboundPickrecordTable,
         'outbound-backrecord-table': OutboundBackrecordTable,
-        'transit-search-table': TransitSearchTable
+        'transit-search-table': TransitSearchTable,
+        'sxb-search-table': SxbSearchTable,
+        'notmonth-search-table': NotmonthSearchTable,
     }
 });
 

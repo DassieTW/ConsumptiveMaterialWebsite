@@ -21,32 +21,29 @@ $(document).ready(function () {
         console.log(client);
         console.log(number);
         if (submit == "1") {
-            if(client == null)
-            {
+            if (client == null) {
                 $("#client").addClass("is-invalid");
                 document.getElementById("clienterror").style.display = "block";
                 document.getElementById("numbererror").style.display = "none";
                 return false;
             }
-            else{
+            else {
                 document.getElementById("clienterror").style.display = "none";
             }
-            if(number == '')
-            {
+            if (number == '') {
                 $("#number").addClass("is-invalid");
                 document.getElementById("numbererror").style.display = "block";
                 document.getElementById("clienterror").style.display = "none";
                 return false;
             }
-            else if(number.length != 12)
-            {
+            else if (number.length != 12) {
                 $("#number").addClass("is-invalid");
                 document.getElementById("numbererror1").style.display = "block";
                 document.getElementById("numbererror").style.display = "none";
                 document.getElementById("clienterror").style.display = "none";
                 return false;
             }
-            else{
+            else {
                 document.getElementById("numbererror").style.display = "none";
                 document.getElementById("numbererror1").style.display = "none";
             }
@@ -91,44 +88,18 @@ $(document).ready(function () {
                         document.getElementById("numbererror1").style.display = "none";
                     }
                     //transaction error
-                    else{
+                    else {
                         alert(err.responseJSON.message);
                         window.location.reload();
                     }
                 }
             });
         }
-        else{
-            $.ajax({
-                type: 'POST',
-                url: "notmonthsearch",
-                data: {
-                    client: client,
-                    number: number,
-                },
-
-                beforeSend: function () {
-                    // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                    $('body').loadingModal({
-                        text: 'Loading...',
-                        animation: 'circle'
-                    });
-                },
-                complete: function () {
-                    $('body').loadingModal('hide');
-                    $('body').loadingModal('destroy');
-                },
-
-                success: function (data) {
-                    $("#varr1").val(data.client);
-                    $("#varr2").val(data.number);
-                    $("#notmonthsearchform").submit();
-                },
-                error: function (err) {
-                    console.log(err);
-                    window.location.reload();
-                }
-            });
+        else {
+            if (number === "") number = null;
+            sessionStorage.setItem("notmonthclient", JSON.stringify(client)); // for later vue to post request
+            sessionStorage.setItem("notmonthisn", JSON.stringify(number)); // for later vue to post request
+            window.location.href = "notmonthsearchok";
         }
     });
 });

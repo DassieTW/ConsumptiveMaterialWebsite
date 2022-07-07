@@ -66,45 +66,45 @@ Route::post('/srmsearch', [MonthController::class, 'srmsearch'])->name('month.sr
 Route::post('/srmsubmit', [MonthController::class, 'srmsubmit'])->name('month.srmsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //非月請購查詢
-Route::post('/notmonthsearch', function (Request $request) {
-    return \Response::json(['client' => $request->input('client'), 'number' => $request->input('number')]/* Status code here default is 200 ok*/);
+// Route::post('/notmonthsearch', function (Request $request) {
+//     return \Response::json(['client' => $request->input('client'), 'number' => $request->input('number')]/* Status code here default is 200 ok*/);
+// })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+
+
+Route::get('/notmonthsearchok', function () {
+    return view('month.notmonthsearchok');
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
+// Route::post('/notmonthsearchok', function (Request $request) {
 
-Route::get('/notmonthsearchok', function (Request $request) {
-    return view('month.importnotmonth')->with(['client' => 客戶別::cursor()]);
-})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/notmonthsearchok', function (Request $request) {
-
-    if ($request->input('varr1') === null && $request->input('varr2') === null) {
-        $datas = DB::table('consumptive_material')
-            ->join('非月請購', function ($join) {
-                $join->on('非月請購.料號', '=', 'consumptive_material.料號');
-            })->select('非月請購.*', 'consumptive_material.品名')->get();
-        return view('month.notmonthsearchok')->with(['data' => $datas]);
-    } else if ($request->input('varr1') !== null && $request->input('var2') === null) {
-        $datas = DB::table('consumptive_material')
-            ->join('非月請購', function ($join) {
-                $join->on('非月請購.料號', '=', 'consumptive_material.料號');
-            })->select('非月請購.*', 'consumptive_material.品名')->get();
-        return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
-    } else if ($request->input('varr1') === null && $request->input('varr2') !== null) {
-        $datas = DB::table('consumptive_material')
-            ->join('非月請購', function ($join) {
-                $join->on('非月請購.料號', '=', 'consumptive_material.料號');
-            })->select('非月請購.*', 'consumptive_material.品名')
-            ->where('非月請購.料號', 'like', $request->input('varr2') . '%')->get();
-        return view('month.notmonthsearchok')->with(['data' => $datas]);
-    } else if ($request->input('varr1') !== null && $request->input('varr2') !== null) {
-        $datas = DB::table('consumptive_material')
-            ->join('非月請購', function ($join) {
-                $join->on('非月請購.料號', '=', 'consumptive_material.料號');
-            })->select('非月請購.*', 'consumptive_material.品名')
-            ->where('非月請購.料號', 'like', $request->input('varr2') . '%')->get();
-        return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
-    }
-})->name('month.notmonthsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+//     if ($request->input('varr1') === null && $request->input('varr2') === null) {
+//         $datas = DB::table('consumptive_material')
+//             ->join('非月請購', function ($join) {
+//                 $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+//             })->select('非月請購.*', 'consumptive_material.品名')->get();
+//         return view('month.notmonthsearchok')->with(['data' => $datas]);
+//     } else if ($request->input('varr1') !== null && $request->input('var2') === null) {
+//         $datas = DB::table('consumptive_material')
+//             ->join('非月請購', function ($join) {
+//                 $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+//             })->select('非月請購.*', 'consumptive_material.品名')->get();
+//         return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
+//     } else if ($request->input('varr1') === null && $request->input('varr2') !== null) {
+//         $datas = DB::table('consumptive_material')
+//             ->join('非月請購', function ($join) {
+//                 $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+//             })->select('非月請購.*', 'consumptive_material.品名')
+//             ->where('非月請購.料號', 'like', $request->input('varr2') . '%')->get();
+//         return view('month.notmonthsearchok')->with(['data' => $datas]);
+//     } else if ($request->input('varr1') !== null && $request->input('varr2') !== null) {
+//         $datas = DB::table('consumptive_material')
+//             ->join('非月請購', function ($join) {
+//                 $join->on('非月請購.料號', '=', 'consumptive_material.料號');
+//             })->select('非月請購.*', 'consumptive_material.品名')
+//             ->where('非月請購.料號', 'like', $request->input('varr2') . '%')->get();
+//         return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
+//     }
+// })->name('month.notmonthsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //非月請購新增
 Route::post('/notmonthadd', [MonthController::class, 'notmonthadd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
@@ -154,9 +154,11 @@ Route::get('/transit', function () {
 })->name('month.transit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //在途量(查詢)
-Route::get('/transitsearch', [MonthController::class, 'transitsearch'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+Route::get('/transitsearch', function () {
+    return view("month.transitsearchok");
+})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-Route::post('/transitsearch', [MonthController::class, 'transitsearch'])->name('month.transitsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+// Route::post('/transitsearch', [MonthController::class, 'transitsearch'])->name('month.transitsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //SXB單(查詢)頁面
 Route::get('/sxb', function () {
@@ -164,9 +166,11 @@ Route::get('/sxb', function () {
 })->name('month.sxb')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //SXB單(查詢)
-Route::get('/sxbsearch', [MonthController::class, 'sxbsearch'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+Route::get('/sxbsearch', function () {
+    return view("month.sxbsearchok");
+})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-Route::post('/sxbsearch', [MonthController::class, 'sxbsearch'])->name('month.sxbsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+// Route::post('/sxbsearch', [MonthController::class, 'sxbsearch'])->name('month.sxbsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //料號單耗(新增)頁面
 Route::get('/consumeadd', function () {

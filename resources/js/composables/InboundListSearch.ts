@@ -11,7 +11,6 @@ export default function useInboundListSearch() {
     const mats = ref("");
     const errors = ref("");
     const router = useRouter();
-
     const getMats = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');

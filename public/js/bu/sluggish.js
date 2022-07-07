@@ -246,7 +246,7 @@ $(document).ready(function () {
             });
             return false;
         }
-
+        receive = receive + " Consumables management";
         $.ajax({
             type: 'POST',
             url: "transsluggish",

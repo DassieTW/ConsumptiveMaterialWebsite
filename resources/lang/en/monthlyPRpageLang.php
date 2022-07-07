@@ -111,7 +111,7 @@ return [
     'allclient' => 'ALL Client',
     'addtodatabase' => 'Add to database',
     'uploadtime' => 'upload time',
-    'description' => 'Description',
+    'description' => 'illustrate',
     'enteramount' => 'Please enter the amount',
     'enterdesc' => 'Please input description',
     'control' => 'Control items',

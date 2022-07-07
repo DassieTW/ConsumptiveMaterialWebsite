@@ -63,6 +63,7 @@ class BUController extends Controller
             $database = config('database_list.databases');
 
             foreach ($database as $key => $value) {
+
                 if ($value !== 'Consumables management') {
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
                     \DB::purge(env("DB_CONNECTION"));
@@ -98,7 +99,7 @@ class BUController extends Controller
             } // for each
 
 
-            //dd($datas[1]);
+            //dd($datas);
             return view('bu.sluggish')->with(['test' => $datas]);
             /*return view('bu.sluggish')->with(['data0' => $datas[0]])->with(['data1' => $datas[1]])->with(['data2' => $datas[2]])
             ->with(['data3' => $datas[3]])->with(['data4' => $datas[4]]);*/

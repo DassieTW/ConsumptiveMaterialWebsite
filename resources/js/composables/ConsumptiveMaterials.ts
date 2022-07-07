@@ -1,6 +1,11 @@
-import { ref, Ref } from "vue";
+import {
+    ref,
+    Ref
+} from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
+import {
+    useRouter
+} from "vue-router";
 
 export default function useConsumptiveMaterials() {
     const mats = ref("");
@@ -32,7 +37,12 @@ export default function useConsumptiveMaterials() {
         });
 
         try {
-            let response = await axios.post('/api/basic/mats', { DB: getDB.data, LookInTargets: lookInTargets, LookInType: lookInType , LookInSend: lookInSend });
+            let response = await axios.post('/api/basic/mats', {
+                DB: getDB.data,
+                LookInTargets: lookInTargets,
+                LookInType: lookInType,
+                LookInSend: lookInSend
+            });
 
             $('body').loadingModal('hide');
             $('body').loadingModal('destroy');
