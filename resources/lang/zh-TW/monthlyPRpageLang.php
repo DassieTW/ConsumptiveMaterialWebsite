@@ -45,7 +45,7 @@ return [
     'nextneed' => '下月需求',
     'nowneed' => '當月需求',
     'safe' => '安全庫存',
-    'price' => '單價' ,
+    'price' => '單價',
     'money' => '幣別',
     'rate' => '匯率',
     'transit' => '在途量',
@@ -147,4 +147,5 @@ return [
     'reason' => '請填寫原因',
     'submitspan' => '僅會提交有填寫SRM以及本次請購數量>0那一列',
     'srmspan' => '僅會填寫至打勾的那一列',
+    'email' => '畫押信箱',
 ];

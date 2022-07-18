@@ -48,184 +48,19 @@ class MonthController extends Controller
             $production = $request->input('production');
             $number = $request->input('number');
             $send = $request->input('send');
-            if ($number !== null) {
-                $datas = DB::table('consumptive_material')
-                    ->join('月請購_單耗', function ($join) {
-                        $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
-                    }) //->wherenull('月請購_單耗.deleted_at')
-                    ->where('consumptive_material.料號', 'like', $number . '%')
-                    ->where('狀態', '已完成')->get();
-            } else {
-                $datas = DB::table('consumptive_material')
-                    ->join('月請購_單耗', function ($join) {
-                        $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
-                    }) //->wherenull('月請購_單耗.deleted_at')
-                    ->where('狀態', '已完成')->get();
-            }
-            //all empty
-            if ($client === null && $machine === null && $production === null && $number === null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas]);
-            }
-            //select client
-            else if ($client !== null && $machine === null && $production === null && $number === null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas->where('客戶別', $client)]);
-            }
-            //select machine
-            else if ($client === null && $machine !== null && $production === null && $number === null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas->where('機種', $machine)]);
-            }
-            //select production
-            else if ($client === null && $machine === null && $production !== null && $number === null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas->where('製程', $production)]);
-            }
-            //input material number
-            else if ($client === null && $machine === null && $production === null && $number !== null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas]);
-            }
-            //select send
-            else if ($client === null && $machine === null && $production === null && $number === null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas->where('發料部門', $send)]);
-            }
-            //select client and machine
-            else if ($client !== null && $machine !== null && $production === null && $number === null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('客戶別', $client)->where('機種', $machine)]);
-            }
-            //select client and production
-            else if ($client !== null && $machine === null && $production !== null && $number === null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('客戶別', $client)->where('製程', $production)]);
-            }
-            //select client and number
-            else if ($client !== null && $machine === null && $production === null && $number !== null && $send === null) {
 
-                return view('month.consumesearchok')->with(['data' => $datas->where('客戶別', $client)]);
-            }
-            //select client and send
-            else if ($client !== null && $machine === null && $production === null && $number === null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('客戶別', $client)->where('發料部門', $send)]);
-            }
-            //select machine and production
-            else if ($client === null && $machine !== null && $production !== null && $number === null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('機種', $machine)->where('製程', $production)]);
-            }
-            //select machine and number
-            else if ($client === null && $machine !== null && $production === null && $number !== null && $send === null) {
+            $datas = DB::table('consumptive_material')
+                ->join('月請購_單耗', function ($join) {
+                    $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
+                }) //->wherenull('月請購_單耗.deleted_at')
+                ->where('consumptive_material.料號', 'like', $number . '%')
+                ->where('consumptive_material.發料部門', 'like', $send . '%')
+                ->where('月請購_單耗.客戶別', 'like', $client . '%')
+                ->where('月請購_單耗.機種', 'like', $machine . '%')
+                ->where('月請購_單耗.製程', 'like', $production . '%')
+                ->get();
 
-                return view('month.consumesearchok')->with(['data' => $datas->where('機種', $number)]);
-            }
-            //select machine and send
-            else if ($client === null && $machine !== null && $production === null && $number === null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('機種', $machine)->where('發料部門', $send)]);
-            }
-            //select production and number
-            else if ($client === null && $machine === null && $production !== null && $number !== null && $send === null) {
-
-                return view('month.consumesearchok')->with(['data' => $datas->where('製程', $production)]);
-            }
-            //select production and send
-            else if ($client === null && $machine === null && $production !== null && $number === null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('製程', $production)->where('發料部門', $send)]);
-            }
-            //select number and send
-            else if ($client === null && $machine === null && $production === null && $number !== null && $send !== null) {
-
-                return view('month.consumesearchok')->with(['data' => $datas->where('發料部門', $send)]);
-            }
-            //select client and machine and production
-            else if ($client !== null && $machine !== null && $production !== null && $number === null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('機種', $machine)->where('製程', $production)
-                    ->where('客戶別', $client)]);
-            }
-            //select client and machine and number
-            else if ($client !== null && $machine !== null && $production === null && $number !== null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas->where('客戶別', $client)
-                    ->where('機種', $machine)]);
-            }
-            //select client and machine and send
-            else if ($client !== null && $machine !== null && $production === null && $number === null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('機種', $machine)->where('發料部門', $send)
-                    ->where('客戶別', $client)]);
-            }
-            //select client and production and number
-            else if ($client !== null && $machine === null && $production !== null && $number !== null && $send === null) {
-                return view('month.consumesearchok')->with(['data' => $datas->where('客戶別', $client)
-                    ->where('製程', $production)]);
-            }
-            //select client and production and send
-            else if ($client !== null && $machine === null && $production !== null && $number === null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('製程', $production)->where('發料部門', $send)
-                    ->where('客戶別', $client)]);
-            }
-            //select client and number and send
-            else if ($client !== null && $machine === null && $production === null && $number !== null && $send !== null) {
-
-                return view('month.consumesearchok')->with(['data' => $datas->where('發料部門', $send)
-                    ->where('客戶別', $client)]);
-            }
-            //select machine and production and number
-            else if ($client === null && $machine !== null && $production !== null && $number !== null && $send === null) {
-
-                return view('month.consumesearchok')->with(['data' => $datas->where('機種', $machine)
-                    ->where('製程', $production)]);
-            }
-            //select machine and production and send
-            else if ($client === null && $machine !== null && $production !== null && $number === null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('發料部門', $send)->where('機種', $machine)->where('製程', $production)]);
-            }
-            //select machine and number and send
-            else if ($client === null && $machine !== null && $production === null && $number !== null && $send !== null) {
-
-                return view('month.consumesearchok')->with(['data' => $datas->where('機種', $machine)
-                    ->where('發料部門', $send)]);
-            }
-            //select production and number and send
-            else if ($client === null && $machine === null && $production !== null && $number !== null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('製程', $production)->where('發料部門', $send)]);
-            }
-            //select client and machine and production and number
-            else if ($client !== null && $machine !== null && $production !== null && $number !== null && $send === null) {
-
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('製程', $production)->where('發料部門', $send)->where('客戶別', $client)]);
-            }
-            //select client and machine and production and send
-            else if ($client !== null && $machine !== null && $production !== null && $number === null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('機種', $machine)->where('製程', $production)->where('發料部門', $send)->where('客戶別', $client)]);
-            }
-            //select client and machine and number and send
-            else if ($client !== null && $machine !== null && $production === null && $number !== null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('機種', $machine)->where('發料部門', $send)->where('客戶別', $client)]);
-            }
-            //select client and production and number and send
-            else if ($client !== null && $machine === null && $production !== null && $number !== null && $send !== null) {
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('製程', $production)->where('發料部門', $send)->where('客戶別', $client)]);
-            }
-            //select machine and production and number and send
-            else if ($client === null && $machine !== null && $production !== null && $number !== null && $send !== null) {
-
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('製程', $production)->where('發料部門', $send)->where('機種', $machine)]);
-            }
-            //select all
-            else if ($client !== null && $machine !== null && $production !== null && $number !== null && $send !== null) {
-
-                return view('month.consumesearchok')->with(['data' => $datas
-                    ->where('機種', $machine)->where('製程', $production)
-                    ->where('客戶別', $client)->where('發料部門', $send)]);
-            }
+            return view('month.consumesearchok')->with(['data' => $datas]);
         } else {
             return redirect(route('member.login'));
         }
