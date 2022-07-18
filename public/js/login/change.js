@@ -185,7 +185,15 @@ $(document).ready(function () {
         // clean up previous input results
         $(".is-invalid").removeClass("is-invalid");
         $(".invalid-feedback").remove();
+        let emailTail = $("#emailTail option:selected").text();
         var newEmail = $("#newMail").val();
+        if( newEmail === "" || newEmail === null) {
+            // do nothing
+        } // if
+        else {
+            newEmail = $("#newMail").val() + emailTail;
+        } // else
+
         $("#newMail").val(""); // clean up after input
         var oldEmail = $("#oldMail").val();
         // console.log( oldEmail + "+++" + newEmail + "+++"); // test
@@ -209,13 +217,13 @@ $(document).ready(function () {
                 $('body').loadingModal('destroy');
             },
             success: function (data) {
-                if( newEmail !== "" && newEmail !== null) {
-                    $("#oldMail").val( newEmail + "@pegatroncorp.com");
+                if (newEmail !== "" && newEmail !== null) {
+                    $("#oldMail").val(newEmail);
                 } // if
                 else {
                     $("#oldMail").val("");
                 } // if
-                
+
                 notyf.success({
                     message: Lang.get('loginPageLang.success'),
                     duration: 5000,   //miliseconds, use 0 for infinite duration

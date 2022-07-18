@@ -64,10 +64,13 @@
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                     <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
-                    <div class="input-group" style="width: 410px">
+                    <div class="input-group" style="width: 410px;">
                         <input type="text" id="email" name="email" class="form-control form-control"
-                            style="width: 150px" placeholder="{!! __('loginPageLang.enter_email') !!}">
-                        <div class="input-group-text"><span class="col col-auto">@pegatroncorp.com</span></div>
+                            style="width: 160px;" placeholder="{!! __('loginPageLang.enter_email') !!}">
+                        <select class="form-select form-select-lg" style="width: 250px;" id="emailTail">
+                            <option selected>@pegatroncorp.com</option>
+                            <option>@intra.pegatroncorp.com</option>
+                        </select>
                     </div>
 
                     <div class="table-responsive text-nowrap">
@@ -128,7 +131,7 @@
                             <tbody>
                                 @foreach ($data as $data)
                                     <?php
-
+                                    
                                     $data->當月站位人數 = round($data->當月站位人數, 7);
                                     $data->當月開線數 = round($data->當月開線數, 7);
                                     $data->當月開班數 = round($data->當月開班數, 7);

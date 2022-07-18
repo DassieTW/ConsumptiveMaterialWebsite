@@ -119,7 +119,7 @@ $(document).ready(function () {
     var titlename = $("#titlename").val();
     var email = $("#email").val();
     var email1 = $("#email").val();
-    email = email + "@pegatroncorp.com";
+    email = email + $("#emailTail option:selected").text();
     var titlecount = $("#titlecount").val();
     $("input:checkbox[name=innumber]:checked").each(function () {
       check.push($(this).val());

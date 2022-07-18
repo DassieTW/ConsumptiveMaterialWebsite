@@ -63,7 +63,7 @@ $(document).ready(function () {
         var consume = [];
         var jobnumber = $("#jobnumber").val();
         var email = $("#email").val();
-        email = email + '@pegatroncorp.com';
+        email = email + $("#emailTail option:selected").text();
         var count = $("#count").val();
 
         for (let i = 0; i < count; i++) {

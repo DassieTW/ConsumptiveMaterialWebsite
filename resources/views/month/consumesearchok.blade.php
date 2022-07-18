@@ -57,10 +57,13 @@
                         value="{!! __('monthlyPRpageLang.change') !!}">
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
-                    <div class="input-group" style="width: 410px">
+                    <div class="input-group" style="width: 410px;">
                         <input type="text" id="email" name="email" class="form-control form-control"
-                            style="width: 150px" placeholder="{!! __('loginPageLang.enter_email') !!}">
-                        <div class="input-group-text"><span class="col col-auto">@pegatroncorp.com</span></div>
+                            style="width: 160px;" placeholder="{!! __('loginPageLang.enter_email') !!}">
+                        <select class="form-select form-select-lg" style="width: 250px;" id="emailTail">
+                            <option selected>@pegatroncorp.com</option>
+                            <option>@intra.pegatroncorp.com</option>
+                        </select>
                     </div>
                     <div class="table-responsive">
                         <table class="table">
@@ -87,10 +90,10 @@
                                     $format = DB::table('consumptive_material')
                                         ->where('料號', $data->料號)
                                         ->value('規格');
-
+                                    
                                     $unitConsume = abs((float) $data->單耗) < 1e-20 ? '0' : rtrim(sprintf('%.10F', ((float) $data->單耗)), '0');
                                     // result should be 0 or 1.8392832 or 14.
-
+                                    
                                     if (strpos($unitConsume, '.') === strlen($unitConsume) - 1) {
                                         // if the result is 5.  (should be like 5.0)
                                         $data->單耗 = sprintf('%.1F', ((float) $data->單耗));

@@ -275,7 +275,7 @@ $(document).ready(function () {
         var nextchange = [];
 
         // var jobnumber = $("#jobnumber").val();
-        var email = $("#email").val().toLowerCase() + "@pegatroncorp.com";
+        var email = $("#email").val().toLowerCase() + $("#emailTail option:selected").text();
         var count = 0;
 
         for (let i = 0; i < sessionStorage.getItem('standcount'); i++) {

@@ -84,7 +84,7 @@ $(document).ready(function () {
         var nextuse = [];
         var nextchange = [];
         var email = $("#email").val();
-        email = email + '@pegatroncorp.com';
+        email = email + $("#emailTail option:selected").text();
 
         var count = $("#count").val();
 

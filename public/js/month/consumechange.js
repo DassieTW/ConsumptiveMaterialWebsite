@@ -52,7 +52,7 @@ $(document).ready(function () {
         var check = [];
         var email = $("#email").val();
         var email1 = $("#email").val();
-        email = email + '@pegatroncorp.com';
+        email = email + $("#emailTail option:selected").text();
         $("input:checkbox[name=innumber]:checked").each(function () {
             check.push($(this).val());
         });
