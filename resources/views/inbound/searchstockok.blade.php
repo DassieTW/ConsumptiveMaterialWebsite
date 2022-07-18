@@ -44,7 +44,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <inbound-stocksearch-table></inbound-stocksearch-table>
+                    {{-- <inbound-stocksearch-table></inbound-stocksearch-table> --}}
                     <form id="inboundsearch" method="POST">
                         @csrf
                         <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"

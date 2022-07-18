@@ -159,9 +159,10 @@
                                 <div class="input-group">
                                     <input class="form-control form-control-lg text-center" type="text" id="newMail"
                                         name="newMail" placeholder="{!! __('loginPageLang.enter_email') !!}" />
-                                    <div class="input-group-text">
-                                        <span>@pegatroncorp.com</span>
-                                    </div>
+                                    <select class="form-select" id="emailTail">
+                                        <option selected>@pegatroncorp.com</option>
+                                        <option>@intra.pegatroncorp.com</option>
+                                    </select>
                                 </div>
                             </div>
 
