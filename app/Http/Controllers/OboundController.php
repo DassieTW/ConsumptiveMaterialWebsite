@@ -315,89 +315,22 @@ class OboundController extends Controller
             $begin = date($request->input('begin'));
             $endDate = strtotime($request->input('end'));
             $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
-            if ($request->input('number') !== null) {
+            if ($request->has('date')) {
                 $datas = DB::table('O庫inbound')
                     ->where('料號', 'like', $request->input('number') . '%')
+                    ->where('客戶別', 'like', $request->input('client') . '%')
+                    ->where('庫別', 'like', $request->input('bound') . '%')
+                    ->whereBetween('時間', [$begin, $end])
+                    ->get();
+            } else {
+                $datas = DB::table('O庫inbound')
+                    ->where('料號', 'like', $request->input('number') . '%')
+                    ->where('客戶別', 'like', $request->input('client') . '%')
+                    ->where('庫別', 'like', $request->input('bound') . '%')
                     ->get();
             }
 
-            //all empty
-            if ($request->input('client') === null && $request->input('bound') === null && $request->input('number') === null && !($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()]);
-            }
-            //select client
-            else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') === null && !($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()->where('客戶別', $request->input('client'))]);
-            }
-            //input bound
-            else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') === null && !($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()->where('庫別', $request->input('bound'))]);
-            }
-            //input material number
-            else if ($request->input('client') === null && $request->input('bound') === null && $request->input('number') !== null && !($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => $datas]);
-            }
-            //select date
-            else if ($request->input('client') === null && $request->input('bound') === null && $request->input('number') === null && ($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()->whereBetween('時間', [$begin, $end])]);
-            }
-            //select client and bound
-            else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') === null && !($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()
-                    ->where('客戶別', $request->input('client'))->where('庫別', $request->input('bound'))]);
-            }
-            //select client and number
-            else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') !== null && !($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
-            }
-            //select client and time
-            else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') === null && ($request->has('date'))) {
-
-                return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()
-                    ->whereBetween('時間', [$begin, $end])->where('客戶別', $request->input('client'))]);
-            }
-            //select bound and number
-            else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') !== null && !($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => $datas->where('庫別', $request->input('bound'))]);
-            }
-            //select bound and time
-            else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') === null && ($request->has('date'))) {
-
-                return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()
-                    ->whereBetween('入庫時間', [$begin, $end])->where('庫別', $request->input('bound'))]);
-            }
-            //select number and time
-            else if ($request->input('client') === null && $request->input('bound') === null && $request->input('number') !== null && ($request->has('date'))) {
-                return view('obound.inboundsearchok')->with(['data' => $datas->whereBetween('時間', [$begin, $end])]);
-            }
-            //select client and bound and number
-            else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') !== null && !($request->has('date'))) {
-
-                return view('obound.inboundsearchok')->with(['data' => $datas->where('庫別', $request->input('bound'))->where('客戶別', $request->input('client'))]);
-            }
-            //select client and bound and time
-            else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') === null && ($request->has('date'))) {
-
-                return view('obound.inboundsearchok')->with(['data' => O庫Inbound::cursor()
-                    ->whereBetween('時間', [$begin, $end])->where('庫別', $request->input('bound'))
-                    ->where('客戶別', $request->input('client'))]);
-            }
-            //select client and number and time
-            else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') !== null && ($request->has('date'))) {
-
-                return view('obound.inboundsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))->whereBetween('時間', [$begin, $end])]);
-            }
-            //select bound and number and time
-            else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') !== null && ($request->has('date'))) {
-
-                return view('obound.inboundsearchok')->with(['data' => $datas->whereBetween('時間', [$begin, $end])->where('庫別', $request->input('bound'))]);
-            }
-            //select all
-            else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') !== null && ($request->has('date'))) {
-
-                return view('obound.inboundsearchok')->with(['data' => $datas->whereBetween('時間', [$begin, $end])
-                    ->where('庫別', $request->input('bound'))->where('客戶別', $request->input('client'))]);
-            }
+            return view('obound.inboundsearchok')->with(['data' => $datas]);
         } else {
             return redirect(route('member.login'));
         }
@@ -554,93 +487,25 @@ class OboundController extends Controller
 
             //不良品inventory
             if ($request->has('nogood')) {
-                if ($request->input('number') !== null) {
-                    $datas = DB::table('O庫不良品inventory')
-                        ->where('料號', 'like', $request->input('number') . '%')
-                        ->where('現有庫存', '>', 0)
-                        ->get();
-                }
-                //all empty
-                if ($request->input('client') === null && $request->input('bound') === null && $request->input('number') === null) {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('現有庫存', '>', 0)]);
-                }
-                //select client
-                else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') === null) {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('現有庫存', '>', 0)
-                        ->where('客戶別', $client)]);
-                }
-                //select bound
-                else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') === null) {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('現有庫存', '>', 0)
-                        ->where('庫別', $bound)]);
-                }
 
-                //input material number
-                else if ($request->input('client') === null && $request->input('bound') === null && $request->input('number') !== null) {
-                    return view('obound.searchstockok')->with(['data' => $datas]);
-                }
-                //select client and bound
-                else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') === null) {
-                    return view('obound.searchstockok')->with(['data' => O庫不良品Inventory::cursor()->where('現有庫存', '>', 0)
-                        ->where('客戶別', $client)->where('庫別', $bound)]);
-                }
-                //select client and number
-                else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') !== null) {
-                    return view('obound.searchstockok')->with(['data' => $datas->where('客戶別', $client)]);
-                }
-                //select bound and number
-                else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') !== null) {
-                    return view('obound.searchstockok')->with(['data' => $datas->where('庫別', $bound)]);
-                }
-                //select all
-                else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') !== null) {
+                $datas = DB::table('O庫不良品inventory')
+                    ->where('料號', 'like', $request->input('number') . '%')
+                    ->where('客戶別', 'like', $request->input('client') . '%')
+                    ->where('庫別', 'like', $request->input('bound') . '%')
+                    ->where('現有庫存', '>', 0)
+                    ->get();
 
-                    return view('obound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('庫別', $bound)]);
-                }
+                return view('obound.searchstockok')->with(['data' => $datas]);
             }
             //inventory
             else {
-                if ($request->input('number') !== null) {
-                    $datas = DB::table('O庫inventory')
-                        ->where('料號', 'like', $request->input('number') . '%')
-                        ->where('現有庫存', '>', 0)
-                        ->get();
-                }
-                //all empty
-                if ($request->input('client') === null && $request->input('bound') === null && $request->input('number') === null) {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('現有庫存', '>', 0)]);
-                }
-                //select client
-                else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') === null) {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('客戶別', $client)->where('現有庫存', '>', 0)]);
-                }
-                //select bound
-                else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') === null) {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('庫別', $bound)->where('現有庫存', '>', 0)]);
-                }
-
-                //input material number
-                else if ($request->input('client') === null && $request->input('bound') === null && $request->input('number') !== null) {
-                    return view('obound.searchstockok')->with(['data' => $datas]);
-                }
-                //select client and bound
-                else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') === null) {
-                    return view('obound.searchstockok')->with(['data' => O庫Inventory::cursor()->where('客戶別', $client)
-                        ->where('庫別', $bound)->where('現有庫存', '>', 0)]);
-                }
-                //select client and number
-                else if ($request->input('client') !== null && $request->input('bound') === null && $request->input('number') !== null) {
-                    return view('obound.searchstockok')->with(['data' => $datas->where('料號', $number)]);
-                }
-                //select bound and number
-                else if ($request->input('client') === null && $request->input('bound') !== null && $request->input('number') !== null) {
-                    return view('obound.searchstockok')->with(['data' => $datas->where('庫別', $bound)]);
-                }
-                //select all
-                else if ($request->input('client') !== null && $request->input('bound') !== null && $request->input('number') !== null) {
-
-                    return view('obound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('庫別', $bound)]);
-                }
+                $datas = DB::table('O庫inventory')
+                    ->where('料號', 'like', $request->input('number') . '%')
+                    ->where('客戶別', 'like', $request->input('client') . '%')
+                    ->where('庫別', 'like', $request->input('bound') . '%')
+                    ->where('現有庫存', '>', 0)
+                    ->get();
+                return view('obound.searchstockok')->with(['data' => $datas]);
             }
         } else {
             return redirect(route('member.login'));
@@ -807,7 +672,7 @@ class OboundController extends Controller
     public function backlistsubmit(Request $request)
     {
         if (Session::has('username')) {
-            $Alldata = json_decode( $request->input('AllData') );
+            $Alldata = json_decode($request->input('AllData'));
             $count = count($Alldata[0]);
             DB::beginTransaction();
             try {
@@ -873,7 +738,7 @@ class OboundController extends Controller
 
                     if ($stock === null) {
                         DB::table($inventoryname)
-                            ->insert(['料號' => $number, '現有庫存' => $amount, '庫別' => $bound, '客戶別' => $client, '最後更新時間' => $now , '品名' => $name , '規格' => $format]);
+                            ->insert(['料號' => $number, '現有庫存' => $amount, '庫別' => $bound, '客戶別' => $client, '最後更新時間' => $now, '品名' => $name, '規格' => $format]);
                     } else {
                         DB::table($inventoryname)
                             ->where('客戶別', $client)
@@ -1323,7 +1188,7 @@ class OboundController extends Controller
                 $num = strval($num);
                 $opentime = $num;
             }
-            $Alldata = json_decode( $request->input('AllData') );
+            $Alldata = json_decode($request->input('AllData'));
 
             DB::beginTransaction();
             try {

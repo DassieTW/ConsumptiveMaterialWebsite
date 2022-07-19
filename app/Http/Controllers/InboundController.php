@@ -44,57 +44,18 @@ class InboundController extends Controller
     public function change(Request $request)
     {
         if (Session::has('username')) {
-            if ($request->input('number') !== null) {
-                $datas = DB::table('consumptive_material')
-                    ->join('inventory', 'consumptive_material.料號', '=', 'inventory.料號')
-                    ->where('inventory.料號', 'like', $request->input('number') . '%')
-                    ->where('現有庫存', '>', 0)
-                    ->select('inventory.*', 'consumptive_material.發料部門')
-                    ->get();
-            } else {
-                $datas = DB::table('consumptive_material')
-                    ->join('inventory', 'consumptive_material.料號', '=', 'inventory.料號')
-                    ->where('現有庫存', '>', 0)
-                    ->select('inventory.*', 'consumptive_material.發料部門')
-                    ->get();
-            }
-            //all empty
-            if ($request->input('client') === null && $request->input('position') === null && $request->input('send') === null) {
-                return view('inbound.change')->with(['data' => $datas]);
-            }
-            //select client
-            else if ($request->input('client') !== null && $request->input('position') === null && $request->input('send') === null) {
-                return view('inbound.change')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
-            }
-            //select position
-            else if ($request->input('client') === null && $request->input('position') !== null && $request->input('send') === null) {
-                return view('inbound.change')->with(['data' => $datas->where('儲位', $request->input('position'))]);
-            }
-            //select senddep
-            else if ($request->input('client') === null && $request->input('position') === null && $request->input('send') !== null) {
-                return view('inbound.change')->with(['data' => $datas->where('發料部門', $request->input('send'))]);
-            }
-            //select client and position
-            else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('send') === null) {
-                return view('inbound.change')->with(['data' => $datas
-                    ->where('客戶別', $request->input('client'))->where('儲位', $request->input('position'))]);
-            }
-            //select client and senddep
-            else if ($request->input('client') !== null && $request->input('position') === null && $request->input('send') !== null) {
-                return view('inbound.change')->with(['data' => $datas
-                    ->where('客戶別', $request->input('client'))->where('發料部門', $request->input('send'))]);
-            }
-            //select position and senddep
-            else if ($request->input('client') === null && $request->input('position') !== null && $request->input('send') !== null) {
-                return view('inbound.change')->with(['data' => $datas
-                    ->where('發料部門', $request->input('send'))->where('儲位', $request->input('position'))]);
-            }
-            //select all
-            else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('send') !== null) {
-                return view('inbound.change')->with(['data' => $datas
-                    ->where('客戶別', $request->input('client'))->where('儲位', $request->input('position'))
-                    ->where('發料部門', $request->input('send'))]);
-            }
+
+            $datas = DB::table('consumptive_material')
+                ->join('inventory', 'consumptive_material.料號', '=', 'inventory.料號')
+                ->where('inventory.料號', 'like', $request->input('number') . '%')
+                ->where('inventory.客戶別', 'like', $request->input('client') . '%')
+                ->where('inventory.儲位', 'like', $request->input('position') . '%')
+                ->where('consumptive_material.發料部門', 'like', $request->input('send') . '%')
+                ->where('現有庫存', '>', 0)
+                ->select('inventory.*', 'consumptive_material.發料部門')
+                ->get();
+
+            return view('inbound.change')->with(['data' => $datas]);
         } else {
             return redirect(route('member.login'));
         }
@@ -315,34 +276,28 @@ class InboundController extends Controller
             $number = $request->input('number');
             //不良品inventory
             if ($request->has('nogood')) {
-                if ($number !== null) {
-                    $datas = DB::table('consumptive_material')
-                        ->join('不良品inventory', function ($join) {
-                            $join->on('不良品inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('consumptive_material.料號', 'like', $number . '%')
-                        ->where('現有庫存', '>', 0)->get();
-                } else {
-                    $datas = DB::table('consumptive_material')
-                        ->join('不良品inventory', function ($join) {
-                            $join->on('不良品inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('現有庫存', '>', 0)->get();
-                }
+
+                $datas = DB::table('consumptive_material')
+                    ->join('不良品inventory', function ($join) {
+                        $join->on('不良品inventory.料號', '=', 'consumptive_material.料號');
+                    })->where('consumptive_material.料號', 'like', $number . '%')
+                    ->where('不良品inventory.客戶別', 'like', $client . '%')
+                    ->where('不良品inventory.儲位', 'like', $position . '%')
+                    ->where('consumptive_material.發料部門', 'like', $send . '%')
+                    ->where('現有庫存', '>', 0)->get();
             }
             //normal inventory
             else {
-                if ($number !== null) {
-                    $datas = DB::table('consumptive_material')
-                        ->join('inventory', function ($join) {
-                            $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('consumptive_material.料號', 'like', $number . '%')
-                        ->where('現有庫存', '>', 0)
-                        ->get();
-                } else {
-                    $datas = DB::table('consumptive_material')
-                        ->join('inventory', function ($join) {
-                            $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('現有庫存', '>', 0)->get();
-                }
+
+                $datas = DB::table('consumptive_material')
+                    ->join('inventory', function ($join) {
+                        $join->on('inventory.料號', '=', 'consumptive_material.料號');
+                    })->where('consumptive_material.料號', 'like', $number . '%')
+                    ->where('inventory.客戶別', 'like', $client . '%')
+                    ->where('inventory.儲位', 'like', $position . '%')
+                    ->where('consumptive_material.發料部門', 'like', $send . '%')
+                    ->where('現有庫存', '>', 0)
+                    ->get();
             }
             //庫存使用月數
             if ($request->has('month')) {
@@ -350,69 +305,18 @@ class InboundController extends Controller
                     ->select('料號', '客戶別', DB::raw('SUM(現有庫存) as 現有庫存'))
                     ->groupBy('料號', '客戶別');
 
-                if ($number !== null) {
-                    $datas = DB::table('consumptive_material')
-                        ->joinSub($test, 'inventory', function ($join) {
-                            $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('consumptive_material.料號', 'like', $number . '%')
-                        ->where('現有庫存', '>', 0)->get();
-                } else {
-                    $datas = DB::table('consumptive_material')
-                        ->joinSub($test, 'inventory', function ($join) {
-                            $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('現有庫存', '>', 0)->get();
-                }
+                $datas = DB::table('consumptive_material')
+                    ->joinSub($test, 'inventory', function ($join) {
+                        $join->on('inventory.料號', '=', 'consumptive_material.料號');
+                    })->where('consumptive_material.料號', 'like', $number . '%')
+                    ->where('inventory.客戶別', 'like', $client . '%')
+                    ->where('consumptive_material.發料部門', 'like', $send . '%')
+                    ->where('現有庫存', '>', 0)->get();
 
-                //all empty
-                if ($request->input('client') === null && $request->input('send') === null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas]);
-                }
-                //select client
-                else if ($request->input('client') !== null && $request->input('send') === null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas->where('客戶別', $client)]);
-                }
-                //select send
-                else if ($request->input('client') === null  && $request->input('send') !== null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas->where('發料部門', $send)]);
-                }
-                //select client and send
-                else if ($request->input('client') !== null  && $request->input('send') !== null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas
-                        ->where('發料部門', $send)->where('客戶別', $client)]);
-                }
+                return view('inbound.searchstockok1')->with(['data' => $datas]);
             } else {
-                //all empty
-                if ($request->input('client') === null && $request->input('position') === null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas]);
-                }
-                //select client
-                else if ($request->input('client') !== null && $request->input('position') === null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)]);
-                }
-                //select position
-                else if ($request->input('client') === null && $request->input('position') !== null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('儲位', $position)]);
-                }
-                //select send
-                else if ($request->input('client') === null && $request->input('position') === null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('發料部門', $send)]);
-                }
-                //select client and position
-                else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('儲位', $position)]);
-                }
-                //select client and send
-                else if ($request->input('client') !== null && $request->input('position') === null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('發料部門', $send)]);
-                }
-                //select position and send
-                else if ($request->input('client') === null && $request->input('position') !== null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('發料部門', $send)->where('儲位', $position)]);
-                }
-                //select client and position and send
-                else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('儲位', $position)->where('發料部門', $send)]);
-                }
+
+                return view('inbound.searchstockok')->with(['data' => $datas]);
             }
         } else {
             return redirect(route('member.login'));
