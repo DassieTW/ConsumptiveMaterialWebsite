@@ -1146,6 +1146,7 @@ class MonthController extends Controller
                     ->join('consumptive_material', function ($join) use ($send) {
                         $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
                     })->where('consumptive_material.發料部門', $send)
+                    ->where('月請購_站位.狀態', '=', "已完成")
                     ->get();
 
                 foreach ($datas2 as $data) {
@@ -1271,6 +1272,7 @@ class MonthController extends Controller
                         $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
                     })->where('月請購_站位.客戶別', $client)
                     ->where('consumptive_material.發料部門', $send)
+                    ->where('月請購_站位.狀態', '=', "已完成")
                     ->get();
 
                 foreach ($datas2 as $data) {
