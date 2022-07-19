@@ -144,7 +144,11 @@
                                     $data->下月每日更換頻率 = round($data->下月每日更換頻率, 7);
                                     // $test = str_replace(";","<br>",$data->紀錄) ;
                                     ?>
-                                    <tr class="isnRows">
+                                    <tr @class([
+                                        'isnRows',
+                                        'table-success' => ($data->狀態 === '已完成'),
+                                        'table-danger' => ($data->狀態 !== '已完成'),
+                                    ])>
                                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                                 style="width:20px;height:20px;" value="{{ $loop->index }}"></td>
                                         <td><input type="hidden" id="dataa{{ $loop->index }}"

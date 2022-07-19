@@ -103,7 +103,12 @@
                                         $data->單耗 = $unitConsume;
                                     } // else
                                     ?>
-                                    <tr id="{{ $loop->index }}" class="isnRows">
+
+                                    <tr id="{{ $loop->index }}" @class([
+                                        'isnRows',
+                                        'table-success' => ($data->狀態 === '已完成'),
+                                        'table-danger' => ($data->狀態 !== '已完成'),
+                                    ])>
                                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                                 style="width:20px;height:20px;" value="{{ $loop->index }}"></td>
                                         <td><input type="hidden" id="client{{ $loop->index }}"
