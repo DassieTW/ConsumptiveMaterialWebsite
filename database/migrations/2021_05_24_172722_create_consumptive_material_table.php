@@ -14,8 +14,7 @@ class CreateConsumptiveMaterialTable extends Migration
     public function up()
     {
         Schema::create('consumptive_material', function (Blueprint $table) {
-            $table->string('料號', 12);
-            $table->primary('料號');
+            $table->string('料號', 12)->primary();
             $table->string('品名', 100);
             $table->string('規格', 100);
             $table->double('單價');

@@ -243,8 +243,7 @@ $(document).ready(function () {
                 amount: amount,
                 say: say,
                 sxb: sxb,
-                reason: reason,
-                month: month
+                count:count
             },
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test

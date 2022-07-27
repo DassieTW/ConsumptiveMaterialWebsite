@@ -12,7 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'page.name' => '出库',
+    'page_name' => '出库',
     'pick' => '领料',
     'picklist' => '领料单',
     'pickrecord' => '领料记录表',
@@ -113,4 +113,5 @@ return [
     'rfidinputbackpeople' => '请点这里感应退料人员识别证',
     'rfidinputsendpeople' => '请点这里感应发料人员识别证',
     'rfidinputpickpeople' => '请点这里感应领料人员识别证',
+    'realpickzero' => '实际领用数量为0',
 ];

@@ -5,6 +5,7 @@
 
 @section('js')
 <!--for this page's sepcified js -->
+<script src="{{ asset('js/month/sxb.js') }}"></script>
 @endsection
 @section('content')
 <!DOCTYPE html>
@@ -28,7 +29,7 @@
             <div class="row justify-content-center">
                 <div class="card-body">
                     <div class="d-flex w-100">
-                        <form action="{{ route('month.sxbsearch') }}" method="POST">
+                        <form id="form1" method="POST">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
                                 <label class="col col-auto form-label p-0 m-0">{!! __('monthlyPRpageLang.client')

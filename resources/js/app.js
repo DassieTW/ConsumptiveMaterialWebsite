@@ -44,16 +44,30 @@ import vueTranslations from './vue-translations';
 import router from './vue-router/route';
 import BreadCrumbNav from './components/breadcrumb/BreadCrumbNav.vue';
 import BasicInfoTable from './components/reusableUtilities/BasicInfoTable.vue';
+import InboundSearchTable from './components/reusableUtilities/InboundSearchTable.vue';
+import OutboundPickrecordTable from './components/reusableUtilities/OutboundPickrecordTable.vue';
+import OutboundBackrecordTable from './components/reusableUtilities/OutboundBackrecordTable.vue';
+import TransitSearchTable from './components/reusableUtilities/TransitSearchTable.vue';
+import SxbSearchTable from './components/reusableUtilities/SxbSearchTable.vue';
+import NotmonthSearchTable from './components/reusableUtilities/NotmonthSearchTable.vue';
+import InboundStockSearchTable from './components/reusableUtilities/InboundStockSearchTable.vue';
 
 const app = createApp({
     components: {
         'vue-bread-crumb': BreadCrumbNav,
-        'basic-info-table': BasicInfoTable
+        'basic-info-table': BasicInfoTable,
+        'inbound-search-table': InboundSearchTable,
+        'outbound-pickrecord-table': OutboundPickrecordTable,
+        'outbound-backrecord-table': OutboundBackrecordTable,
+        'transit-search-table': TransitSearchTable,
+        'sxb-search-table': SxbSearchTable,
+        'notmonth-search-table': NotmonthSearchTable,
+        'inbound-stocksearch-table': InboundStockSearchTable
     }
 });
 
 app.use(Vue3Langjs, {
-    messages: vueTranslations, 
+    messages: vueTranslations,
     // the locale file gen by command "php artisan lang:js resources/js/vue-translations.js --no-lib --quiet"
 });
 

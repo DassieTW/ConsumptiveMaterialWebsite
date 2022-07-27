@@ -404,16 +404,6 @@ $(document).ready(function () {
                 url: "/barcode/seenDelete",  // refer to the route name in web.php
                 data: { DelorNot: DelorNot, isISN: isISN },
                 dataType: 'json',              // let's set the expected response format
-                // beforeSend: function () {
-                //     $('body').loadingModal({
-                //         text: 'Loading...',
-                //         animation: 'circle'
-                //     });
-                // },
-                // complete: function () {
-                //     $('body').loadingModal('hide');
-                //     $('body').loadingModal('destroy');
-                // },
                 success: function (data) {
                     console.log(data.message);
                 },
@@ -436,16 +426,6 @@ $(document).ready(function () {
                 url: "/barcode/seenDelete",  // refer to the route name in web.php
                 data: { DelorNot: DelorNot, isISN: isISN },
                 dataType: 'json',              // let's set the expected response format
-                // beforeSend: function () {
-                //     $('body').loadingModal({
-                //         text: 'Loading...',
-                //         animation: 'circle'
-                //     });
-                // },
-                // complete: function () {
-                //     $('body').loadingModal('hide');
-                //     $('body').loadingModal('destroy');
-                // },
                 success: function (data) {
                     console.log(data.message);
                 },

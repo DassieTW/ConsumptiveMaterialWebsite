@@ -14,7 +14,7 @@ class Create退回原因Table extends Migration
     public function up()
     {
         Schema::create('退回原因', function (Blueprint $table) {
-            $table->string('退回原因',30)->primary();
+            $table->string('退回原因',45)->primary();
             //$table->timestamps();
             //$table->softDeletes();
         });

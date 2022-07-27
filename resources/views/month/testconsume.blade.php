@@ -37,7 +37,6 @@
             top: 0;
             z-index: 10;
         }
-
     </style>
 
     <script>
@@ -102,7 +101,16 @@
                                 </thead>
                                 @foreach($data as $data)
                                 <?php
-                                    $data->單耗 = floatval($data->單耗);
+                                    //$data->單耗 = number_format(floatval($data->單耗),12);
+                                    $unitConsume = abs((float)($data->單耗)) < 1e-20 ? '0' : rtrim(sprintf('%.10F',((float)($data->單耗))), '0');
+                                        // result should be 0 or 1.8392832 or 14.
+                                    
+                                        if ( strpos($unitConsume, '.') === (strlen($unitConsume)-1) ) { // if the result is 5. (should be like 5.0)
+                                        $data->單耗 = sprintf('%.1F',((float)($data->單耗)));
+                                        } // if
+                                        else {
+                                        $data->單耗 = $unitConsume;
+                                        } // else
                                     $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
                                 ?>
                                 <tbody>
@@ -118,7 +126,7 @@
                                         <td><input type="hidden" id="production{{$loop->index}}"
                                                 name="production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}
                                         </td>
-                                        <td class="table-light">{{$data->單耗}}</td>
+                                        <td class="table-light" id="amount{{$loop->index}}">{{ ($data->單耗)}}</td>
                                         <td><input class="checkbutton" type="checkbox" id="check{{$loop->index}}"
                                                 name="check{{$loop->index}}"></td>
                                         <td><input style="width: 120px;" class="form-control formcontrol-lg" type="text"

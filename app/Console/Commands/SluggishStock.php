@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use App\Services\MailService;
 
@@ -27,7 +28,7 @@ class SluggishStock extends Command
      *
      * @return void
      */
-    public function __construct( MailService $mailservice )
+    public function __construct(MailService $mailservice)
     {
         parent::__construct();
         $this->mailservice = $mailservice;
@@ -40,9 +41,15 @@ class SluggishStock extends Command
      */
     public function handle()
     {
-        \Log::channel('dbquerys')->info('---------------------------開始寄信 by Sluggish Stock Command--------------------------');
-        $this->mailservice->day();
-        \Log::channel('dbquerys')->info('---------------------------寄信結束 by Sluggish Stock Command--------------------------');
+        try {
+            \Log::channel('dbquerys')->info('---------------------------開始寄信 by Sluggish Stock Command--------------------------');
+            $this->mailservice->day();
+            \Log::channel('dbquerys')->info('---------------------------寄信結束 by Sluggish Stock Command--------------------------');
+            $this->info("Command executed successfully!");
+        } catch (Exception $e) {
+            $this->error("Command execution failed with error : " . $e->getMessage());
+        } // try - catch
+
         return 0;
     }
 }

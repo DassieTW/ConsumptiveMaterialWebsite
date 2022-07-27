@@ -6,33 +6,6 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
-    function quickSearch() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue;
-        input = $("#numbersearch").val();
-        //var isISN = $("#toggle-state").is(":checked");
-        console.log(input); // test
-        // filter = input.value;
-        // Loop through all table rows, and hide those who don't match the search query
-        $('.isnRows').each(function (i, obj) {
-            txtValue = $(this).find("input[id^='data1']").val();
-            // console.log("now checking text : " + txtValue); // test
-            if (txtValue.indexOf(input) > -1) {
-                obj.style.display = "";
-
-            } else {
-                obj.style.display = "none";
-            } // if else
-        });
-    } // quickSearch function
-
-
-    $("#numbersearch").on('input', function (e) {
-        e.preventDefault();
-        quickSearch();
-    });
-
-
     $('#notmonthform').on('submit', function (e) {
         e.preventDefault();
 
@@ -40,53 +13,35 @@ $(document).ready(function () {
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
-        var data = [];
-        var data0 = [];
-        var data1 = [];
-        var data2 = [];
-        var data3 = [];
-        var data4 = [];
-        var data5 = [];
-        var data6 = [];
-
-        var count = $("#count").val();
         var title = [];
         var titlename = $("#titlename").val();
-        var titlecount = $("#titlecount").val();
-
-        for (let i = 0; i < titlecount; i++) {
-            title.push($("#title" + i).val());
-        }
-
-        for (let i = 0; i < count; i++) {
-            data0.push($("#data0" + i).val());
-            data1.push($("#data1" + i).val());
-            data2.push($("#data2" + i).val());
-            data3.push($("#data3" + i).val());
-            data4.push($("#data4" + i).val());
-            data5.push($("#data5" + i).val());
-            data6.push($("#data6" + i).val());
-
+        var titlecount = 7;
+        var titlecol = [];
+        //download title
+        for (let i = 0; i < 7; i++) {
+            title.push($(".vtl-thead-th").eq(i).text());
         }
 
 
-        data.push(data0);
-        data.push(data1);
-        data.push(data2);
-        data.push(data3);
-        data.push(data4);
-        data.push(data5);
-        data.push(data6);
+        titlecol.push('客戶別');
+        titlecol.push('料號');
+        titlecol.push('品名');
+        titlecol.push('請購數量');
+        titlecol.push('上傳時間');
+        titlecol.push('說明');
+        titlecol.push('SXB單號');
 
+
+        console.log(titlename);
+        console.log(title);
         $.ajax({
             type: 'POST',
             url: "download",
             data: {
-                AllData: JSON.stringify(data),
-                count: count,
                 title: title,
                 titlename: titlename,
                 titlecount: titlecount,
+                titlecol: titlecol,
             },
             xhrFields: {
                 responseType: 'blob', // to avoid binary data being mangled on charset conversion

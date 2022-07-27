@@ -58,6 +58,7 @@ $('#uploadnotmonth').on('submit', function (e) {
         }
 
     }
+
     $.ajax({
         type: 'POST',
         url: "notmonthsubmit",

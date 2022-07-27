@@ -42,6 +42,7 @@ Route::get('/safe', function () {
             'consumptive_material.LT',
             'consumptive_material.月請購',
             'consumptive_material.安全庫存',
+            'consumptive_material.耗材歸屬',
             '月請購_單耗.單耗',
             'MPS.下月MPS',
             'MPS.下月生產天數',
@@ -54,15 +55,16 @@ Route::get('/safe', function () {
             'consumptive_material.LT',
             'consumptive_material.月請購',
             'consumptive_material.安全庫存',
+            'consumptive_material.耗材歸屬',
             '月請購_單耗.單耗',
             'MPS.下月MPS',
             'MPS.下月生產天數',
             'inventory現有庫存',
         )
         ->where('consumptive_material.月請購', '=', "是")
+        ->where('consumptive_material.耗材歸屬', '=', "單耗")
         ->where('月請購_單耗.狀態', '=', "已完成")
         ->get()->toArray();
-
 
 
     foreach ($datas as $data) {
@@ -114,6 +116,7 @@ Route::get('/safe', function () {
             'consumptive_material.月請購',
             'consumptive_material.MPQ',
             'consumptive_material.安全庫存',
+            'consumptive_material.耗材歸屬',
             '月請購_站位.下月站位人數',
             '月請購_站位.下月開線數',
             '月請購_站位.下月開班數',
@@ -129,6 +132,7 @@ Route::get('/safe', function () {
             'consumptive_material.月請購',
             'consumptive_material.MPQ',
             'consumptive_material.安全庫存',
+            'consumptive_material.耗材歸屬',
             '月請購_站位.下月站位人數',
             '月請購_站位.下月開線數',
             '月請購_站位.下月開班數',
@@ -137,6 +141,7 @@ Route::get('/safe', function () {
             'inventory現有庫存',
         )
         ->where('consumptive_material.月請購', '=', "是")
+        ->where('consumptive_material.耗材歸屬', '=', "站位")
         ->where('月請購_站位.狀態', '=', "已完成")
         ->get()->toArray();
 

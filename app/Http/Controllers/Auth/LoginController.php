@@ -224,24 +224,24 @@ class LoginController extends Controller
         } // if
         else if (Session::has('username') && $request->has('newMail')) {
             $this->validate($request, $rules2);
-            if ($request->input('oldMail') === ($request->input('newMail') . "@pegatroncorp.com")) {
+            if ($request->input('oldMail') === $request->input('newMail')) {
                 // dont need to update Email
                 return \Response::json(['message' => 'Email is the same as old one'], 200/* Status code here default is 200 ok*/);
             } // if
             else {
-                if( $request->input('newMail') === null || $request->input('newMail') === "") { // delete the old email
+                if ($request->input('newMail') === null || $request->input('newMail') === "") { // delete the old email
                     DB::table('login')
-                    ->where('username', \Auth::user()->username)
-                    // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
-                    ->update(['email' => NULL]);
+                        ->where('username', \Auth::user()->username)
+                        // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
+                        ->update(['email' => NULL]);
                 } // if
                 else {
                     DB::table('login')
-                    ->where('username', \Auth::user()->username)
-                    // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
-                    ->update(['email' => ($request->input('newMail') . "@pegatroncorp.com")]);
+                        ->where('username', \Auth::user()->username)
+                        // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
+                        ->update(['email' => $request->input('newMail')]);
                 } // else
-                
+
                 return \Response::json(['message' => 'Update successful'], 200/* Status code here default is 200 ok*/);
             } // else
             return \Response::json(['message' => 'weird error'], 421/* Status code here default is 200 ok*/);

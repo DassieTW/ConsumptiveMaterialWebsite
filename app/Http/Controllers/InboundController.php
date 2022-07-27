@@ -44,47 +44,18 @@ class InboundController extends Controller
     public function change(Request $request)
     {
         if (Session::has('username')) {
-            if ($request->input('number') !== null) {
-                $datas = DB::table('inventory')
-                    ->where('料號', 'like', $request->input('number') . '%')
-                    ->get();
-            }
-            //all empty
-            if ($request->input('client') === null && $request->input('position') === null && $request->input('number') === null) {
-                return view('inbound.change')->with(['data' => Inventory::cursor()->where('現有庫存', '>', 0)]);
-            }
-            //select client
-            else if ($request->input('client') !== null && $request->input('position') === null && $request->input('number') === null) {
-                return view('inbound.change')->with(['data' => Inventory::cursor()->where('客戶別', $request->input('client'))->where('現有庫存', '>', 0)]);
-            }
-            //select position
-            else if ($request->input('client') === null && $request->input('position') !== null && $request->input('number') === null) {
-                return view('inbound.change')->with(['data' => Inventory::cursor()->where('儲位', $request->input('position'))->where('現有庫存', '>', 0)]);
-            }
-            //input material number
-            else if ($request->input('client') === null && $request->input('position') === null && $request->input('number') !== null) {
-                return view('inbound.change')->with(['data' => $datas->where('現有庫存', '>', 0)]);
-            }
-            //select client and position
-            else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('number') === null) {
-                return view('inbound.change')->with(['data' => Inventory::cursor()
-                    ->where('客戶別', $request->input('client'))->where('儲位', $request->input('position'))->where('現有庫存', '>', 0)]);
-            }
-            //select client and number
-            else if ($request->input('client') !== null && $request->input('position') === null && $request->input('number') !== null) {
-                return view('inbound.change')->with(['data' => $datas->where('客戶別', $request->input('client'))->where('現有庫存', '>', 0)]);
-            }
-            //select position and number
-            else if ($request->input('client') === null && $request->input('position') !== null && $request->input('number') !== null) {
 
-                return view('inbound.change')->with(['data' => $datas->where('料號', $request->input('number'))->where('儲位', $request->input('position'))->where('現有庫存', '>', 0)]);
-            }
-            //select all
-            else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('number') !== null) {
-                return view('inbound.change')->with(['data' => $datas
-                    ->where('客戶別', $request->input('client'))->where('儲位', $request->input('position'))
-                    ->where('現有庫存', '>', 0)]);
-            }
+            $datas = DB::table('consumptive_material')
+                ->join('inventory', 'consumptive_material.料號', '=', 'inventory.料號')
+                ->where('inventory.料號', 'like', $request->input('number') . '%')
+                ->where('inventory.客戶別', 'like', $request->input('client') . '%')
+                ->where('inventory.儲位', 'like', $request->input('position') . '%')
+                ->where('consumptive_material.發料部門', 'like', $request->input('send') . '%')
+                ->where('現有庫存', '>', 0)
+                ->select('inventory.*', 'consumptive_material.發料部門')
+                ->get();
+
+            return view('inbound.change')->with(['data' => $datas]);
         } else {
             return redirect(route('member.login'));
         }
@@ -146,154 +117,154 @@ class InboundController extends Controller
         }
     }
 
-    //入庫-查詢
-    public function inquire(Request $request)
-    {
-        if (Session::has('username')) {
-            $begin = date($request->input('begin'));
-            $endDate = strtotime($request->input('end'));
-            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
-            if ($request->input('number') !== null) {
-                $datas = DB::table('inbound')
-                    ->where('料號', 'like', $request->input('number') . '%')
-                    ->get();
-            }
-            //all empty
-            if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') === null && !($request->has('date'))) {
-                return view('inbound.searchok')->with(['data' => Inbound::cursor()]);
-            }
-            //select client
-            else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') === null && !($request->has('date'))) {
-                return view('inbound.searchok')->with(['data' => Inbound::cursor()->where('客戶別', $request->input('client'))]);
-            }
-            //input innumber
-            else if ($request->input('client') === null && $request->input('innumber') !== null && $request->input('number') === null && !($request->has('date'))) {
-                if (strlen($request->input('innumber')) !== 12) {
-                    return back()->withErrors([
-                        'innumber' => trans('validation.regex'),
-                    ]);
-                } else {
-                    return view('inbound.searchok')->with(['data' => Inbound::cursor()->where('入庫單號', $request->input('innumber'))]);
-                }
-            }
-            //input material number
-            else if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') !== null && !($request->has('date'))) {
-                return view('inbound.searchok')->with(['data' => $datas]);
-            }
-            //select date
-            else if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') === null && ($request->has('date'))) {
+    // //入庫-查詢
+    // public function inquire(Request $request)
+    // {
+    //     if (Session::has('username')) {
+    //         $begin = date($request->input('begin'));
+    //         $endDate = strtotime($request->input('end'));
+    //         $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
+    //         if ($request->input('number') !== null) {
+    //             $datas = DB::table('inbound')
+    //                 ->where('料號', 'like', $request->input('number') . '%')
+    //                 ->get();
+    //         }
+    //         //all empty
+    //         if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') === null && !($request->has('date'))) {
+    //             return view('inbound.searchok')->with(['data' => Inbound::cursor()]);
+    //         }
+    //         //select client
+    //         else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') === null && !($request->has('date'))) {
+    //             return view('inbound.searchok')->with(['data' => Inbound::cursor()->where('客戶別', $request->input('client'))]);
+    //         }
+    //         //input innumber
+    //         else if ($request->input('client') === null && $request->input('innumber') !== null && $request->input('number') === null && !($request->has('date'))) {
+    //             if (strlen($request->input('innumber')) !== 12) {
+    //                 return back()->withErrors([
+    //                     'innumber' => trans('validation.regex'),
+    //                 ]);
+    //             } else {
+    //                 return view('inbound.searchok')->with(['data' => Inbound::cursor()->where('入庫單號', $request->input('innumber'))]);
+    //             }
+    //         }
+    //         //input material number
+    //         else if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') !== null && !($request->has('date'))) {
+    //             return view('inbound.searchok')->with(['data' => $datas]);
+    //         }
+    //         //select date
+    //         else if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') === null && ($request->has('date'))) {
 
-                return view('inbound.searchok')->with(['data' => Inbound::cursor()->whereBetween('入庫時間', [$begin, $end])]);
-            }
-            //select client and innumber
-            else if ($request->input('client') !== null && $request->input('innumber') !== null && $request->input('number') === null && !($request->has('date'))) {
-                if (strlen($request->input('innumber')) !== 12) {
-                    return back()->withErrors([
-                        'innumber' => trans('validation.regex'),
-                    ]);
-                } else {
-                    return view('inbound.searchok')->with(['data' => Inbound::cursor()
-                        ->where('客戶別', $request->input('client'))->where('入庫單號', $request->input('innumber'))]);
-                }
-            }
-            //select client and number
-            else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') !== null && !($request->has('date'))) {
+    //             return view('inbound.searchok')->with(['data' => Inbound::cursor()->whereBetween('入庫時間', [$begin, $end])]);
+    //         }
+    //         //select client and innumber
+    //         else if ($request->input('client') !== null && $request->input('innumber') !== null && $request->input('number') === null && !($request->has('date'))) {
+    //             if (strlen($request->input('innumber')) !== 12) {
+    //                 return back()->withErrors([
+    //                     'innumber' => trans('validation.regex'),
+    //                 ]);
+    //             } else {
+    //                 return view('inbound.searchok')->with(['data' => Inbound::cursor()
+    //                     ->where('客戶別', $request->input('client'))->where('入庫單號', $request->input('innumber'))]);
+    //             }
+    //         }
+    //         //select client and number
+    //         else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') !== null && !($request->has('date'))) {
 
-                return view('inbound.searchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
-            }
-            //select client and time
-            else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') === null && ($request->has('date'))) {
+    //             return view('inbound.searchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
+    //         }
+    //         //select client and time
+    //         else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') === null && ($request->has('date'))) {
 
-                return view('inbound.searchok')->with(['data' => Inbound::cursor()
-                    ->whereBetween('入庫時間', [$begin, $end])->where('客戶別', $request->input('client'))]);
-            }
-            //select innumber and number
-            else if ($request->input('client') === null && $request->input('innumber') !== null && $request->input('number') !== null && !($request->has('date'))) {
+    //             return view('inbound.searchok')->with(['data' => Inbound::cursor()
+    //                 ->whereBetween('入庫時間', [$begin, $end])->where('客戶別', $request->input('client'))]);
+    //         }
+    //         //select innumber and number
+    //         else if ($request->input('client') === null && $request->input('innumber') !== null && $request->input('number') !== null && !($request->has('date'))) {
 
-                if (strlen($request->input('innumber')) !== 12) {
-                    return back()->withErrors([
-                        'innumber' => trans('validation.regex'),
-                    ]);
-                } else {
-                    return view('inbound.searchok')->with(['data' => $datas->where('入庫單號', $request->input('innumber'))]);
-                }
-            }
-            //select innumber and time
-            else if ($request->input('client') === null && $request->input('innumber') !== null && $request->input('number') === null && ($request->has('date'))) {
-                if (strlen($request->input('innumber')) !== 12) {
-                    return back()->withErrors([
-                        'innumber' => trans('validation.regex'),
-                    ]);
-                } else {
+    //             if (strlen($request->input('innumber')) !== 12) {
+    //                 return back()->withErrors([
+    //                     'innumber' => trans('validation.regex'),
+    //                 ]);
+    //             } else {
+    //                 return view('inbound.searchok')->with(['data' => $datas->where('入庫單號', $request->input('innumber'))]);
+    //             }
+    //         }
+    //         //select innumber and time
+    //         else if ($request->input('client') === null && $request->input('innumber') !== null && $request->input('number') === null && ($request->has('date'))) {
+    //             if (strlen($request->input('innumber')) !== 12) {
+    //                 return back()->withErrors([
+    //                     'innumber' => trans('validation.regex'),
+    //                 ]);
+    //             } else {
 
-                    return view('inbound.searchok')->with(['data' => Inbound::cursor()
-                        ->whereBetween('入庫時間', [$begin, $end])->where('入庫單號', $request->input('innumber'))]);
-                }
-            }
-            //select number and time
-            else if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') !== null && ($request->has('date'))) {
+    //                 return view('inbound.searchok')->with(['data' => Inbound::cursor()
+    //                     ->whereBetween('入庫時間', [$begin, $end])->where('入庫單號', $request->input('innumber'))]);
+    //             }
+    //         }
+    //         //select number and time
+    //         else if ($request->input('client') === null && $request->input('innumber') === null && $request->input('number') !== null && ($request->has('date'))) {
 
-                return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])]);
-            }
-            //select client and innumber and number
-            else if ($request->input('client') !== null && $request->input('innumber') !== null && $request->input('number') !== null && !($request->has('date'))) {
+    //             return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])]);
+    //         }
+    //         //select client and innumber and number
+    //         else if ($request->input('client') !== null && $request->input('innumber') !== null && $request->input('number') !== null && !($request->has('date'))) {
 
-                if (strlen($request->input('innumber')) !== 12) {
-                    return back()->withErrors([
-                        'innumber' => trans('validation.regex'),
-                    ]);
-                } else {
-                    return view('inbound.searchok')->with(['data' => $datas->where('入庫單號', $request->input('innumber'))
-                        ->where('客戶別', $request->input('client'))]);
-                }
-            }
-            //select client and innumber and time
-            else if ($request->input('client') !== null && $request->input('innumber') !== null && $request->input('number') === null && ($request->has('date'))) {
-                if (strlen($request->input('innumber')) !== 12) {
-                    return back()->withErrors([
-                        'innumber' => trans('validation.regex'),
-                    ]);
-                } else {
+    //             if (strlen($request->input('innumber')) !== 12) {
+    //                 return back()->withErrors([
+    //                     'innumber' => trans('validation.regex'),
+    //                 ]);
+    //             } else {
+    //                 return view('inbound.searchok')->with(['data' => $datas->where('入庫單號', $request->input('innumber'))
+    //                     ->where('客戶別', $request->input('client'))]);
+    //             }
+    //         }
+    //         //select client and innumber and time
+    //         else if ($request->input('client') !== null && $request->input('innumber') !== null && $request->input('number') === null && ($request->has('date'))) {
+    //             if (strlen($request->input('innumber')) !== 12) {
+    //                 return back()->withErrors([
+    //                     'innumber' => trans('validation.regex'),
+    //                 ]);
+    //             } else {
 
-                    return view('inbound.searchok')->with(['data' => Inbound::cursor()
-                        ->whereBetween('入庫時間', [$begin, $end])->where('', $request->input('innumber'))
-                        ->where('客戶別', $request->input('client'))]);
-                }
-            }
-            //select client and number and time
-            else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') !== null && ($request->has('date'))) {
+    //                 return view('inbound.searchok')->with(['data' => Inbound::cursor()
+    //                     ->whereBetween('入庫時間', [$begin, $end])->where('', $request->input('innumber'))
+    //                     ->where('客戶別', $request->input('client'))]);
+    //             }
+    //         }
+    //         //select client and number and time
+    //         else if ($request->input('client') !== null && $request->input('innumber') === null && $request->input('number') !== null && ($request->has('date'))) {
 
-                return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
-                    ->where('客戶別', $request->input('client'))]);
-            }
-            //select innumber and number and time
-            else if ($request->input('client') === null && $request->input('innumber') !== null && $request->input('number') !== null && ($request->has('date'))) {
-                if (strlen($request->input('innumber')) !== 12) {
-                    return back()->withErrors([
-                        'innumber' => trans('validation.regex'),
-                    ]);
-                } else {
+    //             return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
+    //                 ->where('客戶別', $request->input('client'))]);
+    //         }
+    //         //select innumber and number and time
+    //         else if ($request->input('client') === null && $request->input('innumber') !== null && $request->input('number') !== null && ($request->has('date'))) {
+    //             if (strlen($request->input('innumber')) !== 12) {
+    //                 return back()->withErrors([
+    //                     'innumber' => trans('validation.regex'),
+    //                 ]);
+    //             } else {
 
-                    return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
-                        ->where('入庫單號', $request->input('innumber'))]);
-                }
-            }
-            //select all
-            else if ($request->input('client') !== null && $request->input('innumber') !== null && $request->input('number') !== null && ($request->has('date'))) {
-                if (strlen($request->input('innumber')) !== 12) {
-                    return back()->withErrors([
-                        'innumber' => trans('validation.regex'),
-                    ]);
-                } else {
+    //                 return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
+    //                     ->where('入庫單號', $request->input('innumber'))]);
+    //             }
+    //         }
+    //         //select all
+    //         else if ($request->input('client') !== null && $request->input('innumber') !== null && $request->input('number') !== null && ($request->has('date'))) {
+    //             if (strlen($request->input('innumber')) !== 12) {
+    //                 return back()->withErrors([
+    //                     'innumber' => trans('validation.regex'),
+    //                 ]);
+    //             } else {
 
-                    return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
-                        ->where('入庫單號', $request->input('innumber'))->where('客戶別', $request->input('client'))]);
-                }
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
+    //                 return view('inbound.searchok')->with(['data' => $datas->whereBetween('入庫時間', [$begin, $end])
+    //                     ->where('入庫單號', $request->input('innumber'))->where('客戶別', $request->input('client'))]);
+    //             }
+    //         }
+    //     } else {
+    //         return redirect(route('member.login'));
+    //     }
+    // } // inquire
 
     //入庫-庫存查詢
     public function searchstocksubmit(Request $request)
@@ -305,34 +276,28 @@ class InboundController extends Controller
             $number = $request->input('number');
             //不良品inventory
             if ($request->has('nogood')) {
-                if ($number !== null) {
-                    $datas = DB::table('consumptive_material')
-                        ->join('不良品inventory', function ($join) {
-                            $join->on('不良品inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('consumptive_material.料號', 'like', $number . '%')
-                        ->where('現有庫存', '>', 0)->get();
-                } else {
-                    $datas = DB::table('consumptive_material')
-                        ->join('不良品inventory', function ($join) {
-                            $join->on('不良品inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('現有庫存', '>', 0)->get();
-                }
+
+                $datas = DB::table('consumptive_material')
+                    ->join('不良品inventory', function ($join) {
+                        $join->on('不良品inventory.料號', '=', 'consumptive_material.料號');
+                    })->where('consumptive_material.料號', 'like', $number . '%')
+                    ->where('不良品inventory.客戶別', 'like', $client . '%')
+                    ->where('不良品inventory.儲位', 'like', $position . '%')
+                    ->where('consumptive_material.發料部門', 'like', $send . '%')
+                    ->where('現有庫存', '>', 0)->get();
             }
-            //inventory
+            //normal inventory
             else {
-                if ($number !== null) {
-                    $datas = DB::table('consumptive_material')
-                        ->join('inventory', function ($join) {
-                            $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('consumptive_material.料號', 'like', $number . '%')
-                        ->where('現有庫存', '>', 0)
-                        ->get();
-                } else {
-                    $datas = DB::table('consumptive_material')
-                        ->join('inventory', function ($join) {
-                            $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('現有庫存', '>', 0)->get();
-                }
+
+                $datas = DB::table('consumptive_material')
+                    ->join('inventory', function ($join) {
+                        $join->on('inventory.料號', '=', 'consumptive_material.料號');
+                    })->where('consumptive_material.料號', 'like', $number . '%')
+                    ->where('inventory.客戶別', 'like', $client . '%')
+                    ->where('inventory.儲位', 'like', $position . '%')
+                    ->where('consumptive_material.發料部門', 'like', $send . '%')
+                    ->where('現有庫存', '>', 0)
+                    ->get();
             }
             //庫存使用月數
             if ($request->has('month')) {
@@ -340,126 +305,22 @@ class InboundController extends Controller
                     ->select('料號', '客戶別', DB::raw('SUM(現有庫存) as 現有庫存'))
                     ->groupBy('料號', '客戶別');
 
-                if ($number !== null) {
-                    $datas = DB::table('consumptive_material')
-                        ->joinSub($test, 'inventory', function ($join) {
-                            $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('consumptive_material.料號', 'like', $number . '%')
-                        ->where('現有庫存', '>', 0)->get();
-                } else {
-                    $datas = DB::table('consumptive_material')
-                        ->joinSub($test, 'inventory', function ($join) {
-                            $join->on('inventory.料號', '=', 'consumptive_material.料號');
-                        })->where('現有庫存', '>', 0)->get();
-                }
+                $datas = DB::table('consumptive_material')
+                    ->joinSub($test, 'inventory', function ($join) {
+                        $join->on('inventory.料號', '=', 'consumptive_material.料號');
+                    })->where('consumptive_material.料號', 'like', $number . '%')
+                    ->where('inventory.客戶別', 'like', $client . '%')
+                    ->where('consumptive_material.發料部門', 'like', $send . '%')
+                    ->where('現有庫存', '>', 0)->get();
 
-                //all empty
-                if ($request->input('client') === null && $request->input('number') === null && $request->input('send') === null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas]);
-                }
-                //select client
-                else if ($request->input('client') !== null && $request->input('number') === null && $request->input('send') === null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas->where('客戶別', $client)]);
-                }
-                //input material number
-                else if ($request->input('client') === null && $request->input('number') !== null && $request->input('send') === null) {
-
-                    return view('inbound.searchstockok1')->with(['data' => $datas]);
-                }
-                //select send
-                else if ($request->input('client') === null && $request->input('number') === null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas->where('發料部門', $send)]);
-                }
-                //select client and number
-                else if ($request->input('client') !== null && $request->input('number') !== null && $request->input('send') === null) {
-
-                    return view('inbound.searchstockok1')->with(['data' => $datas->where('客戶別', $client)]);
-                }
-                //select client and send
-                else if ($request->input('client') !== null && $request->input('number') === null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas
-                        ->where('發料部門', $send)->where('客戶別', $client)]);
-                }
-                //select send and number
-                else if ($request->input('client') === null && $request->input('number') !== null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas->where('發料部門', $send)]);
-                }
-                //select all
-                else if ($request->input('client') !== null && $request->input('number') !== null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok1')->with(['data' => $datas->where('發料部門', $send)->where('客戶別', $client)]);
-                }
+                return view('inbound.searchstockok1')->with(['data' => $datas]);
             } else {
 
-                if ($request->input('client') === null && $request->input('position') === null && $request->input('number') === null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas]);
-                }
-                //select client
-                else if ($request->input('client') !== null && $request->input('position') === null && $request->input('number') === null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)]);
-                }
-                //select position
-                else if ($request->input('client') === null && $request->input('position') !== null && $request->input('number') === null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('儲位', $position)]);
-                }
-
-                //input material number
-                else if ($request->input('client') === null && $request->input('position') === null && $request->input('number') !== null && $request->input('send') === null) {
-
-                    return view('inbound.searchstockok')->with(['data' => $datas]);
-                }
-                //select send
-                else if ($request->input('client') === null && $request->input('position') === null && $request->input('number') === null && $request->input('send') !== null) {
-
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('發料部門', $send)]);
-                }
-                //select client and position
-                else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('number') === null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('儲位', $position)]);
-                }
-                //select client and number
-                else if ($request->input('client') !== null && $request->input('position') === null && $request->input('number') !== null  && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)]);
-                }
-                //select position and number
-                else if ($request->input('client') === null && $request->input('position') !== null && $request->input('number') !== null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('儲位', $position)]);
-                }
-                //select client and send
-                else if ($request->input('client') !== null && $request->input('position') === null && $request->input('number') === null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('發料部門', $send)]);
-                }
-                //select position and send
-                else if ($request->input('client') === null && $request->input('position') !== null && $request->input('number') === null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('發料部門', $send)->where('儲位', $position)]);
-                }
-                //select number and send
-                else if ($request->input('client') === null && $request->input('position') === null && $request->input('number') !== null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('發料部門', $send)]);
-                }
-                //select client and position and send
-                else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('number') === null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('儲位', $position)->where('發料部門', $send)]);
-                }
-                //select number and position and send
-                else if ($request->input('client') === null && $request->input('position') !== null && $request->input('number') !== null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('儲位', $position)->where('發料部門', $send)]);
-                }
-                //select client and position and number
-                else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('number') !== null && $request->input('send') === null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('儲位', $position)]);
-                }
-                //select client and number and send
-                else if ($request->input('client') !== null && $request->input('position') === null && $request->input('number') !== null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('發料部門', $send)]);
-                }
-                //select all
-                else if ($request->input('client') !== null && $request->input('position') !== null && $request->input('number') !== null && $request->input('send') !== null) {
-                    return view('inbound.searchstockok')->with(['data' => $datas->where('客戶別', $client)->where('儲位', $position)->where('發料部門', $send)]);
-                }
+                return view('inbound.searchstockok')->with(['data' => $datas]);
             }
         } else {
             return redirect(route('member.login'));
-        }
+        } // else
     }
 
     //入庫-新增

@@ -42,6 +42,29 @@
             // (避免重新提交表單)
             window.history.replaceState(null, null, window.location.href);
         } // if
+            /**
+
+                                                     __----~~~~~~~~~~~------___
+                                    .  .   ~~//====......          __--~ ~~
+                    -.            \_|//     |||\\  ~~~~~~::::... /~
+                 ___-==_       _-~o~  \/    |||  \\            _/~~-
+         __---~~~.==~||\=_    -_--~/_-~|-   |\\   \\        _/~
+     _-~~     .=~    |  \\-_    '-~7  /-   /  ||    \      /
+   .~       .~       |   \\ -_    /  /-   /   ||      \   /
+  /  ____  /         |     \\ ~-_/  /|- _/   .||       \ /
+  |~~    ~~|--~~~~--_ \     ~==-/   | \~--===~~        .\
+           '         ~-|      /|    |-~\~~       __--~~
+                       |-~~-_/ |    |   ~\_   _-~            /\
+                            /  \     \__   \/~                \__
+                        _--~ _/ | .-~~____--~-/                  ~~==.
+                       ((->/~   '.|||' -_|    ~~-/ ,              . _||
+                                  -_     ~\      ~~---l__i__i__i--~~_/
+                                  _-~-__   ~)  \--______________--~~
+                                //.-~~~-~_--~- |-------~~~~~~~~
+                                       //.-~~~--\
+                                神獸保佑，程式碼沒Bug!
+    
+*/
     </script>
 </head>
 
@@ -116,7 +139,8 @@
                                                 <li
                                                     class="sidebar-item {{ isActiveRoute(['basic/new','basic.uploadmaterial']) }}">
                                                     <a class="sidebar-link" href="{{url('basic/new')}}">
-                                                        {!! __('basicInfoLang.newMats') !!}</a></li>
+                                                        {!! __('basicInfoLang.newMats') !!}</a>
+                                                </li>
                                                 <li class="sidebar-item {{ isActiveRoute(['basic/material']) }}"><a
                                                         class="sidebar-link" href="{{url('basic/material')}}">
                                                         {!! __('basicInfoLang.matsInfo') !!}</a></li>
@@ -600,12 +624,14 @@
                                                 </li>
                                                 @endcan
                                                 @can('newPeopleInfo', App\Models\Login::class )
-                                                <li class="sidebar-item {{ isActiveRoute(['member/new','member/uploadpeople']) }}"><a
-                                                        class="sidebar-link" href="{{route('member.new')}}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['member/new','member/uploadpeople']) }}">
+                                                    <a class="sidebar-link" href="{{route('member.new')}}">
                                                         {!! __('templateWords.newPInfo') !!}
                                                         {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
                                                         --}}
-                                                    </a></li>
+                                                    </a>
+                                                </li>
                                                 @endcan
                                                 @can('searchAndUpdatePeople', App\Models\Login::class )
                                                 <li class="sidebar-item {{ isActiveRoute(['member/number']) }}">
@@ -1085,13 +1111,18 @@
                                     <span>Profile</span>
                                 </a>
                                 <a class="dropdown-item disabled align-items-center" style="color : #495057;" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-building p-0 mr-1" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
-                                        <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                        class="bi bi-building p-0 mr-1" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z" />
+                                        <path
+                                            d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
                                     </svg>
-                                    <span>{{ str_replace("Consumables management", "", \Session::get('database'))}}</span>
+                                    <span>{{ str_replace("Consumables management", "",
+                                        \Session::get('database'))}}</span>
                                 </a>
-                                <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu" aria-expanded="false">
+                                <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu"
+                                    aria-expanded="false">
                                     <i class="p-0 mr-1" data-feather="book-open"></i>
                                     <span>{!! __('templateWords.language') !!}</span>
                                 </a>

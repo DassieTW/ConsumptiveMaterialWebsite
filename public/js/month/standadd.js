@@ -1,3 +1,5 @@
+
+
 sessionStorage.clear();
 
 $.ajaxSetup({
@@ -273,7 +275,7 @@ $(document).ready(function () {
         var nextchange = [];
 
         // var jobnumber = $("#jobnumber").val();
-        var email = $("#email").val().toLowerCase() + "@pegatroncorp.com";
+        var email = $("#email").val().toLowerCase() + $("#emailTail option:selected").text();
         var count = 0;
 
         for (let i = 0; i < sessionStorage.getItem('standcount'); i++) {
@@ -331,7 +333,6 @@ $(document).ready(function () {
                 nextclass: nextclass,
                 nextuse: nextuse,
                 nextchange: nextchange,
-                jobnumber: jobnumber,
                 email: email,
                 count: count,
                 row: row,
@@ -386,8 +387,9 @@ $(document).ready(function () {
             error: function (err) {
                 //transaction error
                 if (err.status == 421) {
+                    alert(Lang.get('monthlyPRpageLang.yellowrepeat'));
                     console.log(err.responseJSON.message);
-                    window.location.reload();
+                    //window.location.reload();
                 }
             },
         });

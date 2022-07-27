@@ -14,7 +14,7 @@ class Create領用原因Table extends Migration
     public function up()
     {
         Schema::create('領用原因', function (Blueprint $table) {
-            $table->string('領用原因',30)->primary();
+            $table->string('領用原因',45)->primary();
             //$table->timestamps();
             //$table->softDeletes();
         });

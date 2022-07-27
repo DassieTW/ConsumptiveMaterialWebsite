@@ -24,7 +24,7 @@ class Create撥出明細Table extends Migration
             $table->integer('現有庫存');
             $table->integer('預計撥出數量');
             $table->integer('實際撥出數量');
-            $table->string('儲位',50);
+            $table->string('儲位',45);
             $table->string('調撥人',45);
             $table->dateTime('撥出時間');
             //$table->timestamps();

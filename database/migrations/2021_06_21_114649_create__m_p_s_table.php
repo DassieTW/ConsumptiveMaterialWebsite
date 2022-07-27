@@ -14,7 +14,7 @@ class CreateMPSTable extends Migration
     public function up()
     {
         Schema::create('MPS', function (Blueprint $table) {
-            $table->string('客戶別', 20);
+            $table->string('客戶別', 45);
             $table->string('機種', 45);
             $table->string('製程', 45);
             $table->primary(['客戶別','機種','製程']);

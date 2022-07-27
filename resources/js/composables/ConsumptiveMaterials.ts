@@ -1,6 +1,11 @@
-import { ref, Ref } from "vue";
+import {
+    ref,
+    Ref
+} from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
+import {
+    useRouter
+} from "vue-router";
 
 export default function useConsumptiveMaterials() {
     const mats = ref("");
@@ -12,7 +17,9 @@ export default function useConsumptiveMaterials() {
         let getDB = await axios.post('/getCurrentDB');
         let lookInTargets = sessionStorage.getItem("lookInTargets");
         let lookInType = sessionStorage.getItem("lookInType");
+        let lookInSend = sessionStorage.getItem("lookInSend");
         console.log(lookInTargets); // test
+        console.log(lookInSend); // test
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
         axios.interceptors.request.use(function (config) {
@@ -30,7 +37,12 @@ export default function useConsumptiveMaterials() {
         });
 
         try {
-            let response = await axios.post('/api/basic/mats', { DB: getDB.data, LookInTargets: lookInTargets, LookInType: lookInType });
+            let response = await axios.post('/api/basic/mats', {
+                DB: getDB.data,
+                LookInTargets: lookInTargets,
+                LookInType: lookInType,
+                LookInSend: lookInSend
+            });
 
             $('body').loadingModal('hide');
             $('body').loadingModal('destroy');

@@ -1,5 +1,24 @@
 sessionStorage.clear();
 
+function ScientificNotaionToFixed(x) { // toFixed
+    if (Math.abs(x) < 1.0) {
+        var e = parseInt(x.toString().split('e-')[1]);
+        if (e) {
+            x *= Math.pow(10, e - 1);
+            x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+        }
+    } else {
+        var e = parseInt(x.toString().split('+')[1]);
+        if (e > 20) {
+            e -= 20;
+            x /= Math.pow(10, e);
+            x += (new Array(e + 1)).join('0');
+        } // if
+    } // if-else
+
+    return x;
+} // to prevent scientific notaion
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -144,23 +163,6 @@ $(document).ready(function () {
                 let rowproduction = document.createElement('td');
                 rowproduction.innerHTML = "<span id=" + "production" + index + ">" + data.production + "</span>";
 
-                // let rownowmps = document.createElement('td');
-                // rownowmps.innerHTML = '<input id="nowmps' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                //     'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nowmps + '">';
-
-                // let rownowday = document.createElement('td');
-                // rownowday.innerHTML = '<input id="nowday' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                //     'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nowday + '">';
-
-                // let rownextmps = document.createElement('td');
-                // rownextmps.innerHTML = '<input id="nextmps' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                //     'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nextmps + '">';
-
-
-                // let rownextday = document.createElement('td');
-                // rownextday.innerHTML = '<input id="nextday' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                //     'step = "0.01"' + 'min = "0"' + 'style="width: 85px"' + 'value="' + data.nextday + '">';
-
                 row.appendChild(rowdelete);
                 row.appendChild(rownumber);
                 row.appendChild(rowname);
@@ -168,40 +170,14 @@ $(document).ready(function () {
                 row.appendChild(rowunit);
                 row.appendChild(rowlt);
                 row.appendChild(rowamount);
-                // row.appendChild(rownowneed);
-                // row.appendChild(rownextneed);
-                // row.appendChild(rowsafestock);
                 row.appendChild(rowclient);
                 row.appendChild(rowmachine);
                 row.appendChild(rowproduction);
-                // row.appendChild(rownowmps);
-                // row.appendChild(rownowday);
-                // row.appendChild(rownextmps);
-                // row.appendChild(rownextday);
 
                 body.appendChild(row);
                 tbl.appendChild(body);
                 appenSVg(index);
 
-                // $("input").change(function () {
-                //     for (let i = 0; i < sessionStorage.getItem('consumecount'); i++) {
-                //         var nowmps = $("#nowmps" + i).val();
-                //         var amount = $("#amount" + i).val();
-                //         var nowday = $("#nowday" + i).val();
-                //         var nextmps = $("#nextmps" + i).val();
-                //         var nextday = $("#nextday" + i).val();
-                //         var lt = $("#lt" + i).text();
-                //         var nowneed = (nowmps * amount) / nowday;
-                //         var nextneed = (nextmps * amount) / nextday;
-                //         var safe = nextneed * lt;
-                //         nowneed = nowneed.toFixed(7);
-                //         nextneed = nextneed.toFixed(7);
-                //         safe = safe.toFixed(7);
-                //         $('#nowneed' + i).val(nowneed);
-                //         $('#nextneed' + i).val(nextneed);
-                //         $('#safestock' + i).val(safe);
-                //     }
-                // });
             },
             error: function (err) {
                 //料號長度不為12
@@ -237,8 +213,8 @@ $(document).ready(function () {
         var number = [];
         var consume = [];
         var row = [];
-        var jobnumber = $("#jobnumber").val();
-        var email = $("#email").val().toLowerCase() + "@pegatroncorp.com";
+        // var jobnumber = $("#jobnumber").val();
+        var email = $("#email").val().toLowerCase() + $("#emailTail option:selected").text();
 
         var count = 0;
         for (let i = 0; i < sessionStorage.getItem('consumecount'); i++) {
@@ -279,7 +255,6 @@ $(document).ready(function () {
                 production: production,
                 number: number,
                 consume: consume,
-                jobnumber: jobnumber,
                 email: email,
                 count: count,
                 row: row,
@@ -324,12 +299,6 @@ $(document).ready(function () {
                     document.getElementById("row" + diff[i]).style.backgroundColor = "yellow";
                 }
 
-                // $("#consumehead").hide();
-                // $("#consumebody").hide();
-                // $("#consumeupload").hide();
-
-                // $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/testconsume?' + data.database + '</a>');
-
             },
             error: function (err) {
                 //transaction error
@@ -337,7 +306,7 @@ $(document).ready(function () {
                     console.log(err.responseJSON.message);
                     window.location.reload();
                 }
-                else{
+                else {
                     console.log(err.responseJSON.message);
                 }
             },
@@ -379,8 +348,7 @@ $(document).ready(function () {
                 $('#loadconsume').remove();
                 alldatas = JSON.parse(JSON.stringify(data.datas));
 
-                if(alldatas.length === 0)
-                {
+                if (alldatas.length === 0) {
                     notyf.open({
                         type: 'warning',
                         message: Lang.get('monthlyPRpageLang.noload'),
@@ -393,7 +361,7 @@ $(document).ready(function () {
                         }
                     });
                 }
-                else{
+                else {
                     notyf.open({
                         type: 'success',
                         message: Lang.get('monthlyPRpageLang.loadsuccess'),
@@ -419,10 +387,8 @@ $(document).ready(function () {
 
 
                 for (let i = 0; i < alldatas.length; i++) {
+                    var consume = Number(alldatas[i].單耗);
 
-
-                    var consume = parseFloat(alldatas[i].單耗);
-                    consume = consume.toFixed(10);
                     document.getElementById('consumeadd').style.display = "block";
                     var tbl = document.getElementById("consumeaddtable");
                     var body = document.getElementById("consumeaddbody");
@@ -449,9 +415,8 @@ $(document).ready(function () {
 
                     let rowamount = document.createElement('td');
                     rowamount.innerHTML = '<input id="amount' + j + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-                        'min = "0.0000000001"' + 'value = "' + consume + '"' + 'step = "0.0000000001"' + 'style="width: 200px"' + '">';
-
-
+                        'min = "0.0000000001"' + 'value = "' + ScientificNotaionToFixed
+                            (consume) + '"' + 'step = "0.0000000001"' + 'style="width: 200px"' + '">';
 
                     let rowclient = document.createElement('td');
                     rowclient.innerHTML = "<span id=" + "client" + j + ">" + alldatas[i].客戶別 + "</span>";
@@ -482,7 +447,7 @@ $(document).ready(function () {
                 }
 
             },
-            error: function (err) {},
+            error: function (err) { },
         });
 
     }); // on load btn click

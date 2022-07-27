@@ -155,13 +155,14 @@
 
                             <label class="col col-auto form-label p-0 m-0">{!! __('loginPageLang.new_email') !!}</label>
                             <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                            <div class="col-8">
+                            <div class="col-10">
                                 <div class="input-group">
                                     <input class="form-control form-control-lg text-center" type="text" id="newMail"
                                         name="newMail" placeholder="{!! __('loginPageLang.enter_email') !!}" />
-                                    <div class="input-group-text">
-                                        <span>@pegatroncorp.com</span>
-                                    </div>
+                                    <select class="form-select form-select-lg" id="emailTail">
+                                        <option selected>@pegatroncorp.com</option>
+                                        <option>@intra.pegatroncorp.com</option>
+                                    </select>
                                 </div>
                             </div>
 

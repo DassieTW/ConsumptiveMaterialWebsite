@@ -1,3 +1,5 @@
+
+
 /*//show select 領料單號
 $("#list").on("change", function () {
     var value = $("#list").val();
@@ -284,6 +286,9 @@ $("#pickpeople").on("blur", function () {
 
 $(document).ready(function () {
 
+    var splittext = "儲位:";
+    if (locale === "en") splittext = "Location:";
+    if (locale === "zh-CN") splittext = "储位:";
     $('#pickpeople').on("input", function () {
         $(window).keydown(function (event) {
             if (event.keyCode == 13) {
@@ -370,7 +375,7 @@ $(document).ready(function () {
                     .val()
                     .split(" ");
                 po = po[0];
-                po = po.split("儲位:");
+                po = po.split(splittext);
                 position.push(po[1]);
             }
         }

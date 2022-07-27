@@ -15,7 +15,7 @@ class CreateO庫InventoryTable extends Migration
     {
         //
         Schema::create('O庫inventory', function (Blueprint $table) {
-            $table->string('料號',12);
+            $table->string('料號',45);
             $table->integer('現有庫存');
             $table->string('客戶別',45);
             $table->string('庫別',45);

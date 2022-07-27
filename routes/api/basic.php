@@ -22,16 +22,35 @@ Route::post('/mats', function (Request $request) {
     $dbName = DB::connection()->getDatabaseName(); // test
 
     $input = json_decode($request->input('LookInTargets'));
+    $send = json_decode($request->input('LookInSend'));
+    // dd($send);
     $datas = [];
     // dd(json_decode($request->input('LookInTargets'))); // test
     if (json_decode($request->input('LookInType')) === "1") {
-        $datas = DB::table('consumptive_material')
-            ->where('料號', 'like', $input . '%')
-            ->get();
+        if($send !== null){
+            $datas = DB::table('consumptive_material')
+                ->where('料號', 'like', $input . '%')
+                ->where('發料部門', '=', $send)
+                ->get();
+        }
+        else{
+            $datas = DB::table('consumptive_material')
+                ->where('料號', 'like', $input . '%')
+                ->get();
+        }
     } else {
-        $datas = DB::table('consumptive_material')
-            ->whereIn('料號', $input)
-            ->get();
+        if($send !== null){
+            $datas = DB::table('consumptive_material')
+                ->where('發料部門', '=', $send)
+                ->whereIn('料號', $input)
+                ->get();
+        }
+        else
+        {
+            $datas = DB::table('consumptive_material')
+                ->whereIn('料號', $input)
+                ->get();
+        }
     } // if else
 
     $senders = DB::table("發料部門")->pluck("發料部門");

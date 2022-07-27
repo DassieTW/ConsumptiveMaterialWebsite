@@ -140,16 +140,16 @@
                                         <td><input type="hidden" id="production{{$loop->index}}"
                                                 name="production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}
                                         </td>
-                                        <td class="table-light">{{$data->當月站位人數}}</td>
-                                        <td class="table-light">{{$data->當月開線數}}</td>
-                                        <td class="table-light">{{$data->當月開班數}}</td>
-                                        <td class="table-light">{{$data->當月每人每日需求量}}</td>
-                                        <td class="table-light">{{$data->當月每日更換頻率}}</td>
-                                        <td class="table-light">{{$data->下月站位人數}}</td>
-                                        <td class="table-light">{{$data->下月開線數}}</td>
-                                        <td class="table-light">{{$data->下月開班數}}</td>
-                                        <td class="table-light">{{$data->下月每人每日需求量}}</td>
-                                        <td class="table-light">{{$data->下月每日更換頻率}}</td>
+                                        <td class="table-light" id="nowpeople{{$loop->index}}">{{$data->當月站位人數}}</td>
+                                        <td class="table-light" id="nowline{{$loop->index}}">{{$data->當月開線數}}</td>
+                                        <td class="table-light" id="nowclass{{$loop->index}}">{{$data->當月開班數}}</td>
+                                        <td class="table-light" id="nowuse{{$loop->index}}">{{$data->當月每人每日需求量}}</td>
+                                        <td class="table-light" id="nowchange{{$loop->index}}">{{$data->當月每日更換頻率}}</td>
+                                        <td class="table-light" id="nextpeople{{$loop->index}}">{{$data->下月站位人數}}</td>
+                                        <td class="table-light" id="nextline{{$loop->index}}">{{$data->下月開線數}}</td>
+                                        <td class="table-light" id="nextclass{{$loop->index}}">{{$data->下月開班數}}</td>
+                                        <td class="table-light" id="nextuse{{$loop->index}}">{{$data->下月每人每日需求量}}</td>
+                                        <td class="table-light" id="nextchange{{$loop->index}}">{{$data->下月每日更換頻率}}</td>
 
                                         <td><input class="checkbutton" type="checkbox" id="check{{$loop->index}}"
                                                 name="check{{$loop->index}}"></td>

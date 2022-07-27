@@ -1,34 +1,44 @@
 <template>
   <div class="row" style="text-align: left">
     <div class="col col-auto">
-      <label for="pnInput" class="col-form-label"
-        >{{ $t("basicInfoLang.quicksearch") }} :</label
-      >
+      <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
     </div>
     <div class="col col-3 p-0 m-0">
-      <input
-        id="pnInput"
-        class="text-center form-control form-control-lg"
-        v-bind:placeholder="$t('basicInfoLang.enterisn')"
-        v-model="searchTerm"
-      />
+      <input id="pnInput" class="text-center form-control form-control-lg"
+        v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
     </div>
   </div>
   <div class="w-100" style="height: 1ch"></div>
   <!-- </div>breaks cols to a new line-->
-  <table-lite
-    :is-static-mode="true"
-    :hasCheckbox="true"
-    :isLoading="table.isLoading"
-    :messages="table.messages"
-    :columns="table.columns"
-    :rows="table.rows"
-    :total="table.totalRecordCount"
-    :page-options="table.pageOptions"
-    :sortable="table.sortable"
-    @is-finished="table.isLoading = false"
-    @return-checked-rows="updateCheckedRows"
-  ></table-lite>
+  <table-lite :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="true"
+    :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+    :page-options="table.pageOptions" :sortable="table.sortable" @do-search="doSearch"
+    @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+    <template v-slot:月請購="{ row, key }">
+      <div v-if="row.月請購 == '是'">
+        <select @change="event => row.月請購 = event.target.value" style="width: 7ch;"
+          class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + key" :name="'month' + key">
+          <option value="是" selected>{{ $t("basicInfoLang.yes") }}</option>
+          <option value="否">{{ $t("basicInfoLang.no") }}</option>
+        </select>
+      </div>
+      <div v-else>
+        <select @change="event => row.月請購 = event.target.value" style="width: 7ch;"
+          class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + key" :name="'month' + key">
+          <option value="是">{{ $t("basicInfoLang.yes") }}</option>
+          <option value="否" selected>{{ $t("basicInfoLang.no") }}</option>
+        </select>
+      </div>
+    </template>
+
+    <template v-slot:安全庫存="{ row, key }">
+      <div v-if="row.月請購 == '否'">
+        <input class="form-control text-center p-0 m-0" style="width: 8ch;" type="number" :id="'safe' + key"
+          :name="'safe' + key" :value="row.安全庫存" min="0" />
+      </div>
+      <div v-else>{{ $t("basicInfoLang.differ_by_client") }}</div>
+    </template>
+  </table-lite>
 </template>
 
 <script>
@@ -59,11 +69,12 @@ export default defineComponent({
 
     // pour the data in
     const data = reactive([]);
-    const senders = reactive([]); // access the value by snders[0], senders[1] ...
+    const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
     watch(mats, () => {
       console.log(JSON.parse(mats.value)); // test
       let allRowsObj = JSON.parse(mats.value);
+      console.log(allRowsObj.datas.length);
       for (let i = 0; i < allRowsObj.senders.length; i++) {
         senders.push(allRowsObj.senders[i]);
       } // for
@@ -80,10 +91,11 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.isn"),
           field: "料號",
-          width: "13ch",
+          width: "14ch",
           sortable: true,
           isKey: true,
           display: function (row, i) {
+            // console.log(row);
             return (
               '<input type="hidden" id="number' +
               i +
@@ -150,7 +162,7 @@ export default defineComponent({
             "basicInfoLang.gradea"
           ),
           field: "A級資材",
-          width: "15ch",
+          width: "9ch",
           sortable: true,
           display: function (row, i) {
             let returnStr = "";
@@ -196,58 +208,20 @@ export default defineComponent({
             "basicInfoLang.month"
           ),
           field: "月請購",
-          width: "13ch",
+          width: "12ch",
           sortable: true,
-          display: function (row, i) {
-            let returnStr = "";
-            // console.log(row); // test
-            if (row.月請購 === "是") {
-              returnStr =
-                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="month' +
-                i +
-                '" name="month' +
-                i +
-                '">' +
-                '<option value="是" selected>' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
-                "</option>" +
-                '<option value="否">' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.no") +
-                "</option>" +
-                "</select>";
-            } // if
-            else {
-              returnStr =
-                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                ' id="month' +
-                i +
-                '" name="month' +
-                i +
-                '">' +
-                '<option value="是">' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
-                "</option>" +
-                '<option value="否" selected>' +
-                app.appContext.config.globalProperties.$t("basicInfoLang.no") +
-                "</option>" +
-                "</select>";
-            } // else
-
-            return returnStr;
-          }, // display
         },
         {
           label: app.appContext.config.globalProperties.$t(
             "basicInfoLang.senddep"
           ),
           field: "發料部門",
-          width: "15ch",
+          width: "10ch",
           sortable: true,
           display: function (row, i) {
             let returnStr = "";
             returnStr +=
-              '<select style="width: 13ch;" class="form-select form-select-lg p-0 m-0" id="send' +
+              '<select style="width: 10ch;" class="form-select form-select-lg p-0 m-0" id="send' +
               i +
               '" name="send' +
               i +
@@ -269,14 +243,14 @@ export default defineComponent({
             "basicInfoLang.belong"
           ),
           field: "耗材歸屬",
-          width: "15ch",
+          width: "10ch",
           sortable: true,
           display: function (row, i) {
             let returnStr = "";
             // console.log(row); // test
             if (row.耗材歸屬 === "單耗") {
               returnStr =
-                '<select style="width: 12ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
                 ' id="belong' +
                 i +
                 '" name="belong' +
@@ -296,7 +270,7 @@ export default defineComponent({
             } // if
             else {
               returnStr =
-                '<select style="width: 12ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
                 ' id="belong' +
                 i +
                 '" name="belong' +
@@ -344,7 +318,7 @@ export default defineComponent({
             "basicInfoLang.money"
           ),
           field: "幣別",
-          width: "13ch",
+          width: "10ch",
           sortable: true,
           display: function (row, i) {
             let currencyDict = ["RMB", "USD", "JPY", "TWD", "VND", "IDR"];
@@ -390,7 +364,7 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.mpq"),
           field: "MPQ",
-          width: "10ch",
+          width: "8ch",
           sortable: true,
           display: function (row, i) {
             return (
@@ -409,7 +383,7 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.moq"),
           field: "MOQ",
-          width: "10ch",
+          width: "8ch",
           sortable: true,
           display: function (row, i) {
             return (
@@ -428,7 +402,7 @@ export default defineComponent({
         {
           label: app.appContext.config.globalProperties.$t("basicInfoLang.lt"),
           field: "LT",
-          width: "10ch",
+          width: "8ch",
           sortable: true,
           display: function (row, i) {
             return (
@@ -438,7 +412,7 @@ export default defineComponent({
               ' name="lt' +
               i +
               '" value="' +
-              row.LT +
+              Math.round(row.LT) +
               '"' +
               ' class="form-control text-center p-0 m-0" min="0">'
             );
@@ -450,33 +424,6 @@ export default defineComponent({
           field: "安全庫存",
           width: "13ch",
           sortable: true,
-          display: function (row, i) {
-            let returnStr = "";
-            // console.log(row); // test
-            if (row.月請購 === "否") {
-              returnStr =
-                '<input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"' +
-                ' id="safe' +
-                i +
-                '" name="safe' +
-                i +
-                '"' +
-                ' value="' +
-                row.安全庫存 +
-                '" min="0">';
-            } // if
-            else {
-              returnStr =
-                '<input class="form-control text-center p-0 m-0" style="width:8ch;" type="number"' +
-                ' id="safe' +
-                i +
-                '" name="safe' +
-                i +
-                '" value="" min="0">';
-            } // else
-
-            return returnStr;
-          }, // display
         },
       ],
       rows: computed(() => {
@@ -513,6 +460,10 @@ export default defineComponent({
         ),
       },
       pageOptions: [
+        {
+          value: 10,
+          text: 10,
+        },
         {
           value: 20,
           text: 20,

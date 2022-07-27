@@ -30,7 +30,7 @@ class InboundTableSeeder extends Seeder
         //
         $inbound = new Inbound;
         $inbound->入庫單號 = 202103130007;
-        $inbound->料號 = '48M0-000VB000';
+        $inbound->料號 = '48M0-000VB00';
         $inbound->入庫數量 = 2000;
         $inbound->儲位 = '7-A008';
         $inbound->入庫人員 = '工號';

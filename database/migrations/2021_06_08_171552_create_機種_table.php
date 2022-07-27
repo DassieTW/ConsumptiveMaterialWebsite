@@ -14,7 +14,7 @@ class Create機種Table extends Migration
     public function up()
     {
         Schema::create('機種', function (Blueprint $table) {
-            $table->string('機種',30)->primary();
+            $table->string('機種',45)->primary();
             //$table->timestamps();
             //$table->softDeletes();
         });

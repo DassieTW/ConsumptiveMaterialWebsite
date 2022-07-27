@@ -57,16 +57,16 @@ $(document).ready(function () {
             number.push($("#number" + i).val());
             production.push($("#production" + i).val());
             machine.push($("#machine" + i).val());
-            nowpeople.push($("#nowpeople" + i).val());
-            nowline.push($("#nowline" + i).val());
-            nowclass.push($("#nowclass" + i).val());
-            nowuse.push($("#nowuse" + i).val());
-            nowchange.push($("#nowchange" + i).val());
-            nextpeople.push($("#nextpeople" + i).val());
-            nextline.push($("#nextline" + i).val());
-            nextclass.push($("#nextclass" + i).val());
-            nextuse.push($("#nextuse" + i).val());
-            nextchange.push($("#nextchange" + i).val());
+            nowpeople.push($("#nowpeople" + i).html());
+            nowline.push($("#nowline" + i).html());
+            nowclass.push($("#nowclass" + i).html());
+            nowuse.push($("#nowuse" + i).html());
+            nowchange.push($("#nowchange" + i).html());
+            nextpeople.push($("#nextpeople" + i).html());
+            nextline.push($("#nextline" + i).html());
+            nextclass.push($("#nextclass" + i).html());
+            nextuse.push($("#nextuse" + i).html());
+            nextchange.push($("#nextchange" + i).html());
             check.push($("#check" + i).prop('checked'));
             reason.push($("#remark" + i).val());
         }

@@ -29,7 +29,6 @@ class DatabaseSeeder extends Seeder
                 入庫原因TableSeeder::class,
                 儲位TableSeeder::class,
                 發料部門TableSeeder::class,
-                AuthorizationManagementTableSeeder::class,
                 InboundTableSeeder::class,
                 InventoryTableSeeder::class,
                 MPSTableSeeder::class,
@@ -40,7 +39,6 @@ class DatabaseSeeder extends Seeder
                 出庫退料TableSeeder::class,
                 在途量TableSeeder::class,
                 非月請購TableSeeder::class,
-                DB_ListTableSeeder::class,
                 O庫不良品InventoryTableSeeder::class,
                 O庫出庫退料TableSeeder::class,
                 O庫InventoryTableSeeder::class,
@@ -52,7 +50,6 @@ class DatabaseSeeder extends Seeder
                 O庫TableSeeder::class,
                 請購單TableSeeder::class,
                 Checking_inventoryTableSeeder::class,
-
             ]
         );
     }

@@ -14,7 +14,7 @@ class Create線別Table extends Migration
     public function up()
     {
         Schema::create('線別', function (Blueprint $table) {
-            $table->string('線別',30)->primary();
+            $table->string('線別',45)->primary();
             //$table->timestamps();
             //$table->softDeletes();
         });

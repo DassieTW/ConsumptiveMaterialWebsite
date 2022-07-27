@@ -18,33 +18,25 @@ class BarcodeDisplayController extends Controller
     {
         // We are collecting all data submitting via Ajax
         $input = $request->all();
-
-        /*
-          $post = new Post;  // using model to save data to db
-          $post->name = $input['name'];
-          $post->description = $input['description'];
-          $post->status = $input['status'];
-          $post->save();
-        */
-        $message = "temp img delete successful !";
+        $message = "temp img records delete successful !";
 
         if ($request->boolean('DelorNot') && $request->boolean('isISN')) { // DelorNot is true and isISN is true
-            if (file_exists(storage_path('app/public/barcodeImg/' . \Session::getId() . '.png'))) {
-                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '.png'));
-            } // if
-            else {
-                $message = "isn temp img already gone from the server";
-            } // else
+            // if (file_exists(storage_path('app/public/barcodeImg/' . \Session::getId() . '.png'))) {
+            //     unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '.png'));
+            // } // if
+            // else {
+            //     $message = "isn temp img already gone from the server";
+            // } // else
 
             $request->session()->forget('imgg');
         } // if
         else if ($request->boolean('DelorNot') && !$request->boolean('isISN')) { // DelorNot is true and it is a loc pic
-            if (file_exists(storage_path('app/public/barcodeImg/' . \Session::getId() . '-2.png'))) {
-                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '-2.png'));
-            } // if
-            else {
-                $message = "loc temp img already gone from the server";
-            } // else
+            // if (file_exists(storage_path('app/public/barcodeImg/' . \Session::getId() . '-2.png'))) {
+            //     unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '-2.png'));
+            // } // if
+            // else {
+            //     $message = "loc temp img already gone from the server";
+            // } // else
 
             $request->session()->forget('imgg2');
         } // if else if
@@ -260,9 +252,9 @@ class BarcodeDisplayController extends Controller
         // We are collecting all data submitting via Ajax
 
         if (\Session::has('isnSepCount') && \Session::get('isnSepCount') !== "" && count(\Session::get('isnSepCount')) > 0) {
-            for ($a = 0; $a < count(\Session::get('isnSepCount')); $a++) {
-                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--isn--' . $a . '.png'));
-            } // for
+            // for ($a = 0; $a < count(\Session::get('isnSepCount')); $a++) {
+            //     unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--isn--' . $a . '.png'));
+            // } // for
 
             $request->session()->forget('isnSepCount');
             $request->session()->forget('isnArray');
@@ -270,9 +262,9 @@ class BarcodeDisplayController extends Controller
         } // if
 
         if (\Session::has('locSepCount') && \Session::get('locSepCount') !== "" && count(\Session::get('locSepCount')) > 0) {
-            for ($a = 0; $a < count(\Session::get('locSepCount')); $a++) {
-                unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--loc--' . $a . '-2.png'));
-            } // for
+            // for ($a = 0; $a < count(\Session::get('locSepCount')); $a++) {
+            //     unlink(storage_path('app/public/barcodeImg/' . \Session::getId() . '--loc--' . $a . '-2.png'));
+            // } // for
 
             $request->session()->forget('locSepCount');
             $request->session()->forget('locArray');
@@ -280,7 +272,7 @@ class BarcodeDisplayController extends Controller
 
 
         // Sending json response to client
-        return \Response::json(['message' => 'all temp img delete successful !']); // Status code here
+        return \Response::json(['message' => 'all temp records deleted in session !']); // Status code here
     } // cleanupAllBarcodes
 
     public function searchISN(Request $request)

@@ -14,7 +14,7 @@ class Create發料部門Table extends Migration
     public function up()
     {
         Schema::create('發料部門', function (Blueprint $table) {
-            $table->string('發料部門',30)->primary();
+            $table->string('發料部門',45)->primary();
             //$table->timestamps();
             //$table->softDeletes();
         });

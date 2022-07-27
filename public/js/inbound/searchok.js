@@ -1,8 +1,4 @@
-//only check one
-$('.innumber').on('change', function () {
-    $('.innumber').not(this).prop('checked', false);
-});
-
+$('.vtl-thead-checkbox').attr("disabled", true);
 
 $.ajaxSetup({
     headers: {
@@ -10,45 +6,29 @@ $.ajaxSetup({
     }
 });
 
-
 $(document).ready(function () {
 
-
-    function quickSearch() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue;
-        input = $("#numbersearch").val();
-        //var isISN = $("#toggle-state").is(":checked");
-        console.log(input); // test
-        // filter = input.value;
-        // Loop through all table rows, and hide those who don't match the search query
-        $('.isnRows').each(function (i, obj) {
-            txtValue = $(this).find("input[id^='datab']").val();
-            // console.log("now checking text : " + txtValue); // test
-            if (txtValue.indexOf(input) > -1) {
-                obj.style.display = "";
-
-            } else {
-                obj.style.display = "none";
-            } // if else
-        });
-    } // quickSearch function
-
-
-    $("#numbersearch").on('input', function (e) {
-        e.preventDefault();
-        quickSearch();
-    });
+    var title = [];
+    var check;
+    var titlecount = 9;
+    var titlename = "入庫查詢";
+    //download title
+    for (let i = 0; i < 9; i++) {
+        title.push($(".vtl-thead-th").eq(i + 1).text());
+    }
 
 
     $('#inboundsearch').on('submit', function (e) {
         e.preventDefault();
 
+        $("input:checkbox:checked").each(function () {
+            check = ($(this).val());
+        });
         // clean up previous input results
         $('.is-invalid').removeClass('is-invalid');
         $(".invalid-feedback").remove();
 
-        var check = 0;
+        var checked;
         checked = $("input[type=checkbox]:checked").length;
         var select = ($(document.activeElement).val());
 
@@ -69,21 +49,14 @@ $(document).ready(function () {
             }
         }
 
-        $("input:checkbox[name='innumber']:checked").each(function () {
-            check = $(this).val();
-        });
-
-
-        var count = $('#count').val();
-        var list = $('#dataa' + check).val();
-        var number = $('#datab' + check).val();
-        var amount = $('#datac' + check).val();
-        var position = $('#datad' + check).val();
-        var inpeople = $('#datae' + check).val();
-        var client = $('#dataf' + check).val();
-        var inreason = $('#datag' + check).val();
-
-
+        console.log(check);
+        var list = $('#inboundlist' + check).val();
+        var number = $('#number' + check).val();
+        var amount = $('#inboundnum' + check).val();
+        var position = $('#position' + check).val();
+        var inpeople = $('#inboundpeople' + check).val();
+        var client = $('#client' + check).val();
+        var inreason = $('#inboundreason' + check).val();
 
         if (select == '刪除' || select == 'Delete' || select == '删除') {
             $.ajax({
@@ -148,12 +121,8 @@ $(document).ready(function () {
                 },
             });
         } else {
-            var titlecount = $("#titlecount").val();
-            var titlename = $("#titlename").val();
-            var title = [];
-            for (let i = 0; i < titlecount; i++) {
-                title.push($("#title" + i).val());
-            }
+            var count = ($('.vtl-paging-count-dropdown').val());
+            console.log(count);
             var data = [];
             var data0 = [];
             var data1 = [];
@@ -165,15 +134,17 @@ $(document).ready(function () {
             var data7 = [];
             var data8 = [];
             for (let i = 0; i < count; i++) {
-                data0.push($("#dataa" + i).val());
-                data1.push($("#datab" + i).val());
-                data2.push($("#datac" + i).val());
-                data3.push($("#datad" + i).val());
-                data4.push($("#datae" + i).val());
-                data5.push($("#dataf" + i).val());
-                data6.push($("#datag" + i).val());
-                data7.push($("#datah" + i).val());
-                data8.push($("#datai" + i).val());
+                if ($("#inboundlist" + i).val() !== null) {
+                    data0.push($("#inboundlist" + i).val());
+                    data1.push($("#number" + i).val());
+                    data2.push($("#inboundnum" + i).val());
+                    data3.push($("#position" + i).val());
+                    data4.push($("#inboundpeople" + i).val());
+                    data5.push($("#client" + i).val());
+                    data6.push($("#inboundreason" + i).val());
+                    data7.push($("#inboundtime" + i).val());
+                    data8.push($("#remark" + i).val());
+                }
             }
             data.push(data0);
             data.push(data1);

@@ -28,7 +28,7 @@ return [
     'home' => 'Home',
     'adduser' => 'Add User',
     'surepassword' =>'Confirm Password',
-    'enterpassword' =>'Enter your password again',
+    'enterpassword' =>'Enter new password again',
     'name' =>'Name',
     'email' => 'Company Email',
     'entername' =>'Please enter your name',

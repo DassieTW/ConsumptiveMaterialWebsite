@@ -14,7 +14,7 @@ class Create在途量Table extends Migration
     public function up()
     {
         Schema::create('在途量', function (Blueprint $table) {
-            $table->string('客戶', 30);
+            $table->string('客戶', 45);
             $table->string('料號', 12);
             $table->primary(['客戶','料號']);
             $table->double('請購數量');

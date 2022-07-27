@@ -21,177 +21,165 @@
                 <vue-bread-crumb></vue-bread-crumb>
             </div>
         </div>
-    <div class="card w-100" id="consumehead">
-        <div class="card-header">
-            <h3>{!! __('monthlyPRpageLang.isnConsumeAdd') !!}</h3>
-        </div>
-        <div class="card-body">
-            <form id="consume" class="row gx-6 gy-1 align-items-center">
-                @csrf
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.client') !!}</label>
-                    <select class="form-select form-select-lg" id="client" name="client" required>
-                        <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterclient') !!}</option>
-                        @foreach ($client as $client)
-                            <option>{{ $client->客戶 }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.machine') !!}</label>
-                    <select class="form-select form-select-lg" id="machine" name="machine" required>
-                        <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.entermachine') !!}</option>
-                        @foreach ($machine as $machine)
-                            <option>{{ $machine->機種 }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-auto">
-                    <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.process') !!}</label>
-                    <select class="form-select form-select-lg " id="production" name="production" required>
-                        <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterprocess') !!}</option>
-                        @foreach ($production as $production)
-                            <option>{{ $production->制程 }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="col-auto">
-                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
-                    <input class="form-control form-control-lg " type="text" id="number" name="number" required
-                        placeholder="{!! __('monthlyPRpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
-                    <div id="numbererror" style="display:none; color:red;">{!! __('monthlyPRpageLang.isnlength') !!}</div>
-                    <div id="numbererror1" style="display:none; color:red;">{!! __('monthlyPRpageLang.noisn') !!}
+        <div class="card w-100" id="consumehead">
+            <div class="card-header">
+                <h3>{!! __('monthlyPRpageLang.isnConsumeAdd') !!}</h3>
+            </div>
+            <div class="card-body">
+                <form id="consume" class="row gx-6 gy-1 align-items-center">
+                    @csrf
+                    <div class="col-auto">
+                        <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.client') !!}</label>
+                        <select class="form-select form-select-lg" id="client" name="client" required>
+                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterclient') !!}</option>
+                            @foreach ($client as $client)
+                                <option>{{ $client->客戶 }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-                <div class="col-auto">
-                    <label class="col col-auto form-label"></label>
-                    <input type="submit" id="add" name="add" class="form-control form-control-lg btn btn-lg btn-primary"
-                        value="{!! __('monthlyPRpageLang.add') !!}">
-                </div>
+                    <div class="col-auto">
+                        <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.machine') !!}</label>
+                        <select class="form-select form-select-lg" id="machine" name="machine" required>
+                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.entermachine') !!}</option>
+                            @foreach ($machine as $machine)
+                                <option>{{ $machine->機種 }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.process') !!}</label>
+                        <select class="form-select form-select-lg " id="production" name="production" required>
+                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterprocess') !!}</option>
+                            @foreach ($production as $production)
+                                <option>{{ $production->制程 }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-            </form>
-            <div class="col-auto">
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <button class="btn btn-lg btn-primary" id="loadconsume">{!! __('monthlyPRpageLang.loadconsume') !!}</button>
+                    <div class="col-auto">
+                        <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
+                        <input class="form-control form-control-lg " type="text" id="number" name="number" required
+                            placeholder="{!! __('monthlyPRpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
+                        <div id="numbererror" style="display:none; color:red;">{!! __('monthlyPRpageLang.isnlength') !!}
+                        </div>
+                        <div id="numbererror1" style="display:none; color:red;">{!! __('monthlyPRpageLang.noisn') !!}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <label class="col col-auto form-label"></label>
+                        <input type="submit" id="add" name="add"
+                            class="form-control form-control-lg btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
+                    </div>
+
+                </form>
+                <div class="col-auto">
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                    <button class="btn btn-lg btn-primary" id="loadconsume">{!! __('monthlyPRpageLang.loadconsume') !!}</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card w-100" id="consumebody">
-        <div class="card-body">
-            <form id="consumeadd" style="display: none">
-                @csrf
-                <div class="table-responsive">
-                    <table class="table" id="consumeaddtable">
-                        <tbody id="consumeaddbody">
-                            <tr>
-                                <th>{!! __('monthlyPRpageLang.delete') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.isn') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.pName') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.format') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.unit') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.lt') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.consume') !!}</th>
-                                {{-- <th>{!! __('monthlyPRpageLang.nowneed') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.nextneed') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.safe') !!}</th> --}}
-                                <th>{!! __('monthlyPRpageLang.client') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.machine') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.process') !!}</th>
-                                {{-- <th>{!! __('monthlyPRpageLang.nowmps') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.nowday') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.nextmps') !!}</th>
-                                <th>{!! __('monthlyPRpageLang.nextday') !!}</th> --}}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                {{-- <div class="row">
-                    <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeople') !!}:</label>
-                    <div class="col col-4">
-                        <input type="text" class="form-control form-control-lg text-center" id="jobnumber" name="jobnumber"
-                            required oninput="if(value.length>9)value=value.slice(0,9)" placeholder="{!! __('monthlyPRpageLang.nopeople') !!}">
+        <div class="card w-100" id="consumebody">
+            <div class="card-body">
+                <form id="consumeadd" style="display: none">
+                    @csrf
+                    <div class="table-responsive">
+                        <table class="table" id="consumeaddtable">
+                            <tbody id="consumeaddbody">
+                                <tr>
+                                    <th>{!! __('monthlyPRpageLang.delete') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.isn') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.pName') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.format') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.unit') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.lt') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.consume') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.client') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.machine') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.process') !!}</th>
 
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div> --}}
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="row">
-                    <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
-                    <div class="col col-6">
-                        <div class="input-group">
-                            <input class="form-control form-control-lg text-center" type="text" id="email" name="email"
-                                placeholder="{!! __('loginPageLang.enter_email') !!}" required />
-                            <div class="input-group-text">
-                                <span class="col col-auto">@pegatroncorp.com</span>
+                    <div class="row">
+                        <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
+                        <div class="col col-8">
+                            <div class="input-group">
+                                <input class="form-control form-control-lg text-center col-3" type="text" id="email"
+                                    name="email" placeholder="{!! __('loginPageLang.enter_email') !!}" required />
+                                <select class="form-select form-select-lg col-5" id="emailTail">
+                                    <option selected>@pegatroncorp.com</option>
+                                    <option>@intra.pegatroncorp.com</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                <div class="row w-100 justify-content-center">
-                    <div class="col col-auto">
-                        <input type="submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}"
-                            style="width: 80px">
+                    <div class="row w-100 justify-content-center">
+                        <div class="col col-auto">
+                            <input type="submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}"
+                                style="width: 80px">
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="row justify-content-center">
-        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <div class="card w-75" id="consumeupload">
-            <div class="card-header">
-                <h3>{!! __('monthlyPRpageLang.upload') !!}</h3>
+                </form>
             </div>
-            <div class="row justify-content-center">
-                <div class="card-body">
-                    <div class=" w-100">
-                        <form method="post" enctype="multipart/form-data" action="{{ route('month.uploadconsume') }}">
-                            @csrf
-                            <div class="row w-100 justify-content-center mb-3">
-                                <div class="col col-auto ">
-                                    <a href="{{ asset('download/ConsumeExample.xlsx') }}"
-                                        download>{!! __('monthlyPRpageLang.exampleExcel') !!}</a>
-                                </div>
+        </div>
 
-                                <div class="w-100" style="height: 1ch;"></div>
-                                <!-- </div>breaks cols to a new line-->
+        <div class="row justify-content-center">
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <div class="card w-75" id="consumeupload">
+                <div class="card-header">
+                    <h3>{!! __('monthlyPRpageLang.upload') !!}</h3>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="card-body">
+                        <div class=" w-100">
+                            <form method="post" enctype="multipart/form-data"
+                                action="{{ route('month.uploadconsume') }}">
+                                @csrf
+                                <div class="row w-100 justify-content-center mb-3">
+                                    <div class="col col-auto ">
+                                        <a href="{{ asset('download/ConsumeExample.xlsx') }}"
+                                            download>{!! __('monthlyPRpageLang.exampleExcel') !!}</a>
+                                    </div>
 
-                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.plz_upload') !!}</label>
-                                <div class="w-100" style="height: 1ch;"></div>
-                                <!-- </div>breaks cols to a new line-->
+                                    <div class="w-100" style="height: 1ch;"></div>
+                                    <!-- </div>breaks cols to a new line-->
 
-                                <div class="col col-auto">
-                                    <input class="form-control @error('select_file') is-invalid @enderror" type="file"
-                                        name="select_file" />
-                                    @error('select_file')
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.plz_upload') !!}</label>
+                                    <div class="w-100" style="height: 1ch;"></div>
+                                    <!-- </div>breaks cols to a new line-->
 
-                                <div class="w-100" style="height: 1ch;"></div>
-                                <!-- </div>breaks cols to a new line-->
-                                <div class="row w-100 justify-content-center">
                                     <div class="col col-auto">
-                                        <input type="submit" name="upload" class="btn btn-lg btn-primary"
-                                            value="{!! __('monthlyPRpageLang.upload1') !!}">
+                                        <input class="form-control @error('select_file') is-invalid @enderror"
+                                            type="file" name="select_file" />
+                                        @error('select_file')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="w-100" style="height: 1ch;"></div>
+                                    <!-- </div>breaks cols to a new line-->
+                                    <div class="row w-100 justify-content-center">
+                                        <div class="col col-auto">
+                                            <input type="submit" name="upload" class="btn btn-lg btn-primary"
+                                                value="{!! __('monthlyPRpageLang.upload1') !!}">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
     </html>
 @endsection

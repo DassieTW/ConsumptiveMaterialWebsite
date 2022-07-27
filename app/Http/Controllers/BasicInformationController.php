@@ -418,36 +418,65 @@ class BasicInformationController extends Controller
     */
 
     //料件信息查詢修改
-    public function searchmaterial(Request $request)
-    {
-        if (Session::has('username')) {
-            $input = $request->input('input');
-            if ($request->input('radio') === "1") {
+    // public function searchmaterial(Request $request)
+    // {
+    //     if (Session::has('username')) {
+    //         $input = $request->input('input');
+    //         $send = $request->input('send');
+    //         dd($send);
+    //         if ($request->input('radio') === "1") {
+    //             if($send !== null)
+    //             {
+    //                 $datas = DB::table('consumptive_material')
+    //                 ->where('發料部門', '=', $send)
+    //                 ->where('料號', 'like', $input . '%')
+    //                 ->get();
+    //                 // return view("basic.searchmaterialok")
+    //                 //     ->with(['data' => $datas])
+    //                 //     ->with(['sends' => 發料部門::cursor()]);
+    //                 return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
 
+    //             }
+    //             else
+    //             {
 
-                $datas = DB::table('consumptive_material')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                // return view("basic.searchmaterialok")
-                //     ->with(['data' => $datas])
-                //     ->with(['sends' => 發料部門::cursor()]);
-                return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
+    //                 $datas = DB::table('consumptive_material')
+    //                     ->where('料號', 'like', $input . '%')
+    //                     ->get();
+    //                 // return view("basic.searchmaterialok")
+    //                 //     ->with(['data' => $datas])
+    //                 //     ->with(['sends' => 發料部門::cursor()]);
+    //                 return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
+    //             }
+    //         } else {
 
-            } else {
+    //             if($send !== null)
+    //             {
+    //                 $datas = DB::table('consumptive_material')
+    //                 ->where('發料部門', '=', $send)
+    //                 ->whereIn('料號', $input)
+    //                 ->get();
+    //                 // return view("basic.searchmaterialok")
+    //                 //     ->with(['data' => $datas])
+    //                 //     ->with(['sends' => 發料部門::cursor()]);
+    //                 return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
 
-                $datas = DB::table('consumptive_material')
-                    ->whereIn('料號', $input)
-                    ->get();
-                // return view("basic.searchmaterialok")
-                //     ->with(['data' => $datas])
-                //     ->with(['sends' => 發料部門::cursor()]);
-                return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
-
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
+    //             }
+    //             else
+    //             {
+    //                 $datas = DB::table('consumptive_material')
+    //                     ->whereIn('料號', $input)
+    //                     ->get();
+    //                 // return view("basic.searchmaterialok")
+    //                 //     ->with(['data' => $datas])
+    //                 //     ->with(['sends' => 發料部門::cursor()]);
+    //                 return \Response::json(['datas' => $datas, 'sends' => 發料部門::cursor()], 200/* Status code here default is 200 ok*/);
+    //             }
+    //         }
+    //     } else {
+    //         return redirect(route('member.login'));
+    //     }
+    // }
 
 
     //新增料件
@@ -492,9 +521,6 @@ class BasicInformationController extends Controller
                 //check 非月請購是否有填安全庫存
                 if ($request->input('month') === '否' && $request->input('safe') === null) {
                     return \Response::json(['message' => 'no write safe'], 422/* Status code here default is 200 ok*/);
-                    /*return back()->withErrors([
-                        'safe' => '非月請購之安全庫存為必填項目',
-                    ]);*/
                 }
 
                 return \Response::json([
@@ -624,11 +650,11 @@ class BasicInformationController extends Controller
                     /*$delete = ConsumptiveMaterial::onlyTrashed()
                         ->where('料號', $number)->get();*/
 
-                    if ($gradea === 'Yes') $gradea = '是';
-                    if ($gradea === 'No') $gradea = '否';
+                    // if ($gradea === 'Yes') $gradea = '是';
+                    // if ($gradea === 'No') $gradea = '否';
 
-                    if ($month === 'Yes') $month = '是';
-                    if ($month === 'No') $month = '否';
+                    // if ($month === 'Yes') $month = '是';
+                    // if ($month === 'No') $month = '否';
 
                     // if ($belong === 'Unit Cons.' || $belong === '单耗') $belong = '單耗';
                     // if ($belong === 'Station') $belong = '站位';

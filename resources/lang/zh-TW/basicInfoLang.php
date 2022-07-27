@@ -98,4 +98,5 @@ return [
     'searchisn' => '直接搜尋全部，或輸入料號開頭搜尋',
     'searchisn1' => '輸入多筆料號查詢，使用換行隔開',
     'quicksearch' => '快速查詢',
+    'differ_by_client' => '因客戶而不同',
 ];
