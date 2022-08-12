@@ -59,4 +59,9 @@ return [
     'east' => '华东EIP',
     'west' => '华西EIP',
     'middle' => '华中EIP',
+
+    // debug notice
+    'clear_cache' => '网站功能或显示异常时，请先依照以下文件清理浏览器快取',
+    'edge' => 'Edge',
+    'chrome' => 'Chrome',
 ];

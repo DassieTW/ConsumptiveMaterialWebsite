@@ -145,11 +145,6 @@
 
 <script src="admin/js/app.js"></script>
 <script>
-    // // Create an instance of Notyf
-    // const notyf = new Notyf(); // ??????? why dont work ????
-
-    // // Display an error notification 
-    // notyf.error('Please fill out the form'); // ??????? why dont work ????
 
     document.addEventListener("DOMContentLoaded", function() {
         // Line chart

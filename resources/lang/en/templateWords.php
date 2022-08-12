@@ -59,4 +59,9 @@ return [
     'east' => 'PSH EIP',
     'west' => 'PCQ EIP',
     'middle' => 'PSZ EIP',
+
+    // debug notice
+    'clear_cache' => 'When Website Behaves Unexpectedly, Please Refer to The Following Docs.',
+    'edge' => 'Edge',
+    'chrome' => 'Chrome',
 ];
