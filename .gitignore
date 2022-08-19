@@ -16,3 +16,9 @@ yarn-error.log
 
 # files that required by Vetur
 tsconfig.json
+.DS_Store
+/app/.DS_Store
+/node_modules/cpy/node_modules/micromatch/lib/.DS_Store
+/node_modules/extglob/lib/.DS_Store
+/node_modules/node-sass/src/.DS_Store
+public/.DS_Store
