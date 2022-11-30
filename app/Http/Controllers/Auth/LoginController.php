@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\Http\Controllers\responseObj;
 use League\CommonMark\Cursor;
 
 class LoginController extends Controller

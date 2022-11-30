@@ -25,6 +25,39 @@ import "./modules/chartjs";
 // Forms
 import "./modules/flatpickr";
 
+// in-site search
+import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import instantsearch from 'instantsearch.js';
+
+const searchClient = instantMeiliSearch(
+    'http://localhost:7700', // Host
+    'masterKey', // API key
+    {
+        placeholderSearch: false // default true
+    }
+)
+
+searchClient.addWidgets([
+    instantsearch.widgets.searchBox({
+        container: "#instantSearchBar"
+    }),
+    instantsearch.widgets.configure({ hitsPerPage: 8 }),
+    instantsearch.widgets.hits({
+        container: "#hits",
+        templates: {
+            item: `
+        <div>
+        <div class="hit-name">
+              {{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}
+        </div>
+        </div>
+      `
+        }
+    })
+]);
+
+searchClient.start();
+
 // Maps
 // import "./modules/vector-maps"; // not used for now
 // end of AdminKit imports

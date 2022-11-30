@@ -16,14 +16,17 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "hedii/artisan-log-cleaner": "^4.1",
         "hhxsv5/laravel-s": "~3.7.0",
+        "http-interop/http-factory-guzzle": "^1.2",
         "illuminate/redis": "^8.40",
         "intervention/image": "^2.5",
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.14",
+        "laravel/scout": "^9.4",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "maatwebsite/excel": "^3.1",
         "mariuzzo/laravel-js-localization": "^1.8",
+        "meilisearch/meilisearch-php": "^0.25.1",
         "phpoffice/phpspreadsheet": "^1.22",
         "predis/predis": "^1.1",
         "sentry/sentry-laravel": "^2.10",
@@ -82,7 +85,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "platform": {
-            "php": "7.3.33"
+            "php": "8.1.8"
         },
         "allow-plugins": {
             "composer/package-versions-deprecated": true
