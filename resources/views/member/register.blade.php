@@ -33,7 +33,6 @@
             top: 0px;
             left: 0px;
         }
-
     </style>
 </head>
 
@@ -45,15 +44,15 @@
         <div class="align-middle">
             <a class="nav-link d-none d-sm-inline-block" href="{{ route('member.index') }}">
                 <i class="align-middle text-dark" data-feather="arrow-left"></i>
-                <u class="text-dark"><span
-                        class="align-middle text-dark">{{ __('loginPageLang.pre_page') }}</span></u>
+                <u class="text-dark"><span class="align-middle text-dark">{{ __('loginPageLang.pre_page') }}</span></u>
             </a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
                 <li class="nav-item dropdown">
-                    <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown"
-                        data-bs-auto-close="outside" data-bs-display="static" aria-expanded="false">
+                    <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
+                        data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
+                        aria-expanded="false">
                         <i class="align-middle" data-feather="settings"></i>
                     </a>
 
@@ -80,7 +79,8 @@
                                 简体中文</a>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="help-circle"></i>
+                        <a class="dropdown-item" href="#"><i class="align-middle mr-1"
+                                data-feather="help-circle"></i>
                             Help
                             Center</a>
                     </div>
@@ -192,8 +192,9 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.dep') !!}</label>
-                                            <input class="form-control form-control-lg " type="text" id="department"
-                                                name="department" placeholder="{!! __('loginPageLang.enterdep') !!}" required>
+                                            <input class="form-control form-control-lg " type="text"
+                                                id="department" name="department"
+                                                placeholder="{!! __('loginPageLang.enterdep') !!}" required>
                                         </div>
 
                                         <label class="form-label">{!! __('loginPageLang.profile_pic') !!}</label>
@@ -272,3 +273,5 @@
     <script src="{{ asset('js/popupNotice.js') }}"></script>
     <script src="{{ asset('/js/login/register.js') }}"></script>
 </body>
+
+</html>

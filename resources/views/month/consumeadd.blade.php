@@ -8,12 +8,6 @@
     <script src="{{ asset('js/month/consumeadd.js') }}"></script>
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <meta charset="utf-8">
-    </head>
     <div id="mountingPoint">
         <div class="row mb-2 mb-xl-3 justify-content-between">
             <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
@@ -138,8 +132,7 @@
                 <div class="row justify-content-center">
                     <div class="card-body">
                         <div class=" w-100">
-                            <form method="post" enctype="multipart/form-data"
-                                action="{{ route('month.uploadconsume') }}">
+                            <form method="post" enctype="multipart/form-data" action="{{ route('month.uploadconsume') }}">
                                 @csrf
                                 <div class="row w-100 justify-content-center mb-3">
                                     <div class="col col-auto ">
@@ -180,6 +173,4 @@
             </div>
         </div>
     </div>
-
-    </html>
 @endsection
