@@ -27,12 +27,6 @@
     <script src="{{ asset('js/month/consumechange.js') }}"></script>
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <meta charset="utf-8">
-    </head>
     <div id="mountingPoint">
         <div class="row mb-2 mb-xl-3 justify-content-between">
             <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
@@ -90,10 +84,10 @@
                                     $format = DB::table('consumptive_material')
                                         ->where('料號', $data->料號)
                                         ->value('規格');
-                                    
+
                                     $unitConsume = abs((float) $data->單耗) < 1e-20 ? '0' : rtrim(sprintf('%.10F', ((float) $data->單耗)), '0');
                                     // result should be 0 or 1.8392832 or 14.
-                                    
+
                                     if (strpos($unitConsume, '.') === strlen($unitConsume) - 1) {
                                         // if the result is 5.  (should be like 5.0)
                                         $data->單耗 = sprintf('%.1F', ((float) $data->單耗));
@@ -106,8 +100,8 @@
 
                                     <tr id="{{ $loop->index }}" @class([
                                         'isnRows',
-                                        'table-success' => ($data->狀態 === '已完成'),
-                                        'table-danger' => ($data->狀態 !== '已完成'),
+                                        'table-success' => $data->狀態 === '已完成',
+                                        'table-danger' => $data->狀態 !== '已完成',
                                     ])>
                                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                                 style="width:20px;height:20px;" value="{{ $loop->index }}"></td>
@@ -158,6 +152,4 @@
             </div>
         </div>
     </div>
-
-    </html>
 @endsection

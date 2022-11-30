@@ -8,12 +8,6 @@
     <script src="{{ asset('js/month/standadd.js') }}"></script>
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <meta charset="utf-8">
-    </head>
     <div id="mountingPoint">
         <div class="row mb-2 mb-xl-3 justify-content-between">
             <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
@@ -160,8 +154,7 @@
                     <div class="card-body">
                         <div class=" w-100">
 
-                            <form method="post" enctype="multipart/form-data"
-                                action="{{ route('month.uploadstand') }}">
+                            <form method="post" enctype="multipart/form-data" action="{{ route('month.uploadstand') }}">
                                 @csrf
                                 <div class="row w-100 justify-content-center mb-3">
                                     <div class="col col-auto ">
@@ -202,6 +195,4 @@
         </div>
 
     </div>
-
-    </html>
 @endsection

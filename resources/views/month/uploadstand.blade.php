@@ -35,47 +35,47 @@
     if ($name === null || $unit === null || $month === '否' || $belong !== '站位') {
         $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[0];
         echo "<script LANGUAGE='JavaScript'>
-        window.alert('$mess');
-        window.location.href='uploadstand';
-        </script>";
+                window.alert('$mess');
+                window.location.href='uploadstand';
+                </script>";
     }
     //判斷是否有這個客戶
     if (in_array($row[1], $clients)) {
         $i = true;
     }
-    
+
     if ($i === false) {
         $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-        window.alert('$mess');
-        window.location.href='uploadstand';
-        </script>";
+                window.alert('$mess');
+                window.location.href='uploadstand';
+                </script>";
     }
-    
+
     //判斷是否有這個機種
     if (in_array($row[2], $machines)) {
         $j = true;
     }
-    
+
     if ($j === false) {
         $mess = trans('monthlyPRpageLang.nomachine') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
         echo "<script LANGUAGE='JavaScript'>
-        window.alert('$mess');
-        window.location.href='uploadstand';
-        </script>";
+                window.alert('$mess');
+                window.location.href='uploadstand';
+                </script>";
     }
-    
+
     //判斷是否有這個製程
     if (in_array($row[3], $productions)) {
         $k = true;
     }
-    
+
     if ($k === false) {
         $mess = trans('monthlyPRpageLang.noproduction') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[3];
         echo "<script LANGUAGE='JavaScript'>
-        window.alert('$mess');
-        window.location.href='uploadstand';
-        </script>";
+                window.alert('$mess');
+                window.location.href='uploadstand';
+                </script>";
     }
     ?>
 @endforeach
@@ -89,12 +89,6 @@
     <script src="{{ asset('/js/month/uploadstand.js') }}"></script>
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <meta charset="utf-8">
-    </head>
     <div id="mountingPoint">
         <div class="row mb-2 mb-xl-3 justify-content-between">
             <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
@@ -282,8 +276,4 @@
             </div>
         </div>
     </div>
-
-
-
-    </html>
 @endsection

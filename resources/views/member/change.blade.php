@@ -4,28 +4,18 @@
 @endsection
 
 @section('js')
-
     <script src="{{ asset('/js/login/change.js') }}"></script>
     <!--for this page's sepcified js -->
-
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <meta charset="utf-8">
-    </head>
-
-
-<div id="mountingPoint">
-    <div class="row mb-2 mb-xl-3 justify-content-between">
-        <h2 class="col-auto">{!! __('templateWords.userManage') !!}</h2>
-        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
-            <vue-bread-crumb></vue-bread-crumb>
+    <div id="mountingPoint">
+        <div class="row mb-2 mb-xl-3 justify-content-between">
+            <h2 class="col-auto">{!! __('templateWords.userManage') !!}</h2>
+            <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+                <vue-bread-crumb></vue-bread-crumb>
+            </div>
         </div>
     </div>
-</div>
     <div class="row justify-content-center">
         <div class="card w-75">
             <div class="card-header">
@@ -138,7 +128,8 @@
                             <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg text-center" type="text" id="oldMail"
-                                    name="oldMail" placeholder="{!! __('loginPageLang.no_email') !!}" value="@php
+                                    name="oldMail" placeholder="{!! __('loginPageLang.no_email') !!}"
+                                    value="@php
                                         // echo $oldMail[0]->email; // test
                                         if (count($oldMail) == 0) {
                                             echo '';
@@ -171,7 +162,8 @@
 
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
-                                    <input type="submit" class="btn btn-lg btn-primary" value="{!! __('loginPageLang.change') !!}">
+                                    <input type="submit" class="btn btn-lg btn-primary"
+                                        value="{!! __('loginPageLang.change') !!}">
                                 </div>
                             </div>
                         </div>
@@ -180,6 +172,4 @@
             </div>
         </div>
     </div>
-
-    </html>
 @endsection

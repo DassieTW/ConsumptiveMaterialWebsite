@@ -1,31 +1,24 @@
 @extends('layouts.adminTemplate')
 @section('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
+    <script src="{{ asset('js/obound/back.js') }}"></script>
 
-<script src="{{ asset('js/obound/back.js') }}"></script>
-
-<!--for notifications pop up -->
+    <!--for notifications pop up -->
 @endsection
 @section('content')
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-</head>
-<div id="mountingPoint">
-    <div class="row mb-2 mb-xl-3 justify-content-between">
-        <h2 class="col-auto">{!! __('templateWords.obound') !!}</h2>
-        <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
-            <vue-bread-crumb></vue-bread-crumb>
+    <div id="mountingPoint">
+        <div class="row mb-2 mb-xl-3 justify-content-between">
+            <h2 class="col-auto">{!! __('templateWords.obound') !!}</h2>
+            <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
+                <vue-bread-crumb></vue-bread-crumb>
+            </div>
         </div>
     </div>
-</div>
-<div class="card w-100">
-    <div class="card-header">
+    <div class="card w-100">
+        <div class="card-header">
             <h3>{!! __('oboundpageLang.back') !!}</h3>
         </div>
         <div class="card-body">
@@ -34,20 +27,18 @@
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('oboundpageLang.client') !!}</label>
                     <select class="form-select form-select-lg" id="client" name="client" required>
-                        <option style="display: none" disabled selected value="">{!!
-                            __('oboundpageLang.enterclient') !!}</option>
-                        @foreach($client as $client)
-                        <option>{{ $client->客戶 }}</option>
+                        <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterclient') !!}</option>
+                        @foreach ($client as $client)
+                            <option>{{ $client->客戶 }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('oboundpageLang.machine') !!}</label>
                     <select class="form-select form-select-lg" id="machine" name="machine" required>
-                        <option style="display: none" disabled selected value="">{!!
-                            __('oboundpageLang.entermachine') !!}</option>
-                        @foreach($machine as $machine)
-                        <option>{{ $machine->機種 }}</option>
+                        <option style="display: none" disabled selected value="">{!! __('oboundpageLang.entermachine') !!}</option>
+                        @foreach ($machine as $machine)
+                            <option>{{ $machine->機種 }}</option>
                         @endforeach
                     </select>
 
@@ -55,10 +46,9 @@
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('oboundpageLang.process') !!}</label>
                     <select class="form-select form-select-lg " id="production" name="production" required>
-                        <option style="display: none" disabled selected value="">{!!
-                            __('oboundpageLang.enterprocess') !!}</option>
-                        @foreach($production as $production)
-                        <option>{{ $production->制程 }}</option>
+                        <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterprocess') !!}</option>
+                        @foreach ($production as $production)
+                            <option>{{ $production->制程 }}</option>
                         @endforeach
                     </select>
 
@@ -66,20 +56,18 @@
                 <div class="col-auto">
                     <label class="col col-auto form-label">{!! __('oboundpageLang.line') !!}</label>
                     <select class="form-select form-select-lg " id="line" name="line" required>
-                        <option style="display: none" disabled selected value="">{!!
-                            __('oboundpageLang.enterline') !!}</option>
-                        @foreach($line as $line)
-                        <option>{{ $line->線別 }}</option>
+                        <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterline') !!}</option>
+                        @foreach ($line as $line)
+                            <option>{{ $line->線別 }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-auto">
                     <label class="col col-auto form-label">{!! __('oboundpageLang.backreason') !!}</label>
                     <select class="form-select form-select-lg " id="backreason" name="backreason" required>
-                        <option style="display: none" disabled selected value="">{!!
-                            __('oboundpageLang.enterbackreason') !!}</option>
-                        @foreach($backreason as $backreason)
-                        <option>{{ $backreason->退回原因 }}</option>
+                        <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterbackreason') !!}</option>
+                        @foreach ($backreason as $backreason)
+                            <option>{{ $backreason->退回原因 }}</option>
                         @endforeach
                         <option>{!! __('oboundpageLang.other') !!}</option>
                     </select>
@@ -93,18 +81,17 @@
                 </div>
                 <div class="col-auto">
                     <label class="col col-auto form-label"></label>
-                    <input type="submit" id="add" name="add" class="form-control form-control-lg btn btn-lg btn-primary"
-                        value="{!! __('oboundpageLang.add') !!}">
+                    <input type="submit" id="add" name="add"
+                        class="form-control form-control-lg btn btn-lg btn-primary" value="{!! __('oboundpageLang.add') !!}">
                 </div>
                 <div class="col-auto">
                     <label class="col col-auto form-label"></label>
-                    <input style="display:none;" class="form-control form-control-lg " type="text" id="reason" name="reason"
-                        placeholder="{!! __('oboundpageLang.inputbackreason') !!}">
+                    <input style="display:none;" class="form-control form-control-lg " type="text" id="reason"
+                        name="reason" placeholder="{!! __('oboundpageLang.inputbackreason') !!}">
                 </div>
             </form>
         </div>
-    </div>
-    <div class="card w-100">
+
         <div class="card-body">
             <form id="backadd" style="display: none">
                 @csrf
@@ -137,5 +124,4 @@
             </form>
         </div>
     </div>
-</html>
 @endsection

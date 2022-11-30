@@ -16,13 +16,6 @@
     </script>
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <meta charset="utf-8">
-    </head>
-
     <div id="mountingPoint">
         <div class="row mb-2 mb-xl-3 justify-content-between">
             <h2 class="col-auto">{!! __('templateWords.inbound') !!}</h2>
@@ -108,6 +101,4 @@
             </div>
         </div>
     </div>
-
-    </html>
 @endsection

@@ -27,12 +27,6 @@
     <script src="{{ asset('js/month/standsearch.js') }}"></script>
 @endsection
 @section('content')
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <meta charset="utf-8">
-    </head>
     <div id="mountingPoint">
         <div class="row mb-2 mb-xl-3 justify-content-between">
             <h2 class="col-auto">{!! __('templateWords.monthly') !!}</h2>
@@ -131,7 +125,7 @@
                             <tbody>
                                 @foreach ($data as $data)
                                     <?php
-                                    
+
                                     $data->當月站位人數 = round($data->當月站位人數, 7);
                                     $data->當月開線數 = round($data->當月開線數, 7);
                                     $data->當月開班數 = round($data->當月開班數, 7);
@@ -146,8 +140,8 @@
                                     ?>
                                     <tr @class([
                                         'isnRows',
-                                        'table-success' => ($data->狀態 === '已完成'),
-                                        'table-danger' => ($data->狀態 !== '已完成'),
+                                        'table-success' => $data->狀態 === '已完成',
+                                        'table-danger' => $data->狀態 !== '已完成',
                                     ])>
                                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                                 style="width:20px;height:20px;" value="{{ $loop->index }}"></td>
@@ -246,7 +240,4 @@
             </div>
         </div>
     </div>
-
-
-    </html>
 @endsection
