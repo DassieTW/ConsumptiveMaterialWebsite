@@ -7,6 +7,7 @@ use App\Http\Controllers\CallController;
 use App\Http\Controllers\OwarehouseController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\HomeController;
 use App\Services\MailService; // for testing only
 
 use Illuminate\Http\Request;
@@ -108,3 +109,5 @@ Route::get('/storage/barcodeImg/{filename}', function ($filename) {
     $response->header("Content-Type", $type);
     return $response;
 });
+
+Route::post('/navbar_quick_search', [HomeController::class, 'insiteSearch']);

@@ -26,6 +26,13 @@ $(document).ready(function () {
     //
     //
     //
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $("#passiveStockBtn").on("click", function (e) {
         e.preventDefault();
         $('body').loadingModal({
@@ -34,5 +41,43 @@ $(document).ready(function () {
         });
 
         window.location.href = "/bu/sluggish";
+    });
+
+    $("#instantSearchBar").on("input", function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "/navbar_quick_search",
+            type: 'post',
+            data: {
+                inputStr: $("#instantSearchBar").val()
+            },
+            dataType: 'json', // let's set the expected response format
+            beforeSend: function () {
+                
+            },
+            complete: function () {
+                
+            },
+            success: function (response) {
+
+            },
+            error: function (err) {
+                console.log(err.responseJSON.message); // test
+                notyf.error({
+                    message: "Some err",
+                    duration: 5000,   //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
+            } // if error
+        }); // end of ajax
+    });
+
+    $("#quickSearchForm").on("submit", function (e) {
+        e.preventDefault();
     });
 }); // on document ready
