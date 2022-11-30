@@ -53,18 +53,18 @@ $(document).ready(function () {
             },
             dataType: 'json', // let's set the expected response format
             beforeSend: function () {
-                
+
             },
             complete: function () {
-                
+
             },
             success: function (response) {
-
+                console.log(JSON.parse(response.data)); // test
             },
             error: function (err) {
                 console.log(err.responseJSON.message); // test
                 notyf.error({
-                    message: "Some err",
+                    message: "Error",
                     duration: 5000,   //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,

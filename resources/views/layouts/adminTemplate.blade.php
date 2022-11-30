@@ -934,7 +934,6 @@
                 <a class="sidebar-toggle d-flex">
                     <i class="hamburger align-self-center"></i>
                 </a>
-
                 <form id="quickSearchForm" class="d-none d-sm-inline-block">
                     <div class="input-group input-group-navbar">
                         <input id="instantSearchBar" type="text" class="form-control" placeholder="Search…" aria-label="Search">
@@ -1422,7 +1421,6 @@
             });
         });
     </script> -->
-
     <script src="{{ asset('/js/app.js') }}"></script>
     <script src="{{ asset('/admin/js/app.js') }}"></script>
     <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
