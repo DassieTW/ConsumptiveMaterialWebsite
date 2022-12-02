@@ -369,7 +369,6 @@ function CallPhpSpreadSheetToGetData(fileName) {
                 });
             } // if error 422
             else {
-                // Lang = new Lang();
                 console.log(err); // test
                 notyf.error({
                     message: Lang.get('barcodeGenerator.temp_save_error') + err.status,
@@ -591,7 +590,6 @@ $(document).ready(function () {
                     });
                 } // if error 422
                 else {
-                    // Lang = new Lang();
                     console.log(err.status); // test
                 } // else
             }
@@ -712,7 +710,6 @@ $(document).ready(function () {
                     });
                 } // if error 422
                 else {
-                    // Lang = new Lang();
                     console.log(err.status); // test
                 } // else
             } // error

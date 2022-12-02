@@ -38,7 +38,7 @@ return [
     'submit' => 'Submit',
     'edit' => 'Edit',
     'this' => 'This',
-    'has' => 'Also',
+    'has' => 'Has',
     'unchecked' => 'not yet stocktaked !',
     'update_success' => 'Update Success!',
     'update_failed' => 'Update Failed.',

@@ -22,10 +22,19 @@ class HomeController extends Controller
         // set up the keyword database and search client
         $this->searchClient = new Client(env('MEILISEARCH_HOST'));
 
-        $movies_json = file_get_contents(__DIR__ . '/../../../resources/meilisearchWords/movies.json');
-        $movies = json_decode($movies_json);
+        $keywords_json = file_get_contents(__DIR__ . '/../../../resources/meilisearchWords/keywords.json');
+        $titles = json_decode($keywords_json);
 
-        $this->searchClient->index('movies')->addDocuments($movies);
+        $this->searchClient->index('titles')->addDocuments($titles);
+
+        $this->searchClient->index('titles')->updateSearchableAttributes([
+            'en_title',
+            'cn_title',
+            'tw_title',
+            'en_parentTitle',
+            'cn_parentTitle',
+            'tw_parentTitle'
+        ]);
     } // constructor
 
     /**
@@ -42,8 +51,11 @@ class HomeController extends Controller
     {
         // dd($this->client->getTask(0)); // test if the document added successfully
         // dd($request->input('inputStr')); // test
-        $searchResult = $this->searchClient->index('movies')->search($request->input('inputStr'))->toJSON();
+        $searchResult = $this->searchClient->index('titles')->search(
+            $request->input('inputStr'),
+            ['attributesToHighlight' => ['en_title', 'cn_title', 'tw_title', 'en_parentTitle', 'cn_parentTitle', 'tw_parentTitle']]
+        )->toJSON();
         // dd($searchResult); // test
-        return \Response::json(['data' => $searchResult]/* Status code here default is 200 ok*/);
+        return \Response::json(['data' => $searchResult, 'lang' => app()->getLocale()]/* Status code here default is 200 ok*/);
     } // using MeiliSearch
 }

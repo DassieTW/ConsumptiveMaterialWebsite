@@ -1,0 +1,67 @@
+[
+{"id":1,"url": "/basic", "en_title":"Basic Info.","tw_title":"基礎資料","cn_title":"基础资料", "en_parentTitle": "Basic Info.", "tw_parentTitle": "基礎資料", "cn_parentTitle": "基础资料"},
+{"id":2,"url": "/basic/new","en_title":"Add Material","tw_title":"新增料件","cn_title":"新增料件", "en_parentTitle": "Basic Info.", "tw_parentTitle": "基礎資料", "cn_parentTitle": "基础资料"},
+{"id":3,"url": "/basic/material","en_title":"Material Info. (Search & Update)","tw_title":"料件信息(查詢/修改)","cn_title":"料件信息(查询/修改)", "en_parentTitle": "Basic Info.", "tw_parentTitle": "基礎資料", "cn_parentTitle": "基础资料"},
+
+{"id":4,"url": "/barcode", "en_title":"Barcode Generator","tw_title":"條碼產生器","cn_title":"条码产生器", "en_parentTitle": "Barcodes", "tw_parentTitle": "條碼", "cn_parentTitle": "条码"},
+{"id":5,"url": "/barcode/isn_search","en_title":"Find PN. Barcode","tw_title":"料號條碼查詢","cn_title":"料号条码查询", "en_parentTitle": "Barcodes", "tw_parentTitle": "條碼", "cn_parentTitle": "条码"},
+{"id":6,"url": "/barcode/loc_search","en_title":"Find Loc. Barcode","tw_title":"儲位條碼查詢","cn_title":"储位条码查询", "en_parentTitle": "Barcodes", "tw_parentTitle": "條碼", "cn_parentTitle": "条码"},
+
+{"id":7,"url": "/inbound/add", "en_title":"New","tw_title":"新增","cn_title":"新增", "en_parentTitle": "Inbound", "tw_parentTitle": "入庫", "cn_parentTitle": "入库"},
+{"id":8,"url": "/inbound/search","en_title":"Search","tw_title":"查詢","cn_title":"查询", "en_parentTitle": "Inbound", "tw_parentTitle": "入庫", "cn_parentTitle": "入库"},
+{"id":9,"url": "/inbound/searchstock","en_title":"Stock Search","tw_title":"庫存查詢","cn_title":"库存查询", "en_parentTitle": "Inbound", "tw_parentTitle": "入庫", "cn_parentTitle": "入库"},
+{"id":10,"url": "/inbound/positionchange", "en_title":"Location Transfer","tw_title":"儲位調撥","cn_title":"储位调拨", "en_parentTitle": "Inbound", "tw_parentTitle": "入庫", "cn_parentTitle": "入库"},
+{"id":11,"url": "/inbound/upload","en_title":"Stock Upload","tw_title":"庫存上傳","cn_title":"库存上传", "en_parentTitle": "Inbound", "tw_parentTitle": "入庫", "cn_parentTitle": "入库"},
+
+{"id":12,"url": "/outbound/pick", "en_title":"Pick Material","tw_title":"領料","cn_title":"领料", "en_parentTitle": "Outbound", "tw_parentTitle": "出庫", "cn_parentTitle": "出库"},
+{"id":13,"url": "/outbound/picklist","en_title":"Pick Material List","tw_title":"領料單","cn_title":"领料单", "en_parentTitle": "Outbound", "tw_parentTitle": "出庫", "cn_parentTitle": "出库"},
+{"id":14,"url": "/outbound/pickrecord","en_title":"Pick Material Record","tw_title":"領料記錄表","cn_title":"领料记录表", "en_parentTitle": "Outbound", "tw_parentTitle": "出庫", "cn_parentTitle": "出库"},
+{"id":15,"url": "/outbound/back", "en_title":"Return Material","tw_title":"退料","cn_title":"退料", "en_parentTitle": "Outbound", "tw_parentTitle": "出庫", "cn_parentTitle": "出库"},
+{"id":16,"url": "/outbound/backlist","en_title":"Material Return Sheet","tw_title":"退料單","cn_title":"退料单", "en_parentTitle": "Outbound", "tw_parentTitle": "出庫", "cn_parentTitle": "出库"},
+{"id":17,"url": "/outbound/backrecord","en_title":"Material Return Record","tw_title":"退料記錄表","cn_title":"退料记录表", "en_parentTitle": "Outbound", "tw_parentTitle": "出庫", "cn_parentTitle": "出库"},
+
+{"id":18,"url": "/month/consumeadd", "en_title":"Unit Consumption (Add)","tw_title":"料號單耗(新增)","cn_title":"料号单耗(新增)", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+{"id":19,"url": "/month/consume","en_title":"Unit Consumption (Search & Update)","tw_title":"料號單耗(查詢與修改)","cn_title":"料号单耗(查询与修改)", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+{"id":20,"url": "/month/standadd","en_title":"Station Manpower (Add)","tw_title":"站位人力(新增)","cn_title":"站位人力(新增)", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+{"id":21,"url": "/month/stand", "en_title":"Station Manpower (Search & Update)","tw_title":"站位人力(查詢與修改)","cn_title":"站位人力(查询与修改)", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+{"id":22,"url": "/month/importmonth","en_title":"Import Monthly PR Data","tw_title":"匯入月請購資料","cn_title":"汇入月请购资料", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+{"id":23,"url": "/month/buylistmake","en_title":"PR","tw_title":"請購單","cn_title":"请购单", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+{"id":24,"url": "/month/srm", "en_title":"SRM","tw_title":"SRM單","cn_title":"SRM单", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+{"id":25,"url": "/month/sxb","en_title":"SXB (Search)","tw_title":"SXB單(查詢)","cn_title":"SXB单(查询)", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+{"id":26,"url": "/month/importnotmonth","en_title":"Import Non-Monthly PR Data","tw_title":"匯入非月請購資料","cn_title":"汇入非月请购资料", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+{"id":27,"url": "/month/transit", "en_title":"On-Order Inventory (Search)","tw_title":"在途數量(查詢)","cn_title":"在途数量(查询)", "en_parentTitle": "Monthly PR", "tw_parentTitle": "月請購", "cn_parentTitle": "月请购"},
+
+{"id":28,"url": "/obound/new", "en_title":"Add Material","tw_title":"新增料件","cn_title":"新增料件", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":29,"url": "/obound/material","en_title":"Material Info.(Search)","tw_title":"料件信息(查詢)","cn_title":"料件信息(查询)", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":30,"url": "/obound/inbound","en_title":"Inbound","tw_title":"入庫","cn_title":"入库", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":31,"url": "/obound/inboundsearch", "en_title":"Inbound Search","tw_title":"入庫查詢","cn_title":"入库查询", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":32,"url": "/obound/upload","en_title":"Stock Upload","tw_title":"庫存上傳","cn_title":"库存上传", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":33,"url": "/obound/searchstock","en_title":"Stock Search","tw_title":"庫存查詢","cn_title":"库存查询", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":34,"url": "/obound/pick", "en_title":"Pick Material","tw_title":"領料","cn_title":"领料", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":35,"url": "/obound/picklist","en_title":"Pick Material List","tw_title":"領料單","cn_title":"领料单", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":36,"url": "/obound/pickrecord","en_title":"Pick Material Record","tw_title":"領料記錄表","cn_title":"领料记录表", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":37,"url": "/obound/back", "en_title":"Return Material","tw_title":"退料","cn_title":"退料", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":38,"url": "/obound/backlist","en_title":"Material Return Sheet","tw_title":"退料單","cn_title":"退料单", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+{"id":39,"url": "/obound/backrecord","en_title":"Material Return Record","tw_title":"退料記錄表","cn_title":"退料记录表", "en_parentTitle": "Vendor Stock", "tw_parentTitle": "O庫", "cn_parentTitle": "O库"},
+
+{"id":40,"url": "/bu/sluggish", "en_title":"Passive stock","tw_title":"呆滯庫存","cn_title":"呆滞库存", "en_parentTitle": "BU C.M. (BU Consumable Mgmt.)", "tw_parentTitle": "BU耗材管理", "cn_parentTitle": "BU耗材管理"},
+{"id":41,"url": "/bu/material","en_title":"Factory transfer","tw_title":"廠區庫存調撥","cn_title":"厂区库存调拨", "en_parentTitle": "BU C.M. (BU Consumable Mgmt.)", "tw_parentTitle": "BU耗材管理", "cn_parentTitle": "BU耗材管理"},
+{"id":42,"url": "/bu/searchlist","en_title":"Transfer List Search","tw_title":"調撥單查詢","cn_title":"调拨单查询", "en_parentTitle": "BU C.M. (BU Consumable Mgmt.)", "tw_parentTitle": "BU耗材管理", "cn_parentTitle": "BU耗材管理"},
+{"id":43,"url": "/bu/outlist", "en_title":"Transfer List (outbound)","tw_title":"調撥_撥出單","cn_title":"调拨_拨出单", "en_parentTitle": "BU C.M. (BU Consumable Mgmt.)", "tw_parentTitle": "BU耗材管理", "cn_parentTitle": "BU耗材管理"},
+{"id":44,"url": "/bu/picklist","en_title":"Transfer List (inbound)","tw_title":"調撥_接收單","cn_title":"调拨_接收单", "en_parentTitle": "BU C.M. (BU Consumable Mgmt.)", "tw_parentTitle": "BU耗材管理", "cn_parentTitle": "BU耗材管理"},
+{"id":45,"url": "/bu/searchdetail","en_title":"Transfer Detail Search","tw_title":"調撥明細查詢","cn_title":"调拨明细查询", "en_parentTitle": "BU C.M. (BU Consumable Mgmt.)", "tw_parentTitle": "BU耗材管理", "cn_parentTitle": "BU耗材管理"},
+
+{"id":46,"url": "/call/safe","en_title":"Safety Stock Alert","tw_title":"安全庫存警報","cn_title":"安全库存警报", "en_parentTitle": "Alarm system", "tw_parentTitle": "報警系統", "cn_parentTitle": "报警系统"},
+{"id":47,"url": "/call/day","en_title":"Passive Day Alert","tw_title":"呆滯天數警報","cn_title":"呆滞天数警报", "en_parentTitle": "Alarm system", "tw_parentTitle": "報警系統", "cn_parentTitle": "报警系统"},
+
+{"id":48,"url": "/checking/create_new_table", "en_title":"Create New Sheet","tw_title":"建立新盤點表","cn_title":"建立新盘点表", "en_parentTitle": "Stock-taking", "tw_parentTitle": "盤點管理", "cn_parentTitle": "盘点管理"},
+{"id":49,"url": "/checking","en_title":"Stocktake","tw_title":"盤點","cn_title":"盘点", "en_parentTitle": "Stock-taking", "tw_parentTitle": "盤點管理", "cn_parentTitle": "盘点管理"},
+{"id":50,"url": "/checking/check_result","en_title":"Result of Stocktaking","tw_title":"盤點結果","cn_title":"盘点结果", "en_parentTitle": "Stock-taking", "tw_parentTitle": "盤點管理", "cn_parentTitle": "盘点管理"},
+
+{"id":51,"url": "/member/change", "en_title":"Change Password / Email","tw_title":"修改密碼/信箱","cn_title":"修改密码/信箱", "en_parentTitle": "User Mgmt.", "tw_parentTitle": "用戶管理", "cn_parentTitle": "用户管理"},
+{"id":52,"url": "/member/register","en_title":"Add User","tw_title":"新增用戶","cn_title":"新增用户", "en_parentTitle": "User Mgmt.", "tw_parentTitle": "用戶管理", "cn_parentTitle": "用户管理"},
+{"id":53,"url": "/member/new","en_title":"Add Staff Info.","tw_title":"新增人員訊息","cn_title":"新增人员讯息", "en_parentTitle": "User Mgmt.", "tw_parentTitle": "用戶管理", "cn_parentTitle": "用户管理"},
+{"id":54,"url": "/member/number","en_title":"Modify Staff Info","tw_title":"人員訊息(查詢/修改)","cn_title":"人员讯息(查询/修改)", "en_parentTitle": "User Mgmt.", "tw_parentTitle": "用戶管理", "cn_parentTitle": "用户管理"},
+{"id":55,"url": "/member/username","en_title":"Modify User Info.","tw_title":"用戶訊息(查詢/刪除)","cn_title":"用户讯息(查询/删除)", "en_parentTitle": "User Mgmt.", "tw_parentTitle": "用戶管理", "cn_parentTitle": "用户管理"}
+
+]

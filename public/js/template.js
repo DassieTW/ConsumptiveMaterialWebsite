@@ -45,39 +45,54 @@ $(document).ready(function () {
 
     $("#instantSearchBar").on("input", function (e) {
         e.preventDefault();
-        $.ajax({
-            url: "/navbar_quick_search",
-            type: 'post',
-            data: {
-                inputStr: $("#instantSearchBar").val()
-            },
-            dataType: 'json', // let's set the expected response format
-            beforeSend: function () {
-
-            },
-            complete: function () {
-
-            },
-            success: function (response) {
-                console.log(JSON.parse(response.data)); // test
-            },
-            error: function (err) {
-                console.log(err.responseJSON.message); // test
-                notyf.error({
-                    message: "Error",
-                    duration: 5000,   //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom"
-                    }
-                });
-            } // if error
-        }); // end of ajax
-    });
-
-    $("#quickSearchForm").on("submit", function (e) {
-        e.preventDefault();
+        if ($("#instantSearchBar").val().length > 0) {
+            $.ajax({
+                url: "/navbar_quick_search",
+                type: 'post',
+                data: {
+                    inputStr: $("#instantSearchBar").val()
+                },
+                dataType: 'json', // let's set the expected response format
+                complete: function () {
+                    // do nothing for now
+                },
+                success: function (response) {
+                    $("#searchResult").empty();
+                    console.log(JSON.parse(response.data)); // test
+                    // console.log(response.lang); // test
+                    var responseObj = JSON.parse(response.data); // get the response data
+                    //console.log(responseObj.hits); // test
+                    if (responseObj.hits.length > 0) {
+                        $("#searchResult").show(); // show the ul list
+                        for (var i = 0; i < 10 && i < responseObj.hits.length; i++) {
+                            $("#searchResult").append('<li><a class="dropdown-item" href="#">123</a></li>'); // add <li> for each hit
+                            if( (i+1) < 10 && (i+1) < responseObj.hits.length) {
+                                $("#searchResult").append('<li><hr class="dropdown-divider"></li>'); // add divider between items
+                            } // for 
+                        } // for
+                    } // if
+                    else {
+                        $("#searchResult").hide(); // hide the ul list
+                    } // else
+                },
+                error: function (err) {
+                    console.log(err.responseJSON.message); // test
+                    notyf.error({
+                        message: "Error",
+                        duration: 5000,   //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom"
+                        }
+                    });
+                } // if error
+            }); // end of ajax
+        } // if
+        else {
+            $("#searchResult").empty();
+            $("#searchResult").hide();
+        } // else
     });
 }); // on document ready

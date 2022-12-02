@@ -934,14 +934,16 @@
                 <a class="sidebar-toggle d-flex">
                     <i class="hamburger align-self-center"></i>
                 </a>
-                <form id="quickSearchForm" class="d-none d-sm-inline-block">
+                <div class="d-none d-sm-inline-block">
                     <div class="input-group input-group-navbar">
-                        <input id="instantSearchBar" type="text" class="form-control" placeholder="Search…" aria-label="Search">
+                        <input id="instantSearchBar" type="text" class="form-control" placeholder="Search…" aria-label="Search" autocomplete="off">
                         <button class="btn" type="button">
                             <i class="align-middle" data-feather="search"></i>
                         </button>
                     </div>
-                </form>
+                    <ul id="searchResult" class="dropdown-menu" style="border-radius: 10px;">
+                    </ul>
+                </div>
 
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
@@ -1104,7 +1106,7 @@
                                     class="avatar img-fluid rounded mr-1" alt="Charles Hall" /> <span
                                     class="text-dark">{{ \Auth::user()->姓名 }}</span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end align-items-center">
+                            <div class="dropdown-menu dropdown-menu-end align-items-center" style="border-radius: 10px;">
                                 <a class="dropdown-item" href="#">
                                     <i class="p-0 mr-1" data-feather="user"></i>
                                     <span>Profile</span>
