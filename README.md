@@ -1,14 +1,10 @@
-## Environment init ( should not need it since node_module already in git flow)
-
-npm install
-
 ## In Dev
 
 npx mix watch
 
 ## In Deployment/Production
 
-npm run clear:babel-cache <br />
+yarn run clear:babel-cache <br />
 npx mix --production <br />
 
 ## Useful Laravel Commands (used in workspace container)

@@ -24,16 +24,14 @@ class HomeController extends Controller
 
         $keywords_json = file_get_contents(__DIR__ . '/../../../resources/meilisearchWords/keywords.json');
         $titles = json_decode($keywords_json);
-
+        //--------------------------------------------------------------------------------------------------
+        // $this->searchClient->index('titles')->delete(); // u might want to clean up meilisearch db first
+        //--------------------------------------------------------------------------------------------------
         $this->searchClient->index('titles')->addDocuments($titles);
-
         $this->searchClient->index('titles')->updateSearchableAttributes([
             'en_title',
-            'cn_title',
             'tw_title',
-            'en_parentTitle',
-            'cn_parentTitle',
-            'tw_parentTitle'
+            'cn_title'
         ]);
     } // constructor
 
@@ -51,9 +49,14 @@ class HomeController extends Controller
     {
         // dd($this->client->getTask(0)); // test if the document added successfully
         // dd($request->input('inputStr')); // test
+
         $searchResult = $this->searchClient->index('titles')->search(
             $request->input('inputStr'),
-            ['attributesToHighlight' => ['en_title', 'cn_title', 'tw_title', 'en_parentTitle', 'cn_parentTitle', 'tw_parentTitle']]
+            [
+                'attributesToHighlight' => ['en_title', 'cn_title', 'tw_title', 'en_parentTitle', 'cn_parentTitle', 'tw_parentTitle'],
+                'highlightPreTag' => '<mark>',
+                'highlightPostTag' => '</mark>'
+            ]
         )->toJSON();
         // dd($searchResult); // test
         return \Response::json(['data' => $searchResult, 'lang' => app()->getLocale()]/* Status code here default is 200 ok*/);

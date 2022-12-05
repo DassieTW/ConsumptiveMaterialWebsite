@@ -27,6 +27,9 @@ const WebpackShellPlugin = require('webpack-shell-plugin-next');
 
 // Add shell command plugin configured to create JavaScript language file
 mix.webpackConfig({
+    stats: {
+        children: true,
+    },
     plugins:
         [
             new WebpackShellPlugin({ onBuildStart: ['php artisan lang:js --quiet'], onBuildEnd: [] })
