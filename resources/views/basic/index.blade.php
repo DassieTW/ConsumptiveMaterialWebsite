@@ -8,6 +8,56 @@
 @section('js')
     <!--for this page's sepcified js -->
     <script src="{{ asset('js/basic/basic.js') }}"></script>
+    <style>
+        :root {
+            --form-control-color: rgb(62, 102, 220);
+        }
+
+        *:after {
+            box-sizing: border-box;
+        }
+
+        input[type="checkbox"] {
+            /* Add if not using autoprefixer */
+            -webkit-appearance: none;
+            /* Remove most all native input styles */
+            appearance: none;
+            /* For iOS < 15 */
+            background-color: var(--form-background);
+            /* Not removed via appearance */
+            margin: 0;
+            font: inherit;
+            width: 1.5em;
+            height: 1.5em;
+            border: 0.15em solid #7e280e;
+            border-radius: 0.15em;
+            transform: translateY(-0.075em);
+            display: grid;
+            place-content: center;
+        }
+
+        input[type="checkbox"]::before {
+            content: "";
+            width: 1.0em;
+            height: 1.0em;
+            color: #713de0;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+            transform: scale(0);
+            transform-origin: bottom left;
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--form-control-color);
+            /* Windows High Contrast Mode */
+            background-color: CanvasText;
+        }
+
+        input[type="checkbox"]:hover {
+            border-color: #ff1d0b;
+        }
+
+        input[type="checkbox"]:checked::before {
+            transform: scale(1);
+        }
+    </style>
 @endsection
 @section('content')
     <div class="row justify-content-center">
@@ -76,17 +126,19 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($factorys as $factory)
-                                        <input class="factory" type="checkbox" id="factorycheck" name="factorycheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="factory" type="text" id="factory{{ $loop->index }}"
-                                            name="factory{{ $loop->index }}" value="{{ $factory->廠別 }}">
-
+                                        <label>
+                                            <input type="checkbox" name="factorycheck" value="{{ $loop->index }}">
+                                        </label>
+                                        <label>
+                                            <input class="form-control-lg" type="text" id="factory{{ $loop->index }}"
+                                                name="factory{{ $loop->index }}" value="{{ $factory->廠別 }}">
+                                        </label>
                                         <input type="hidden" id="oldfactory{{ $loop->index }}"
                                             name="oldfactory{{ $loop->index }}" value="{{ $factory->廠別 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="factorynew"
-                                        name="factorynew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="factorynew" name="factorynew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -96,16 +148,19 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($clients as $client)
-                                        <input class="client" type="checkbox" id="clientcheck" name="clientcheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="client" type="text" id="client{{ $loop->index }}"
-                                            name="client{{ $loop->index }}" value="{{ $client->客戶 }}">
+                                        <label>
+                                            <input type="checkbox" name="clientcheck" value="{{ $loop->index }}">
+                                        </label>
+                                        <label>
+                                            <input class="form-control-lg" type="text" id="client{{ $loop->index }}"
+                                                name="client{{ $loop->index }}" value="{{ $client->客戶 }}">
+                                        </label>
                                         <input type="hidden" id="oldclient{{ $loop->index }}"
                                             name="oldclient{{ $loop->index }}" value="{{ $client->客戶 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="clientnew"
-                                        name="clientnew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="clientnew" name="clientnew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -115,16 +170,20 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($machines as $machine)
-                                        <input class="machine " type="checkbox" id="machinecheck" name="machinecheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="machine" type="text" id="machine{{ $loop->index }}"
-                                            name="machine{{ $loop->index }}" value="{{ $machine->機種 }}">
+                                        <label>
+                                            <input type="checkbox" id="machinecheck" name="machinecheck"
+                                                value="{{ $loop->index }}">
+                                        </label>
+                                        <label>
+                                            <input class="form-control-lg" type="text"
+                                                id="machine{{ $loop->index }}" name="machine{{ $loop->index }}"
+                                                value="{{ $machine->機種 }}"></label>
                                         <input type="hidden" id="oldmachine{{ $loop->index }}"
                                             name="oldmachine{{ $loop->index }}" value="{{ $machine->機種 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="machinenew"
-                                        name="machinenew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="machinenew" name="machinenew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -134,17 +193,17 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($productions as $production)
-                                        <input class="production " type="checkbox" id="productioncheck"
-                                            name="productioncheck" style="width:20px;height:20px;"
-                                            value="{{ $loop->index }}">
-                                        <input class="production" type="text" id="production{{ $loop->index }}"
-                                            name="production{{ $loop->index }}" value="{{ $production->制程 }}">
+                                        <label><input type="checkbox" name="productioncheck"
+                                                value="{{ $loop->index }}"></label>
+                                        <label><input class="form-control-lg" type="text"
+                                                id="production{{ $loop->index }}" name="production{{ $loop->index }}"
+                                                value="{{ $production->制程 }}"></label>
                                         <input type="hidden" id="oldproduction{{ $loop->index }}"
                                             name="oldproduction{{ $loop->index }}" value="{{ $production->制程 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text"
-                                        id="productionnew" name="productionnew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="productionnew" name="productionnew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -154,16 +213,17 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($lines as $line)
-                                        <input class="line " type="checkbox" id="linecheck" name="linecheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="line" type="text" id="line{{ $loop->index }}"
-                                            name="line{{ $loop->index }}" value="{{ $line->線別 }}">
+                                        <label><input type="checkbox" name="linecheck"
+                                                value="{{ $loop->index }}"></label>
+                                        <label><input class="form-control-lg" type="text"
+                                                id="line{{ $loop->index }}" name="line{{ $loop->index }}"
+                                                value="{{ $line->線別 }}"></label>
                                         <input type="hidden" id="oldline{{ $loop->index }}"
                                             name="oldline{{ $loop->index }}" value="{{ $line->線別 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="linenew"
-                                        name="linewnew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="linenew" name="linewnew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -173,16 +233,16 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($uses as $use)
-                                        <input class="use " type="checkbox" id="usecheck" name="usecheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="use" type="text" id="use{{ $loop->index }}"
-                                            name="use{{ $loop->index }}" value="{{ $use->領用部門 }}">
+                                        <label><input type="checkbox" name="usecheck"
+                                                value="{{ $loop->index }}"></label>
+                                        <label><input class="form-control-lg" type="text" id="use{{ $loop->index }}"
+                                                name="use{{ $loop->index }}" value="{{ $use->領用部門 }}"></label>
                                         <input type="hidden" id="olduse{{ $loop->index }}"
                                             name="olduse{{ $loop->index }}" value="{{ $use->領用部門 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="usenew"
-                                        name="usenew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="usenew" name="usenew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -192,17 +252,17 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($usereasons as $usereason)
-                                        <input class="usereason " type="checkbox" id="usereasoncheck"
-                                            name="usereasoncheck" style="width:20px;height:20px;"
-                                            value="{{ $loop->index }}">
-                                        <input class="usereason" type="text" id="usereason{{ $loop->index }}"
-                                            name="usereason{{ $loop->index }}" value="{{ $usereason->領用原因 }}">
+                                        <label><input type="checkbox" name="usereasoncheck"
+                                                value="{{ $loop->index }}"></label>
+                                        <label><input class="form-control-lg" type="text"
+                                                id="usereason{{ $loop->index }}" name="usereason{{ $loop->index }}"
+                                                value="{{ $usereason->領用原因 }}"></label>
                                         <input type="hidden" id="oldusereason{{ $loop->index }}"
                                             name="oldusereason{{ $loop->index }}" value="{{ $usereason->領用原因 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text"
-                                        id="usereasonnew" name="usereasonnew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="usereasonnew" name="usereasonnew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -212,16 +272,17 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($inreasons as $inreason)
-                                        <input class="inreason " type="checkbox" id="inreasoncheck" name="inreasoncheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="inreason" type="text" id="inreason{{ $loop->index }}"
-                                            name="inreason{{ $loop->index }}" value="{{ $inreason->入庫原因 }}">
+                                        <label><input type="checkbox" name="inreasoncheck"
+                                                value="{{ $loop->index }}"></label>
+                                        <label><input class="form-control-lg" type="text"
+                                                id="inreason{{ $loop->index }}" name="inreason{{ $loop->index }}"
+                                                value="{{ $inreason->入庫原因 }}"></label>
                                         <input type="hidden" id="oldinreason{{ $loop->index }}"
                                             name="oldinreason{{ $loop->index }}" value="{{ $inreason->入庫原因 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text"
-                                        id="inreasonnew" name="inreasonnew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="inreasonnew" name="inreasonnew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -231,16 +292,17 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($positions as $position)
-                                        <input class="position " type="checkbox" id="positioncheck" name="positioncheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="position" type="text" id="position{{ $loop->index }}"
-                                            name="position{{ $loop->index }}" value="{{ $position->儲存位置 }}">
+                                        <label><input type="checkbox" name="positioncheck"
+                                                value="{{ $loop->index }}"></label>
+                                        <label><input class="form-control-lg" type="text"
+                                                id="position{{ $loop->index }}" name="position{{ $loop->index }}"
+                                                value="{{ $position->儲存位置 }}"></label>
                                         <input type="hidden" id="oldposition{{ $loop->index }}"
                                             name="oldposition{{ $loop->index }}" value="{{ $position->儲存位置 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text"
-                                        id="positionnew" name="positionnew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="positionnew" name="positionnew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -250,16 +312,17 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($sends as $send)
-                                        <input class="send " type="checkbox" id="sendcheck" name="sendcheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="send" type="text" id="send{{ $loop->index }}"
-                                            name="send{{ $loop->index }}" value="{{ $send->發料部門 }}">
+                                        <label><input type="checkbox" name="sendcheck"
+                                                value="{{ $loop->index }}"></label>
+                                        <label><input class="form-control-lg" type="text"
+                                                id="send{{ $loop->index }}" name="send{{ $loop->index }}"
+                                                value="{{ $send->發料部門 }}"></label>
                                         <input type="hidden" id="oldsend{{ $loop->index }}"
                                             name="oldsend{{ $loop->index }}" value="{{ $send->發料部門 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="sendnew"
-                                        name="sendnew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="sendnew" name="sendnew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -269,16 +332,16 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($os as $o)
-                                        <input class="o " type="checkbox" id="ocheck" name="ocheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="o" type="text" id="o{{ $loop->index }}"
-                                            name="o{{ $loop->index }}" value="{{ $o->O庫 }}">
+                                        <label><input type="checkbox" name="ocheck"
+                                                value="{{ $loop->index }}"></label>
+                                        <label><input class="form-control-lg" type="text" id="o{{ $loop->index }}"
+                                                name="o{{ $loop->index }}" value="{{ $o->O庫 }}"></label>
                                         <input type="hidden" id="oldo{{ $loop->index }}"
                                             name="oldo{{ $loop->index }}" value="{{ $o->O庫 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="onew"
-                                        name="onew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="onew" name="onew" value=""></label>
                                     <hr />
                                 </div>
                             </div>
@@ -288,16 +351,17 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     @foreach ($backs as $back)
-                                        <input class="back " type="checkbox" id="backcheck" name="backcheck"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}">
-                                        <input class="back" type="text" id="back{{ $loop->index }}"
-                                            name="back{{ $loop->index }}" value="{{ $back->退回原因 }}">
+                                        <label><input type="checkbox" name="backcheck"
+                                                value="{{ $loop->index }}"></label>
+                                        <label><input class="form-control-lg" type="text"
+                                                id="back{{ $loop->index }}" name="back{{ $loop->index }}"
+                                                value="{{ $back->退回原因 }}"></label>
                                         <input type="hidden" id="oldback{{ $loop->index }}"
                                             name="oldback{{ $loop->index }}" value="{{ $back->退回原因 }}">
                                         <hr />
                                     @endforeach
-                                    {!! __('basicInfoLang.new') !!} : <input class="form-control" type="text" id="backnew"
-                                        name="backnew" value="">
+                                    <label>{!! __('basicInfoLang.new') !!} : <input class="form-control-lg" type="text"
+                                            id="backnew" name="backnew" value=""></label>
                                     <hr />
                                 </div>
                             </div>

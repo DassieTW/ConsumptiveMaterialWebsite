@@ -24,7 +24,7 @@
                     @csrf
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.client') !!}</label>
-                        <select class="form-select form-select-lg" id="client" name="client" required>
+                        <select class="form-select form-select-lg" id="client" name="client">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterclient') !!}</option>
                             @foreach ($client as $client)
                                 <option>{{ $client->客戶 }}</option>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
-                        <select class="form-select form-select-lg" id="machine" name="machine" required>
+                        <select class="form-select form-select-lg" id="machine" name="machine">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.entermachine') !!}</option>
                             @foreach ($machine as $machine)
                                 <option>{{ $machine->機種 }}</option>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.process') !!}</label>
-                        <select class="form-select form-select-lg " id="production" name="production" required>
+                        <select class="form-select form-select-lg " id="production" name="production">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterprocess') !!}</option>
                             @foreach ($production as $production)
                                 <option>{{ $production->制程 }}</option>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>
-                        <select class="form-select form-select-lg " id="line" name="line" required>
+                        <select class="form-select form-select-lg " id="line" name="line">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterline') !!}</option>
                             @foreach ($line as $line)
                                 <option>{{ $line->線別 }}</option>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.backreason') !!}</label>
-                        <select class="form-select form-select-lg " id="backreason" name="backreason" required>
+                        <select class="form-select form-select-lg " id="backreason" name="backreason">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterbackreason') !!}</option>
                             @foreach ($backreason as $backreason)
                                 <option>{{ $backreason->退回原因 }}</option>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
-                        <input class="form-control form-control-lg " type="text" id="number" name="number" required
+                        <input class="form-control form-control-lg " type="text" id="number" name="number"
                             placeholder="{!! __('outboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
                         <div id="numbererror" style="display:none; color:red;">{!! __('outboundpageLang.isnlength') !!}</div>
                         <div id="numbererror1" style="display:none; color:red;">{!! __('outboundpageLang.noisn') !!}

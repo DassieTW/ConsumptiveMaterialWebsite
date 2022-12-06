@@ -93,7 +93,7 @@
                                         <td><span id="unit{{ $loop->index }}">{{ $data->單位 }}</span></td>
                                         <td><span id="advance{{ $loop->index }}">{{ $data->預領數量 }}</span></td>
                                         <td><input class="form-control amount" style="width:100px" type="number"
-                                                id="amount{{ $loop->index }}" name="amount{{ $loop->index }}" required
+                                                id="amount{{ $loop->index }}" name="amount{{ $loop->index }}"
                                                 value="{{ $data->實際領用數量 }}" min="0"></td>
                                         <td><span id="remark{{ $loop->index }}">{{ $data->備註 }}</span></td>
                                         <td><input class="form-control reason" style="width:100px" type="text"
@@ -104,8 +104,7 @@
                                         <td><span id="opentime{{ $loop->index }}">{{ $data->開單時間 }}</span></td>
                                         <td>
                                             <select style="width: 150px" class="form-select form-select-lg"
-                                                name="position{{ $loop->index }}" id="position{{ $loop->index }}"
-                                                required>
+                                                name="position{{ $loop->index }}" id="position{{ $loop->index }}">
                                                 <div id="locoption{{ $loop->index }}">
                                                     <option style="display: none" disabled selected value="">
                                                         {!! __('outboundpageLang.enterloc') !!}</option>
@@ -116,7 +115,7 @@
                                                         @endif
                                                     @endforeach
                                                 </div>
-                                                <option>實際領用數量為0</option>
+                                                <option value="actualzero">{!! __('outboundpageLang.realpickzero') !!}</option>
                                             </select>
                                         </td>
                                         <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
@@ -128,7 +127,7 @@
 
                     {{-- show reason error --}}
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                    <div id="reasonerror" style="display:none;">
+                    <div class="invalid-feedback" id="reasonerror" style="display:none;">
                         <h3 id="reasonerrrow" style="color: red"></h3>
                         <h3 style="color: red">{!! __('outboundpageLang.enterdiffreason') !!}</h3>
                     </div>
@@ -137,7 +136,7 @@
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <label class="form-label">{!! __('outboundpageLang.sendpeople') !!}</label>
                     <input class="form-control form-control-lg" id="sendpeople" name="sendpeople" width="250"
-                        style="width: 250px" placeholder="{!! __('outboundpageLang.inputsendpeople') !!}" required {{-- oninput="if(value.length>9)value=value.slice(0,9)"> --}}>
+                        style="width: 250px" placeholder="{!! __('outboundpageLang.inputsendpeople') !!}" {{-- oninput="if(value.length>9)value=value.slice(0,9)"> --}}>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <ul id="sendmenu" style="display: none;" class="list-group">
                         @foreach ($people as $people)
@@ -157,7 +156,7 @@
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <label class="form-label">{!! __('outboundpageLang.pickpeople') !!}</label>
                     <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
-                        style="width: 250px" placeholder="{!! __('outboundpageLang.inputpickpeople') !!}" required {{-- oninput="if(value.length>9)value=value.slice(0,9)"> --}}>
+                        style="width: 250px" placeholder="{!! __('outboundpageLang.inputpickpeople') !!}" {{-- oninput="if(value.length>9)value=value.slice(0,9)"> --}}>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <ul id="pickmenu" style="display: none;" class="list-group">
                         @foreach ($people1 as $people)
@@ -181,7 +180,7 @@
 
                     {{-- stock error --}}
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                    <div id="lessstock" style="display:none;">
+                    <div class="invalid-feedback" id="lessstock" style="display:none;">
                         <h3 style="color: red" id="row"></h3>
                         <h3 style="color: red" id="position"></h3>
                         <h3 style="color: red" id="nowstock"></h3>

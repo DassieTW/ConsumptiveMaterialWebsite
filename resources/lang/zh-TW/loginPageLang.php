@@ -32,7 +32,7 @@ return [
     'name' => '姓名',
     'email' => '公司信箱',
     'entername' => '請輸入姓名',
-    'enteremail' =>'請輸入公司信箱',
+    'enteremail' => '請輸入公司信箱',
     'enterpriority' => '請選擇權限',
     'priority' => '權限',
     'dep' => '部門',
@@ -80,4 +80,5 @@ return [
     'yellowrepeat' => '黃底標表示資料庫已存放在資料庫內',
     'data' => '資料',
     'mail' => '信箱',
+    'selectprofile_pic' => '請選擇頭像'
 ];

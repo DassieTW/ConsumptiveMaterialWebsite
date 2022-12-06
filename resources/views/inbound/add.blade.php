@@ -27,25 +27,29 @@
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('inboundpageLang.client') !!}</label>
 
-                        <select class="form-select form-select-lg" id="client" name="client" required>
+                        <select class="form-select form-select-lg" id="client" name="client">
                             <option style="display: none" disabled selected value="">{!! __('inboundpageLang.enterclient') !!}</option>
                             @foreach ($clients as $client)
                                 <option>{{ $client->客戶 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
+                            {!! __('inboundpageLang.enterclient') !!}</div>
                     </div>
 
                     <div class="col-auto">
 
                         <label class="col col-lg-12 form-label">{!! __('inboundpageLang.inreason') !!}</label>
 
-                        <select class="form-select form-select-lg " id="inreason" name="inreason" required>
+                        <select class="form-select form-select-lg " id="inreason" name="inreason">
                             <option style="display: none" disabled selected value="">{!! __('inboundpageLang.enterinreason') !!}</option>
                             @foreach ($inreasons as $inreason)
                                 <option>{{ $inreason->入庫原因 }}</option>
                             @endforeach
                             <option>{!! __('inboundpageLang.other') !!}</option>
                         </select>
+                        <div class="invalid-feedback" id="inreasonerror" style="display:none; color:red;">
+                            {!! __('inboundpageLang.enterinreason') !!}</div>
                     </div>
 
                     <div class="col-auto">
@@ -53,10 +57,13 @@
                         <input class="form-control form-control-lg " type="text" id="number" name="number"
                             placeholder="{!! __('inboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
 
-                        <div id="numbererror" style="display:none; color:red;">{!! __('inboundpageLang.isnlength') !!}</div>
-                        <div id="numbererror1" style="display:none; color:red;">{!! __('inboundpageLang.noisn') !!}
+                        <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                            {!! __('inboundpageLang.isnlength') !!}</div>
+                        <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                            {!! __('inboundpageLang.noisn') !!}
                         </div>
-                        <div id="notransit" style="display:none; color:red;">{!! __('inboundpageLang.notransit') !!}
+                        <div class="invalid-feedback" id="notransit" style="display:none; color:red;">
+                            {!! __('inboundpageLang.notransit') !!}
                         </div>
                     </div>
                     <div class="col-auto">
@@ -127,7 +134,7 @@
                     <div class="mb-3 col-md-6">
                         <label class="form-label">{!! __('inboundpageLang.inpeople') !!}</label>
                         <input class="form-control form-control-lg" id="inpeople" name="inpeople" style="width: 250px"
-                            placeholder="{!! __('inboundpageLang.enterinpeople') !!}" required>
+                            placeholder="{!! __('inboundpageLang.enterinpeople') !!}">
                         {{-- oninput="if(value.length>9)value=value.slice(0,9)" required> --}}
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <ul id="inboundmenu" style="display: none;" class="list-group">

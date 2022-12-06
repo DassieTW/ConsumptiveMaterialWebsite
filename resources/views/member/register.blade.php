@@ -115,7 +115,10 @@
                                             <input
                                                 class="form-control form-control-lg @error('username') is-invalid @enderror"
                                                 type="text" id="username" name="username"
-                                                placeholder="{!! __('loginPageLang.username_placeholder') !!}" required>
+                                                placeholder="{!! __('loginPageLang.username_placeholder') !!}">
+                                            <div class="invalid-feedback" id="usernameerror"
+                                                style="display:none; color:red;">
+                                                {!! __('loginPageLang.username_placeholder') !!}</div>
                                         </div>
 
                                         <div class="mb-3">
@@ -124,7 +127,7 @@
                                                 <input
                                                     class="form-control form-control-lg @error('password') is-invalid @enderror"
                                                     type="password" id="password" name="password"
-                                                    placeholder="{!! __('loginPageLang.password_placeholder') !!}" required />
+                                                    placeholder="{!! __('loginPageLang.password_placeholder') !!}" />
                                                 <div class="input-group-text" id="eye-button"
                                                     style="color: darkblue; border-radius: 5px;">
                                                     <a href="#">
@@ -137,7 +140,9 @@
                                                         </svg>
                                                     </a>
                                                 </div>
-
+                                                <div class="invalid-feedback" id="passworderror"
+                                                    style="display:none; color:red;">
+                                                    {!! __('loginPageLang.password_placeholder') !!}</div>
                                             </div>
                                         </div>
 
@@ -147,7 +152,7 @@
                                                 <input
                                                     class="form-control form-control-lg @error('password2') is-invalid @enderror"
                                                     type="password" id="password2" name="password2"
-                                                    placeholder="{!! __('loginPageLang.enterpassword') !!}" required />
+                                                    placeholder="{!! __('loginPageLang.enterpassword') !!}" />
                                                 <div class="input-group-text" id="eye-button2"
                                                     style="color: darkblue; border-radius: 5px;">
                                                     <a href="#">
@@ -160,26 +165,44 @@
                                                         </svg>
                                                     </a>
                                                 </div>
+                                                <div class="invalid-feedback" id="passworderror1"
+                                                    style="display:none; color:red;">
+                                                    {!! __('loginPageLang.password_placeholder') !!}</div>
 
+                                                <div class="invalid-feedback" id="passworderror2"
+                                                    style="display:none; color:red;">
+                                                    {!! __('loginPageLang.errorpassword2') !!}</div>
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.name') !!}</label>
                                             <input class="form-control form-control-lg" type="text" id="name"
-                                                name="name" placeholder="{!! __('loginPageLang.entername') !!}" required />
-
+                                                name="name" placeholder="{!! __('loginPageLang.entername') !!}" />
+                                            <div class="invalid-feedback" id="nameerror"
+                                                style="display:none; color:red;">
+                                                {!! __('loginPageLang.entername') !!}</div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.email') !!}</label>
-                                            <input class="form-control form-control-lg" type="text" id="email"
-                                                name="email" placeholder="{!! __('loginPageLang.enteremail') !!}" />
-
+                                            <div class="input-group">
+                                                <input type="text" id="email" name="email"
+                                                    class="form-control form-control" style="width: 200px;"
+                                                    placeholder="{!! __('loginPageLang.enter_email') !!}">
+                                                <select class="form-select form-select-lg" style="width: 200px;"
+                                                    id="emailTail">
+                                                    <option selected>@pegatroncorp.com</option>
+                                                    <option>@intra.pegatroncorp.com</option>
+                                                </select>
+                                            </div>
+                                            <div class="invalid-feedback" id="emailerror"
+                                                style="display:none; color:red;">
+                                                {!! __('loginPageLang.enteremail') !!}</div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.priority') !!}</label>
 
-                                            <select class="form-select form-select-lg" id="priority" name="priority"
-                                                required>
+                                            <select class="form-select form-select-lg" id="priority"
+                                                name="priority">
                                                 <option style="display: none" disabled selected value="">
                                                     {!! __('loginPageLang.enterpriority') !!}</option>
                                                 <option>1</option>
@@ -187,14 +210,19 @@
                                                 <option>3</option>
                                                 <option>4</option>
                                             </select>
-
+                                            <div class="invalid-feedback" id="priorityerror"
+                                                style="display:none; color:red;">
+                                                {!! __('loginPageLang.enterpriority') !!}</div>
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">{!! __('loginPageLang.dep') !!}</label>
                                             <input class="form-control form-control-lg " type="text"
                                                 id="department" name="department"
-                                                placeholder="{!! __('loginPageLang.enterdep') !!}" required>
+                                                placeholder="{!! __('loginPageLang.enterdep') !!}">
+                                            <div class="invalid-feedback" id="deperror"
+                                                style="display:none; color:red;">
+                                                {!! __('loginPageLang.enterdep') !!}</div>
                                         </div>
 
                                         <label class="form-label">{!! __('loginPageLang.profile_pic') !!}</label>
@@ -205,7 +233,7 @@
                                                         class="img-fluid rounded-circle" />
                                                 </label>
                                                 <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
-                                                    name="flexRadioDefault" id="radio1" value="1" required>
+                                                    name="flexRadioDefault" id="radio1" value="1">
                                             </div>
                                             &nbsp;
                                             <div class="form-check col col-auto checkboxContainer m-0 p-0">
@@ -214,7 +242,7 @@
                                                         class="img-fluid rounded-circle" />
                                                 </label>
                                                 <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
-                                                    name="flexRadioDefault" id="radio2" value="2" required>
+                                                    name="flexRadioDefault" id="radio2" value="2">
                                             </div>
                                             &nbsp;
                                             <div class="form-check col col-auto checkboxContainer m-0 p-0">
@@ -223,7 +251,7 @@
                                                         class="img-fluid rounded-circle" />
                                                 </label>
                                                 <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
-                                                    name="flexRadioDefault" id="radio3" value="3" required>
+                                                    name="flexRadioDefault" id="radio3" value="3">
                                             </div>
                                             &nbsp;
                                             <div class="form-check col col-auto checkboxContainer m-0 p-0">
@@ -232,7 +260,7 @@
                                                         class="img-fluid rounded-circle" />
                                                 </label>
                                                 <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
-                                                    name="flexRadioDefault" id="radio4" value="4" required>
+                                                    name="flexRadioDefault" id="radio4" value="4">
                                             </div>
                                             &nbsp;
                                             <div class="form-check col col-auto checkboxContainer m-0 p-0">
@@ -241,14 +269,19 @@
                                                         class="img-fluid rounded-circle" />
                                                 </label>
                                                 <input class="form-check-input m-0 p-0 checkboxOnPic" type="radio"
-                                                    name="flexRadioDefault" id="radio5" value="5" required>
+                                                    name="flexRadioDefault" id="radio5" value="5">
                                             </div>
 
-                                            @error('flexRadioDefault')
+                                            {{-- @error('flexRadioDefault')
                                                 <span class="invalid-feedback p-0 m-0" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
+
+                                            <div class="invalid-feedback" id="picerror"
+                                                style="display:none; color:red;">
+                                                {!! __('loginPageLang.selectprofile_pic') !!}</div>
+
                                         </div>
 
                                         <div class="text-center mt-3">

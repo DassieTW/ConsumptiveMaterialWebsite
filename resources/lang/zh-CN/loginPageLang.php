@@ -32,7 +32,7 @@ return [
     'name' => '姓名',
     'email' => '公司信箱',
     'entername' => '请输入姓名',
-    'enteremail' =>'请输入公司信箱',
+    'enteremail' => '请输入公司信箱',
     'enterpriority' => '请选择权限',
     'priority' => '权限',
     'dep' => '部门',
@@ -80,4 +80,5 @@ return [
     'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
     'data' => '资料',
     'mail' => '信箱',
+    'selectprofile_pic' => '请选择头像'
 ];

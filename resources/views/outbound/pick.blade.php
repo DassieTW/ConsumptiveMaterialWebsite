@@ -26,58 +26,71 @@
                     @csrf
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.client') !!}</label>
-                        <select class="form-select form-select-lg" id="client" name="client" required>
+                        <select class="form-select form-select-lg" id="client" name="client">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterclient') !!}</option>
                             @foreach ($client as $client)
                                 <option>{{ $client->客戶 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
+                            {!! __('inboundpageLang.enterclient') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
-                        <select class="form-select form-select-lg" id="machine" name="machine" required>
+                        <select class="form-select form-select-lg" id="machine" name="machine">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.entermachine') !!}</option>
                             @foreach ($machine as $machine)
                                 <option>{{ $machine->機種 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="machineerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.entermachine') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.process') !!}</label>
-                        <select class="form-select form-select-lg " id="production" name="production" required>
+                        <select class="form-select form-select-lg " id="production" name="production">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterprocess') !!}</option>
                             @foreach ($production as $production)
                                 <option>{{ $production->制程 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="productionerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.enterprocess') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>
-                        <select class="form-select form-select-lg " id="line" name="line" required>
+                        <select class="form-select form-select-lg " id="line" name="line">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterline') !!}</option>
                             @foreach ($line as $line)
                                 <option>{{ $line->線別 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="lineerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.enterline') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.usereason') !!}</label>
-                        <select class="form-select form-select-lg " id="usereason" name="usereason" required>
+                        <select class="form-select form-select-lg " id="usereason" name="usereason">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterusereason') !!}</option>
                             @foreach ($usereason as $usereason)
                                 <option>{{ $usereason->領用原因 }}</option>
                             @endforeach
                             <option>{!! __('outboundpageLang.other') !!}</option>
                         </select>
+                        <div class="invalid-feedback" id="usereasonerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.enterusereason') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
-                        <input class="form-control form-control-lg " type="text" id="number" name="number" required
+                        <input class="form-control form-control-lg " type="text" id="number" name="number"
                             placeholder="{!! __('outboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
-                        <div id="numbererror" style="display:none; color:red;">{!! __('outboundpageLang.isnlength') !!}</div>
-                        <div id="numbererror1" style="display:none; color:red;">{!! __('outboundpageLang.noisn') !!}
+                        <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.isnlength') !!}</div>
+                        <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                            {!! __('outboundpageLang.noisn') !!}
                         </div>
-                        <div id="nostock" style="display:none; color:red;">{!! __('outboundpageLang.nostock') !!}
+                        <div class="invalid-feedback" id="nostock" style="display:none; color:red;">
+                            {!! __('outboundpageLang.nostock') !!}
                         </div>
                     </div>
                     <div class="col-auto">
