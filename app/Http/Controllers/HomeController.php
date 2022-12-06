@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use MeiliSearch\Client;
+use MeiliSearch\Contracts\IndexesQuery;
 
 class HomeController extends Controller
 {
@@ -25,7 +26,7 @@ class HomeController extends Controller
         $keywords_json = file_get_contents(__DIR__ . '/../../../resources/meilisearchWords/keywords.json');
         $titles = json_decode($keywords_json);
         //--------------------------------------------------------------------------------------------------
-        // $this->searchClient->index('titles')->delete(); // u might want to clean up meilisearch db first
+        // $this->searchClient->deleteAllIndexes(); // u might want to clean up meilisearch db first
         //--------------------------------------------------------------------------------------------------
         $this->searchClient->index('titles')->addDocuments($titles);
         $this->searchClient->index('titles')->updateSearchableAttributes([

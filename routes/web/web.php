@@ -13,6 +13,7 @@ use App\Services\MailService; // for testing only
 use Illuminate\Http\Request;
 use App\Models;
 use Illuminate\Database\Eloquent\Model;
+use MeiliSearch\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,12 +69,6 @@ Route::get('/import_excel', [ImportExcelController::class, 'index']);
 Route::get('/import_excel/import', [ImportExcelController::class, 'index']);
 Route::post('/import_excel/import', [ImportExcelController::class, 'import']);
 
-
-//Route::middleware('priority')->get('member/call', [PriorityController::class, 'call'])->name('member.call');
-//Route::middleware('priority')->post('member/call', [PriorityController::class, 'call'])->name('member.call');
-
-// Auth::routes();
-
 // language changing routes
 Route::get('/lang/{type}', function (Request $request, $type) {
     $session = $request->getSession();
@@ -94,7 +89,7 @@ Route::post('/getCurrentDB', function () {
     return DB::connection()->getDatabaseName();
 });
 
-Route::get('/storage/barcodeImg/{filename}', function ($filename) { 
+Route::get('/storage/barcodeImg/{filename}', function ($filename) {
     // due to multiple project nginx settings, the php artisan storage:link won't work
     // so we get the storage path ourselves
     $path = storage_path('app/public/barcodeImg/' . $filename);
@@ -111,3 +106,10 @@ Route::get('/storage/barcodeImg/{filename}', function ($filename) {
 });
 
 Route::post('/navbar_quick_search', [HomeController::class, 'insiteSearch']);
+
+Route::get('/meiliSearchCleanUp', function () { // use this route when needed
+    $testClient = new Client(env('MEILISEARCH_HOST'));
+    // dd($testClient->getAllIndexes());
+    $testClient->deleteAllIndexes(); // u might want to clean up meilisearch db first
+    dd($testClient->getTasks());
+});
