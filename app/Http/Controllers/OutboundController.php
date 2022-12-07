@@ -111,20 +111,12 @@ class OutboundController extends Controller
     public function picklist(Request $request)
     {
         if (Session::has('username')) {
-            //刪除領料單
-            if ($request->has('delete')) {
-                $list =  $request->input('list');
-                DB::table('outbound')
-                    ->where('領料單號', $request->input('list'))
-                    ->delete();
-                $mess = trans('outboundpageLang.delete') . ' : ' . trans('outboundpageLang.picklistnum')
-                    . $list . trans('outboundpageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess' );
-                    window.location.href='picklist';
-                            </script>");
+            $list = $request->input('list');
+            if ($list === null) {
+                return $request->validate([
+                    'list' => 'required',
+                ]);
             } else {
-                $list = $request->input('list');
                 if ($request->input('send') === null) {
 
                     $datas =  DB::table('outbound')
@@ -158,20 +150,13 @@ class OutboundController extends Controller
     public function backlist(Request $request)
     {
         if (Session::has('username')) {
-            //刪除退料單
-            if ($request->has('delete')) {
-                $list =  $request->input('list');
-                DB::table('出庫退料')
-                    ->where('退料單號', $request->input('list'))
-                    ->delete();
-                $mess = trans('outboundpageLang.delete') . ' : ' . trans('outboundpageLang.backlistnum')
-                    . $list . trans('outboundpageLang.success');
-                echo ("<script LANGUAGE='JavaScript'>
-                    window.alert('$mess' );
-                    window.location.href='backlist';
-                            </script>");
+
+            $list =  $request->input('list');
+            if ($list === null) {
+                return $request->validate([
+                    'list' => 'required',
+                ]);
             } else {
-                $list = $request->input('list');
                 if ($request->input('send') === null) {
 
                     $datas =  DB::table('出庫退料')

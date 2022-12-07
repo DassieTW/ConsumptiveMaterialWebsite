@@ -13,11 +13,9 @@ $.ajaxSetup({
 $("#usereason").on("change", function () {
   var value = $("#usereason").val();
   if (value === "其他" || value === "other") {
-    document.getElementById("reason").style.display = "block";
-    document.getElementById("reason").required = true;
+    document.getElementById("inputreason").style.display = "block";
   } else {
-    document.getElementById("reason").style.display = "none";
-    document.getElementById("reason").required = false;
+    document.getElementById("inputreason").style.display = "none";
   }
 });
 
@@ -74,35 +72,48 @@ $(document).ready(function () {
     var production = $("#production").val();
     var line = $("#line").val();
     var usereason = $("#usereason").val();
-    if (usereason === "其他" || usereason === "other") {
-      usereason = $("#reason").val();
-    }
     var number = $("#number").val();
-    console.log(number);
+
     if (client === null) {
       document.getElementById("clienterror").style.display = "block";
       document.getElementById("client").classList.add("is-invalid");
+      document.getElementById("client").focus();
       return false;
     } else if (machine === null) {
       document.getElementById("machineerror").style.display = "block";
       document.getElementById("machine").classList.add("is-invalid");
+      document.getElementById("machine").focus();
       return false;
     } else if (production === null) {
       document.getElementById("productionerror").style.display = "block";
       document.getElementById("production").classList.add("is-invalid");
+      document.getElementById("production").focus();
       return false;
     } else if (line === null) {
       document.getElementById("lineerror").style.display = "block";
       document.getElementById("line").classList.add("is-invalid");
+      document.getElementById("line").focus();
       return false;
     } else if (usereason === null) {
       document.getElementById("usereasonerror").style.display = "block";
       document.getElementById("usereason").classList.add("is-invalid");
+      document.getElementById("usereason").focus();
       return false;
     } else if (number === "") {
       document.getElementById("numbererror1").style.display = "block";
       document.getElementById("number").classList.add("is-invalid");
+      document.getElementById("number").focus();
       return false;
+    }
+    if (usereason === "其他" || usereason === "other") {
+      if ($("#reason").val() !== "") {
+        usereason = $("#reason").val();
+      } else {
+        document.getElementById("inputreasonerror").style.display = "block";
+        document.getElementById("reason").classList.add("is-invalid");
+        document.getElementById("reason").focus();
+        return false;
+      }
     }
 
     $.ajax({
@@ -253,24 +264,20 @@ $(document).ready(function () {
           document.getElementById("client").classList.add("is-invalid");
           document.getElementById("number").value = "";
           document.getElementById("client").value = "";
-          document.getElementById("numbererror1").style.display = "none";
-          document.getElementById("numbererror").style.display = "none";
         }
         //沒有料號
         else if (err.status == 421) {
           document.getElementById("numbererror1").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
-          document.getElementById("nostock").style.display = "none";
-          document.getElementById("numbererror").style.display = "none";
+          document.getElementById("number").focus();
         }
         //料號長度不為12
         else if (err.status == 422) {
           document.getElementById("numbererror").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
-          document.getElementById("nostock").style.display = "none";
-          document.getElementById("numbererror1").style.display = "none";
+          document.getElementById("number").focus();
         }
       },
     });

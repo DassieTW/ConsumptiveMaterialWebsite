@@ -30,6 +30,8 @@
                                 <option>{{ $client->客戶 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.enterclient') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
@@ -39,7 +41,8 @@
                                 <option>{{ $machine->機種 }}</option>
                             @endforeach
                         </select>
-
+                        <div class="invalid-feedback" id="machineerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.entermachine') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.process') !!}</label>
@@ -49,7 +52,8 @@
                                 <option>{{ $production->制程 }}</option>
                             @endforeach
                         </select>
-
+                        <div class="invalid-feedback" id="productionerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.enterprocess') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>
@@ -59,6 +63,8 @@
                                 <option>{{ $line->線別 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="lineerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.enterline') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.backreason') !!}</label>
@@ -69,26 +75,34 @@
                             @endforeach
                             <option>{!! __('outboundpageLang.other') !!}</option>
                         </select>
+                        <div class="invalid-feedback" id="backreasonerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.enterbackreason') !!}</div>
+                        <div id="inputreason" style="display:none;">
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <input class="form-control form-control-lg " type="text" id="reason" name="reason"
+                                placeholder="{!! __('outboundpageLang.inputbackreason') !!}">
+                        </div>
+                        <div class="invalid-feedback" id="inputreasonerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.inputbackreason') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
                         <input class="form-control form-control-lg " type="text" id="number" name="number"
                             placeholder="{!! __('outboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
-                        <div id="numbererror" style="display:none; color:red;">{!! __('outboundpageLang.isnlength') !!}</div>
-                        <div id="numbererror1" style="display:none; color:red;">{!! __('outboundpageLang.noisn') !!}
+                        <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.isnlength') !!}</div>
+                        <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                            {!! __('outboundpageLang.noisn') !!}
                         </div>
-                        <div id="nostock" style="display:none; color:red;">{!! __('outboundpageLang.nostock') !!}
+                        <div class="invalid-feedback" id="nostock" style="display:none; color:red;">
+                            {!! __('outboundpageLang.nostock') !!}
                         </div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label"></label>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <input type="submit" id="add" name="add"
                             class="form-control form-control-lg btn btn-lg btn-primary" value="{!! __('outboundpageLang.add') !!}">
-                    </div>
-                    <div class="col-auto">
-                        <label class="col col-auto form-label"></label>
-                        <input style="display:none;" class="form-control form-control-lg " type="text" id="reason"
-                            name="reason" placeholder="{!! __('outboundpageLang.inputbackreason') !!}">
                     </div>
                 </form>
             </div>

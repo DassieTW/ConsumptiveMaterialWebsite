@@ -35,7 +35,7 @@
                                 <div class="col-lg-6  col-md-12 col-sm-12">
 
                                     <select class="form-select form-select-lg @error('list') is-invalid @enderror"
-                                        id="list" name="list" required>
+                                        id="list" name="list">
                                         <option style="display: none" disabled selected value="">
                                             {!! __('outboundpageLang.enterbacklist') !!}</option>
                                         @foreach ($data as $data)
@@ -45,7 +45,7 @@
 
                                     @error('list')
                                         <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong>{!! __('outboundpageLang.enterbacklist') !!}</strong>
                                         </span>
                                     @enderror
                                 </div>

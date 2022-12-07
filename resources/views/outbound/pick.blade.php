@@ -33,7 +33,7 @@
                             @endforeach
                         </select>
                         <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
-                            {!! __('inboundpageLang.enterclient') !!}</div>
+                            {!! __('outboundpageLang.enterclient') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
@@ -79,6 +79,13 @@
                         </select>
                         <div class="invalid-feedback" id="usereasonerror" style="display:none; color:red;">
                             {!! __('outboundpageLang.enterusereason') !!}</div>
+                        <div id="inputreason" style="display:none;">
+                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            <input class="form-control form-control-lg " type="text" id="reason" name="reason"
+                                placeholder="{!! __('outboundpageLang.inputusereason') !!}">
+                        </div>
+                        <div class="invalid-feedback" id="inputreasonerror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.inputusereason') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
@@ -95,13 +102,9 @@
                     </div>
                     <div class="col-auto">
                         <label class="col col-auto form-label"></label>
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <input type="submit" id="add" name="add"
                             class="form-control form-control-lg btn btn-lg btn-primary" value="{!! __('outboundpageLang.add') !!}">
-                    </div>
-                    <div class="col-auto">
-                        <label class="col col-auto form-label"></label>
-                        <input style="display:none;" class="form-control form-control-lg " type="text" id="reason"
-                            name="reason" placeholder="{!! __('outboundpageLang.inputusereason') !!}">
                     </div>
                 </form>
             </div>
