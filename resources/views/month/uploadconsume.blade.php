@@ -35,58 +35,57 @@
     if ($name === null || $format === null || $month === '否' || $belong !== '單耗') {
         $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[3];
         echo "<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='uploadconsume';
-                        </script>";
+                            window.alert('$mess');
+                            window.location.href='uploadconsume';
+                            </script>";
     }
     //判斷是否有這個客戶
     if (in_array($row[0], $clients)) {
         $i = true;
     }
-
+    
     if ($i === false) {
         $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[0];
         echo "<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='uploadconsume';
-                        </script>";
+                            window.alert('$mess');
+                            window.location.href='uploadconsume';
+                            </script>";
     }
-
+    
     //判斷是否有這個機種
     if (in_array($row[1], $machines)) {
         $j = true;
     }
-
+    
     if ($j === false) {
         $mess = trans('monthlyPRpageLang.nomachine') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='uploadconsume';
-                        </script>";
+                            window.alert('$mess');
+                            window.location.href='uploadconsume';
+                            </script>";
     }
-
+    
     //判斷是否有這個製程
     if (in_array($row[2], $productions)) {
         $k = true;
     }
-
+    
     if ($k === false) {
         $mess = trans('monthlyPRpageLang.noproduction') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
         echo "<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='uploadconsume';
-                        </script>";
+                            window.alert('$mess');
+                            window.location.href='uploadconsume';
+                            </script>";
     }
     ?>
 @endforeach
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('/js/month/uploadconsume.js') }}"></script>
+    <script src="{{ asset('/js/month/uploadconsume.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">

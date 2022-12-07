@@ -2,6 +2,10 @@
 
 npx mix watch
 
+## Everytime u update a js or a css
+you should also update the version number in .env file,
+so that all clients' broswer will download the latest files.
+
 ## In Deployment/Production
 
 yarn run clear:babel-cache <br />

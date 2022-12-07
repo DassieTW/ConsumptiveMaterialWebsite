@@ -1,6 +1,5 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
     <style>
         /* for single line table with over-flow , SAP style as asked */
         table {
@@ -24,7 +23,7 @@
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/bu/searchlist.js') }}"></script>
+    <script src="{{ asset('js/bu/searchlist.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">

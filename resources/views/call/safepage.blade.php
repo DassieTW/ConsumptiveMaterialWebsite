@@ -1,11 +1,8 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
-    <!-- <script src="{{ asset('js/popupNotice.js') }}"></script> -->
-    <!--for notifications pop up -->
     <script>
         $(window).on('beforeunload', function() {
             $('body').loadingModal({

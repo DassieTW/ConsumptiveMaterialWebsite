@@ -1,10 +1,9 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
-    <script src="{{ asset('/js/login/change.js') }}"></script>
+    <script src="{{ asset('/js/login/change.js?v=') . env('APP_VERSION') }}"></script>
     <!--for this page's sepcified js -->
 @endsection
 @section('content')

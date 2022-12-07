@@ -1,99 +1,94 @@
 @extends('layouts.adminTemplate')
 
 @section('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
-<link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/animate.min.css?v=') . env('APP_VERSION') }}">
 @endsection
 
 @section('js')
-<!--for this page's sepcified js -->
-<script src="{{ asset('/js/checkInventory/newTable.js') }}"></script>
+    <!--for this page's sepcified js -->
+    <script src="{{ asset('/js/checkInventory/newTable.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 
 
 @section('content')
-<div class="container-fluid p-0">
+    <div class="container-fluid p-0">
 
-    <div class="row mb-2 mb-xl-3 justify-content-between">
-        <div class="col-auto">
-            <h2 class="pb-3">{!! __('checkInvLang.create_new_table') !!}</h2>
+        <div class="row mb-2 mb-xl-3 justify-content-between">
+            <div class="col-auto">
+                <h2 class="pb-3">{!! __('checkInvLang.create_new_table') !!}</h2>
+            </div>
+
+            {{-- this div will not be visible if screen is smaller than lg --}}
+            <div class="col-auto ml-auto text-right mt-n1 d-none d-lg-block" id="mountingPoint">
+                <vue-bread-crumb></vue-bread-crumb>
+            </div>
         </div>
-
-        {{-- this div will not be visible if screen is smaller than lg --}}
-        <div class="col-auto ml-auto text-right mt-n1 d-none d-lg-block" id="mountingPoint">
-            <vue-bread-crumb></vue-bread-crumb>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card flex-fill w-100">
-                <div class="card-body pt-2 pb-3">
-                    <div class="card-header pb-0">
-                        <h1 class="card-title">
-                            @if ( $serialNums->first() !== null )
-                            {!! __('checkInvLang.existed_tables') !!} :&nbsp;&nbsp;
-                            @endif
-                            <div class="btn-group col col-auto" hidden>
-                                <ul class="dropdown-menu" aria-labelledby="continueT" id="serialList">
-                                    @foreach ($serialNums as $serialNum)
-                                    <li>{{ $serialNum->單號 }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </h1>
-                    </div>
-
-                    @if ( $serialNums->first() === null )
-                    <form class="text-center needs-validation" method="post" novalidate>
-                        <div class="row justify-content-center align-items-center">
-                            <div class="col col-auto">
-                                <span class="col col-auto">{!! __('checkInvLang.plz_create')
-                                    !!}</span>
-                            </div>
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                            <div class="col col-auto">
-                                <button class="btn btn-primary col-auto" id="submitBtn" type="submit">{!!
-                                    __('checkInvLang.create_new_table')
-                                    !!}</button>
-                            </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card flex-fill w-100">
+                    <div class="card-body pt-2 pb-3">
+                        <div class="card-header pb-0">
+                            <h1 class="card-title">
+                                @if ($serialNums->first() !== null)
+                                    {!! __('checkInvLang.existed_tables') !!} :&nbsp;&nbsp;
+                                @endif
+                                <div class="btn-group col col-auto" hidden>
+                                    <ul class="dropdown-menu" aria-labelledby="continueT" id="serialList">
+                                        @foreach ($serialNums as $serialNum)
+                                            <li>{{ $serialNum->單號 }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </h1>
                         </div>
-                    </form>
-                    @else
-                    <form class="text-center needs-validation" method="post" novalidate>
-                        @csrf
-                        <div class="table-responsive">
-                            <table class="table align-items-center">
-                                <tbody>
-                                    <tr id="tableHead" class="table-primary align-items-center">
-                                        <th class="col col-auto align-items-center px-0 m-0"><span>{!!
-                                                __('checkInvLang.serial_number') !!}</span>
-                                        </th>
-                                        <th class="col col-auto align-items-center px-0 m-0"><span>{!!
-                                                __('checkInvLang.created_by') !!}</span>
-                                        </th>
-                                        <th class="col col-auto align-items-center px-0 m-0"><span>{!!
-                                                __('checkInvLang.created_time') !!}</span>
-                                        </th>
-                                        <th class="col col-auto align-items-center px-0 m-0">
-                                            <span>&nbsp;&nbsp;</span>
-                                        </th>
-                                    </tr>
-                                    {{-- the content here is generated by js --}}
-                                </tbody>
-                            </table>
-                        </div>
-                        <input type="hidden" name="sID" id="sID" value="{!! \Session::getId() !!}">
-                    </form>
-                    <div class="row justify-content-center align-items-center mt-3">
-                        <button class="btn btn-primary col-auto" id="stillNewBtn">{!!
-                            __('checkInvLang.create_new_table') !!}</button>
-                    </div>
 
-                    @endif
+                        @if ($serialNums->first() === null)
+                            <form class="text-center needs-validation" method="post" novalidate>
+                                <div class="row justify-content-center align-items-center">
+                                    <div class="col col-auto">
+                                        <span class="col col-auto">{!! __('checkInvLang.plz_create') !!}</span>
+                                    </div>
+                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <div class="col col-auto">
+                                        <button class="btn btn-primary col-auto" id="submitBtn"
+                                            type="submit">{!! __('checkInvLang.create_new_table') !!}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        @else
+                            <form class="text-center needs-validation" method="post" novalidate>
+                                @csrf
+                                <div class="table-responsive">
+                                    <table class="table align-items-center">
+                                        <tbody>
+                                            <tr id="tableHead" class="table-primary align-items-center">
+                                                <th class="col col-auto align-items-center px-0 m-0">
+                                                    <span>{!! __('checkInvLang.serial_number') !!}</span>
+                                                </th>
+                                                <th class="col col-auto align-items-center px-0 m-0">
+                                                    <span>{!! __('checkInvLang.created_by') !!}</span>
+                                                </th>
+                                                <th class="col col-auto align-items-center px-0 m-0">
+                                                    <span>{!! __('checkInvLang.created_time') !!}</span>
+                                                </th>
+                                                <th class="col col-auto align-items-center px-0 m-0">
+                                                    <span>&nbsp;&nbsp;</span>
+                                                </th>
+                                            </tr>
+                                            {{-- the content here is generated by js --}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <input type="hidden" name="sID" id="sID" value="{!! \Session::getId() !!}">
+                            </form>
+                            <div class="row justify-content-center align-items-center mt-3">
+                                <button class="btn btn-primary col-auto" id="stillNewBtn">{!! __('checkInvLang.create_new_table') !!}</button>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
 @endsection

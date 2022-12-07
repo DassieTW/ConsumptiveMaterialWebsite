@@ -1,11 +1,10 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/bu/outlist.js') }}"></script>
+    <script src="{{ asset('js/bu/outlist.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -60,7 +59,7 @@
                                     ->where('現有庫存', '>', 0)
                                     ->pluck('儲位')
                                     ->toArray();
-
+                                
                                 $count = count($client);
                                 for ($x = 0; $x < $count; $x++) {
                                     $keys[] = 'u' . $x;

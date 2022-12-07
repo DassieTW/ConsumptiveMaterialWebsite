@@ -2,12 +2,6 @@
 
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
-@endsection
-
-@section('js')
-    <!--for this page's sepcified js -->
-    <script src="{{ asset('js/basic/basic.js') }}"></script>
     <style>
         :root {
             --form-control-color: rgb(62, 102, 220);
@@ -59,6 +53,12 @@
         }
     </style>
 @endsection
+
+@section('js')
+    <!--for this page's sepcified js -->
+    <script src="{{ asset('js/basic/basic.js?v=') . env('APP_VERSION') }}"></script>
+@endsection
+
 @section('content')
     <div class="row justify-content-center">
         <div class="card w-75">

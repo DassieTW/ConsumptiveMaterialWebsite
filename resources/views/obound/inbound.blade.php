@@ -1,11 +1,9 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
-    <script src="{{ asset('js/obound/inbound.js') }}"></script>
-    <!--for notifications pop up -->
+    <script src="{{ asset('js/obound/inbound.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">

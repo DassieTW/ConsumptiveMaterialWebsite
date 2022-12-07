@@ -1,6 +1,5 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
     <style>
         /* for single line table with over-flow , SAP style as asked */
         table {
@@ -19,14 +18,11 @@
             top: 0;
             z-index: 10;
         }
-
     </style>
 @endsection
 
 @section('js')
-    <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
-    <script src="{{ asset('js/inbound/searchstock.js') }}"></script>
-    <!--for notifications pop up -->
+    <script src="{{ asset('js/inbound/searchstock.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <!DOCTYPE html>
@@ -61,25 +57,35 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th><input type="hidden" id="title0" name="title0" value="客戶別">{!! __('inboundpageLang.client') !!}
+                                    <th><input type="hidden" id="title0" name="title0"
+                                            value="客戶別">{!! __('inboundpageLang.client') !!}
                                     </th>
-                                    <th><input type="hidden" id="title1" name="title1" value="料號">{!! __('inboundpageLang.isn') !!}
+                                    <th><input type="hidden" id="title1" name="title1"
+                                            value="料號">{!! __('inboundpageLang.isn') !!}
                                     </th>
-                                    <th><input type="hidden" id="title2" name="title2" value="品名">{!! __('inboundpageLang.pName') !!}
+                                    <th><input type="hidden" id="title2" name="title2"
+                                            value="品名">{!! __('inboundpageLang.pName') !!}
                                     </th>
-                                    <th><input type="hidden" id="title3" name="title3" value="規格">{!! __('inboundpageLang.format') !!}
+                                    <th><input type="hidden" id="title3" name="title3"
+                                            value="規格">{!! __('inboundpageLang.format') !!}
                                     </th>
-                                    <th><input type="hidden" id="title4" name="title4" value="單位">{!! __('inboundpageLang.unit') !!}
+                                    <th><input type="hidden" id="title4" name="title4"
+                                            value="單位">{!! __('inboundpageLang.unit') !!}
                                     </th>
-                                    <th><input type="hidden" id="title5" name="title5" value="單價">{!! __('inboundpageLang.price') !!}
+                                    <th><input type="hidden" id="title5" name="title5"
+                                            value="單價">{!! __('inboundpageLang.price') !!}
                                     </th>
-                                    <th><input type="hidden" id="title6" name="title6" value="幣別">{!! __('inboundpageLang.money') !!}
+                                    <th><input type="hidden" id="title6" name="title6"
+                                            value="幣別">{!! __('inboundpageLang.money') !!}
                                     </th>
-                                    <th><input type="hidden" id="title7" name="title7" value="A級資材">{!! __('inboundpageLang.gradea') !!}
+                                    <th><input type="hidden" id="title7" name="title7"
+                                            value="A級資材">{!! __('inboundpageLang.gradea') !!}
                                     </th>
-                                    <th><input type="hidden" id="title8" name="title8" value="月請購">{!! __('inboundpageLang.month') !!}
+                                    <th><input type="hidden" id="title8" name="title8"
+                                            value="月請購">{!! __('inboundpageLang.month') !!}
                                     </th>
-                                    <th><input type="hidden" id="title9" name="title9" value="現有庫存">{!! __('inboundpageLang.nowstock') !!}
+                                    <th><input type="hidden" id="title9" name="title9"
+                                            value="現有庫存">{!! __('inboundpageLang.nowstock') !!}
                                     </th>
                                     <th><input type="hidden" id="title10" name="title10"
                                             value="月使用量">{!! __('inboundpageLang.monthuse') !!}
@@ -106,57 +112,50 @@
                                         $lt = $data->LT;
                                         $monthuse = 0;
                                         if ($belong === '單耗') {
-
                                             $machine = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
                                                 ->get('機種');
                                             $howmany = count($machine);
-
+                                        
                                             $production = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
                                                 ->get('製程');
-
-
-                                            for($i = 0 ; $i < $howmany ; $i++)
-                                            {
+                                        
+                                            for ($i = 0; $i < $howmany; $i++) {
                                                 $nowmps = DB::table('MPS')
                                                     ->where('客戶別', $data->客戶別)
                                                     ->where('製程', $production[$i]->製程)
                                                     ->where('機種', $machine[$i]->機種)
                                                     ->value('本月MPS');
-
+                                        
                                                 $consume = DB::table('月請購_單耗')
                                                     ->where('料號', $data->料號)
                                                     ->where('客戶別', $data->客戶別)
                                                     ->where('製程', $production[$i]->製程)
                                                     ->where('機種', $machine[$i]->機種)
                                                     ->value('單耗');
-
-                                                $monthuse = $monthuse + ($consume * $nowmps);
+                                        
+                                                $monthuse = $monthuse + $consume * $nowmps;
                                             }
-
+                                        
                                             if ($monthuse != 0) {
                                                 $stockmonth = $data->現有庫存 / $monthuse;
                                             } else {
                                                 $stockmonth = 0;
                                             }
-
-
                                         } else {
                                             $machine = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
                                                 ->get('機種');
                                             $howmany = count($machine);
-
+                                        
                                             $production = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
                                                 ->get('製程');
                                             $mpq = DB::table('consumptive_material')
                                                 ->where('料號', $data->料號)
                                                 ->value('MPQ');
-                                            for($i = 0 ; $i < $howmany ; $i++)
-                                            {
-
+                                            for ($i = 0; $i < $howmany; $i++) {
                                                 $nowday = DB::table('MPS')
                                                     ->where('客戶別', $data->客戶別)
                                                     ->where('製程', $production[$i]->製程)
@@ -192,14 +191,14 @@
                                                     ->where('製程', $production[$i]->製程)
                                                     ->where('機種', $machine[$i]->機種)
                                                     ->value('當月每日更換頻率');
-
+                                        
                                                 if ($mpq != 0 || $mpq != null) {
-                                                    $monthuse = $monthuse + (($nowday * $nowstand * $nowline * $nowclass * $nowneed * $nowchange) / $mpq);
+                                                    $monthuse = $monthuse + ($nowday * $nowstand * $nowline * $nowclass * $nowneed * $nowchange) / $mpq;
                                                 } else {
                                                     $monthuse = $monthuse + 0;
                                                 }
                                             }
-
+                                        
                                             if ($monthuse != 0) {
                                                 $stockmonth = $data->現有庫存 / $monthuse;
                                             } else {
@@ -242,7 +241,7 @@
                                                 value="{{ $monthuse }}">{{ $monthuse }}</td>
                                         <td><input type="hidden" id="datal{{ $loop->index }}"
                                                 name="data11{{ $loop->index }}"
-                                                value="{{ round($stockmonth,5) }}">{{ round($stockmonth,5) }}</td>
+                                                value="{{ round($stockmonth, 5) }}">{{ round($stockmonth, 5) }}</td>
                                     </tr>
                             </tbody>
                             <input type="hidden" id="count" name="count" value="{{ $loop->count }}">

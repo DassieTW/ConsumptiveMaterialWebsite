@@ -1,13 +1,9 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
-    <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
-    <script src="{{ asset('js/obound/download.js') }}"></script>
-
-    <!--for notifications pop up -->
+    <script src="{{ asset('js/obound/download.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -70,8 +66,8 @@
                             </th>
                             <th><input type="hidden" id="title16" name="title16" value="發料人員工號">{!! __('oboundpageLang.sendpeoplenum') !!}
                             </th>
-                            <th><input type="hidden" id="title17" name="title17"
-                                    value="領料單號">{!! __('oboundpageLang.picklistnum') !!}</th>
+                            <th><input type="hidden" id="title17" name="title17" value="領料單號">{!! __('oboundpageLang.picklistnum') !!}
+                            </th>
                             <th><input type="hidden" id="title18" name="title18"
                                     value="開單時間">{!! __('oboundpageLang.opentime') !!}</th>
                             <th><input type="hidden" id="title19" name="title19"

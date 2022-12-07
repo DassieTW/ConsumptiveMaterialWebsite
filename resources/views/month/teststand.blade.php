@@ -14,11 +14,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.loadingModal.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/check.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/check.css?v=') . env('APP_VERSION') }}">
 
     <style>
         /* for single line table with over-flow , SAP style as asked */
@@ -37,7 +38,6 @@
             top: 0;
             z-index: 10;
         }
-
     </style>
 
     <script>
@@ -47,7 +47,6 @@
             // (避免重新提交表單)
             window.history.replaceState(null, null, window.location.href);
         } // if
-
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -57,9 +56,9 @@
     所以若域名不是ip而有經過轉換時要進到Nginx裡面的proxy_set_header裡面確認Host設定值，
     否則會抓到錯誤的Host導致找不到資源 --}}
 
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <script src="{{ asset('/admin/js/app.js') }}"></script>
-    <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
+    <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
 
     <main class="d-flex">
 
@@ -76,9 +75,9 @@
                     </p>
                 </div>
                 <div class="card-header">
-                    <h3 class="text-center">{!! __('monthlyPRpageLang.emailsender') !!} : {{$username}} ({!!
-                        __('basicInfoLang.factory') !!} : {{$database}})</h3>
-                    <input type="hidden" id="sender" value="{{$username}}">
+                    <h3 class="text-center">{!! __('monthlyPRpageLang.emailsender') !!} : {{ $username }} ({!! __('basicInfoLang.factory') !!} :
+                        {{ $database }})</h3>
+                    <input type="hidden" id="sender" value="{{ $username }}">
                 </div>
             </div>
             <div class="card">
@@ -86,7 +85,7 @@
                     <form id="standcheck" method="POST">
                         @csrf
                         <div class="table-responsive ">
-                            <table class = "table">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>{!! __('monthlyPRpageLang.isn') !!}</th>
@@ -110,56 +109,76 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($data as $data)
-                                    <?php
-                                        $name = DB::table('consumptive_material')->where('料號',$data->料號)->value('品名');
+                                    @foreach ($data as $data)
+                                        <?php
+                                        $name = DB::table('consumptive_material')
+                                            ->where('料號', $data->料號)
+                                            ->value('品名');
                                         $data->當月站位人數 = floatval($data->當月站位人數);
-                                        $data->當月開線數 = floatval($data->當月開線數 );
-                                        $data->當月開班數 = floatval($data->當月開班數 );
-                                        $data->當月每人每日需求量 = floatval($data->當月每人每日需求量 );
-                                        $data->當月每日更換頻率 = floatval($data->當月每日更換頻率 );
-                                        $data->下月站位人數 = floatval($data->下月站位人數 );
-                                        $data->下月開線數 = floatval($data->下月開線數 );
-                                        $data->下月開班數 = floatval($data->下月開班數 );
-                                        $data->下月每人每日需求量 = floatval($data->下月每人每日需求量 );
-                                        $data->下月每日更換頻率 = floatval($data->下月每日更換頻率 );
+                                        $data->當月開線數 = floatval($data->當月開線數);
+                                        $data->當月開班數 = floatval($data->當月開班數);
+                                        $data->當月每人每日需求量 = floatval($data->當月每人每日需求量);
+                                        $data->當月每日更換頻率 = floatval($data->當月每日更換頻率);
+                                        $data->下月站位人數 = floatval($data->下月站位人數);
+                                        $data->下月開線數 = floatval($data->下月開線數);
+                                        $data->下月開班數 = floatval($data->下月開班數);
+                                        $data->下月每人每日需求量 = floatval($data->下月每人每日需求量);
+                                        $data->下月每日更換頻率 = floatval($data->下月每日更換頻率);
+                                        
+                                        ?>
+                                        <tr>
+                                            <td><input type="hidden" id="number{{ $loop->index }}"
+                                                    name="number{{ $loop->index }}"
+                                                    value="{{ $data->料號 }}">{{ $data->料號 }}
+                                            </td>
+                                            <td><input type="hidden" id="name{{ $loop->index }}"
+                                                    name="name{{ $loop->index }}"
+                                                    value="{{ $name }}">{{ $name }}</td>
+                                            <td><input type="hidden" id="client{{ $loop->index }}"
+                                                    name="client{{ $loop->index }}"
+                                                    value="{{ $data->客戶別 }}">{{ $data->客戶別 }}
+                                            </td>
+                                            <td><input type="hidden" id="machine{{ $loop->index }}"
+                                                    name="machine{{ $loop->index }}"
+                                                    value="{{ $data->機種 }}">{{ $data->機種 }}
+                                            </td>
+                                            <td><input type="hidden" id="production{{ $loop->index }}"
+                                                    name="production{{ $loop->index }}"
+                                                    value="{{ $data->製程 }}">{{ $data->製程 }}
+                                            </td>
+                                            <td class="table-light" id="nowpeople{{ $loop->index }}">
+                                                {{ $data->當月站位人數 }}</td>
+                                            <td class="table-light" id="nowline{{ $loop->index }}">
+                                                {{ $data->當月開線數 }}</td>
+                                            <td class="table-light" id="nowclass{{ $loop->index }}">
+                                                {{ $data->當月開班數 }}</td>
+                                            <td class="table-light" id="nowuse{{ $loop->index }}">
+                                                {{ $data->當月每人每日需求量 }}</td>
+                                            <td class="table-light" id="nowchange{{ $loop->index }}">
+                                                {{ $data->當月每日更換頻率 }}</td>
+                                            <td class="table-light" id="nextpeople{{ $loop->index }}">
+                                                {{ $data->下月站位人數 }}</td>
+                                            <td class="table-light" id="nextline{{ $loop->index }}">
+                                                {{ $data->下月開線數 }}</td>
+                                            <td class="table-light" id="nextclass{{ $loop->index }}">
+                                                {{ $data->下月開班數 }}</td>
+                                            <td class="table-light" id="nextuse{{ $loop->index }}">
+                                                {{ $data->下月每人每日需求量 }}</td>
+                                            <td class="table-light" id="nextchange{{ $loop->index }}">
+                                                {{ $data->下月每日更換頻率 }}</td>
 
-                                    ?>
-                                    <tr>
-                                        <td><input type="hidden" id="number{{$loop->index}}"
-                                                name="number{{$loop->index}}" value="{{$data->料號}}">{{$data->料號}}
-                                        </td>
-                                        <td><input type="hidden" id="name{{$loop->index}}" name="name{{$loop->index}}"
-                                                value="{{$name}}">{{$name}}</td>
-                                        <td><input type="hidden" id="client{{$loop->index}}"
-                                                name="client{{$loop->index}}" value="{{$data->客戶別}}">{{$data->客戶別}}
-                                        </td>
-                                        <td><input type="hidden" id="machine{{$loop->index}}"
-                                                name="machine{{$loop->index}}" value="{{$data->機種}}">{{$data->機種}}
-                                        </td>
-                                        <td><input type="hidden" id="production{{$loop->index}}"
-                                                name="production{{$loop->index}}" value="{{$data->製程}}">{{$data->製程}}
-                                        </td>
-                                        <td class="table-light" id="nowpeople{{$loop->index}}">{{$data->當月站位人數}}</td>
-                                        <td class="table-light" id="nowline{{$loop->index}}">{{$data->當月開線數}}</td>
-                                        <td class="table-light" id="nowclass{{$loop->index}}">{{$data->當月開班數}}</td>
-                                        <td class="table-light" id="nowuse{{$loop->index}}">{{$data->當月每人每日需求量}}</td>
-                                        <td class="table-light" id="nowchange{{$loop->index}}">{{$data->當月每日更換頻率}}</td>
-                                        <td class="table-light" id="nextpeople{{$loop->index}}">{{$data->下月站位人數}}</td>
-                                        <td class="table-light" id="nextline{{$loop->index}}">{{$data->下月開線數}}</td>
-                                        <td class="table-light" id="nextclass{{$loop->index}}">{{$data->下月開班數}}</td>
-                                        <td class="table-light" id="nextuse{{$loop->index}}">{{$data->下月每人每日需求量}}</td>
-                                        <td class="table-light" id="nextchange{{$loop->index}}">{{$data->下月每日更換頻率}}</td>
+                                            <td><input class="checkbutton" type="checkbox"
+                                                    id="check{{ $loop->index }}" name="check{{ $loop->index }}">
+                                            </td>
+                                            <td></td>
+                                            <td><input style="width: 120px;" class="form-control formcontrol-lg"
+                                                    type="text" id="remark{{ $loop->index }}"
+                                                    name="remark{{ $loop->index }}" required
+                                                    placeholder="{!! __('monthlyPRpageLang.reason') !!}"></td>
+                                        </tr>
 
-                                        <td><input class="checkbutton" type="checkbox" id="check{{$loop->index}}"
-                                                name="check{{$loop->index}}"></td>
-                                        <td></td>
-                                        <td><input style="width: 120px;" class="form-control formcontrol-lg" type="text"
-                                                id="remark{{$loop->index}}" name="remark{{$loop->index}}" required
-                                                placeholder="{!! __('monthlyPRpageLang.reason') !!}"></td>
-                                    </tr>
-
-                                    <input type="hidden" id="count" name="count" value="{{$loop->count}}"></td>
+                                        <input type="hidden" id="count" name="count"
+                                            value="{{ $loop->count }}"></td>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -174,7 +193,7 @@
                         <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
                         <input class="form-control form-control-lg" type="email" id="email" name="email"
                             pattern=".+@pegatroncorp\.com" readonly style="width: 250px"
-                            placeholder="xxx@pegatroncorp.com" value="{{$email}}">
+                            placeholder="xxx@pegatroncorp.com" value="{{ $email }}">
                         <div class="text-center mt-3">
                             <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
                                 value="{!! __('monthlyPRpageLang.submit') !!}">
@@ -184,8 +203,8 @@
             </div>
         </div>
     </main>
-    <script src="{{ asset('/messages.js') }}"></script>
-    <script src="{{ asset('js/popupNotice.js') }}"></script>
-    <script src="{{ asset('js/month/teststand.js') }}"></script>
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('js/month/teststand.js?v=') . env('APP_VERSION') }}"></script>
 
 </body>

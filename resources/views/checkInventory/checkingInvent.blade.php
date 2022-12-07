@@ -1,13 +1,12 @@
 @extends('layouts.adminTemplate')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
     <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
 @endsection
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('/js/checkInventory/checkInvent.js') }}"></script>
+    <script src="{{ asset('/js/checkInventory/checkInvent.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 
 
@@ -48,7 +47,8 @@
                                                 <li><a class="serialNum dropdown-item active"
                                                         href="#">{{ $serialNum->單號 }}</a></li>
                                             @else
-                                                <li><a class="serialNum dropdown-item" href="#">{{ $serialNum->單號 }}</a>
+                                                <li><a class="serialNum dropdown-item"
+                                                        href="#">{{ $serialNum->單號 }}</a>
                                                 </li>
                                             @endif
                                         @else
@@ -56,7 +56,8 @@
                                                 <li><a class="serialNum dropdown-item active"
                                                         href="#">{{ $serialNum->單號 }}</a></li>
                                             @else
-                                                <li><a class="serialNum dropdown-item" href="#">{{ $serialNum->單號 }}</a>
+                                                <li><a class="serialNum dropdown-item"
+                                                        href="#">{{ $serialNum->單號 }}</a>
                                                 </li>
                                             @endif
                                         @endif
@@ -74,7 +75,8 @@
                                 <label class="form-check-label" for="toggle-state" id="toggle-state-text"></label>
                             </div>
                         </div>
-                        <form class="inp text-center needs-validation" id="inp" method="post" novalidate autocomplete="off">
+                        <form class="inp text-center needs-validation" id="inp" method="post" novalidate
+                            autocomplete="off">
                             @csrf
                             <input type="text" id="texBox" name="texBox" class="form-control form-control-lg"
                                 style="text-align: center;" autocomplete="off" autofocus>

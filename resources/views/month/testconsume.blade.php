@@ -14,11 +14,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.loadingModal.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/check.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/check.css?v=') . env('APP_VERSION') }}">
 
     <style>
         /* for single line table with over-flow , SAP style as asked */
@@ -56,9 +56,9 @@
     所以若域名不是ip而有經過轉換時要進到Nginx裡面的proxy_set_header裡面確認Host設定值，
     否則會抓到錯誤的Host導致找不到資源 --}}
 
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <script src="{{ asset('/admin/js/app.js') }}"></script>
-    <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
+    <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
 
     <main class="d-flex">
         <div class="container d-flex flex-column">
@@ -159,8 +159,8 @@
             </div>
         </div>
     </main>
-    <script src="{{ asset('/messages.js') }}"></script>
-    <script src="{{ asset('js/popupNotice.js') }}"></script>
-    <script src="{{ asset('js/month/testconsume.js') }}"></script>
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('js/month/testconsume.js?v=') . env('APP_VERSION') }}"></script>
 
 </body>

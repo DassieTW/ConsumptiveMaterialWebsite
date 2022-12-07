@@ -20,47 +20,44 @@
     if ($name === null || $format === null) {
         $mess = trans('inboundpageLang.noisn') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='upload';
-                    </script>";
-    }
+                        window.alert('$mess');
+                        window.location.href='upload';
+                        </script>";
+    } // if
     //判斷是否有這個客戶
     if (in_array($row[0], $clients)) {
         $i = true;
-    }
-
+    } // if
+    
     if ($i === false) {
         $mess = trans('inboundpageLang.noclient') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[0];
         echo "<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='upload';
-                    </script>";
-    }
-
+                        window.alert('$mess');
+                        window.location.href='upload';
+                        </script>";
+    } // if
+    
     //判斷是否有這個儲位
     if (in_array($row[3], $positions)) {
         $j = true;
-    }
-
+    } // if
+    
     if ($j === false) {
         $mess = trans('inboundpageLang.noloc') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[3];
         echo "<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='upload';
-                    </script>";
-    }
-
+                        window.alert('$mess');
+                        window.location.href='upload';
+                        </script>";
+    } // if
+    
     ?>
 @endforeach
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
-    <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
-    <script src="{{ asset('js/inbound/upload.js') }}"></script>
-    <!--for notifications pop up -->
+    <script src="{{ asset('js/inbound/upload.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">

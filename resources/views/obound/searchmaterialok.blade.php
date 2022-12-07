@@ -1,6 +1,5 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
     <style>
         /* for single line table with over-flow , SAP style as asked */
         table {
@@ -23,11 +22,7 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('js/obound/search.js') }}"></script>
-    <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
-
-
-    <!--for notifications pop up -->
+    <script src="{{ asset('js/obound/search.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">

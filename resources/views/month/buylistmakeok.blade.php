@@ -1,11 +1,10 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('/js/month/buylist.js') }}"></script>
+    <script src="{{ asset('/js/month/buylist.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -156,7 +155,7 @@
                                 ->where('料號', $data->料號)
                                 ->where('客戶別', $data->客戶別)
                                 ->sum('現有庫存');
-
+                            
                             $nowneedb = ($data->當月站位人數 * $data->當月開線數 * $data->當月開班數 * $data->當月每人每日需求量 * $data->當月每日更換頻率 * $data->本月生產天數) / $data->MPQ;
                             $nextneedb = ($data->下月站位人數 * $data->下月開線數 * $data->下月開班數 * $data->下月每人每日需求量 * $data->下月每日更換頻率 * $data->下月生產天數) / $data->MPQ;
                             $safeb = $data->下月生產天數 <= 0 ? 0 : ($nextneedb * $data->LT) / $data->MPQ / $data->下月生產天數;

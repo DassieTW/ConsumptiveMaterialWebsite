@@ -1,6 +1,5 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
     <style>
         /* for single line table with over-flow , SAP style as asked */
         table {
@@ -24,7 +23,7 @@
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/inbound/searchstock.js') }}"></script>
+    <script src="{{ asset('js/inbound/searchstock.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -108,18 +107,18 @@
                                                 ->where('客戶別', $data->客戶別)
                                                 ->get('機種');
                                             $howmany = count($machine);
-
+                                        
                                             $production = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
                                                 ->get('製程');
-
+                                        
                                             for ($i = 0; $i < $howmany; $i++) {
                                                 $nextmps = DB::table('MPS')
                                                     ->where('客戶別', $data->客戶別)
                                                     ->where('製程', $production[$i]->製程)
                                                     ->where('機種', $machine[$i]->機種)
                                                     ->value('下月MPS');
-
+                                        
                                                 $consume = DB::table('月請購_單耗')
                                                     ->where('料號', $data->料號)
                                                     ->where('客戶別', $data->客戶別)
@@ -127,13 +126,13 @@
                                                     ->where('機種', $machine[$i]->機種)
                                                     ->where('狀態', '已完成')
                                                     ->value('單耗');
-
+                                        
                                                 $nextday = DB::table('MPS')
                                                     ->where('客戶別', $data->客戶別)
                                                     ->where('製程', $production[$i]->製程)
                                                     ->where('機種', $machine[$i]->機種)
                                                     ->value('下月生產天數');
-
+                                        
                                                 if ($nextday == 0) {
                                                     $safe = $safe + 0;
                                                 } else {
@@ -145,7 +144,7 @@
                                                 ->where('客戶別', $data->客戶別)
                                                 ->get('機種');
                                             $howmany = count($machine);
-
+                                        
                                             $production = DB::table('MPS')
                                                 ->where('客戶別', $data->客戶別)
                                                 ->get('製程');
@@ -192,7 +191,7 @@
                                                     ->where('機種', $machine[$i]->機種)
                                                     ->where('狀態', '已完成')
                                                     ->value('下月每日更換頻率');
-
+                                        
                                                 if ($mpq == 0) {
                                                     $safe = $safe + 0;
                                                 } else {
@@ -200,11 +199,11 @@
                                                 } // if else
                                             }
                                         } // if else 單耗 or 站位
-
+                                        
                                         if ($data->月請購 == '否') {
                                             $safe = $data->安全庫存;
                                         } // if
-
+                                        
                                         ?>
                                         <td><input type="hidden" id="dataa{{ $loop->index }}"
                                                 name="data0{{ $loop->index }}"
