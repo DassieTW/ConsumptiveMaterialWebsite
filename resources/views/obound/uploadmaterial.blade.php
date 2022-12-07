@@ -1,13 +1,9 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
-    <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
-    <script src="{{ asset('js/obound/uploadnew.js') }}"></script>
-
-    <!--for notifications pop up -->
+    <script src="{{ asset('js/obound/uploadnew.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -45,9 +41,8 @@
                                         name="data0{{ $loop->index }}" value="{{ $row[0] }}"></td>
                                 <td><input class="form-control form-control-lg" type="text" id="data1{{ $loop->index }}"
                                         name="data1{{ $loop->index }}" value="{{ $row[1] }}"></td>
-                                <td><input class="form-control form-control-lg" type="text"
-                                        id="data2{{ $loop->index }}" name="data2{{ $loop->index }}"
-                                        value="{{ $row[2] }}"></td>
+                                <td><input class="form-control form-control-lg" type="text" id="data2{{ $loop->index }}"
+                                        name="data2{{ $loop->index }}" value="{{ $row[2] }}"></td>
                             </tr>
                             <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
                         @endforeach

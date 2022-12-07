@@ -1,11 +1,10 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/inbound/stock.js') }}"></script>
+    <script src="{{ asset('js/inbound/stock.js?v=') . env('APP_VERSION') }}"></script>
     <script>
         $(window).on('beforeunload', function() {
             $('body').loadingModal({

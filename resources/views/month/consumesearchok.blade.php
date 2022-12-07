@@ -1,6 +1,5 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
     <style>
         /* for single line table with over-flow , SAP style as asked */
         table {
@@ -24,7 +23,7 @@
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/month/consumechange.js') }}"></script>
+    <script src="{{ asset('js/month/consumechange.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -84,10 +83,10 @@
                                     $format = DB::table('consumptive_material')
                                         ->where('料號', $data->料號)
                                         ->value('規格');
-
+                                    
                                     $unitConsume = abs((float) $data->單耗) < 1e-20 ? '0' : rtrim(sprintf('%.10F', ((float) $data->單耗)), '0');
                                     // result should be 0 or 1.8392832 or 14.
-
+                                    
                                     if (strpos($unitConsume, '.') === strlen($unitConsume) - 1) {
                                         // if the result is 5.  (should be like 5.0)
                                         $data->單耗 = sprintf('%.1F', ((float) $data->單耗));

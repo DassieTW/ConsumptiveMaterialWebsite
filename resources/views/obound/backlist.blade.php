@@ -1,13 +1,10 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" type="text/css" href="../css/tooltip.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/tooltip.css?v=') . env('APP_VERSION') }}">
 @endsection
 
 @section('js')
-    <script src="{{ asset('js/obound/backlist.js') }}"></script>
-    <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
-    <!--for notifications pop up -->
+    <script src="{{ asset('js/obound/backlist.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">

@@ -1,6 +1,6 @@
 @foreach ($data as $row)
     <?php
-
+    
     $name = DB::table('O庫_material')
         ->where('料號', $row[1])
         ->value('品名');
@@ -17,35 +17,32 @@
     if ($name === null || $format === null) {
         $mess = trans('oboundpageLang.noisn') . ' ' . trans('oboundpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='upload';
-
-                        </script>";
+                            window.alert('$mess');
+                            window.location.href='upload';
+    
+                            </script>";
     }
     //判斷是否有這個客戶
     if (in_array($row[0], $clients)) {
         $i = true;
     }
-
+    
     if ($i === false) {
         $mess = trans('oboundpageLang.noclient') . ' ' . trans('oboundpageLang.row') . ' : ' . $error . ' ' . $row[0];
         echo "<script LANGUAGE='JavaScript'>
-                        window.alert('$mess');
-                        window.location.href='upload';
-
-                        </script>";
+                            window.alert('$mess');
+                            window.location.href='upload';
+    
+                            </script>";
     }
     ?>
 @endforeach
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
-    <!-- <script src="{{ asset('/js/popupNotice.js') }}"></script> -->
-    <script src="{{ asset('js/obound/upload.js') }}"></script>
-    <!--for notifications pop up -->
+    <script src="{{ asset('js/obound/upload.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">

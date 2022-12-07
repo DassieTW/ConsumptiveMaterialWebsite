@@ -6,7 +6,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Sheets of Paper</title>
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/sheets-of-paper-a4.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/sheets-of-paper-a4.css?v=') . env('APP_VERSION') }}">
     <style>
         table {
             border-collapse: collapse;
@@ -109,12 +109,12 @@
     @endif
     
 
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <script src="{{ asset('/admin/js/app.js') }}"></script>
-    <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
-    <script src="{{ asset('/messages.js') }}"></script>
-    <script src="{{ asset('js/popupNotice.js') }}"></script>
-    <script src="{{ asset('/js/barcode/barcode_pdf_page.js') }}"></script>
+    <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/barcode/barcode_pdf_page.js?v=') . env('APP_VERSION') }}"></script>
     <script type="text/javascript">
         window.print();
     </script>

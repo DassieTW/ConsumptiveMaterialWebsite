@@ -1,9 +1,8 @@
 @extends('layouts.adminTemplate')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/animate.min.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/daterangepicker.css?v=') . env('APP_VERSION') }}">
     <style>
         .sortBtn {
             border: none;
@@ -145,14 +144,13 @@
             background-color: #fff;
             box-shadow: 0px 0px 1px 3px rgba(255, 0, 55, 0.1);
         }
-
     </style>
 @endsection
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('/js/checkInventory/checkResult.js') }}"></script>
-    <script src="{{ asset('/js/daterangepicker.js') }}"></script>
+    <script src="{{ asset('/js/checkInventory/checkResult.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/daterangepicker.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 
 

@@ -1,6 +1,5 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
     <style>
         /* hide scrollbar but still scrollable */
         .scrollableWithoutScrollbar {
@@ -18,7 +17,7 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('js/basic/material.js') }}"></script>
+    <script src="{{ asset('js/basic/material.js?v=') . env('APP_VERSION') }}"></script>
     <!--for this page's sepcified js -->
 @endsection
 @section('content')

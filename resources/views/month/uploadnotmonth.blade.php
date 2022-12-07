@@ -9,45 +9,44 @@
     $month = DB::table('consumptive_material')
         ->where('料號', $row[2])
         ->value('月請購');
-
+    
     $clients = DB::table('客戶別')
         ->pluck('客戶')
         ->toArray();
-
+    
     $i = false;
     $error = $loop->index + 1;
-
+    
     //判斷是否有料號
     if ($name === null || $unit === null) {
         $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
         echo "<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='uploadnotmonth';
-                </script>";
+                    window.alert('$mess');
+                    window.location.href='uploadnotmonth';
+                    </script>";
     }
     //判斷是否有這個客戶
     if (in_array($row[1], $clients)) {
         $i = true;
     }
-
+    
     if ($i === false) {
         $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-                window.alert('$mess');
-                window.location.href='uploadnotmonth';
-                </script>";
+                    window.alert('$mess');
+                    window.location.href='uploadnotmonth';
+                    </script>";
     }
-
+    
     ?>
 @endforeach
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
 @endsection
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('/js/month/uploadnotmonth.js') }}"></script>
+    <script src="{{ asset('/js/month/uploadnotmonth.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">

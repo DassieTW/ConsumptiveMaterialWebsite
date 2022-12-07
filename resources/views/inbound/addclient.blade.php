@@ -1,12 +1,11 @@
 @extends('layouts.adminTemplate')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('./admin/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" type="text/css" href="../css/tooltip.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/tooltip.css?v=') . env('APP_VERSION') }}">
 @endsection
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/inbound/addclient.js') }}"></script>
+    <script src="{{ asset('js/inbound/addclient.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -166,7 +165,7 @@
                                                 ->where('客戶別', $data->客戶)
                                                 ->where('製程', $production)
                                                 ->value('下月生產天數');
-
+                                        
                                             if ($nextday == 0) {
                                                 $safe = 0;
                                             } else {
@@ -210,7 +209,7 @@
                                                 $safe = ($lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange) / $mpq;
                                             }
                                         }
-
+                                        
                                         $showstock = '';
                                         $nowstock = DB::table('inventory')
                                             ->where('料號', $data->料號)
@@ -228,7 +227,7 @@
                                         foreach ($test as $k => $a) {
                                             $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\n";
                                         }
-
+                                        
                                         ?>
                                         <td><a id="deleteBtn{{ $loop->index }}"
                                                 href="javascript:deleteBtn({{ $loop->index }})"><svg width="16"

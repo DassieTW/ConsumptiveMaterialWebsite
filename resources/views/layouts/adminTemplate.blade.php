@@ -22,18 +22,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.loadingModal.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
     @yield('css')
     {{-- local lang for js --}}
-    <script src="{{ asset('/messages.js') }}"></script>
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     {{-- for date picker's js --}}
-    <script type="text/javascript" href="{{ asset('/js/moment.min.js') }}"></script>
+    <script type="text/javascript" href="{{ asset('/js/moment.min.js?v=') . env('APP_VERSION') }}"></script>
     {{-- get parameters from url, js version --}}
     {{-- usage example : var temp = getUrlParameter('parameterName'); --}}
-    <script type="module" src="{{ asset('/js/getUrlParameter.js') }}"></script>
+    <script type="module" src="{{ asset('/js/getUrlParameter.js?v=') . env('APP_VERSION') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script>
         if (window.history.replaceState) {
@@ -1423,12 +1423,12 @@
             });
         });
     </script> -->
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <script src="{{ asset('/admin/js/app.js') }}"></script>
-    <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
-    <script src="{{ asset('/js/logout.js') }}"></script>
-    <script src="{{ asset('js/popupNotice.js') }}"></script>
-    <script src="{{ asset('js/template.js') }}"></script>
+    <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/logout.js?v=') . env('APP_VERSION')}}"></script>
+    <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('js/template.js?v=') . env('APP_VERSION') }}"></script>
     @yield('js')
 </body>
 

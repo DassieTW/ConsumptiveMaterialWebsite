@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
 
     <!-- Styles -->
     <style>
@@ -626,9 +626,9 @@
         </div>
     </div>
 
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <script src="{{ asset('/admin/js/app.js') }}"></script>
-    <script src="{{ asset('/messages.js') }}"></script>
+    <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
 </body>
 
 </html>

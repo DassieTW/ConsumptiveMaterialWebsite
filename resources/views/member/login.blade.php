@@ -16,9 +16,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . time() }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.loadingModal.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
     <script>
         if (window.history.replaceState) {
             // java script to prvent "confirm form resubmission" dialog
@@ -35,9 +36,9 @@
     所以若域名不是ip而有經過轉換時要進到Nginx裡面的proxy_set_header裡面確認Host設定值，
     否則會抓到錯誤的Host導致找不到資源 --}}
 
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <script src="{{ asset('/admin/js/app.js') }}"></script>
-    <script src="{{ asset('/js/jquery.loadingModal.min.js') }}"></script>
+    <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
 
     <script>
         //place your code to be executed early here
@@ -59,8 +60,9 @@
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
                 <li class="nav-item dropdown">
-                    <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown"
-                        data-bs-auto-close="outside" data-bs-display="static" aria-expanded="false">
+                    <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
+                        data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
+                        aria-expanded="false">
                         <i class="align-middle" data-feather="settings"></i>
                     </a>
 
@@ -68,7 +70,8 @@
                         data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
                         aria-expanded="false">
                         <i class="align-middle text-dark" data-feather="settings"></i>
-                        <u class="text-dark"><span class="align-middle text-dark">{{ __('loginPageLang.settings') }}</span></u>
+                        <u class="text-dark"><span
+                                class="align-middle text-dark">{{ __('loginPageLang.settings') }}</span></u>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end">
@@ -86,7 +89,8 @@
                                 简体中文</a>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="help-circle"></i>
+                        <a class="dropdown-item" href="#"><i class="align-middle mr-1"
+                                data-feather="help-circle"></i>
                             Help
                             Center</a>
                     </div>
@@ -104,7 +108,7 @@
                         <div class="w-100 d-none d-sm-inline-block" style="height: 2ch;"></div>
                         <!-- </div>breaks cols to a new line-->
                         <div class="text-center mt-4">
-                            <h1 class="h2 d-none d-sm-inline-block" id = "fordatabase">
+                            <h1 class="h2 d-none d-sm-inline-block" id="fordatabase">
                                 {{ __('loginPageLang.welcome') }}
                             </h1>
                             <br>
@@ -118,17 +122,20 @@
                                 <div class="m-sm-4">
                                     <div class="text-center">
                                         <img src="../admin/img/avatars/avatarBot.png" alt="Charles"
-                                            class="img-fluid rounded-circle" width="132" height="132"/>
+                                            class="img-fluid rounded-circle" width="132" height="132" />
                                     </div>
-                                    <form id="loginForm" class="needs-validation" method="post" accept-charset="utf-8"
-                                        novalidate>
+                                    <form id="loginForm" class="needs-validation" method="post"
+                                        accept-charset="utf-8" novalidate>
                                         @csrf
                                         <div class="mb-3">
                                             <label class="form-label">{{ __('loginPageLang.site') }}</label>
-                                            <select class="form-select form-select-lg" id="site" name="site" required>
-                                                <option value="" selected>{{ __('loginPageLang.site_placeholder') }}</option>
-                                                @for( $i = 1 ; $i < count($database_list) ; $i++ )
-                                                    <option value="{{ $database_list[$i] }}">{{ $database_names[$i] }}</option>
+                                            <select class="form-select form-select-lg" id="site" name="site"
+                                                required>
+                                                <option value="" selected>
+                                                    {{ __('loginPageLang.site_placeholder') }}</option>
+                                                @for ($i = 1; $i < count($database_list); $i++)
+                                                    <option value="{{ $database_list[$i] }}">
+                                                        {{ $database_names[$i] }}</option>
                                                 @endfor
                                             </select>
                                         </div>
@@ -176,7 +183,7 @@
         </div>
     </main>
 
-    <script src="{{ asset('/messages.js') }}"></script>
-    <script src="{{ asset('js/popupNotice.js') }}"></script>
-    <script src="{{ asset('/js/login/login.js') }}"></script>
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/login/login.js?v=') . env('APP_VERSION') }}"></script>
 </body>
