@@ -311,7 +311,11 @@ class BUController extends Controller
         $database_list = config('database_list.databases');
         if (Session::has('username')) {
             $list = $request->input('list');
-
+            if ($list === null) {
+                return $request->validate([
+                    'list' => 'required',
+                ]);
+            }
             $database = $request->session()->get('database');
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
@@ -385,7 +389,11 @@ class BUController extends Controller
         $database_list = config('database_list.databases');
         if (Session::has('username')) {
             $list = $request->input('list');
-
+            if ($list === null) {
+                return $request->validate([
+                    'list' => 'required',
+                ]);
+            }
             $database = $request->session()->get('database');
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));

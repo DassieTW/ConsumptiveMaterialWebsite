@@ -100,6 +100,10 @@
                         </thead>
                         <tbody>
                             @foreach ($data as $data)
+                                <?php
+                                $data->撥出廠區 = explode('Consumables management', $data->撥出廠區)[0];
+                                $data->接收廠區 = explode('Consumables management', $data->接收廠區)[0];
+                                ?>
                                 <tr id="list{{ $loop->index }}" class="isnRows">
                                     <td><input class="basic" type="checkbox" id="check{{ $loop->index }}"
                                             name="check{{ $loop->index }}" style="width:20px;height:20px;"

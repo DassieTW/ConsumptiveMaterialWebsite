@@ -38,7 +38,7 @@
                                     </select>
                                     @error('client')
                                         <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong>{!! __('monthlyPRpageLang.enterclient') !!}</strong>
                                         </span>
                                     @enderror
                                 </div>
@@ -58,7 +58,7 @@
                                     </select>
                                     @error('machine')
                                         <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong>{!! __('monthlyPRpageLang.entermachine') !!}</strong>
                                         </span>
                                     @enderror
                                 </div>
@@ -130,7 +130,7 @@
                 @endforeach
                 @error('production')
                     <span class="invalid-feedback d-block" role="alert">
-                        <strong>{{ $message }}</strong>
+                        <strong>{!! __('monthlyPRpageLang.enterprocess') !!}</strong>
                     </span>
                 @enderror
             </table>

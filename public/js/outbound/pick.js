@@ -288,7 +288,7 @@ $(document).ready(function () {
 
     // clean up previous input results
     $(".is-invalid").removeClass("is-invalid");
-    $(".invalid-feedback").remove();
+    $(".invalid-feedback").hide();
 
     if (count == 0) {
       document.getElementById("numbererror1").style.display = "none";

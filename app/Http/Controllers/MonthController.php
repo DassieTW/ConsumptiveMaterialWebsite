@@ -1074,6 +1074,16 @@ class MonthController extends Controller
             $vnd = $request->input('vnd');
             $idr = $request->input('idr');
 
+            if ($client === null) {
+                return back()->withErrors([
+                    'client' => trans('validation.required'),
+                ]);
+            } else if ($money === null) {
+                return back()->withErrors([
+                    'money' => trans('validation.required'),
+                ]);
+            }
+
             if ($client == "ALL_CLIENT") {
                 Session::put("clientChoice", "All Clients"); // for Excel Header
 
@@ -1086,7 +1096,7 @@ class MonthController extends Controller
                     })
                     ->join('consumptive_material', function ($join) {
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
-                    })->where('consumptive_material.發料部門', $send)
+                    })->where('consumptive_material.發料部門', 'like', $send . '%')
                     ->where('月請購_單耗.狀態', '=', "已完成")->get();
 
 
@@ -1145,7 +1155,7 @@ class MonthController extends Controller
                     })
                     ->join('consumptive_material', function ($join) use ($send) {
                         $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
-                    })->where('consumptive_material.發料部門', $send)
+                    })->where('consumptive_material.發料部門', 'like', $send . '%')
                     ->where('月請購_站位.狀態', '=', "已完成")
                     ->get();
 
@@ -1211,7 +1221,7 @@ class MonthController extends Controller
                     ->join('consumptive_material', function ($join) use ($send) {
                         $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                     })->where('月請購_單耗.客戶別', $client)
-                    ->where('consumptive_material.發料部門', $send)
+                    ->where('consumptive_material.發料部門', 'like', $send . '%')
                     ->where('月請購_單耗.狀態', '=', "已完成")
                     ->get();
 
@@ -1271,7 +1281,7 @@ class MonthController extends Controller
                     ->join('consumptive_material', function ($join) use ($send) {
                         $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
                     })->where('月請購_站位.客戶別', $client)
-                    ->where('consumptive_material.發料部門', $send)
+                    ->where('consumptive_material.發料部門', 'like', $send . '%')
                     ->where('月請購_站位.狀態', '=', "已完成")
                     ->get();
 

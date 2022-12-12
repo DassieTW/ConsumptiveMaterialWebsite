@@ -35,7 +35,8 @@
                                                 <option>{{ $client->客戶 }}</option>
                                             @endforeach
                                         </select>
-                                        <div id="clienterror" style="display:none; color:red;">{!! __('inboundpageLang.enterclient') !!}</div>
+                                        <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
+                                            {!! __('inboundpageLang.enterclient') !!}</div>
                                     </div>
 
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -46,10 +47,13 @@
                                         <input class="form-control form-control-lg" type="text" id="number"
                                             name="number" placeholder="{!! __('monthlyPRpageLang.enterisn') !!}"
                                             oninput="if(value.length>12)value=value.slice(0,12)">
-                                        <div id="numbererror" style="display:none; color:red;">{!! __('inboundpageLang.enterisn') !!}</div>
-                                        <div id="numbererror1" style="display:none; color:red;">{!! __('inboundpageLang.isnlength') !!}
+                                        <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                                            {!! __('inboundpageLang.enterisn') !!}</div>
+                                        <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                                            {!! __('inboundpageLang.isnlength') !!}
                                         </div>
-                                        <div id="numbererror2" style="display:none; color:red;">{!! __('inboundpageLang.noisn') !!}
+                                        <div class="invalid-feedback" id="numbererror2" style="display:none; color:red;">
+                                            {!! __('inboundpageLang.noisn') !!}
                                         </div>
                                     </div>
 

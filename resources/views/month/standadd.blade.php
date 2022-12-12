@@ -23,43 +23,51 @@
                     @csrf
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.client') !!}</label>
-                        <select class="form-select form-select-lg" id="client" name="client" required>
+                        <select class="form-select form-select-lg" id="client" name="client">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterclient') !!}</option>
                             @foreach ($client as $client)
                                 <option>{{ $client->客戶 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
+                            {!! __('monthlyPRpageLang.enterclient') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
-                        <select class="form-select form-select-lg" id="machine" name="machine" required>
+                        <select class="form-select form-select-lg" id="machine" name="machine">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.entermachine') !!}</option>
                             @foreach ($machine as $machine)
                                 <option>{{ $machine->機種 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="machineerror" style="display:none; color:red;">
+                            {!! __('monthlyPRpageLang.entermachine') !!}</div>
                     </div>
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('outboundpageLang.process') !!}</label>
-                        <select class="form-select form-select-lg " id="production" name="production" required>
+                        <select class="form-select form-select-lg " id="production" name="production">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterprocess') !!}</option>
                             @foreach ($production as $production)
                                 <option>{{ $production->制程 }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback" id="productionerror" style="display:none; color:red;">
+                            {!! __('monthlyPRpageLang.enterprocess') !!}</div>
                     </div>
 
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
-                        <input class="form-control form-control-lg " type="text" id="number" name="number" required
+                        <input class="form-control form-control-lg " type="text" id="number" name="number"
                             placeholder="{!! __('outboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
-                        <div id="numbererror" style="display:none; color:red;">{!! __('outboundpageLang.isnlength') !!}
+                        <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                            {!! __('outboundpageLang.isnlength') !!}
                         </div>
-                        <div id="numbererror1" style="display:none; color:red;">{!! __('outboundpageLang.noisn') !!}
+                        <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                            {!! __('outboundpageLang.noisn') !!}
                         </div>
                     </div>
                     <div class="col-auto">
-                        <label class="col col-auto form-label"></label>
+                        <label class="col col-auto form-label">&nbsp;</label>
                         <input type="submit" id="add" name="add"
                             class="form-control form-control-lg btn btn-lg btn-primary" value="{!! __('outboundpageLang.add') !!}">
                     </div>
@@ -124,11 +132,14 @@
                         <div class="col col-8">
                             <div class="input-group">
                                 <input class="form-control form-control-lg text-center col-3" type="text" id="email"
-                                    name="email" placeholder="{!! __('loginPageLang.enter_email') !!}" required />
+                                    name="email" placeholder="{!! __('loginPageLang.enter_email') !!}" />
                                 <select class="form-select form-select-lg col-5" id="emailTail">
                                     <option selected>@pegatroncorp.com</option>
                                     <option>@intra.pegatroncorp.com</option>
                                 </select>
+                                <div class="invalid-feedback" id="emailerror" style="display:none; color:red;">
+                                    {!! __('loginPageLang.enter_email') !!}
+                                </div>
                             </div>
                         </div>
                     </div>

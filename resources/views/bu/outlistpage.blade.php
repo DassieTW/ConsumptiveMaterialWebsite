@@ -27,13 +27,19 @@
                             <label class="col col-auto form-label">{!! __('bupagelang.outlist') !!}</label>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
-                                <select class="form-select form-select-lg" id="list" name="list" required>
+                                <select class="form-select form-select-lg @error('list') is-invalid @enderror"
+                                    id="list" name="list">
                                     <option style="display: none" disabled selected value="">{!! __('bupagelang.enteroutlist') !!}
                                     </option>
                                     @foreach ($data as $data)
                                         <option>{{ $data->調撥單號 }}</option>
                                     @endforeach
                                 </select>
+                                @error('list')
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong> {!! __('bupagelang.enteroutlist') !!}</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

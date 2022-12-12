@@ -24,19 +24,27 @@
                 @csrf
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('outboundpageLang.client') !!}</label>
-                    <select class="form-select form-select-lg" id="client" name="client" required>
+                    <select class="form-select form-select-lg" id="client" name="client">
                         <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterclient') !!}</option>
                         @foreach ($showclient as $cli)
                             <option>{{ $cli->客戶 }}</option>
                         @endforeach
                     </select>
+                    <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
+                        {!! __('monthlyPRpageLang.enterclient') !!}</div>
                 </div>
                 <div class="col-auto">
                     <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
-                    <input class="form-control form-control-lg " type="text" id="number" name="number" required
+                    <input class="form-control form-control-lg " type="text" id="number" name="number"
                         placeholder="{!! __('outboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
-                    <div id="numbererror1" style="display:none; color:red;">{!! __('inboundpageLang.isnlength') !!}</div>
-                    <div id="numbererror2" style="display:none; color:red;">{!! __('inboundpageLang.noisn') !!}</div>
+                    <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                        {!! __('monthlyPRpageLang.enterisn') !!}</div>
+                    <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                        {!! __('monthlyPRpageLang.isnlength') !!}
+                    </div>
+                    <div class="invalid-feedback" id="numbererror2" style="display:none; color:red;">
+                        {!! __('monthlyPRpageLang.noisn') !!}
+                    </div>
                 </div>
 
                 <div class="col-auto">
@@ -74,20 +82,23 @@
                                 <td>{!! __('monthlyPRpageLang.control') !!}</td>
                             </tr>
                             <tr>
-                                <td><a id="deleteBtn0" href="javascript:deleteBtn(0)"><svg width="16" height="16"
-                                            fill="#c94466" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                            <path
-                                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z">
-                                            </path>
-                                        </svg></a></td>
+                                <td><a id="deleteBtn0"></a></td>
                                 <td><span id="client0">{{ $client }}</span></td>
                                 <td><span id="number0">{{ $number }}</span></td>
                                 <td><input type="number" class="form-control form-control-lg" id="amount0" name="amount0"
-                                        required placeholder="{!! __('monthlyPRpageLang.enteramount') !!}" min="1"></td>
+                                        placeholder="{!! __('monthlyPRpageLang.enteramount') !!}" min="1" value="1"></td>
                                 <td><input type="text" class="form-control form-control-lg" id="sxb0" name="sxb0"
-                                        required placeholder="{!! __('monthlyPRpageLang.entersxb') !!}"></td>
+                                        placeholder="{!! __('monthlyPRpageLang.entersxb') !!}">
+                                    <div class="invalid-feedback" id="sxberror0" style="display:none; color:red;">
+                                        {!! __('monthlyPRpageLang.entersxb') !!}
+                                    </div>
+                                </td>
                                 <td><input type="text" class="form-control form-control-lg" id="say0" name="say0"
-                                        placeholder="{!! __('monthlyPRpageLang.enterdesc') !!}"></td>
+                                        placeholder="{!! __('monthlyPRpageLang.enterdesc') !!}">
+                                    <div class="invalid-feedback" id="sayerror0" style="display:none; color:red;">
+                                        {!! __('monthlyPRpageLang.entersay') !!}
+                                    </div>
+                                </td>
                                 <td><span id="name0">{{ $name }}</span></td>
                                 <td><span id="unit0">{{ $unit }}</span></td>
                                 <td><span id="month0">{{ $month }}</span></td>
@@ -105,7 +116,7 @@
                     </table>
                 </div>
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <div id="error" style="display:none;">
+                <div class="invalid-feedback" id="error" style="display:none;">
                     <h3 id="errorrow" style="color: red"></h3>
                     <h3 style="color: red">{!! __('monthlyPRpageLang.errormonth') !!}</h3>
                 </div>

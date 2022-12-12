@@ -29,7 +29,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         // $schedule->call(function () { // test schedule in log file
-        //     \Log::info('成功排程');
+        //     $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        //     $out->writeln("Hello from Terminal");
         // })->everyMinute();
         $schedule->command('call:safestock')->daily()->timezone('Asia/Taipei');
         $schedule->command('call:sluggish')->daily()->timezone('Asia/Taipei');

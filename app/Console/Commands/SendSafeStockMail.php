@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
+
 use Exception;
 use Illuminate\Console\Command;
 use App\Models;
@@ -83,8 +84,9 @@ class SendSafeStockMail extends Command
             $this->info("Command executed successfully!");
         } catch (Exception $e) {
             $this->error("Command execution failed with error : " . $e->getMessage());
+            \Log::error("Command execution failed with error : " . $e->getMessage());
         } // try - catch
-        
+
         return 0;
     } // handle
 }

@@ -28,8 +28,9 @@
                                 <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
-                                    <select class="form-select form-select-lg col col-auto" id="client" name="client"
-                                        required>
+                                    <select
+                                        class="form-select form-select-lg col col-auto @error('client') is-invalid @enderror"
+                                        id="client" name="client">
                                         <option style="display: none" disabled selected value="">
                                             {!! __('monthlyPRpageLang.enterclient') !!}</option>
                                         @foreach ($client as $client)
@@ -37,6 +38,11 @@
                                         @endforeach
                                         <option value="ALL_CLIENT">{!! __('monthlyPRpageLang.allclient') !!}</option>
                                     </select>
+                                    @error('client')
+                                        <span class="invalid-feedback d-block" role="alert">
+                                            <strong>{!! __('monthlyPRpageLang.enterclient') !!}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -44,8 +50,9 @@
                                 <label class="col col-auto form-label">{!! __('monthlyPRpageLang.money') !!}</label>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
-                                    <select class="form-select form-select-lg col col-auto" id="money" name="money"
-                                        required>
+                                    <select
+                                        class="form-select form-select-lg col col-auto @error('money') is-invalid @enderror"
+                                        id="money" name="money">
                                         <option style="display: none" disabled selected value="">
                                             {!! __('monthlyPRpageLang.entermoney') !!}</option>
                                         <option>RMB</option>
@@ -55,6 +62,11 @@
                                         <option>VND</option>
                                         <option>IDR</option>
                                     </select>
+                                    @error('money')
+                                        <span class="invalid-feedback d-block" role="alert">
+                                            <strong>{!! __('monthlyPRpageLang.entermoney') !!}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
