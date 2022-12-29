@@ -23,72 +23,91 @@
                 @csrf
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('oboundpageLang.client') !!}</label>
-                    <select class="form-select form-select-lg" id="client" name="client" required>
+                    <select class="form-select form-select-lg" id="client" name="client">
                         <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterclient') !!}</option>
                         @foreach ($client as $client)
                             <option>{{ $client->客戶 }}</option>
                         @endforeach
                     </select>
+                    <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
+                        {!! __('oboundpageLang.enterclient') !!}</div>
                 </div>
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('oboundpageLang.machine') !!}</label>
-                    <select class="form-select form-select-lg" id="machine" name="machine" required>
+                    <select class="form-select form-select-lg" id="machine" name="machine">
                         <option style="display: none" disabled selected value="">{!! __('oboundpageLang.entermachine') !!}</option>
                         @foreach ($machine as $machine)
                             <option>{{ $machine->機種 }}</option>
                         @endforeach
                     </select>
-
+                    <div class="invalid-feedback" id="machineerror" style="display:none; color:red;">
+                        {!! __('oboundpageLang.entermachine') !!}</div>
                 </div>
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('oboundpageLang.process') !!}</label>
-                    <select class="form-select form-select-lg " id="production" name="production" required>
+                    <select class="form-select form-select-lg " id="production" name="production">
                         <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterprocess') !!}</option>
                         @foreach ($production as $production)
                             <option>{{ $production->制程 }}</option>
                         @endforeach
                     </select>
-
+                    <div class="invalid-feedback" id="productionerror" style="display:none; color:red;">
+                        {!! __('oboundpageLang.enterprocess') !!}</div>
                 </div>
                 <div class="col-auto">
                     <label class="col col-auto form-label">{!! __('oboundpageLang.line') !!}</label>
-                    <select class="form-select form-select-lg " id="line" name="line" required>
+                    <select class="form-select form-select-lg " id="line" name="line">
                         <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterline') !!}</option>
                         @foreach ($line as $line)
                             <option>{{ $line->線別 }}</option>
                         @endforeach
                     </select>
+                    <div class="invalid-feedback" id="lineerror" style="display:none; color:red;">
+                        {!! __('oboundpageLang.enterline') !!}</div>
                 </div>
                 <div class="col-auto">
                     <label class="col col-auto form-label">{!! __('oboundpageLang.backreason') !!}</label>
-                    <select class="form-select form-select-lg " id="backreason" name="backreason" required>
+                    <select class="form-select form-select-lg " id="backreason" name="backreason">
                         <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterbackreason') !!}</option>
                         @foreach ($backreason as $backreason)
                             <option>{{ $backreason->退回原因 }}</option>
                         @endforeach
-                        <option>{!! __('oboundpageLang.other') !!}</option>
+                        <option value="其他">{!! __('oboundpageLang.other') !!}</option>
                     </select>
+                    <div class="invalid-feedback" id="backreasonerror" style="display:none; color:red;">
+                        {!! __('oboundpageLang.enterbackreason') !!}</div>
+                    <div id="inputreason" style="display:none;">
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <input class="form-control form-control-lg " type="text" id="reason" name="reason"
+                            placeholder="{!! __('oboundpageLang.inputbackreason') !!}">
+                    </div>
+                    <div class="invalid-feedback" id="inputreasonerror" style="display:none; color:red;">
+                        {!! __('oboundpageLang.inputbackreason') !!}</div>
                 </div>
+
+
                 <div class="col-auto">
                     <label class="col col-auto form-label">{!! __('oboundpageLang.isn') !!}</label>
-                    <input class="form-control form-control-lg " type="text" id="number" name="number" required
+                    <input class="form-control form-control-lg " type="text" id="number" name="number"
                         placeholder="{!! __('oboundpageLang.enterisn') !!}">
-                    <div id="numbererror1" style="display:none; color:red;">{!! __('oboundpageLang.noisn') !!}
+                    <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                        {!! __('oboundpageLang.enterisn') !!}
+                    </div>
+                    <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                        {!! __('oboundpageLang.noisn') !!}
                     </div>
                 </div>
                 <div class="col-auto">
                     <label class="col col-auto form-label"></label>
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <input type="submit" id="add" name="add"
                         class="form-control form-control-lg btn btn-lg btn-primary" value="{!! __('oboundpageLang.add') !!}">
                 </div>
-                <div class="col-auto">
-                    <label class="col col-auto form-label"></label>
-                    <input style="display:none;" class="form-control form-control-lg " type="text" id="reason"
-                        name="reason" placeholder="{!! __('oboundpageLang.inputbackreason') !!}">
-                </div>
+
             </form>
         </div>
-
+    </div>
+    <div class="card w-100">
         <div class="card-body">
             <form id="backadd" style="display: none">
                 @csrf

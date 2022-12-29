@@ -1,28 +1,22 @@
 @extends('layouts.adminTemplate')
 @section('css')
     <style>
-        /* for single line table with over-flow , SAP style as asked */
-        table {
-            table-layout: fixed;
-            /* width: 900px; */
+        /* hide scrollbar but still scrollable */
+        .scrollableWithoutScrollbar {
+            -ms-overflow-style: none !important;
+            /* IE and Edge */
+            scrollbar-width: none !important;
+            /* FireFox */
         }
 
-        .table-responsive {
-            height: 600px;
-            overflow: scroll;
-        }
-
-        thead tr:nth-child(1) th {
-            background: white;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+        .scrollableWithoutScrollbar::-webkit-scrollbar {
+            /* Chrome, Safari and Opera */
+            display: none !important;
         }
     </style>
 @endsection
 
 @section('js')
-    <script src="{{ asset('js/obound/search.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -32,41 +26,17 @@
                 <vue-bread-crumb></vue-bread-crumb>
             </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h3>{!! __('oboundpageLang.matsInfo') !!}</h3>
-            <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
-                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
-                style="width: 200px">
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table" id="material">
-                    <thead>
-                        <tr>
 
-                            <th><input type="hidden" id="title0" name="title0" value="料號">{!! __('oboundpageLang.isn') !!}
-                            </th>
-                            <th><input type="hidden" id="title1" name="title1" value="品名">{!! __('oboundpageLang.pName') !!}
-                            </th>
-                            <th><input type="hidden" id="title2" name="title2" value="規格">{!! __('oboundpageLang.format') !!}
-                            </th>
-                        </tr>
-                    </thead>
-                    @foreach ($data as $data)
-                        <tr class="isnRows">
-                            <td>{{ $data->料號 }}</td>
-                            <input type="hidden" id="number{{ $loop->index }}" value="{{ $data->料號 }}">
-                            <td>{{ $data->品名 }}</td>
-                            <td>{{ $data->規格 }}</td>
-                        </tr>
-                    @endforeach
-                </table>
+        <div class="card">
+            <div class="card-header">
+                <h3>{!! __('oboundpageLang.matsInfo') !!}</h3>
             </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <obound-isnsearch-table></obound-isnsearch-table>
 
-            <button class="btn btn-lg btn-primary"
-                onclick="location.href='{{ route('obound.material') }}'">{!! __('oboundpageLang.return') !!}</button>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

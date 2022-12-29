@@ -322,7 +322,7 @@ export default defineComponent({
 
     const updateCheckedRows = (rowsKey) => {
       console.log(rowsKey)
-      // only check one 
+      // only check one
       let count = ($('.vtl-paging-count-dropdown').val());
       rowsKey = parseInt(rowsKey);
       for (let i = 0; i < count; i++) {

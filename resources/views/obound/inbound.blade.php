@@ -23,36 +23,41 @@
                 @csrf
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('oboundpageLang.client') !!}</label>
-                    <select class="form-select form-select-lg" id="client" name="client" required>
+                    <select class="form-select form-select-lg" id="client" name="client">
                         <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterclient') !!}</option>
                         @foreach ($client as $client)
                             <option>{{ $client->客戶 }}</option>
                         @endforeach
                     </select>
+                    <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
+                        {!! __('oboundpageLang.enterclient') !!}
+                    </div>
                 </div>
 
                 <div class="col-auto">
                     <label class="col col-lg-12 form-label">{!! __('oboundpageLang.inreason') !!}</label>
-                    <select class="form-select form-select-lg " id="inreason" name="inreason" required>
+                    <select class="form-select form-select-lg " id="inreason" name="inreason">
                         <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterinreason') !!}</option>
                         @foreach ($inreason as $inreason)
                             <option>{{ $inreason->入庫原因 }}</option>
                         @endforeach
                     </select>
+                    <div class="invalid-feedback" id="inreasonerror" style="display:none; color:red;">
+                        {!! __('oboundpageLang.enterinreason') !!}
+                    </div>
                 </div>
 
                 <div class="col-auto">
-
                     <label class="col col-lg-12 form-label">{!! __('oboundpageLang.oisn') !!}</label>
-
-                    <input class="form-control form-control-lg " type="text" id="number" name="number" required
+                    <input class="form-control form-control-lg " type="text" id="number" name="number"
                         placeholder="{!! __('oboundpageLang.enterisn') !!}">
-                    <div id="numbererror" style="display:none; color:red;">{!! __('oboundpageLang.noisn') !!}
+                    <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">{!! __('oboundpageLang.noisn') !!}
                     </div>
                 </div>
 
                 <div class="col-auto">
                     <label class="col col-auto form-label"></label>
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <input type="submit" class="btn btn-lg btn-primary" value="{!! __('oboundpageLang.add') !!}">
                 </div>
             </form>
@@ -103,7 +108,7 @@
 
                 <div class="mb-3 col-md-6">
                     <label class="form-label">{!! __('oboundpageLang.inpeople') !!}</label>
-                    <input class="form-control form-control-lg" id="inpeople" name="inpeople" required style="width: 250px"
+                    <input class="form-control form-control-lg" id="inpeople" name="inpeople" style="width: 250px"
                         placeholder="{!! __('oboundpageLang.enterinpeople') !!}">
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <ul id="inboundmenu" style="display: none;" class="list-group">

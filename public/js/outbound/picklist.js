@@ -16,6 +16,7 @@ $.ajaxSetup({
 var index = 0;
 var count = $("#count").val();
 count = parseInt(count);
+var all = count;
 
 function appenSVg(count) {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -24,11 +25,11 @@ function appenSVg(count) {
     "d",
     "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"
   );
-  svg.setAttribute("width", "16");
-  svg.setAttribute("height", "16");
+  svg.setAttribute("width", "30");
+  svg.setAttribute("height", "30");
   svg.setAttribute("fill", "#c94466");
   svg.setAttribute("class", "bi bi-x-circle-fill");
-  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("viewBox", "0 0 20 20");
   svg.appendChild(path);
   $("#deleteBtn" + count).append(svg);
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -42,11 +43,11 @@ function appenSVg(count) {
     "d",
     "M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
   );
-  svg.setAttribute("width", "20");
-  svg.setAttribute("height", "20");
+  svg.setAttribute("width", "30");
+  svg.setAttribute("height", "30");
   svg.setAttribute("fill", "#467fd0");
   svg.setAttribute("class", "bi bi-plus-square");
-  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("viewBox", "0 0 20 20");
   svg.appendChild(path);
   svg.appendChild(path1);
   $("#addBtn" + count).append(svg);
@@ -73,7 +74,7 @@ function deleteBtn(index) {
       y: "bottom",
     },
   });
-  count = count - 1;
+  all = all - 1;
   $("#deleteBtn" + index)
     .parent()
     .parent()
@@ -82,6 +83,7 @@ function deleteBtn(index) {
 }
 
 function addBtn(index) {
+  all = all + 1;
   notyf.success({
     message:
       Lang.get("outboundpageLang.add") + Lang.get("outboundpageLang.success"),
@@ -320,7 +322,7 @@ function myFunction2() {
 
 $("#sendpeople").on("focus", function () {
   $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       event.preventDefault();
       return false;
     }
@@ -342,7 +344,7 @@ $("#sendpeople").on("blur", function () {
 });
 $("#pickpeople").on("focus", function () {
   $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       event.preventDefault();
       return false;
     }
@@ -351,7 +353,7 @@ $("#pickpeople").on("focus", function () {
 });
 $("#pickpeople").on("input", function () {
   $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       event.preventDefault();
       return false;
     }
@@ -376,7 +378,7 @@ $(document).ready(function () {
   if (locale === "zh-CN") splittext = "储位:";
   $("#pickpeople").on("input", function () {
     $(window).keydown(function (event) {
-      if (event.keyCode == 13) {
+      if (event.keyCode === 13) {
         event.preventDefault();
         return false;
       }
@@ -388,7 +390,7 @@ $(document).ready(function () {
   });
   $("#sendpeople").on("input", function () {
     $(window).keydown(function (event) {
-      if (event.keyCode == 13) {
+      if (event.keyCode === 13) {
         event.preventDefault();
         return false;
       }
@@ -405,7 +407,7 @@ $(document).ready(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").hide();
 
-    if (count == 0) {
+    if (count === 0) {
       notyf.open({
         type: "warning",
         message: Lang.get("basicInfoLang.nodata"),
@@ -463,7 +465,7 @@ $(document).ready(function () {
             message:
               Lang.get("outboundpageLang.row") +
               " " +
-              i +
+              (i + 1) +
               " " +
               Lang.get("outboundpageLang.enterloc"),
             duration: 3000, //miliseconds, use 0 for infinite duration
@@ -507,7 +509,7 @@ $(document).ready(function () {
     var check2 = checkpeople.indexOf(pickpeople);
 
     //check has people
-    if (check1 == -1) {
+    if (check1 === -1) {
       notyf.open({
         type: "warning",
         message: Lang.get("outboundpageLang.nosendpeople"),
@@ -523,7 +525,7 @@ $(document).ready(function () {
       return false;
     }
 
-    if (check2 == -1) {
+    if (check2 === -1) {
       notyf.open({
         type: "warning",
         message: Lang.get("outboundpageLang.nopickpeople"),
@@ -541,7 +543,7 @@ $(document).ready(function () {
 
     //check write reason
     for (let i = 0; i < count; i++) {
-      if (amount[i] != advance[i] && reason[i] == "") {
+      if (amount[i] !== advance[i] && reason[i] === "") {
         row = i + 1;
         $("#reasonerrrow")
           .empty()
@@ -609,7 +611,7 @@ $(document).ready(function () {
       },
       error: function (err) {
         //儲位庫存小於實際領用數量
-        if (err.status == 421) {
+        if (err.status === 421) {
           document.getElementById("lessstock").style.display = "block";
           document.getElementById("position").classList.add("is-invalid");
           document
@@ -658,7 +660,7 @@ $(document).ready(function () {
           }
         }
         //transcation error
-        else if (err.status == 422) {
+        else if (err.status === 422) {
           var mess = err.responseJSON.message;
           alert(mess);
           window.location.reload();

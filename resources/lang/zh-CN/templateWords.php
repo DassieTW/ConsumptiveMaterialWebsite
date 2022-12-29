@@ -35,7 +35,7 @@ return [
     'barcode_generator' => '条码产生器',
     'locBarcode' => '储位条码查询',
     'isnBarcode' => '料号条码查询',
-    'nowuser' => '现在登入的用户是:',
+    'nowuser' => '现在登入的用户是 :',
 
     'isnConsumeAdd' => '料号单耗(新增)',
     'isnConsumeUpdate' => '料号单耗(查询与修改)',
@@ -52,7 +52,7 @@ return [
     'custom_range' => '自订',
     'apply' => '确定',
     'cancel' => '取消',
-    
+
     'taipei' => '台北企总EIP',
     'dep' => '部门网站',
     'project' => '专案网站',

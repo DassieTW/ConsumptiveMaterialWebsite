@@ -271,7 +271,7 @@ Route::get('/testconsume', function () {
     } else {
         return redirect()->route('month.consumeadd');
     }
-})->name('month.testconsume')->withoutMiddleware('auth');
+})->withoutMiddleware('auth');
 
 //test單耗畫押提交
 Route::post('/testconsume', [MonthController::class, 'testconsume'])->name('month.testconsume')->withoutMiddleware('auth');
@@ -292,7 +292,7 @@ Route::get('/teststand', function () {
     } else {
         return redirect()->route('month.standadd');
     }
-})->name('month.teststand')->withoutMiddleware('auth');
+})->withoutMiddleware('auth');
 
 //test站位畫押提交
 Route::post('/teststand', [MonthController::class, 'teststand'])->name('month.teststand')->withoutMiddleware('auth');

@@ -34,7 +34,7 @@ return [
     'barcode_generator' => '條碼產生器',
     'locBarcode' => '儲位條碼查詢',
     'isnBarcode' => '料號條碼查詢',
-    'nowuser' => '現在登入的用戶是:',
+    'nowuser' => '現在登入的用戶是 :',
     'checkIvent_create_new_table' => 'Create New Sheet',
 
     'isnConsumeAdd' => '料號單耗(新增)',

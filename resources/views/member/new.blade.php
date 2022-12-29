@@ -30,12 +30,15 @@
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
                                     <input class="form-control form-control-lg " type="text" id="number"
-                                        name="number" required placeholder="{!! __('loginPageLang.enterjobsearch') !!}"
+                                        name="number" placeholder="{!! __('loginPageLang.enterjobsearch') !!}"
                                         oninput="if(value.length>9)value=value.slice(0,9)">
-                                    <div id="message" style="display:none; color:red;">
+                                    <div class="invalid-feedback" id="numbererror2" style="display:none; color:red;">
+                                        {!! __('loginPageLang.enterjobsearch') !!}
+                                    </div>
+                                    <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
                                         {!! __('loginPageLang.jobrepeat') !!}
                                     </div>
-                                    <div id="message1" style="display:none; color:red;">
+                                    <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
                                         {!! __('loginPageLang.joblength') !!}
                                     </div>
                                 </div>
@@ -46,7 +49,9 @@
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
                                     <input class="form-control form-control-lg " type="text" id="name"
-                                        name="name" required placeholder="{!! __('loginPageLang.entername') !!}">
+                                        name="name" placeholder="{!! __('loginPageLang.entername') !!}">
+                                    <div class="invalid-feedback" id="nameerror" style="display:none; color:red;">
+                                        {!! __('loginPageLang.entername') !!}</div>
                                 </div>
 
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -55,7 +60,9 @@
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
                                     <input class="form-control form-control-lg " type="text" id="department"
-                                        name="department" required placeholder="{!! __('loginPageLang.enterdep') !!}">
+                                        name="department" placeholder="{!! __('loginPageLang.enterdep') !!}">
+                                    <div class="invalid-feedback" id="departmenterror" style="display:none; color:red;">
+                                        {!! __('loginPageLang.enterdep') !!}</div>
                                 </div>
 
                             </div>

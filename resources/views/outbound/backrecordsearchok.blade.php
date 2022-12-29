@@ -38,10 +38,8 @@
                         value="{!! __('outboundpageLang.download') !!}">
 
                     <outbound-backrecord-table></outbound-backrecord-table>
-                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                 </form>
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             </div>
         </div>

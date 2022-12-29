@@ -146,7 +146,7 @@ class OutboundController extends Controller
         }
     }
 
-    //退料單
+    // //退料單
     public function backlist(Request $request)
     {
         if (Session::has('username')) {

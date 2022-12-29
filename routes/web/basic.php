@@ -103,7 +103,7 @@ Route::get('/uploadbasic', function () {
         ->with(['sends' => 發料部門::cursor()])
         ->with(['os' => O庫::cursor()])
         ->with(['backs' => 退回原因::cursor()]);
-})->name('basic.insertuploadbasic')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+})->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 Route::post('/uploadbasic', [BasicInformationController::class, 'uploadbasic'])->name('basic.uploadbasic')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 

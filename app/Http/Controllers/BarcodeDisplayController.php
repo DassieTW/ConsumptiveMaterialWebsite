@@ -175,7 +175,7 @@ class BarcodeDisplayController extends Controller
         } // if a file is uploaded
         else {
             return \Response::json(['message' => __('validation.required')], 469); // Status code here
-        } // else 
+        } // else
 
     } // batchUpload
 
@@ -203,7 +203,7 @@ class BarcodeDisplayController extends Controller
                 if ($countingStars === 1) {
                     if ($cell->getValue() !== null) {
                         $spreadsheetBarcodesArray['isn'][] = $cell->getValue();
-                    } // if   
+                    } // if
                 } // if
                 else if ($countingStars === 2) {
                     $spreadsheetBarcodesArray['name'][] = $cell->getValue();  // names can be null
@@ -212,7 +212,7 @@ class BarcodeDisplayController extends Controller
                     if ($cell->getValue() !== null) {
                         $spreadsheetBarcodesArray['loc'][] = $cell->getValue();
                     } // if
-                } // else 
+                } // else
 
                 $countingStars++;
             } // foreach

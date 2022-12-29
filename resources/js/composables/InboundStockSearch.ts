@@ -7,20 +7,19 @@ import {
     useRouter
 } from "vue-router";
 
-export default function useInboundListSearch() {
+export default function useInboundStockSearch() {
     const mats = ref("");
     const errors = ref("");
     const router = useRouter();
-
-    const getStocks = async () => {
+    const getMats = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        let inboundclient = sessionStorage.getItem("inboundclient");
-        let inboundisn = sessionStorage.getItem("inboundisn");
-        let inboundlist = sessionStorage.getItem("inboundlist");
-        let inboundcheck = sessionStorage.getItem("inboundcheck");
-        let inboundbegin = sessionStorage.getItem("inboundbegin");
-        let inboundend = sessionStorage.getItem("inboundend");
+        let inboundclient = sessionStorage.getItem("inboundstockclient");
+        let inboundisn = sessionStorage.getItem("inboundstockisn");
+        let inboundloc = sessionStorage.getItem("inboundstockloc");
+        let inboundsend = sessionStorage.getItem("inboundstocksend");
+        let inboundmonth = sessionStorage.getItem("inboundstockmonth");
+        let inboundnogood = sessionStorage.getItem("inboundstocknogood");
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
         axios.interceptors.request.use(function (config) {
@@ -38,14 +37,14 @@ export default function useInboundListSearch() {
         });
 
         try {
-            let response = await axios.post('/api/inbound/search', {
+            let response = await axios.post('/api/inbound/searchstock', {
                 DB: getDB.data,
                 inboundclient: inboundclient,
                 inboundisn: inboundisn,
-                inboundlist: inboundlist,
-                inboundcheck: inboundcheck,
-                inboundbegin: inboundbegin,
-                inboundend: inboundend
+                inboundloc: inboundloc,
+                inboundsend: inboundsend,
+                inboundmonth: inboundmonth,
+                inboundnogood: inboundnogood
             });
 
             $('body').loadingModal('hide');
@@ -57,13 +56,12 @@ export default function useInboundListSearch() {
             for (const key in e.response.data.errors) {
                 errors.value += e.response.data.errors[key][0] + '  ';
             } // for each errors
-
             console.log(errors.value); // test
         } // try catch
     } // get mats
 
     return {
         mats,
-        getStocks
+        getMats
     } // return
 } // useConsumptiveMaterials

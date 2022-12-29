@@ -758,270 +758,6 @@ class OboundController extends Controller
         }
     }
 
-    /*//O庫-領料記錄表
-    public function pickrecord(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('obound.pickrecord')->with(['client' => 客戶別::cursor()])
-                ->with(['production' => 製程::cursor()]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //O庫-退料記錄表
-    public function backrecord(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('obound.backrecord')->with(['client' => 客戶別::cursor()])
-                ->with(['production' => 製程::cursor()]);
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    //O庫-領料記錄表查詢
-    public function pickrecordsearch(Request $request)
-    {
-        if (Session::has('username')) {
-            $client = $request->input('client');
-            $number =  $request->input('number');
-            $production = $request->input('production');
-            $begin = date($request->input('begin'));
-            $endDate = strtotime($request->input('end'));
-            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
-            //all empty
-            if ($client === null && $production === null && $number === null && !($request->has('date'))) {
-                return view('obound.pickrecordsearchok')->with(['data' => O庫Outbound::cursor()->whereNotNull('發料人員')]);
-            }
-            //select client
-            else if ($client !== null && $production === null && $number === null && !($request->has('date'))) {
-                return view('obound.pickrecordsearchok')->with(['data' => O庫Outbound::cursor()->whereNotNull('發料人員')->where('客戶別', $client)]);
-            }
-            //select production
-            else if ($client === null && $production !== null && $number === null && !($request->has('date'))) {
-                return view('obound.pickrecordsearchok')->with(['data' => O庫Outbound::cursor()->whereNotNull('發料人員')->where('製程', $production)]);
-            }
-            //input material number
-            else if ($client === null && $production === null && $number !== null  && !($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫outbound')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-
-                return view('obound.pickrecordsearchok')->with(['data' => $datas->whereNotNull('發料人員')]);
-            }
-            //select date
-            else if ($client === null && $production === null && $number === null  && ($request->has('date'))) {
-                return view('obound.pickrecordsearchok')->with(['data' => O庫Outbound::cursor()->whereNotNull('發料人員')->whereBetween('出庫時間', [$begin, $end])]);
-            }
-            //select client and production
-            else if ($client !== null && $production !== null && $number === null  && !($request->has('date'))) {
-                return view('obound.pickrecordsearchok')->with(['data' => O庫Outbound::cursor()->whereNotNull('發料人員')->where('客戶別', $client)->where('製程', $production)]);
-            }
-            //select client and number
-            else if ($client !== null && $production === null && $number !== null  && !($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫outbound')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-
-                return view('obound.pickrecordsearchok')->with(['data' => $datas->whereNotNull('發料人員')->where('料號', $number)->where('客戶別', $client)]);
-            }
-            //select client and time
-            else if ($client !== null && $production === null && $number === null  && ($request->has('date'))) {
-                return view('obound.pickrecordsearchok')->with(['data' => O庫Outbound::cursor()->whereNotNull('發料人員')->whereBetween('出庫時間', [$begin, $end])->where('客戶別', $client)]);
-            }
-            //select production and number
-            else if ($client === null && $production !== null && $number !== null  && !($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫outbound')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.pickrecordsearchok')->with(['data' => $datas->whereNotNull('發料人員')->where('料號', $number)->where('製程', $production)]);
-            }
-            //select production and time
-            else if ($client === null && $production !== null && $number === null  && ($request->has('date'))) {
-
-                return view('obound.pickrecordsearchok')->with(['data' => O庫Outbound::cursor()->whereNotNull('發料人員')->whereBetween('出庫時間', [$begin, $end])->where('製程', $production)]);
-            }
-            //select number and time
-            else if ($client === null && $production === null && $number !== null  && ($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫outbound')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.pickrecordsearchok')->with(['data' => $datas->whereNotNull('發料人員')->whereBetween('出庫時間', [$begin, $end])->where('料號', $number)]);
-            }
-            //select client and production and number
-            else if ($client !== null && $production !== null && $number !== null  && !($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫outbound')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.pickrecordsearchok')->with(['data' => $datas->whereNotNull('發料人員')->where('料號', $number)->where('製程', $production)
-                    ->where('客戶別', $client)]);
-            }
-            //select client and production and time
-            else if ($client !== null && $production !== null && $number === null  && ($request->has('date'))) {
-                return view('obound.pickrecordsearchok')->with(['data' => O庫Outbound::cursor()->whereNotNull('發料人員')->whereBetween('出庫時間', [$begin, $end])->where('製程', $production)
-                    ->where('客戶別', $client)]);
-            }
-            //select client and number and time
-            else if ($client !== null && $production === null && $number !== null  && ($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫outbound')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.pickrecordsearchok')->with(['data' => $datas->whereNotNull('發料人員')->whereBetween('出庫時間', [$begin, $end])->where('料號', $number)
-                    ->where('客戶別', $client)]);
-            }
-            //select production and number and time
-            else if ($client === null && $production !== null && $number !== null  && ($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫outbound')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.pickrecordsearchok')->with(['data' => $datas->whereNotNull('發料人員')->whereBetween('出庫時間', [$begin, $end])->where('料號', $number)
-                    ->where('製程', $production)]);
-            }
-
-
-            //select all
-            else if ($client !== null && $production !== null && $number !== null  && ($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫outbound')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.pickrecordsearchok')->with(['data' => $datas->whereNotNull('發料人員')->where('料號', $number)->where('製程', $production)
-                    ->where('客戶別', $client)->whereBetween('出庫時間', [$begin, $end])]);
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //O庫-退料記錄表查詢
-    public function backrecordsearch(Request $request)
-    {
-        if (Session::has('username')) {
-            $client = $request->input('client');
-            $number =  $request->input('number');
-            $production = $request->input('production');
-            $begin = date($request->input('begin'));
-            $endDate = strtotime($request->input('end'));
-            $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $endDate));
-            //all empty
-            if ($client === null && $production === null && $number === null && !($request->has('date'))) {
-                return view('obound.backrecordsearchok')->with(['data' => O庫出庫退料::cursor()->whereNotNull('收料人員')]);
-            }
-            //select client
-            else if ($client !== null && $production === null && $number === null && !($request->has('date'))) {
-                return view('obound.backrecordsearchok')->with(['data' => O庫出庫退料::cursor()->whereNotNull('收料人員')->where('客戶別', $client)]);
-            }
-            //select production
-            else if ($client === null && $production !== null && $number === null && !($request->has('date'))) {
-                return view('obound.backrecordsearchok')->with(['data' => O庫出庫退料::cursor()->whereNotNull('收料人員')->where('製程', $production)]);
-            }
-            //input material number
-            else if ($client === null && $production === null && $number !== null  && !($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫出庫退料')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-
-                return view('obound.backrecordsearchok')->with(['data' => $datas->whereNotNull('收料人員')]);
-            }
-            //select date
-            else if ($client === null && $production === null && $number === null  && ($request->has('date'))) {
-                return view('obound.backrecordsearchok')->with(['data' => O庫出庫退料::cursor()->whereNotNull('收料人員')->whereBetween('入庫時間', [$begin, $end])]);
-            }
-            //select client and production
-            else if ($client !== null && $production !== null && $number === null  && !($request->has('date'))) {
-                return view('obound.backrecordsearchok')->with(['data' => O庫出庫退料::cursor()->whereNotNull('收料人員')->where('客戶別', $client)->where('製程', $production)]);
-            }
-            //select client and number
-            else if ($client !== null && $production === null && $number !== null  && !($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫出庫退料')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-
-                return view('obound.backrecordsearchok')->with(['data' => $datas->whereNotNull('收料人員')->where('料號', $number)->where('客戶別', $client)]);
-            }
-            //select client and time
-            else if ($client !== null && $production === null && $number === null  && ($request->has('date'))) {
-                return view('obound.backrecordsearchok')->with(['data' => O庫出庫退料::cursor()->whereNotNull('收料人員')->whereBetween('入庫時間', [$begin, $end])->where('客戶別', $client)]);
-            }
-            //select production and number
-            else if ($client === null && $production !== null && $number !== null  && !($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫出庫退料')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.backrecordsearchok')->with(['data' => $datas->whereNotNull('收料人員')->where('料號', $number)->where('製程', $production)]);
-            }
-            //select production and time
-            else if ($client === null && $production !== null && $number === null  && ($request->has('date'))) {
-
-                return view('obound.backrecordsearchok')->with(['data' => O庫出庫退料::cursor()->whereNotNull('收料人員')->whereBetween('入庫時間', [$begin, $end])->where('製程', $production)]);
-            }
-            //select number and time
-            else if ($client === null && $production === null && $number !== null  && ($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫出庫退料')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.backrecordsearchok')->with(['data' => $datas->whereNotNull('收料人員')->whereBetween('入庫時間', [$begin, $end])->where('料號', $number)]);
-            }
-            //select client and production and number
-            else if ($client !== null && $production !== null && $number !== null  && !($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫出庫退料')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.backrecordsearchok')->with(['data' => $datas->whereNotNull('收料人員')->where('料號', $number)->where('製程', $production)
-                    ->where('客戶別', $client)]);
-            }
-            //select client and production and time
-            else if ($client !== null && $production !== null && $number === null  && ($request->has('date'))) {
-                return view('obound.backrecordsearchok')->with(['data' => O庫出庫退料::cursor()->whereNotNull('收料人員')->whereBetween('入庫時間', [$begin, $end])->where('製程', $production)
-                    ->where('客戶別', $client)]);
-            }
-            //select client and number and time
-            else if ($client !== null && $production === null && $number !== null  && ($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫出庫退料')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.backrecordsearchok')->with(['data' => $datas->whereNotNull('收料人員')->whereBetween('入庫時間', [$begin, $end])->where('料號', $number)
-                    ->where('客戶別', $client)]);
-            }
-            //select production and number and time
-            else if ($client === null && $production !== null && $number !== null  && ($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫出庫退料')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.backrecordsearchok')->with(['data' => $datas->whereNotNull('收料人員')->whereBetween('入庫時間', [$begin, $end])->where('料號', $number)
-                    ->where('製程', $production)]);
-            }
-
-
-            //select all
-            else if ($client !== null && $production !== null && $number !== null  && ($request->has('date'))) {
-                $input = $request->input('number');
-                $datas = DB::table('O庫出庫退料')
-                    ->where('料號', 'like', $input . '%')
-                    ->get();
-                return view('obound.backrecordsearchok')->with(['data' => $datas->whereNotNull('收料人員')->where('料號', $number)->where('製程', $production)
-                    ->where('客戶別', $client)->whereBetween('入庫時間', [$begin, $end])]);
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
     //O庫-領料添加
     public function pickadd(Request $request)
     {
@@ -1314,12 +1050,16 @@ class OboundController extends Controller
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
             $worksheet = $spreadsheet->getActiveSheet();
             $titlecount = $request->input('titlecount');
-            $count = $request->input('count');
-            $Alldata = json_decode($request->input('AllData'));
+            $titlename = $request->input('titlename');
 
-            // $stringValueBinder = new StringValueBinder();
-            // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
-            // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+            if ($titlename === "O庫領料記錄表") {
+                $Alldata = DB::table('O庫outbound')
+                    ->whereNotNull('發料人員')->get();
+            } else {
+                $Alldata = DB::table('O庫出庫退料')
+                    ->whereNotNull('收料人員')->get();
+            }
+            $count = count($Alldata);
 
             //填寫表頭
             for ($i = 0; $i < $titlecount; $i++) {
@@ -1328,15 +1068,15 @@ class OboundController extends Controller
 
             //填寫內容
             for ($i = 0; $i < $titlecount; $i++) {
+                $string = $request->input('titlecol')[$i];
                 for ($j = 0; $j < $count; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
                 }
             }
 
 
             // 下載
             $now = Carbon::now()->format('YmdHis');
-            $titlename = $request->input('titlename');
             $filename = rawurlencode($titlename) . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="' . $filename . '"');

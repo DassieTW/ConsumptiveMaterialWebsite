@@ -42,7 +42,7 @@
                                         name="select_file" />
                                     @error('select_file')
                                         <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong>{!! __('oboundpageLang.plz_upload') !!}</strong>
                                         </span>
                                     @enderror
                                 </div>
