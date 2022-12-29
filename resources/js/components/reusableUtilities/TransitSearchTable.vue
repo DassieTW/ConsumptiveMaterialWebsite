@@ -8,8 +8,6 @@
                 v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
         </div>
     </div>
-    <div class="w-100" style="height: 1ch"></div>
-    <!-- </div>breaks cols to a new line-->
     <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
         :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"

@@ -43,6 +43,7 @@ return array(
     'App\\Http\\Middleware\\TrustHosts' => $baseDir . '/app/Http/Middleware/TrustHosts.php',
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
+    'App\\Models\\Bulletin' => $baseDir . '/app/Models/Bulletin.php',
     'App\\Models\\Checking_inventory' => $baseDir . '/app/Models/Checking_inventory.php',
     'App\\Models\\ConsumptiveMaterial' => $baseDir . '/app/Models/ConsumptiveMaterial.php',
     'App\\Models\\Inbound' => $baseDir . '/app/Models/Inbound.php',

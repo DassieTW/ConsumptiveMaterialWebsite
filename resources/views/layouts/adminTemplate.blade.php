@@ -101,6 +101,33 @@
                                         {{-- <li class="sidebar-header">
                                             Pages
                                         </li> --}}
+                                        @can('editNews', App\Models\Bulletin::class )
+                                        <li class="sidebar-item {{ isActiveRoute(['home','editNews']) }}">
+                                            <a data-bs-target="#editNews" data-bs-toggle="collapse"
+                                                class="sidebar-link collapsed" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-sliders align-middle me-2"
+                                                    viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z" />
+                                                </svg>
+                                                <span class="align-middle">{!! __('templateWords.dashboard') !!}</span>
+                                            </a>
+                                            <ul id="editNews" class="sidebar-dropdown list-unstyled collapse"
+                                                data-bs-parent="#sidebar" style="">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['home']) }}">
+                                                    <a class="sidebar-link" href="{{url('home')}}">
+                                                        {!! __('templateWords.News') !!}</a>
+                                                </li>
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['editNewsBoard','editNews']) }}">
+                                                    <a class="sidebar-link" href="{{url('editNews')}}">
+                                                        {!! __('templateWords.editNews') !!}</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        @else
                                         <li class="sidebar-item {{ isActiveRoute(['home',]) }}">
                                             <a class="sidebar-link" href="{{url('home')}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -113,6 +140,7 @@
                                                 {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
                                             </a>
                                         </li>
+                                        @endcan
 
                                         @can('viewBasicInfo', App\Models\ConsumptiveMaterial::class )
                                         <li class="sidebar-item {{ isActiveRoute(['basic/', 'basic.index']) }}">
@@ -1140,7 +1168,7 @@
                                     <i class="p-0 mr-1" data-feather="settings"></i>
                                     <span>Settings</span>
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ url('/help') }}">
                                     <i class="p-0 mr-1" data-feather="help-circle"></i>
                                     <span>Help Center</span>
                                 </a>

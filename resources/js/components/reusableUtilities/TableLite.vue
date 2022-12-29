@@ -1,5 +1,5 @@
 <template>
-  <div class="vtl vtl-card">
+  <div class="vtl vtl-card p-2">
     <div class="vtl-card-title" v-if="title">{{ title }}</div>
     <div class="vtl-card-body">
       <div class="vtl-row row">

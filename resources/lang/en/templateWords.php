@@ -60,6 +60,13 @@ return [
     'west' => 'PCQ EIP',
     'middle' => 'PSZ EIP',
 
+    // News Table
+    'cat' => 'Category',
+    'dateOfNotice' => 'Date',
+    'title' => 'Title',
+    'editNews' => 'Edit Bulletin',
+    'News' => 'Bulletin',
+
     // debug notice
     'clear_cache' => 'When Website Behaves Unexpectedly, Please Refer to The Following Docs.',
     'edge' => 'Edge',

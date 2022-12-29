@@ -60,6 +60,13 @@ return [
     'west' => '华西EIP',
     'middle' => '华中EIP',
 
+    // News Table
+    'cat' => '类别',
+    'dateOfNotice' => '日期',
+    'title' => '标题',
+    'editNews' => '编辑公告',
+    'News' => '公告',
+
     // debug notice
     'clear_cache' => '网站功能或显示异常时，请先依照以下文件清理浏览器快取',
     'edge' => 'Edge',

@@ -81,6 +81,14 @@ Route::get('/home', function () {
     return view("home");
 })->name('home');
 
+Route::get('/editNews', function () {
+    return view("editNewsBoard");
+})->name('editNews');
+
+Route::get('/help', function () {
+    return view("help");
+})->name('help');
+
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');
 });

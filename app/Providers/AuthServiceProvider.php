@@ -26,6 +26,9 @@ use App\Policies\AlarmPolicy;
 use App\Models\Checking_inventory;
 use App\Policies\CheckInventPolicy;
 
+use App\Models\Bulletin;
+use App\Policies\EditNewsPolicy;
+
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 class AuthServiceProvider extends ServiceProvider
@@ -45,6 +48,7 @@ class AuthServiceProvider extends ServiceProvider
         Outbound::class => OutboundPolicy::class,
         Inventory::class => AlarmPolicy::class,
         Checking_inventory::class => CheckInventPolicy::class,
+        Bulletin::class => EditNewsPolicy::class,
     ];
 
     /**
@@ -55,7 +59,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
     }
 }

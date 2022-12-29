@@ -14,8 +14,6 @@
       />
     </div>
   </div>
-  <div class="w-100" style="height: 1ch;"></div>
-  <!-- </div>breaks cols to a new line-->
   <table-lite
     :is-fixed-first-column="true"
     :isStaticMode="true"

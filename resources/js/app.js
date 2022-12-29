@@ -51,6 +51,7 @@ import TransitSearchTable from './components/reusableUtilities/TransitSearchTabl
 import SxbSearchTable from './components/reusableUtilities/SxbSearchTable.vue';
 import NotmonthSearchTable from './components/reusableUtilities/NotmonthSearchTable.vue';
 import InboundStockSearchTable from './components/reusableUtilities/InboundStockSearchTable.vue';
+import NewsTable from './components/reusableUtilities/NewsTable.vue';
 
 const app = createApp({
     components: {
@@ -62,7 +63,8 @@ const app = createApp({
         'transit-search-table': TransitSearchTable,
         'sxb-search-table': SxbSearchTable,
         'notmonth-search-table': NotmonthSearchTable,
-        'inbound-stocksearch-table': InboundStockSearchTable
+        'inbound-stocksearch-table': InboundStockSearchTable,
+        'news-table': NewsTable
     }
 });
 

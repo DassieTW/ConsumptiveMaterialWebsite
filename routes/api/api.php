@@ -17,3 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/news', function (Request $request) {
+    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
+    \DB::purge(env("DB_CONNECTION"));
+
+    $datas = [];
+    $datas = DB::table('bulletins')
+                ->get();
+
+    return \Response::json(['datas' => $datas], 200/* Status code here default is 200 ok*/);
+});

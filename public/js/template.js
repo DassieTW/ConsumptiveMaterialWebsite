@@ -53,133 +53,143 @@ $(document).ready(function () {
         window.location.href = "/bu/sluggish";
     });
 
-    $("#instantSearchBar").on("input", function (e) {
-        e.preventDefault();
-        if ($("#instantSearchBar").val().length > 0) {
-            $.ajax({
-                url: "/navbar_quick_search",
-                type: 'post',
-                data: {
-                    inputStr: $("#instantSearchBar").val()
-                },
-                dataType: 'json', // let's set the expected response format
-                complete: function () {
-                    // do nothing for now
-                },
-                success: function (response) {
-                    $("#searchResult").empty();
-                    // console.log(JSON.parse(response.data)); // test
-                    // console.log(response.lang); // test
-                    var responseObj = JSON.parse(response.data); // get the response data
-                    const hits = [...new Map(responseObj.hits.map((item) => [item["url"], item])).values()];
-                    console.log(hits); // test
-                    if (hits.length > 0) {
-                        $("#searchResult").show(); // show the ul list
-                        for (var i = 0; i < 10 && i < hits.length; i++) {
-                            if (response.lang == "en") {
-                                if (hits[i]._formatted.en_title.includes("<mark>")) {
-                                    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                                    // console.log(hits[i].svg_d); //test
-                                    hits[i].svg_d.forEach(function (itemD, indexD) {
-                                        var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-                                        path.setAttribute('d', itemD);
-                                        svg.appendChild(path);
-                                    });
+    function getData() {
+        // I have enabled typo in meilisearch, so the input string and result may differ a little when search by English
+        return $.ajax({
+            url: "/navbar_quick_search",
+            type: 'post',
+            data: {
+                inputStr: $("#instantSearchBar").val()
+            },
+            dataType: 'json', // let's set the expected response format
+            complete: function () {
+                // do nothing for now
+            },
+            success: function (response) {
+                $("#searchResult").empty();
+                // console.log(JSON.parse(response.data)); // test
+                // console.log(response.lang); // test
+                var responseObj = JSON.parse(response.data); // get the response data
+                const hits = [...new Map(responseObj.hits.map((item) => [item["url"], item])).values()];
+                // console.log(hits); // test
+                if (hits.length > 0) {
+                    $("#searchResult").show(); // show the ul list
+                    for (var i = 0; i < 10 && i < hits.length; i++) {
+                        if (response.lang == "en") {
+                            if (hits[i]._formatted.en_title.includes("<mark>")) {
+                                var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                                // console.log(hits[i].svg_d); //test
+                                hits[i].svg_d.forEach(function (itemD, indexD) {
+                                    var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+                                    path.setAttribute('d', itemD);
+                                    svg.appendChild(path);
+                                });
 
-                                    svg.setAttribute("width", "16");
-                                    svg.setAttribute("height", "16");
-                                    svg.setAttribute("fill", hits[i].svg_fill);
-                                    svg.setAttribute("class", hits[i].svg_class);
-                                    svg.setAttribute("viewBox", "0 0 16 16");
+                                svg.setAttribute("width", "16");
+                                svg.setAttribute("height", "16");
+                                svg.setAttribute("fill", hits[i].svg_fill);
+                                svg.setAttribute("class", hits[i].svg_class);
+                                svg.setAttribute("viewBox", "0 0 16 16");
 
-                                    $("#searchResult").append('<li id="result' + i + '"><a class="dropdown-item" href="' + hits[i].url + '"><span>' + hits[i]._formatted.en_parentTitle + '</span><br class="sepLi"><span>' +
-                                        hits[i]._formatted.en_title + '</span></a></li>'); // add <li> for each hit
+                                $("#searchResult").append('<li id="result' + i + '"><a class="dropdown-item" href="' + hits[i].url + '"><span>' + hits[i]._formatted.en_parentTitle + '</span><br class="sepLi"><span>' +
+                                    hits[i]._formatted.en_title + '</span></a></li>'); // add <li> for each hit
 
-                                    $('#result' + i + " a").prepend(svg);
-                                    if ((i + 1) < 10 && (i + 1) < hits.length) {
-                                        $("#searchResult").append('<li><hr class="dropdown-divider"></li>'); // add divider between items
-                                    } // for 
-                                } // if
+                                $('#result' + i + " a").prepend(svg);
+                                if ((i + 1) < 10 && (i + 1) < hits.length) {
+                                    $("#searchResult").append('<li><hr class="dropdown-divider"></li>'); // add divider between items
+                                } // for 
                             } // if
-                            else if (response.lang == "zh-TW") {
-                                if (hits[i]._formatted.tw_title.includes("<mark>")) {
-                                    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                                    // console.log(hits[i].svg_d); //test
-                                    hits[i].svg_d.forEach(function (itemD, indexD) {
-                                        var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-                                        path.setAttribute('d', itemD);
-                                        svg.appendChild(path);
-                                    });
-
-                                    svg.setAttribute("width", "16");
-                                    svg.setAttribute("height", "16");
-                                    svg.setAttribute("fill", hits[i].svg_fill);
-                                    svg.setAttribute("class", hits[i].svg_class);
-                                    svg.setAttribute("viewBox", "0 0 16 16");
-
-                                    $("#searchResult").append('<li id="result' + i + '"><a class="dropdown-item" href="' + hits[i].url + '"><span>' + hits[i]._formatted.tw_parentTitle + '</span><br class="sepLi"><span>' +
-                                        hits[i]._formatted.tw_title + '</span></a></li>'); // add <li> for each hit
-
-                                    $('#result' + i + " a").prepend(svg);
-                                    if ((i + 1) < 10 && (i + 1) < hits.length) {
-                                        $("#searchResult").append('<li><hr class="dropdown-divider"></li>'); // add divider between items
-                                    } // for 
-                                } // if
-                            } // else if
-                            else {
-                                if (hits[i]._formatted.cn_title.includes("<mark>")) {
-                                    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                                    // console.log(hits[i].svg_d); //test
-                                    hits[i].svg_d.forEach(function (itemD, indexD) {
-                                        var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-                                        path.setAttribute('d', itemD);
-                                        svg.appendChild(path);
-                                    });
-
-                                    svg.setAttribute("width", "16");
-                                    svg.setAttribute("height", "16");
-                                    svg.setAttribute("fill", hits[i].svg_fill);
-                                    svg.setAttribute("class", hits[i].svg_class);
-                                    svg.setAttribute("viewBox", "0 0 16 16");
-
-                                    $("#searchResult").append('<li id="result' + i + '"><a class="dropdown-item" href="' + hits[i].url + '"><span>' + hits[i]._formatted.cn_parentTitle + '</span><br class="sepLi"><span>' +
-                                        hits[i]._formatted.cn_title + '</span></a></li>'); // add <li> for each hit
-
-                                    $('#result' + i + " a").prepend(svg);
-                                    if ((i + 1) < 10 && (i + 1) < hits.length) {
-                                        $("#searchResult").append('<li><hr class="dropdown-divider"></li>'); // add divider between items
-                                    } // for 
-                                } // if
-                            } // else
-                        } // for
-
-                        if ($("#searchResult").children().length > 0) {
-                            $(".sepLi").after(svgArrowRight);
-                            $(".sepLi").after("&nbsp;&nbsp;&nbsp;&nbsp;");
                         } // if
+                        else if (response.lang == "zh-TW") {
+                            if (hits[i]._formatted.tw_title.includes("<mark>")) {
+                                var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                                // console.log(hits[i].svg_d); //test
+                                hits[i].svg_d.forEach(function (itemD, indexD) {
+                                    var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+                                    path.setAttribute('d', itemD);
+                                    svg.appendChild(path);
+                                });
+
+                                svg.setAttribute("width", "16");
+                                svg.setAttribute("height", "16");
+                                svg.setAttribute("fill", hits[i].svg_fill);
+                                svg.setAttribute("class", hits[i].svg_class);
+                                svg.setAttribute("viewBox", "0 0 16 16");
+
+                                $("#searchResult").append('<li id="result' + i + '"><a class="dropdown-item" href="' + hits[i].url + '"><span>' + hits[i]._formatted.tw_parentTitle + '</span><br class="sepLi"><span>' +
+                                    hits[i]._formatted.tw_title + '</span></a></li>'); // add <li> for each hit
+
+                                $('#result' + i + " a").prepend(svg);
+                                if ((i + 1) < 10 && (i + 1) < hits.length) {
+                                    $("#searchResult").append('<li><hr class="dropdown-divider"></li>'); // add divider between items
+                                } // for 
+                            } // if
+                        } // else if
                         else {
-                            $("#searchResult").empty();
-                            $("#searchResult").hide(); // hide the ul list
+                            if (hits[i]._formatted.cn_title.includes("<mark>")) {
+                                var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                                // console.log(hits[i].svg_d); //test
+                                hits[i].svg_d.forEach(function (itemD, indexD) {
+                                    var path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+                                    path.setAttribute('d', itemD);
+                                    svg.appendChild(path);
+                                });
+
+                                svg.setAttribute("width", "16");
+                                svg.setAttribute("height", "16");
+                                svg.setAttribute("fill", hits[i].svg_fill);
+                                svg.setAttribute("class", hits[i].svg_class);
+                                svg.setAttribute("viewBox", "0 0 16 16");
+
+                                $("#searchResult").append('<li id="result' + i + '"><a class="dropdown-item" href="' + hits[i].url + '"><span>' + hits[i]._formatted.cn_parentTitle + '</span><br class="sepLi"><span>' +
+                                    hits[i]._formatted.cn_title + '</span></a></li>'); // add <li> for each hit
+
+                                $('#result' + i + " a").prepend(svg);
+                                if ((i + 1) < 10 && (i + 1) < hits.length) {
+                                    $("#searchResult").append('<li><hr class="dropdown-divider"></li>'); // add divider between items
+                                } // for 
+                            } // if
                         } // else
+                    } // for
+
+                    if ($("#searchResult").children().length > 0) {
+                        $(".sepLi").after(svgArrowRight);
+                        $(".sepLi").after("&nbsp;&nbsp;&nbsp;&nbsp;");
                     } // if
                     else {
+                        $("#searchResult").empty();
                         $("#searchResult").hide(); // hide the ul list
                     } // else
-                },
-                error: function (err) {
-                    console.log(err); // test
-                    notyf.error({
-                        message: "Error",
-                        duration: 5000,   //miliseconds, use 0 for infinite duration
-                        ripple: true,
-                        dismissible: true,
-                        position: {
-                            x: "right",
-                            y: "bottom"
-                        }
-                    });
-                } // if error
-            }); // end of ajax
+                } // if
+                else {
+                    $("#searchResult").hide(); // hide the ul list
+                } // else
+            },
+            error: function (err) {
+                console.log(err); // test
+                notyf.error({
+                    message: "Error",
+                    duration: 5000,   //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom"
+                    }
+                });
+            } // if error
+        }); // end of ajax
+    };
+
+    let searchTimeout;
+
+    $("#instantSearchBar").on("input", function (e) {
+        // console.log($("#instantSearchBar").val()); // test
+        if ($("#instantSearchBar").val().length > 0) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function () {
+                getData();
+            }, 200);
         } // if
         else {
             $("#searchResult").empty();
