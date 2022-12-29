@@ -4,7 +4,7 @@
 @section('css')
     <style>
         :root {
-            --form-control-color: rgb(62, 102, 220);
+            --form-control-color: rgb(13, 56, 186);
         }
 
         *:after {
@@ -51,6 +51,12 @@
         input[type="checkbox"]:checked::before {
             transform: scale(1);
         }
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
+            background: blanchedalmond;
+            border-bottom: 1px solid green;
+        }
     </style>
 @endsection
 
@@ -81,7 +87,7 @@
                                 href="#showmachine">{!! __('basicInfoLang.machine') !!}</a>
                         </li>
                         <li class="nav-item" id="ProductionExample">
-                            <a id="ProductionExamplea" data-toggle="tab" class="nav-link"
+                            <a id="ProductionExamplea" data-toggle="pill" class="nav-link"
                                 href="#showprocess">{!! __('basicInfoLang.process') !!}</a>
                         </li>
                         <li class="nav-item" id="LineExample">
@@ -409,7 +415,7 @@
                                         name="select_file" />
                                     @error('select_file')
                                         <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong>{!! __('basicInfoLang.plz_upload') !!}</strong>
                                         </span>
                                     @enderror
                                 </div>

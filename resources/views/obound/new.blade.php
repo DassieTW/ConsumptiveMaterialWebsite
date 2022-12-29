@@ -29,9 +29,12 @@
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg @error('number') is-invalid @enderror"
-                                    type="text" id="number" name="number" required
-                                    placeholder="{!! __('oboundpageLang.enterisn') !!}">
-                                <div id="numbererror" style="display:none; color:red;">{!! __('oboundpageLang.isnrepeat') !!}</div>
+                                    type="text" id="number" name="number" placeholder="{!! __('oboundpageLang.enterisn') !!}">
+                                <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                                    {!! __('oboundpageLang.enterisn') !!}
+                                </div>
+                                <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                                    {!! __('oboundpageLang.isnrepeat') !!}</div>
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -40,8 +43,10 @@
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
                                 <input class="form-control form-control-lg @error('name') is-invalid @enderror"
-                                    type="text" id="name" name="name" required
-                                    placeholder="{!! __('oboundpageLang.enterpName') !!}">
+                                    type="text" id="name" name="name" placeholder="{!! __('oboundpageLang.enterpName') !!}">
+                                <div class="invalid-feedback" id="nameerror" style="display:none; color:red;">
+                                    {!! __('oboundpageLang.enterpName') !!}
+                                </div>
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -49,11 +54,11 @@
                             <label class="col col-auto form-label">{!! __('oboundpageLang.format') !!}</label>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="col-lg-6  col-md-12 col-sm-12">
-
                                 <input class="form-control form-control-lg @error('format') is-invalid @enderror"
-                                    type="text" id="format" name="format" required
-                                    placeholder="{!! __('oboundpageLang.enterformat') !!}">
-
+                                    type="text" id="format" name="format" placeholder="{!! __('oboundpageLang.enterformat') !!}">
+                                <div class="invalid-feedback" id="formaterror" style="display:none; color:red;">
+                                    {!! __('oboundpageLang.enterformat') !!}
+                                </div>
                             </div>
 
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -85,7 +90,6 @@
                         </table>
                     </div>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">
                             <input type="submit" class="btn btn-lg btn-primary" value="{!! __('basicInfoLang.addtodatabase') !!}">

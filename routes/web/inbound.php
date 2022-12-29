@@ -47,8 +47,6 @@ Route::get('/inquire', function () {
     return view("inbound.searchok");
 })->middleware('can:viewInbound,App\Models\Inbound');
 
-Route::post('/inquire', [InboundController::class, 'inquire'])->name('inbound.inquire')->middleware('can:viewInbound,App\Models\Inbound');
-
 //入庫-新增
 Route::get('/add', function () {
     return view('inbound.add')
@@ -93,9 +91,17 @@ Route::get('/searchstock', function () {
 //Route::post('/searchstock', [InboundController::class, 'searchstock'])->name('inbound.searchstock');
 
 //入庫-庫存查詢成功
-Route::get('/searchstocksubmit', [InboundController::class, 'searchstocksubmit'])->middleware('can:viewInbound,App\Models\Inbound');
+Route::get('/searchstocksubmit', function () {
+    Session::put("month", false);
+    return view("inbound.searchstockok");
+})->middleware('can:viewInbound,App\Models\Inbound');
 
-Route::post('/searchstocksubmit', [InboundController::class, 'searchstocksubmit'])->name('inbound.searchstocksubmit')->middleware('can:viewInbound,App\Models\Inbound');
+//入庫-庫存查詢成功(月使用量)
+Route::get('/searchstocksubmit1', function () {
+    Session::put("month", true);
+    return view("inbound.searchstockok");
+})->middleware('can:viewInbound,App\Models\Inbound');
+
 
 //入庫-查詢刪除
 Route::post('/delete', [InboundController::class, 'delete'])->name('inbound.delete')->middleware('can:viewInbound,App\Models\Inbound');
@@ -134,7 +140,7 @@ Route::get('/upload', function () {
 
 Route::get('/uploadinventory', function () {
     return view('inbound.upload');
-})->name('inbound.uploadinventory')->middleware('can:viewInbound,App\Models\Inbound');
+})->middleware('can:viewInbound,App\Models\Inbound');
 
 Route::post('/uploadinventory', [InboundController::class, 'uploadinventory'])->name('inbound.uploadinventory')->middleware('can:viewInbound,App\Models\Inbound');
 

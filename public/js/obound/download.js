@@ -1,360 +1,232 @@
 $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+  headers: {
+    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+  },
 });
 $(document).ready(function () {
+  var title = [];
+  var titlecol = [];
 
+  $("#picktable").on("submit", function (e) {
+    e.preventDefault();
 
-    function quickSearch() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue;
-        input = $("#numbersearch").val();
-        //var isISN = $("#toggle-state").is(":checked");
-        console.log(input); // test
-        // filter = input.value;
-        // Loop through all table rows, and hide those who don't match the search query
-        $('.isnRows').each(function (i, obj) {
-            txtValue = $(this).find("input[id^='dataf']").val();
-            // console.log("now checking text : " + txtValue); // test
-            if (txtValue.indexOf(input) > -1) {
-                obj.style.display = "";
+    var titlecount = 20;
+    var titlename = $("#titlename").val();
 
+    // clean up previous input results
+    $(".is-invalid").removeClass("is-invalid");
+    $(".invalid-feedback").remove();
+
+    for (let i = 0; i < 20; i++) {
+      title.push($(".vtl-thead-th").eq(i).text());
+    }
+
+    titlecol.push("客戶別");
+    titlecol.push("機種");
+    titlecol.push("製程");
+    titlecol.push("領用原因");
+    titlecol.push("線別");
+    titlecol.push("料號");
+    titlecol.push("品名");
+    titlecol.push("規格");
+    titlecol.push("預領數量");
+    titlecol.push("實際領用數量");
+    titlecol.push("備註");
+    titlecol.push("實領差異原因");
+    titlecol.push("庫別");
+    titlecol.push("領料人員");
+    titlecol.push("領料人員工號");
+    titlecol.push("發料人員");
+    titlecol.push("發料人員工號");
+    titlecol.push("領料單號");
+    titlecol.push("開單時間");
+    titlecol.push("出庫時間");
+
+    $.ajax({
+      type: "POST",
+      url: "download",
+      data: {
+        title: title,
+        titlecount: titlecount,
+        titlename: titlename,
+        titlecol: titlecol,
+      },
+      xhrFields: {
+        responseType: "blob", // to avoid binary data being mangled on charset conversion
+      },
+
+      beforeSend: function () {
+        // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+        $("body").loadingModal({
+          text: "Loading...",
+          animation: "circle",
+        });
+      },
+      complete: function () {
+        $("body").loadingModal("hide");
+        $("body").loadingModal("destroy");
+      },
+
+      success: function (blob, status, xhr) {
+        console.log(status); // test
+        // check for a filename
+
+        var filename = "";
+        var disposition = xhr.getResponseHeader("Content-Disposition");
+        if (disposition && disposition.indexOf("attachment") !== -1) {
+          var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+          var matches = filenameRegex.exec(disposition);
+          if (matches != null && matches[1])
+            filename = matches[1].replace(/['"]/g, "");
+        }
+
+        if (typeof window.navigator.msSaveBlob !== "undefined") {
+          // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+          window.navigator.msSaveBlob(blob, filename);
+        } else {
+          var URL = window.URL || window.webkitURL;
+          var downloadUrl = URL.createObjectURL(blob);
+
+          if (filename) {
+            // use HTML5 a[download] attribute to specify filename
+            var a = document.createElement("a");
+            // safari doesn't support this yet
+            if (typeof a.download === "undefined") {
+              window.location.href = downloadUrl;
             } else {
-                obj.style.display = "none";
-            } // if else
-        });
-    } // quickSearch function
-
-
-    $("#numbersearch").on('input', function (e) {
-        e.preventDefault();
-        quickSearch();
-    });
-
-    $('#picktable').on('submit', function (e) {
-        e.preventDefault();
-
-        // clean up previous input results
-        $('.is-invalid').removeClass('is-invalid');
-        $(".invalid-feedback").remove();
-
-
-        var titlecount = $("#titlecount").val();
-        var count = $("#count").val();
-        var titlename = $("#titlename").val();
-        var title = [];
-        for (let i = 0; i < titlecount; i++) {
-            title.push($("#title" + i).val());
-        }
-        var data = [];
-        var data0 = [];
-        var data1 = [];
-        var data2 = [];
-        var data3 = [];
-        var data4 = [];
-        var data5 = [];
-        var data6 = [];
-        var data7 = [];
-        var data8 = [];
-        var data9 = [];
-        var data10 = [];
-        var data11 = [];
-        var data12 = [];
-        var data13 = [];
-        var data14 = [];
-        var data15 = [];
-        var data16 = [];
-        var data17 = [];
-        var data18 = [];
-        var data19 = [];
-        var data20 = [];
-        for (let i = 0; i < count; i++) {
-            data0.push($("#dataa" + i).val());
-            data1.push($("#datab" + i).val());
-            data2.push($("#datac" + i).val());
-            data3.push($("#datad" + i).val());
-            data4.push($("#datae" + i).val());
-            data5.push($("#dataf" + i).val());
-            data6.push($("#datag" + i).val());
-            data7.push($("#datah" + i).val());
-            data8.push($("#datai" + i).val());
-            data9.push($("#dataj" + i).val());
-            data10.push($("#datak" + i).val());
-            data11.push($("#datal" + i).val());
-            data12.push($("#datam" + i).val());
-            data13.push($("#datan" + i).val());
-            data14.push($("#datao" + i).val());
-            data15.push($("#datap" + i).val());
-            data16.push($("#dataq" + i).val());
-            data17.push($("#datar" + i).val());
-            data18.push($("#datas" + i).val());
-            data19.push($("#datat" + i).val());
-            data20.push($("#datau" + i).val());
-
-        }
-        data.push(data0);
-        data.push(data1);
-        data.push(data2);
-        data.push(data3);
-        data.push(data4);
-        data.push(data5);
-        data.push(data6);
-        data.push(data7);
-        data.push(data8);
-        data.push(data9);
-        data.push(data10);
-        data.push(data11);
-        data.push(data12);
-        data.push(data13);
-        data.push(data14);
-        data.push(data15);
-        data.push(data16);
-        data.push(data17);
-        data.push(data18);
-        data.push(data19);
-        data.push(data20);
-        $.ajax({
-            type: 'POST',
-            url: "download",
-            data: {
-                title: title,
-                titlecount: titlecount,
-                titlename: titlename,
-                AllData: JSON.stringify(data),
-                count: count,
-            },
-            xhrFields: {
-                responseType: 'blob', // to avoid binary data being mangled on charset conversion
-            },
-
-            beforeSend: function () {
-                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                $('body').loadingModal({
-                    text: 'Loading...',
-                    animation: 'circle'
-                });
-            },
-            complete: function () {
-                $('body').loadingModal('hide');
-                $('body').loadingModal('destroy');
-            },
-
-            success: function (blob, status, xhr) {
-
-                console.log(status); // test
-                // check for a filename
-
-                var filename = "";
-                var disposition = xhr.getResponseHeader('Content-Disposition');
-                if (disposition && disposition.indexOf('attachment') !== -1) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                    var matches = filenameRegex.exec(disposition);
-                    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                }
-
-                if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                    window.navigator.msSaveBlob(blob, filename);
-                } else {
-                    var URL = window.URL || window.webkitURL;
-                    var downloadUrl = URL.createObjectURL(blob);
-
-                    if (filename) {
-                        // use HTML5 a[download] attribute to specify filename
-                        var a = document.createElement("a");
-                        // safari doesn't support this yet
-                        if (typeof a.download === 'undefined') {
-                            window.location.href = downloadUrl;
-                        } else {
-                            a.href = downloadUrl;
-                            a.download = decodeURIComponent(filename);
-                            console.log(decodeURIComponent(filename));
-                            document.body.appendChild(a);
-                            a.click();
-                        }
-                    } else {
-                        window.location.href = downloadUrl;
-                    }
-
-                    setTimeout(function () {
-                        URL.revokeObjectURL(downloadUrl);
-                    }, 100); // cleanup
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-
-                console.warn(jqXHR.responseText);
-                alert(errorThrown);
+              a.href = downloadUrl;
+              a.download = decodeURIComponent(filename);
+              console.log(decodeURIComponent(filename));
+              document.body.appendChild(a);
+              a.click();
             }
-        });
+          } else {
+            window.location.href = downloadUrl;
+          }
+
+          setTimeout(function () {
+            URL.revokeObjectURL(downloadUrl);
+          }, 100); // cleanup
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.warn(jqXHR.responseText);
+        alert(errorThrown);
+      },
     });
-    $('#backtable').on('submit', function (e) {
-        e.preventDefault();
+  });
 
-        // clean up previous input results
-        $('.is-invalid').removeClass('is-invalid');
-        $(".invalid-feedback").remove();
+  $("#backtable").on("submit", function (e) {
+    e.preventDefault();
 
+    // clean up previous input results
+    $(".is-invalid").removeClass("is-invalid");
+    $(".invalid-feedback").remove();
 
-        var titlecount = $("#titlecount").val();
-        var count = $("#count").val();
-        var titlename = $("#titlename").val();
-        var title = [];
-        for (let i = 0; i < titlecount; i++) {
-            title.push($("#title" + i).val());
+    var titlecount = 21;
+    var titlename = $("#titlename").val();
+    //download title
+    for (let i = 0; i < 21; i++) {
+      title.push($(".vtl-thead-th").eq(i).text());
+    }
+
+    titlecol.push("客戶別");
+    titlecol.push("機種");
+    titlecol.push("製程");
+    titlecol.push("退回原因");
+    titlecol.push("線別");
+    titlecol.push("料號");
+    titlecol.push("品名");
+    titlecol.push("規格");
+    titlecol.push("預退數量");
+    titlecol.push("實際退回數量");
+    titlecol.push("備註");
+    titlecol.push("實退差異原因");
+    titlecol.push("庫別");
+    titlecol.push("收料人員");
+    titlecol.push("收料人員工號");
+    titlecol.push("退料人員");
+    titlecol.push("退料人員工號");
+    titlecol.push("退料單號");
+    titlecol.push("開單時間");
+    titlecol.push("入庫時間");
+    titlecol.push("功能狀況");
+
+    // clean up previous input results
+    $(".is-invalid").removeClass("is-invalid");
+    $(".invalid-feedback").remove();
+
+    $.ajax({
+      type: "POST",
+      url: "download",
+      data: {
+        title: title,
+        titlecount: titlecount,
+        titlename: titlename,
+        titlecol: titlecol,
+      },
+      xhrFields: {
+        responseType: "blob", // to avoid binary data being mangled on charset conversion
+      },
+
+      beforeSend: function () {
+        // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+        $("body").loadingModal({
+          text: "Loading...",
+          animation: "circle",
+        });
+      },
+      complete: function () {
+        $("body").loadingModal("hide");
+        $("body").loadingModal("destroy");
+      },
+
+      success: function (blob, status, xhr) {
+        console.log(status); // test
+        // check for a filename
+
+        var filename = "";
+        var disposition = xhr.getResponseHeader("Content-Disposition");
+        if (disposition && disposition.indexOf("attachment") !== -1) {
+          var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+          var matches = filenameRegex.exec(disposition);
+          if (matches != null && matches[1])
+            filename = matches[1].replace(/['"]/g, "");
         }
-        var data = [];
-        var data0 = [];
-        var data1 = [];
-        var data2 = [];
-        var data3 = [];
-        var data4 = [];
-        var data5 = [];
-        var data6 = [];
-        var data7 = [];
-        var data8 = [];
-        var data9 = [];
-        var data10 = [];
-        var data11 = [];
-        var data12 = [];
-        var data13 = [];
-        var data14 = [];
-        var data15 = [];
-        var data16 = [];
-        var data17 = [];
-        var data18 = [];
-        var data19 = [];
-        var data20 = [];
-        var data21 = [];
-        for (let i = 0; i < count; i++) {
-            data0.push($("#dataa" + i).val());
-            data1.push($("#datab" + i).val());
-            data2.push($("#datac" + i).val());
-            data3.push($("#datad" + i).val());
-            data4.push($("#datae" + i).val());
-            data5.push($("#dataf" + i).val());
-            data6.push($("#datag" + i).val());
-            data7.push($("#datah" + i).val());
-            data8.push($("#datai" + i).val());
-            data9.push($("#dataj" + i).val());
-            data10.push($("#datak" + i).val());
-            data11.push($("#datal" + i).val());
-            data12.push($("#datam" + i).val());
-            data13.push($("#datan" + i).val());
-            data14.push($("#datao" + i).val());
-            data15.push($("#datap" + i).val());
-            data16.push($("#dataq" + i).val());
-            data17.push($("#datar" + i).val());
-            data18.push($("#datas" + i).val());
-            data19.push($("#datat" + i).val());
-            data20.push($("#datau" + i).val());
-            data21.push($("#datav" + i).val());
 
-        }
-        data.push(data0);
-        data.push(data1);
-        data.push(data2);
-        data.push(data3);
-        data.push(data4);
-        data.push(data5);
-        data.push(data6);
-        data.push(data7);
-        data.push(data8);
-        data.push(data9);
-        data.push(data10);
-        data.push(data11);
-        data.push(data12);
-        data.push(data13);
-        data.push(data14);
-        data.push(data15);
-        data.push(data16);
-        data.push(data17);
-        data.push(data18);
-        data.push(data19);
-        data.push(data20);
-        data.push(data21);
+        if (typeof window.navigator.msSaveBlob !== "undefined") {
+          // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+          window.navigator.msSaveBlob(blob, filename);
+        } else {
+          var URL = window.URL || window.webkitURL;
+          var downloadUrl = URL.createObjectURL(blob);
 
-        $.ajax({
-            type: 'POST',
-            url: "download",
-            data: {
-                title: title,
-                titlecount: titlecount,
-                titlename: titlename,
-                AllData: JSON.stringify(data),
-                count: count,
-            },
-            xhrFields: {
-                responseType: 'blob', // to avoid binary data being mangled on charset conversion
-            },
-
-            beforeSend: function () {
-                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                $('body').loadingModal({
-                    text: 'Loading...',
-                    animation: 'circle'
-                });
-            },
-            complete: function () {
-                $('body').loadingModal('hide');
-                $('body').loadingModal('destroy');
-            },
-
-            success: function (blob, status, xhr) {
-
-                console.log(status); // test
-                // check for a filename
-
-                var filename = "";
-                var disposition = xhr.getResponseHeader('Content-Disposition');
-                if (disposition && disposition.indexOf('attachment') !== -1) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                    var matches = filenameRegex.exec(disposition);
-                    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                }
-
-                if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                    window.navigator.msSaveBlob(blob, filename);
-                } else {
-                    var URL = window.URL || window.webkitURL;
-                    var downloadUrl = URL.createObjectURL(blob);
-
-                    if (filename) {
-                        // use HTML5 a[download] attribute to specify filename
-                        var a = document.createElement("a");
-                        // safari doesn't support this yet
-                        if (typeof a.download === 'undefined') {
-                            window.location.href = downloadUrl;
-                        } else {
-                            a.href = downloadUrl;
-                            a.download = decodeURIComponent(filename);
-                            console.log(decodeURIComponent(filename));
-                            document.body.appendChild(a);
-                            a.click();
-                        }
-                    } else {
-                        window.location.href = downloadUrl;
-                    }
-
-                    setTimeout(function () {
-                        URL.revokeObjectURL(downloadUrl);
-                    }, 100); // cleanup
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-
-                console.warn(jqXHR.responseText);
-                alert(errorThrown);
+          if (filename) {
+            // use HTML5 a[download] attribute to specify filename
+            var a = document.createElement("a");
+            // safari doesn't support this yet
+            if (typeof a.download === "undefined") {
+              window.location.href = downloadUrl;
+            } else {
+              a.href = downloadUrl;
+              a.download = decodeURIComponent(filename);
+              console.log(decodeURIComponent(filename));
+              document.body.appendChild(a);
+              a.click();
             }
-        });
-    });
-});
+          } else {
+            window.location.href = downloadUrl;
+          }
 
-$(window).on('load', function () {
-    // PAGE IS FULLY LOADED
-    // FADE OUT YOUR OVERLAYING DIV
-    $('body').loadingModal('hide');
-    $('body').loadingModal('destroy');
+          setTimeout(function () {
+            URL.revokeObjectURL(downloadUrl);
+          }, 100); // cleanup
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.warn(jqXHR.responseText);
+        alert(errorThrown);
+      },
+    });
+  });
 });

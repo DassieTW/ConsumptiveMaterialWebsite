@@ -74,7 +74,7 @@
                             @foreach ($usereason as $usereason)
                                 <option>{{ $usereason->領用原因 }}</option>
                             @endforeach
-                            <option>{!! __('outboundpageLang.other') !!}</option>
+                            <option value="其他">{!! __('outboundpageLang.other') !!}</option>
                         </select>
                         <div class="invalid-feedback" id="usereasonerror" style="display:none; color:red;">
                             {!! __('outboundpageLang.enterusereason') !!}</div>

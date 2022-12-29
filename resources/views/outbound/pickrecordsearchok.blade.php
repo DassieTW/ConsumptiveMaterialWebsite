@@ -37,10 +37,8 @@
                     <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                         value="{!! __('outboundpageLang.download') !!}">
                     <outbound-pickrecord-table></outbound-pickrecord-table>
-                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                 </form>
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             </div>
         </div>

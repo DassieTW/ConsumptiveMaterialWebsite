@@ -4,16 +4,7 @@
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/inbound/stock.js?v=') . env('APP_VERSION') }}"></script>
-    <script>
-        $(window).on('beforeunload', function() {
-            $('body').loadingModal({
-                text: 'Loading...',
-                animation: 'circle'
-            });
-            $('body').loadingModal('show');
-        });
-    </script>
+    <script src="{{ asset('js/inbound/searchstock.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <!DOCTYPE html>
@@ -38,7 +29,7 @@
                 <div class="row justify-content-center">
                     <div class="card-body">
                         <div class="d-flex w-100">
-                            <form action="{{ route('inbound.searchstocksubmit') }}" method="POST">
+                            <form id="form1" method="POST">
                                 @csrf
                                 <div class="row w-100 justify-content-center mb-3">
                                     <label class="col col-auto form-label">{!! __('inboundpageLang.client') !!}</label>

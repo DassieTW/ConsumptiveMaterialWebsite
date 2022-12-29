@@ -63,6 +63,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api/month.php'));
 
+            Route::prefix('api/obound')
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api/obound.php'));
+
             Route::middleware(['web', 'auth', 'locale'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/web.php'));

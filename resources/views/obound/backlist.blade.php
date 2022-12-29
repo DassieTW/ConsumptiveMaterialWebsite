@@ -67,16 +67,16 @@
                                     }
                                     ?>
                                     <td><a id="deleteBtn{{ $loop->index }}"
-                                            href="javascript:deleteBtn({{ $loop->index }})"><svg width="16"
-                                                height="16" fill="#c94466" class="bi bi-x-circle-fill"
-                                                viewBox="0 0 16 16">
+                                            href="javascript:deleteBtn({{ $loop->index }})"><svg width="30"
+                                                height="30" fill="#c94466" class="bi bi-x-circle-fill"
+                                                viewBox="0 0 20 20">
                                                 <path
                                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z">
                                                 </path>
                                             </svg></a></td>
                                     <td><a id="addBtn{{ $loop->index }}" href="javascript:addBtn({{ $loop->index }})"><svg
-                                                xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                fill="#467fd0" class="bi bi-plus-square" viewBox="0 0 16 16">
+                                                xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                                fill="#467fd0" class="bi bi-plus-square" viewBox="0 0 20 20">
                                                 <path
                                                     d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
                                                 <path
@@ -94,8 +94,8 @@
                                     <td>
                                         <div class="tooltip1">
                                             <input class="form-control amount" style="width:100px" type="number"
-                                                id="amount{{ $loop->index }}" name="amount{{ $loop->index }}" required
-                                                value="{{ $data->實際退回數量 }}" min="1">
+                                                id="amount{{ $loop->index }}" name="amount{{ $loop->index }}"
+                                                value="{{ $data->實際退回數量 }}" min="1" value="1">
 
                                             <span class="tooltip1text tooltip1-top">{{ $showstock }}</span>
                                         </div>
@@ -110,7 +110,7 @@
                                     <td><span id="opentime{{ $loop->index }}">{{ $data->開單時間 }}</span></td>
                                     <td>
                                         <select class="form-select form-select-lg" id="status{{ $loop->index }}"
-                                            name="status{{ $loop->index }}" required width="250" style="width: 150px">
+                                            name="status{{ $loop->index }}" width="250" style="width: 150px">
                                             <option style="display: none" disabled selected value="">
                                                 {!! __('oboundpageLang.enterstatus') !!}
                                             </option>
@@ -120,7 +120,7 @@
                                     </td>
                                     <td>
                                         <select style="width: 150px" class="form-select form-select-lg"
-                                            name="bound{{ $loop->index }}" id="bound{{ $loop->index }}" required>
+                                            name="bound{{ $loop->index }}" id="bound{{ $loop->index }}">
 
                                             <option style="display: none" disabled selected value="">
                                                 {!! __('oboundpageLang.enterbound') !!}</option>
@@ -147,7 +147,7 @@
                 {{-- input pickpeople --}}
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <label class="form-label">{!! __('oboundpageLang.receivepeople') !!}</label>
-                <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" required width="250"
+                <input class="form-control form-control-lg" id="pickpeople" name="pickpeople" width="250"
                     style="width: 250px" placeholder="{!! __('oboundpageLang.inputreceivepeople') !!}">
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <ul id="receivemenu" style="display: none;" class="list-group">
@@ -166,7 +166,7 @@
                 {{-- input backpeople --}}
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <label class="form-label">{!! __('oboundpageLang.backpeople') !!}</label>
-                <input class="form-control form-control-lg" id="backpeople" name="backpeople" required width="250"
+                <input class="form-control form-control-lg" id="backpeople" name="backpeople" width="250"
                     style="width: 250px" placeholder="{!! __('oboundpageLang.inputbackpeople') !!}">
                 <option style="display: none" disabled selected value="">{!! __('oboundpageLang.enterbackpeople') !!}</option>
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

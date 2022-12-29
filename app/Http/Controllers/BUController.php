@@ -733,7 +733,12 @@ class BUController extends Controller
             $number = $request->input('number');
             $table = $request->input('table');
 
-            if (strlen($number) !== 12) {
+            if ($number === null) {
+                return back()->withErrors([
+
+                    'number' => trans('bupagelang.enterisn'),
+                ]);
+            } else if (strlen($number) !== 12) {
                 return back()->withErrors([
 
                     'number' => trans('bupagelang.isnlength'),

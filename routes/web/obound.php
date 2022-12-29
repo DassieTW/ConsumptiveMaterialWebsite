@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\人員信息;
 use App\Models\入庫原因;
 use App\Models\客戶別;
@@ -37,7 +38,7 @@ Route::get('/', function () {
 
 Route::get('/new', function () {
     return view('obound.new');
-})->name('obound.new')->middleware('can:oboundNewMat,App\Models\O庫');
+})->middleware('can:oboundNewMat,App\Models\O庫');
 
 Route::post('/new', [OboundController::class, 'new'])->name('obound.new')->middleware('can:oboundNewMat,App\Models\O庫');
 
@@ -81,13 +82,15 @@ Route::post('/inboundnew', [OboundController::class, 'inboundnew'])->name('oboun
 Route::post('/inboundnewsubmit', [OboundController::class, 'inboundnewsubmit'])->name('obound.inboundnewsubmit')->middleware('can:oboundIn,App\Models\O庫');
 
 //O庫-入庫查詢頁面
-Route::get('/inboundsearch', function(){
+Route::get('/inboundsearch', function () {
     return view('obound.inboundsearch')->with(['client' => 客戶別::cursor()])
-    ->with(['bound' => O庫::cursor()]);
+        ->with(['bound' => O庫::cursor()]);
 })->name('obound.inboundsearch')->middleware('can:oboundInSearch,App\Models\O庫');
 
 //O庫-入庫查詢ok
-Route::get('/inboundsearchok', [OboundController::class, 'inboundsearchok'])->middleware('can:oboundInSearch,App\Models\O庫');
+Route::get('/inboundsearchok', function () {
+    return view("obound.inboundsearchok");
+})->middleware('can:oboundInSearch,App\Models\O庫');
 
 Route::post('/inboundsearchok', [OboundController::class, 'inboundsearchok'])->name('obound.inboundsearchok')->middleware('can:oboundInSearch,App\Models\O庫');
 
@@ -95,12 +98,12 @@ Route::post('/inboundsearchok', [OboundController::class, 'inboundsearchok'])->n
 Route::post('/delete', [OboundController::class, 'delete'])->name('obound.delete')->middleware('can:oboundInSearch,App\Models\O庫');
 
 //O庫-庫存上傳頁面
-Route::get('/upload', function(){
+Route::get('/upload', function () {
     return view('obound.upload');
 })->name('obound.upload')->middleware('can:oboundStockUpload,App\Models\O庫');
 
 //O庫-新增料件上傳
-Route::get('/uploadinventory', function(){
+Route::get('/uploadinventory', function () {
     return view('obound.upload');
 })->middleware('can:oboundStockUpload,App\Models\O庫');
 
@@ -110,9 +113,9 @@ Route::post('/uploadinventory', [OboundController::class, 'uploadinventory'])->n
 Route::post('/insertuploadinventory', [OboundController::class, 'insertuploadinventory'])->name('obound.insertuploadinventory')->middleware('can:oboundStockUpload,App\Models\O庫');
 
 //O庫-庫存查詢頁面
-Route::get('/searchstock', function(){
+Route::get('/searchstock', function () {
     return view('obound.searchstock')->with(['client' => 客戶別::cursor()])
-                ->with(['bound' => O庫::cursor()]);
+        ->with(['bound' => O庫::cursor()]);
 })->name('obound.searchstock')->middleware('can:oboundStockSearch,App\Models\O庫');
 
 //O庫-庫存查詢成功
@@ -188,13 +191,13 @@ Route::get('/backlist', function () {
 //Route::post('/backlist', [OboundController::class, 'backlistpage'])->name('outbound.backlistpage');
 
 //O庫-退料單
-Route::get('/backlistsub', function(){
+Route::get('/backlistsub', function () {
     $datas =  DB::table('O庫出庫退料')
         ->join('O庫_material', 'O庫出庫退料.料號', '=', 'O庫_material.料號')
         ->wherenull('O庫出庫退料.收料人員')
         ->select('O庫出庫退料.*')
         ->get()->unique('退料單號');
-        $num = count($datas);
+    $num = count($datas);
     return view('obound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->middleware('can:oboundReturnSerialNum,App\Models\O庫');
 
@@ -209,9 +212,9 @@ Route::get('/pickrecord', function () {
 //Route::post('/pickrecord', [OboundController::class, 'pickrecord'])->name('outbound.pickrecord');
 
 //O庫-領料紀錄表查詢
-Route::get('/pickrecordsearch', [OboundController::class, 'pickrecordsearch'])->middleware('can:oboundPickupRecord,App\Models\O庫');
-
-Route::post('/pickrecordsearch', [OboundController::class, 'pickrecordsearch'])->name('obound.pickrecordsearch')->middleware('can:oboundPickupRecord,App\Models\O庫');
+Route::get('/pickrecordsearch', function () {
+    return view("obound.pickrecordsearchok");
+})->middleware('can:oboundPickupRecord,App\Models\O庫');
 
 //O庫-退料紀錄表
 Route::get('/backrecord', function () {
@@ -222,9 +225,9 @@ Route::get('/backrecord', function () {
 //Route::post('/backrecord', [OboundController::class, 'backrecord'])->name('outbound.backrecord');
 
 //O庫-退料紀錄表查詢
-Route::get('/backrecordsearch', [OboundController::class, 'backrecordsearch'])->middleware('can:outboundReturnRecord,App\Models\Outbound');
-
-Route::post('/backrecordsearch', [OboundController::class, 'backrecordsearch'])->name('obound.backrecordsearch')->middleware('can:outboundReturnRecord,App\Models\Outbound');
+Route::get('/backrecordsearch', function () {
+    return view("obound.backrecordsearchok");
+})->middleware('can:oboundReturnRecord,App\Models\O庫');
 
 //領料添加
 Route::post('/pickadd', [OboundController::class, 'pickadd'])->name('obound.pickadd')->middleware('can:oboundPickup,App\Models\O庫');

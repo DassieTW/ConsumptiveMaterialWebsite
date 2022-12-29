@@ -72,7 +72,7 @@
                             @foreach ($backreason as $backreason)
                                 <option>{{ $backreason->退回原因 }}</option>
                             @endforeach
-                            <option>{!! __('outboundpageLang.other') !!}</option>
+                            <option value="其他">{!! __('outboundpageLang.other') !!}</option>
                         </select>
                         <div class="invalid-feedback" id="backreasonerror" style="display:none; color:red;">
                             {!! __('outboundpageLang.enterbackreason') !!}</div>
@@ -84,6 +84,8 @@
                         <div class="invalid-feedback" id="inputreasonerror" style="display:none; color:red;">
                             {!! __('outboundpageLang.inputbackreason') !!}</div>
                     </div>
+
+
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
                         <input class="form-control form-control-lg " type="text" id="number" name="number"

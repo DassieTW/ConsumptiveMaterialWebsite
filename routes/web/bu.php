@@ -62,9 +62,9 @@ Route::get('/searchlist', function () {
     if (Session::has('username')) {
         $database_list = config('database_list.databases');
         $database_names = array();
-        foreach( $database_list as $value ) {
+        foreach ($database_list as $value) {
             $temp = str_replace(" Consumables management", "", $value);
-            array_push( $database_names, $temp );
+            array_push($database_names, $temp);
         } // for each
 
         unset($value); // unset the var created in the foreach loop
@@ -107,7 +107,7 @@ Route::get('/outlistsub', function () {
     } else {
         return redirect(route('member.login'));
     }
-})->name('bu.outlist');
+});
 
 Route::post('/outlistsub', [BUController::class, 'outlist'])->name('bu.outlist');
 
@@ -138,7 +138,7 @@ Route::get('/picklistsub', function () {
     } else {
         return redirect(route('member.login'));
     }
-})->name('bu.picklist');
+});
 
 Route::post('/picklistsub', [BUController::class, 'picklist'])->name('bu.picklist');
 

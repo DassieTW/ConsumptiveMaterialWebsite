@@ -3,6 +3,7 @@
 @endsection
 
 @section('js')
+    <script src="{{ asset('js/obound/isnsearch.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -20,7 +21,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="card-body">
-                    <form action="{{ route('obound.searchmaterial') }}" method="POST">
+                    <form id="form1" method="POST">
                         @csrf
                         <div class="row w-100 justify-content-center mb-3">
                             <label class="col col-auto form-label">{!! __('oboundpageLang.matsInfo') !!}</label>
