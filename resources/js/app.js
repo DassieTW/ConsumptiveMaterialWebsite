@@ -4,8 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require("./bootstrap");
 global.$ = global.jQuery = require("jquery");
+require("./bootstrap");
 window.Vue = require("vue").default;
 
 import { Notyf } from "notyf";

@@ -9,10 +9,10 @@
 
 
 @section('content')
-    <div class="container-fluid p-0">
+    <div id="mountingPoint" class="container-fluid p-0">
         <div class="row mb-2 mb-xl-3 justify-content-between">
             <div class="col-auto">
-                <h2 class="pb-3">{!! __('templateWords.isnBarcode') !!}</h2>
+                <h2 class="pb-3">{!! __('templateWords.editNews') !!}</h2>
             </div>
 
             <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block" id="mountingPoint">
@@ -22,24 +22,55 @@
         <div class="row">
             <div class="col-12">
                 <div class="card flex-fill w-100">
+                    <div class="card-header">
+                        <h1 class="card-title mb-0">{!! __('templateWords.addNews') !!}</h1>
+                    </div>
                     <div class="card-body pt-3 pb-3">
-                        <form class="text-center needs-validation" id="searchForm" method="post" accept-charset="utf-8"
-                            novalidate autocomplete="off">
-                            @csrf
-                            <div class="row justify-content-center align-items-center">
-                                <div class="col col-auto p-0 m-0">
-                                    <label for="searchIn"
-                                        class="col-form-label">{!! __('barcodeGenerator.search_isn') !!}:&nbsp;&nbsp;</label>
-                                </div>
-
-                                <div class="col col-auto p-0">
-                                    <input type="text" name="searchIn" class="form-control p-1" id="searchIn"
-                                        maxlength="12" style="width: 15ch; text-align: center;" placeholder="4010-..."
-                                        pattern="[a-zA-Z0-9._%+-]{1,12}">
-                                </div>
+                        <form id="addBulletinForm" class="row g-3">
+                            <div class="col-md-6">
+                                <label for="titleField" class="form-label">{!! __('templateWords.title') !!}</label>
+                                <input type="text" class="form-control" id="titleField" name="titleField" required>
                             </div>
+                            <div class="col-md-6">
+                                <label for="levelField" class="form-label">{!! __('templateWords.level') !!}</label>
+                                <select id="levelField" class="form-select">
+                                    <option value="normal" selected>{!! __('templateWords.normal') !!}</option>
+                                    <option class="text-warning-emphasis" value="important">{!! __('templateWords.important') !!}</option>
+                                    <option class="text-danger-emphasis" value="urgent">{!! __('templateWords.urgent') !!}</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="contentField" class="form-label">{!! __('templateWords.content') !!}</label>
+                                <textarea type="text" class="form-control" id="contentField" name="contentField" required></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="levelField" class="form-label">{!! __('templateWords.cat') !!}</label>
+                                <select id="levelField" class="form-select">
+                                    @for ($i = 1; $i < count($cat_list); $i++)
+                                        <option value="{{ $cat_list[$i] }}">{{ $cat_list[$i] }}</option>
+                                    @endfor
+                                    <option value="newCat">{!! __('templateWords.addNewCat') !!}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputState" class="form-label">{!! __('templateWords.site') !!}</label>
+                                <select id="inputState" class="form-select">
+                                    @for ($i = 1; $i < count($database_list); $i++)
+                                        @if ($database_list[$i] === \DB::connection()->getDatabaseName())
+                                            <option value="{{ $database_list[$i] }}" selected>
+                                                {{ $database_names[$i] }}
+                                            </option>
+                                        @else
+                                            <option value="{{ $database_list[$i] }}">
+                                                {{ $database_names[$i] }}
+                                            </option>
+                                        @endif
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
                             <div class="row justify-content-center align-items-center mt-3">
-                                <button class="btn btn-primary col-auto" type="submit">{!! __('barcodeGenerator.search') !!}</button>
+                                <button class="btn btn-primary col-auto" type="submit">{!! __('templateWords.addNews') !!}</button>
                             </div>
                         </form>
                     </div>
@@ -47,51 +78,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
-                <div class="card flex-fill w-100">
-                    <div class="card-body pt-2 pb-3">
-                        <div class="card-header mt-0">
-                            <h3 class="card-title">{!! __('barcodeGenerator.Temporary_Storage_Zone') !!}</h3>
-                            <h6 class="card-title" style="color: orangered">{!! __('barcodeGenerator.Delete_Notice') !!}
-                                </h3>
-                        </div>
-                        <form class="text-center needs-validation" method="post" novalidate>
-                            @csrf
-                            <div class="table-responsive">
-                                <table class="table align-items-center">
-                                    <tbody>
-                                        <tr id="tableHead" class="table-primary align-items-center">
-                                            <th class="col col-auto align-items-center px-0 m-0">
-                                                <a id="cleanupISNbtn" style="color: rgb(255, 60, 0);">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                                                    </svg>
-                                                </a>
-                                            </th>
-                                            <th class="col col-auto align-items-center px-0 m-0">
-                                                <span>{!! __('barcodeGenerator.isn') !!}</span>
-                                            </th>
-                                            {{-- <th class="col col-auto align-items-center px-0 m-0"><span>{!!
-                                                __('barcodeGenerator.spec') !!}</span> --}}
-                                            </th>
-                                            <th class="col col-auto align-items-center px-0 m-0">
-                                                <span>{!! __('barcodeGenerator.print_amount') !!}</span>
-                                            </th>
-                                        </tr>
-                                        {{-- the content here is generated by js --}}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <input type="hidden" name="sID" id="sID" value="{!! \Session::getId() !!}">
-                            <div class="row justify-content-center align-items-center mt-3">
-                                <button class="btn btn-primary col-auto" id="printBtn"
-                                    type="submit">{!! __('barcodeGenerator.print') !!}</button>
-                            </div>
-                        </form>
-                    </div>
+            <div class="card w-100 flex-fill">
+                <div class="card-header">
+                    <h1 class="card-title mb-0">{!! __('templateWords.editNews') !!}</h1>
                 </div>
+                <news-table></news-table>
             </div>
         </div>
     </div>

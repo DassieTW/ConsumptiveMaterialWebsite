@@ -11,18 +11,6 @@ class LoginPolicy         // 所有用戶管理相關權限
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\Login  $user
-     * @return mixed
-     */
-    public function viewAny(Login $user)
-    {
-        //
-    }
-
-
-    /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\Login  $user
@@ -51,9 +39,8 @@ class LoginPolicy         // 所有用戶管理相關權限
         }else {
             return false;
         } // if else 
-    }
+    } // updatePriority
     
-
     /**
      * Determine whether the user can delete the model.
      *
@@ -64,11 +51,11 @@ class LoginPolicy         // 所有用戶管理相關權限
     // public function delete(Login $user, xxx $post) // 需要用到另一個Model的例子 限制只有同個人能刪
     // {
     //     return $user->id === $post->user_id;
-    // }
+    // } // delete
 
     /**
      * Determine whether the user can login. 
-     * Prevent trying to go to login from url after already login.
+     * Prevent user trying to go to login page from url after logged in.
      * @param  \App\Models\Login  $user
      * @return boolean
      */
@@ -117,16 +104,4 @@ class LoginPolicy         // 所有用戶管理相關權限
             return false;
         } // if else 
     } // searchAndUpdate
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\Login  $user
-     * @param  \App\Models\Login  $post
-     * @return mixed
-     */
-    public function forceDelete(Login $user, Login $post)
-    {
-        //
-    }
 }

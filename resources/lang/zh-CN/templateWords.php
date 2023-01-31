@@ -65,7 +65,16 @@ return [
     'dateOfNotice' => '日期',
     'title' => '标题',
     'editNews' => '编辑公告',
+    'addNews' => '新增公告',
     'News' => '公告',
+    'level' => '层级',
+    'normal' => '一般',
+    'important' => '重要',
+    'urgent' => '紧急',
+    'site' => '厂别',
+    'all' => '所有厂别',
+    'content' => '内容',
+    'addNewCat' => '新增类别',
 
     // debug notice
     'clear_cache' => '网站功能或显示异常时，请先依照以下文件清理浏览器快取',

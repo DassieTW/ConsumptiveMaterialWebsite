@@ -6,21 +6,14 @@ export default function useConsumptiveMaterials() {
     const news = ref("");
     const errors = ref("");
     const router = useRouter();
-    const selfDB = ref("");
 
     const getNews = async () => {
         errors.value = "";
-        selfDB.value = JSON.stringify(await axios.post("/getCurrentDB"));
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
         axios.interceptors.request.use(
             function (config) {
                 // do sth before request is sent
-                $("body").loadingModal({
-                    text: "Loading...",
-                    animation: "circle",
-                });
-
                 return config; // this config does nothing for us atm
             },
             function (error) {
@@ -31,11 +24,12 @@ export default function useConsumptiveMaterials() {
         );
 
         try {
-            let response = await axios.post("/api/news", {});
+            let response = await axios.post("/api/news", {
+                DB: await axios.post("/getCurrentDB")
+            });
 
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
             news.value = JSON.stringify(response.data);
+            // console.log(response.data); // test
         } catch (e) {
             console.log(e); // test
             for (const key in e.response.data.errors) {
@@ -48,7 +42,6 @@ export default function useConsumptiveMaterials() {
 
     return {
         news,
-        selfDB,
         getNews,
     }; // return
 } // useConsumptiveMaterials

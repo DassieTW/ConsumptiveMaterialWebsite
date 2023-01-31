@@ -133,131 +133,61 @@ function appenSVg() {
 
 $(document).ready(function () {
 
-    (function () {
-        if (sessionStorage.hasOwnProperty('isnCount')) {
-            var DelorNot = true;
-            var isISN = true;
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                type: 'POST',
-                url: "/barcode/seenDelete",  // refer to the route name in web.php
-                data: { DelorNot: DelorNot, isISN: isISN },
-                dataType: 'json',              // let's set the expected response format
-                success: function (data) {
-                    console.log(data.message);
-                },
-                error: function (err) {
-                    console.warn(err);
-                } // error
-            });
-        } // if
-
-        if (sessionStorage.hasOwnProperty('locCount')) {
-            var DelorNot = true;
-            var isISN = false;
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                type: 'POST',
-                url: "/barcode/seenDelete",  // refer to the route name in web.php
-                data: { DelorNot: DelorNot, isISN: isISN },
-                dataType: 'json',              // let's set the expected response format
-                success: function (data) {
-                    console.log(data.message);
-                },
-                error: function (err) {
-                    console.warn(err);
-                } // error
-            });
-        } // if
-
-        if (! sessionStorage.hasOwnProperty('allMats')) {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({   // get all isn and pName for bringing out pName if it existed in database
-                type: "post",
-                url: "/barcode/search_isn",
-                data: { searchIn: "" },
-                dataType: 'json',              // let's set the expected response format
-                beforeSend: function () {
-                    $('body').loadingModal({
-                        text: 'Loading...',
-                        animation: 'circle'
-                    });
-                },
-                complete: function () {
-                    $('body').loadingModal('hide');
-                    $('body').loadingModal('destroy');
-                },
-                success: function (response) {
-                    AllMatsData = JSON.parse(JSON.stringify(response.data));
-                    sessionStorage.setItem("allMats", JSON.stringify(response.data));
-                    // console.log(AllMatsData); // test
-                },
-                error: function (err) {
-                    console.log(err.status); // test
-                    // console.log(err); // test
-                } // error
-            }); // end of ajax
-        } // if
-        else {
-            AllMatsData = JSON.parse(sessionStorage.getItem("allMats"));
-        } // else
-
-        if( sessionStorage.hasOwnProperty('locCount') || sessionStorage.hasOwnProperty('isnCount') ) {
-            notyf.success({
-                message: Lang.get('barcodeGenerator.temp_save_success'),
-                duration: 5000,   //miliseconds, use 0 for infinite duration
-                ripple: true,
-                dismissible: true,
-                position: {
-                    x: "right",
-                    y: "bottom"
-                }
-            });
-        } // if
-    })();
-
-    $('#isnForm').on('submit', function (e) {
+    $("#addBulletinForm").on("submit", function (e) {
         e.preventDefault();
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        
+        // clean up previous input results
+        $(".is-invalid").removeClass("is-invalid");
+        $(".invalid-feedback").remove();
+        var password = $("#password").val();
+        var newpassword = $("#newpassword").val();
+        var surepassword = $("#surepassword").val();
         $.ajax({
-            type: "post",
-            url: "/barcode/barcode_isn",
-            data: { barcode2: barcode2, pName: pName, isIsn: isIsn, toSess: toSess, fName: fName },
-            dataType: 'json',              // let's set the expected response format
+            type: "POST",
+            url: "change",
+            data: {
+                password: password,
+                newpassword: newpassword,
+                surepassword: surepassword,
+            },
+            dataType: 'json', // expected respose datatype from server
             beforeSend: function () {
-                console.log('sup, loading modal triggered !');
-                // e.preventDefault();return false;  // test
-                $('body').loadingModal({
-                    text: 'Loading...',
-                    animation: 'circle'
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
                 });
             },
             complete: function () {
-                $('body').loadingModal('hide');
+                $("body").loadingModal("hide");
                 $('body').loadingModal('destroy');
             },
             success: function (data) {
-                
+                var mess =
+                    Lang.get("loginPageLang.change") +
+                    Lang.get("oboundpageLang.success") +
+                    "，" +
+                    Lang.get("loginPageLang.againlogin");
+                alert(mess);
+                //alert('更新成功，請重新登入。');
+                window.location.href = "login";
             },
             error: function (err) {
-                if (err.status == 422) { // when status code is 422, it's a validation issue
+                // 舊密碼輸入錯誤
+                if (err.status == 420) {
+                    document.getElementById("password").classList.add("is-invalid");
+                    document.getElementById("password").value = "";
+                    $("#password").siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('loginPageLang.errorpassword') + '</strong></span>'));
+                } // if
+                // 密碼並不相符
+                else if (err.status == 421) {
+                    document.getElementById("newpassword").classList.add("is-invalid");
+                    document.getElementById("newpassword").value = "";
+                    document.getElementById("surepassword").classList.add("is-invalid");
+                    document.getElementById("surepassword").value = "";
+                    $("#newpassword").siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('loginPageLang.errorpassword2') + '</strong></span>'));
+                    $("#surepassword").siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + Lang.get('loginPageLang.errorpassword2') + '</strong></span>'));
+                } // else if
+                else if (err.status == 422) { // when status code is 422, it's a validation issue
                     // console.log(err.responseJSON.message); // test
 
                     // you can loop through the errors object and show it to the user
@@ -265,24 +195,22 @@ $(document).ready(function () {
                     // display errors on each form field
                     $.each(err.responseJSON.errors, function (i, error) {
                         var el = $(document).find('[name="' + i + '"]');
-                        // console.log(el.siblings(".input-group-text").length); // test
+                        // console.log(el); // test
                         el.addClass("is-invalid");
                         if (el.siblings(".input-group-text").length > 0) {
-                            if ($('.invalid-feedback').length === 0) {
-                                $('#barcode2').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
-                            } // if
+                            el.siblings('.input-group-text').after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
                         } // if
                         else {
-                            el.after($('<span class="col col-auto invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
-                        } // if else 
+                            el.after($('<span class="invalid-feedback p-0 m-0" role="alert"><strong>' + error[0] + '</strong></span>'));
+                        } // if else
                     });
-                } // if error 422
+                } // else if
                 else {
-                    console.log(err.status); // test
+                    console.log(err.status); // print out other errors 
                 } // else
-            }
-        }); // end of ajax
-    }); // on submit
+            },
+        });
+    });
 
 }); // on document ready
 

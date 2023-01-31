@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\OwarehouseController;
 use App\Http\Controllers\ImportExcelController;
@@ -82,7 +81,41 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::get('/editNews', function () {
-    return view("editNewsBoard");
+    $user = \Auth::user();
+    $response = \Gate::inspect('canPostToOtherSite', $user); // call to EditNewsPolicy
+    $database_list = config('database_list.databases');
+    $database_names = array();
+    $selfDB_name = array("Consumables management", str_replace(" Consumables management", "", DB::connection()->getDatabaseName()));
+    $selfDB_list = array("Consumables management", DB::connection()->getDatabaseName());
+    foreach ($database_list as $value) {
+        $temp = str_replace(" Consumables management", "", $value);
+        array_push($database_names, $temp);
+    } // for each
+
+    unset($value); // unset the var created in the foreach loop
+
+    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
+    \DB::purge(env("DB_CONNECTION"));
+
+    $cat_list = [];
+    $cat_list = DB::table('bulletins')
+        ->select('category')
+        ->distinct()
+        ->get();
+
+    // get the connection back to original
+    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $selfDB_list[1]);
+    \DB::purge(env("DB_CONNECTION"));
+
+    if ($response->allowed()) {
+        // The action is authorized...
+        array_push($database_list, "All");
+        array_push($database_names, __('templateWords.all'));
+        return view('editNewsBoard')->with(['cat_list' => $cat_list, 'database_list' => $database_list, 'database_names' => $database_names]);
+    } else {
+        return view('editNewsBoard')->with(['cat_list' => $cat_list, 'database_list' => $selfDB_list, 'database_names' => $selfDB_name]);
+    } // if else
+
 })->name('editNews');
 
 Route::get('/help', function () {

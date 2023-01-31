@@ -65,7 +65,16 @@ return [
     'dateOfNotice' => 'Date',
     'title' => 'Title',
     'editNews' => 'Edit Bulletin',
+    'addNews' => 'Add Bulletin',
     'News' => 'Bulletin',
+    'level' => 'Level',
+    'normal' => 'Normal',
+    'important' => 'Important',
+    'urgent' => 'Urgent',
+    'site' => 'Site',
+    'all' => 'All',
+    'content' => 'Content',
+    'addNewCat' => 'Add New Category',
 
     // debug notice
     'clear_cache' => 'When Website Behaves Unexpectedly, Please Refer to The Following Docs.',

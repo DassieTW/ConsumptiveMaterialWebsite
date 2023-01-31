@@ -88,11 +88,11 @@
                             <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-CN') }}">
                                 简体中文</a>
                         </div>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="align-middle mr-1"
+                        {{-- <div class="dropdown-divider"></div> --}}
+                        {{-- <a class="dropdown-item" href="#"><i class="align-middle mr-1"
                                 data-feather="help-circle"></i>
                             Help
-                            Center</a>
+                            Center</a> --}}
                     </div>
                 </li>
             </ul>
