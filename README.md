@@ -12,7 +12,7 @@ yarn run clear:babel-cache <br />
 npx mix --production <br />
 
 ## Generate the vue-translations.js 
-# (convert Laravel translation lang to Vue translation lang)
+### (convert Laravel translation lang to Vue translation lang)
 
 php artisan lang:js resources/js/vue-translations.js --no-lib --quiet
 
