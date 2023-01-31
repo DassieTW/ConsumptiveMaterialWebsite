@@ -5,6 +5,9 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
+  var title = [];
+  var titlecol = [];
+  var nogood = 1;
   $("#inboundsearch").on("submit", function (e) {
     e.preventDefault();
 
@@ -15,11 +18,40 @@ $(document).ready(function () {
     var titlename = $("#titlename").val();
     //download title
 
-    var title = [];
     if (titlename === "庫存") {
+      if (sessionStorage.getItem("inboundstocknogood") === "true") {
+        nogood = 2;
+      }
       var titlecount = 13;
+
+      titlecol.push("客戶別");
+      titlecol.push("料號");
+      titlecol.push("品名");
+      titlecol.push("規格");
+      titlecol.push("單位");
+      titlecol.push("單價");
+      titlecol.push("幣別");
+      titlecol.push("A級資材");
+      titlecol.push("月請購");
+      titlecol.push("現有庫存");
+      titlecol.push("安全庫存");
+      titlecol.push("儲位");
+      titlecol.push("呆滯天數");
     } else {
       var titlecount = 12;
+
+      titlecol.push("客戶別");
+      titlecol.push("料號");
+      titlecol.push("品名");
+      titlecol.push("規格");
+      titlecol.push("單位");
+      titlecol.push("單價");
+      titlecol.push("幣別");
+      titlecol.push("A級資材");
+      titlecol.push("月請購");
+      titlecol.push("現有庫存");
+      titlecol.push("月使用量");
+      titlecol.push("庫存使用月數");
     }
 
     //download title
@@ -27,103 +59,12 @@ $(document).ready(function () {
       title.push($(".vtl-thead-th").eq(i).text());
     }
 
-    var count = $(".vtl-paging-count-dropdown").val();
-    console.log(count);
+    console.log(title);
+    console.log(titlecount);
+    console.log(titlename);
+    console.log(titlecol);
+    console.log(nogood);
 
-    if (titlename === "庫存") {
-      var count = $(".vtl-paging-count-dropdown").val();
-      console.log(count);
-      var data = [];
-      var data0 = [];
-      var data1 = [];
-      var data2 = [];
-      var data3 = [];
-      var data4 = [];
-      var data5 = [];
-      var data6 = [];
-      var data7 = [];
-      var data8 = [];
-      var data9 = [];
-      var data10 = [];
-      var data11 = [];
-      var data12 = [];
-
-      for (let i = 0; i < count; i++) {
-        if ($("#client" + i).val() !== null) {
-          data0.push($("#client" + i).val());
-          data1.push($("#isn" + i).val());
-          data2.push($("#name" + i).val());
-          data3.push($("#format" + i).val());
-          data4.push($("#unit" + i).val());
-          data5.push($("#price" + i).val());
-          data6.push($("#money" + i).val());
-          data7.push($("#gradea" + i).val());
-          data8.push($("#month" + i).val());
-          data9.push($("#stock" + i).val());
-          data10.push($("#safe" + i).val());
-          data11.push($("#loc" + i).val());
-          data12.push($("#days" + i).val());
-        }
-      }
-      data.push(data0);
-      data.push(data1);
-      data.push(data2);
-      data.push(data3);
-      data.push(data4);
-      data.push(data5);
-      data.push(data6);
-      data.push(data7);
-      data.push(data8);
-      data.push(data9);
-      data.push(data10);
-      data.push(data11);
-      data.push(data12);
-    } else {
-      var count = $(".vtl-paging-count-dropdown").val();
-      console.log(count);
-      var data = [];
-      var data0 = [];
-      var data1 = [];
-      var data2 = [];
-      var data3 = [];
-      var data4 = [];
-      var data5 = [];
-      var data6 = [];
-      var data7 = [];
-      var data8 = [];
-      var data9 = [];
-      var data10 = [];
-      var data11 = [];
-
-      for (let i = 0; i < count; i++) {
-        if ($("#client" + i).val() !== null) {
-          data0.push($("#client" + i).val());
-          data1.push($("#isn" + i).val());
-          data2.push($("#name" + i).val());
-          data3.push($("#format" + i).val());
-          data4.push($("#unit" + i).val());
-          data5.push($("#price" + i).val());
-          data6.push($("#money" + i).val());
-          data7.push($("#gradea" + i).val());
-          data8.push($("#month" + i).val());
-          data9.push($("#stock" + i).val());
-          data10.push($("#monthuse" + i).val());
-          data11.push($("#monthstock" + i).val());
-        }
-      }
-      data.push(data0);
-      data.push(data1);
-      data.push(data2);
-      data.push(data3);
-      data.push(data4);
-      data.push(data5);
-      data.push(data6);
-      data.push(data7);
-      data.push(data8);
-      data.push(data9);
-      data.push(data10);
-      data.push(data11);
-    }
     $.ajax({
       type: "POST",
       url: "download",
@@ -131,8 +72,8 @@ $(document).ready(function () {
         title: title,
         titlecount: titlecount,
         titlename: titlename,
-        AllData: JSON.stringify(data),
-        count: count,
+        titlecol: titlecol,
+        nogood: nogood,
       },
       xhrFields: {
         responseType: "blob", // to avoid binary data being mangled on charset conversion
