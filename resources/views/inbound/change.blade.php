@@ -84,16 +84,18 @@
                                                 value="{{ $data->客戶別 }}">{{ $data->客戶別 }}</td>
                                         <td>{{ $data->最後更新時間 }}</td>
                                         <td><input type="number" style="width: 120px" id="amount{{ $loop->index }}"
-                                                class="form-control" name="amount{{ $loop->index }}"
+                                                class="form-control form-control-lg" name="amount{{ $loop->index }}"
                                                 placeholder="{!! __('inboundpageLang.enteramount') !!}" min="1">
                                         </td>
                                         <td>
                                             <select class="form-select form-select-lg" id="newposition{{ $loop->index }}"
-                                                name="newposition{{ $loop->index }}" style="width: 120px">
+                                                name="newposition{{ $loop->index }}" style="width:120px">
                                                 <option style="display: none" disabled selected>{!! __('inboundpageLang.enterloc') !!}
                                                 </option>
                                                 @foreach ($position as $position)
-                                                    <option>{{ $position }}</option>
+                                                    @if ($position !== $data->儲位)
+                                                        <option>{{ $position }}</option>
+                                                    @endif
                                                 @endforeach
                                             </select>
                                         </td>
