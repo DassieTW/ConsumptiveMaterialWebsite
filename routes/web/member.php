@@ -5,8 +5,6 @@ use App\Models\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth;
 use App\Models\Inventory;
-// use DB;
-// use Session;
 
 // use App\Http\Controllers\Auth\LoginController;
 
@@ -26,6 +24,7 @@ Route::get('/login', function () {
     // used middleware for lacale now
     $user = \Auth::user();
     $response = \Gate::inspect('canLogin', $user); // call to LoginPolicy
+    
     if ($response->allowed() || $user === null) {
         // The action is authorized...
         $database_list = config('database_list.databases');

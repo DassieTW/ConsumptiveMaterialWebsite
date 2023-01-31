@@ -15,11 +15,14 @@ class CreateBulletinsTable extends Migration
     {
         Schema::create('bulletins', function (Blueprint $table) {
             $table->id();
-
+            
+            $table->string('category', 25);
             $table->string('title', 25);
             $table->string('content', 255);
             $table->string('updated_by', 255);
             $table->string('site', 255);
+            // level should be one of the list : "urgent", "important", "normal"
+            $table->string('level', 255);
 
             $table->timestamps();
         });
@@ -33,5 +36,5 @@ class CreateBulletinsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('bulletins');
-    }
+    } // down
 }

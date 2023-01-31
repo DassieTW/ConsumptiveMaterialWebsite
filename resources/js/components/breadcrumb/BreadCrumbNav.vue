@@ -4,18 +4,14 @@
     <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
         <li class="breadcrumb-item">
             <a href="/home">{{ $t('templateWords.websiteName') }}</a>
-        <!-- {{ item }} -->
         </li>
         <li v-for="(item, index) in urls.slice(0,-1)" :key="index" class="breadcrumb-item">
             <a :href="item">{{ $t(whereurl + '.page_name') }}</a>
-        <!-- {{ item }} -->
         </li>
         <li class="breadcrumb-item">
             <span>{{op}}</span>
-        <!-- {{ item }} -->
         </li>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        <!-- <a :href="item">{{ "0.0" }}</a> -->
     </ol>
   </nav>
 
@@ -35,11 +31,11 @@ export default {
     onMounted(getPageNames);
     var test = (document.getElementsByClassName("sidebar-item active")[1].textContent);
 
-    var op = test.replace(/&nbsp;/g, '');
-    //op = op.replace(/\n|\r/g, "");
-    console.log(op);
+    var op = test.replace(/&nbsp;/g, ''); // remove &nbsp;
+    op = op.replace(/\s+/g, ' ').trim(); // remove extra white spaces
 
-    // console.log(test); // test
+    // console.log(op); // test
+
     return {
       urls,
       whereurl,

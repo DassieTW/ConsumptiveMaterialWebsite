@@ -2,31 +2,7 @@
   <table-lite :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="false"
     :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
     :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
-    @return-checked-rows="updateCheckedRows">
-    <template v-slot:月請購="{ row, key }">
-      <div v-if="row.月請購 == '是'">
-        <select @change="event => row.月請購 = event.target.value" style="width: 7ch;"
-          class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + key" :name="'month' + key">
-          <option value="是" selected>{{ $t("basicInfoLang.yes") }}</option>
-          <option value="否">{{ $t("basicInfoLang.no") }}</option>
-        </select>
-      </div>
-      <div v-else>
-        <select @change="event => row.月請購 = event.target.value" style="width: 7ch;"
-          class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + key" :name="'month' + key">
-          <option value="是">{{ $t("basicInfoLang.yes") }}</option>
-          <option value="否" selected>{{ $t("basicInfoLang.no") }}</option>
-        </select>
-      </div>
-    </template>
-
-    <template v-slot:安全庫存="{ row, key }">
-      <div v-if="row.月請購 == '否'">
-        <input class="form-control text-center p-0 m-0" style="width: 8ch;" type="number" :id="'safe' + key"
-          :name="'safe' + key" :value="row.安全庫存" min="0" />
-      </div>
-      <div v-else>{{ $t("basicInfoLang.differ_by_client") }}</div>
-    </template>
+    @row-clicked="rowClicked">
   </table-lite>
 </template>
 
@@ -44,11 +20,10 @@ export default defineComponent({
   name: "App",
   components: { TableLite },
   setup() {
-    const { news, selfDB, getNews } = useNewsSearch(); // axios get the news data
+    const { news, getNews } = useNewsSearch(); // axios get the news data
 
     onMounted(getNews);
 
-    const searchTerm = ref(""); // Search text
     const app = getCurrentInstance(); // get the current instance
     let thisHtmlLang = document
       .getElementsByTagName("HTML")[0]
@@ -60,11 +35,8 @@ export default defineComponent({
     const data = reactive([]); // access the value by data[0], data[1] ...
 
     watch(news, () => {
-      console.log(JSON.parse(news.value)); // test
       let allRowsObj = JSON.parse(news.value);
-      let dbName = JSON.parse(selfDB.value).data;
-      console.log(allRowsObj.datas.length); // test
-      console.log(dbName); // test
+      // console.log(allRowsObj.datas); // test
 
       for (let i = 0; i < allRowsObj.datas.length; i++) {
         data.push(allRowsObj.datas[i]);
@@ -77,24 +49,30 @@ export default defineComponent({
       columns: [
         {
           label: app.appContext.config.globalProperties.$t("templateWords.cat"),
-          field: "料號",
-          width: "14ch",
+          field: "cat",
+          width: "8ch",
           sortable: true,
-          isKey: true,
           display: function (row, i) {
-            // console.log(row);
+            let returnStr = "";
+            // console.log(row); // test
+            if (row.level === "urgent") {
+              returnStr = '<span id="' + row.id + '" class="col col-auto text-danger-emphasis">' +
+                row.category +
+                '</span>'
+            } // if
+            else if (row.level === "important") {
+              returnStr = '<span id="' + row.id + '" class="col col-auto text-warning-emphasis">' +
+                row.category +
+                '</span>'
+            } // else if
+            else {
+              returnStr = '<span id="' + row.id + '" class="col col-auto">' +
+                row.category +
+                '</span>'
+            } // else
+
             return (
-              '<input type="hidden" id="number' +
-              i +
-              '" name="number' +
-              i +
-              '" value="' +
-              row.料號 +
-              '">' +
-              '<div class="text-nowrap scrollableWithoutScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-              row.料號 +
-              "</div>"
+              returnStr
             );
           },
         },
@@ -102,22 +80,30 @@ export default defineComponent({
           label: app.appContext.config.globalProperties.$t(
             "templateWords.title"
           ),
-          field: "品名",
+          field: "title",
           width: "13ch",
           sortable: true,
           display: function (row, i) {
+            let returnStr = "";
+            // console.log(row); // test
+            if (row.level === "urgent") {
+              returnStr = '<span class="col col-auto text-danger-emphasis">' +
+                row.title +
+                '</span>'
+            } // if
+            else if (row.level === "important") {
+              returnStr = '<span class="col col-auto text-warning-emphasis">' +
+                row.title +
+                '</span>'
+            } // else if
+            else {
+              returnStr = '<span class="col col-auto">' +
+                row.title +
+                '</span>'
+            } // else
+
             return (
-              '<input type="hidden" id="name' +
-              i +
-              '" name="name' +
-              i +
-              '" value="' +
-              row.品名 +
-              '">' +
-              '<div class="text-nowrap scrollableWithoutScrollbar"' +
-              ' style="overflow-x: auto; width: 100%;">' +
-              row.品名 +
-              "</div>"
+              returnStr
             );
           },
         },
@@ -125,37 +111,41 @@ export default defineComponent({
           label: app.appContext.config.globalProperties.$t(
             "templateWords.dateOfNotice"
           ),
-          field: "規格",
-          width: "13ch",
+          field: "date",
+          width: "8ch",
           sortable: true,
           display: function (row, i) {
+            let returnStr = "";
+            // console.log(row); // test
+            if (row.level === "urgent") {
+              returnStr = '<span class="col col-auto text-danger-emphasis">' +
+                row.updated_at +
+                '</span>'
+            } // if
+            else if (row.level === "important") {
+              returnStr = '<span class="col col-auto text-warning-emphasis">' +
+                row.updated_at +
+                '</span>'
+            } // else if
+            else {
+              returnStr = '<span class="col col-auto">' +
+                row.updated_at +
+                '</span>'
+            } // else
+
             return (
-              '<input type="hidden" id="format' +
-              i +
-              '" name="format' +
-              i +
-              '" value="' +
-              row.規格 +
-              '">' +
-              '<div class="scrollableWithoutScrollbar text-nowrap"' +
-              ' style="overflow-x: auto; width: 100%;">' +
-              row.規格 +
-              "</div>"
+              returnStr
             );
           },
         },
       ],
-      rows: computed(() => {
-        return data.filter((x) =>
-          x.料號.toLowerCase().includes(searchTerm.value.toLowerCase())
-        );
-      }),
+      rows: [],
       totalRecordCount: computed(() => {
         return table.rows.length;
       }),
-      sortable: {
-        order: "id",
-        sort: "asc",
+      sortable: { // make the date field already sorted on mount
+        order: "date",
+        sort: "desc",
       },
       messages: {
         pagingInfo:
@@ -173,9 +163,6 @@ export default defineComponent({
         ),
         gotoPageLabel: app.appContext.config.globalProperties.$t(
           "basicInfoLang.go_to_page"
-        ),
-        noDateAvailable: app.appContext.config.globalProperties.$t(
-          "basicInfoLang.search_with_no_data_returned"
         ),
       },
       pageOptions: [
@@ -198,13 +185,13 @@ export default defineComponent({
       ],
     });
 
-    const updateCheckedRows = (rowsKey) => {
-      console.log(rowsKey);
+    const rowClicked = (row) => {
+      console.log("Row clicked ! on " + row); // test
     };
 
     return {
       table,
-      updateCheckedRows,
+      rowClicked,
     };
   }, // setup
 });

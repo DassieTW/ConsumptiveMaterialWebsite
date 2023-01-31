@@ -22,9 +22,12 @@ class Bulletin extends Model
      * @var array
      */
     protected $fillable = [
+        'category',
         'title',
         'content',
         'updated_by',
         'site',
+        // level should be one of the list : "urgent", "important", "normal"
+        'level'
     ];
 }

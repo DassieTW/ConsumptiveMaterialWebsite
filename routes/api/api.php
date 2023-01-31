@@ -24,7 +24,10 @@ Route::post('/news', function (Request $request) {
 
     $datas = [];
     $datas = DB::table('bulletins')
-                ->get();
-
+        ->where('site', '=', 'All')
+        ->orWhere('site', '=', $request->input('DB'))
+        ->orderBy('updated_at', 'desc')
+        ->get();
+    // dd($datas); // test
     return \Response::json(['datas' => $datas], 200/* Status code here default is 200 ok*/);
 });

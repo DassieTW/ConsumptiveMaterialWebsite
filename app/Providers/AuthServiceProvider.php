@@ -59,5 +59,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-    }
+
+        Gate::define('canPostToOtherSite', [EditNewsPolicy::class, 'canPostToOtherSite']);
+        Gate::define('canLogin', [LoginPolicy::class, 'canLogin']);
+    } // boot
 }
