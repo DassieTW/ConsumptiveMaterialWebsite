@@ -1,31 +1,44 @@
-```
- _                               _  _____ 
-| |                             | |/ ____|
-| |     __ _ _ __ __ ___   _____| | (___  
-| |    / _` | '__/ _` \ \ / / _ \ |\___ \ 
-| |___| (_| | | | (_| |\ V /  __/ |____) |
-|______\__,_|_|  \__,_| \_/ \___|_|_____/ 
-                                           
-```
-> 🚀 LaravelS 是 Swoole 和 Laravel/Lumen 之间`开箱即用的适配器`。
+<div align="center">
+    <img src="https://github.com/hhxsv5/laravel-s/raw/master/logo.svg" alt="LaravelS Logo" height="80">
+     <p>
+        <a href="https://github.com/hhxsv5/laravel-s/blob/master/README-CN.md">中文文档</a> |
+        <a href="https://github.com/hhxsv5/laravel-s/blob/master/README.md">English Docs</a>
+    </p>
+    <p>🚀 LaravelS 是 Laravel/Lumen 和 Swoole 之间开箱即用的适配器</p>
+    <p>
+        <a href="https://github.com/hhxsv5/laravel-s/releases">
+            <img src="https://img.shields.io/github/release/hhxsv5/laravel-s.svg" alt="Latest Version">
+        </a>
+        <a href="https://www.php.net/">
+            <img src="https://img.shields.io/packagist/php-v/hhxsv5/laravel-s" alt="PHP Version">
+        </a>
+        <a href="https://github.com/swoole/swoole-src">
+            <img src="https://img.shields.io/badge/swoole-%3E=1.7.19-flat.svg" alt="Swoole Version">
+        </a>
+        <a href="https://packagist.org/packages/hhxsv5/laravel-s/stats">
+            <img src="https://img.shields.io/packagist/dt/hhxsv5/laravel-s" alt="Total Downloads">
+        </a>
+        <a href="https://travis-ci.com/hhxsv5/laravel-s">
+            <img src="https://travis-ci.com/hhxsv5/laravel-s.svg?branch=master" alt="Build Status">
+        </a>
+        <a href="https://scrutinizer-ci.com/g/hhxsv5/laravel-s/">
+            <img src="https://scrutinizer-ci.com/g/hhxsv5/laravel-s/badges/code-intelligence.svg?b=master" alt="Code Intelligence Status">
+        </a>
+        <a href="https://github.com/hhxsv5/laravel-s/blob/master/LICENSE">
+            <img src="https://img.shields.io/github/license/hhxsv5/laravel-s" alt="License">
+        </a>
+    </p>
+</div>
 
-*请`Watch`此仓库，以获得最新的更新。*
+---
 
-[![Latest Version](https://img.shields.io/github/release/hhxsv5/laravel-s.svg)](https://github.com/hhxsv5/laravel-s/releases)
-[![PHP Version](https://img.shields.io/packagist/php-v/hhxsv5/laravel-s)](https://www.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=1.7.19-flat.svg)](https://github.com/swoole/swoole-src)
-[![Total Downloads](https://img.shields.io/packagist/dt/hhxsv5/laravel-s)](https://packagist.org/packages/hhxsv5/laravel-s/stats)
-[![License](https://img.shields.io/github/license/hhxsv5/laravel-s)](https://github.com/hhxsv5/laravel-s/blob/master/LICENSE)
-[![Build Status](https://travis-ci.com/hhxsv5/laravel-s.svg?branch=master)](https://travis-ci.com/hhxsv5/laravel-s)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/hhxsv5/laravel-s/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+## 持续更新
+- *请`Watch`此仓库，以获得最新的更新。*
+- **QQ交流群**：
+  - `698480528` [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](//shang.qq.com/wpa/qunwpa?idkey=f949191c8f413a3ecc5fbce661e57d379740ba92172bd50b02d23a5ab36cc7d6)
+  - `62075835` [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](//shang.qq.com/wpa/qunwpa?idkey=5230f8da0693a812811e21e19d5823ee802ee5d24def177663f42a32a9060e97)
 
-**[English Documentation](https://github.com/hhxsv5/laravel-s/blob/master/README.md)**
-
-**QQ交流群**
-- 群1：`698480528` [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](//shang.qq.com/wpa/qunwpa?idkey=f949191c8f413a3ecc5fbce661e57d379740ba92172bd50b02d23a5ab36cc7d6)
-- 群2：`62075835` [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](//shang.qq.com/wpa/qunwpa?idkey=5230f8da0693a812811e21e19d5823ee802ee5d24def177663f42a32a9060e97)
-
-Table of Contents
+文档目录
 =================
 
 * [特性](#特性)
@@ -536,24 +549,21 @@ class TestEvent extends Event
 2.创建监听器类。
 
 ```php
+use Hhxsv5\LaravelS\Swoole\Task\Event;
 use Hhxsv5\LaravelS\Swoole\Task\Task;
 use Hhxsv5\LaravelS\Swoole\Task\Listener;
 class TestListener1 extends Listener
 {
-    /**
-     * @var TestEvent
-     */
-    protected $event;
-    
-    public function handle()
+    public function handle(Event $event)
     {
-        \Log::info(__CLASS__ . ':handle start', [$this->event->getData()]);
+        \Log::info(__CLASS__ . ':handle start', [$event->getData()]);
         sleep(2);// 模拟一些慢速的事件处理
         // 监听器中也可以投递Task，但不支持Task的finish()回调。
         // 注意：config/laravels.php中修改配置task_ipc_mode为1或2，参考 https://wiki.swoole.com/#/server/setting?id=task_ipc_mode
         $ret = Task::deliver(new TestTask('task data'));
         var_dump($ret);
         // 此处抛出的异常会被上层捕获并记录到Swoole日志，开发者需要手动try/catch
+        // return false; // 停止将事件传播到后面的监听器
     }
 }
 ```

@@ -1,25 +1,39 @@
-```
- _                               _  _____ 
-| |                             | |/ ____|
-| |     __ _ _ __ __ ___   _____| | (___  
-| |    / _` | '__/ _` \ \ / / _ \ |\___ \ 
-| |___| (_| | | | (_| |\ V /  __/ |____) |
-|______\__,_|_|  \__,_| \_/ \___|_|_____/ 
-                                           
-```
-> 🚀 LaravelS is `an out-of-the-box adapter` between Swoole and Laravel/Lumen.
+<div align="center">
+    <img src="https://github.com/hhxsv5/laravel-s/raw/master/logo.svg" alt="LaravelS Logo" height="80">
+     <p>
+        <a href="https://github.com/hhxsv5/laravel-s/blob/master/README.md">English Docs</a> |
+        <a href="https://github.com/hhxsv5/laravel-s/blob/master/README-CN.md">中文文档</a>
+    </p>
+    <p>🚀 LaravelS is an out-of-the-box adapter between Laravel/Lumen and Swoole</p>
+    <p>
+        <a href="https://github.com/hhxsv5/laravel-s/releases">
+            <img src="https://img.shields.io/github/release/hhxsv5/laravel-s.svg" alt="Latest Version">
+        </a>
+        <a href="https://www.php.net/">
+            <img src="https://img.shields.io/packagist/php-v/hhxsv5/laravel-s" alt="PHP Version">
+        </a>
+        <a href="https://github.com/swoole/swoole-src">
+            <img src="https://img.shields.io/badge/swoole-%3E=1.7.19-flat.svg" alt="Swoole Version">
+        </a>
+        <a href="https://packagist.org/packages/hhxsv5/laravel-s/stats">
+            <img src="https://img.shields.io/packagist/dt/hhxsv5/laravel-s" alt="Total Downloads">
+        </a>
+        <a href="https://travis-ci.com/hhxsv5/laravel-s">
+            <img src="https://travis-ci.com/hhxsv5/laravel-s.svg?branch=master" alt="Build Status">
+        </a>
+        <a href="https://scrutinizer-ci.com/g/hhxsv5/laravel-s/">
+            <img src="https://scrutinizer-ci.com/g/hhxsv5/laravel-s/badges/code-intelligence.svg?b=master" alt="Code Intelligence Status">
+        </a>
+        <a href="https://github.com/hhxsv5/laravel-s/blob/master/LICENSE">
+            <img src="https://img.shields.io/github/license/hhxsv5/laravel-s" alt="License">
+        </a>
+    </p>
+</div>
 
-*Please `Watch` this repository to get the latest updates.*
+---
 
-[![Latest Release](https://img.shields.io/github/v/release/hhxsv5/laravel-s.svg)](https://github.com/hhxsv5/laravel-s/releases)
-[![PHP Version](https://img.shields.io/packagist/php-v/hhxsv5/laravel-s)](https://www.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=1.7.19-flat.svg)](https://github.com/swoole/swoole-src)
-[![Total Downloads](https://img.shields.io/packagist/dt/hhxsv5/laravel-s)](https://packagist.org/packages/hhxsv5/laravel-s/stats)
-[![License](https://img.shields.io/github/license/hhxsv5/laravel-s)](https://github.com/hhxsv5/laravel-s/blob/master/LICENSE)
-[![Build Status](https://travis-ci.com/hhxsv5/laravel-s.svg?branch=master)](https://travis-ci.com/hhxsv5/laravel-s)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/hhxsv5/laravel-s/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
-
-**[中文文档](https://github.com/hhxsv5/laravel-s/blob/master/README-CN.md)**
+## Continuous Updates
+- *Please `Watch` this repository to get the latest updates.*
 
 Table of Contents
 =================
@@ -526,24 +540,21 @@ class TestEvent extends Event
 
 2.Create listener class.
 ```php
+use Hhxsv5\LaravelS\Swoole\Task\Event;
 use Hhxsv5\LaravelS\Swoole\Task\Task;
 use Hhxsv5\LaravelS\Swoole\Task\Listener;
 class TestListener1 extends Listener
 {
-    /**
-     * @var TestEvent
-     */
-    protected $event;
-    
-    public function handle()
+    public function handle(Event $event)
     {
-        \Log::info(__CLASS__ . ':handle start', [$this->event->getData()]);
+        \Log::info(__CLASS__ . ':handle start', [$event->getData()]);
         sleep(2);// Simulate the slow codes
         // Deliver task in CronJob, but NOT support callback finish() of task.
         // Note: Modify task_ipc_mode to 1 or 2 in config/laravels.php, see https://www.swoole.co.uk/docs/modules/swoole-server/configuration
         $ret = Task::deliver(new TestTask('task data'));
         var_dump($ret);
         // The exceptions thrown here will be caught by the upper layer and recorded in the Swoole log. Developers need to try/catch manually.
+        // return false; // Stop propagating this event to subsequent listeners
     }
 }
 ```

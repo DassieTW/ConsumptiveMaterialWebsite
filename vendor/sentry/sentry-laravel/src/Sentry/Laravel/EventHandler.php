@@ -6,9 +6,11 @@ use Exception;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Console\Events\CommandStarting;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Http\Request;
 use Illuminate\Log\Events\MessageLogged;
@@ -17,13 +19,16 @@ use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\WorkerStopping;
 use Illuminate\Queue\QueueManager;
-use Laravel\Octane\Events as Octane;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Routing\Route;
+use Laravel\Octane\Events as Octane;
+use Laravel\Sanctum\Events as Sanctum;
 use RuntimeException;
 use Sentry\Breadcrumb;
 use Sentry\SentrySdk;
 use Sentry\State\Scope;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
 
 class EventHandler
 {
@@ -33,14 +38,14 @@ class EventHandler
      * @var array
      */
     protected static $eventHandlerMap = [
-        'router.matched'                         => 'routerMatched',                         // Until Laravel 5.1
-        'Illuminate\Routing\Events\RouteMatched' => 'routeMatched',  // Since Laravel 5.2
+        'router.matched' => 'routerMatched',                              // Until Laravel 5.1
+        'Illuminate\Routing\Events\RouteMatched' => 'routeMatched',       // Since Laravel 5.2
 
-        'illuminate.query'                         => 'query',                                 // Until Laravel 5.1
-        'Illuminate\Database\Events\QueryExecuted' => 'queryExecuted', // Since Laravel 5.2
+        'illuminate.query' => 'query',                                    // Until Laravel 5.1
+        'Illuminate\Database\Events\QueryExecuted' => 'queryExecuted',    // Since Laravel 5.2
 
-        'illuminate.log'                      => 'log',                                // Until Laravel 5.3
-        'Illuminate\Log\Events\MessageLogged' => 'messageLogged', // Since Laravel 5.4
+        'illuminate.log' => 'log',                                        // Until Laravel 5.3
+        'Illuminate\Log\Events\MessageLogged' => 'messageLogged',         // Since Laravel 5.4
 
         'Illuminate\Console\Events\CommandStarting' => 'commandStarting', // Since Laravel 5.5
         'Illuminate\Console\Events\CommandFinished' => 'commandFinished', // Since Laravel 5.5
@@ -52,7 +57,8 @@ class EventHandler
      * @var array
      */
     protected static $authEventHandlerMap = [
-        'Illuminate\Auth\Events\Authenticated' => 'authenticated', // Since Laravel 5.3
+        'Illuminate\Auth\Events\Authenticated' => 'authenticated',                  // Since Laravel 5.3
+        'Laravel\Sanctum\Events\TokenAuthenticated' => 'sanctumTokenAuthenticated', // Since Sanctum 2.13
     ];
 
     /**
@@ -61,10 +67,10 @@ class EventHandler
      * @var array
      */
     protected static $queueEventHandlerMap = [
-        'Illuminate\Queue\Events\JobProcessing'        => 'queueJobProcessing',        // Since Laravel 5.2
-        'Illuminate\Queue\Events\JobProcessed'         => 'queueJobProcessed',         // Since Laravel 5.2
+        'Illuminate\Queue\Events\JobProcessed' => 'queueJobProcessed',                 // Since Laravel 5.2
+        'Illuminate\Queue\Events\JobProcessing' => 'queueJobProcessing',               // Since Laravel 5.2
+        'Illuminate\Queue\Events\WorkerStopping' => 'queueWorkerStopping',             // Since Laravel 5.2
         'Illuminate\Queue\Events\JobExceptionOccurred' => 'queueJobExceptionOccurred', // Since Laravel 5.2
-        'Illuminate\Queue\Events\WorkerStopping'       => 'queueWorkerStopping',       // Since Laravel 5.2
     ];
 
     /**
@@ -73,17 +79,17 @@ class EventHandler
      * @var array
      */
     protected static $octaneEventHandlerMap = [
-        'Laravel\Octane\Events\RequestReceived'   => 'octaneRequestReceived',
+        'Laravel\Octane\Events\RequestReceived' => 'octaneRequestReceived',
         'Laravel\Octane\Events\RequestTerminated' => 'octaneRequestTerminated',
 
-        'Laravel\Octane\Events\TaskReceived'   => 'octaneTaskReceived',
+        'Laravel\Octane\Events\TaskReceived' => 'octaneTaskReceived',
         'Laravel\Octane\Events\TaskTerminated' => 'octaneTaskTerminated',
 
-        'Laravel\Octane\Events\TickReceived'   => 'octaneTickReceived',
+        'Laravel\Octane\Events\TickReceived' => 'octaneTickReceived',
         'Laravel\Octane\Events\TickTerminated' => 'octaneTickTerminated',
 
         'Laravel\Octane\Events\WorkerErrorOccurred' => 'octaneWorkerErrorOccurred',
-        'Laravel\Octane\Events\WorkerStopping'      => 'octaneWorkerStopping',
+        'Laravel\Octane\Events\WorkerStopping' => 'octaneWorkerStopping',
     ];
 
     /**
@@ -166,11 +172,11 @@ class EventHandler
     {
         $this->container = $container;
 
-        $this->recordSqlQueries     = ($config['breadcrumbs.sql_queries'] ?? $config['breadcrumbs']['sql_queries'] ?? true) === true;
-        $this->recordSqlBindings    = ($config['breadcrumbs.sql_bindings'] ?? $config['breadcrumbs']['sql_bindings'] ?? false) === true;
-        $this->recordLaravelLogs    = ($config['breadcrumbs.logs'] ?? $config['breadcrumbs']['logs'] ?? true) === true;
-        $this->recordQueueInfo      = ($config['breadcrumbs.queue_info'] ?? $config['breadcrumbs']['queue_info'] ?? true) === true;
-        $this->recordCommandInfo    = ($config['breadcrumbs.command_info'] ?? $config['breadcrumbs']['command_info'] ?? true) === true;
+        $this->recordSqlQueries = ($config['breadcrumbs.sql_queries'] ?? $config['breadcrumbs']['sql_queries'] ?? true) === true;
+        $this->recordSqlBindings = ($config['breadcrumbs.sql_bindings'] ?? $config['breadcrumbs']['sql_bindings'] ?? false) === true;
+        $this->recordLaravelLogs = ($config['breadcrumbs.logs'] ?? $config['breadcrumbs']['logs'] ?? true) === true;
+        $this->recordQueueInfo = ($config['breadcrumbs.queue_info'] ?? $config['breadcrumbs']['queue_info'] ?? true) === true;
+        $this->recordCommandInfo = ($config['breadcrumbs.command_info'] ?? $config['breadcrumbs']['command_info'] ?? true) === true;
         $this->recordOctaneTickInfo = ($config['breadcrumbs.octane_tick_info'] ?? $config['breadcrumbs']['octane_tick_info'] ?? true) === true;
         $this->recordOctaneTaskInfo = ($config['breadcrumbs.octane_task_info'] ?? $config['breadcrumbs']['octane_task_info'] ?? true) === true;
     }
@@ -419,9 +425,40 @@ class EventHandler
      */
     protected function authenticatedHandler(Authenticated $event)
     {
-        $userData = [
-            'id' => $event->user->getAuthIdentifier(),
-        ];
+        $this->configureUserScopeFromModel($event->user);
+    }
+
+    /**
+     * Since Sanctum 2.13
+     *
+     * @param \Laravel\Sanctum\Events\TokenAuthenticated $event
+     */
+    protected function sanctumTokenAuthenticatedHandler(Sanctum\TokenAuthenticated $event)
+    {
+        $this->configureUserScopeFromModel($event->token->tokenable);
+    }
+
+    /**
+     * Configures the user scope with the user data and values from the HTTP request.
+     *
+     * @param mixed $authUser
+     *
+     * @return void
+     */
+    private function configureUserScopeFromModel($authUser): void
+    {
+        $userData = [];
+
+        // If the user is a Laravel Eloquent model we try to extract some common fields from it
+        if ($authUser instanceof Model) {
+            $userData = [
+                'id' => $authUser instanceof Authenticatable
+                    ? $authUser->getAuthIdentifier()
+                    : $authUser->getKey(),
+                'email' => $authUser->getAttribute('email') ?? $authUser->getAttribute('mail'),
+                'username' => $authUser->getAttribute('username'),
+            ];
+        }
 
         try {
             /** @var \Illuminate\Http\Request $request */
@@ -439,7 +476,7 @@ class EventHandler
         }
 
         Integration::configureScope(static function (Scope $scope) use ($userData): void {
-            $scope->setUser($userData);
+            $scope->setUser(array_filter($userData));
         });
     }
 
@@ -461,9 +498,9 @@ class EventHandler
         }
 
         $job = [
-            'job'        => $event->job->getName(),
-            'queue'      => $event->job->getQueue(),
-            'attempts'   => $event->job->attempts(),
+            'job' => $event->job->getName(),
+            'queue' => $event->job->getQueue(),
+            'attempts' => $event->job->attempts(),
             'connection' => $event->connectionName,
         ];
 
@@ -533,9 +570,9 @@ class EventHandler
                 Breadcrumb::TYPE_DEFAULT,
                 'artisan.command',
                 'Starting Artisan command: ' . $event->command,
-                method_exists($event->input, '__toString') ? [
-                    'input' => (string)$event->input,
-                ] : []
+                [
+                    'input' => $this->extractConsoleCommandInput($event->input),
+                ]
             ));
         }
     }
@@ -553,20 +590,35 @@ class EventHandler
                 Breadcrumb::TYPE_DEFAULT,
                 'artisan.command',
                 'Finished Artisan command: ' . $event->command,
-                array_merge([
+                [
                     'exit' => $event->exitCode,
-                ], method_exists($event->input, '__toString') ? [
-                    'input' => (string)$event->input,
-                ] : [])
+                    'input' => $this->extractConsoleCommandInput($event->input),
+                ]
             ));
         }
 
-        Integration::configureScope(static function (Scope $scope): void {
-            $scope->setTag('command', '');
-        });
-
         // Flush any and all events that were possibly generated by the command
         Integration::flushEvents();
+
+        Integration::configureScope(static function (Scope $scope): void {
+            $scope->removeTag('command');
+        });
+    }
+
+    /**
+     * Extract the command input arguments if possible.
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface|null $input
+     *
+     * @return string|null
+     */
+    private function extractConsoleCommandInput(?InputInterface $input): ?string
+    {
+        if ($input instanceof ArgvInput) {
+            return (string)$input;
+        }
+
+        return null;
     }
 
     protected function octaneRequestReceivedHandler(Octane\RequestReceived $event): void

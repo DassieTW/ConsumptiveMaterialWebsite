@@ -4,7 +4,6 @@ namespace Sentry\Laravel\Tracing;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Route;
 use Sentry\Laravel\Integration;
 use Sentry\SentrySdk;
@@ -12,6 +11,7 @@ use Sentry\State\HubInterface;
 use Sentry\Tracing\Span;
 use Sentry\Tracing\SpanContext;
 use Sentry\Tracing\TransactionContext;
+use Symfony\Component\HttpFoundation\Response;
 
 class Middleware
 {
@@ -56,8 +56,8 @@ class Middleware
     /**
      * Handle the application termination.
      *
-     * @param \Illuminate\Http\Request  $request
-     * @param \Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Request                   $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
      *
      * @return void
      */
@@ -123,7 +123,7 @@ class Middleware
         $bootstrapSpan = $this->addAppBootstrapSpan($request);
 
         $appContextStart = new SpanContext();
-        $appContextStart->setOp('laravel.handle');
+        $appContextStart->setOp('middleware.handle');
         $appContextStart->setStartTimestamp($bootstrapSpan ? $bootstrapSpan->getEndTimestamp() : microtime(true));
 
         $this->appSpan = $this->transaction->startChild($appContextStart);
@@ -144,7 +144,7 @@ class Middleware
         }
 
         $spanContextStart = new SpanContext();
-        $spanContextStart->setOp('laravel.bootstrap');
+        $spanContextStart->setOp('app.bootstrap');
         $spanContextStart->setStartTimestamp($laravelStartTime);
         $spanContextStart->setEndTimestamp($this->bootedTimestamp);
 
@@ -168,7 +168,7 @@ class Middleware
         }
 
         $autoload = new SpanContext();
-        $autoload->setOp('laravel.autoload');
+        $autoload->setOp('app.php.autoload');
         $autoload->setStartTimestamp($bootstrap->getStartTimestamp());
         $autoload->setEndTimestamp(SENTRY_AUTOLOAD);
 
@@ -180,11 +180,25 @@ class Middleware
         $route = $request->route();
 
         if ($route instanceof Route) {
-            $this->updateTransactionNameIfDefault(Integration::extractNameForRoute($route));
+            $this->updateTransactionNameIfDefault(
+                Integration::extractNameForRoute($route)
+            );
 
             $this->transaction->setData([
                 'name' => $route->getName(),
                 'action' => $route->getActionName(),
+                'method' => $request->getMethod(),
+            ]);
+        } elseif (is_array($route) && count($route) === 3) {
+            $this->updateTransactionNameIfDefault(
+                Integration::extractNameForLumenRoute($route, $request->path())
+            );
+
+            $action = $route[1] ?? [];
+
+            $this->transaction->setData([
+                'name' => $action['as'] ?? null,
+                'action' => $action['uses'] ?? 'Closure',
                 'method' => $request->getMethod(),
             ]);
         }
@@ -194,7 +208,7 @@ class Middleware
 
     private function hydrateResponseData(Response $response): void
     {
-        $this->transaction->setHttpStatus($response->status());
+        $this->transaction->setHttpStatus($response->getStatusCode());
     }
 
     private function updateTransactionNameIfDefault(?string $name): void

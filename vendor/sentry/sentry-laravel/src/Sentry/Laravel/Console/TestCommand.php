@@ -7,10 +7,12 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Psr\Log\AbstractLogger;
 use Sentry\ClientBuilder;
+use Sentry\Laravel\Version;
 use Sentry\State\Hub;
 use Sentry\State\HubInterface;
 use Sentry\Tracing\SpanContext;
 use Sentry\Tracing\TransactionContext;
+use Throwable;
 
 class TestCommand extends Command
 {
@@ -54,9 +56,20 @@ class TestCommand extends Command
 
         $dsn = $this->option('dsn');
 
+        $laravelClient = null;
+
+        try {
+            $laravelClient = app(HubInterface::class)->getClient();
+        } catch (Throwable $e) {
+            // Ignore any errors related to getting the client from the Laravel container
+            // These errors will surface later in the process but we should not crash here
+        }
+
         // If the DSN was not passed as option to the command we use the registered client to get the DSN from the Laravel config
         if ($dsn === null) {
-            $dsnObject = app(HubInterface::class)->getClient()->getOptions()->getDsn();
+            $dsnObject = $laravelClient === null
+                ? null
+                : $laravelClient->getOptions()->getDsn();
 
             if ($dsnObject !== null) {
                 $dsn = (string)$dsnObject;
@@ -77,6 +90,8 @@ class TestCommand extends Command
         try {
             $clientBuilder = ClientBuilder::create([
                 'dsn' => $dsn,
+                'release' => $laravelClient === null ? null : $laravelClient->getOptions()->getRelease(),
+                'environment' => $laravelClient === null ? null : $laravelClient->getOptions()->getEnvironment(),
                 'traces_sample_rate' => 1.0,
             ]);
         } catch (Exception $e) {
@@ -84,6 +99,10 @@ class TestCommand extends Command
 
             return 1;
         }
+
+        // Set the Laravel SDK identifier and version
+        $clientBuilder->setSdkIdentifier(Version::SDK_IDENTIFIER);
+        $clientBuilder->setSdkVersion(Version::SDK_VERSION);
 
         // We set a logger so we can surface errors thrown internally by the SDK
         $clientBuilder->setLogger(new class($this) extends AbstractLogger {

@@ -26,7 +26,7 @@ class ServiceProvider extends BaseServiceProvider
     /**
      * List of configuration options that are Laravel specific and should not be sent to the base PHP SDK.
      */
-    private const LARAVEL_SPECIFIC_OPTIONS = [
+    protected const LARAVEL_SPECIFIC_OPTIONS = [
         // We do not want these settings to hit the PHP SDK because they are Laravel specific and the PHP SDK will throw errors
         'tracing',
         'breadcrumbs',
@@ -84,7 +84,7 @@ class ServiceProvider extends BaseServiceProvider
 
         $this->mergeConfigFrom(__DIR__ . '/../../../config/sentry.php', static::$abstract);
 
-        $this->configureAndRegisterClient($this->getUserConfig());
+        $this->configureAndRegisterClient();
 
         if (($logManager = $this->app->make('log')) instanceof LogManager) {
             $logManager->extend('sentry', function ($app, array $config) {
@@ -109,7 +109,7 @@ class ServiceProvider extends BaseServiceProvider
         }
 
         if ($this->app->bound('queue')) {
-            $handler->subscribeQueueEvents($this->app->queue);
+            $handler->subscribeQueueEvents($this->app->make('queue'));
         }
 
         if (isset($userConfig['send_default_pii']) && $userConfig['send_default_pii'] !== false) {
@@ -143,7 +143,7 @@ class ServiceProvider extends BaseServiceProvider
             $basePath   = base_path();
             $userConfig = $this->getUserConfig();
 
-            foreach (self::LARAVEL_SPECIFIC_OPTIONS as $laravelSpecificOptionName) {
+            foreach (static::LARAVEL_SPECIFIC_OPTIONS as $laravelSpecificOptionName) {
                 unset($userConfig[$laravelSpecificOptionName]);
             }
 
@@ -206,7 +206,7 @@ class ServiceProvider extends BaseServiceProvider
                     });
 
                     $integrations[] = new SdkIntegration\RequestIntegration(
-                        new LaravelRequestFetcher($app)
+                        new LaravelRequestFetcher
                     );
                 }
 

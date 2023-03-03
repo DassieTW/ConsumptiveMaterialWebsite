@@ -2,68 +2,90 @@
 
 declare(strict_types=1);
 
-define('SWOOLE_VERSION', '4.8.7');
-define('SWOOLE_VERSION_ID', 40807);
-define('SWOOLE_MAJOR_VERSION', 4);
-define('SWOOLE_MINOR_VERSION', 8);
-define('SWOOLE_RELEASE_VERSION', 7);
+/*
+ * Swoole version information.
+ */
+define('SWOOLE_VERSION', '5.0.1');
+define('SWOOLE_VERSION_ID', 50001);
+define('SWOOLE_MAJOR_VERSION', 5);
+define('SWOOLE_MINOR_VERSION', 0);
+define('SWOOLE_RELEASE_VERSION', 1);
 define('SWOOLE_EXTRA_VERSION', '');
-define('SWOOLE_DEBUG', '');
+
+/*
+ * If debug logging is enabled or not in Swoole.
+ *
+ * Debug logging is enabled when Swoole is installed with configuration option "--enable-debug-log" included.
+ */
+define('SWOOLE_DEBUG', 0);
+
+#ifdef SW_HAVE_COMPRESSION
 define('SWOOLE_HAVE_COMPRESSION', '1');
+#endif
+#ifdef SW_HAVE_ZLIB
 define('SWOOLE_HAVE_ZLIB', '1');
+#endif
+#ifdef SW_HAVE_BROTLI
 define('SWOOLE_HAVE_BROTLI', '1');
+#endif
+
 define('SWOOLE_USE_HTTP2', '1');
-define('SWOOLE_USE_SHORTNAME', '1');
+
+// Support short names or not. Short names are all the aliases listed in file ./shortnames.php.
+define('SWOOLE_USE_SHORTNAME', (bool) ini_get('swoole.use_shortname'));
+
+/*
+ * Next two constants define types of socket connections. They are used in method Swoole\Client::__construct().
+ *
+ * There are two types of socket connections: synchronous (blocking) and asynchronous (non-blocking).
+ */
+define('SWOOLE_SOCK_SYNC', false);
+define('SWOOLE_SOCK_ASYNC', true); // No longer used, but still kept for backward compatibility.
+
+// Socket types, which are to specify the communication semantics.
 define('SWOOLE_SOCK_TCP', 1);
-define('SWOOLE_SOCK_TCP6', 3);
 define('SWOOLE_SOCK_UDP', 2);
+define('SWOOLE_SOCK_TCP6', 3);
 define('SWOOLE_SOCK_UDP6', 4);
-define('SWOOLE_SOCK_UNIX_DGRAM', 6);
 define('SWOOLE_SOCK_UNIX_STREAM', 5);
-define('SWOOLE_TCP', 1);
-define('SWOOLE_TCP6', 3);
-define('SWOOLE_UDP', 2);
-define('SWOOLE_UDP6', 4);
-define('SWOOLE_UNIX_DGRAM', 6);
-define('SWOOLE_UNIX_STREAM', 5);
-define('SWOOLE_SOCK_SYNC', '');
-define('SWOOLE_SOCK_ASYNC', '1');
-define('SWOOLE_SYNC', 2048);
-define('SWOOLE_ASYNC', 1024);
-define('SWOOLE_KEEP', 4096);
-define('SWOOLE_SSL', 512);
-define('SWOOLE_SSLv3_METHOD', 1);
-define('SWOOLE_SSLv3_SERVER_METHOD', 2);
-define('SWOOLE_SSLv3_CLIENT_METHOD', 3);
-define('SWOOLE_TLSv1_METHOD', 6);
-define('SWOOLE_TLSv1_SERVER_METHOD', 7);
-define('SWOOLE_TLSv1_CLIENT_METHOD', 8);
-define('SWOOLE_TLSv1_1_METHOD', 9);
-define('SWOOLE_TLSv1_1_SERVER_METHOD', 10);
-define('SWOOLE_TLSv1_1_CLIENT_METHOD', 11);
-define('SWOOLE_TLSv1_2_METHOD', 12);
-define('SWOOLE_TLSv1_2_SERVER_METHOD', 13);
-define('SWOOLE_TLSv1_2_CLIENT_METHOD', 14);
-define('SWOOLE_DTLS_SERVER_METHOD', 16);
-define('SWOOLE_DTLS_CLIENT_METHOD', 15);
-define('SWOOLE_SSLv23_METHOD', 0);
-define('SWOOLE_SSLv23_SERVER_METHOD', 4);
-define('SWOOLE_SSLv23_CLIENT_METHOD', 5);
-define('SWOOLE_TLS_METHOD', 0);
-define('SWOOLE_TLS_SERVER_METHOD', 4);
-define('SWOOLE_TLS_CLIENT_METHOD', 5);
-define('SWOOLE_SSL_TLSv1', 8);
-define('SWOOLE_SSL_TLSv1_1', 16);
-define('SWOOLE_SSL_TLSv1_2', 32);
-define('SWOOLE_SSL_TLSv1_3', 64);
-define('SWOOLE_SSL_DTLS', 128);
-define('SWOOLE_SSL_SSLv2', 2);
-define('SWOOLE_EVENT_READ', 512);
-define('SWOOLE_EVENT_WRITE', 1024);
+define('SWOOLE_SOCK_UNIX_DGRAM', 6);
+
+// Simple aliases of socket types.
+define('SWOOLE_TCP', SWOOLE_SOCK_TCP);
+define('SWOOLE_UDP', SWOOLE_SOCK_UDP);
+define('SWOOLE_TCP6', SWOOLE_SOCK_TCP6);
+define('SWOOLE_UDP6', SWOOLE_SOCK_UDP6);
+define('SWOOLE_UNIX_STREAM', SWOOLE_SOCK_UNIX_STREAM);
+define('SWOOLE_UNIX_DGRAM', SWOOLE_SOCK_UNIX_DGRAM);
+
+/*
+ * Socket flags. They can be used in conjunction with socket types to modify the behavior of socket connections.
+ *
+ * There are four flags for socket connections:
+ *   - SWOOLE_SSL   (2^9)
+ *   - SWOOLE_ASYNC (2^10) (No longer used, but still kept for backward compatibility.)
+ *   - SWOOLE_SYNC  (2^11) (No longer used, but still kept for backward compatibility.)
+ *   - SWOOLE_KEEP  (2^12)
+ */
+define('SWOOLE_ASYNC', 1024); // 2^10 (No longer used, but still kept for backward compatibility.)
+define('SWOOLE_SYNC', 2048);  // 2^11 (No longer used, but still kept for backward compatibility.)
+define('SWOOLE_KEEP', 4096);  // 2^12
+
+// Read/Write events of sockets.
+define('SWOOLE_EVENT_READ', 512);   // 2^9
+define('SWOOLE_EVENT_WRITE', 1024); // 2^10
+
+/*
+ * Error types. They are used as value of the second parameter of function swoole_strerror(int $errno, int $error_type).
+ *
+ * @see swoole_strerror()
+ */
 define('SWOOLE_STRERROR_SYSTEM', 0);
 define('SWOOLE_STRERROR_GAI', 1);
 define('SWOOLE_STRERROR_DNS', 2);
 define('SWOOLE_STRERROR_SWOOLE', 9);
+
+// Error codes.
 define('SWOOLE_ERROR_MALLOC_FAIL', 501);
 define('SWOOLE_ERROR_SYSTEM_CALL_FAIL', 502);
 define('SWOOLE_ERROR_PHP_FATAL_ERROR', 503);
@@ -113,6 +135,7 @@ define('SWOOLE_ERROR_HTTP2_STREAM_ID_TOO_BIG', 3001);
 define('SWOOLE_ERROR_HTTP2_STREAM_NO_HEADER', 3002);
 define('SWOOLE_ERROR_HTTP2_STREAM_NOT_FOUND', 3003);
 define('SWOOLE_ERROR_HTTP2_STREAM_IGNORE', 3004);
+define('SWOOLE_ERROR_HTTP2_SEND_CONTROL_FRAME_FAILED', 3005);
 define('SWOOLE_ERROR_AIO_BAD_REQUEST', 4001);
 define('SWOOLE_ERROR_AIO_CANCELED', 4002);
 define('SWOOLE_ERROR_AIO_TIMEOUT', 4003);
@@ -148,6 +171,7 @@ define('SWOOLE_ERROR_SERVER_INVALID_REQUEST', 9010);
 define('SWOOLE_ERROR_SERVER_CONNECT_FAIL', 9011);
 define('SWOOLE_ERROR_SERVER_INVALID_COMMAND', 9012);
 define('SWOOLE_ERROR_SERVER_IS_NOT_REGULAR_FILE', 9013);
+define('SWOOLE_ERROR_SERVER_SEND_TO_WOKER_TIMEOUT', 9014);
 define('SWOOLE_ERROR_SERVER_WORKER_EXIT_TIMEOUT', 9101);
 define('SWOOLE_ERROR_SERVER_WORKER_ABNORMAL_PIPE_DATA', 9102);
 define('SWOOLE_ERROR_SERVER_WORKER_UNPROCESSED_DATA', 9103);
@@ -169,37 +193,43 @@ define('SWOOLE_ERROR_CO_CANNOT_CANCEL', 10015);
 define('SWOOLE_ERROR_CO_NOT_EXISTS', 10016);
 define('SWOOLE_ERROR_CO_CANCELED', 10017);
 define('SWOOLE_ERROR_CO_TIMEDOUT', 10018);
-define('SWOOLE_TRACE_SERVER', 2);
-define('SWOOLE_TRACE_CLIENT', 4);
-define('SWOOLE_TRACE_BUFFER', 8);
-define('SWOOLE_TRACE_CONN', 16);
-define('SWOOLE_TRACE_EVENT', 32);
-define('SWOOLE_TRACE_WORKER', 64);
-define('SWOOLE_TRACE_MEMORY', 128);
-define('SWOOLE_TRACE_REACTOR', 256);
-define('SWOOLE_TRACE_PHP', 512);
-define('SWOOLE_TRACE_HTTP', 1024);
-define('SWOOLE_TRACE_HTTP2', 2048);
-define('SWOOLE_TRACE_EOF_PROTOCOL', 4096);
-define('SWOOLE_TRACE_LENGTH_PROTOCOL', 8192);
-define('SWOOLE_TRACE_CLOSE', 16384);
-define('SWOOLE_TRACE_WEBSOCKET', 32768);
-define('SWOOLE_TRACE_REDIS_CLIENT', 65536);
-define('SWOOLE_TRACE_MYSQL_CLIENT', 131072);
-define('SWOOLE_TRACE_HTTP_CLIENT', 262144);
-define('SWOOLE_TRACE_AIO', 524288);
-define('SWOOLE_TRACE_SSL', 1048576);
-define('SWOOLE_TRACE_NORMAL', 2097152);
-define('SWOOLE_TRACE_CHANNEL', 4194304);
-define('SWOOLE_TRACE_TIMER', 8388608);
-define('SWOOLE_TRACE_SOCKET', 16777216);
-define('SWOOLE_TRACE_COROUTINE', 33554432);
-define('SWOOLE_TRACE_CONTEXT', 67108864);
-define('SWOOLE_TRACE_CO_HTTP_SERVER', 134217728);
-define('SWOOLE_TRACE_TABLE', 268435456);
-define('SWOOLE_TRACE_CO_CURL', 536870912);
-define('SWOOLE_TRACE_CARES', 1073741824);
-define('SWOOLE_TRACE_ALL', 9223372036854775807);
+
+// Trace log types (server related).
+define('SWOOLE_TRACE_SERVER', 2); // 2^1
+define('SWOOLE_TRACE_CLIENT', 4); // 2^2
+define('SWOOLE_TRACE_BUFFER', 8); // 2^3
+define('SWOOLE_TRACE_CONN', 16); // 2^4
+define('SWOOLE_TRACE_EVENT', 32); // 2^5
+define('SWOOLE_TRACE_WORKER', 64); // 2^6
+define('SWOOLE_TRACE_MEMORY', 128); // 2^7
+define('SWOOLE_TRACE_REACTOR', 256); // 2^8
+define('SWOOLE_TRACE_PHP', 512); // 2^9
+define('SWOOLE_TRACE_HTTP', 1024); // 2^10
+define('SWOOLE_TRACE_HTTP2', 2048); // 2^11
+define('SWOOLE_TRACE_EOF_PROTOCOL', 4096); // 2^12
+define('SWOOLE_TRACE_LENGTH_PROTOCOL', 8192); // 2^13
+define('SWOOLE_TRACE_CLOSE', 16384); // 2^14
+define('SWOOLE_TRACE_WEBSOCKET', 32768); // 2^15
+// Trace log types (client related).
+define('SWOOLE_TRACE_REDIS_CLIENT', 65536); // 2^16
+define('SWOOLE_TRACE_MYSQL_CLIENT', 131072); // 2^17
+define('SWOOLE_TRACE_HTTP_CLIENT', 262144); // 2^18
+define('SWOOLE_TRACE_AIO', 524288); // 2^19
+define('SWOOLE_TRACE_SSL', 1048576); // 2^20
+define('SWOOLE_TRACE_NORMAL', 2097152); // 2^21
+// Trace log types (coroutine related).
+define('SWOOLE_TRACE_CHANNEL', 4194304); // 2^22
+define('SWOOLE_TRACE_TIMER', 8388608); // 2^23
+define('SWOOLE_TRACE_SOCKET', 16777216); // 2^24
+define('SWOOLE_TRACE_COROUTINE', 33554432); // 2^25
+define('SWOOLE_TRACE_CONTEXT', 67108864); // 2^26
+define('SWOOLE_TRACE_CO_HTTP_SERVER', 134217728); // 2^27
+define('SWOOLE_TRACE_TABLE', 268435456); // 2^28
+define('SWOOLE_TRACE_CO_CURL', 536870912); // 2^29
+define('SWOOLE_TRACE_CARES', 1073741824); // 2^30
+define('SWOOLE_TRACE_ALL', 9223372036854775807); // 2^63 - 1
+
+// Log levels.
 define('SWOOLE_LOG_DEBUG', 0);
 define('SWOOLE_LOG_TRACE', 1);
 define('SWOOLE_LOG_INFO', 2);
@@ -207,20 +237,62 @@ define('SWOOLE_LOG_NOTICE', 3);
 define('SWOOLE_LOG_WARNING', 4);
 define('SWOOLE_LOG_ERROR', 5);
 define('SWOOLE_LOG_NONE', 6);
+
+// Log rotation intervals.
 define('SWOOLE_LOG_ROTATION_SINGLE', 0);
 define('SWOOLE_LOG_ROTATION_MONTHLY', 1);
 define('SWOOLE_LOG_ROTATION_DAILY', 2);
 define('SWOOLE_LOG_ROTATION_HOURLY', 3);
 define('SWOOLE_LOG_ROTATION_EVERY_MINUTE', 4);
+
+/*
+ * Constants in this section are IPC modes.
+ */
 define('SWOOLE_IPC_NONE', 0);
-define('SWOOLE_IPC_UNIXSOCK', 1);
-define('SWOOLE_IPC_SOCKET', 3);
+define('SWOOLE_IPC_UNIXSOCK', 1); // IPC socket (aka Unix domain socket).
+define('SWOOLE_IPC_MSGQUEUE', 2); // IPC using message queues.
+define('SWOOLE_IPC_SOCKET', 3); // Network socket.
+
+define('SWOOLE_IPC_UNSOCK', SWOOLE_IPC_UNIXSOCK);
+define('SWOOLE_IPC_PREEMPTIVE', 3);
+
+/*
+ * Maximum number of iovec structures that one process has available for use with readv() or writev().
+ *
+ * Note that value of this constant varies across different operating systems.
+ *
+ * @see https://www.gnu.org/software/libc/manual/html_node/Scatter_002dGather.html Fast Scatter-Gather I/O
+ */
 define('SWOOLE_IOV_MAX', 1024);
+
+/*
+ * Types of supported locks in Swoole.
+ *
+ * @see \Swoole\Lock
+ */
+#ifdef HAVE_RWLOCK
+define('SWOOLE_RWLOCK', 1);
+#endif
 define('SWOOLE_FILELOCK', 2);
 define('SWOOLE_MUTEX', 3);
 define('SWOOLE_SEM', 4);
-define('SWOOLE_RWLOCK', 1);
+#ifdef HAVE_SPINLOCK
 define('SWOOLE_SPINLOCK', 5);
+#endif
+
+/*
+ * Following SIG_* and PRIO_* constants are set only when PHP extension pcntl (to support Process Control) is not
+ * installed.
+ *
+ * Most constants here are the same as those defined in PHP extension pcntl, as you can see from the following links:
+ *   - https://www.php.net/manual/en/pcntl.constants.php
+ *   - https://github.com/php/php-src/blob/php-8.1.12/ext/pcntl/pcntl.c#L106
+ *
+ * Note that values of these constants are not always the same in different operating systems. The values shown here
+ * is for Linux only.
+ */
+// SIG_* constants. Please see your systems signal(7) man page for details of the default behavior of these signals.
+define('SIG_IGN', 1);
 define('SIGHUP', 1);
 define('SIGINT', 2);
 define('SIGQUIT', 3);
@@ -236,7 +308,9 @@ define('SIGUSR2', 12);
 define('SIGPIPE', 13);
 define('SIGALRM', 14);
 define('SIGTERM', 15);
+#ifdef SIGSTKFLT
 define('SIGSTKFLT', 16);
+#endif
 define('SIGCHLD', 17);
 define('SIGCONT', 18);
 define('SIGSTOP', 19);
@@ -250,28 +324,53 @@ define('SIGVTALRM', 26);
 define('SIGPROF', 27);
 define('SIGWINCH', 28);
 define('SIGIO', 29);
+#ifdef SIGPWR
 define('SIGPWR', 30);
+#endif
+#ifdef SIGSYS
 define('SIGSYS', 31);
-define('SIG_IGN', 1);
+#endif
+/*
+ * PRIO_* constants. They are used to get/set process priority.
+ *
+ * Please see your systems getpriority(2) or setpriority(2) man page for details of these constants.
+ *
+ * @see \Swoole\Process::getPriority()
+ * @see \Swoole\Process::setPriority()
+ */
 define('PRIO_PROCESS', 0);
 define('PRIO_PGRP', 1);
 define('PRIO_USER', 2);
-define('SWOOLE_TIMER_MIN_MS', 1);
-define('SWOOLE_TIMER_MIN_SEC', 0.001);
-define('SWOOLE_TIMER_MAX_MS', 9223372036854775807);
-define('SWOOLE_TIMER_MAX_SEC', 9.2233720368548E+15);
+
 define('SWOOLE_DEFAULT_MAX_CORO_NUM', 100000);
 define('SWOOLE_CORO_MAX_NUM_LIMIT', 9223372036854775807);
 define('SWOOLE_CORO_INIT', 0);
 define('SWOOLE_CORO_WAITING', 1);
 define('SWOOLE_CORO_RUNNING', 2);
 define('SWOOLE_CORO_END', 3);
-define('SWOOLE_EXIT_IN_COROUTINE', 2);
-define('SWOOLE_EXIT_IN_SERVER', 4);
+
+/*
+ * Exit flags.
+ *
+ * When exit() is called in Swoole illegally, Swoole throws out a \Swoole\ExitException exception, with exit flags set
+ * on property $flags.
+ *
+ * @see \Swoole\ExitException::$flags
+ */
+define('SWOOLE_EXIT_IN_COROUTINE', 2); // exit() is called inside a coroutine.
+define('SWOOLE_EXIT_IN_SERVER', 4); // exit() is called after Swoole server is started.
+
+/*
+ * Error codes of channels. They are used in method \Swoole\Coroutine\Channel::push() and \Swoole\Coroutine\Channel::pop() only.
+ *
+ * @see \Swoole\Coroutine\Channel::push()
+ * @see \Swoole\Coroutine\Channel::pop()
+ */
 define('SWOOLE_CHANNEL_OK', 0);
 define('SWOOLE_CHANNEL_TIMEOUT', -1);
 define('SWOOLE_CHANNEL_CLOSED', -2);
 define('SWOOLE_CHANNEL_CANCELED', -3);
+
 define('SWOOLE_HOOK_TCP', 2);
 define('SWOOLE_HOOK_UDP', 4);
 define('SWOOLE_HOOK_UNIX', 8);
@@ -289,68 +388,16 @@ define('SWOOLE_HOOK_NATIVE_CURL', 4096);
 define('SWOOLE_HOOK_BLOCKING_FUNCTION', 8192);
 define('SWOOLE_HOOK_SOCKETS', 16384);
 define('SWOOLE_HOOK_ALL', 2147481599);
-define('SOCKET_ECANCELED', 125);
-define('SWOOLE_HTTP_CLIENT_ESTATUS_CONNECT_FAILED', -1);
-define('SWOOLE_HTTP_CLIENT_ESTATUS_REQUEST_TIMEOUT', -2);
-define('SWOOLE_HTTP_CLIENT_ESTATUS_SERVER_RESET', -3);
-define('SWOOLE_HTTP_CLIENT_ESTATUS_SEND_FAILED', -4);
-define('SWOOLE_MYSQLND_CR_UNKNOWN_ERROR', 2000);
-define('SWOOLE_MYSQLND_CR_CONNECTION_ERROR', 2002);
-define('SWOOLE_MYSQLND_CR_SERVER_GONE_ERROR', 2006);
-define('SWOOLE_MYSQLND_CR_OUT_OF_MEMORY', 2008);
-define('SWOOLE_MYSQLND_CR_SERVER_LOST', 2013);
-define('SWOOLE_MYSQLND_CR_COMMANDS_OUT_OF_SYNC', 2014);
-define('SWOOLE_MYSQLND_CR_CANT_FIND_CHARSET', 2019);
-define('SWOOLE_MYSQLND_CR_MALFORMED_PACKET', 2027);
-define('SWOOLE_MYSQLND_CR_NOT_IMPLEMENTED', 2054);
-define('SWOOLE_MYSQLND_CR_NO_PREPARE_STMT', 2030);
-define('SWOOLE_MYSQLND_CR_PARAMS_NOT_BOUND', 2031);
-define('SWOOLE_MYSQLND_CR_INVALID_PARAMETER_NO', 2034);
-define('SWOOLE_MYSQLND_CR_INVALID_BUFFER_USE', 2035);
-define('SWOOLE_REDIS_MODE_MULTI', 0);
-define('SWOOLE_REDIS_MODE_PIPELINE', 1);
-define('SWOOLE_REDIS_TYPE_NOT_FOUND', 0);
-define('SWOOLE_REDIS_TYPE_STRING', 1);
-define('SWOOLE_REDIS_TYPE_SET', 2);
-define('SWOOLE_REDIS_TYPE_LIST', 3);
-define('SWOOLE_REDIS_TYPE_ZSET', 4);
-define('SWOOLE_REDIS_TYPE_HASH', 5);
-define('SWOOLE_REDIS_ERR_IO', 1);
-define('SWOOLE_REDIS_ERR_OTHER', 2);
-define('SWOOLE_REDIS_ERR_EOF', 3);
-define('SWOOLE_REDIS_ERR_PROTOCOL', 4);
-define('SWOOLE_REDIS_ERR_OOM', 5);
-define('SWOOLE_REDIS_ERR_CLOSED', 6);
-define('SWOOLE_REDIS_ERR_NOAUTH', 7);
-define('SWOOLE_REDIS_ERR_ALLOC', 8);
-define('SWOOLE_HTTP2_TYPE_DATA', 0);
-define('SWOOLE_HTTP2_TYPE_HEADERS', 1);
-define('SWOOLE_HTTP2_TYPE_PRIORITY', 2);
-define('SWOOLE_HTTP2_TYPE_RST_STREAM', 3);
-define('SWOOLE_HTTP2_TYPE_SETTINGS', 4);
-define('SWOOLE_HTTP2_TYPE_PUSH_PROMISE', 5);
-define('SWOOLE_HTTP2_TYPE_PING', 6);
-define('SWOOLE_HTTP2_TYPE_GOAWAY', 7);
-define('SWOOLE_HTTP2_TYPE_WINDOW_UPDATE', 8);
-define('SWOOLE_HTTP2_TYPE_CONTINUATION', 9);
-define('SWOOLE_HTTP2_ERROR_NO_ERROR', 0);
-define('SWOOLE_HTTP2_ERROR_PROTOCOL_ERROR', 1);
-define('SWOOLE_HTTP2_ERROR_INTERNAL_ERROR', 2);
-define('SWOOLE_HTTP2_ERROR_FLOW_CONTROL_ERROR', 3);
-define('SWOOLE_HTTP2_ERROR_SETTINGS_TIMEOUT', 4);
-define('SWOOLE_HTTP2_ERROR_STREAM_CLOSED', 5);
-define('SWOOLE_HTTP2_ERROR_FRAME_SIZE_ERROR', 6);
-define('SWOOLE_HTTP2_ERROR_REFUSED_STREAM', 7);
-define('SWOOLE_HTTP2_ERROR_CANCEL', 8);
-define('SWOOLE_HTTP2_ERROR_COMPRESSION_ERROR', 9);
-define('SWOOLE_HTTP2_ERROR_CONNECT_ERROR', 10);
-define('SWOOLE_HTTP2_ERROR_ENHANCE_YOUR_CALM', 11);
-define('SWOOLE_HTTP2_ERROR_INADEQUATE_SECURITY', 12);
+
+define('SOCKET_ECANCELED', 125); // TODO:
+
+/*
+ * Constants in this section are used in Swoole servers.
+ */
+// Server modes. For details, please check documentation on property \Swoole\Server::$mode.
 define('SWOOLE_BASE', 1);
 define('SWOOLE_PROCESS', 2);
-define('SWOOLE_IPC_UNSOCK', 1);
-define('SWOOLE_IPC_MSGQUEUE', 2);
-define('SWOOLE_IPC_PREEMPTIVE', 3);
+// Command types in Swoole server.
 define('SWOOLE_SERVER_COMMAND_MASTER', 2);
 define('SWOOLE_SERVER_COMMAND_MANAGER', 32);
 define('SWOOLE_SERVER_COMMAND_REACTOR_THREAD', 4);
@@ -366,6 +413,7 @@ define('SWOOLE_DISPATCH_USERFUNC', 6);
 define('SWOOLE_DISPATCH_STREAM', 7);
 define('SWOOLE_DISPATCH_CO_CONN_LB', 8);
 define('SWOOLE_DISPATCH_CO_REQ_LB', 9);
+define('SWOOLE_DISPATCH_CONCURRENT_LB', 10);
 define('SWOOLE_DISPATCH_RESULT_DISCARD_PACKET', -1);
 define('SWOOLE_DISPATCH_RESULT_CLOSE_CONNECTION', -2);
 define('SWOOLE_DISPATCH_RESULT_USERFUNC_FALLBACK', -3);
@@ -377,25 +425,96 @@ define('SWOOLE_TASK_WAITALL', 16);
 define('SWOOLE_TASK_COROUTINE', 32);
 define('SWOOLE_TASK_PEEK', 64);
 define('SWOOLE_TASK_NOREPLY', 128);
+// Statuses of worker processes in Swoole server.
 define('SWOOLE_WORKER_BUSY', 1);
 define('SWOOLE_WORKER_IDLE', 2);
 define('SWOOLE_WORKER_EXIT', 3);
+
+/*
+ * Status code of the last operation in class \Swoole\Coroutine\Http\Client.
+ *
+ * @see \Swoole\Coroutine\Http\Client
+ * @see \Swoole\Coroutine\Http\Client::$statusCode
+ */
+define('SWOOLE_HTTP_CLIENT_ESTATUS_CONNECT_FAILED', -1);
+define('SWOOLE_HTTP_CLIENT_ESTATUS_REQUEST_TIMEOUT', -2);
+define('SWOOLE_HTTP_CLIENT_ESTATUS_SERVER_RESET', -3);
+define('SWOOLE_HTTP_CLIENT_ESTATUS_SEND_FAILED', -4);
+
+// HTTP 2 frame types.
+// @see https://datatracker.ietf.org/doc/html/rfc7540#section-6 Frame Definitions
+define('SWOOLE_HTTP2_TYPE_DATA', 0);
+define('SWOOLE_HTTP2_TYPE_HEADERS', 1);
+define('SWOOLE_HTTP2_TYPE_PRIORITY', 2);
+define('SWOOLE_HTTP2_TYPE_RST_STREAM', 3);
+define('SWOOLE_HTTP2_TYPE_SETTINGS', 4);
+define('SWOOLE_HTTP2_TYPE_PUSH_PROMISE', 5);
+define('SWOOLE_HTTP2_TYPE_PING', 6);
+define('SWOOLE_HTTP2_TYPE_GOAWAY', 7);
+define('SWOOLE_HTTP2_TYPE_WINDOW_UPDATE', 8);
+define('SWOOLE_HTTP2_TYPE_CONTINUATION', 9);
+
+// HTTP 2 error codes.
+// @see https://datatracker.ietf.org/doc/html/rfc7540#section-7 Error Codes
+define('SWOOLE_HTTP2_ERROR_NO_ERROR', 0);
+define('SWOOLE_HTTP2_ERROR_PROTOCOL_ERROR', 1);
+define('SWOOLE_HTTP2_ERROR_INTERNAL_ERROR', 2);
+define('SWOOLE_HTTP2_ERROR_FLOW_CONTROL_ERROR', 3);
+define('SWOOLE_HTTP2_ERROR_SETTINGS_TIMEOUT', 4);
+define('SWOOLE_HTTP2_ERROR_STREAM_CLOSED', 5);
+define('SWOOLE_HTTP2_ERROR_FRAME_SIZE_ERROR', 6);
+define('SWOOLE_HTTP2_ERROR_REFUSED_STREAM', 7);
+define('SWOOLE_HTTP2_ERROR_CANCEL', 8);
+define('SWOOLE_HTTP2_ERROR_COMPRESSION_ERROR', 9);
+define('SWOOLE_HTTP2_ERROR_CONNECT_ERROR', 10);
+define('SWOOLE_HTTP2_ERROR_ENHANCE_YOUR_CALM', 11);
+define('SWOOLE_HTTP2_ERROR_INADEQUATE_SECURITY', 12);
+define('SWOOLE_HTTP2_ERROR_HTTP_1_1_REQUIRED', 13); // Added in Swoole 5.0.1.
+
+// WebSocket flags.
+define('SWOOLE_WEBSOCKET_FLAG_FIN', 1);
+define('SWOOLE_WEBSOCKET_FLAG_RSV1', 4);
+define('SWOOLE_WEBSOCKET_FLAG_RSV2', 8);
+define('SWOOLE_WEBSOCKET_FLAG_RSV3', 16);
+define('SWOOLE_WEBSOCKET_FLAG_MASK', 32);
+define('SWOOLE_WEBSOCKET_FLAG_COMPRESS', 2); // Used to indicate if a frame is compressed or not.
+
+/*
+ * WebSocket connection status. They are used as value of field "websocket_status" in the array returned from method
+ * \Swoole\Server::getClientInfo().
+ *
+ * @see \Swoole\Server::getClientInfo()
+ * @see \Swoole\Server::connection_info()
+ */
 define('SWOOLE_WEBSOCKET_STATUS_CONNECTION', 1);
 define('SWOOLE_WEBSOCKET_STATUS_HANDSHAKE', 2);
 define('SWOOLE_WEBSOCKET_STATUS_ACTIVE', 3);
 define('SWOOLE_WEBSOCKET_STATUS_CLOSING', 4);
+// Next five constants are kept for backward compatibility.
+define('WEBSOCKET_STATUS_CONNECTION', SWOOLE_WEBSOCKET_STATUS_CONNECTION);
+define('WEBSOCKET_STATUS_HANDSHAKE', SWOOLE_WEBSOCKET_STATUS_HANDSHAKE);
+define('WEBSOCKET_STATUS_FRAME', SWOOLE_WEBSOCKET_STATUS_ACTIVE);
+define('WEBSOCKET_STATUS_ACTIVE', SWOOLE_WEBSOCKET_STATUS_ACTIVE);
+define('WEBSOCKET_STATUS_CLOSING', SWOOLE_WEBSOCKET_STATUS_CLOSING);
+
+// WebSocket opcodes.
+// @see https://datatracker.ietf.org/doc/html/rfc6455#section-11.8 WebSocket Opcode Registry
 define('SWOOLE_WEBSOCKET_OPCODE_CONTINUATION', 0);
 define('SWOOLE_WEBSOCKET_OPCODE_TEXT', 1);
 define('SWOOLE_WEBSOCKET_OPCODE_BINARY', 2);
 define('SWOOLE_WEBSOCKET_OPCODE_CLOSE', 8);
 define('SWOOLE_WEBSOCKET_OPCODE_PING', 9);
 define('SWOOLE_WEBSOCKET_OPCODE_PONG', 10);
-define('SWOOLE_WEBSOCKET_FLAG_FIN', 1);
-define('SWOOLE_WEBSOCKET_FLAG_RSV1', 4);
-define('SWOOLE_WEBSOCKET_FLAG_RSV2', 8);
-define('SWOOLE_WEBSOCKET_FLAG_RSV3', 16);
-define('SWOOLE_WEBSOCKET_FLAG_MASK', 32);
-define('SWOOLE_WEBSOCKET_FLAG_COMPRESS', 2);
+// Next six constants are kept for backward compatibility.
+define('WEBSOCKET_OPCODE_CONTINUATION', SWOOLE_WEBSOCKET_OPCODE_CONTINUATION);
+define('WEBSOCKET_OPCODE_TEXT', SWOOLE_WEBSOCKET_OPCODE_TEXT);
+define('WEBSOCKET_OPCODE_BINARY', SWOOLE_WEBSOCKET_OPCODE_BINARY);
+define('WEBSOCKET_OPCODE_CLOSE', SWOOLE_WEBSOCKET_OPCODE_CLOSE);
+define('WEBSOCKET_OPCODE_PING', SWOOLE_WEBSOCKET_OPCODE_PING);
+define('WEBSOCKET_OPCODE_PONG', SWOOLE_WEBSOCKET_OPCODE_PONG);
+
+// WebSocket status codes.
+// @see https://datatracker.ietf.org/doc/html/rfc6455#section-7.4.1 Status Code Definitions
 define('SWOOLE_WEBSOCKET_CLOSE_NORMAL', 1000);
 define('SWOOLE_WEBSOCKET_CLOSE_GOING_AWAY', 1001);
 define('SWOOLE_WEBSOCKET_CLOSE_PROTOCOL_ERROR', 1002);
@@ -408,26 +527,242 @@ define('SWOOLE_WEBSOCKET_CLOSE_MESSAGE_TOO_BIG', 1009);
 define('SWOOLE_WEBSOCKET_CLOSE_EXTENSION_MISSING', 1010);
 define('SWOOLE_WEBSOCKET_CLOSE_SERVER_ERROR', 1011);
 define('SWOOLE_WEBSOCKET_CLOSE_TLS', 1015);
-define('WEBSOCKET_STATUS_CONNECTION', 1);
-define('WEBSOCKET_STATUS_HANDSHAKE', 2);
-define('WEBSOCKET_STATUS_FRAME', 3);
-define('WEBSOCKET_STATUS_ACTIVE', 3);
-define('WEBSOCKET_STATUS_CLOSING', 4);
-define('WEBSOCKET_OPCODE_CONTINUATION', 0);
-define('WEBSOCKET_OPCODE_TEXT', 1);
-define('WEBSOCKET_OPCODE_BINARY', 2);
-define('WEBSOCKET_OPCODE_CLOSE', 8);
-define('WEBSOCKET_OPCODE_PING', 9);
-define('WEBSOCKET_OPCODE_PONG', 10);
-define('WEBSOCKET_CLOSE_NORMAL', 1000);
-define('WEBSOCKET_CLOSE_GOING_AWAY', 1001);
-define('WEBSOCKET_CLOSE_PROTOCOL_ERROR', 1002);
-define('WEBSOCKET_CLOSE_DATA_ERROR', 1003);
-define('WEBSOCKET_CLOSE_STATUS_ERROR', 1005);
-define('WEBSOCKET_CLOSE_ABNORMAL', 1006);
-define('WEBSOCKET_CLOSE_MESSAGE_ERROR', 1007);
-define('WEBSOCKET_CLOSE_POLICY_ERROR', 1008);
-define('WEBSOCKET_CLOSE_MESSAGE_TOO_BIG', 1009);
-define('WEBSOCKET_CLOSE_EXTENSION_MISSING', 1010);
-define('WEBSOCKET_CLOSE_SERVER_ERROR', 1011);
-define('WEBSOCKET_CLOSE_TLS', 1015);
+// Next twelve constants are kept for backward compatibility.
+define('WEBSOCKET_CLOSE_NORMAL', SWOOLE_WEBSOCKET_CLOSE_NORMAL);
+define('WEBSOCKET_CLOSE_GOING_AWAY', SWOOLE_WEBSOCKET_CLOSE_GOING_AWAY);
+define('WEBSOCKET_CLOSE_PROTOCOL_ERROR', SWOOLE_WEBSOCKET_CLOSE_PROTOCOL_ERROR);
+define('WEBSOCKET_CLOSE_DATA_ERROR', SWOOLE_WEBSOCKET_CLOSE_DATA_ERROR);
+define('WEBSOCKET_CLOSE_STATUS_ERROR', SWOOLE_WEBSOCKET_CLOSE_STATUS_ERROR);
+define('WEBSOCKET_CLOSE_ABNORMAL', SWOOLE_WEBSOCKET_CLOSE_ABNORMAL);
+define('WEBSOCKET_CLOSE_MESSAGE_ERROR', SWOOLE_WEBSOCKET_CLOSE_MESSAGE_ERROR);
+define('WEBSOCKET_CLOSE_POLICY_ERROR', SWOOLE_WEBSOCKET_CLOSE_POLICY_ERROR);
+define('WEBSOCKET_CLOSE_MESSAGE_TOO_BIG', SWOOLE_WEBSOCKET_CLOSE_MESSAGE_TOO_BIG);
+define('WEBSOCKET_CLOSE_EXTENSION_MISSING', SWOOLE_WEBSOCKET_CLOSE_EXTENSION_MISSING);
+define('WEBSOCKET_CLOSE_SERVER_ERROR', SWOOLE_WEBSOCKET_CLOSE_SERVER_ERROR);
+define('WEBSOCKET_CLOSE_TLS', SWOOLE_WEBSOCKET_CLOSE_TLS);
+
+/*
+ * The minimum number of milliseconds that can be used for time-related operations (e.g., timeout, time intervals, etc)
+ * in Swoole.
+ */
+define('SWOOLE_TIMER_MIN_MS', 1);
+/*
+ * The minimum number of seconds that can be used for time-related operations (e.g., timeout, time intervals, etc) in
+ * Swoole.
+ */
+define('SWOOLE_TIMER_MIN_SEC', 0.001);
+/*
+ * The maximum number of milliseconds that can be used for time-related operations (e.g., timeout, time intervals, etc)
+ * in Swoole. It equals to the maximum signed long integer that the system can hold, and it varies among different systems.
+ */
+define('SWOOLE_TIMER_MAX_MS', 9223372036854775807);
+/*
+ * The maximum number of seconds that can be used for time-related operations (e.g., timeout, time intervals, etc) in
+ * Swoole. It equals to `(float) SWOOLE_TIMER_MAX_MS / 1000`.
+ */
+define('SWOOLE_TIMER_MAX_SEC', (float) (SWOOLE_TIMER_MAX_MS / 1000));
+
+/*
+ * Constants in this section are used in class \Swoole\Coroutine\PostgreSQLStatement only. They are available only when
+ * Swoole is installed with option "--enable-swoole-pgsql" included.
+ */
+/*
+ * @since 5.0.0
+ */
+define('SW_PGSQL_ASSOC', 1);
+/*
+ * @since 5.0.0
+ */
+define('SW_PGSQL_NUM', 2);
+/*
+ * @since 5.0.0
+ */
+define('SW_PGSQL_BOTH', 3);
+
+/*
+ * Constants in this section are available only when OpenSSL support is enabled (i.e., when Swoole is installed with
+ * configuration option "--enable-openssl" included).
+ */
+#ifdef SW_USE_OPENSSL
+define('SWOOLE_SSL', 512); // 2^9
+define('SWOOLE_SSLv3_METHOD', 1);
+define('SWOOLE_SSLv3_SERVER_METHOD', 2);
+define('SWOOLE_SSLv3_CLIENT_METHOD', 3);
+define('SWOOLE_TLSv1_METHOD', 6);
+define('SWOOLE_TLSv1_SERVER_METHOD', 7);
+define('SWOOLE_TLSv1_CLIENT_METHOD', 8);
+
+#ifdef TLS1_1_VERSION
+define('SWOOLE_TLSv1_1_METHOD', 9);
+define('SWOOLE_TLSv1_1_SERVER_METHOD', 10);
+define('SWOOLE_TLSv1_1_CLIENT_METHOD', 11);
+#endif
+
+#ifdef TLS1_2_VERSION
+define('SWOOLE_TLSv1_2_METHOD', 12);
+define('SWOOLE_TLSv1_2_SERVER_METHOD', 13);
+define('SWOOLE_TLSv1_2_CLIENT_METHOD', 14);
+#endif
+
+#ifdef SW_SUPPORT_DTLS
+define('SWOOLE_DTLS_SERVER_METHOD', 16);
+define('SWOOLE_DTLS_CLIENT_METHOD', 15);
+#endif
+
+define('SWOOLE_SSLv23_METHOD', 0);
+define('SWOOLE_SSLv23_SERVER_METHOD', 4);
+define('SWOOLE_SSLv23_CLIENT_METHOD', 5);
+define('SWOOLE_TLS_METHOD', 0);
+define('SWOOLE_TLS_SERVER_METHOD', 4);
+define('SWOOLE_TLS_CLIENT_METHOD', 5);
+
+define('SWOOLE_SSL_SSLv2', 2);
+
+#ifdef HAVE_SSL3
+define('SWOOLE_SSL_SSLv3', 4);
+#endif
+
+define('SWOOLE_SSL_TLSv1', 8);
+
+#ifdef TLS1_1_VERSION
+define('SWOOLE_SSL_TLSv1_1', 16);
+#endif
+
+#ifdef TLS1_2_VERSION
+define('SWOOLE_SSL_TLSv1_2', 32);
+#endif
+
+#ifdef TLS1_3_VERSION
+define('SWOOLE_SSL_TLSv1_3', 64);
+#endif
+
+#ifdef SW_SUPPORT_DTLS
+define('SWOOLE_SSL_DTLS', 128);
+#endif
+#endif /* SW_USE_OPENSSL */
+
+/*
+ * Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0. Please use PDO_MySQL or mysqli on top of the
+ * mysqlnd library, with runtime hook SWOOLE_HOOK_TCP or SWOOLE_HOOK_ALL turned on.
+ */
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_UNKNOWN_ERROR', 2000);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_CONNECTION_ERROR', 2002);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_SERVER_GONE_ERROR', 2006);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_OUT_OF_MEMORY', 2008);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_SERVER_LOST', 2013);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_COMMANDS_OUT_OF_SYNC', 2014);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_CANT_FIND_CHARSET', 2019);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_MALFORMED_PACKET', 2027);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_NOT_IMPLEMENTED', 2054);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_NO_PREPARE_STMT', 2030);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_PARAMS_NOT_BOUND', 2031);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_INVALID_PARAMETER_NO', 2034);
+/*
+ * @deprecated 5.0.0 Coroutine-version of the MySQL driver is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_MYSQLND_CR_INVALID_BUFFER_USE', 2035);
+
+/*
+ * Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0. Please use phpredis (the PHP extension for Redis)
+ * instead, with runtime hook SWOOLE_HOOK_TCP or SWOOLE_HOOK_ALL turned on.
+ */
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_MODE_MULTI', 0);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_MODE_PIPELINE', 1);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_TYPE_NOT_FOUND', 0);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_TYPE_STRING', 1);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_TYPE_SET', 2);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_TYPE_LIST', 3);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_TYPE_ZSET', 4);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_TYPE_HASH', 5);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_ERR_IO', 1);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_ERR_OTHER', 2);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_ERR_EOF', 3);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_ERR_PROTOCOL', 4);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_ERR_OOM', 5);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_ERR_CLOSED', 6);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_ERR_NOAUTH', 7);
+/*
+ * @deprecated 5.0.0 Class \Swoole\Coroutine\Redis is deprecated in Swoole 5.0.0.
+ */
+define('SWOOLE_REDIS_ERR_ALLOC', 8);

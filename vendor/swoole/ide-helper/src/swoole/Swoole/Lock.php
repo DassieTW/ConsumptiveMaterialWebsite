@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Swoole;
 
+/**
+ * @not-serializable Objects of this class cannot be serialized.
+ */
 class Lock
 {
     public const FILELOCK = 2;
@@ -22,49 +25,31 @@ class Lock
     {
     }
 
-    /**
-     * @return bool
-     */
-    public function lock()
+    public function lock(): bool
     {
     }
 
-    /**
-     * @return bool
-     */
-    public function lockwait(float $timeout = 1.0)
+    public function lockwait(float $timeout = 1): bool
     {
     }
 
-    /**
-     * @return bool
-     */
-    public function trylock()
+    public function trylock(): bool
     {
     }
 
-    /**
-     * @return bool
-     */
-    public function lock_read()
+    public function lock_read(): bool
     {
     }
 
-    /**
-     * @return bool
-     */
-    public function trylock_read()
+    public function trylock_read(): bool
     {
     }
 
-    /**
-     * @return bool
-     */
-    public function unlock()
+    public function unlock(): bool
     {
     }
 
-    public function destroy()
+    public function destroy(): void
     {
     }
 }

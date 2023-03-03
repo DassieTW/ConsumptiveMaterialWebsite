@@ -19,24 +19,33 @@ class Runtime
      *   Swoole\Runtime::enableCoroutine(true, 0); // #3
      *   Swoole\Runtime::enableCoroutine(false);   // #4
      *
-     * @param int|bool $enable
      * @return bool TRUE on success, or FALSE on failure.
      */
-    public static function enableCoroutine($enable = true, int $flags = SWOOLE_HOOK_ALL)
+    public static function enableCoroutine(bool|int $enable = SWOOLE_HOOK_ALL, int $flags = SWOOLE_HOOK_ALL): bool
     {
     }
 
     /**
-     * @return int
+     * Get current runtime hook flags.
      */
-    public static function getHookFlags()
+    public static function getHookFlags(): int
     {
     }
 
     /**
+     * Set runtime hook flags.
+     *
      * @return bool true on success or false on failure
+     * @since 4.5.0
+     * @pseudocode-included This is a built-in method in Swoole. The PHP code included inside this method is for explanation purpose only.
      */
-    public static function setHookFlags(int $flags)
+    public static function setHookFlags(int $flags): bool
     {
+        if (PHP_SAPI !== 'cli') {
+            // An E_ERROR level error will be thrown out here.
+            return false;
+        }
+
+        return self::enableCoroutine(true, $flags);
     }
 }

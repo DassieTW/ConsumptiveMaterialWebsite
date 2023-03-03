@@ -2,6 +2,117 @@
 
 ## Unreleased
 
+## 3.13.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v3.13.0.
+
+### Features
+
+- Object IDs are now automatically serialized as part of a stack trace frame [(#1443)](https://github.com/getsentry/sentry-php/pull/1443)
+  - If `Obj::getID()` or `Obj->id` is accessible, this value will be displayed inside the stack trace frame on the issue details page.
+    To attach local variables to your stack trace, make sure `zend.exception_ignore_arg: 0` is set in your `php.ini`.
+    See https://docs.sentry.io/platforms/php/troubleshooting/#missing-variables-in-stack-traces
+
+- Add more functionality to the `ExceptionMechanism::class` [(#1450)](https://github.com/getsentry/sentry-php/pull/1450)
+  - Attach arbitrary data
+    ```php
+    $hint = EventHint::fromArray([
+        'exception' => $exception,
+        'mechanism' => new ExceptionMechanism(
+            ExceptionMechanism::TYPE_GENERIC,
+            false,
+            [
+                'key' => 'value',
+                //...
+            ],
+        ),
+    ]);
+    captureEvent(Event::createEvent(), $hint);
+    ```
+    Learn more about the interface of the `ExceptionMechanism` on https://develop.sentry.dev/sdk/event-payloads/exception/#exception-mechanism
+  - Access or mutate `ExceptionMechanism::data` via `ExceptionMechanism::getData()` and `ExceptionMechanism::setData()`
+  - If an exception contains a user-provided `code`, the value will be serialized into the event and displayed on the issues details page.
+    ```php
+    throw new \Exception('Oh no!', 123);
+    ```
+
+## 3.12.1 (2023-01-12)
+
+- fix: Allow `null` on `getTracesSampleRate` and `setTracesSampleRate` in `Options` class (#1441)
+
+## 3.12.0 (2022-11-22)
+
+- feat: Add `before_send_transaction` option (#1424)
+- fix: Set `traces_sample_rate` to `null` by default (#1428)
+
+## 3.11.0 (2022-10-25)
+
+- fix: Only include the transaction name to the DSC if it has good quality (#1410)
+- ref: Enable the ModulesIntegration by default (#1415)
+- ref: Expose the ExceptionMechanism through the event hint (#1416)
+
+## 3.10.0 (2022-10-19)
+
+- ref: Add correct `never` option for `max_request_body_size` (#1397)
+  - Deprecate `max_request_body_size.none` in favour of `max_request_body_size.never`
+- fix: Sampling now correctly takes in account the parent sampling decision if available instead of always being `false` when tracing is disabled (#1407)
+
+## 3.9.1 (2022-10-11)
+
+- fix: Suppress errors on is_callable (#1401)
+
+## 3.9.0 (2022-10-05)
+
+- feat: Add `trace_propagation_targets` option (#1396)
+- feat: Expose a function to retrieve the URL of the CSP endpoint (#1378)
+- feat: Add support for Dynamic Sampling (#1360)
+  - Add `segment` to `UserDataBag`
+  - Add `TransactionSource`, to set information about the transaction name via `TransactionContext::setSource()` (#1382)
+  - Deprecate `TransactionContext::fromSentryTrace()` in favor of `TransactionContext::fromHeaders()`
+
+## 3.8.1 (2022-09-21)
+
+- fix: Use constant for the SDK version (#1374)
+- fix: Do not throw an TypeError on numeric HTTP headers (#1370)
+
+## 3.8.0 (2022-09-05)
+
+- Add `Sentry\Monolog\BreadcrumbHandler`, a Monolog handler to allow registration of logs as breadcrumbs (#1199)
+- Do not setup any error handlers if the DSN is null (#1349)
+- Add setter for type on the `ExceptionDataBag` (#1347)
+- Drop symfony/polyfill-uuid in favour of a standalone implementation (#1346)
+
+## 3.7.0 (2022-07-18)
+
+- Fix `Scope::getTransaction()` so that it returns also unsampled transactions (#1334)
+- Set the event extras by taking the data from the Monolog record's extra (#1330)
+
+## 3.6.1 (2022-06-27)
+
+- Set the `sentry-trace` header when using the tracing middleware (#1331)
+
+## 3.6.0 (2022-06-10)
+
+- Add support for `monolog/monolog:^3.0` (#1321)
+- Add `setTag` and `removeTag` public methods to `Event` for easier manipulation of tags (#1324)
+
+## 3.5.0 (2022-05-19)
+
+- Bump minimum version of `guzzlehttp/psr7` package to avoid [`CVE-2022-24775`](https://github.com/guzzle/psr7/security/advisories/GHSA-q7rv-6hp3-vh96) (#1305)
+- Fix stripping of memory addresses from stacktrace frames of anonymous classes in PHP `>=7.4.2` (#1314)
+- Set the default `send_attempts` to `0` (this disables retries) and deprecate the option. If you require retries you can increase the `send_attempts` option to the desired value. (#1312)
+- Add `http_connect_timeout` and `http_timeout` client options (#1282)
+
+## 3.4.0 (2022-03-14)
+
+- Update Guzzle tracing middleware to meet the [expected standard](https://develop.sentry.dev/sdk/features/#http-client-integrations) (#1234)
+- Add `toArray` public method in `PayloadSerializer` to be able to re-use Event serialization
+- The `withScope` methods now return the callback's return value (#1263)
+- Set the event extras by taking the data from the Monolog record's context (#1244)
+- Make the `StacktraceBuilder` class part of the public API and add the `Client::getStacktraceBuilder()` method to build custom stacktraces (#1124)
+- Support handling the server rate-limits when sending events to Sentry (#1291)
+- Treat the project ID component of the DSN as a `string` rather than an `integer` (#1293)
+
 ## 3.3.7 (2022-01-19)
 
 - Fix the serialization of a `callable` when the autoloader throws exceptions (#1280)
@@ -37,7 +148,7 @@
 ## 3.3.0 (2021-05-26)
 
 - Allow setting a custom timestamp on the breadcrumbs (#1193)
-- Add option `ignore_tags` to `IgnoreErrorsIntegration` in order to ignore exceptions by tags values. (#1201)
+- Add option `ignore_tags` to `IgnoreErrorsIntegration` in order to ignore exceptions by tags values (#1201)
 
 ## 3.2.2 (2021-05-06)
 

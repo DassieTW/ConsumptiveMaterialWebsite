@@ -4,7 +4,6 @@ namespace Hhxsv5\LaravelS\Illuminate;
 
 use Hhxsv5\LaravelS\Components\Prometheus\CollectorProcess;
 use Hhxsv5\LaravelS\Components\Prometheus\TimerProcessMetricsCronJob;
-use Hhxsv5\LaravelS\Swoole\Timer\PrometheusTimerProcessMetricsCronJob;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 
@@ -136,7 +135,7 @@ EOS;
             [
                 'Main HTTP',
                 '<info>On</info>',
-                $this->getApplication()->getName(),
+                $this->isLumen() ? 'Lumen Router' : 'Laravel Router',
                 sprintf('%s://%s', $ssl ? 'https' : 'http', $listenAt),
             ],
         ];
@@ -222,7 +221,7 @@ EOS;
             $svrConf['laravel_base_path'] = base_path();
         }
         if (empty($svrConf['process_prefix'])) {
-            $svrConf['process_prefix'] = $svrConf['laravel_base_path'];
+            $svrConf['process_prefix'] = trim(config('app.name', '') . ' ' . $svrConf['laravel_base_path']);
         }
         if ($this->option('ignore')) {
             $svrConf['ignore_check_pid'] = true;
@@ -244,7 +243,7 @@ EOS;
             $svrConf['timer']['max_wait_time'] = 5;
         }
 
-        // Configure PrometheusTimerProcessMetricsCronJob automatically
+        // Configure TimerProcessMetricsCronJob automatically
         if (isset($svrConf['processes']) && !empty($svrConf['timer']['enable'])) {
             foreach ($svrConf['processes'] as $process) {
                 if ($process['class'] === CollectorProcess::class && (!isset($process['enable']) || $process['enable'])) {
