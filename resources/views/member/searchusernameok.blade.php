@@ -38,7 +38,7 @@
                             <th>{!! __('loginPageLang.mail') !!}</th>
                         </tr>
                         @foreach ($data as $data)
-                            @if ($data->姓名 !== 'su')
+                            @if ($data->username !== 'su')
                                 <tr>
                                     <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                             style="width:20px;height:20px;" value="{{ $loop->index }}"></td>
