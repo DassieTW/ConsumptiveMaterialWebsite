@@ -18,6 +18,7 @@ php artisan lang:js resources/js/vue-translations.js --no-lib --quiet
 
 ## Useful Laravel Commands (used in workspace container)
 
+php artisan optimize:clear <br />
 php artisan view:clear <br />
 php artisan route:clear <br />
 php artisan cache:clear <br />

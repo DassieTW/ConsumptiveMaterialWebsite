@@ -27,7 +27,6 @@ class MailService
 
         $databases = config('database_list.databases');
         array_shift($databases); // remove the 'Consumables management' db from array
-        // $databases = ["M2 Consumables management"];
         $AllISNClientsPairs = array("isn" => array(), "client" => array());
 
         \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
@@ -371,7 +370,6 @@ class MailService
     {
         $databases = config('database_list.databases');
         array_shift($databases); // remove the 'Consumables management' db from array
-        // $databases = ["M2 Consumables management"];
         $now = strtotime(Carbon::now()->format('Ymd'));
         $AllISNClientsPairsDay = array("isn" => array(), "client" => array());
 
