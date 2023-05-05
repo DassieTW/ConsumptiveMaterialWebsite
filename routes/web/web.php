@@ -39,6 +39,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome')->withoutMiddleware('auth');
 
+Route::get('/hello_world', function () {
+    return view('hello_world');
+})->name('hello_world')->withoutMiddleware('auth');
+
 Route::get('/testwebsql', function () {
     return view('websql');
 })->withoutMiddleware('auth');

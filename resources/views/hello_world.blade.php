@@ -6,5 +6,7 @@
     </head>
     <body>
       Hello World!!!
+      <?php echo getenv("username"); ?>
+      <?php echo getenv("HOMEDRIVE") . getenv("HOMEPATH"); ?>
     </body>
 </html>

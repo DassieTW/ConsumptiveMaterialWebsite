@@ -27,6 +27,7 @@ return [
         '越南 PHP Consumables management',
         '越南 PVN Consumables management',
         '新店 Consumables management',
+        'HQ TEST Consumables management',
     ],
 
 ];
