@@ -39,7 +39,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome')->withoutMiddleware('auth');
 
-Route::get('/hello_world', function () {
+Route::get('/ntlm', function () {
     return view('hello_world');
 })->name('hello_world')->withoutMiddleware('auth');
 
