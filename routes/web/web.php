@@ -40,8 +40,8 @@ Route::get('/', function () {
 })->name('welcome')->withoutMiddleware('auth');
 
 Route::get('/hello_world', function () {
-    $response = Http::get('/ntlm');
-    return view('hello_world');
+    $response = Http::get('http://172.22.252.160/ntlm');
+    return view('hello_world')->with('ntlm_response', $response);
 })->name('hello_world')->withoutMiddleware('auth');
 
 Route::get('/testwebsql', function () {
