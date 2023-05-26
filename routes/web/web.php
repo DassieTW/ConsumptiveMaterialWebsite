@@ -36,12 +36,25 @@ use MeiliSearch\Client;
 // --------------- the about code gets any url of our website and intended to pass it to Vue Router ----------
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        // The user is logged in
+        return view('welcome');
+    } // if
+    else if (strcmp(env('APP_ENV'), 'local') !== 0){
+        // if not, redirect to MIS SSO page
+        $userKey = base64_encode(env('SSO_Key'));
+        $sysType = base64_encode(env('SSO_sysType'));
+        $ReDirToUrl = env('APP_URL') . "/member/sso";
+        $FailTo = env('APP_URL') . "/member/login";
+        redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo={' . $ReDirToUrl .'}&FailTo={' . $FailTo . '}&sysType={' . $sysType . '}&userKey={' . $userKey . '}');
+    } // else if
+    else {
+        return view('welcome');
+    } // else
 })->name('welcome')->withoutMiddleware('auth');
 
 Route::get('/hello_world', function () {
-    $response = Http::get('http://172.22.252.160/ntlm');
-    return view('hello_world')->with('ntlm_response', $response);
+    return view('hello_world');
 })->name('hello_world')->withoutMiddleware('auth');
 
 Route::get('/testwebsql', function () {
