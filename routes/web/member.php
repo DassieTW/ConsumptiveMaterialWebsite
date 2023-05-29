@@ -20,7 +20,7 @@ Route::get('/', function () {
 })->name('member.index');
 
 // Matches The "/member/sso" URL
-Route::post('/sso', [Auth\LoginController::class, 'OALogin'])->name('member.sso')->middleware('cors')->withoutMiddleware('auth');
+Route::post('/sso', [Auth\LoginController::class, 'OALogin'])->name('member.sso')->withoutMiddleware('auth');
 
 // Matches The "/member/login" URL
 Route::get('/login', function () {

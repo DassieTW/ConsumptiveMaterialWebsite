@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'https://ws.ecomp.pegatroncorp.com/*',
+        'http://ws.ecomp.pegatroncorp.com/*'
     ];
 }

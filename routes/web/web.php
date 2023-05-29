@@ -51,7 +51,7 @@ Route::get('/', function () {
     else {
         return view('welcome');
     } // else
-})->name('welcome')->middleware('cors')->withoutMiddleware('auth');
+})->name('welcome')->withoutMiddleware('auth');
 
 Route::get('/hello_world', function () {
     return view('hello_world');
