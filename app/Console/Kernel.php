@@ -37,6 +37,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('barcodeimg:clear')->daily()->timezone('Asia/Taipei');
         $schedule->command('logs:clear')->cron('30 03 01 Jan,Apr,Jul,Oct *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
         $schedule->command('log:clear')->cron('30 03 01 Jan,Apr,Jul,Oct *')->timezone('Asia/Taipei'); // At 03:00 in every 3rd month.
+        $schedule->command('telescope:prune --hours=48')->daily(); // Prune the laravel telescope records created over 48 hours ago
     } // schedule
 
     /**

@@ -19,9 +19,6 @@ Route::get('/', function () {
     return view('member.infor');
 })->name('member.index');
 
-// Matches The "/member/sso" URL
-Route::post('/sso', [Auth\LoginController::class, 'OALogin'])->name('member.sso')->withoutMiddleware('auth');
-
 // Matches The "/member/login" URL
 Route::get('/login', function () {
     // used middleware for lacale now

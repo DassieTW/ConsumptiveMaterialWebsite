@@ -46,7 +46,7 @@ Route::get('/', function () {
         $sysType = base64_encode(env('SSO_sysType'));
         $ReDirToUrl = env('APP_URL') . "/member/sso";
         $FailTo = env('APP_URL') . "/member/login";
-        redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo={' . $ReDirToUrl .'}&FailTo={' . $FailTo . '}&sysType={' . $sysType . '}&userKey={' . $userKey . '}');
+        return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl .'&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // else if
     else {
         return view('welcome');
