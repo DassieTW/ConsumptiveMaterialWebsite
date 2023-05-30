@@ -118,6 +118,73 @@ class LoginController extends Controller
         } // else
     } // login
 
+    protected function attemptSSOLogin(Request $request)
+    {
+        $credentials = [
+            'username' => $request->work_id,
+        ];
+
+        // dd($request->site) ; // test
+        // return \Auth::attempt($credentials);
+
+        // login without hashed password
+        $user = Login::where([
+            'username' => $request->work_id,
+        ])->first();
+
+        if ($user) {
+            \Auth::login($user);
+            return true;
+        } // if
+        else {
+            return false;
+        } // else
+    } // attemptSSOLogin
+
+    //OA Account Login
+    public function OALogin(Request $request)
+    {
+        $databaseArray = \Config::get('database_list.databases');
+        dd($request); //test
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->site);
+        \DB::purge(env("DB_CONNECTION"));
+
+        if ($this->attemptLogin($request)) {
+            $request->session()->regenerate();
+
+            $usernameAuthed = \Auth::user()->username;
+            $prior = \Auth::user()->priority;
+            $avatarChoice = \Auth::user()->avatarChoice;
+            Session::put('username', $usernameAuthed);
+            Session::put('priority', $prior);
+            Session::put('avatarChoice', $avatarChoice);
+            $this->authenticated($request, \Auth::user()); // set the login db
+
+            DB::beginTransaction();
+
+            try {
+                $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+                $affected = DB::table('login')
+                    ->where('username', '=', \Auth::user()->username)
+                    ->update(['last_login_time' => $datetime]);
+
+                DB::commit();
+                return \Response::json(['message' => 'Log in successful !']); // Status code
+                // all good
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                return \Response::json(['message' => $e], 420); // Status code here
+                // something went wrong
+            } // try catch
+
+            return \Response::json(['message' => \DB::connection()->getDatabaseName()], 420); // Status code here
+        } // if
+        else { // login failed
+            return \Response::json(['message' => \DB::connection()->getDatabaseName()], 420); // Status code here
+        } // else
+    } // login
+
     //search by job number
     /*public function search(Request $request)
     {

@@ -6,5 +6,8 @@
     </head>
     <body>
       Hello World!!!
+      <br/>
+      {{-- {{ $ntlm_response }} --}}
+      <br/>
     </body>
 </html>

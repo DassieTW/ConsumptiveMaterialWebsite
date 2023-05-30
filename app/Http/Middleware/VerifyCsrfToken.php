@@ -12,6 +12,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        '*/member/sso', // allows MIS SSO Page to send POST to my route
     ];
 }
