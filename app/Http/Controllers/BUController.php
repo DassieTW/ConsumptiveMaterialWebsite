@@ -642,12 +642,7 @@ class BUController extends Controller
                     $worksheet->setCellValueByColumnAndRow(10, $j + 2, $Alldata[9][$j]);
                 }
 
-
-
-
                 // 下載
-
-
                 $now = Carbon::now()->format('YmdHis');
                 //rawurlencode('呆滯庫存查詢');
                 $filename = rawurlencode('呆滯庫存查詢') . $now . '.xlsx';

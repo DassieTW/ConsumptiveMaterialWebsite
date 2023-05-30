@@ -33,14 +33,16 @@
             <div class="card-body">
                 <form id="materialsearch" method="POST">
                     @csrf
-                    <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
-                        value="{!! __('basicInfoLang.delete') !!}">
-                    &emsp13;
-                    <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
-                        value="{!! __('basicInfoLang.change') !!}">
-                    &emsp13;
-                    <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-                        value="{!! __('basicInfoLang.download') !!}">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                            value="{!! __('basicInfoLang.delete') !!}">
+                        &emsp13;
+                        <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
+                            value="{!! __('basicInfoLang.change') !!}">
+                        &emsp13;
+                        <input type="submit" id="download" name="download" class="btn btn btn-primary"
+                            value="{!! __('basicInfoLang.download') !!}">
+                    </div>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                     <basic-info-table></basic-info-table>
