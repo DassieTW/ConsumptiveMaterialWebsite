@@ -42,9 +42,5 @@ class AppServiceProvider extends ServiceProvider
             // $query->bindings
             // $query->time
         });
-
-        if(strcmp(env('APP_ENV'), 'production') === 0) {
-            \URL::forceScheme('https');
-        } // if
     }
 }
