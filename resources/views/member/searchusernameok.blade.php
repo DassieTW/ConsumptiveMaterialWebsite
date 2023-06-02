@@ -22,14 +22,14 @@
         <div class="card-body">
 
             <form id="searchusername" method="POST">
-                <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
-                    value="{!! __('loginPageLang.delete') !!}">
+                <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
+                    value="{!! __('loginPageLang.change') !!}">
 
                 @csrf
                 <div class="table-responsive">
                     <table class="table" id="test">
                         <tr>
-                            <th>{!! __('loginPageLang.delete') !!}</th>
+                            <th>{!! __('loginPageLang.change') !!}</th>
                             <th>{!! __('loginPageLang.username') !!}</th>
                             <th>{!! __('loginPageLang.password') !!}</th>
                             <th>{!! __('loginPageLang.priority') !!}</th>
@@ -46,7 +46,11 @@
                                             name="username{{ $loop->index }}"
                                             value="{{ $data->username }}">{{ $data->username }}</td>
                                     <td>{{ $data->password }}</td>
-                                    <td>{{ $data->priority }}</td>
+                                    <td><input type="hidden" id="pr{{ $loop->index }}" value="{{ $data->priority }}">
+                                        <select class="form-select form-select-lg" id="priority{{ $loop->index }}">
+                                            <option>{{ $data->priority }}</option>
+                                        </select>
+                                    </td>
                                     <td>{{ $data->姓名 }}</td>
                                     <td>{{ $data->部門 }}</td>
                                     <td>{{ $data->email }}</td>

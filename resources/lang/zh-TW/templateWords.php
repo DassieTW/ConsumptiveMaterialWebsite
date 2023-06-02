@@ -20,7 +20,7 @@ return [
     'changePass' => '修改密碼/信箱',
     'newPInfo' => '新增人員訊息',
     'PInfo' => '人員訊息(查詢/修改)',
-    'UserInfo' => '用戶訊息(查詢/刪除)',
+    'UserInfo' => '用戶訊息(查詢/修改)',
     'inbound' => '入庫',
     'outbound' => '出庫',
     'monthly' => '月請購',

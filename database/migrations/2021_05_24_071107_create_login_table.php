@@ -14,14 +14,15 @@ class CreateLoginTable extends Migration
     public function up()
     {
         Schema::create('login', function (Blueprint $table) {
-            $table->string('username',45)->primary();
+            $table->string('username', 45)->primary();
             $table->string('password', 200);
             $table->tinyInteger('priority');
-            $table->string('姓名',50)->nullable();
-            $table->string('部門',50)->nullable();
+            $table->string('姓名', 50)->nullable();
+            $table->string('部門', 50)->nullable();
             $table->integer('avatarChoice')->nullable();
             $table->string('email', 200)->nullable();
             $table->dateTime('last_login_time')->nullable();
+            $table->dateTime('update_priority_time')->nullable();
             // $table->timestamps();
             // $table->softDeletes();
         });

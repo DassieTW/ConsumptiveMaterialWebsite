@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 class Login extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -32,7 +33,8 @@ class Login extends Authenticatable
         '部門',
         'avatarChoice',
         'email',
-        'last_login_time'
+        'last_login_time',
+        'update_priority_time'
     ];
 
     /**

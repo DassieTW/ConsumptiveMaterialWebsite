@@ -27,14 +27,14 @@ Route::get('/login', function () {
     // used middleware for lacale now
     $user = \Auth::user();
     $response = \Gate::inspect('canLogin', $user); // call to LoginPolicy
-    
+
     if ($response->allowed() || $user === null) {
         // The action is authorized...
         $database_list = config('database_list.databases');
         $database_names = array();
-        foreach( $database_list as $value ) {
+        foreach ($database_list as $value) {
             $temp = str_replace(" Consumables management", "", $value);
-            array_push( $database_names, $temp );
+            array_push($database_names, $temp);
         } // for each
 
         unset($value); // unset the var created in the foreach loop
@@ -109,7 +109,7 @@ Route::post('/username', [Auth\LoginController::class, 'username'])->name('membe
 
 //用戶信息查詢
 Route::get('/usernamesearch', function () {
-    return view('member.searchusernameok')->with(['data' => Login::cursor()]);
+    return view('member.searchusernameok')->with(['data' => Login::cursor()->where('priority', '<>', 1)]);
 })->middleware('can:searchAndUpdateUser,App\Models\Login');
 
 Route::post('/usernamesearch', [Auth\LoginController::class, 'searchusername'])->name('member.searchusername')->middleware('can:searchAndUpdateUser,App\Models\Login');

@@ -21,7 +21,7 @@ return [
     'changePass' => '修改密码/信箱',
     'newPInfo' => '新增人员讯息',
     'PInfo' => '人员讯息(查询/修改)',
-    'UserInfo' => '用户讯息(查询/删除)',
+    'UserInfo' => '用户讯息(查询/修改)',
     'inbound' => '入库',
     'outbound' => '出库',
     'monthly' => '月请购',

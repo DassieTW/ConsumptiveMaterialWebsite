@@ -455,18 +455,21 @@ class LoginController extends Controller
     }
 
 
-    //用戶信息更新或刪除
+    //用戶信息更新
     public function usernamechangeordel(Request $request)
     {
         if (Session::has('username')) {
-            //delete
+
             $count = $request->input('count');
             $username = $request->input('username');
+            $priority = $request->input('priority');
+            $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+
             for ($i = 0; $i < $count; $i++) {
 
                 DB::table('login')
                     ->where('username', $username[$i])
-                    ->delete();
+                    ->update(['priority' => $priority[$i], 'update_priority_time' => $datetime]);
             }
             return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
         } else {
@@ -478,18 +481,19 @@ class LoginController extends Controller
     public function searchusername(Request $request)
     {
         if (Session::has('username')) {
-            if ($request->input('username') === null) {
-                return view('member.searchusernameok')->with(['data' => Login::cursor()]);
-            } else if ($request->input('username') !== null) {
-                $input = $request->input('username');
+            // if ($request->input('username') === null) {
+            //     return view('member.searchusernameok')->with(['data' => Login::cursor()]);
+            // } else if ($request->input('username') !== null) {
+            $input = $request->input('username');
 
-                $datas = DB::table('login')
-                    ->where('username', 'like', $input . '%')
-                    ->get();
+            $datas = DB::table('login')
+                ->where('username', 'like', $input . '%')
+                ->where('priority', '<>', 1)
+                ->get();
 
-                return view("member.searchusernameok")
-                    ->with(['data' => $datas]);
-            }
+            return view("member.searchusernameok")
+                ->with(['data' => $datas]);
+            // }
         } else {
             return redirect(route('member.login'));
         }
