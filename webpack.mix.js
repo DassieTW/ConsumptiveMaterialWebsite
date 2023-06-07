@@ -1,4 +1,5 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
+const { exec } = require('child_process');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,29 +12,43 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .vue({ version: 3})
-    .sass('resources/sass/app.scss', 'public/css')
-    .postCss('resources/css/app.css', 'public/css')
+mix.js("resources/js/app.js", "public/js")
+    .vue({ version: 3 })
+    .sass("resources/sass/app.scss", "public/css")
+    .postCss("resources/css/app.css", "public/css")
     .version()
-    .sourceMaps();
+    .sourceMaps()
+    .after(() => {
+        exec('php artisan lang:js --quiet');
+        exec('php artisan lang:js resources/js/vue-translations.js --no-lib --quiet');
+    });
 
 mix.autoload({
-    jquery: ['$', 'window.jQuery', "jQuery", "window.$", "jquery", "window.jquery"],
-    'popper.js/dist/umd/popper.js': ['Popper']
+    jquery: [
+        "$",
+        "window.jQuery",
+        "jQuery",
+        "window.$",
+        "jquery",
+        "window.jquery",
+    ],
+    "popper.js/dist/umd/popper.js": ["Popper"],
 });
 
-const WebpackShellPlugin = require('webpack-shell-plugin-next');
+const WebpackShellPlugin = require("webpack-shell-plugin-next");
 
 // Add shell command plugin configured to create JavaScript language file
 mix.webpackConfig({
     stats: {
         children: true,
     },
-    plugins:
-        [
-            new WebpackShellPlugin({ onBuildStart: ['php artisan lang:js --quiet'], onBuildEnd: [] })
-        ]
+    plugins: [
+        new WebpackShellPlugin({
+            onBuildStart: [
+                "php artisan lang:js --quiet",
+                "php artisan lang:js resources/js/vue-translations.js --no-lib --quiet",
+            ],
+            onBuildEnd: [],
+        }),
+    ],
 });
-
-

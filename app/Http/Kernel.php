@@ -22,7 +22,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
 
-        // custom middleware
+        // custom middleware for detecting if production env user still using http
         \App\Http\Middleware\RedirectToHttps::class,
     ];
 

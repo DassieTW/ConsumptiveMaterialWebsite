@@ -20,7 +20,30 @@ Route::get('/', function () {
 })->name('member.index');
 
 // Matches The "/member/sso" URL
-Route::post('/sso', [Auth\LoginController::class, 'OALogin'])->name('member.sso')->withoutMiddleware('auth');
+Route::get('/sso', [Auth\LoginController::class, 'OALogin'])->name('member.sso')->withoutMiddleware('auth');
+
+// Matches the "/member/New_OA_Login" URL
+Route::get('/New_OA_Login', function () {
+    if (str_contains(url()->previous(), "/member/sso")) {
+        $database_list = config('database_list.databases');
+        $database_names = array();
+        foreach ($database_list as $value) {
+            $temp = str_replace(" Consumables management", "", $value);
+            array_push($database_names, $temp);
+        } // for each
+
+        unset($value); // unset the var created in the foreach loop
+
+        // continue log in process
+        return view('member.new_oa_login')->with([
+            'database_list' => $database_list,
+            'database_names' => $database_names
+        ]);
+    } // if
+    else {
+        return redirect(route('welcome'));
+    } // else
+})->name('member.New_OA_Login')->withoutMiddleware('auth');
 
 // Matches The "/member/login" URL
 Route::get('/login', function () {
@@ -39,7 +62,6 @@ Route::get('/login', function () {
 
         unset($value); // unset the var created in the foreach loop
 
-        // dd($database_names); // test
         // continue log in process
         return view('member.login')->with(['database_list' => $database_list, 'database_names' => $database_names]);
     } else {
@@ -59,12 +81,7 @@ Route::get('/change', function () {
 
 Route::post('/change', [Auth\LoginController::class, 'change'])->name('member.change');
 
-//register login people
-Route::get('/register', function () {
-    return view('member.register');
-})->middleware('can:create,App\Models\Login');
-
-Route::post('/register', [Auth\LoginController::class, 'register'])->name('member.register')->middleware('can:create,App\Models\Login');
+Route::post('/register', [Auth\LoginController::class, 'register'])->name('member.register')->withoutMiddleware('auth');
 
 //new people information
 Route::get('/new', function () {

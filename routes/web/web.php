@@ -40,7 +40,7 @@ Route::get('/', function () {
         // The user is logged in
         return view('welcome');
     } // if
-    else if (strcmp(env('APP_ENV'), 'local') !== 0){
+    else if (strcmp(env('APP_ENV'), 'production') === 0){
         // if not, redirect to MIS SSO page
         $userKey = base64_encode(env('SSO_Key'));
         $sysType = base64_encode(env('SSO_sysType'));
