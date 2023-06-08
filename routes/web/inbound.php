@@ -13,7 +13,6 @@ use App\Models\入庫原因;
 use App\Models\發料部門;
 use App\Models\Outbound;
 use App\Models\出庫退料;
-use App\Models\人員信息;
 use App\Models\儲位;
 use App\Models\在途量;
 use App\Models\Inventory;
@@ -53,8 +52,8 @@ Route::get('/add', function () {
         ->with(['clients' => 客戶別::cursor()])
         ->with(['inreasons' => 入庫原因::cursor()])
         ->with(['positions' => 儲位::cursor()])
-        ->with(['peoples' => 人員信息::cursor()])
-        ->with(['checks' => 人員信息::cursor()]);
+        ->with(['peoples' => Login::cursor()])
+        ->with(['checks' => Login::cursor()]);
 })->middleware('can:viewInbound,App\Models\Inbound');
 
 Route::post('/add', [InboundController::class, 'add'])->name('inbound.add')->middleware('can:viewInbound,App\Models\Inbound');
@@ -71,8 +70,8 @@ Route::get('/addclient', function () {
         return view("inbound.addclient")->with(['data' => 在途量::cursor()->where('請購數量', '>', 0)->where('客戶', $client)])
             ->with(['inreason' => $inreason])
             ->with(['positions' => 儲位::cursor()])
-            ->with(['peoples' => 人員信息::cursor()])
-            ->with(['checks' => 人員信息::cursor()]);
+            ->with(['peoples' => Login::cursor()])
+            ->with(['checks' => Login::cursor()]);
     } else {
         return redirect(route('inbound.add'));
     }

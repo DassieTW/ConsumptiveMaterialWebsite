@@ -153,7 +153,7 @@
                 <ul id="receivemenu" style="display: none;" class="list-group">
                     @foreach ($people as $people)
                         <a class="receivelist list-group-item list-group-item-action"
-                            href="#">{{ $people->工號 . ' ' . $people->姓名 }}</a>
+                            href="#">{{ $people->username . ' ' . $people->姓名 }}</a>
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     @endforeach
                 </ul>
@@ -174,7 +174,7 @@
                 <ul id="backmenu" style="display: none;" class="list-group">
                     @foreach ($people1 as $people)
                         <a class="backlist list-group-item list-group-item-action"
-                            href="#">{{ $people->工號 . ' ' . $people->姓名 }}</a>
+                            href="#">{{ $people->username . ' ' . $people->姓名 }}</a>
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     @endforeach
                 </ul>
@@ -187,7 +187,7 @@
                 {{-- check people --}}
                 @foreach ($check as $people)
                     <input type="hidden" id="checkpeople{{ $loop->index }}" name="checkpeople{{ $loop->index }}"
-                        value="{{ $people->工號 }}">
+                        value="{{ $people->username }}">
                     <input type="hidden" id="checkcount" name="checkcount" value="{{ $loop->count }}">
                 @endforeach
 

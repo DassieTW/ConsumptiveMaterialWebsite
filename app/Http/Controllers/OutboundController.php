@@ -13,7 +13,6 @@ use App\Models\退回原因;
 use App\Models\發料部門;
 use App\Models\Outbound;
 use App\Models\出庫退料;
-use App\Models\人員信息;
 use App\Models\儲位;
 use App\Models\Inventory;
 use DB;
@@ -137,9 +136,9 @@ class OutboundController extends Controller
 
                 return view('outbound.picklist')->with(['number' => $datas->where('領料單號', $list)])
                     ->with(['data' => $datas->where('領料單號', $list)])
-                    ->with(['people' => 人員信息::cursor()])
-                    ->with(['people1' => 人員信息::cursor()])
-                    ->with(['check' => 人員信息::cursor()]);
+                    ->with(['people' => Login::cursor()])
+                    ->with(['people1' => Login::cursor()])
+                    ->with(['check' => Login::cursor()]);
             }
         } else {
             return redirect(route('member.login'));
@@ -175,10 +174,10 @@ class OutboundController extends Controller
 
                 return view('outbound.backlist')->with(['number' => $datas->where('退料單號', $list)])
                     ->with(['data' => $datas->where('退料單號', $list)])
-                    ->with(['people' => 人員信息::cursor()])
-                    ->with(['people1' => 人員信息::cursor()])
+                    ->with(['people' => Login::cursor()])
+                    ->with(['people1' => Login::cursor()])
                     ->with(['locs' => 儲位::cursor()])
-                    ->with(['check' => 人員信息::cursor()]);
+                    ->with(['check' => Login::cursor()]);
             }
         } else {
             return redirect(route('member.login'));
@@ -429,8 +428,8 @@ class OutboundController extends Controller
                     $pickpeople = $request->input('pickpeople');
 
                     $now = Carbon::now();
-                    $sendname = DB::table('人員信息')->where('工號', $sendpeople)->value('姓名');
-                    $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
+                    $sendname = DB::table('Login')->where('username', $sendpeople)->value('姓名');
+                    $pickname = DB::table('Login')->where('username', $pickpeople)->value('姓名');
                     $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
                     //庫存小於實際領用數量,無法出庫
                     if ($amount > $stock) {
@@ -513,8 +512,8 @@ class OutboundController extends Controller
                     $backpeople = $request->input('backpeople');
                     $pickpeople = $request->input('pickpeople');
                     $now = Carbon::now();
-                    $backname = DB::table('人員信息')->where('工號', $backpeople)->value('姓名');
-                    $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
+                    $backname = DB::table('Login')->where('username', $backpeople)->value('姓名');
+                    $pickname = DB::table('Login')->where('username', $pickpeople)->value('姓名');
 
                     if ($status === '良品') {
                         $inventoryname = 'inventory';

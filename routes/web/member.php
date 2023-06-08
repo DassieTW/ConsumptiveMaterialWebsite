@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\人員信息;
 use App\Models\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth;
@@ -82,46 +81,39 @@ Route::get('/logout', [Auth\LoginController::class, 'logout'])->withoutMiddlewar
 Route::post('/logout', [Auth\LoginController::class, 'logout'])->name('member.logout')->withoutMiddleware('auth');
 
 
-//人員信息查詢頁面
-Route::get('/number', function () {
-    return view('member.searchnumber');
-})->middleware('can:searchAndUpdatePeople,App\Models\Login');
+// //人員信息查詢頁面
+// Route::get('/number', function () {
+//     return view('member.searchnumber');
+// })->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
-Route::post('/number', [Auth\LoginController::class, 'number'])->name('member.number')->middleware('can:searchAndUpdatePeople,App\Models\Login');
+// Route::post('/number', [Auth\LoginController::class, 'number'])->name('member.number')->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
-//人員信息查詢
-Route::get('/numbersearch', function () {
-    return view('member.searchnumberok')->with(['data' => 人員信息::cursor()]);
-})->middleware('can:searchAndUpdatePeople,App\Models\Login');
+// //人員信息查詢
+// Route::get('/numbersearch', function () {
+//     return view('member.searchnumberok')->with(['data' => 人員信息::cursor()]);
+// })->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
-Route::post('/numbersearch', [Auth\LoginController::class, 'searchnumber'])->name('member.searchnumber')->middleware('can:searchAndUpdatePeople,App\Models\Login');
+// Route::post('/numbersearch', [Auth\LoginController::class, 'searchnumber'])->name('member.searchnumber')->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
-//人員信息刪除或修改
-Route::post('/numberchangeordel', [Auth\LoginController::class, 'numberchangeordel'])->name('member.numberchangeordel')->middleware('can:searchAndUpdatePeople,App\Models\Login');
+// //人員信息刪除或修改
+// Route::post('/numberchangeordel', [Auth\LoginController::class, 'numberchangeordel'])->name('member.numberchangeordel')->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
 
 //用戶信息查詢頁面
 Route::get('/username', function () {
-    return view('member.searchusername');
-})->middleware('can:searchAndUpdateUser,App\Models\Login');
-
-Route::post('/username', [Auth\LoginController::class, 'username'])->name('member.username')->middleware('can:searchAndUpdateUser,App\Models\Login');
-
-//用戶信息查詢
-Route::get('/usernamesearch', function () {
     return view('member.searchusernameok')->with(['data' => Login::cursor()->where('priority', '<>', 1)]);
-})->middleware('can:searchAndUpdateUser,App\Models\Login');
+})->name('member.username')->middleware('can:searchAndUpdateUser,App\Models\Login');
 
 Route::post('/usernamesearch', [Auth\LoginController::class, 'searchusername'])->name('member.searchusername')->middleware('can:searchAndUpdateUser,App\Models\Login');
 
 //用戶信息刪除或修改
 Route::post('/usernamechangeordel', [Auth\LoginController::class, 'usernamechangeordel'])->name('member.usernamechangeordel')->middleware('can:searchAndUpdateUser,App\Models\Login');
 
-//新增人員信息上傳
-Route::get('/uploadpeople', function () {
-    return view('member.new');
-});
-Route::post('/uploadpeople', [Auth\LoginController::class, 'uploadpeople'])->name('member.uploadpeople');
+// //新增人員信息上傳
+// Route::get('/uploadpeople', function () {
+//     return view('member.new');
+// });
+// Route::post('/uploadpeople', [Auth\LoginController::class, 'uploadpeople'])->name('member.uploadpeople');
 
 //人員信息上傳資料新增至資料庫
-Route::post('/insertuploadpeople', [Auth\LoginController::class, 'insertuploadpeople'])->name('member.insertuploadpeople');
+// Route::post('/insertuploadpeople', [Auth\LoginController::class, 'insertuploadpeople'])->name('member.insertuploadpeople');
