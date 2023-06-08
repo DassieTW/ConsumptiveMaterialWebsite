@@ -661,16 +661,6 @@
                                                         --}}
                                                     </a>
                                                 </li>
-                                                @can('newPeopleInfo', App\Models\Login::class)
-                                                    <li
-                                                        class="sidebar-item {{ isActiveRoute(['member/new', 'member/uploadpeople']) }}">
-                                                        <a class="sidebar-link" href="{{ route('member.new') }}">
-                                                            {!! __('templateWords.newPInfo') !!}
-                                                            {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
-                                                        --}}
-                                                        </a>
-                                                    </li>
-                                                @endcan
                                                 @can('searchAndUpdateUser', App\Models\Login::class)
                                                     <li class="sidebar-item {{ isActiveRoute(['member/username']) }}">
                                                         <a class="sidebar-link" href="{{ route('member.username') }}">
