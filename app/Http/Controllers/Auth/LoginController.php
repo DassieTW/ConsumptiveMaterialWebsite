@@ -126,6 +126,15 @@ class LoginController extends Controller
         // dd($request->site) ; // test
         // return \Auth::attempt($credentials);
 
+        // update the info from SSO POST
+        $affected = DB::table('login')
+            ->where('username', '=', $request->work_id)
+            ->update([
+                '姓名' => $request->user_name,
+                '部門' => $request->dept_name,
+                'email' => $request->office_mail
+            ]);
+
         // login without hashed password
         $user = Login::where([
             'username' => $request->work_id,
@@ -143,8 +152,14 @@ class LoginController extends Controller
     //OA Account Login
     public function OALogin(Request $request)
     {
-        $databaseArray = \Config::get('database_list.databases');
-        dd($request); //test
+        $databaseArray = config('database_list.databases');
+        // dd($databaseArray); //test
+
+        Session::put('work_id', "LA200836"); // test
+        Session::put('user_name', "Vincent6_Yeh"); // test
+        Session::put('dept_name', "Testing Dep."); // test
+        Session::put('office_mail', "Mail@Test"); // test
+        return redirect()->route('member.New_OA_Login'); //test
 
         foreach ($databaseArray as $site) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
@@ -169,59 +184,62 @@ class LoginController extends Controller
                         ->update(['last_login_time' => $datetime]);
 
                     DB::commit();
-
-                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
-                    \DB::purge(env("DB_CONNECTION"));
-                    break; // stop looping databases
-                    return \Response::json(['message' => 'Log in successful !']); // Status code
+                    return redirect()->route('welcome');
                     // all good
                 } catch (\Exception $e) {
-                    dd($e);
+                    dd($e); // test
                     DB::rollback();
                     return \Response::json(['message' => $e], 420); // Status code here
                     // something went wrong
                 } // try catch
-
-                return \Response::json(['message' => \DB::connection()->getDatabaseName()], 420); // Status code here
             } // if
-            else { // login failed
-                return \Response::json(['message' => \DB::connection()->getDatabaseName()], 420); // Status code here
-            } // else
         } // foreach
+
+        // if the OA account is new to us
+        // Session::put('work_id', $request->work_id);
+        // Session::put('user_name', $request->user_name);
+        // Session::put('dept_name', $request->dept_name);
+        // Session::put('office_mail', $request->office_mail);
+        return redirect()->route('member.New_OA_Login');
     } // login
 
-    //register login people
+    //register newly logged in OA account
     public function register(Request $request)
     {
-        $username = $request->input('username');
-        //$password = Hash::make($request->input('password'));
-        $password = $request->input('password');
-        $priority = $request->input('priority');
+        $site = $request->input('site');
+        $job_id = $request->input('job_id');
         $email = $request->input('email');
-        $name = $request->input('name');
-        $department = $request->input('department');
+        $name = $request->input('p_name');
+        $department = $request->input('dep');
         $profilePic = intval($request->input('profilePic'));
-        $names = DB::table('login')->pluck('username');
-        for ($i = 0; $i < count($names); $i++) {
-            if (strcasecmp($username, $names[$i]) === 0) {
+        $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
-                return \Response::json(['message' => 'username repeat'], 420/* Status code here default is 200 ok*/);
-            } else {
-                continue;
-            }
-        } // for
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
+        \DB::purge(env("DB_CONNECTION"));
 
         DB::table('login')
             ->insert([
-                'username' => $username, 'password' => $password, 'priority' => $priority,
-                '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic, /*, 'created_at' => Carbon::now(),*/
-                'email' => $email
+                'username' => $job_id, 'password' => "123456", 'priority' => 4,
+                '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic,
+                'email' => $email, 'last_login_time' => $datetime
             ]);
 
-        $request->session()->flush();
+        $user = Login::where([
+            'username' => $job_id,
+        ])->first();
+        \Auth::login($user);
+
+        $request->session()->regenerate();
+        $usernameAuthed = \Auth::user()->username;
+        $prior = \Auth::user()->priority;
+        $avatarChoice = \Auth::user()->avatarChoice;
+        Session::put('username', $usernameAuthed);
+        Session::put('priority', $prior);
+        Session::put('avatarChoice', $avatarChoice);
+        $this->authenticated($request, \Auth::user()); // set the login db
 
         return \Response::json(['message' => 'success insert']/* Status code here default is 200 ok*/);
-    }
+    } // register
 
     //change password
     public function change(Request $request)
@@ -287,143 +305,6 @@ class LoginController extends Controller
     } // change password
 
 
-    //new people information
-    // public function new(Request $request)
-    // {
-    //     if (Session::has('username')) {
-    //         if ($request->input('number') !== null && $request->input('name') !== null) {
-    //             $number = $request->input('number');
-    //             $name = $request->input('name');
-    //             $department = $request->input('department');
-    //             $numbers = DB::table('Login')->pluck('username');
-    //             //job length not 9
-    //             if (strlen($number) !== 9) {
-    //                 return \Response::json(['message' => 'job number isn\'t 9'], 420/* Status code here default is 200 ok*/);
-    //             }
-    //             //job number repeat
-    //             for ($i = 0; $i < count($numbers); $i++) {
-    //                 if (strcasecmp($number, $numbers[$i]) === 0) {
-    //                     return \Response::json(['message' => 'job number is repeat'], 421/* Status code here default is 200 ok*/);
-    //                 } else {
-    //                     continue;
-    //                 }
-    //             }
-
-    //             DB::table('人員信息')
-    //                 ->insert(['工號' => $number, '姓名' => $name, '部門' => $department]);
-
-    //             return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
-    //         } else {
-    //             return view('member.new');
-    //         }
-    //     } else {
-    //         return redirect(route('member.login'));
-    //     }
-    // }
-
-    /*//update people information
-    public function update(Request $request)
-    {
-        if (Session::has('username')) {
-            if (Session::has('number')) {
-                $reDive = new responseObj();
-                $number = $request->input('number');
-                $name = $request->input('name');
-                $department = $request->input('department');
-                DB::table('人員信息')
-                    ->where('工號', Session::get('number'))
-                    ->update(['工號' => $number, '姓名' => $name, '部門' => $department]);
-                Session::forget('number');
-                Session::forget('name');
-                Session::forget('department');
-                $reDive->boolean = true;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
-            } else {
-                return redirect(route('member.search'));
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    //人員信息更新或刪除
-    // public function numberchangeordel(Request $request)
-    // {
-    //     if (Session::has('username')) {
-
-    //         $select = $request->input('select');
-    //         $now = Carbon::now();
-    //         $count = $request->input('count');
-    //         $name = $request->input('name');
-    //         $number = $request->input('number');
-    //         $department = $request->input('department');
-    //         //delete
-    //         if ($select == "刪除") {
-    //             for ($i = 0; $i < $count; $i++) {
-    //                 DB::beginTransaction();
-    //                 try {
-    //                     DB::table('人員信息')
-    //                         ->where('工號', $number[$i])
-    //                         ->delete();
-    //                     DB::commit();
-    //                 } catch (\Exception $e) {
-    //                     DB::rollback();
-    //                     return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-    //                 }
-    //             }
-
-    //             return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
-    //         }
-    //         //change
-    //         if ($select == "更新") {
-    //             for ($i = 0; $i < $count; $i++) {
-    //                 DB::beginTransaction();
-    //                 try {
-    //                     人員信息::where('工號', $number[$i])
-    //                         ->update([
-    //                             '姓名' => $name[$i], '部門' => $department[$i],
-    //                             /*'updated_at' => Carbon::now()*/
-    //                         ]);
-    //                     DB::commit();
-    //                 } catch (\Exception $e) {
-    //                     DB::rollback();
-    //                     return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-    //                 }
-    //             }
-    //             return \Response::json(['message' => $count, 'status' => 201]/* Status code here default is 200 ok*/);
-    //         }
-    //     } else {
-    //         return redirect(route('member.login'));
-    //     }
-    // }
-
-    // //人員信息查詢
-    // public function searchnumber(Request $request)
-    // {
-    //     if (Session::has('username')) {
-    //         if ($request->input('number') === null) {
-    //             return view('member.searchnumberok')->with(['data' => 人員信息::cursor()]);
-    //         } else if ($request->input('number') !== null && strlen($request->input('number')) <= 9) {
-    //             $input = $request->input('number');
-
-    //             $datas = DB::table('人員信息')
-    //                 ->where('工號', 'like', $input . '%')
-    //                 ->get();
-
-    //             return view("member.searchnumberok")
-    //                 ->with(['data' => $datas]);
-    //         } else {
-    //             return back()->withErrors([
-    //                 'number' => trans('validation.regex'),
-    //             ]);
-    //         }
-    //     } else {
-    //         return redirect(route('member.login'));
-    //     }
-    // }
-
-
     //用戶信息更新
     public function usernamechangeordel(Request $request)
     {
@@ -476,7 +357,7 @@ class LoginController extends Controller
 
         $request->session()->flush();
 
-        return redirect(url('/'));
+        return redirect(url('/member/login'));
     } // logout
 
 
@@ -499,43 +380,4 @@ class LoginController extends Controller
             return redirect(route('member.login'));
         }
     }
-
-    // //人員信息上傳資料新增至資料庫
-    // public function insertuploadpeople(Request $request)
-    // {
-    //     if (Session::has('username')) {
-
-    //         $number = $request->input('number');
-    //         $name = $request->input('name');
-    //         $department =  $request->input('department');
-    //         $record =  0;
-    //         $count = count($number);
-    //         $row = $request->input('row');
-    //         $check = array();
-
-    //         DB::beginTransaction();
-    //         try {
-    //             for ($i = 0; $i < $count; $i++) {
-    //                 $test = DB::table('人員信息')->where('工號', $number[$i])->value('姓名');
-
-    //                 //判斷data是否重複
-    //                 if ($test === null) {
-    //                     DB::table('人員信息')
-    //                         ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i]/*, 'created_at' => Carbon::now()*/]);
-    //                     $record++;
-    //                     array_push($check, $row[$i]);
-    //                 } else {
-    //                     continue;
-    //                 }
-    //             } //for
-    //             DB::commit();
-    //             return \Response::json(['record' => $record, 'check' => $check]/* Status code here default is 200 ok*/);
-    //         } catch (\Exception $e) {
-    //             DB::rollback();
-    //             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
-    //         }
-    //     } else {
-    //         return redirect(route('member.login'));
-    //     }
-    // }
 }

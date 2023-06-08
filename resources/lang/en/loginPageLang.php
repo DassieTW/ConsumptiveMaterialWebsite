@@ -80,5 +80,10 @@ return [
     'yellowrepeat' => 'Yellow background means that the data already exist in the database',
     'data' => 'data',
     'mail' => 'email',
-    'selectprofile_pic' => 'Please select Profile Pic'
+    'selectprofile_pic' => 'Please select Profile Pic',
+
+    // OA SSO Login Page Lang
+    'newSSO_msg' => 'This OA account has not logged in before.<br/>Please complete the form for initial settings.',
+    'submit' => 'Submit',
+    'site_error' => 'Please select your site.',
 ];

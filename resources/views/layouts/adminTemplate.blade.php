@@ -661,12 +661,6 @@
                                                         --}}
                                                     </a>
                                                 </li>
-                                                @can('create', App\Models\Login::class)
-                                                    <li class="sidebar-item {{ isActiveRoute(['member/register']) }}">
-                                                        <a class="sidebar-link" href="{{ route('member.register') }}">
-                                                            {!! __('templateWords.newUser') !!}</a>
-                                                    </li>
-                                                @endcan
                                                 @can('newPeopleInfo', App\Models\Login::class)
                                                     <li
                                                         class="sidebar-item {{ isActiveRoute(['member/new', 'member/uploadpeople']) }}">
@@ -1139,7 +1133,7 @@
                             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                                 data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static">
                                 <img src="../admin/img/avatars/avatarBot{{ \Auth::user()->avatarChoice }}.png"
-                                    class="avatar img-fluid rounded mr-1" alt="Charles Hall" /> <span
+                                    class="avatar img-fluid rounded mr-1" alt="{{ \Auth::user()->姓名 }}" /> <span
                                     class="text-dark">{{ \Auth::user()->姓名 }}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end align-items-center"
