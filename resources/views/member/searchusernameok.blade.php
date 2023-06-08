@@ -20,16 +20,16 @@
             <h3>{!! __('templateWords.UserInfo') !!}</h3>
         </div>
         <div class="card-body">
-
+            <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                placeholder="{!! __('loginPageLang.username_placeholder') !!}" oninput="if(value.length>12)value=value.slice(0,9)"
+                style="width: 200px">
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
             <form id="searchusername" method="POST">
-                <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
-                    value="{!! __('loginPageLang.change') !!}">
-
                 @csrf
                 <div class="table-responsive">
                     <table class="table" id="test">
                         <tr>
-                            <th>{!! __('loginPageLang.change') !!}</th>
+                            {{-- <th>{!! __('loginPageLang.change') !!}</th> --}}
                             <th>{!! __('loginPageLang.username') !!}</th>
                             <th>{!! __('loginPageLang.password') !!}</th>
                             <th>{!! __('loginPageLang.priority') !!}</th>
@@ -39,16 +39,14 @@
                         </tr>
                         @foreach ($data as $data)
                             @if ($data->username !== 'su')
-                                <tr>
-                                    <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
-                                            style="width:20px;height:20px;" value="{{ $loop->index }}"></td>
+                                <tr class="isnRows">
                                     <td><input type="hidden" id="username{{ $loop->index }}"
                                             name="username{{ $loop->index }}"
                                             value="{{ $data->username }}">{{ $data->username }}</td>
                                     <td>{{ $data->password }}</td>
-                                    <td><input type="hidden" id="pr{{ $loop->index }}" value="{{ $data->priority }}">
-                                        <select class="form-select form-select-lg" id="priority{{ $loop->index }}">
-                                            <option>{{ $data->priority }}</option>
+                                    <td style="width:150px">
+                                        <select class="form-select" id="priority{{ $loop->index }}">
+                                            <option selected>{{ $data->priority }}</option>
                                         </select>
                                     </td>
                                     <td>{{ $data->姓名 }}</td>
@@ -58,13 +56,9 @@
                                 <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
                             @endif
                         @endforeach
-
                     </table>
                 </div>
             </form>
-            {{-- <br> --}}
-            {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('member.username')}}'">{!!
-            __('loginPageLang.return') !!}</button> --}}
         </div>
     </div>
 @endsection

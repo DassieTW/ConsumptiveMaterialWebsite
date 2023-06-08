@@ -5,12 +5,34 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
+  function quickSearch() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = $("#numbersearch").val();
+    //var isISN = $("#toggle-state").is(":checked");
+    console.log(input); // test
+    // filter = input.value;
+    // Loop through all table rows, and hide those who don't match the search query
+    $(".isnRows").each(function (i, obj) {
+      txtValue = $(this).find("input[id^='username']").val();
+      // console.log("now checking text : " + txtValue); // test
+      if (txtValue.indexOf(input) > -1) {
+        obj.style.display = "";
+      } else {
+        obj.style.display = "none";
+      } // if else
+    });
+  } // quickSearch function
+
+  $("#numbersearch").on("input", function (e) {
+    e.preventDefault();
+    quickSearch();
+  });
   var options = ["1", "2", "3", "4"];
   var all = $("#count").val();
-  console.log(all);
   for (let i = 0; i < all; i++) {
     var selectElement = document.getElementById("priority" + i);
-    var temppriority = $("#pr" + i).val();
+    var temppriority = $("#priority" + i).val();
     for (let j = 0; j < options.length; j++) {
       if (temppriority !== options[j]) {
         var option = document.createElement("option");
@@ -20,78 +42,47 @@ $(document).ready(function () {
       }
     }
   }
-  $("#searchusername").on("submit", function (e) {
-    e.preventDefault();
-
-    // clean up previous input results
-    $(".is-invalid").removeClass("is-invalid");
-    $(".invalid-feedback").remove();
-
-    var username = [];
-    var check = [];
-    var priority = [];
-
-    $("input:checkbox[name=innumber]:checked").each(function () {
-      check.push($(this).val());
-    });
-
-    var count = check.length;
-
-    for (let i = 0; i < count; i++) {
-      username.push($("#username" + check[i]).val());
-      priority.push($("#priority" + check[i]).val());
-    }
-
-    checked = $("input[type=checkbox]:checked").length;
-
-    if (!checked) {
-      notyf.open({
-        type: "warning",
-        message: Lang.get("loginPageLang.nocheck"),
-        duration: 3000, //miliseconds, use 0 for infinite duration
-        ripple: true,
-        dismissible: true,
-        position: {
-          x: "right",
-          y: "bottom",
-        },
-      });
-      return false;
-    }
-
+  $("select").on("change", function () {
+    var id = this.id.slice(8);
+    var username = $("#username" + id).val();
+    var priority = this.value;
     $.ajax({
       type: "POST",
       url: "usernamechangeordel",
       data: {
         username: username,
         priority: priority,
-        count: count,
       },
       beforeSend: function () {
-        // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-        $("body").loadingModal({
-          text: "Loading...",
-          animation: "circle",
-        });
+        // // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+        // $("body").loadingModal({
+        //   text: "Loading...",
+        //   animation: "circle",
+        // });
       },
       complete: function () {
         $("body").loadingModal("hide");
         $("body").loadingModal("destroy");
+        // location.reload();
       },
       success: function (data) {
-        console.log(data);
-
-        var mess =
-          Lang.get("loginPageLang.total") +
-          " " +
-          data.message +
-          " " +
-          Lang.get("loginPageLang.record") +
-          Lang.get("loginPageLang.user") +
-          Lang.get("loginPageLang.change") +
-          Lang.get("loginPageLang.success");
-        alert(mess);
-        window.location.href = "username";
+        notyf.open({
+          type: "success",
+          message:
+            Lang.get("loginPageLang.user") +
+            Lang.get("loginPageLang.change") +
+            Lang.get("loginPageLang.success"),
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
+        setTimeout(function () {
+          location.reload();
+        }, 1000);
       },
       error: function (err) {
         console.log(err);

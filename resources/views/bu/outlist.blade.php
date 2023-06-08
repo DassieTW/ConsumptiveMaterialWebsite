@@ -59,16 +59,16 @@
                                     ->where('現有庫存', '>', 0)
                                     ->pluck('儲位')
                                     ->toArray();
-                                
+
                                 $count = count($client);
                                 for ($x = 0; $x < $count; $x++) {
                                     $keys[] = 'u' . $x;
                                 }
-                                $jobnumber = DB::table('人員信息')
-                                    ->pluck('工號')
+                                $jobnumber = DB::table('Login')
+                                    ->pluck('username')
                                     ->toArray();
-                                $name = DB::table('人員信息')
-                                    ->pluck('姓名')
+                                $name = DB::table('Login')
+                                    ->pluck('username')
                                     ->toArray();
                                 $test = array_combine($jobnumber, $name);
                                 $result = array_merge_recursive(array_combine($keys, $client), array_combine($keys, $nowstock), array_combine($keys, $position));

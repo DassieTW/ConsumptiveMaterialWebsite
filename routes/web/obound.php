@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\人員信息;
 use App\Models\入庫原因;
 use App\Models\客戶別;
 use App\Models\發料部門;
@@ -8,6 +7,7 @@ use App\Models\製程;
 use App\Models\領用原因;
 use App\Models\領用部門;
 use App\Models\廠別;
+use App\Models\Login;
 use App\Models\線別;
 use App\Models\機種;
 use App\Models\儲位;
@@ -71,8 +71,8 @@ Route::get('/inbound', function () {
     return view('obound.inbound')->with(['client' => 客戶別::cursor()])
         ->with(['inreason' => 入庫原因::cursor()])
         ->with(['bounds' => O庫::cursor()])
-        ->with(['peoples' => 人員信息::cursor()])
-        ->with(['checks' => 人員信息::cursor()]);
+        ->with(['peoples' => Login::cursor()])
+        ->with(['checks' => Login::cursor()]);
 })->name('obound.inbound')->middleware('can:oboundIn,App\Models\O庫');
 
 //O庫-入庫新增

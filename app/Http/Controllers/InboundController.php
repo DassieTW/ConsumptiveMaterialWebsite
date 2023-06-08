@@ -14,7 +14,6 @@ use App\Models\入庫原因;
 use App\Models\發料部門;
 use App\Models\Outbound;
 use App\Models\出庫退料;
-use App\Models\人員信息;
 use App\Models\儲位;
 use App\Models\在途量;
 use App\Models\Inventory;

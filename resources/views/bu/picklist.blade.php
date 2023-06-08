@@ -47,7 +47,7 @@
                                 $sure = DB::table('consumptive_material')
                                     ->where('料號', $data->料號)
                                     ->value('品名');
-                                
+
                                 $client = DB::table('客戶別')
                                     ->pluck('客戶')
                                     ->toArray();
@@ -69,15 +69,15 @@
                                 $position = DB::table('儲位')
                                     ->pluck('儲存位置')
                                     ->toArray();
-                                
+
                                 $count = count($nowstock);
-                                
+
                                 if ($sure !== null) {
                                     if ($nowstock !== []) {
                                         for ($x = 0; $x < $count; $x++) {
                                             $keys[] = 'u' . $x;
                                         }
-                                
+
                                         $result = array_merge_recursive(array_combine($keys, $nowclient), array_combine($keys, $nowstock), array_combine($keys, $nowloc));
                                     } else {
                                         $keys[0] = 'u0';
@@ -85,12 +85,12 @@
                                 } else {
                                     $keys[0] = 'u0';
                                 }
-                                
-                                $jobnumber = DB::table('人員信息')
-                                    ->pluck('工號')
+
+                                $jobnumber = DB::table('Login')
+                                    ->pluck('username')
                                     ->toArray();
-                                $name = DB::table('人員信息')
-                                    ->pluck('姓名')
+                                $name = DB::table('Login')
+                                    ->pluck('username')
                                     ->toArray();
                                 $test = array_combine($jobnumber, $name);
                                 ?>

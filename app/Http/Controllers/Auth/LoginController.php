@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Login;
-use App\Models\人員信息;
 use DB;
 use Session;
 use Route;
@@ -204,42 +203,6 @@ class LoginController extends Controller
         return redirect()->route('member.New_OA_Login');
     } // login
 
-    //search by job number
-    /*public function search(Request $request)
-    {
-        Session::forget('number');
-        Session::forget('name');
-        Session::forget('department');
-        if ($request->input('number') !== null) {
-            $number = $request->input('number');
-            $name = DB::table('人員信息')->where('工號', $number)->value('姓名');
-            $department = DB::table('人員信息')->where('工號', $number)->value('部門');
-            $reDive = new responseObj();
-            if ($name !== NULL && $department !== NULL) {
-                Session::put('number', $number);
-                Session::put('name', $name);
-                Session::put('department', $department);
-                $reDive->boolean = true;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
-                /*return view('member.searchok')
-                    ->with('number' , $number)
-                    ->with('name', $name)
-                    ->with('department', $department);*/
-    //         } else {
-    //             $reDive->boolean = false;
-    //             $myJSON = json_encode($reDive);
-    //             echo $myJSON;
-    //             /*return back()->withErrors([
-    //                     'number' => 'Job number is not exist , Please enter another job number',
-    //                     ]);*/
-    //         }
-    //     } else {
-    //         return view('member.search');
-    //     }
-    // }
-
-
     //register newly logged in OA account
     public function register(Request $request)
     {
@@ -342,160 +305,20 @@ class LoginController extends Controller
     } // change password
 
 
-    //new people information
-    public function new(Request $request)
-    {
-        if (Session::has('username')) {
-            if ($request->input('number') !== null && $request->input('name') !== null) {
-                $number = $request->input('number');
-                $name = $request->input('name');
-                $department = $request->input('department');
-                $numbers = DB::table('人員信息')->pluck('工號');
-                //job length not 9
-                if (strlen($number) !== 9) {
-                    return \Response::json(['message' => 'job number isn\'t 9'], 420/* Status code here default is 200 ok*/);
-                }
-                //job number repeat
-                for ($i = 0; $i < count($numbers); $i++) {
-                    if (strcasecmp($number, $numbers[$i]) === 0) {
-                        return \Response::json(['message' => 'job number is repeat'], 421/* Status code here default is 200 ok*/);
-                    } else {
-                        continue;
-                    }
-                }
-
-                DB::table('人員信息')
-                    ->insert(['工號' => $number, '姓名' => $name, '部門' => $department]);
-
-                return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
-            } else {
-                return view('member.new');
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    /*//update people information
-    public function update(Request $request)
-    {
-        if (Session::has('username')) {
-            if (Session::has('number')) {
-                $reDive = new responseObj();
-                $number = $request->input('number');
-                $name = $request->input('name');
-                $department = $request->input('department');
-                DB::table('人員信息')
-                    ->where('工號', Session::get('number'))
-                    ->update(['工號' => $number, '姓名' => $name, '部門' => $department]);
-                Session::forget('number');
-                Session::forget('name');
-                Session::forget('department');
-                $reDive->boolean = true;
-                $myJSON = json_encode($reDive);
-                echo $myJSON;
-            } else {
-                return redirect(route('member.search'));
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
-    //人員信息更新或刪除
-    public function numberchangeordel(Request $request)
-    {
-        if (Session::has('username')) {
-
-            $select = $request->input('select');
-            $now = Carbon::now();
-            $count = $request->input('count');
-            $name = $request->input('name');
-            $number = $request->input('number');
-            $department = $request->input('department');
-            //delete
-            if ($select == "刪除") {
-                for ($i = 0; $i < $count; $i++) {
-                    DB::beginTransaction();
-                    try {
-                        DB::table('人員信息')
-                            ->where('工號', $number[$i])
-                            ->delete();
-                        DB::commit();
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                }
-
-                return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
-            }
-            //change
-            if ($select == "更新") {
-                for ($i = 0; $i < $count; $i++) {
-                    DB::beginTransaction();
-                    try {
-                        人員信息::where('工號', $number[$i])
-                            ->update([
-                                '姓名' => $name[$i], '部門' => $department[$i],
-                                /*'updated_at' => Carbon::now()*/
-                            ]);
-                        DB::commit();
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                }
-                return \Response::json(['message' => $count, 'status' => 201]/* Status code here default is 200 ok*/);
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //人員信息查詢
-    public function searchnumber(Request $request)
-    {
-        if (Session::has('username')) {
-            if ($request->input('number') === null) {
-                return view('member.searchnumberok')->with(['data' => 人員信息::cursor()]);
-            } else if ($request->input('number') !== null && strlen($request->input('number')) <= 9) {
-                $input = $request->input('number');
-
-                $datas = DB::table('人員信息')
-                    ->where('工號', 'like', $input . '%')
-                    ->get();
-
-                return view("member.searchnumberok")
-                    ->with(['data' => $datas]);
-            } else {
-                return back()->withErrors([
-                    'number' => trans('validation.regex'),
-                ]);
-            }
-        } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-
     //用戶信息更新
     public function usernamechangeordel(Request $request)
     {
         if (Session::has('username')) {
 
-            $count = $request->input('count');
             $username = $request->input('username');
             $priority = $request->input('priority');
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
-            for ($i = 0; $i < $count; $i++) {
+            DB::table('login')
+                ->where('username', $username)
+                ->update(['priority' => $priority, 'update_priority_time' => $datetime]);
 
-                DB::table('login')
-                    ->where('username', $username[$i])
-                    ->update(['priority' => $priority[$i], 'update_priority_time' => $datetime]);
-            }
-            return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
         }
@@ -556,44 +379,5 @@ class LoginController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
-
-    //人員信息上傳資料新增至資料庫
-    public function insertuploadpeople(Request $request)
-    {
-        if (Session::has('username')) {
-
-            $number = $request->input('number');
-            $name = $request->input('name');
-            $department =  $request->input('department');
-            $record =  0;
-            $count = count($number);
-            $row = $request->input('row');
-            $check = array();
-
-            DB::beginTransaction();
-            try {
-                for ($i = 0; $i < $count; $i++) {
-                    $test = DB::table('人員信息')->where('工號', $number[$i])->value('姓名');
-
-                    //判斷data是否重複
-                    if ($test === null) {
-                        DB::table('人員信息')
-                            ->insert(['工號' => $number[$i], '姓名' => $name[$i], '部門' => $department[$i]/*, 'created_at' => Carbon::now()*/]);
-                        $record++;
-                        array_push($check, $row[$i]);
-                    } else {
-                        continue;
-                    }
-                } //for
-                DB::commit();
-                return \Response::json(['record' => $record, 'check' => $check]/* Status code here default is 200 ok*/);
-            } catch (\Exception $e) {
-                DB::rollback();
-                return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
-            }
-        } else {
-            return redirect(route('member.login'));
-        } // else
     }
 }
