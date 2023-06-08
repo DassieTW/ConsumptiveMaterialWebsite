@@ -86,4 +86,6 @@ return [
     'newSSO_msg' => 'This OA account has not logged in before.<br/>Please complete the form for initial settings.',
     'submit' => 'Submit',
     'site_error' => 'Please select your site.',
+    'permission_notice' => 'Your permission will be restricted.<br/>Contact your manager for more permissions.',
+    'change_site_permission_reset' => 'Your permission will be reset.<br/>Contact the site manager for more permissions.',
 ];

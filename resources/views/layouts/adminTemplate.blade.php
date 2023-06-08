@@ -1176,10 +1176,10 @@
                                         简体中文</a>
                                 </div>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">
+                                {{-- <a class="dropdown-item" href="#">
                                     <i class="p-0 mr-1" data-feather="settings"></i>
                                     <span>Settings</span>
-                                </a>
+                                </a> --}}
                                 <a class="dropdown-item" href="{{ url('/help') }}">
                                     <i class="p-0 mr-1" data-feather="help-circle"></i>
                                     <span>Help Center</span>
