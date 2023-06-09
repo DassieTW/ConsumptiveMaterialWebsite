@@ -23,7 +23,7 @@ Route::post('/sso', [Auth\LoginController::class, 'OALogin'])->withoutMiddleware
 
 // Matches the "/member/New_OA_Login" URL
 Route::get('/New_OA_Login', function () {
-    if (str_contains(url()->previous(), "/member/sso")) {
+    if (str_contains(url()->previous(), "/member/sso") || str_contains(url()->previous(), "ws.ecomp.pegatroncorp.comws.ecomp.pegatroncorp.com")) {
         $database_list = config('database_list.databases');
         $database_names = array();
         foreach ($database_list as $value) {

@@ -134,7 +134,7 @@ class LoginController extends Controller
                 '部門' => $request->dept_name,
                 'email' => $request->office_mail
             ]);
-
+        
         // login without hashed password
         $user = Login::where([
             'username' => $request->work_id,
