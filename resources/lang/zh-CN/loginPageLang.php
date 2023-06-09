@@ -80,5 +80,12 @@ return [
     'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
     'data' => '资料',
     'mail' => '信箱',
-    'selectprofile_pic' => '请选择头像'
+    'selectprofile_pic' => '请选择头像',
+
+    // OA SSO Login Page Lang
+    'newSSO_msg' => '此公司帐号从未登入过耗材管理系统<br/>请先填写以下内容完成初始设定',
+    'submit' => '提交',
+    'site_error' => '请选择厂区',
+    'permission_notice' => '初始权限设为最低<br/>若有需要请联络主管或系统管理员提升权限',
+    'change_site_permission_reset' => '切换厂区将重置权限<br/>若有需要请联络该厂主管或系统管理员提升权限',
 ];

@@ -1,5 +1,10 @@
 @extends('layouts.adminTemplate')
 @section('css')
+    <style>
+        input {
+            text-align: center;
+        }
+    </style>
 @endsection
 
 @section('js')
@@ -101,68 +106,6 @@
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
                                     <input type="submit" class="btn btn-lg btn-primary" value="{!! __('loginPageLang.change') !!}">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="card w-75">
-            <div class="card-header">
-                <h3>{!! __('loginPageLang.changeMail') !!}</h3>
-            </div>
-            <div class="row justify-content-center">
-                <div class="card-body">
-                    <form id="changeEmail" class="needs-validation text-center" method="post" novalidate>
-                        @csrf
-                        <div class="row justify-content-center mb-3">
-                            <?php
-                            $username = Session::get('username');
-                            echo __('templateWords.nowuser') . ' ' . $username;
-                            ?>
-                            <hr />
-                            <label class="col col-auto form-label p-0 m-0">{!! __('loginPageLang.old_email') !!}</label>
-                            <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                            <div class="col-lg-6  col-md-12 col-sm-12">
-                                <input class="form-control form-control-lg text-center" type="text" id="oldMail"
-                                    name="oldMail" placeholder="{!! __('loginPageLang.no_email') !!}"
-                                    value="@php
-                                        // echo $oldMail[0]->email; // test
-                                        if (count($oldMail) == 0) {
-                                            echo '';
-                                        }
-                                        // if
-                                        else {
-                                            echo $oldMail[0]->email;
-                                        } // else
-                                    @endphp"
-                                    readonly />
-                            </div>
-
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                            <label class="col col-auto form-label p-0 m-0">{!! __('loginPageLang.new_email') !!}</label>
-                            <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                            <div class="col-10">
-                                <div class="input-group">
-                                    <input class="form-control form-control-lg text-center" type="text" id="newMail"
-                                        name="newMail" placeholder="{!! __('loginPageLang.enter_email') !!}" />
-                                    <select class="form-select form-select-lg" id="emailTail">
-                                        <option selected>@pegatroncorp.com</option>
-                                        <option>@intra.pegatroncorp.com</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                            <div class="row w-100 justify-content-center">
-                                <div class="col col-auto">
-                                    <input type="submit" class="btn btn-lg btn-primary"
-                                        value="{!! __('loginPageLang.change') !!}">
                                 </div>
                             </div>
                         </div>

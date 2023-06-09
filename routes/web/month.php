@@ -255,46 +255,70 @@ Route::get('/uploadmonth', function () {
 
 Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('month.uploadmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//test單耗畫押
+//單耗畫押page
 Route::get('/testconsume', function () {
-    if (request()->filled('r')) {
+    if (strcmp(env('APP_ENV'), 'production') === 0 && !request()->filled('SSOfailed')) {
+        // redirect to MIS SSO page
+        $userKey = base64_encode(env('SSO_Key'));
+        $sysType = base64_encode(env('SSO_sysType'));
+        $ReDirToUrl = env('APP_URL') . "/month/testconsume?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d;
+        $FailTo = env('APP_URL') . "/month/testconsume?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&SSOfailed=true";
+        return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
+    } // if
+    else {
+        if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
+            $email = Crypt::decrypt(request()->r);
+            $username = Crypt::decrypt(request()->u);
+            $database = Crypt::decrypt(request()->d);
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
+            \DB::purge(env("DB_CONNECTION"));
+            $name = DB::table('login')->where('username', $username)->value('姓名');
+            return view('month.testconsume')->with(['data' => 月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
+                ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
+        } else {
+            return abort(404);
+        } // if else
+    } // else
 
-        $email = Crypt::decrypt(request()->r);
-        $username = Crypt::decrypt(request()->u);
-        $database = Crypt::decrypt(request()->d);
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
-        \DB::purge(env("DB_CONNECTION"));
-        $name = DB::table('login')->where('username', $username)->value('姓名');
-        return view('month.testconsume')->with(['data' => 月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
-            ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
-    } else {
-        return redirect()->route('month.consumeadd');
-    }
 })->withoutMiddleware('auth');
+
+// POST Route for SSO Redir
+Route::post('/testconsume', [MonthController::class, 'testconsumeOALogin'])->withoutMiddleware('auth');
 
 //test單耗畫押提交
-Route::post('/testconsume', [MonthController::class, 'testconsume'])->name('month.testconsume')->withoutMiddleware('auth');
+Route::post('/testconsume_submit', [MonthController::class, 'testconsume'])->name('month.testconsume_submit')->withoutMiddleware('auth');
 
-//test站位畫押
+//站位畫押page
 Route::get('/teststand', function () {
-    if (request()->filled('r')) {
-        $email = Crypt::decrypt(request()->r);
-        $username = Crypt::decrypt(request()->u);
-        $database = Crypt::decrypt(request()->d);
-
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
-        \DB::purge(env("DB_CONNECTION"));
-        $name = DB::table('login')->where('username', $username)->value('姓名');
-
-        return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
-            ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
-    } else {
-        return redirect()->route('month.standadd');
-    }
+    if (strcmp(env('APP_ENV'), 'production') === 0 && !request()->filled('SSOfailed')) {
+        // redirect to MIS SSO page
+        $userKey = base64_encode(env('SSO_Key'));
+        $sysType = base64_encode(env('SSO_sysType'));
+        $ReDirToUrl = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d;
+        $FailTo = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&SSOfailed=true";
+        return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
+    } // if
+    else {
+        if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
+            $email = Crypt::decrypt(request()->r);
+            $username = Crypt::decrypt(request()->u);
+            $database = Crypt::decrypt(request()->d);
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
+            \DB::purge(env("DB_CONNECTION"));
+            $name = DB::table('login')->where('username', $username)->value('姓名');
+            return view('month.testconsume')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
+                ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
+        } else {
+            return abort(404);
+        } // if else
+    } // else
 })->withoutMiddleware('auth');
 
+// POST Route for SSO Redir
+Route::post('/teststand', [MonthController::class, 'teststandOALogin'])->withoutMiddleware('auth');
+
 //test站位畫押提交
-Route::post('/teststand', [MonthController::class, 'teststand'])->name('month.teststand')->withoutMiddleware('auth');
+Route::post('/teststand_submit', [MonthController::class, 'teststand'])->name('month.teststand_submit')->withoutMiddleware('auth');
 
 //站位人力下載
 Route::post('/standdownload', [MonthController::class, 'standdownload'])->name('month.standdownload');

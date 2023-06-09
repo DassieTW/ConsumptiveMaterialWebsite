@@ -50,9 +50,7 @@ $(document).ready(function () {
             amount.push($("#amount" + i).html());
             check.push($("#check" + i).prop('checked'));
             reason.push($("#remark" + i).val());
-        }
-
-
+        } // for
 
         if (count == undefined) {
             notyf.open({
@@ -67,7 +65,8 @@ $(document).ready(function () {
                 }
             });
             return false;
-        }
+        } // if
+
         var mess = Lang.get('monthlyPRpageLang.total') + ' ' + count + ' ' +
             Lang.get('monthlyPRpageLang.record') + ' ' + Lang.get('monthlyPRpageLang.consume');
 
@@ -86,7 +85,7 @@ $(document).ready(function () {
         } else {
             $.ajax({
                 type: 'POST',
-                url: "testconsume",
+                url: "testconsume_submit",
                 data: {
                     AllData: JSON.stringify(data),
                     // jobnumber: jobnumber,
