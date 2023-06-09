@@ -84,7 +84,7 @@
                 <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                     <div class="d-table-cell align-middle">
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="w-100 d-none d-sm-inline-block" style="height: 2ch;"></div>
+                        <div class="w-100" style="height: 2ch;"></div>
                         <div class="text-center mt-4">
                             <h1 class="h2" id="fordatabase">
                                 {{ __('loginPageLang.welcome') }}
