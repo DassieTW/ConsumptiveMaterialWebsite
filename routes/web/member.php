@@ -19,7 +19,7 @@ Route::get('/', function () {
 })->name('member.index');
 
 // Matches The "/member/sso" URL
-Route::get('/sso', [Auth\LoginController::class, 'OALogin'])->withoutMiddleware('auth');
+Route::post('/sso', [Auth\LoginController::class, 'OALogin'])->withoutMiddleware('auth');
 
 // Matches the "/member/New_OA_Login" URL
 Route::get('/New_OA_Login', function () {

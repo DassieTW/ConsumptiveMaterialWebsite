@@ -134,7 +134,7 @@ class LoginController extends Controller
                 '部門' => $request->dept_name,
                 'email' => $request->office_mail
             ]);
-        
+
         // login without hashed password
         $user = Login::where([
             'username' => $request->work_id,
@@ -164,7 +164,7 @@ class LoginController extends Controller
         foreach ($databaseArray as $site) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
             \DB::purge(env("DB_CONNECTION"));
-            if ($this->attemptLogin($request)) {
+            if ($this->attemptSSOLogin($request)) {
                 $request->session()->regenerate();
 
                 $usernameAuthed = \Auth::user()->username;
@@ -184,7 +184,7 @@ class LoginController extends Controller
                         ->update(['last_login_time' => $datetime]);
 
                     DB::commit();
-                    return redirect()->route('welcome');
+                    return redirect('/?SSODone=' . $request->work_id . '&DB=' . $site);
                     // all good
                 } catch (\Exception $e) {
                     dd($e); // test
