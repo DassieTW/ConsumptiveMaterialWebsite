@@ -53,7 +53,7 @@ Route::get('/', function (Request $request) {
         Session::put('username', $usernameAuthed);
         Session::put('priority', $prior);
         Session::put('avatarChoice', $avatarChoice);
-        $this->authenticated($request, \Auth::user()); // set the login db
+        session(['database' => request()->DB]);
 
         return view('welcome');
     } // if
