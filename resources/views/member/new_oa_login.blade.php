@@ -86,11 +86,11 @@
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <div class="w-100 d-none d-sm-inline-block" style="height: 2ch;"></div>
                         <div class="text-center mt-4">
-                            <h1 class="h2 d-none d-sm-inline-block" id="fordatabase">
+                            <h1 class="h2" id="fordatabase">
                                 {{ __('loginPageLang.welcome') }}
                             </h1>
                             <br>
-                            <p class="lead d-none d-sm-inline-block">
+                            <p class="lead">
                                 {!! __('loginPageLang.newSSO_msg') !!}
                             </p>
                         </div>
@@ -186,7 +186,7 @@
                                         </div>
 
                                         <div class="text-center mt-2">
-                                            <p class="lead d-none d-sm-inline-block" style="color:rgb(160, 90, 0);">
+                                            <p class="lead" style="color:rgb(160, 90, 0);">
                                                 {!! __('loginPageLang.permission_notice') !!}
                                             </p>
                                         </div>
