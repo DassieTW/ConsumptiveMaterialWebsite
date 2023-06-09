@@ -155,11 +155,11 @@ class LoginController extends Controller
         $databaseArray = config('database_list.databases');
         // dd($databaseArray); //test
 
-        Session::put('work_id', "LA2000836"); // test
-        Session::put('user_name', "Vincent"); // test
-        Session::put('dept_name', "Test Dept"); // test
-        Session::put('office_mail', "Mail@test"); // test
-        return redirect()->route('member.New_OA_Login'); // test
+        // Session::put('work_id', "LA2000836"); // test
+        // Session::put('user_name', "Vincent"); // test
+        // Session::put('dept_name', "Test Dept"); // test
+        // Session::put('office_mail', "Mail@test"); // test
+        // return redirect()->route('member.New_OA_Login'); // test
 
         foreach ($databaseArray as $site) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
