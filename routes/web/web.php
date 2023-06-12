@@ -37,13 +37,18 @@ use MeiliSearch\Client;
 // --------------- the about code gets any url of our website and intended to pass it to Vue Router ----------
 
 Route::get('/', function (Request $request) {
-    if ($request->filled('SSODone') && $request->filled('DB')) {
-        // this session is seperated from SSO session, so we need to login manaully
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', request()->DB);
+    if ($request->filled('S')) {
+        // the redirected session is seperated from SSO session, so we need to login manaully
+        $decrypted_site = \Crypt::decrypt(request()->D);
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $decrypted_site);
         \DB::purge(env("DB_CONNECTION"));
+        $decrypted_id = \Crypt::decrypt(request()->S);
         $user = Login::where([
-            'username' => request()->SSODone,
-        ])->first();
+            'username' => $decrypted_id,
+        ])->firstOr(function ($site, $id) use ($decrypted_site, $decrypted_id) { 
+            // returns the first result matching the query or, if no results are found, execute the given closure
+            dd($site . "_" . $id);
+        });
 
         \Auth::login($user);
         $request->session()->regenerate();

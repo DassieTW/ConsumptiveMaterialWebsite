@@ -257,7 +257,7 @@ Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('mont
 
 //單耗畫押page
 Route::get('/testconsume', function () {
-    if (strcmp(env('APP_ENV'), 'production') === 0 && !request()->filled('SSOfailed')) {
+    if (strcmp(env('APP_ENV'), 'production') === 0 && request()->query('SSOfailed', 'false') == 'false') {
         // redirect to MIS SSO page
         $userKey = base64_encode(env('SSO_Key'));
         $sysType = base64_encode(env('SSO_sysType'));
@@ -266,7 +266,7 @@ Route::get('/testconsume', function () {
         return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // if
     else {
-        if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
+        if (request()->filled('r')) {
             $email = Crypt::decrypt(request()->r);
             $username = Crypt::decrypt(request()->u);
             $database = Crypt::decrypt(request()->d);
@@ -290,7 +290,7 @@ Route::post('/testconsume_submit', [MonthController::class, 'testconsume'])->nam
 
 //站位畫押page
 Route::get('/teststand', function () {
-    if (strcmp(env('APP_ENV'), 'production') === 0 && !request()->filled('SSOfailed')) {
+    if (strcmp(env('APP_ENV'), 'production') === 0 && request()->query('SSOfailed', 'false') == 'false') {
         // redirect to MIS SSO page
         $userKey = base64_encode(env('SSO_Key'));
         $sysType = base64_encode(env('SSO_sysType'));
@@ -299,7 +299,7 @@ Route::get('/teststand', function () {
         return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // if
     else {
-        if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
+        if (request()->filled('r')) {
             $email = Crypt::decrypt(request()->r);
             $username = Crypt::decrypt(request()->u);
             $database = Crypt::decrypt(request()->d);
