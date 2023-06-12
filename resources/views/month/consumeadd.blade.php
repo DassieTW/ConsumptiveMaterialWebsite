@@ -104,19 +104,13 @@
                     </div>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                    <div class="row">
+                    <div>
                         <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
                         <div class="col col-8">
-                            <div class="input-group">
-                                <input class="form-control form-control-lg text-center col-3" type="text" id="email"
-                                    name="email" placeholder="{!! __('loginPageLang.enter_email') !!}" />
-                                <select class="form-select form-select-lg col-5" id="emailTail">
-                                    <option selected>@pegatroncorp.com</option>
-                                    <option>@intra.pegatroncorp.com</option>
-                                </select>
-                                <div class="invalid-feedback" id="emailerror" style="display:none; color:red;">
-                                    {!! __('loginPageLang.enter_email') !!}
-                                </div>
+                            <div class="input-group" style="width: 30ch;">
+                                <input type="text" id="email" name="email" class="form-control form-control-lg"
+                                    style="text-align:center;" placeholder="{!! __('loginPageLang.enter_email') !!}">
+                                <span class="input-group-text input-group-text-lg" id="emailTail">@pegatroncorp.com</span>
                             </div>
                         </div>
                     </div>

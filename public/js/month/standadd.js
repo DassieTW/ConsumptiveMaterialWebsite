@@ -424,15 +424,25 @@ $(document).ready(function () {
 
     // var jobnumber = $("#jobnumber").val();
     if ($("#email").val() !== "") {
-      var email =
-        $("#email").val().toLowerCase() +
-        $("#emailTail option:selected").text();
+      var email = $("#email").val().toLowerCase() + "@intra.pegatroncorp.com";
     } else {
-      document.getElementById("emailerror").style.display = "block";
+      notyf.open({
+        type: "warning",
+        message: Lang.get("monthlyPRpageLang.noemail"),
+        duration: 3000, //miliseconds, use 0 for infinite duration
+        ripple: true,
+        dismissible: true,
+        position: {
+          x: "right",
+          y: "bottom",
+        },
+      });
+      document.getElementById("email").classList.add("is-invalid");
       document.getElementById("email").classList.add("is-invalid");
       document.getElementById("email").focus();
       return false;
     }
+
     var count = 0;
 
     for (let i = 0; i < sessionStorage.getItem("standcount"); i++) {
