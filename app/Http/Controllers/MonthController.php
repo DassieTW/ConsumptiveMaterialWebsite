@@ -1190,12 +1190,12 @@ class MonthController extends Controller
             $email = \Crypt::decrypt(request()->r);
             $username = \Crypt::decrypt(request()->u);
             $database = \Crypt::decrypt(request()->d);
-
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
 
+            $name = DB::table('login')->where('username', $username)->value('姓名');
             // update the info from SSO POST
             $affected = DB::table('login')
                 ->where('username', '=', $request->work_id)
@@ -1222,7 +1222,7 @@ class MonthController extends Controller
             } // if
 
             return view('month.testconsume')->with(['data' => \App\Models\月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $request->office_mail)])
-                ->with(['email' => $request->office_mail])->with(['username' => $request->user_name])->with(['database' => $database]);
+                ->with(['email' => $request->office_mail])->with(['username' => $name])->with(['database' => $database]);
         } else {
             return abort(404);
         } // if else
@@ -1290,6 +1290,7 @@ class MonthController extends Controller
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
 
+            $name = DB::table('login')->where('username', $username)->value('姓名');
             // update the info from SSO POST
             $affected = DB::table('login')
                 ->where('username', '=', $request->work_id)
@@ -1316,7 +1317,7 @@ class MonthController extends Controller
             } // if
 
             return view('month.teststand')->with(['data' => \App\Models\月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $request->office_mail)])
-                ->with(['email' => $request->office_mail])->with(['username' => $request->user_name])->with(['database' => $database]);
+                ->with(['email' => $request->office_mail])->with(['username' => $name])->with(['database' => $database]);
         } else {
             return abort(404);
         } // if else
