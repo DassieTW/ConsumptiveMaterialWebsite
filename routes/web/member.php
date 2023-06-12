@@ -102,7 +102,5 @@ Route::get('/username', function () {
     return view('member.searchusernameok')->with(['data' => Login::cursor()->where('priority', '<>', 1)]);
 })->name('member.username')->middleware('can:searchAndUpdateUser,App\Models\Login');
 
-Route::post('/usernamesearch', [Auth\LoginController::class, 'searchusername'])->name('member.searchusername')->middleware('can:searchAndUpdateUser,App\Models\Login');
-
 //用戶信息刪除或修改
 Route::post('/usernamechangeordel', [Auth\LoginController::class, 'usernamechangeordel'])->name('member.usernamechangeordel')->middleware('can:searchAndUpdateUser,App\Models\Login');

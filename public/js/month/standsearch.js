@@ -117,9 +117,8 @@ $(document).ready(function () {
     var check = [];
     var title = [];
     var titlename = $("#titlename").val();
-    var email = $("#email").val();
-    var email1 = $("#email").val();
-    email = email + $("#emailTail option:selected").text();
+    var email = $("#email").val().toLowerCase();
+    email = email + "@intra.pegatroncorp.com";
     var titlecount = $("#titlecount").val();
     $("input:checkbox[name=innumber]:checked").each(function () {
       check.push($(this).val());
@@ -220,10 +219,10 @@ $(document).ready(function () {
     data.push(data21);
     data.push(data22);
 
-    if (select == "刪除" || select == "删除" || select == "Delete") {
+    if (select === "刪除" || select === "删除" || select === "Delete") {
       select = "刪除";
     }
-    if (select == "更新" || select == "Update") {
+    if (select === "更新" || select === "Update") {
       if (!checked) {
         notyf.open({
           type: "warning",
@@ -238,7 +237,7 @@ $(document).ready(function () {
         });
         return false;
       }
-      if (!email1) {
+      if ($("#email").val() === "") {
         notyf.open({
           type: "warning",
           message: Lang.get("monthlyPRpageLang.noemail"),
@@ -251,11 +250,12 @@ $(document).ready(function () {
           },
         });
         document.getElementById("email").classList.add("is-invalid");
+        document.getElementById("email").focus();
         return false;
       }
       select = "更新";
     }
-    if (select == "刪除" || select == "更新") {
+    if (select === "刪除" || select === "更新") {
       if (!checked) {
         notyf.open({
           type: "warning",
