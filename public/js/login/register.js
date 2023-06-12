@@ -82,15 +82,7 @@ $(document).ready(function () {
                 window.location.href = "/home";
             },
             error: function (err) {
-                if (err.status == 420) {
-                    // var mess = Lang.get("loginPageLang.usernamerepeat");
-                    alert(err);
-                    $("#username").addClass("is-invalid");
-                    return false;
-                } // if
-                else {
-                  console.log(err);
-                } // else
+                console.log(err);
             },
         });
     });

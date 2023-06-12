@@ -7,6 +7,7 @@ use App\Http\Controllers\OwarehouseController;
 use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\HomeController;
+use App\Models\Login;
 use App\Services\MailService; // for testing only
 
 use Illuminate\Http\Request;
@@ -35,18 +36,34 @@ use MeiliSearch\Client;
 // })->where("any", ".*");
 // --------------- the about code gets any url of our website and intended to pass it to Vue Router ----------
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        // The user is logged in
+Route::get('/', function (Request $request) {
+    if ($request->filled('SSODone') && $request->filled('DB')) {
+        // this session is seperated from SSO session, so we need to login manaully
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', request()->DB);
+        \DB::purge(env("DB_CONNECTION"));
+        $user = Login::where([
+            'username' => request()->SSODone,
+        ])->first();
+
+        \Auth::login($user);
+        $request->session()->regenerate();
+        $usernameAuthed = \Auth::user()->username;
+        $prior = \Auth::user()->priority;
+        $avatarChoice = \Auth::user()->avatarChoice;
+        Session::put('username', $usernameAuthed);
+        Session::put('priority', $prior);
+        Session::put('avatarChoice', $avatarChoice);
+        session(['database' => request()->DB]);
+
         return view('welcome');
     } // if
-    else if (strcmp(env('APP_ENV'), 'production') === 0){
+    else if (strcmp(env('APP_ENV'), 'production') === 0) {
         // if not, redirect to MIS SSO page
         $userKey = base64_encode(env('SSO_Key'));
         $sysType = base64_encode(env('SSO_sysType'));
         $ReDirToUrl = env('APP_URL') . "/member/sso";
         $FailTo = env('APP_URL') . "/member/login";
-        return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl .'&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
+        return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // else if
     else {
         return view('welcome');

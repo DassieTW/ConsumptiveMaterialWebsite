@@ -38,15 +38,6 @@
 
 <body>
     <nav class="navbar navbar-expand fixed-top navbar-light navbar-bg p-0 m-0">
-        <a class="nav-icon d-inline-block d-sm-none" href="{{ route('member.index') }}">
-            <i class="align-middle" data-feather="arrow-left"></i>
-        </a>
-        <div class="align-middle">
-            <a class="nav-link d-none d-sm-inline-block" href="{{ route('member.index') }}">
-                <i class="align-middle text-dark" data-feather="arrow-left"></i>
-                <u class="text-dark"><span class="align-middle text-dark">{{ __('loginPageLang.pre_page') }}</span></u>
-            </a>
-        </div>
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
                 <li class="nav-item dropdown">
@@ -93,13 +84,13 @@
                 <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                     <div class="d-table-cell align-middle">
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="w-100 d-none d-sm-inline-block" style="height: 2ch;"></div>
+                        <div class="w-100" style="height: 2ch;"></div>
                         <div class="text-center mt-4">
-                            <h1 class="h2 d-none d-sm-inline-block" id="fordatabase">
+                            <h1 class="h2" id="fordatabase">
                                 {{ __('loginPageLang.welcome') }}
                             </h1>
                             <br>
-                            <p class="lead d-none d-sm-inline-block">
+                            <p class="lead">
                                 {!! __('loginPageLang.newSSO_msg') !!}
                             </p>
                         </div>
@@ -192,6 +183,12 @@
                                                     {!! __('loginPageLang.selectprofile_pic') !!}</div>
 
                                             </div>
+                                        </div>
+
+                                        <div class="text-center mt-2">
+                                            <p class="lead" style="color:rgb(160, 90, 0);">
+                                                {!! __('loginPageLang.permission_notice') !!}
+                                            </p>
                                         </div>
 
                                         <div class="text-center mt-3">

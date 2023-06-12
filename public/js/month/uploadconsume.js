@@ -133,9 +133,6 @@ $(document).ready(function () {
                     document.getElementById("row" + diff[i]).style.backgroundColor = "yellow";
                 }
                 // $("#consumebody").hide();
-
-                // $('#url').append(' URL : ' + '<a>http://127.0.0.1/month/testconsume?' + data.database + '</a>');
-
             },
             error: function (err) {
                 //transaction error

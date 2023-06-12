@@ -155,16 +155,16 @@ class LoginController extends Controller
         $databaseArray = config('database_list.databases');
         // dd($databaseArray); //test
 
-        Session::put('work_id', "LA200836"); // test
-        Session::put('user_name', "Vincent6_Yeh"); // test
-        Session::put('dept_name', "Testing Dep."); // test
-        Session::put('office_mail', "Mail@Test"); // test
-        return redirect()->route('member.New_OA_Login'); //test
+        // Session::put('work_id', "LA2000836"); // test
+        // Session::put('user_name', "Vincent"); // test
+        // Session::put('dept_name', "Test Dept"); // test
+        // Session::put('office_mail', "Mail@test"); // test
+        // return redirect()->route('member.New_OA_Login'); // test
 
         foreach ($databaseArray as $site) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
             \DB::purge(env("DB_CONNECTION"));
-            if ($this->attemptLogin($request)) {
+            if ($this->attemptSSOLogin($request)) {
                 $request->session()->regenerate();
 
                 $usernameAuthed = \Auth::user()->username;
@@ -184,7 +184,7 @@ class LoginController extends Controller
                         ->update(['last_login_time' => $datetime]);
 
                     DB::commit();
-                    return redirect()->route('welcome');
+                    return redirect('/?SSODone=' . $request->work_id . '&DB=' . $site);
                     // all good
                 } catch (\Exception $e) {
                     dd($e); // test
@@ -196,12 +196,12 @@ class LoginController extends Controller
         } // foreach
 
         // if the OA account is new to us
-        // Session::put('work_id', $request->work_id);
-        // Session::put('user_name', $request->user_name);
-        // Session::put('dept_name', $request->dept_name);
-        // Session::put('office_mail', $request->office_mail);
+        Session::put('work_id', $request->work_id);
+        Session::put('user_name', $request->user_name);
+        Session::put('dept_name', $request->dept_name);
+        Session::put('office_mail', $request->office_mail);
         return redirect()->route('member.New_OA_Login');
-    } // login
+    } // OAlogin
 
     //register newly logged in OA account
     public function register(Request $request)

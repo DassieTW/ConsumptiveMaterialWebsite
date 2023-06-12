@@ -113,7 +113,7 @@ $(document).ready(function () {
         } else {
             $.ajax({
                 type: 'POST',
-                url: "teststand",
+                url: "teststand_submit",
                 data: {
                     AllData: JSON.stringify(data),
                     // jobnumber: jobnumber,
