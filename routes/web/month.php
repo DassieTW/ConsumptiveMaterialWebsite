@@ -262,7 +262,9 @@ Route::get('/testconsume', function () {
         $userKey = base64_encode(env('SSO_Key'));
         $sysType = base64_encode(env('SSO_sysType'));
         $ReDirToUrl = env('APP_URL') . "/month/testconsume?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d;
+        $ReDirToUrl = urlencode($ReDirToUrl);
         $FailTo = env('APP_URL') . "/month/testconsume?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&SSOfailed=true";
+        $FailTo = urlencode($FailTo);
         return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // if
     else {
