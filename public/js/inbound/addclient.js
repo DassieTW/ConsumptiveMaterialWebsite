@@ -396,6 +396,7 @@ $(document).ready(function () {
           document
             .getElementById("newposition" + i)
             .classList.add("is-invalid");
+          return false;
         } else {
           position.push($("#newposition" + i).val());
         }
