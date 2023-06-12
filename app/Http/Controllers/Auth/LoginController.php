@@ -184,7 +184,9 @@ class LoginController extends Controller
                         ->update(['last_login_time' => $datetime]);
 
                     DB::commit();
-                    return redirect('/?SSODone=' . $request->work_id . '&DB=' . $site);
+                    $encrypt_site = \Crypt::encrypt($site);
+                    $encrypt_id = \Crypt::encrypt($request->work_id);
+                    return redirect('/?S=' . $encrypt_id . '&D=' . $encrypt_site);
                     // all good
                 } catch (\Exception $e) {
                     dd($e); // test
