@@ -17,7 +17,7 @@ return [
     'logout_btn' => 'Log Out',
     'userManage' => 'User Mgmt.',
     'newUser' => 'Add User',
-    'changePass' => 'Change <br/> &nbsp;&nbsp;&nbsp; Password / Email',
+    'changePass' => 'Change Password',
     'newPInfo' => 'Add Staff Info.',
     'PInfo' => 'Modify Staff Info.',
     'UserInfo' => 'Modify User Info.',

@@ -21,9 +21,9 @@
             /* Not removed via appearance */
             margin: 0;
             font: inherit;
-            width: 1.5em;
-            height: 1.5em;
-            border: 0.15em solid #7e280e;
+            width: 1.2em;
+            height: 1.2em;
+            border: 0.15em solid #000000;
             border-radius: 0.15em;
             transform: translateY(-0.075em);
             display: grid;
@@ -377,11 +377,11 @@
 
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto justify-content-between p-0 m-0">
-                            <input type="submit" id="change" name="change" class="btn btn-lg btn-primary"
-                                value="{!! __('basicInfoLang.change') !!}">
-                            &emsp;
-                            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                            <input type="submit" id="delete" name="delete" class="btn btn-lg btn-danger"
                                 value="{!! __('basicInfoLang.delete') !!}">
+                            &emsp;
+                            <input type="submit" id="change" name="change" class="btn btn-lg btn-success"
+                                value="{!! __('basicInfoLang.change') !!}">
                         </div>
                     </div>
                 </form>
