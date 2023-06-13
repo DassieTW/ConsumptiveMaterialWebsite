@@ -20,7 +20,7 @@ return [
     'newUser' => '新增用户',
     'changePass' => '修改密码/信箱',
     'newPInfo' => '新增人员讯息',
-    'PInfo' => '人员讯息(查询/修改)',
+    'PInfo' => '人员讯息维护',
     'UserInfo' => '用户讯息(查询/修改)',
     'inbound' => '入库',
     'outbound' => '出库',

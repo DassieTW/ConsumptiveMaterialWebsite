@@ -294,7 +294,7 @@
                     <div style="display: none" id="showname">
                         @foreach ($checks as $people)
                             <input type="hidden" id="checkpeople{{ $loop->index }}"
-                                name="checkpeople{{ $loop->index }}" value="{{ $people->username }}">
+                                name="checkpeople{{ $loop->index }}" value="{{ $people->工號 }}">
                             <input type="hidden" id="checkcount" name="checkcount" value="{{ $loop->count }}">
                         @endforeach
                     </div>
@@ -308,7 +308,7 @@
                         <ul id="inboundmenu" style="display: none;" class="list-group">
                             @foreach ($peoples as $peopleinf)
                                 <a class="inboundlist list-group-item list-group-item-action"
-                                    href="#">{{ $peopleinf->username . ' ' . $peopleinf->姓名 }}</a>
+                                    href="#">{{ $peopleinf->工號 . ' ' . $peopleinf->姓名 }}</a>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             @endforeach
                         </ul>

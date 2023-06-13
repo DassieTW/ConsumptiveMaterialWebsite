@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Login;
+use App\Models\人員信息;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth;
 use App\Models\Inventory;
@@ -109,3 +110,11 @@ Route::get('/username', function () {
 
 //用戶信息刪除或修改
 Route::post('/usernamechangeordel', [Auth\LoginController::class, 'usernamechangeordel'])->name('member.usernamechangeordel')->middleware('can:searchAndUpdateUser,App\Models\Login');
+
+//人員信息查詢頁面
+Route::get('/numbersearch', function () {
+    return view('member.searchnumberok')->with(['data' => 人員信息::cursor()]);
+})->name('member.numbersearch')->middleware('can:searchAndUpdateUser,App\Models\Login');
+
+//人員信息刪除或修改
+Route::post('/numberchangeordel', [Auth\LoginController::class, 'numberchangeordel'])->name('member.usernamechangeordel')->middleware('can:searchAndUpdateUser,App\Models\Login');

@@ -156,7 +156,7 @@
                         style="width: 250px" placeholder="{!! __('outboundpageLang.inputreceivepeople') !!}" {{-- oninput="if(value.length>9)value=value.slice(0,9)"> --}}>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <ul id="receivemenu" style="display: none;" class="list-group">
-                        @foreach ($people as $people)
+                        @foreach ( as $people)
                             <a class="receivelist list-group-item list-group-item-action"
                                 href="#">{{ $people->username . ' ' . $people->姓名 }}</a>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

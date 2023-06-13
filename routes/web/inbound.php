@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InboundController;
 use App\Models\Login;
+use App\Models\人員信息;
 use App\Models\客戶別;
 use App\Models\機種;
 use App\Models\製程;
@@ -52,8 +53,8 @@ Route::get('/add', function () {
         ->with(['clients' => 客戶別::cursor()])
         ->with(['inreasons' => 入庫原因::cursor()])
         ->with(['positions' => 儲位::cursor()])
-        ->with(['peoples' => Login::cursor()])
-        ->with(['checks' => Login::cursor()]);
+        ->with(['peoples' => 人員信息::cursor()])
+        ->with(['checks' => 人員信息::cursor()]);
 })->middleware('can:viewInbound,App\Models\Inbound');
 
 Route::post('/add', [InboundController::class, 'add'])->name('inbound.add')->middleware('can:viewInbound,App\Models\Inbound');
@@ -70,8 +71,8 @@ Route::get('/addclient', function () {
         return view("inbound.addclient")->with(['data' => 在途量::cursor()->where('請購數量', '>', 0)->where('客戶', $client)])
             ->with(['inreason' => $inreason])
             ->with(['positions' => 儲位::cursor()])
-            ->with(['peoples' => Login::cursor()])
-            ->with(['checks' => Login::cursor()]);
+            ->with(['peoples' => 人員信息::cursor()])
+            ->with(['checks' => 人員信息::cursor()]);
     } else {
         return redirect(route('inbound.add'));
     }
