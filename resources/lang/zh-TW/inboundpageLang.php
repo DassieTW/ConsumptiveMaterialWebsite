@@ -66,7 +66,7 @@ return [
     'download' => '下載',
     'addtodatabase' => '新增至資料庫',
     'days' => '呆滯天數',
-    'price' => '單價' ,
+    'price' => '單價',
     'money' => '幣別',
     'gradea' => 'A級資材',
     'month' => '月請購',
@@ -90,6 +90,6 @@ return [
     'enterinlist' => '請輸入入庫單號',
     'timepart' => '時間段',
     'upload1' => '上傳',
-    'noinpeople' => '入庫人員之工號不存在，請先到用戶管理-新增人員訊息維護',
+    'noinpeople' => '入庫人員之工號不存在，請先到用戶管理-人員信息維護',
     'rfidinpeople' => '請點這裡感應入庫人員識別證',
 ];
