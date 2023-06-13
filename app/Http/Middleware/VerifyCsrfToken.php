@@ -13,7 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '*/member/sso', // allows MIS SSO Page to send POST to my route
-        '*/month/testconsume?r=*', // allows MIS SSO Page to send POST to my route
-        '*/month/teststand?r=*', // allows MIS SSO Page to send POST to my route
+        '*/month/testconsume*', // allows MIS SSO Page to send POST to my route
+        '*/month/teststand*', // allows MIS SSO Page to send POST to my route
     ];
 }
