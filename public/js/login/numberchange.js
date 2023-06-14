@@ -169,7 +169,14 @@ $(document).ready(function () {
           }, 1000);
         } else if (data.status == 202) {
           notyf.open({
-            type: "success",
+            types: [
+              {
+                type: "info",
+                background: "blue",
+                icon: false,
+              },
+            ],
+            type: "info",
             message:
               Lang.get("loginPageLang.user") +
               Lang.get("loginPageLang.delete") +
@@ -205,8 +212,19 @@ $(document).ready(function () {
       error: function (err) {
         console.log(err);
 
-        var mess = err.responseJSON.message;
-        alert(mess);
+        notyf.open({
+          type: "error",
+          message: err.responseJSON.message,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
+        document.getElementById("newnumber").classList.add("is-invalid");
+        document.getElementById("newnumber").value = "";
       },
     });
   });

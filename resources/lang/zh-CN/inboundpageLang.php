@@ -66,7 +66,7 @@ return [
     'download' => '下载',
     'addtodatabase' => '新增至资料库',
     'days' => '呆滞天数',
-    'price' => '单价' ,
+    'price' => '单价',
     'money' => '币别',
     'gradea' => 'A级资材',
     'month' => '月请购',
@@ -90,6 +90,6 @@ return [
     'enterinlist' => '请输入入库单号',
     'timepart' => '时间段',
     'upload1' => '上传',
-    'noinpeople' => '入库人员之工号不存在，请先到用户管理-新增人员讯息维护',
+    'noinpeople' => '入库人员之工号不存在，请先到用户管理-人员讯息维护',
     'rfidinpeople' => '请点这里感应入库人员识别证',
 ];
