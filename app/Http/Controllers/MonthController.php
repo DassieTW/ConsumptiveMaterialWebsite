@@ -1202,7 +1202,8 @@ class MonthController extends Controller
                 ->update([
                     '姓名' => $request->user_name,
                     '部門' => $request->dept_name,
-                    'email' => $request->office_mail
+                    'email' => $request->office_mail,
+                    'last_login_time' => $datetime
                 ]);
 
             DB::table('月請購_單耗')
@@ -1297,7 +1298,8 @@ class MonthController extends Controller
                 ->update([
                     '姓名' => $request->user_name,
                     '部門' => $request->dept_name,
-                    'email' => $request->office_mail
+                    'email' => $request->office_mail,
+                    'last_login_time' => $datetime
                 ]);
 
             DB::table('月請購_站位')
