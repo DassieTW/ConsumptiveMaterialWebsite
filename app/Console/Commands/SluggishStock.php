@@ -9,6 +9,7 @@ use App\Services\MailService;
 
 class SluggishStock extends Command
 {
+    private $mailservice;
     /**
      * The name and signature of the console command.
      *
