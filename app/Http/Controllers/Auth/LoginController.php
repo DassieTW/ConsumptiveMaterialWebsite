@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Login;
+use App\Models\人員信息;
 use DB;
+use Lang;
 use Session;
 use Route;
 use Carbon\Carbon;
@@ -362,22 +364,52 @@ class LoginController extends Controller
         return redirect(url('/member/login'));
     } // logout
 
-
-    //人員信息上傳
-    public function uploadpeople(Request $request)
+    //人員信息刪除,新增
+    public function numberchangeordel(Request $request)
     {
         if (Session::has('username')) {
-            $this->validate($request, [
-                'select_file'  => 'required|mimes:xls,xlsx'
-            ]);
-            $path = $request->file('select_file')->getRealPath();
 
-            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
+            $select = $request->input('select');
+            $count = $request->input('count');
+            $number = $request->input('number');
+            $numbers = DB::table('人員信息')->pluck('工號');
+            $newname = $request->input('newname');
+            $newnumber = $request->input('newnumber');
+            $newdep = $request->input('newdep');
 
-            $sheetData = $spreadsheet->getActiveSheet()->toArray();
+            //delete
+            if ($select === "刪除") {
+                for ($i = 0; $i < $count; $i++) {
+                    DB::beginTransaction();
+                    try {
+                        DB::table('人員信息')
+                            ->where('工號', $number[$i])
+                            ->delete();
+                        DB::commit();
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+                    }
+                }
+                return \Response::json(['message' => $count, 'status' => 202]/* Status code here default is 200 ok*/);
+            }
+            //new
+            else {
 
-            unset($sheetData[0]);
-            return view('member.uploadpeople')->with(['data' => $sheetData]);
+                DB::beginTransaction();
+                //job number repeat
+                for ($i = 0; $i < count($numbers); $i++) {
+                    if (strcasecmp($newnumber, $numbers[$i]) === 0) {
+                        return \Response::json(['message' => Lang::get('loginPageLang.jobrepeat')], 421/* Status code here default is 200 ok*/);
+                    } else {
+                        continue;
+                    }
+                }
+
+                DB::table('人員信息')->insert(['工號' => $newnumber, '姓名' => $newname, '部門' => $newdep]);
+                DB::commit();
+                return \Response::json(['message' => $count, 'status' => 201]/* Status code here default is 200 ok*/);
+            }
         } else {
             return redirect(route('member.login'));
         }

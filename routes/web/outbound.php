@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\入庫原因;
+use App\Models\人員信息;
 use App\Models\客戶別;
 use App\Models\發料部門;
 use App\Models\製程;

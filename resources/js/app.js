@@ -56,7 +56,7 @@ import OboundInboundSearchTable from "./components/reusableUtilities/OboundINSea
 import OboundISNSearchTable from "./components/reusableUtilities/OboundISNSearch.vue";
 import OboundPickrecordTable from "./components/reusableUtilities/OboundPickrecordTable.vue";
 import OboundBackrecordTable from "./components/reusableUtilities/OboundBackrecordTable.vue";
-import NewsTable from './components/reusableUtilities/NewsTable.vue';
+import NewsTable from "./components/reusableUtilities/NewsTable.vue";
 
 const app = createApp({
   components: {
@@ -74,7 +74,7 @@ const app = createApp({
     "obound-isnsearch-table": OboundISNSearchTable,
     "obound-pickrecord-table": OboundPickrecordTable,
     "obound-backrecord-table": OboundBackrecordTable,
-    'news-table': NewsTable,
+    "news-table": NewsTable,
   },
 });
 

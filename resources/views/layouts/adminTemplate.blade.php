@@ -670,6 +670,16 @@
                                                         </a>
                                                     </li>
                                                 @endcan
+                                                @can('searchAndUpdateUser', App\Models\Login::class)
+                                                    <li class="sidebar-item {{ isActiveRoute(['member/number']) }}">
+                                                        <a class="sidebar-link"
+                                                            href="{{ route('member.numbersearch') }}">
+                                                            {!! __('templateWords.PInfo') !!}
+                                                            {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
+                                                        --}}
+                                                        </a>
+                                                    </li>
+                                                @endcan
                                             </ul>
                                         </li>
 
