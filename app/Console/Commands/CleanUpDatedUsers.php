@@ -41,7 +41,6 @@ class CleanUpDatedUsers extends Command
     {
         $databaseArray = config('database_list.databases');
         array_shift($databaseArray); // remove the 'Consumables management' db from array
-
         try {
             \Log::channel('dbquerys')->info('---------------------------清理久未登入人員開始--------------------------');
             foreach ($databaseArray as $site) {
@@ -56,8 +55,8 @@ class CleanUpDatedUsers extends Command
             \Log::channel('dbquerys')->info('---------------------------清理久未登入人員結束--------------------------');
             $this->info("Command executed successfully!");
         } catch (Exception $e) {
-            \Log::channel('dbquerys')->error("Old User Clear Command execution failed with error : " . $e->getMessage());
-            $this->error("Old User Clear Command execution failed with error : " . $e->getMessage());
+            \Log::channel('dbquerys')->error("Dated User Clear Command execution failed with error : " . $e->getMessage());
+            $this->error("Dated User Clear Command execution failed with error : " . $e->getMessage());
         } // try - catch
         return 0;
     } // handle

@@ -14,7 +14,7 @@ class 不良品Inventory extends Model
     public $timestamps = false;
     protected $table = "不良品inventory";
 
-    protected $primaryKey = ['料號','儲位' , '客戶別'];
+    protected $primaryKey = ['料號', '儲位', '客戶別'];
 
     protected $keyType = 'string';
 
