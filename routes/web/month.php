@@ -271,9 +271,6 @@ Route::get('/testconsume', function () {
     } // if else
 })->withoutMiddleware('auth');
 
-// POST Route for SSO Redir
-Route::post('/testconsume', [MonthController::class, 'testconsumeOALogin'])->withoutMiddleware('auth');
-
 //test單耗畫押提交
 Route::post('/testconsume_submit', [MonthController::class, 'testconsume'])->name('month.testconsume_submit')->withoutMiddleware('auth');
 
@@ -292,9 +289,6 @@ Route::get('/teststand', function () {
         return abort(404);
     } // if else
 })->withoutMiddleware('auth');
-
-// POST Route for SSO Redir
-Route::post('/teststand', [MonthController::class, 'teststandOALogin'])->withoutMiddleware('auth');
 
 //test站位畫押提交
 Route::post('/teststand_submit', [MonthController::class, 'teststand'])->name('month.teststand_submit')->withoutMiddleware('auth');

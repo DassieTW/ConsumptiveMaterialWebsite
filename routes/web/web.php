@@ -58,7 +58,7 @@ Route::get('/', function (Request $request) {
         Session::put('username', $usernameAuthed);
         Session::put('priority', $prior);
         Session::put('avatarChoice', $avatarChoice);
-        session(['database' => request()->DB]);
+        session(['database' => $decrypted_site]);
 
         return view('welcome');
     } // if
