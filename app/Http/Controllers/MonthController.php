@@ -1187,9 +1187,9 @@ class MonthController extends Controller
     public function testconsumeOALogin(Request $request)
     {
         if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
-            $email = \Crypt::decrypt(request()->query('r'));
-            $username = \Crypt::decrypt(request()->query('u'));
-            $database = \Crypt::decrypt(request()->query('d'));
+            $email = \Crypt::decrypt(urldecode(request()->query('r')));
+            $username = \Crypt::decrypt(urldecode(request()->query('u')));
+            $database = \Crypt::decrypt(urldecode(request()->query('d')));
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
@@ -1221,7 +1221,7 @@ class MonthController extends Controller
                     ]);
             } // if
             $name = DB::table('login')->where('username', $username)->value('姓名');
-            
+
             return view('month.testconsume')->with(['data' => \App\Models\月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $request->office_mail)])
                 ->with(['email' => $request->office_mail])->with(['username' => $name])->with(['database' => $database]);
         } else {
@@ -1282,9 +1282,9 @@ class MonthController extends Controller
     public function teststandOALogin(Request $request)
     {
         if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
-            $email = \Crypt::decrypt(request()->query('r'));
-            $username = \Crypt::decrypt(request()->query('u'));
-            $database = \Crypt::decrypt(request()->query('d'));
+            $email = \Crypt::decrypt(urldecode(request()->query('r')));
+            $username = \Crypt::decrypt(urldecode(request()->query('u')));
+            $database = \Crypt::decrypt(urldecode(request()->query('d')));
 
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
