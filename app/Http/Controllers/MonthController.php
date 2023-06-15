@@ -1186,7 +1186,7 @@ class MonthController extends Controller
     // Get OA Account Info from 畫押人員/單位工程師
     public function testconsumeOALogin(Request $request)
     {
-        if (request()->filled('r')) {
+        if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
             $email = \Crypt::decrypt(request()->r);
             $username = \Crypt::decrypt(request()->u);
             $database = \Crypt::decrypt(request()->d);
@@ -1281,7 +1281,7 @@ class MonthController extends Controller
     // Get OA Account Info from 畫押人員/單位工程師
     public function teststandOALogin(Request $request)
     {
-        if (request()->filled('r')) {
+        if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
             $email = \Crypt::decrypt(request()->r);
             $username = \Crypt::decrypt(request()->u);
             $database = \Crypt::decrypt(request()->d);
