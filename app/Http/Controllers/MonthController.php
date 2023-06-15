@@ -1183,52 +1183,6 @@ class MonthController extends Controller
         }
     } // uploadmonth
 
-    // Get OA Account Info from 畫押人員/單位工程師
-    public function testconsumeOALogin(Request $request)
-    {
-        if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
-            $email = \Crypt::decrypt(base64_decode(request()->query('r')));
-            $username = \Crypt::decrypt(base64_decode(request()->query('u')));
-            $database = \Crypt::decrypt(base64_decode(request()->query('d')));
-            $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
-
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
-            \DB::purge(env("DB_CONNECTION"));
-
-            // update the info from SSO POST
-            $affected = DB::table('login')
-                ->where('username', '=', $request->work_id)
-                ->update([
-                    '姓名' => $request->user_name,
-                    '部門' => $request->dept_name,
-                    'email' => $request->office_mail,
-                    'last_login_time' => $datetime
-                ]);
-
-            DB::table('月請購_單耗')
-                ->where('狀態', '=', "待畫押")
-                ->where("畫押信箱", '=', $email)
-                ->update([
-                    '畫押信箱' => $request->office_mail
-                ]);
-
-            if ($affected < 1) { // if the 畫押人員 is not in DB yet
-                DB::table('login')
-                    ->insert([
-                        'username' => $request->work_id, 'password' => "123456", 'priority' => 69,
-                        '姓名' => $request->user_name, '部門' => $request->dept_name, 'avatarChoice' => 3,
-                        'email' => $request->office_mail, 'last_login_time' => $datetime
-                    ]);
-            } // if
-            $name = DB::table('login')->where('username', $username)->value('姓名');
-
-            return view('month.testconsume')->with(['data' => \App\Models\月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $request->office_mail)])
-                ->with(['email' => $request->office_mail])->with(['username' => $name])->with(['database' => $database]);
-        } else {
-            return abort(404);
-        } // if else
-    } // testconsumeOALogin
-
     //單耗畫押提交
     public function testconsume(Request $request)
     {
@@ -1277,53 +1231,6 @@ class MonthController extends Controller
         } //try-catch
 
     }
-
-    // Get OA Account Info from 畫押人員/單位工程師
-    public function teststandOALogin(Request $request)
-    {
-        if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
-            $email = \Crypt::decrypt(base64_decode(request()->query('r')));
-            $username = \Crypt::decrypt(base64_decode(request()->query('u')));
-            $database = \Crypt::decrypt(base64_decode(request()->query('d')));
-
-            $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
-
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
-            \DB::purge(env("DB_CONNECTION"));
-
-            // update the info from SSO POST
-            $affected = DB::table('login')
-                ->where('username', '=', $request->work_id)
-                ->update([
-                    '姓名' => $request->user_name,
-                    '部門' => $request->dept_name,
-                    'email' => $request->office_mail,
-                    'last_login_time' => $datetime
-                ]);
-
-            DB::table('月請購_站位')
-                ->where('狀態', '=', "待畫押")
-                ->where("畫押信箱", '=', $email)
-                ->update([
-                    '畫押信箱' => $request->office_mail
-                ]);
-
-            if ($affected < 1) { // if the 畫押人員 is not in DB yet
-                DB::table('login')
-                    ->insert([
-                        'username' => $request->work_id, 'password' => "123456", 'priority' => 69,
-                        '姓名' => $request->user_name, '部門' => $request->dept_name, 'avatarChoice' => 3,
-                        'email' => $request->office_mail, 'last_login_time' => $datetime
-                    ]);
-            } // if
-            $name = DB::table('login')->where('username', $username)->value('姓名');
-
-            return view('month.teststand')->with(['data' => \App\Models\月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $request->office_mail)])
-                ->with(['email' => $request->office_mail])->with(['username' => $name])->with(['database' => $database]);
-        } else {
-            return abort(404);
-        } // if else
-    } // teststandOALogin
 
     //站位畫押提交
     public function teststand(Request $request)
