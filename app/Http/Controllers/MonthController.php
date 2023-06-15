@@ -104,10 +104,10 @@ class MonthController extends Controller
             $number = $request->input('number');
             $amount = $request->input('amount');
             $email = $request->input('email');
-            $sessemail = \Crypt::encrypt($email);
-            $name = \Crypt::encrypt(\Auth::user()->username);
+            $sessemail = \Crypt::encryptString($email);
+            $name = \Crypt::encryptString(\Auth::user()->username);
             $database = $request->session()->get('database');
-            $database = \Crypt::encrypt($database);
+            $database = \Crypt::encryptString($database);
 
             //delete
             if ($select == "刪除") {
@@ -179,10 +179,10 @@ class MonthController extends Controller
             $nextchange = $Alldata[18];
             // $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
-            $sessemail = \Crypt::encrypt($email);
-            $name = \Crypt::encrypt(\Auth::user()->username);
+            $sessemail = \Crypt::encryptString($email);
+            $name = \Crypt::encryptString(\Auth::user()->username);
             $database = $request->session()->get('database');
-            $database = \Crypt::encrypt($database);
+            $database = \Crypt::encryptString($database);
 
 
             //delete
@@ -341,10 +341,10 @@ class MonthController extends Controller
             $check = array();
             //$jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
-            $sessemail = \Crypt::encrypt($email);
-            $username = \Crypt::encrypt(\Auth::user()->username);
+            $sessemail = \Crypt::encryptString($email);
+            $username = \Crypt::encryptString(\Auth::user()->username);
             $database = $request->session()->get('database');
-            $database = \Crypt::encrypt($database);
+            $database = \Crypt::encryptString($database);
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
@@ -406,10 +406,10 @@ class MonthController extends Controller
             $database = $request->session()->get('database');
             // $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
-            $sessemail = \Crypt::encrypt($email);
-            $name = \Crypt::encrypt(\Auth::user()->username);
+            $sessemail = \Crypt::encryptString($email);
+            $name = \Crypt::encryptString(\Auth::user()->username);
             $database = $request->session()->get('database');
-            $database = \Crypt::encrypt($database);
+            $database = \Crypt::encryptString($database);
 
             DB::beginTransaction();
             try {
@@ -1191,6 +1191,9 @@ class MonthController extends Controller
         $count = $request->input('count');
         $sender = $request->input('sender');
         $Alldata = json_decode($request->input('AllData'));
+        $database = $request->input('database');
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
+        \DB::purge(env("DB_CONNECTION"));
 
         DB::beginTransaction();
         try {
@@ -1208,7 +1211,6 @@ class MonthController extends Controller
                         ->where('料號', $number)
                         ->update([
                             '狀態' => "已完成", '畫押時間' => $now,
-
                         ]);
                 } else {
                     月請購_單耗::where('客戶別', $client)
@@ -1217,7 +1219,6 @@ class MonthController extends Controller
                         ->where('料號', $number)
                         ->update([
                             '狀態' => "待重畫", '畫押時間' => $now,
-
                         ]);
                 }
             } //for
@@ -1240,6 +1241,9 @@ class MonthController extends Controller
             $count = $request->input('count');
             $sender = $request->input('sender');
             $Alldata = json_decode($request->input('AllData'));
+            $database = $request->input('database');
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
+            \DB::purge(env("DB_CONNECTION"));
 
             DB::beginTransaction();
             try {
@@ -1504,7 +1508,7 @@ class MonthController extends Controller
     //send consume mail
     public static function sendconsumemail($email, $sessemail, $username, $database)
     {
-        $dename = DB::table('login')->where('username', \Crypt::decrypt($username))->value('姓名');
+        $dename = DB::table('login')->where('username', \Crypt::decryptString($username))->value('姓名');
         $data = array('email' => $sessemail, 'username' => $username, 'database' => $database, 'name' => $dename);
 
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
@@ -1520,7 +1524,7 @@ class MonthController extends Controller
     //send stand mail
     public static function sendstandmail($email, $sessemail, $name, $database)
     {
-        $dename = DB::table('login')->where('username', \Crypt::decrypt($name))->value('姓名');
+        $dename = DB::table('login')->where('username', \Crypt::decryptString($name))->value('姓名');
         $data = array('email' => $sessemail, 'username' => $name, 'database' => $database, 'name' => $dename);
 
         Mail::send('mail/standcheck', $data,  function ($message) use ($email) {

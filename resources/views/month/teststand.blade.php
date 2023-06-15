@@ -59,7 +59,29 @@
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
+    <nav class="navbar navbar-expand navbar-light navbar-bg p-0 m-0">
 
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav navbar-align">
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{ __('templateWords.language') }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li> <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
+                                English</a></li>
+                        <li><a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-TW') }}">
+                                繁體中文</a></li>
+                        <li><a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-CN') }}">
+                                简体中文</a></li>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+    </nav>
+    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
     <main class="d-flex">
 
         <div class="container d-flex flex-column">
@@ -74,10 +96,12 @@
                         {!! __('monthlyPRpageLang.stand') !!}
                     </p>
                 </div>
+
                 <div class="card-header">
                     <h3 class="text-center">{!! __('monthlyPRpageLang.emailsender') !!} : {{ $username }} ({!! __('basicInfoLang.factory') !!} :
                         {{ $database }})</h3>
                     <input type="hidden" id="sender" value="{{ $username }}">
+                    <input type="hidden" id="database" value="{{ $database }}">
                 </div>
             </div>
             <div class="card">
@@ -124,7 +148,7 @@
                                         $data->下月開班數 = floatval($data->下月開班數);
                                         $data->下月每人每日需求量 = floatval($data->下月每人每日需求量);
                                         $data->下月每日更換頻率 = floatval($data->下月每日更換頻率);
-                                        
+
                                         ?>
                                         <tr>
                                             <td><input type="hidden" id="number{{ $loop->index }}"
