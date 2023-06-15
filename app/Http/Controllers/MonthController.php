@@ -1195,7 +1195,6 @@ class MonthController extends Controller
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
 
-            $name = DB::table('login')->where('username', $username)->value('姓名');
             // update the info from SSO POST
             $affected = DB::table('login')
                 ->where('username', '=', $request->work_id)
@@ -1221,7 +1220,8 @@ class MonthController extends Controller
                         'email' => $request->office_mail, 'last_login_time' => $datetime
                     ]);
             } // if
-
+            $name = DB::table('login')->where('username', $username)->value('姓名');
+            
             return view('month.testconsume')->with(['data' => \App\Models\月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $request->office_mail)])
                 ->with(['email' => $request->office_mail])->with(['username' => $name])->with(['database' => $database]);
         } else {
@@ -1291,7 +1291,6 @@ class MonthController extends Controller
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
 
-            $name = DB::table('login')->where('username', $username)->value('姓名');
             // update the info from SSO POST
             $affected = DB::table('login')
                 ->where('username', '=', $request->work_id)
@@ -1317,6 +1316,7 @@ class MonthController extends Controller
                         'email' => $request->office_mail, 'last_login_time' => $datetime
                     ]);
             } // if
+            $name = DB::table('login')->where('username', $username)->value('姓名');
 
             return view('month.teststand')->with(['data' => \App\Models\月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $request->office_mail)])
                 ->with(['email' => $request->office_mail])->with(['username' => $name])->with(['database' => $database]);
