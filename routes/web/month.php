@@ -258,9 +258,9 @@ Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('mont
 //單耗畫押page
 Route::get('/testconsume', function () {
     if (request()->filled('r')) {
-        $email = Crypt::decrypt(request()->r);
-        $username = Crypt::decrypt(request()->u);
-        $database = Crypt::decrypt(request()->d);
+        $email = Crypt::decryptString(request()->r);
+        $username = Crypt::decryptString(request()->u);
+        $database = Crypt::decryptString(request()->d);
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
         \DB::purge(env("DB_CONNECTION"));
         $name = DB::table('login')->where('username', $username)->value('姓名');
@@ -277,9 +277,9 @@ Route::post('/testconsume_submit', [MonthController::class, 'testconsume'])->nam
 //站位畫押page
 Route::get('/teststand', function () {
     if (request()->filled('r')) {
-        $email = Crypt::decrypt(request()->r);
-        $username = Crypt::decrypt(request()->u);
-        $database = Crypt::decrypt(request()->d);
+        $email = Crypt::decryptString(request()->r);
+        $username = Crypt::decryptString(request()->u);
+        $database = Crypt::decryptString(request()->d);
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
         \DB::purge(env("DB_CONNECTION"));
         $name = DB::table('login')->where('username', $username)->value('姓名');
