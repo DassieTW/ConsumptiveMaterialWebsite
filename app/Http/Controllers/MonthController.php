@@ -58,8 +58,8 @@ class MonthController extends Controller
                 ->where('月請購_單耗.機種', 'like', $machine . '%')
                 ->where('月請購_單耗.製程', 'like', $production . '%')
                 ->get();
-
-            return view('month.consumesearchok')->with(['data' => $datas]);
+            $people = DB::table('login')->where('priority', "=", 69)->get();
+            return view('month.consumesearchok')->with(['data' => $datas, 'people' => $people]);
         } else {
             return redirect(route('member.login'));
         }
@@ -85,8 +85,9 @@ class MonthController extends Controller
                 ->where('月請購_站位.機種', 'like', $machine . '%')
                 ->where('月請購_站位.製程', 'like', $production . '%')
                 ->get();
+            $people = DB::table('login')->where('priority', "=", 69)->get();
 
-            return view('month.standsearchok')->with(['data' => $datas]);
+            return view('month.standsearchok')->with(['data' => $datas, 'people' => $people]);
         } else {
             return redirect(route('member.login'));
         }

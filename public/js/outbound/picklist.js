@@ -484,7 +484,9 @@ $(document).ready(function () {
               .split(" ");
             po = po[0];
             po = po.split(splittext);
-            position.push(po[1]);
+            po = po[1];
+            po = po.split("\n");
+            position.push(po[0]);
           } else {
             position.push("actualzero");
           }
@@ -612,6 +614,7 @@ $(document).ready(function () {
       error: function (err) {
         //儲位庫存小於實際領用數量
         if (err.status === 421) {
+          console.log(err.responseJSON);
           document.getElementById("lessstock").style.display = "block";
           document.getElementById("position").classList.add("is-invalid");
           document

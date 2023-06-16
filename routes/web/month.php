@@ -174,13 +174,13 @@ Route::get('/sxbsearch', function () {
 //料號單耗(新增)頁面
 Route::get('/consumeadd', function () {
     return view('month.consumeadd')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()]);
+        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['people' => Login::cursor()->where('priority', "=", 69)]);
 })->name('month.consumeadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //站位人力(新增)頁面
 Route::get('/standadd', function () {
     return view('month.standadd')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()]);
+        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['people' => Login::cursor()->where('priority', "=", 69)]);
 })->name('month.standadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 

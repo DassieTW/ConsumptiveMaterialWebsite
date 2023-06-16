@@ -50,10 +50,19 @@
                         value="{!! __('monthlyPRpageLang.change') !!}">
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
-                    <div class="input-group" style="width: 30ch;">
+                    <div class="input-group" style="width: 40ch;">
                         <input type="text" id="email" name="email" class="form-control form-control-lg"
                             style="text-align:center;" placeholder="{!! __('loginPageLang.enter_email') !!}">
                         <span class="input-group-text input-group-text-lg" id="emailTail">@pegatroncorp.com</span>
+                    </div>
+                    <div class="input-group">
+                        <ul id="peoplemenu" style="display: none;" class="list-group">
+                            @foreach ($people as $people)
+                                <a class="peoplelist list-group-item list-group-item-action"
+                                    href="#">{{ $people->姓名 }}</a>
+                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                            @endforeach
+                        </ul>
                     </div>
                     <div class="table-responsive">
                         <table class="table">

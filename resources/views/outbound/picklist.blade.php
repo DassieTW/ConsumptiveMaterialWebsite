@@ -109,7 +109,10 @@
                                                         {!! __('outboundpageLang.enterloc') !!}</option>
                                                     @foreach ($test as $k => $a)
                                                         @if ($a > 0)
-                                                            <option>{!! __('outboundpageLang.loc') !!}:{{ $k }}
+                                                            <option
+                                                                value="{!! __('outboundpageLang.loc') !!}:{{ $k }}
+                                                                {!! __('outboundpageLang.nowstock') !!}:{{ $a }}">
+                                                                {!! __('outboundpageLang.loc') !!}:{{ $k }}
                                                                 {!! __('outboundpageLang.nowstock') !!}:{{ $a }}</option>
                                                         @endif
                                                     @endforeach

@@ -57,13 +57,20 @@
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                     <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
-                    <div class="input-group" style="width: 410px;">
-                        <input type="text" id="email" name="email" class="form-control form-control"
-                            style="width: 160px;" placeholder="{!! __('loginPageLang.enter_email') !!}">
-                        <select class="form-select form-select-lg" style="width: 250px;" id="emailTail">
-                            <option selected>@pegatroncorp.com</option>
-                            <option>@intra.pegatroncorp.com</option>
-                        </select>
+                    <div class="input-group" style="width: 40ch;">
+                        <input type="text" id="email" name="email" class="form-control form-control-lg"
+                            style="text-align:center;" placeholder="{!! __('loginPageLang.enter_email') !!}">
+                        <span class="input-group-text input-group-text-lg" id="emailTail">@pegatroncorp.com</span>
+                    </div>
+                    <div class="input-group">
+                        <ul id="peoplemenu" style="display: none;" class="list-group">
+                            @foreach ($people as $people)
+                                <a class="peoplelist list-group-item list-group-item-action"
+                                    href="#">{{ $people->姓名 }}</a>
+                                <div class="w-100" style="height: 1ch;"></div>
+                                <!-- </div>breaks cols to a new line-->
+                            @endforeach
+                        </ul>
                     </div>
 
                     <div class="table-responsive text-nowrap">
@@ -124,7 +131,7 @@
                             <tbody>
                                 @foreach ($data as $data)
                                     <?php
-                                    
+
                                     $data->當月站位人數 = round($data->當月站位人數, 7);
                                     $data->當月開線數 = round($data->當月開線數, 7);
                                     $data->當月開班數 = round($data->當月開班數, 7);

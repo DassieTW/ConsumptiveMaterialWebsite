@@ -1,5 +1,51 @@
 sessionStorage.clear();
-
+function myFunction() {
+  var input, filter, ul, li, a, i;
+  ul = document.getElementById("peoplemenu");
+  li = ul.getElementsByTagName("a");
+  input = document.getElementById("email");
+  filter = input.value.toUpperCase();
+  for (i = 0; i < li.length; i++) {
+    a = li[i];
+    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+$("#email").on("focus", function () {
+  $(window).keydown(function (event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+  $("#peoplemenu").show();
+});
+$("#email").on("input", function () {
+  $(window).keydown(function (event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+  $("#peoplemenu").show();
+  myFunction();
+});
+$("#email").on("blur", function () {
+  $("#peoplemenu").hide();
+});
+$(".peoplelist").mouseover(function (e) {
+  e.preventDefault();
+  var ename = $(this).text();
+  $("#email").val(ename);
+});
+$(".peoplelist").on("click", function (e) {
+  e.preventDefault();
+  var ename = $(this).text();
+  $("#email").val(ename);
+});
 function ScientificNotaionToFixed(x) {
   // toFixed
   if (Math.abs(x) < 1.0) {
