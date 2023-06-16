@@ -1187,9 +1187,9 @@ class MonthController extends Controller
     public function testconsumeOALogin(Request $request)
     {
         if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
-            $email = \Crypt::decryptString(base64_decode(urldecode(request()->query('r'))));
-            $username = \Crypt::decryptString(base64_decode(urldecode(request()->query('u'))));
-            $database = \Crypt::decryptString(base64_decode(urldecode(request()->query('d'))));
+            $email = \Crypt::decryptString(base64_decode(request()->query('r')));
+            $username = \Crypt::decryptString(base64_decode(request()->query('u')));
+            $database = \Crypt::decryptString(base64_decode(request()->query('d')));
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
@@ -1283,9 +1283,9 @@ class MonthController extends Controller
     public function teststandOALogin(Request $request)
     {
         if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
-            $email = \Crypt::decryptString(base64_decode(urldecode(request()->query('r'))));
-            $username = \Crypt::decryptString(base64_decode(urldecode(request()->query('u'))));
-            $database = \Crypt::decryptString(base64_decode(urldecode(request()->query('d'))));
+            $email = \Crypt::decryptString(base64_decode(request()->query('r')));
+            $username = \Crypt::decryptString(base64_decode(request()->query('u')));
+            $database = \Crypt::decryptString(base64_decode(request()->query('d')));
 
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
