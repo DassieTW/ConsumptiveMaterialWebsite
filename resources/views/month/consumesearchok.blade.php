@@ -116,7 +116,7 @@
                                         <td>{{ $name }}</td>
                                         <td>{{ $format }}</td>
                                         <td><input style="width: 200px;" class="form-control form-control-lg "
-                                                type="text" id="amount{{ $loop->index }}"
+                                                type="text" id="amount{{ $loop->index }}" required
                                                 name="amount{{ $loop->index }}" value="{{ $data->單耗 }}">
                                         </td>
                                         <td>{{ $data->畫押信箱 }}</td>
