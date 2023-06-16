@@ -60,16 +60,16 @@
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     <nav class="navbar navbar-expand navbar-light navbar-bg p-0 m-0">
-
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
 
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        {{ __('templateWords.language') }}
-                    </button>
-                    <ul class="dropdown-menu">
+                    <a class="dropdown-toggle nav-link" href="#langMenu" data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside" data-bs-display="static" aria-expanded="false">
+                        <i class="align-middle mr-1" data-feather="book-open"></i>{{ __('templateWords.language') }}
+                    </a>
+
+                    <ul class="dropdown-menu" id="langMenu">
                         <li> <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
                                 English</a></li>
                         <li><a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-TW') }}">
