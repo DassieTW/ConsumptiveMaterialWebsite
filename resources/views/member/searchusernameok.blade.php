@@ -38,23 +38,21 @@
                             <th>{!! __('loginPageLang.mail') !!}</th>
                         </tr>
                         @foreach ($data as $data)
-                            @if ($data->username !== 'su')
-                                <tr class="isnRows">
-                                    <td><input type="hidden" id="username{{ $loop->index }}"
-                                            name="username{{ $loop->index }}"
-                                            value="{{ $data->username }}">{{ $data->username }}</td>
-                                    <td>{{ $data->password }}</td>
-                                    <td style="width:150px">
-                                        <select class="form-select" id="priority{{ $loop->index }}">
-                                            <option selected>{{ $data->priority }}</option>
-                                        </select>
-                                    </td>
-                                    <td>{{ $data->姓名 }}</td>
-                                    <td>{{ $data->部門 }}</td>
-                                    <td>{{ $data->email }}</td>
-                                </tr>
-                                <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
-                            @endif
+                            <tr class="isnRows">
+                                <td><input type="hidden" id="username{{ $loop->index }}"
+                                        name="username{{ $loop->index }}"
+                                        value="{{ $data->username }}">{{ $data->username }}</td>
+                                <td>{{ $data->password }}</td>
+                                <td style="width:150px">
+                                    <select class="form-select" id="priority{{ $loop->index }}">
+                                        <option selected>{{ $data->priority }}</option>
+                                    </select>
+                                </td>
+                                <td>{{ $data->姓名 }}</td>
+                                <td>{{ $data->部門 }}</td>
+                                <td>{{ $data->email }}</td>
+                            </tr>
+                            <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
                         @endforeach
                     </table>
                 </div>
