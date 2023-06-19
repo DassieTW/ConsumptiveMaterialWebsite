@@ -49,6 +49,7 @@
         "chart.js": "^2.9.4",
         "feather-icons": "4.28.0",
         "flatpickr": "4.6.6",
+        "jquery-loadingModal": "^1.0.2",
         "jsvectormap": "1.1.1",
         "lang.js": "^1.1.14",
         "moment": "^2.28.0",
