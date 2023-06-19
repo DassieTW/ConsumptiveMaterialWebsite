@@ -60,13 +60,16 @@ export default function useOutboundPickRecord() {
             } // for each errors
 
             console.log(errors.value); // test
+            return e;
         } // try catch
 
         // console.log( JSON.parse(mats.value)); // test
     } // get mats post
 
-    const getMats = () => {
-        mats.value = JSON.stringify(getMatsPost);
+    const getMats = async () => {
+        const temp = await getMatsPost(); // test
+        // console.log(temp); // test
+        mats.value = JSON.stringify(temp);
     } // getMats
 
     return {
