@@ -7,6 +7,8 @@ import {
     useRouter
 } from "vue-router";
 
+import * as $ from "jquery";
+
 export default function useOutboundPickRecord() {
     const mats = ref("");
     const errors = ref("");
