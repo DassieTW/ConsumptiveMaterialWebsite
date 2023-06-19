@@ -13,8 +13,8 @@ export default function useConsumptiveMaterials() {
         let lookInTargets = sessionStorage.getItem("lookInTargets");
         let lookInType = sessionStorage.getItem("lookInType");
         let lookInSend = sessionStorage.getItem("lookInSend");
-        console.log(lookInTargets); // test
-        console.log(lookInSend); // test
+        // console.log(lookInTargets); // test
+        // console.log(lookInSend); // test
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
         axios.interceptors.request.use(

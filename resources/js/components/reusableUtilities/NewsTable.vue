@@ -22,7 +22,7 @@ export default defineComponent({
   setup() {
     const { news, getNews } = useNewsSearch(); // axios get the news data
 
-    onMounted(getNews);
+    onBeforeMount(getNews);
 
     const app = getCurrentInstance(); // get the current instance
     let thisHtmlLang = document

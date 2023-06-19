@@ -53,15 +53,8 @@
         }
 
         .nav-tabs {
-            -ms-overflow-style: none;
-            /* Internet Explorer 10+ */
             scrollbar-width: none;
             /* Firefox */
-        }
-
-        .nav-tabs::-webkit-scrollbar {
-            display: none;
-            /* Safari and Chrome */
         }
 
         .arrow {

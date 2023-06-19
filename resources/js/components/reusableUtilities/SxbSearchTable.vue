@@ -31,7 +31,7 @@ export default defineComponent({
     setup() {
         const { mats, getMats } = useSxbSearch(); // axios get the mats data
 
-        onMounted(getMats);
+        onBeforeMount(getMats);
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance

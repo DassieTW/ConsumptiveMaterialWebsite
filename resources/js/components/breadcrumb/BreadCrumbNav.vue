@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { onMounted } from "@vue/runtime-core";
+import { onMounted, onBeforeMount } from "@vue/runtime-core";
 // composable as to component in Vue is like Service as to Controller in Laravel
 import NowWeAt from "../../composables/now_location";
 export default {
@@ -27,8 +27,8 @@ export default {
 
     const { whereurl, getPageNames } = NowWeAt();
 
-    onMounted(getUrl);
-    onMounted(getPageNames);
+    onBeforeMount(getUrl);
+    onBeforeMount(getPageNames);
     var test = (document.getElementsByClassName("sidebar-item active")[1].textContent);
 
     var op = test.replace(/&nbsp;/g, ''); // remove &nbsp;
