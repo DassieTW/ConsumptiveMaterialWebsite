@@ -50,8 +50,8 @@ export default function useOutboundPickRecord() {
                 pickrecordend: pickrecordend
             });
 
-            $('body').loadingModal('hide');
-            $('body').loadingModal('destroy');
+            $("body").loadingModal('hide');
+            $("body").loadingModal('destroy');
             return response.data;
         } catch (e) {
             console.log(e); // test
@@ -62,8 +62,6 @@ export default function useOutboundPickRecord() {
             console.log(errors.value); // test
             return e;
         } // try catch
-
-        // console.log( JSON.parse(mats.value)); // test
     } // get mats post
 
     const getMats = async () => {
