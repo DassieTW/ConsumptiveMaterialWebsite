@@ -12,7 +12,7 @@ export default function useOutboundPickRecord() {
     const errors = ref("");
     const router = useRouter();
 
-    const getMats = async () => {
+    const getMatsPost = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
         let pickrecordclient = sessionStorage.getItem("pickrecordclient");
@@ -39,7 +39,7 @@ export default function useOutboundPickRecord() {
         });
 
         try {
-            let response = await axios.post('/api/outbound/pickrecord', {
+            const response = await axios.post('/api/outbound/pickrecord', {
                 DB: getDB.data,
                 pickrecordclient: pickrecordclient,
                 pickrecordproduction: pickrecordproduction,
@@ -50,10 +50,7 @@ export default function useOutboundPickRecord() {
                 pickrecordend: pickrecordend
             });
 
-            $('body').loadingModal('hide');
-            $('body').loadingModal('destroy');
-            mats.value = JSON.stringify(response.data);
-            // console.log( JSON.parse(mats.value)); // test
+            return response.data;
         } catch (e) {
             console.log(e); // test
             for (const key in e.response.data.errors) {
@@ -62,7 +59,15 @@ export default function useOutboundPickRecord() {
 
             console.log(errors.value); // test
         } // try catch
+
+        // console.log( JSON.parse(mats.value)); // test
     } // get mats
+
+    const getMats = () => {
+        mats.value = JSON.stringify(getMatsPost);
+        $('body').loadingModal('hide');
+        $('body').loadingModal('destroy');
+    }
 
     return {
         mats,
