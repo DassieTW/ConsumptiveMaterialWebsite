@@ -29,11 +29,24 @@ export default function useOutboundPickRecord() {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
-            }); 
+            });
 
             return config; // this config does nothing for us atm
         }, function (error) {
             // do sth with request error
+            console.log(error); // test
+            return Promise.reject(error);
+        });
+
+        // Add a response interceptor
+        axios.interceptors.response.use(function (response) {
+            // Any status code that lie within the range of 2xx cause this function to trigger
+            $("body").loadingModal('hide');
+            $("body").loadingModal('destroy');
+            return response;
+        }, function (error) {
+            // Any status codes that falls outside the range of 2xx cause this function to trigger
+            // Do something with response error
             console.log(error); // test
             return Promise.reject(error);
         });
@@ -50,8 +63,6 @@ export default function useOutboundPickRecord() {
                 pickrecordend: pickrecordend
             });
 
-            $("body").loadingModal('hide');
-            $("body").loadingModal('destroy');
             return response.data;
         } catch (e) {
             console.log(e); // test
@@ -66,7 +77,6 @@ export default function useOutboundPickRecord() {
 
     const getMats = async () => {
         const temp = await getMatsPost(); // test
-        // console.log(temp); // test
         mats.value = JSON.stringify(temp);
     } // getMats
 
