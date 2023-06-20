@@ -22,34 +22,6 @@ export default function useOutboundPickRecord() {
         let pickrecordcheck = sessionStorage.getItem("pickrecordcheck");
         let pickrecordbegin = sessionStorage.getItem("pickrecordbegin");
         let pickrecordend = sessionStorage.getItem("pickrecordend");
-        // let gettest = await axios.post('/basic/materialsearch');
-        // console.log(gettest); // test
-        // axios.interceptors.request.use(function (config) {
-        //     // do sth before request is sent
-        //     $("body").loadingModal({
-        //         text: "Loading...",
-        //         animation: "circle",
-        //     });
-
-        //     return config; // this config does nothing for us atm
-        // }, function (error) {
-        //     // do sth with request error
-        //     console.log(error); // test
-        //     return Promise.reject(error);
-        // });
-
-        // // Add a response interceptor
-        // axios.interceptors.response.use(function (response) {
-        //     // Any status code that lie within the range of 2xx cause this function to trigger
-        //     $("body").loadingModal('hide');
-        //     $("body").loadingModal('destroy');
-        //     return response;
-        // }, function (error) {
-        //     // Any status codes that falls outside the range of 2xx cause this function to trigger
-        //     // Do something with response error
-        //     console.log(error); // test
-        //     return Promise.reject(error);
-        // });
 
         try {
             const response = await axios.post('/api/outbound/pickrecord', {

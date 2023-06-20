@@ -37,7 +37,6 @@
                     <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                         value="{!! __('outboundpageLang.download') !!}">
                     <outbound-pickrecord-table></outbound-pickrecord-table>
-
                 </form>
 
             </div>

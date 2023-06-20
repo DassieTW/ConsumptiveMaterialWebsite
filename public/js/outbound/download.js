@@ -7,11 +7,12 @@ $.ajaxSetup({
 $(document).ready(function () {
     var title = [];
     var titlecol = [];
+    
     $("body").loadingModal({
         text: "Loading...",
         animation: "circle",
     });
-    
+
     $("#QueryFlag").on("click", function (e) {
         // console.log("clicked!"); // test
         $("body").loadingModal("hide");
@@ -241,5 +242,3 @@ $(document).ready(function () {
         });
     });
 });
-
-$(window).on("load", function () {});

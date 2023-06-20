@@ -1,16 +1,26 @@
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
 });
 
 $(document).ready(function () {
+    $("body").loadingModal({
+        text: "Loading...",
+        animation: "circle",
+    });
 
-    $('#notmonthform').on('submit', function (e) {
+    $("#QueryFlag").on("click", function (e) {
+        // console.log("clicked!"); // test
+        $("body").loadingModal("hide");
+        $("body").loadingModal("destroy");
+    });
+
+    $("#notmonthform").on("submit", function (e) {
         e.preventDefault();
 
         // clean up previous input results
-        $('.is-invalid').removeClass('is-invalid');
+        $(".is-invalid").removeClass("is-invalid");
         $(".invalid-feedback").remove();
 
         var title = [];
@@ -22,20 +32,18 @@ $(document).ready(function () {
             title.push($(".vtl-thead-th").eq(i).text());
         }
 
-
-        titlecol.push('客戶別');
-        titlecol.push('料號');
-        titlecol.push('品名');
-        titlecol.push('請購數量');
-        titlecol.push('上傳時間');
-        titlecol.push('說明');
-        titlecol.push('SXB單號');
-
+        titlecol.push("客戶別");
+        titlecol.push("料號");
+        titlecol.push("品名");
+        titlecol.push("請購數量");
+        titlecol.push("上傳時間");
+        titlecol.push("說明");
+        titlecol.push("SXB單號");
 
         console.log(titlename);
         console.log(title);
         $.ajax({
-            type: 'POST',
+            type: "POST",
             url: "download",
             data: {
                 title: title,
@@ -44,35 +52,36 @@ $(document).ready(function () {
                 titlecol: titlecol,
             },
             xhrFields: {
-                responseType: 'blob', // to avoid binary data being mangled on charset conversion
+                responseType: "blob", // to avoid binary data being mangled on charset conversion
             },
 
             beforeSend: function () {
                 // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-                $('body').loadingModal({
-                    text: 'Loading...',
-                    animation: 'circle'
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
                 });
             },
             complete: function () {
-                $('body').loadingModal('hide');
-                $('body').loadingModal('destroy');
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
             },
 
             success: function (blob, status, xhr) {
-
                 console.log(status); // test
                 // check for a filename
 
                 var filename = "";
-                var disposition = xhr.getResponseHeader('Content-Disposition');
-                if (disposition && disposition.indexOf('attachment') !== -1) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                var disposition = xhr.getResponseHeader("Content-Disposition");
+                if (disposition && disposition.indexOf("attachment") !== -1) {
+                    var filenameRegex =
+                        /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
                     var matches = filenameRegex.exec(disposition);
-                    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                    if (matches != null && matches[1])
+                        filename = matches[1].replace(/['"]/g, "");
                 }
 
-                if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                if (typeof window.navigator.msSaveBlob !== "undefined") {
                     // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
                     window.navigator.msSaveBlob(blob, filename);
                 } else {
@@ -83,7 +92,7 @@ $(document).ready(function () {
                         // use HTML5 a[download] attribute to specify filename
                         var a = document.createElement("a");
                         // safari doesn't support this yet
-                        if (typeof a.download === 'undefined') {
+                        if (typeof a.download === "undefined") {
                             window.location.href = downloadUrl;
                         } else {
                             a.href = downloadUrl;
@@ -104,9 +113,7 @@ $(document).ready(function () {
             error: function (jqXHR, textStatus, errorThrown) {
                 console.warn(jqXHR.responseText);
                 alert(errorThrown);
-            }
+            },
         });
-
     });
-
 });

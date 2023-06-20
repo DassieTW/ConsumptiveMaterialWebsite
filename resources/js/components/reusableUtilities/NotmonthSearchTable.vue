@@ -10,8 +10,8 @@
     </div>
     <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
         :messages="table.messages" :columns="table.columns" :columns1="table.columns1" :rows="table.rows"
-        :rows1="table.rows1" :total="table.totalRecordCount" :page-options="table.pageOptions"
-        :sortable="table.sortable" @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+        :rows1="table.rows1" :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
     </table-lite>
 </template>
 
@@ -53,6 +53,10 @@ export default defineComponent({
                 allRowsObj.datas[i].請購數量 = parseInt(allRowsObj.datas[i].請購數量);
                 data.push(allRowsObj.datas[i]);
             } // for
+
+            document
+                .getElementById("QueryFlag")
+                .click();
         }); // watch for data change
 
         let test = "料號";

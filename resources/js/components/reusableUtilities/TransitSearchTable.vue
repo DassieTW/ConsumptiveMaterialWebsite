@@ -52,6 +52,10 @@ export default defineComponent({
                 allRowsObj.datas[i].請購數量 = parseInt(allRowsObj.datas[i].請購數量);
                 data.push(allRowsObj.datas[i]);
             } // for
+
+            document
+                .getElementById("QueryFlag")
+                .click();
         }); // watch for data change
 
         // Table config

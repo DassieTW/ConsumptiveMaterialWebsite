@@ -132,6 +132,16 @@ function appenSVg() {
 } // appenSVg
 
 $(document).ready(function () {
+    $("body").loadingModal({
+        text: "Loading...",
+        animation: "circle",
+    });
+    
+    $("#QueryFlag").on("click", function (e) {
+        // console.log("clicked!"); // test
+        $("body").loadingModal("hide");
+        $("body").loadingModal("destroy");
+    });
 
     $("#addBulletinForm").on("submit", function (e) {
         e.preventDefault();

@@ -18,22 +18,6 @@ export default function useNotmonthSearch() {
         let notmonthclient = sessionStorage.getItem("notmonthclient");
         let notmonthisn = sessionStorage.getItem("notmonthisn");
 
-        // let gettest = await axios.post('/basic/materialsearch');
-        // console.log(gettest); // test
-        axios.interceptors.request.use(function (config) {
-            // do sth before request is sent
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-
-            return config; // this config does nothing for us atm
-        }, function (error) {
-            // do sth with request error
-            console.log(error); // test
-            return Promise.reject(error);
-        });
-
         try {
             let response = await axios.post('/api/month/notmonth', {
                 DB: getDB.data,
@@ -41,8 +25,6 @@ export default function useNotmonthSearch() {
                 notmonthisn: notmonthisn,
             });
 
-            $('body').loadingModal('hide');
-            $('body').loadingModal('destroy');
             mats.value = JSON.stringify(response.data);
             //console.log(JSON.parse(mats.value)); // test
         } catch (e) {

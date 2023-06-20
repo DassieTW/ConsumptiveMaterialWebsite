@@ -22,19 +22,6 @@ export default function useInboundListSearch() {
         let inboundend = sessionStorage.getItem("inboundend");
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
-        axios.interceptors.request.use(function (config) {
-            // do sth before request is sent
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-
-            return config; // this config does nothing for us atm
-        }, function (error) {
-            // do sth with request error
-            console.log(error); // test
-            return Promise.reject(error);
-        });
 
         try {
             let response = await axios.post('/api/inbound/search', {
@@ -47,8 +34,6 @@ export default function useInboundListSearch() {
                 inboundend: inboundend
             });
 
-            $('body').loadingModal('hide');
-            $('body').loadingModal('destroy');
             mats.value = JSON.stringify(response.data);
             // console.log( JSON.parse(mats.value)); // test
         } catch (e) {
