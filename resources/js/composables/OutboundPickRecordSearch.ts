@@ -12,7 +12,7 @@ export default function useOutboundPickRecord() {
     const errors = ref("");
     const router = useRouter();
 
-    const getMatsPost = async () => {
+    const getMats = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
         let pickrecordclient = sessionStorage.getItem("pickrecordclient");
@@ -24,32 +24,32 @@ export default function useOutboundPickRecord() {
         let pickrecordend = sessionStorage.getItem("pickrecordend");
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
-        axios.interceptors.request.use(function (config) {
-            // do sth before request is sent
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
+        // axios.interceptors.request.use(function (config) {
+        //     // do sth before request is sent
+        //     $("body").loadingModal({
+        //         text: "Loading...",
+        //         animation: "circle",
+        //     });
 
-            return config; // this config does nothing for us atm
-        }, function (error) {
-            // do sth with request error
-            console.log(error); // test
-            return Promise.reject(error);
-        });
+        //     return config; // this config does nothing for us atm
+        // }, function (error) {
+        //     // do sth with request error
+        //     console.log(error); // test
+        //     return Promise.reject(error);
+        // });
 
-        // Add a response interceptor
-        axios.interceptors.response.use(function (response) {
-            // Any status code that lie within the range of 2xx cause this function to trigger
-            $("body").loadingModal('hide');
-            $("body").loadingModal('destroy');
-            return response;
-        }, function (error) {
-            // Any status codes that falls outside the range of 2xx cause this function to trigger
-            // Do something with response error
-            console.log(error); // test
-            return Promise.reject(error);
-        });
+        // // Add a response interceptor
+        // axios.interceptors.response.use(function (response) {
+        //     // Any status code that lie within the range of 2xx cause this function to trigger
+        //     $("body").loadingModal('hide');
+        //     $("body").loadingModal('destroy');
+        //     return response;
+        // }, function (error) {
+        //     // Any status codes that falls outside the range of 2xx cause this function to trigger
+        //     // Do something with response error
+        //     console.log(error); // test
+        //     return Promise.reject(error);
+        // });
 
         try {
             const response = await axios.post('/api/outbound/pickrecord', {
@@ -63,7 +63,7 @@ export default function useOutboundPickRecord() {
                 pickrecordend: pickrecordend
             });
 
-            return response.data;
+            mats.value = JSON.stringify(response.data);
         } catch (e) {
             console.log(e); // test
             for (const key in e.response.data.errors) {
@@ -73,12 +73,7 @@ export default function useOutboundPickRecord() {
             console.log(errors.value); // test
             return e;
         } // try catch
-    } // get mats post
-
-    const getMats = async () => {
-        const temp = await getMatsPost(); // test
-        mats.value = JSON.stringify(temp);
-    } // getMats
+    } // get mats
 
     return {
         mats,
