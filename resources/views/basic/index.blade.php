@@ -52,51 +52,21 @@
             transform: scale(1);
         }
 
-        .arrow {
-            position: absolute;
-            z-index: 2;
-            top: calc(30% - 1px);
-            right: calc(0% - 1px);
-            width: 3px;
-            height: 16px;
-            /* background: white; */
-
-            animation: bounce 1s cubic-bezier(.19, .38, 0, 1) infinite;
-
-            &::after {
-                content: '';
-                position: absolute;
-                width: 8px;
-                height: 8px;
-                bottom: 0;
-                left: -4px;
-                border-bottom: solid darkgray 3px;
-                border-right: solid darkgray 3px;
-            }
+        #myTab::-webkit-scrollbar-track {
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            border-radius: 4px;
+            background-color: #F5F5F5;
         }
 
-        @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateX(-4px);
-            }
-
-            50% {
-                transform: translateX(4px);
-            }
+        #myTab::-webkit-scrollbar {
+            height: 4px;
+            -webkit-appearance: none;
         }
 
-        .arrow.arrowR {
-            &::after {
-                transform: rotate(-45deg);
-            }
-        }
-
-        .arrow.arrowL {
-            &::after {
-                transform: rotate(135deg);
-            }
+        #myTab::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            background-color: rgba(0, 0, 0, 0.3);
         }
     </style>
 @endsection
