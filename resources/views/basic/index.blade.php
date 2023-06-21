@@ -52,11 +52,6 @@
             transform: scale(1);
         }
 
-        .nav-tabs {
-            scrollbar-width: none;
-            /* Firefox */
-        }
-
         .arrow {
             position: absolute;
             z-index: 2;
@@ -114,7 +109,6 @@
 @section('content')
     <div class="row justify-content-center">
         {{-- <div class="arrow arrowL"></div> --}}
-        <div class="arrow arrowL"></div>
         <div class="card w-100">
             <form id="basicdata" class="p-3 justify-content-center">
                 @csrf
