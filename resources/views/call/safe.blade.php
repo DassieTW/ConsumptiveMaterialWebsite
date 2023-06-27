@@ -191,7 +191,7 @@
                             if ($data->inventory現有庫存 === null) {
                                 $data->inventory現有庫存 = 0;
                             }
-                            // dd($astock2 , $position2);
+                            //dd($astock2, $position2);
                             ?>
 
                             <tr id="datab{{ $loop->index }}" class="isnRows2">

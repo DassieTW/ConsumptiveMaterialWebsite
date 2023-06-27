@@ -5,6 +5,11 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
+  $("body").loadingModal({
+    text: "Loading...",
+    animation: "circle",
+  });
+
   var title = [];
   var titlecol = [];
 
