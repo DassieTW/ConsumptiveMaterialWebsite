@@ -41,6 +41,9 @@ class Kernel extends ConsoleKernel
 
         // Clean up dated users
         $schedule->command('olduser:clear')->quarterly('02:00')->timezone('Asia/Taipei');
+
+        // Clean up dated inventory
+        $schedule->command('inventory:cleanup')->quarterly('01:00')->timezone('Asia/Taipei');
     } // schedule
 
     /**
