@@ -12,18 +12,7 @@ const { exec } = require('child_process');
  |
  */
 
-mix.js("resources/js/app.js", "public/js")
-    .vue({ version: 3 })
-    .sass("resources/sass/app.scss", "public/css")
-    .postCss("resources/css/app.css", "public/css")
-    .version()
-    .sourceMaps()
-    .after(() => {
-        exec('php artisan lang:js --quiet');
-        exec('php artisan lang:js resources/js/vue-translations.js --no-lib --quiet');
-    });
-
-mix.autoload({
+ mix.autoload({
     jquery: [
         "$",
         "window.jQuery",
@@ -34,6 +23,17 @@ mix.autoload({
     ],
     "popper.js/dist/umd/popper.js": ["Popper"],
 });
+
+mix.js("resources/js/app.js", "public/js")
+    .vue({ version: 3 })
+    .sass("resources/sass/app.scss", "public/css")
+    .postCss("resources/css/app.css", "public/css")
+    .version()
+    .sourceMaps()
+    .after(() => {
+        exec('php artisan lang:js --quiet');
+        exec('php artisan lang:js resources/js/vue-translations.js --no-lib --quiet');
+    });
 
 const WebpackShellPlugin = require("webpack-shell-plugin-next");
 

@@ -29,7 +29,7 @@
                 <vue-bread-crumb></vue-bread-crumb>
             </div>
         </div>
-
+        <button type="hidden" id="QueryFlag" name="QueryFlag" value="Posting" style="display: none;"></button>
         <div class="card">
             <div class="card-body">
                 <form id="inboundsearch" method="POST">

@@ -30,7 +30,7 @@ export default defineComponent({
   setup() {
     const { mats, getMats } = useInboundListSearch(); // axios get the mats data
 
-    onMounted(getMats);
+    onBeforeMount(getMats);
 
     const searchTerm = ref(""); // Search text
     const app = getCurrentInstance(); // get the current instance
@@ -51,6 +51,10 @@ export default defineComponent({
       for (let i = 0; i < allRowsObj.datas.length; i++) {
         data.push(allRowsObj.datas[i]);
       } // for
+
+      document
+        .getElementById("QueryFlag")
+        .click();
     }); // watch for data change
 
     // Table config

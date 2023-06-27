@@ -77,6 +77,7 @@
                 </div>
             </div>
         </div>
+        <button type="hidden" id="QueryFlag" name="QueryFlag" value="Posting" style="display: none;"></button>
         <div class="row">
             <div class="card w-100 flex-fill">
                 <div class="card-header">

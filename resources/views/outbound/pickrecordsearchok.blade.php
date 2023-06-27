@@ -28,7 +28,7 @@
                 <vue-bread-crumb></vue-bread-crumb>
             </div>
         </div>
-
+        <button type="hidden" id="QueryFlag" name="QueryFlag" value="Posting" style="display: none;"></button>
         <div class="card">
             <div class="card-body">
                 <form id="picktable" method="POST">
@@ -37,7 +37,6 @@
                     <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                         value="{!! __('outboundpageLang.download') !!}">
                     <outbound-pickrecord-table></outbound-pickrecord-table>
-
                 </form>
 
             </div>

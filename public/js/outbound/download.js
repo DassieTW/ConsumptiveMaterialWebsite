@@ -5,13 +5,19 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
+  var title = [];
+  var titlecol = [];
+
   $("body").loadingModal({
     text: "Loading...",
     animation: "circle",
   });
 
-  var title = [];
-  var titlecol = [];
+  $("#QueryFlag").on("click", function (e) {
+    // console.log("clicked!"); // test
+    $("body").loadingModal("hide");
+    $("body").loadingModal("destroy");
+  });
 
   $("#picktable").on("submit", function (e) {
     e.preventDefault();

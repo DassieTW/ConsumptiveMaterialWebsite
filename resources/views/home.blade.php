@@ -4,25 +4,46 @@
 
 @section('js')
     <!--for this page's sepcified js -->
+    <script>
+        $(document).ready(function() {
+            var title = [];
+            var titlecol = [];
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            $("#QueryFlag").on("click", function(e) {
+                // console.log("clicked!"); // test
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+            });
+        });
+    </script>
 @endsection
 @section('content')
     <div class="row justify-content-center" id="mountingPoint">
         <div class="col col-auto">
             <a href="http://eip.tw.pegatroncorp.com/" target="_blank">{!! __('templateWords.taipei') !!}</a>
-            &nbsp;<hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
+            &nbsp;
+            <hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
             <a href="http://eip.tw.pegatroncorp.com/DeptSiteMap.aspx" target="_blank">{!! __('templateWords.dep') !!}</a>
-            &nbsp;<hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
+            &nbsp;
+            <hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
             <a href="http://project.eip.tw.pegatroncorp.com/default.aspx" target="_blank">{!! __('templateWords.project') !!}</a>
-            &nbsp;<hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
+            &nbsp;
+            <hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
             <a href="http://eip.sh.pegatroncorp.com/" target="_blank">{!! __('templateWords.east') !!}</a>
-            &nbsp;<hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
+            &nbsp;
+            <hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
             <a href="http://eip.sz.pegatroncorp.com/eip/" target="_blank">{!! __('templateWords.middle') !!}</a>
-            &nbsp;<hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
+            &nbsp;
+            <hr width="3" size="10;" style="margin: auto; align:center; display:inline-block;" /> &nbsp;
             <a href="http://eip.cq.pegatroncorp.com/Home.aspx" target="_blank">{!! __('templateWords.west') !!}</a>
         </div>
 
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
+        <button type="hidden" id="QueryFlag" name="QueryFlag" value="Posting" style="display: none;"></button>
         <div class="row">
             <div class="card w-100 flex-fill">
                 <div class="card-header">

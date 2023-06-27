@@ -4855,6 +4855,11 @@ jest-worker@^27.4.5:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
+jquery-loadingModal@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/jquery-loadingModal/-/jquery-loadingModal-1.0.2.tgz#ba195397c8a5d0397b8ba81fdf0ba945994d5c4b"
+  integrity sha512-KesZ02k+8Pw44k9zmW8BO9bAxxGmj+D7CXFifHTJNLqQjczKwLi5YfCxv09UX6VD+BAo4HLYJwQJ1oq3Fi+Znw==
+
 jquery@^3.6.0:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.1.tgz#fab0408f8b45fc19f956205773b62b292c147a16"

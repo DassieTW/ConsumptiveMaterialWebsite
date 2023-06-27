@@ -22,24 +22,9 @@ export default function useOutboundPickRecord() {
         let pickrecordcheck = sessionStorage.getItem("pickrecordcheck");
         let pickrecordbegin = sessionStorage.getItem("pickrecordbegin");
         let pickrecordend = sessionStorage.getItem("pickrecordend");
-        // let gettest = await axios.post('/basic/materialsearch');
-        // console.log(gettest); // test
-        axios.interceptors.request.use(function (config) {
-            // do sth before request is sent
-            // $("body").loadingModal({
-            //     text: "Loading...",
-            //     animation: "circle",
-            // });
-
-            return config; // this config does nothing for us atm
-        }, function (error) {
-            // do sth with request error
-            console.log(error); // test
-            return Promise.reject(error);
-        });
 
         try {
-            let response = await axios.post('/api/outbound/pickrecord', {
+            const response = await axios.post('/api/outbound/pickrecord', {
                 DB: getDB.data,
                 pickrecordclient: pickrecordclient,
                 pickrecordproduction: pickrecordproduction,
@@ -50,13 +35,7 @@ export default function useOutboundPickRecord() {
                 pickrecordend: pickrecordend
             });
 
-            // $('body').loadingModal('hide');
-            // $('body').loadingModal('destroy');
             mats.value = JSON.stringify(response.data);
-            $('body').loadingModal('hide');
-            $('body').loadingModal('destroy');
-
-            // console.log( JSON.parse(mats.value)); // test
         } catch (e) {
             console.log(e); // test
             for (const key in e.response.data.errors) {
@@ -64,6 +43,7 @@ export default function useOutboundPickRecord() {
             } // for each errors
 
             console.log(errors.value); // test
+            return e;
         } // try catch
     } // get mats
 

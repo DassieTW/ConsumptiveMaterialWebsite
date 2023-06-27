@@ -30,7 +30,7 @@ export default defineComponent({
     setup() {
         const { mats, getMats } = useTransitSearch(); // axios get the mats data
 
-        onMounted(getMats);
+        onBeforeMount(getMats);
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance
@@ -52,6 +52,10 @@ export default defineComponent({
                 allRowsObj.datas[i].請購數量 = parseInt(allRowsObj.datas[i].請購數量);
                 data.push(allRowsObj.datas[i]);
             } // for
+
+            document
+                .getElementById("QueryFlag")
+                .click();
         }); // watch for data change
 
         // Table config

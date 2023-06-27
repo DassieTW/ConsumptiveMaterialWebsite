@@ -10,8 +10,8 @@
     </div>
     <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
         :messages="table.messages" :columns="table.columns" :columns1="table.columns1" :rows="table.rows"
-        :rows1="table.rows1" :total="table.totalRecordCount" :page-options="table.pageOptions"
-        :sortable="table.sortable" @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+        :rows1="table.rows1" :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
     </table-lite>
 </template>
 
@@ -31,7 +31,7 @@ export default defineComponent({
     setup() {
         const { mats, getMats } = useSxbSearch(); // axios get the mats data
 
-        onMounted(getMats);
+        onBeforeMount(getMats);
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance
@@ -57,6 +57,10 @@ export default defineComponent({
                 allRowsObj.datas1[j].請購數量 = parseInt(allRowsObj.datas1[j].請購數量);
                 data.push(allRowsObj.datas1[j]);
             } // for
+
+            document
+                .getElementById("QueryFlag")
+                .click();
         }); // watch for data change
 
         // Table config
