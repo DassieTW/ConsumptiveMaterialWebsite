@@ -50,7 +50,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                {{-- <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                                 <label class="col col-auto form-label">{!! __('outboundpageLang.senddep') !!}</label>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -62,7 +62,7 @@
                                             <option>{{ $data->發料部門 }}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             </div>
                             <div class="row w-100 justify-content-center">
