@@ -57,7 +57,7 @@ Route::post('/searchstock', function (Request $request) {
     $inboundloc = json_decode($request->input('inboundloc'));
     $inboundsend = json_decode($request->input('inboundsend'));
     $inboundmonth = json_decode($request->input('inboundmonth'));
-    $inboundnogood = date(json_decode($request->input('inboundnogood')));
+    $inboundnogood = json_decode($request->input('inboundnogood'));
 
     //$datas = [];
 

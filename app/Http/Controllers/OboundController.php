@@ -1051,10 +1051,18 @@ class OboundController extends Controller
             $worksheet = $spreadsheet->getActiveSheet();
             $titlecount = $request->input('titlecount');
             $titlename = $request->input('titlename');
+            $nogood = $request->input('nogood');
 
             if ($titlename === "O庫領料記錄表") {
                 $Alldata = DB::table('O庫outbound')
                     ->whereNotNull('發料人員')->get();
+            } else if ($titlename === "O庫庫存") {
+                if ($nogood === "2") {
+                    $titlename = "O庫不良品庫存";
+                    $Alldata = DB::table('O庫不良品inventory')->get();
+                } else {
+                    $Alldata = DB::table('O庫inventory')->get();
+                }
             } else {
                 $Alldata = DB::table('O庫出庫退料')
                     ->whereNotNull('收料人員')->get();
