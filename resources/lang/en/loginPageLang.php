@@ -61,7 +61,7 @@ return [
     'loginsearch' => 'Login account search',
     'enterlogin' => 'Please enter the login account',
     'search' => 'Search',
-    'delete' => 'delete',
+    'delete' => 'Delete',
     'jobsearch' => 'ID search',
     'enterjobsearch' => 'Please enter your ID',
     'addtodatabase' => 'AddtoDatabase',
