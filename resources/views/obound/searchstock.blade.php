@@ -3,6 +3,7 @@
 @endsection
 
 @section('js')
+    <script src="{{ asset('js/obound/searchstock.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -21,7 +22,7 @@
             <div class="row justify-content-center">
                 <div class="card-body">
                     <div class="d-flex w-100">
-                        <form action="{{ route('obound.searchstocksubmit') }}" method="POST">
+                        <form id="form1" method="POST">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
                                 <label class="col col-auto form-label">{!! __('oboundpageLang.bound') !!}</label>

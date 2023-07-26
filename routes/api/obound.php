@@ -60,6 +60,28 @@ Route::post('/isnsearch', function (Request $request) {
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
 
+// 庫存查詢
+Route::post('/searchstock', function (Request $request) {
+    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+    \DB::purge(env("DB_CONNECTION"));
+    $dbName = DB::connection()->getDatabaseName(); // test
+
+    $oboundisn = json_decode($request->input('oboundstockisn'));
+    $oboundnogood = json_decode($request->input('oboundnogood'));
+
+    $datas = [];
+    if ($oboundnogood) {
+        $datas = DB::table('O庫不良品inventory')
+            ->where('料號', 'like', $oboundisn . '%')
+            ->get();
+    } else {
+        $datas = DB::table('O庫inventory')
+            ->where('料號', 'like', $oboundisn . '%')
+            ->get();
+    }
+    return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
+});
+
 // 領料記錄表查詢
 Route::post('/picklistsearch', function (Request $request) {
     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));

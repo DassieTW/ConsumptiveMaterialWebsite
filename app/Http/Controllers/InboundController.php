@@ -745,6 +745,7 @@ class InboundController extends Controller
             if ($titlename === "庫存") {
                 // 不良品
                 if ($nogood === "2") {
+                    $titlename = "不良品庫存";
                     $datas = DB::table('consumptive_material')
                         ->join('不良品inventory', function ($join) {
                             $join->on('不良品inventory.料號', '=', 'consumptive_material.料號');

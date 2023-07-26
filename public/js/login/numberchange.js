@@ -31,7 +31,7 @@ $(document).ready(function () {
       number.push($("#number" + check[i]).val());
     }
 
-    if (select == "刪除" || select == "删除" || select == "Delete") {
+    if (select === "刪除" || select === "删除" || select === "Delete") {
       select = "刪除";
       checked = $("input[type=checkbox]:checked").length;
 
@@ -154,7 +154,9 @@ $(document).ready(function () {
             type: "success",
             message:
               Lang.get("loginPageLang.user") +
+              " " +
               Lang.get("loginPageLang.new") +
+              " " +
               Lang.get("loginPageLang.success"),
             duration: 3000, //miliseconds, use 0 for infinite duration
             ripple: true,
@@ -179,7 +181,9 @@ $(document).ready(function () {
             type: "info",
             message:
               Lang.get("loginPageLang.user") +
+              " " +
               Lang.get("loginPageLang.delete") +
+              " " +
               Lang.get("loginPageLang.success"),
             duration: 3000, //miliseconds, use 0 for infinite duration
             ripple: true,

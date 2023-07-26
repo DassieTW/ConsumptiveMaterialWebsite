@@ -197,7 +197,7 @@ class MailService
             }
             $datas1 = array_values($datas1);
 
-            $inventorys2 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 ,客戶別  ,料號'))->groupBy('客戶別', '料號');
+            $inventorys2 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 ,料號'))->groupBy('料號');
 
             $datas2 = DB::table('consumptive_material')
                 ->leftJoinSub($inventorys2, 'suminventory', function ($join) {
