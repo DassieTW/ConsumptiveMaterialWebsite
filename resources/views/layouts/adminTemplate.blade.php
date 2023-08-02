@@ -957,7 +957,7 @@
         </nav>
 
         <div class="main">
-            <nav class="navbar navbar-expand navbar-light navbar-bg">
+            <nav class="navbar navbar-expand navbar-light navbar-bg ">
                 <a class="sidebar-toggle d-flex">
                     <i class="hamburger align-self-center"></i>
                 </a>
@@ -976,11 +976,11 @@
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
                         {{-- <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown"
-                                data-bs-display="static">
+                            <a class="nav-icon dropdown-toggle pt-1" href="#" id="alertsDropdown"
+                                data-bs-toggle="dropdown" data-bs-display="static" style="height: 100%;">
                                 <div class="position-relative">
                                     <i class="align-middle" data-feather="bell"></i>
-                                    <span class="indicator">4</span>
+                                    <span class="indicator bg-danger">4</span>
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-lg-end py-0"
@@ -1044,8 +1044,8 @@
                                     <a href="#" class="text-muted">Show all notifications</a>
                                 </div>
                             </div>
-                        </li>
-                        <li class="nav-item dropdown">
+                        </li> --}}
+                        {{-- <li class="nav-item dropdown">
                             <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-bs-toggle="dropdown"
                                 data-bs-display="static">
                                 <div class="position-relative">
@@ -1131,7 +1131,7 @@
                             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                                 data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static">
                                 <img src="../admin/img/avatars/avatarBot{{ \Auth::user()->avatarChoice }}.png"
-                                    class="avatar img-fluid rounded mr-1" alt="{{ \Auth::user()->姓名 }}" /> <span
+                                    class="avatar img-fluid rounded mx-auto" alt="{{ \Auth::user()->姓名 }}" /> <span
                                     class="text-dark">{{ \Auth::user()->姓名 }}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end align-items-center"
@@ -1140,7 +1140,7 @@
                                     <i class="p-0 mr-1" data-feather="user"></i>
                                     <span>Profile</span>
                                 </a>
-
+                                <div class="dropdown-divider"></div>
                                 @can('canSwitchSites', App\Models\Login::class)
                                     <a class="dropdown-item align-items-center" data-bs-toggle="collapse"
                                         data-bs-target="#sitesMenu" aria-expanded="false">
@@ -1155,20 +1155,20 @@
                                     </a>
                                     <div class="collapse" id="sitesMenu">
                                         @php
-                                            $database_list = config('database_list.databases');
-                                            $database_names = [];
-                                            foreach ($database_list as $value) {
-                                                $temp = str_replace(' Consumables management', '', $value);
-                                                array_push($database_names, $temp);
+                                            $database_list_switcher = config('database_list.databases');
+                                            $database_names_switcher = [];
+                                            foreach ($database_list_switcher as $valuez) {
+                                                $tempz = str_replace(' Consumables management', '', $valuez);
+                                                array_push($database_names_switcher, $tempz);
                                             } // for each
                                             
-                                            unset($value); // unset the var created in the foreach loop
+                                            unset($valuez); // unset the var created in the foreach loop
                                         @endphp
-                                        @for ($i = 1; $i < count($database_list); $i++)
-                                            @if (\Session::get('database') != $database_list[$i])
-                                                <a class="dropdown-item justify-content-center" href="#"
-                                                    value="{{ $database_list[$i] }}">
-                                                    {{ $database_names[$i] }}</a>
+                                        @for ($i = 1; $i < count($database_list_switcher); $i++)
+                                            @if (\Session::get('database') != $database_list_switcher[$i])
+                                                <a class="dropdown-item justify-content-center" href="{{ url('/switchSite/' . str_replace(' ', '_', $database_list_switcher[$i])) }}"
+                                                    value="{{ $database_list_switcher[$i] }}">
+                                                    {{ $database_names_switcher[$i] }}</a>
                                             @endif
                                         @endfor
                                     </div>
@@ -1185,6 +1185,7 @@
                                         <span>{{ str_replace('Consumables management', '', \Session::get('database')) }}</span>
                                     </a>
                                 @endcan
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu"
                                     aria-expanded="false">
                                     <i class="p-0 mr-1" data-feather="book-open"></i>

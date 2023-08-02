@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use DateTime;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use League\CommonMark\Cursor;
 
@@ -151,6 +152,29 @@ class LoginController extends Controller
         } // else
     } // attemptSSOLogin
 
+    protected function attemptRecentlyLoginDBForMultiSiteUsers(Request $request)
+    {
+        $databaseArray = config('database_list.databases');
+        $latestLoginTime = new DateTime("1996-12-10 16:52:36.000");
+        $mostrecentDB = "None";
+
+        foreach ($databaseArray as $site) {
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
+            \DB::purge(env("DB_CONNECTION"));
+            $user = Login::where([
+                'username' => $request->work_id,
+            ])->first();
+
+            $tempDateTime = new DateTime($user->last_login_time);
+            if ($tempDateTime > $latestLoginTime) {
+                $mostrecentDB = $site;
+                $latestLoginTime = $tempDateTime;
+            } // if
+        } // foreach
+
+        return $mostrecentDB;
+    } // attemptRecentlyLoginDBForMultiSiteUsers
+
     //OA Account Login
     public function OALogin(Request $request)
     {
@@ -167,26 +191,30 @@ class LoginController extends Controller
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
             \DB::purge(env("DB_CONNECTION"));
             if ($this->attemptSSOLogin($request)) {
-                $request->session()->regenerate();
 
-                $usernameAuthed = \Auth::user()->username;
-                $prior = \Auth::user()->priority;
-                $avatarChoice = \Auth::user()->avatarChoice;
-                Session::put('username', $usernameAuthed);
-                Session::put('priority', $prior);
-                Session::put('avatarChoice', $avatarChoice);
-                $this->authenticated($request, \Auth::user()); // set the login db
+                $request->session()->regenerate();
 
                 DB::beginTransaction();
 
                 try {
                     $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+
+                    if (\Auth::user()->priority < 1) {
+                        $recentSite = $this->attemptRecentlyLoginDBForMultiSiteUsers($request);
+                        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $recentSite);
+                        \DB::purge(env("DB_CONNECTION"));
+                        $encrypt_site = \Crypt::encrypt($recentSite);
+                    } // if
+                    else {
+                        $encrypt_site = \Crypt::encrypt($site);
+                    } // if else
+
                     $affected = DB::table('login')
                         ->where('username', '=', \Auth::user()->username)
                         ->update(['last_login_time' => $datetime]);
 
                     DB::commit();
-                    $encrypt_site = \Crypt::encrypt($site);
+
                     $encrypt_id = \Crypt::encrypt($request->work_id);
                     return redirect('/?S=' . $encrypt_id . '&D=' . $encrypt_site);
                     // all good
@@ -206,6 +234,50 @@ class LoginController extends Controller
         Session::put('office_mail', $request->office_mail);
         return redirect()->route('member.New_OA_Login');
     } // OAlogin
+
+    // switch the user ( with priority 0 ) to another site
+    public function switchSite(Request $request, $site_name)
+    {
+        $DBName = str_replace('_', ' ', $site_name);
+        $previousUser = \Auth::user();
+        $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+
+        \Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        $request->session()->flush();
+
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $DBName);
+        \DB::purge(env("DB_CONNECTION"));
+
+        $user = Login::updateOrCreate(
+            ['username' => $previousUser->username],
+            [
+                'password' => $previousUser->password,
+                'priority' => $previousUser->priority,
+                '姓名' => $previousUser->姓名,
+                '部門' => $previousUser->部門,
+                'avatarChoice' => $previousUser->avatarChoice,
+                'email' => $previousUser->email,
+                'last_login_time' => $datetime
+            ]
+        );
+
+        \Auth::login($user);
+        $request->session()->regenerate();
+        $usernameAuthed = \Auth::user()->username;
+        $prior = \Auth::user()->priority;
+        $avatarChoice = \Auth::user()->avatarChoice;
+        Session::put('username', $usernameAuthed);
+        Session::put('priority', $prior);
+        Session::put('avatarChoice', $avatarChoice);
+        session(['database' => $DBName]);
+
+        return redirect()->back();
+    } // switchSite
 
     //register newly logged in OA account
     public function register(Request $request)

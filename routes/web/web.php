@@ -45,7 +45,7 @@ Route::get('/', function (Request $request) {
         $decrypted_id = \Crypt::decrypt(request()->S);
         $user = Login::where([
             'username' => $decrypted_id,
-        ])->firstOr(function ($site, $id) use ($decrypted_site, $decrypted_id) { 
+        ])->firstOr(function ($site, $id) use ($decrypted_site, $decrypted_id) {
             // returns the first result matching the query or, if no results are found, execute the given closure
             dd($site . "_" . $id);
         });
@@ -74,6 +74,8 @@ Route::get('/', function (Request $request) {
         return view('welcome');
     } // else
 })->name('welcome')->withoutMiddleware('auth');
+
+Route::get('/switchSite/{site_name}', [App\Http\Controllers\Auth\LoginController::class, 'switchSite'])->name('switchSite');
 
 Route::get('/hello_world', function () {
     return view('hello_world');
