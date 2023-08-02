@@ -27,6 +27,24 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
+    <style>
+        #UserDropDown::-webkit-scrollbar-track {
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            border-radius: 4px;
+            background-color: #F5F5F5;
+        }
+
+        #UserDropDown::-webkit-scrollbar {
+            height: 4px;
+            -webkit-appearance: none;
+        }
+
+        #UserDropDown::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+    </style>
     @yield('css')
     {{-- local lang for js --}}
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
@@ -1134,7 +1152,7 @@
                                     class="avatar img-fluid rounded mx-auto" alt="{{ \Auth::user()->姓名 }}" /> <span
                                     class="text-dark">{{ \Auth::user()->姓名 }}</span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end align-items-center"
+                            <div class="dropdown-menu dropdown-menu-end align-items-center" id="UserDropDown"
                                 style="border-radius: 10px; max-height: 48ch; overflow-y: auto;">
                                 <a class="dropdown-item" href="{{ url('/member/change') }}">
                                     <i class="p-0 mr-1" data-feather="user"></i>
@@ -1166,7 +1184,8 @@
                                         @endphp
                                         @for ($i = 1; $i < count($database_list_switcher); $i++)
                                             @if (\Session::get('database') != $database_list_switcher[$i])
-                                                <a class="dropdown-item justify-content-center" href="{{ url('/switchSite/' . str_replace(' ', '_', $database_list_switcher[$i])) }}"
+                                                <a class="dropdown-item justify-content-center"
+                                                    href="{{ url('/switchSite/' . str_replace(' ', '_', $database_list_switcher[$i])) }}"
                                                     value="{{ $database_list_switcher[$i] }}">
                                                     {{ $database_names_switcher[$i] }}</a>
                                             @endif
