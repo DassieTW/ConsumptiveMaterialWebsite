@@ -152,11 +152,11 @@ class LoginController extends Controller
         } // else
     } // attemptSSOLogin
 
-    protected function attemptRecentlyLoginDBForMultiSiteUsers(Request $request)
+    protected function attemptRecentlyLoginDBForMultiSiteUsers(Request $request, $PrevSite)
     {
         $databaseArray = config('database_list.databases');
         $latestLoginTime = new DateTime("1996-12-10 16:52:36.000");
-        $mostrecentDB = "None";
+        $mostrecentDB = $PrevSite;
 
         foreach ($databaseArray as $site) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
@@ -165,11 +165,14 @@ class LoginController extends Controller
                 'username' => $request->work_id,
             ])->first();
 
-            $tempDateTime = new DateTime($user->last_login_time);
-            if ($tempDateTime > $latestLoginTime) {
-                $mostrecentDB = $site;
-                $latestLoginTime = $tempDateTime;
+            if ($user !== null) {
+                $tempDateTime = new DateTime($user->last_login_time);
+                if ($tempDateTime > $latestLoginTime) {
+                    $mostrecentDB = $site;
+                    $latestLoginTime = $tempDateTime;
+                } // if
             } // if
+
         } // foreach
 
         return $mostrecentDB;
@@ -200,7 +203,7 @@ class LoginController extends Controller
                     $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
                     if (\Auth::user()->priority < 1) {
-                        $recentSite = $this->attemptRecentlyLoginDBForMultiSiteUsers($request);
+                        $recentSite = $this->attemptRecentlyLoginDBForMultiSiteUsers($request, $site);
                         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $recentSite);
                         \DB::purge(env("DB_CONNECTION"));
                         $encrypt_site = \Crypt::encrypt($recentSite);
