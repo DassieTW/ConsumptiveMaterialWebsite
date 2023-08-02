@@ -1135,7 +1135,7 @@
                                     class="text-dark">{{ \Auth::user()->姓名 }}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end align-items-center"
-                                style="border-radius: 10px;">
+                                style="border-radius: 10px; max-height: 48ch; overflow-y: auto;">
                                 <a class="dropdown-item" href="{{ url('/member/change') }}">
                                     <i class="p-0 mr-1" data-feather="user"></i>
                                     <span>Profile</span>
