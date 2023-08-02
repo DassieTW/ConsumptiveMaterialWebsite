@@ -30,17 +30,17 @@
     <style>
         #UserDropDown::-webkit-scrollbar-track {
             -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
-            border-radius: 2px;
+            border-radius: 4px;
             background-color: #F5F5F5;
         }
 
         #UserDropDown::-webkit-scrollbar {
-            height: 2px;
+            width: 4px;
             -webkit-appearance: none;
         }
 
         #UserDropDown::-webkit-scrollbar-thumb {
-            border-radius: 2px;
+            border-radius: 4px;
             -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
             background-color: rgba(0, 0, 0, 0.3);
         }
