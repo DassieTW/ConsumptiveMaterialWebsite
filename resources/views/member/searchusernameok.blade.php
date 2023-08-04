@@ -43,8 +43,8 @@
                                         name="username{{ $loop->index }}"
                                         value="{{ $data->username }}">{{ $data->username }}</td>
                                 <td>{{ $data->password }}</td>
-                                <td style="width:150px">
-                                    <select class="form-select" id="priority{{ $loop->index }}">
+                                <td>
+                                    <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch">
                                         <option selected>{{ $data->priority }}</option>
                                     </select>
                                 </td>
@@ -53,6 +53,7 @@
                                 <td>{{ $data->email }}</td>
                             </tr>
                             <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                            <input type="hidden" id="department" name="department" value="{{ $department }}">
                         @endforeach
                     </table>
                 </div>

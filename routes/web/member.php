@@ -105,7 +105,12 @@ Route::post('/logout', [Auth\LoginController::class, 'logout'])->name('member.lo
 
 //用戶信息查詢頁面
 Route::get('/username', function () {
-    return view('member.searchusernameok')->with(['data' => Login::cursor()->where('priority', '<>', 1)]);
+    $department = Session::get('department');
+    if (strpos($department, "IT專案課") !== false) {
+        return view('member.searchusernameok')->with(['data' => Login::cursor(), 'department' => $department]);
+    } else {
+        return view('member.searchusernameok')->with(['data' => Login::cursor()->where('priority', '>', 1), 'department' => $department]);
+    }
 })->name('member.username')->middleware('can:searchAndUpdateUser,App\Models\Login');
 
 //用戶信息刪除或修改

@@ -5,6 +5,8 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
+  var department = $("#department").val();
+  console.log(department);
   function quickSearch() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
@@ -28,8 +30,13 @@ $(document).ready(function () {
     e.preventDefault();
     quickSearch();
   });
-  var options = ["1", "2", "3", "4"];
   var all = $("#count").val();
+  if (department.indexOf("IT專案課") !== -1) {
+    var options = ["0", "1", "2", "3", "4"];
+  } else {
+    var options = ["1", "2", "3", "4"];
+  }
+
   for (let i = 0; i < all; i++) {
     var selectElement = document.getElementById("priority" + i);
     var temppriority = $("#priority" + i).val();

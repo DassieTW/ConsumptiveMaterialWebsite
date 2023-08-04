@@ -90,9 +90,13 @@ class LoginController extends Controller
             $usernameAuthed = \Auth::user()->username;
             $prior = \Auth::user()->priority;
             $avatarChoice = \Auth::user()->avatarChoice;
+            $department = \Auth::user()->部門;
+
             Session::put('username', $usernameAuthed);
             Session::put('priority', $prior);
             Session::put('avatarChoice', $avatarChoice);
+            Session::put('department', $department);
+
             $this->authenticated($request, \Auth::user()); // set the login db
 
             DB::beginTransaction();
