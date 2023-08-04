@@ -27,6 +27,24 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
+    <style>
+        #UserDropDown::-webkit-scrollbar-track {
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            border-radius: 4px;
+            background-color: #F5F5F5;
+        }
+
+        #UserDropDown::-webkit-scrollbar {
+            width: 4px;
+            -webkit-appearance: none;
+        }
+
+        #UserDropDown::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+    </style>
     @yield('css')
     {{-- local lang for js --}}
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
@@ -84,8 +102,7 @@
                                     <a class="sidebar-brand" href="{{ url('/') }}">
                                         <span class="sidebar-brand-text align-middle">
                                             {!! __('templateWords.websiteName') !!}
-                                            {{-- <sup><small class="badge bg-primary text-uppercase">Pro</small></sup>
-                                            --}}
+                                            {{-- <sup><small class="badge bg-primary text-uppercase">Pro</small></sup> --}}
                                         </span>
                                         <svg class="sidebar-brand-icon align-middle" width="32px" height="32px"
                                             viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
@@ -96,7 +113,6 @@
                                             <path d="M20 16L12 20L4 16"></path>
                                         </svg>
                                     </a>
-
 
                                     <ul class="sidebar-nav">
                                         {{-- <li class="sidebar-header">
@@ -959,7 +975,7 @@
         </nav>
 
         <div class="main">
-            <nav class="navbar navbar-expand navbar-light navbar-bg">
+            <nav class="navbar navbar-expand navbar-light navbar-bg ">
                 <a class="sidebar-toggle d-flex">
                     <i class="hamburger align-self-center"></i>
                 </a>
@@ -978,11 +994,11 @@
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
                         {{-- <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown"
-                                data-bs-display="static">
+                            <a class="nav-icon dropdown-toggle pt-1" href="#" id="alertsDropdown"
+                                data-bs-toggle="dropdown" data-bs-display="static" style="height: 100%;">
                                 <div class="position-relative">
                                     <i class="align-middle" data-feather="bell"></i>
-                                    <span class="indicator">4</span>
+                                    <span class="indicator bg-danger">4</span>
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-lg-end py-0"
@@ -1046,8 +1062,8 @@
                                     <a href="#" class="text-muted">Show all notifications</a>
                                 </div>
                             </div>
-                        </li>
-                        <li class="nav-item dropdown">
+                        </li> --}}
+                        {{-- <li class="nav-item dropdown">
                             <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-bs-toggle="dropdown"
                                 data-bs-display="static">
                                 <div class="position-relative">
@@ -1133,26 +1149,62 @@
                             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                                 data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static">
                                 <img src="../admin/img/avatars/avatarBot{{ \Auth::user()->avatarChoice }}.png"
-                                    class="avatar img-fluid rounded mr-1" alt="{{ \Auth::user()->姓名 }}" /> <span
+                                    class="avatar img-fluid rounded mx-auto" alt="{{ \Auth::user()->姓名 }}" /> <span
                                     class="text-dark">{{ \Auth::user()->姓名 }}</span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end align-items-center"
-                                style="border-radius: 10px;">
-                                <a class="dropdown-item" href="#">
+                            <div class="dropdown-menu dropdown-menu-end align-items-center" id="UserDropDown"
+                                style="border-radius: 10px; max-height: 48ch; overflow-y: auto;">
+                                <a class="dropdown-item" href="{{ url('/member/change') }}">
                                     <i class="p-0 mr-1" data-feather="user"></i>
                                     <span>Profile</span>
                                 </a>
-                                <a class="dropdown-item disabled align-items-center" style="color : #495057;"
-                                    href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                        fill="currentColor" class="bi bi-building p-0 mr-1" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z" />
-                                        <path
-                                            d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
-                                    </svg>
-                                    <span>{{ str_replace('Consumables management', '', \Session::get('database')) }}</span>
-                                </a>
+                                <div class="dropdown-divider"></div>
+                                @can('canSwitchSites', App\Models\Login::class)
+                                    <a class="dropdown-item align-items-center" data-bs-toggle="collapse"
+                                        data-bs-target="#sitesMenu" aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                            fill="currentColor" class="bi bi-building p-0 mr-1" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z" />
+                                            <path
+                                                d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
+                                        </svg>
+                                        <span>{{ str_replace('Consumables management', '', \Session::get('database')) }}</span>
+                                    </a>
+                                    <div class="collapse" id="sitesMenu">
+                                        @php
+                                            $database_list_switcher = config('database_list.databases');
+                                            $database_names_switcher = [];
+                                            foreach ($database_list_switcher as $valuez) {
+                                                $tempz = str_replace(' Consumables management', '', $valuez);
+                                                array_push($database_names_switcher, $tempz);
+                                            } // for each
+                                            
+                                            unset($valuez); // unset the var created in the foreach loop
+                                        @endphp
+                                        @for ($i = 1; $i < count($database_list_switcher); $i++)
+                                            @if (\Session::get('database') != $database_list_switcher[$i])
+                                                <a class="dropdown-item justify-content-center"
+                                                    href="{{ url('/switchSite/' . str_replace(' ', '_', $database_list_switcher[$i])) }}"
+                                                    value="{{ $database_list_switcher[$i] }}">
+                                                    {{ $database_names_switcher[$i] }}</a>
+                                            @endif
+                                        @endfor
+                                    </div>
+                                @else
+                                    <a class="dropdown-item disabled align-items-center" style="color : #495057;"
+                                        href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                            fill="currentColor" class="bi bi-building p-0 mr-1" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z" />
+                                            <path
+                                                d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
+                                        </svg>
+                                        <span>{{ str_replace('Consumables management', '', \Session::get('database')) }}</span>
+                                    </a>
+                                @endcan
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#langMenu"
                                     aria-expanded="false">
                                     <i class="p-0 mr-1" data-feather="book-open"></i>

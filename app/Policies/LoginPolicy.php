@@ -62,7 +62,7 @@ class LoginPolicy         // 所有用戶管理相關權限
     public function canLogin(?Login $user)
     {
         if( \Auth::user() != null ) {
-            return Response::deny('You already logged in.');
+            return Response::deny('You are already logged in.');
         } else {
             return Response::allow();
         } // if else
@@ -104,4 +104,14 @@ class LoginPolicy         // 所有用戶管理相關權限
             return false;
         } // if else 
     } // searchAndUpdate
+
+    public function canSwitchSites(Login $user)
+    {
+        // 權限 " 0 " 才能在右上角切換廠別
+        if( intval($user->priority) < 1 ) {
+            return true;
+        }else {
+            return false;
+        } // if else 
+    } // canSwitchSites
 }
