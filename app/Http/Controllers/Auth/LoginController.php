@@ -281,6 +281,7 @@ class LoginController extends Controller
         Session::put('username', $usernameAuthed);
         Session::put('priority', $prior);
         Session::put('avatarChoice', $avatarChoice);
+        Session::put('department', \Auth::user()->部門);
         session(['database' => $DBName]);
 
         return redirect()->back();
@@ -319,6 +320,7 @@ class LoginController extends Controller
         Session::put('username', $usernameAuthed);
         Session::put('priority', $prior);
         Session::put('avatarChoice', $avatarChoice);
+        Session::put('department', \Auth::user()->部門);
         $this->authenticated($request, \Auth::user()); // set the login db
 
         return \Response::json(['message' => 'success insert']/* Status code here default is 200 ok*/);
