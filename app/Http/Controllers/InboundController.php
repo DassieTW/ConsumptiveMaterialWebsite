@@ -874,6 +874,10 @@ class InboundController extends Controller
                     }
                 }
             }
+            //入庫查詢
+            else if ($titlename === "入庫查詢") {
+                $datas = DB::table('inbound')->get();
+            }
             //庫存使用月數
             else {
                 $test = DB::table('inventory')
