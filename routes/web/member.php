@@ -52,26 +52,27 @@ Route::get('/New_OA_Login', function () {
 
 // Matches The "/member/login" URL
 Route::get('/login', function () {
+    return redirect(route('welcome'));
     // used middleware for lacale now
-    $user = \Auth::user();
-    $response = \Gate::inspect('canLogin', $user); // call to LoginPolicy
+    // $user = \Auth::user();
+    // $response = \Gate::inspect('canLogin', $user); // call to LoginPolicy
 
-    if ($response->allowed() || $user === null) {
-        // The action is authorized...
-        $database_list = config('database_list.databases');
-        $database_names = array();
-        foreach ($database_list as $value) {
-            $temp = str_replace(" Consumables management", "", $value);
-            array_push($database_names, $temp);
-        } // for each
+    // if ($response->allowed() || $user === null) {
+    //     // The action is authorized...
+    //     $database_list = config('database_list.databases');
+    //     $database_names = array();
+    //     foreach ($database_list as $value) {
+    //         $temp = str_replace(" Consumables management", "", $value);
+    //         array_push($database_names, $temp);
+    //     } // for each
 
-        unset($value); // unset the var created in the foreach loop
+    //     unset($value); // unset the var created in the foreach loop
 
-        // continue log in process
-        return view('member.login')->with(['database_list' => $database_list, 'database_names' => $database_names]);
-    } else {
-        return back(); // users that already logged in will be return back.
-    } // if else
+    //     // continue log in process
+    //     return view('member.login')->with(['database_list' => $database_list, 'database_names' => $database_names]);
+    // } else {
+    //     return back(); // users that already logged in will be return back.
+    // } // if else
 
 })->withoutMiddleware('auth');
 
