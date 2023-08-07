@@ -1443,14 +1443,15 @@ class MonthController extends Controller
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
             $worksheet = $spreadsheet->getActiveSheet();
             $titlecount = $request->input('titlecount');
-            $Alldata = DB::table('consumptive_material')
-                ->join('非月請購', function ($join) {
-                    $join->on('非月請購.料號', '=', 'consumptive_material.料號')
-                        ->whereNotNull('SXB單號');
-                })->get();
-            $count = count($Alldata);
+            // $Alldata = DB::table('consumptive_material')
+            //     ->join('非月請購', function ($join) {
+            //         $join->on('非月請購.料號', '=', 'consumptive_material.料號')
+            //             ->whereNotNull('SXB單號');
+            //     })->get();
+            $Alldata = json_decode($request->input('AllData'));
+            $count = $request->input('count');
 
-            //dd($Alldata);
+            // dd($Alldata);
 
             $worksheet->getPageSetup()->setHorizontalCentered(true);
             // 填寫header & footer of excel when printing
@@ -1472,8 +1473,8 @@ class MonthController extends Controller
             $alphabet = range('A', 'Z'); // A ~ Z
             for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
-                    $string = $request->input('titlecol')[$i];
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
+                    //$string = $i;
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
                     $endOfRow = $j;
                 } // for
 
