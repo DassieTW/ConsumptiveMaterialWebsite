@@ -14,9 +14,6 @@ return [
     'databases' => [
         'Consumables management',
         'BB1 Consumables management',
-        'BB4 Consumables management',
-        'M1 Consumables management',
-        'M2 Consumables management',
         'M3-名碩 Consumables management',
         'M3-康碩 Consumables management',
         'SMT Consumables management',

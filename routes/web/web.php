@@ -68,7 +68,7 @@ Route::get('/', function (Request $request) {
         $userKey = base64_encode(env('SSO_Key'));
         $sysType = base64_encode(env('SSO_sysType'));
         $ReDirToUrl = env('APP_URL') . "/member/sso";
-        $FailTo = env('APP_URL') . "/member/login";
+        $FailTo = env('APP_URL') . "/569";
         return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // else if
     else {
@@ -197,3 +197,8 @@ Route::get('/meiliSearchCleanUp', function () { // use this route when needed
     $testClient->deleteAllIndexes(); // u might want to clean up meilisearch db first
     dd($testClient->getTasks());
 });
+
+// When OA Login Failed on MIS side. Use this route as Failto
+Route::get('/569', function () {
+    return view("errors.569");
+})->name('error569')->withoutMiddleware('auth');

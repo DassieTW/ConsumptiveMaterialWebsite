@@ -206,15 +206,10 @@ class LoginController extends Controller
                 try {
                     $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
-                    if (\Auth::user()->priority < 1) {
-                        $recentSite = $this->attemptRecentlyLoginDBForMultiSiteUsers($request, $site);
-                        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $recentSite);
-                        \DB::purge(env("DB_CONNECTION"));
-                        $encrypt_site = \Crypt::encrypt($recentSite);
-                    } // if
-                    else {
-                        $encrypt_site = \Crypt::encrypt($site);
-                    } // if else
+                    $recentSite = $this->attemptRecentlyLoginDBForMultiSiteUsers($request, $site);
+                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $recentSite);
+                    \DB::purge(env("DB_CONNECTION"));
+                    $encrypt_site = \Crypt::encrypt($recentSite);
 
                     $affected = DB::table('login')
                         ->where('username', '=', \Auth::user()->username)
@@ -269,7 +264,8 @@ class LoginController extends Controller
                 '部門' => $previousUser->部門,
                 'avatarChoice' => $previousUser->avatarChoice,
                 'email' => $previousUser->email,
-                'last_login_time' => $datetime
+                'last_login_time' => $datetime,
+                
             ]
         );
 
