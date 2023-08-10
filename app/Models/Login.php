@@ -34,7 +34,8 @@ class Login extends Authenticatable
         'avatarChoice',
         'email',
         'last_login_time',
-        'update_priority_time'
+        'update_priority_time',
+        'avilable_dblist'
     ];
 
     /**

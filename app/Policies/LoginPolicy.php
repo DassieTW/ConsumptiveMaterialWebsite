@@ -108,7 +108,7 @@ class LoginPolicy         // 所有用戶管理相關權限
     public function canSwitchSites(Login $user)
     {
         // 權限 " 0 " 才能在右上角切換廠別
-        if( intval($user->priority) < 1 ) {
+        if( ($user->avilable_dblist) < 1 ) {
             return true;
         }else {
             return false;

@@ -6,7 +6,12 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\CleanUpDatedUsers' => $baseDir . '/app/Console/Commands/CleanUpDatedUsers.php',
+    'App\\Console\\Commands\\CleanUpInventory' => $baseDir . '/app/Console/Commands/CleanUpInventory.php',
     'App\\Console\\Commands\\CleanupBarcodeImg' => $baseDir . '/app/Console/Commands/CleanupBarcodeImg.php',
+    'App\\Console\\Commands\\FlushSessions' => $baseDir . '/app/Console/Commands/FlushSessions.php',
+    'App\\Console\\Commands\\MigrateAllDB' => $baseDir . '/app/Console/Commands/MigrateAllDB.php',
+    'App\\Console\\Commands\\MigrateAllServerDB' => $baseDir . '/app/Console/Commands/MigrateAllServerDB.php',
     'App\\Console\\Commands\\SendSafeStockMail' => $baseDir . '/app/Console/Commands/SendSafeStockMail.php',
     'App\\Console\\Commands\\SluggishStock' => $baseDir . '/app/Console/Commands/SluggishStock.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
@@ -37,6 +42,7 @@ return array(
     'App\\Http\\Middleware\\PreventRequestsDuringMaintenance' => $baseDir . '/app/Http/Middleware/PreventRequestsDuringMaintenance.php',
     'App\\Http\\Middleware\\Priority' => $baseDir . '/app/Http/Middleware/Priority.php',
     'App\\Http\\Middleware\\RedirectIfAuthenticated' => $baseDir . '/app/Http/Middleware/RedirectIfAuthenticated.php',
+    'App\\Http\\Middleware\\RedirectToHttps' => $baseDir . '/app/Http/Middleware/RedirectToHttps.php',
     'App\\Http\\Middleware\\SentryUserContext' => $baseDir . '/app/Http/Middleware/SentryUserContext.php',
     'App\\Http\\Middleware\\SetDBConnection' => $baseDir . '/app/Http/Middleware/SetDBConnection.php',
     'App\\Http\\Middleware\\SetLocale' => $baseDir . '/app/Http/Middleware/SetLocale.php',
@@ -102,6 +108,7 @@ return array(
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
+    'App\\Providers\\TelescopeServiceProvider' => $baseDir . '/app/Providers/TelescopeServiceProvider.php',
     'App\\Services\\BarWebDisplay' => $baseDir . '/app/Services/BarWebDisplay.php',
     'App\\Services\\Barcode39' => $baseDir . '/app/Services/Barcode39.php',
     'App\\Services\\InventoryCheckService' => $baseDir . '/app/Services/InventoryCheckService.php',

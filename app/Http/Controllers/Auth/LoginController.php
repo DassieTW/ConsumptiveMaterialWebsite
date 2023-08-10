@@ -265,7 +265,6 @@ class LoginController extends Controller
                 'avatarChoice' => $previousUser->avatarChoice,
                 'email' => $previousUser->email,
                 'last_login_time' => $datetime,
-                
             ]
         );
 

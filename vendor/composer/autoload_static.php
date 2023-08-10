@@ -767,7 +767,12 @@ class ComposerStaticInit3a337aa382200259a249a8921ee7c950
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\CleanUpDatedUsers' => __DIR__ . '/../..' . '/app/Console/Commands/CleanUpDatedUsers.php',
+        'App\\Console\\Commands\\CleanUpInventory' => __DIR__ . '/../..' . '/app/Console/Commands/CleanUpInventory.php',
         'App\\Console\\Commands\\CleanupBarcodeImg' => __DIR__ . '/../..' . '/app/Console/Commands/CleanupBarcodeImg.php',
+        'App\\Console\\Commands\\FlushSessions' => __DIR__ . '/../..' . '/app/Console/Commands/FlushSessions.php',
+        'App\\Console\\Commands\\MigrateAllDB' => __DIR__ . '/../..' . '/app/Console/Commands/MigrateAllDB.php',
+        'App\\Console\\Commands\\MigrateAllServerDB' => __DIR__ . '/../..' . '/app/Console/Commands/MigrateAllServerDB.php',
         'App\\Console\\Commands\\SendSafeStockMail' => __DIR__ . '/../..' . '/app/Console/Commands/SendSafeStockMail.php',
         'App\\Console\\Commands\\SluggishStock' => __DIR__ . '/../..' . '/app/Console/Commands/SluggishStock.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
@@ -798,6 +803,7 @@ class ComposerStaticInit3a337aa382200259a249a8921ee7c950
         'App\\Http\\Middleware\\PreventRequestsDuringMaintenance' => __DIR__ . '/../..' . '/app/Http/Middleware/PreventRequestsDuringMaintenance.php',
         'App\\Http\\Middleware\\Priority' => __DIR__ . '/../..' . '/app/Http/Middleware/Priority.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
+        'App\\Http\\Middleware\\RedirectToHttps' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectToHttps.php',
         'App\\Http\\Middleware\\SentryUserContext' => __DIR__ . '/../..' . '/app/Http/Middleware/SentryUserContext.php',
         'App\\Http\\Middleware\\SetDBConnection' => __DIR__ . '/../..' . '/app/Http/Middleware/SetDBConnection.php',
         'App\\Http\\Middleware\\SetLocale' => __DIR__ . '/../..' . '/app/Http/Middleware/SetLocale.php',
@@ -863,6 +869,7 @@ class ComposerStaticInit3a337aa382200259a249a8921ee7c950
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Providers\\TelescopeServiceProvider' => __DIR__ . '/../..' . '/app/Providers/TelescopeServiceProvider.php',
         'App\\Services\\BarWebDisplay' => __DIR__ . '/../..' . '/app/Services/BarWebDisplay.php',
         'App\\Services\\Barcode39' => __DIR__ . '/../..' . '/app/Services/Barcode39.php',
         'App\\Services\\InventoryCheckService' => __DIR__ . '/../..' . '/app/Services/InventoryCheckService.php',
