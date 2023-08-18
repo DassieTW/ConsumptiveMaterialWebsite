@@ -60,7 +60,7 @@ function copyoption(count) {
   //$('#position'+ index + 'option').clone().appendTo('#position' + count);
 }
 
-$(".inboundlist").mouseover(function (e) {
+$(".inboundlist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#inpeople").val(ename);
@@ -89,8 +89,8 @@ function myFunction() {
 }
 
 $("#inpeople").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $("#inpeople").on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -98,8 +98,8 @@ $("#inpeople").on("focus", function () {
   $("#inboundmenu").show();
 });
 $("#inpeople").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $("#inpeople").on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -111,7 +111,7 @@ $("#inpeople").on("blur", function () {
   $("#inboundmenu").hide();
 });
 
-$(document).ready(function () {
+$(function () {
   $("#add").on("submit", function (e) {
     e.preventDefault();
 
@@ -160,7 +160,7 @@ $(document).ready(function () {
       },
 
       success: function (data) {
-        if (data.type == "add") {
+        if (data.type === "add") {
           document.getElementById("notransit").style.display = "none";
           sessionStorage.setItem("inboundadd", index + 1);
 
@@ -276,28 +276,28 @@ $(document).ready(function () {
 
           index = index + 1;
           count = count + 1;
-        } else if (data.type == "client") {
+        } else if (data.type === "client") {
           window.location.href = "/inbound/addclient";
         }
       },
       error: function (err) {
         console.log(err);
         //不等於12
-        if (err.status == 420) {
+        if (err.status === 420) {
           document.getElementById("numbererror").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
           document.getElementById("number").focus();
         }
         //無料號
-        else if (err.status == 421) {
+        else if (err.status === 421) {
           document.getElementById("numbererror1").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
           document.getElementById("number").focus();
         }
         //在途量為0
-        else if (err.status == 422) {
+        else if (err.status === 422) {
           document.getElementById("notransit").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("client").classList.add("is-invalid");
@@ -312,8 +312,8 @@ $(document).ready(function () {
   });
 
   $("#inpeople").on("input", function () {
-    $(window).keydown(function (event) {
-      if (event.keyCode == 13) {
+    $("#inpeople").on("keydown", function (event) {
+      if (event.code === "Enter") {
         event.preventDefault();
         return false;
       }
@@ -353,7 +353,6 @@ $(document).ready(function () {
     for (let i = 0; i < $("#checkcount").val(); i++) {
       checkpeople.push($("#checkpeople" + i).val());
     }
-    console.log(inpeople);
 
     var check1 = checkpeople.indexOf(inpeople);
 
@@ -400,8 +399,8 @@ $(document).ready(function () {
     for (let i = 0; i < count; i++) {
       if (
         amount[i] > transit[i] &&
-        inreason[i] != "調撥" &&
-        inreason[i] != "退庫"
+        inreason[i] !== "調撥" &&
+        inreason[i] !== "退庫"
       ) {
         $("#amount" + row[i]).addClass("is-invalid");
         var row = i + 1;
@@ -480,7 +479,7 @@ $(document).ready(function () {
         //     return false;
         // }
         //transaction error
-        if (err.status == 421) {
+        if (err.status === 421) {
           alert(err.responseJSON.message);
           window.location.reload();
         }

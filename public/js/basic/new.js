@@ -41,8 +41,8 @@ function appenSVg(index) {
   }); // on delete btn click
 } // appenSVg
 
-$(document).ready(function () {
-  $("select").change(function () {
+$(function () {
+  $("select").on("change", function () {
     var checkedValue = $("#month").val();
     if (checkedValue === "是" || checkedValue === "Yes") {
       $("#safe").attr("disabled", true);
@@ -425,8 +425,6 @@ $(document).ready(function () {
       return false;
     }
 
-    console.log(sessionStorage.getItem("materialcount"));
-
     var data = [];
     var number = [];
     var name = [];
@@ -530,11 +528,34 @@ $(document).ready(function () {
           " " +
           Lang.get("basicInfoLang.matsdata");
 
-        alert(mess);
+        notyf.open({
+          type: "info",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
 
         var mess2 = Lang.get("basicInfoLang.yellowrepeat");
-
-        alert(mess2);
+        setTimeout(
+          () =>
+            notyf.open({
+              type: "info",
+              message: mess2,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            }),
+          1000
+        );
 
         for (let i = 0; i < row.length; i++) {
           var same = row.filter(function (v) {
@@ -555,20 +576,28 @@ $(document).ready(function () {
         // window.location.href = "/basic";
       },
       error: function (err) {
-        console.log(err.status);
         //非月請購沒填安全庫存
-        if (err.status == 422) {
+        if (err.status === 422) {
           var mess =
             Lang.get("basicInfoLang.row") +
             " : " +
             err.responseJSON.message +
             " " +
             Lang.get("basicInfoLang.safeerror");
-          window.alert(mess);
-          window.location.href = "new";
-        } else if (err.status == 423) {
+          notyf.open({
+            type: "warning",
+            message: mess,
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+              x: "right",
+              y: "bottom",
+            },
+          });
+          setTimeout(() => (window.location.href = "new"), 1000);
+        } else if (err.status === 423) {
           window.alert(err.responseJSON.message);
-          console.log(err.responseJSON.message);
         } // else if
         //transaction error
         else {

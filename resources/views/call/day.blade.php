@@ -40,19 +40,19 @@
         </div>
 
         <div class="card">
-            <div class="card-header">
-                <h3>{!! __('callpageLang.dayalert') !!}</h3>
-                <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
-                    placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
-                    style="width: 200px">
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
-                    value="{!! __('callpageLang.saveremark') !!}">
+            <form method="POST" id="day">
+                @csrf
+                <div class="card-header">
+                    <h3>{!! __('callpageLang.dayalert') !!}</h3>
+                    <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
+                        placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                        style="width: 200px">
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                    <input type="submit" id="submit" name="submit" class="btn btn-lg btn-primary"
+                        value="{!! __('callpageLang.saveremark') !!}">
 
-            </div>
-            <div class="card-body">
-                <form method="POST" id="day">
-                    @csrf
+                </div>
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="test">
                             <thead>
@@ -117,8 +117,8 @@
                             </tbody>
                         </table>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 @endsection
