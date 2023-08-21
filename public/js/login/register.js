@@ -4,7 +4,24 @@ $.ajaxSetup({
     },
 });
 
-$(window).on('load', function() {
+document.addEventListener("readystatechange", (event) => {
+    switch (document.readyState) {
+        case "loading":
+        // document is loading
+        case "interactive":
+            // document has finish loading DOM
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+            break;
+        case "complete":
+            // the page DOM with sub-resources are now fully loaded.
+            break;
+    } // switch
+});
+
+$(window).on("load", function () {
     console.log("page loaded!"); // test
     $("body").loadingModal("hide");
     $("body").loadingModal("destroy");

@@ -53,8 +53,6 @@
         }
     </style>
 
-    <script src="{{ asset('/js/manifest.js?v=') . env('APP_VERSION') }}"></script>
-    <script src="{{ asset('/js/vendor.js?v=') . env('APP_VERSION') }}"></script>
     <script>
         if (window.history.replaceState) {
             // java script to prvent "confirm form resubmission" dialog
@@ -62,23 +60,6 @@
             // (避免重新提交表單)
             window.history.replaceState(null, null, window.location.href);
         } // if
-
-        document.addEventListener("readystatechange", event => {
-            switch (document.readyState) {
-                case "loading":
-                    // document is loading
-                case "interactive":
-                    // document has finish loading DOM
-                    $("body").loadingModal({
-                        text: "Loading...",
-                        animation: "circle",
-                    });
-                    break;
-                case "complete":
-                    // the page DOM with sub-resources are now fully loaded.
-                    break;
-            } // switch
-        });
         /**
 
                                                              __----~~~~~~~~~~~------___
@@ -275,6 +256,8 @@
         </div>
     </main>
 
+    <script src="{{ asset('/js/manifest.js') }}"></script>
+    <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
