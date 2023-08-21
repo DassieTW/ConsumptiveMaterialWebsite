@@ -6,9 +6,6 @@ $.ajaxSetup({
 
 var imgclicked = false;
 $(document).ready(function () {
-    $("body").loadingModal("hide");
-    $("body").loadingModal("destroy");
-    
     $("#fordatabase").on("click", function (event) {
         event.preventDefault();
         if (imgclicked === false) {

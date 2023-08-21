@@ -35,7 +35,7 @@
     {{-- usage example : var temp = getUrlParameter('parameterName'); --}}
     {{-- <script type="module" src="{{ asset('/js/getUrlParameter.js?v=') . env('APP_VERSION') }}"></script> --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
+
     {{-- checkbox on top left of picture --}}
     <style>
         .checkboxContainer {
@@ -81,13 +81,6 @@
                                         神獸保佑，程式碼沒Bug!
 
         */
-
-        $(document).ready(function() {
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-        });
     </script>
 </head>
 
@@ -261,8 +254,18 @@
         </div>
     </main>
 
+    <script>
+        $("body").loadingModal({
+            text: "Loading...",
+            animation: "circle",
+        });
+    </script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
+    <script>
+        $("body").loadingModal("hide");
+        $("body").loadingModal("destroy");
+    </script>
     <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
