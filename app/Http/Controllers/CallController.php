@@ -313,7 +313,7 @@ class CallController extends Controller
             if ($number === null) {
                 return \Response::json([]/* Status code here default is 200 ok*/);
             } else {
-                $count = count($number);
+                $count = count($remark);
                 DB::beginTransaction();
                 try {
                     for ($i = 0; $i < $count; $i++) {
@@ -321,10 +321,16 @@ class CallController extends Controller
                         $remark = $request->input('remark')[$i];
                         $client = $request->input('client')[$i];
 
-
-                        DB::table('safestock報警備註')->upsert([
-                            ['料號' => $number, '客戶別' => $client, '備註' => $remark],
-                        ], ['料號', '客戶別'], ['備註']);
+                        if ($remark !== "") {
+                            DB::table('safestock報警備註')->upsert([
+                                ['料號' => $number, '客戶別' => $client, '備註' => $remark],
+                            ], ['料號', '客戶別'], ['備註']);
+                        } else {
+                            DB::table('safestock報警備註')->where([
+                                ['料號', '=', $number],
+                                ['客戶別', '=', $client],
+                            ])->delete();
+                        }
                     } //for
                     DB::commit();
                 } catch (\Exception $e) {

@@ -4,7 +4,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   $("#uploadnew").on("submit", function (e) {
     e.preventDefault();
 
@@ -81,7 +81,6 @@ $(document).ready(function () {
         return false;
       }
 
-      console.log(month, safe);
       if (month[i] === "否" && safe[i] === "") {
         var row = i + 1;
         var mess =
@@ -107,7 +106,7 @@ $(document).ready(function () {
       }
     } // for
 
-    if (number.length == 0) {
+    if (number.length === 0) {
       notyf.open({
         type: "warning",
         message: Lang.get("basicInfoLang.nodata"),
@@ -175,11 +174,35 @@ $(document).ready(function () {
           " " +
           Lang.get("basicInfoLang.matsdata");
 
-        alert(mess);
+        notyf.open({
+          type: "info",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
 
         var mess2 = Lang.get("basicInfoLang.yellowrepeat");
 
-        alert(mess2);
+        setTimeout(
+          () =>
+            notyf.open({
+              type: "info",
+              message: mess2,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            }),
+          1000
+        );
 
         for (let i = 0; i < row.length; i++) {
           var same = row.filter(function (v) {

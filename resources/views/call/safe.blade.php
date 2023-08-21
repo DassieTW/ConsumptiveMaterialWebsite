@@ -41,6 +41,7 @@
 
         <div class="card">
             <form method="POST" id="safe">
+                @csrf
                 <div class="card-header">
                     <h3>{!! __('callpageLang.safealert') !!}</h3>
                     <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
@@ -228,4 +229,7 @@
             </table>
         </div>
     </div>
+</form>
+</div>
+</div>
 @endsection

@@ -6,7 +6,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   $("#uploadbasic").on("submit", function (e) {
     e.preventDefault();
 
@@ -68,9 +68,6 @@ $(document).ready(function () {
         $("body").loadingModal("destroy");
       },
       success: function (data) {
-        console.log(data.choose);
-        console.log(data.record);
-
         var mess =
           Lang.get("basicInfoLang.total") +
           " : " +
@@ -90,11 +87,34 @@ $(document).ready(function () {
           " " +
           Lang.get("basicInfoLang.data");
 
-        alert(mess);
+        notyf.open({
+          type: "info",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
 
         var mess2 = Lang.get("basicInfoLang.yellowrepeat");
-
-        alert(mess2);
+        setTimeout(
+          () =>
+            notyf.open({
+              type: "info",
+              message: mess2,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            }),
+          1000
+        );
 
         for (let i = 0; i < row.length; i++) {
           var same = row.filter(function (v) {
