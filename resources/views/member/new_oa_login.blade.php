@@ -242,7 +242,7 @@
                                         </div>
 
                                         <div class="text-center mt-3">
-                                            <input type="submit" class="btn btn-lg btn-primary"
+                                            <input style="display: none;" id="sumBtn" type="submit" class="btn btn-lg btn-primary"
                                                 value="{!! __('loginPageLang.submit') !!}">
                                         </div>
                                     </form>
@@ -256,15 +256,6 @@
         </div>
     </main>
 
-    <script>
-        document.onreadystatechange = function() {
-            if (document.readyState !== "complete") {
-                document.querySelector("body").style.visibility = "hidden";
-            } else {
-                document.querySelector("body").style.visibility = "visible";
-            } // if else
-        };
-    </script>
     <script src="{{ asset('/js/manifest.js') }}"></script>
     <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
