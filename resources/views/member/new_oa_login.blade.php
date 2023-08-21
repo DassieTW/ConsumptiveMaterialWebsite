@@ -27,11 +27,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
+    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     {{-- local lang for js --}}
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     {{-- for date picker's js --}}
     <script type="text/javascript" href="{{ asset('/js/moment.min.js?v=') . env('APP_VERSION') }}"></script>
-    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     {{-- get parameters from url, js version --}}
     {{-- usage example : var temp = getUrlParameter('parameterName'); --}}
     {{-- <script type="module" src="{{ asset('/js/getUrlParameter.js?v=') . env('APP_VERSION') }}"></script> --}}
@@ -60,6 +60,22 @@
             window.history.replaceState(null, null, window.location.href);
         } // if
 
+        document.addEventListener("readystatechange", event => {
+            switch (document.readyState) {
+                case "loading":
+                    // document is loading
+                case "interactive":
+                    // document has finish loading DOM
+                    $("body").loadingModal({
+                        text: "Loading...",
+                        animation: "circle",
+                    });
+                    break;
+                case "complete":
+                    // the page DOM with sub-resources are now fully loaded.
+                    break;
+            } // switch
+        });
         /**
 
                                                              __----~~~~~~~~~~~------___
@@ -255,14 +271,6 @@
             </div>
         </div>
     </main>
-    <script>
-        $(document).ready(function() {
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-        });
-    </script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
