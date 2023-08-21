@@ -257,7 +257,13 @@
     </main>
 
     <script>
-        document.getElementsByTagName("body").style.display = "none";
+        document.onreadystatechange = function() {
+            if (document.readyState !== "complete") {
+                document.querySelector("body").style.visibility = "hidden";
+            } else {
+                document.querySelector("body").style.visibility = "visible";
+            } // if else
+        };
     </script>
     <script src="{{ asset('/js/manifest.js') }}"></script>
     <script src="{{ asset('/js/vendor.js') }}"></script>

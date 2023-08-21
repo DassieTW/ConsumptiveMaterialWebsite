@@ -6,7 +6,6 @@ $.ajaxSetup({
 
 $(window).on("load", function () {
     console.log("page loaded!"); // test
-    $('body').show();
     $("body").loadingModal("hide");
     $("body").loadingModal("destroy");
 });
