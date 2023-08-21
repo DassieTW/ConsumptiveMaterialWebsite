@@ -242,7 +242,7 @@
                                         </div>
 
                                         <div class="text-center mt-3">
-                                            <input style="display: none;" id="sumBtn" type="submit" class="btn btn-lg btn-primary"
+                                            <input style="display: none;" id="subBtn" type="submit" class="btn btn-lg btn-primary"
                                                 value="{!! __('loginPageLang.submit') !!}">
                                         </div>
                                     </form>
