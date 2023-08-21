@@ -31,6 +31,7 @@
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     {{-- for date picker's js --}}
     <script type="text/javascript" href="{{ asset('/js/moment.min.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     {{-- get parameters from url, js version --}}
     {{-- usage example : var temp = getUrlParameter('parameterName'); --}}
     {{-- <script type="module" src="{{ asset('/js/getUrlParameter.js?v=') . env('APP_VERSION') }}"></script> --}}
@@ -58,6 +59,14 @@
             // (避免重新提交表單)
             window.history.replaceState(null, null, window.location.href);
         } // if
+
+        $(document).ready(function() {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+        });
+
         /**
 
                                                              __----~~~~~~~~~~~------___
@@ -125,7 +134,7 @@
             </ul>
         </div>
     </nav>
-
+    <button type="hidden" id="QueryFlag" name="QueryFlag" value="Posting" style="display: none;"></button>
     <main class="d-flex w-100 h-100 position-relative">
         <div class="container d-flex flex-column">
             <div class="row vh-100">
@@ -254,19 +263,8 @@
         </div>
     </main>
 
-    <script>
-        $("body").loadingModal({
-            text: "Loading...",
-            animation: "circle",
-        });
-    </script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
-    <script>
-        $("body").loadingModal("hide");
-        $("body").loadingModal("destroy");
-    </script>
-    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/js/login/register.js?v=') . env('APP_VERSION') }}"></script>

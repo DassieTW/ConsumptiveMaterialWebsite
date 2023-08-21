@@ -4,6 +4,12 @@ $.ajaxSetup({
     },
 });
 
+$(window).on('load', function() {
+    // console.log("clicked!"); // test
+    $("body").loadingModal("hide");
+    $("body").loadingModal("destroy");
+});
+
 var imgclicked = false;
 $(document).ready(function () {
     $("#fordatabase").on("click", function (event) {
