@@ -10,10 +10,7 @@ document.addEventListener("readystatechange", (event) => {
         // document is loading
         case "interactive":
             // document has finish loading DOM
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
+            document.getElementsByTagName("BODY")[0].style.display = "none";
             break;
         case "complete":
             // the page DOM with sub-resources are now fully loaded.
@@ -23,6 +20,7 @@ document.addEventListener("readystatechange", (event) => {
 
 $(window).on("load", function () {
     console.log("page loaded!"); // test
+    $('body').show();
     $("body").loadingModal("hide");
     $("body").loadingModal("destroy");
 });
