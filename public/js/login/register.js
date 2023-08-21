@@ -4,20 +4,6 @@ $.ajaxSetup({
     },
 });
 
-document.addEventListener("readystatechange", (event) => {
-    switch (document.readyState) {
-        case "loading":
-        // document is loading
-        case "interactive":
-            // document has finish loading DOM
-            document.getElementsByTagName("BODY")[0].style.display = "none";
-            break;
-        case "complete":
-            // the page DOM with sub-resources are now fully loaded.
-            break;
-    } // switch
-});
-
 $(window).on("load", function () {
     console.log("page loaded!"); // test
     $('body').show();
@@ -26,6 +12,7 @@ $(window).on("load", function () {
 });
 
 var imgclicked = false;
+
 $(document).ready(function () {
     $("#fordatabase").on("click", function (event) {
         event.preventDefault();

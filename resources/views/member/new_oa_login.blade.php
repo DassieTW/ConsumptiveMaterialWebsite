@@ -256,6 +256,9 @@
         </div>
     </main>
 
+    <script>
+        document.getElementsByTagName("body").style.display = "none";
+    </script>
     <script src="{{ asset('/js/manifest.js') }}"></script>
     <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
