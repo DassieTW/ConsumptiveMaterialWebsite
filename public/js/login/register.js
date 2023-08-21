@@ -58,7 +58,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "register",
+            url: "/member/register",
             data: {
                 site: site,
                 profilePic: profilePic,
