@@ -27,7 +27,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
-    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     {{-- local lang for js --}}
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     {{-- for date picker's js --}}
@@ -242,8 +241,8 @@
                                         </div>
 
                                         <div class="text-center mt-3">
-                                            <input style="display: none;" id="subBtn" type="submit" class="btn btn-lg btn-primary"
-                                                value="{!! __('loginPageLang.submit') !!}">
+                                            <input style="display: none;" id="subBtn" type="submit"
+                                                class="btn btn-lg btn-primary" value="{!! __('loginPageLang.submit') !!}">
                                         </div>
                                     </form>
                                 </div>
@@ -262,6 +261,7 @@
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/js/login/register.js?v=') . env('APP_VERSION') }}"></script>
 </body>
 

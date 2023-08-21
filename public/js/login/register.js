@@ -8,7 +8,7 @@ $(window).on("load", function () {
     console.log("page loaded!"); // test
     $("body").loadingModal("hide");
     $("body").loadingModal("destroy");
-    $("#subBtn").show();
+    $("#subBtn").removeAttr("style");
 });
 
 var imgclicked = false;
