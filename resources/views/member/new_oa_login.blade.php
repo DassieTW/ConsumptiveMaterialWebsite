@@ -60,13 +60,6 @@
             window.history.replaceState(null, null, window.location.href);
         } // if
 
-        $(document).ready(function() {
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-        });
-
         /**
 
                                                              __----~~~~~~~~~~~------___
@@ -262,7 +255,14 @@
             </div>
         </div>
     </main>
-
+    <script>
+        $(document).ready(function() {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+        });
+    </script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
