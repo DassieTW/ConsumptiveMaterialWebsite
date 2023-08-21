@@ -5,7 +5,7 @@ $.ajaxSetup({
 });
 
 $(window).on('load', function() {
-    // console.log("clicked!"); // test
+    console.log("page loaded!"); // test
     $("body").loadingModal("hide");
     $("body").loadingModal("destroy");
 });
