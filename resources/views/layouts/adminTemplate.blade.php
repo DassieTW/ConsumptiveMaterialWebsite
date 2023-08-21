@@ -1510,6 +1510,8 @@
             });
         });
     </script> -->
+    <script src="{{ asset('/js/manifest.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/vendor.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>

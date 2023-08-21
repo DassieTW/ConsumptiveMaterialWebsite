@@ -52,6 +52,9 @@
             left: 0px;
         }
     </style>
+
+    <script src="{{ asset('/js/manifest.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/vendor.js?v=') . env('APP_VERSION') }}"></script>
     <script>
         if (window.history.replaceState) {
             // java script to prvent "confirm form resubmission" dialog
@@ -271,6 +274,7 @@
             </div>
         </div>
     </main>
+
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
