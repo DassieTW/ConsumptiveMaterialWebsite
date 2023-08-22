@@ -47,6 +47,12 @@
                             @endforeach
                             <option>{!! __('inboundpageLang.other') !!}</option>
                         </select>
+
+                        <label class="col col-lg-12 form-label" style="display:none;" id="reasonlabel"></label>
+
+                        <input style="display:none;" class="form-control form-control-lg " type="text" id="reason"
+                            name="reason" placeholder="{!! __('inboundpageLang.inputinreason') !!}">
+
                         <div class="invalid-feedback" id="inreasonerror" style="display:none; color:red;">
                             {!! __('inboundpageLang.enterinreason') !!}</div>
                     </div>
@@ -64,8 +70,11 @@
                         <div class="invalid-feedback" id="notransit" style="display:none; color:red;">
                             {!! __('inboundpageLang.notransit') !!}
                         </div>
+
                     </div>
-                    <div class="col-auto">
+
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                    <div class="">
                         <label class="col col-auto form-label"></label>
                         <input type="submit" onclick="buttonIndex=0;" id="addto" name="addto"
                             class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.add') !!}">
@@ -73,11 +82,7 @@
                         <input type="submit" onclick="buttonIndex=1;" id="addclient" name="addclient"
                             class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.addclient') !!}">
                     </div>
-                    <div class="col-auto">
-                        <label class="col col-auto form-label"></label>
-                        <input style="display:none;" class="form-control form-control-lg " type="text" id="reason"
-                            name="reason" placeholder="{!! __('inboundpageLang.inputinreason') !!}">
-                    </div>
+
 
                 </form>
             </div>
@@ -139,7 +144,7 @@
                         <ul id="inboundmenu" style="display: none;" class="list-group">
                             @foreach ($peoples as $name)
                                 <a class="inboundlist list-group-item list-group-item-action"
-                                    href="#">{{ $name->工號 . ' ' . $name->姓名 }}</a>
+                                    href="#">{{ $name->工號 . ' : ' . $name->姓名 }}</a>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             @endforeach
                         </ul>

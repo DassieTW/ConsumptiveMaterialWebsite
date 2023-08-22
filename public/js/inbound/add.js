@@ -9,9 +9,11 @@ $("#inreason").on("change", function () {
   var value = $("#inreason").val();
   if (value === "其他" || value === "other") {
     document.getElementById("reason").style.display = "block";
+    document.getElementById("reasonlabel").style.display = "block";
     document.getElementById("reason").required = true;
   } else {
     document.getElementById("reason").style.display = "none";
+    document.getElementById("reasonlabel").style.display = "none";
     document.getElementById("reason").required = false;
   }
 });
@@ -464,8 +466,19 @@ $(function () {
           Lang.get("inboundpageLang.inlist") +
           " : " +
           data.message;
-        alert(mess);
-        window.location.href = "/inbound/add";
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
+
+        setTimeout(() => (window.location.href = "/inbound/add"), 1000);
       },
       error: function (err) {
         // //入庫數量大於在途量

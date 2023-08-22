@@ -318,8 +318,12 @@ class BUController extends Controller
             $database = $request->session()->get('database');
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
+            $data = DB::table('調撥單')
+                ->where('撥出廠區', $database)
+                ->whereNull('調撥人')
+                ->where('調撥單號', $list)->get()->toArray();
             return view('bu.outlist')
-                ->with(['data' => 調撥單::cursor()->where('撥出廠區', $database)->wherenull('調撥人')->where('調撥單號', $list)]);
+                ->with(['data' => $data, 'database' => $database]);
         } else {
             return redirect(route('member.login'));
         }
@@ -352,10 +356,12 @@ class BUController extends Controller
             try {
 
                 for ($i = 0; $i < $count; $i++) {
-                    DB::table('撥出明細')
-                        ->insert([
-                            '調撥單號' => $list, '客戶別' => $clients[$i], '撥出廠區' => $outfactory, '接收廠區' => $receivefac, '料號' => $number, '品名' => $name, '規格' => $format, '現有庫存' => $nowstocks[$i], '預計撥出數量' => $preamount, '實際撥出數量' => $realamounts[$i], '儲位' => $positions[$i], '調撥人' => $outpeople, '撥出時間' => $now
-                        ]);
+                    if ($realamounts[$i] > 0) {
+                        DB::table('撥出明細')
+                            ->insert([
+                                '調撥單號' => $list, '客戶別' => $clients[$i], '撥出廠區' => $outfactory, '接收廠區' => $receivefac, '料號' => $number, '品名' => $name, '規格' => $format, '現有庫存' => $nowstocks[$i], '預計撥出數量' => $preamount, '實際撥出數量' => $realamounts[$i], '儲位' => $positions[$i], '調撥人' => $outpeople, '撥出時間' => $now
+                            ]);
+                    }
                     $total = $total + $realamounts[$i];
                 }
 
@@ -396,7 +402,11 @@ class BUController extends Controller
             $database = $request->session()->get('database');
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
-            return view('bu.picklist')->with(['data' => 調撥單::cursor()->where('接收廠區', $database)->where('狀態', '待接收')->where('調撥單號', $list)]);
+            $data = DB::table('調撥單')
+                ->where('接收廠區', $database)
+                ->where('狀態', '待接收')->where('調撥單號', $list)->get()->toArray();
+
+            return view('bu.picklist')->with(['data' => $data, 'database' => $database]);
         } else {
             return redirect(route('member.login'));
         }

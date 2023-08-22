@@ -1,39 +1,38 @@
 @foreach ($data as $row)
     <?php
+    if (strlen(trim($row[1])) !== 0) {
+        $name = DB::table('O庫_material')
+            ->where('料號', $row[1])
+            ->value('品名');
+        $format = DB::table('O庫_material')
+            ->where('料號', $row[1])
+            ->value('規格');
+        $clients = DB::table('客戶別')
+            ->pluck('客戶')
+            ->toArray();
+        $i = false;
+        $j = false;
+        $error = $loop->index + 1;
+        //判斷是否有料號
+        if ($name === null || $format === null) {
+            $mess = trans('oboundpageLang.noisn') . ' ' . trans('oboundpageLang.row') . ' : ' . $error . ' ' . $row[1];
+            echo "<script LANGUAGE='JavaScript'>
+                                                                                        window.alert('$mess');
+                                                                                        window.location.href='upload';
+                                                                                        </script>";
+        }
+        //判斷是否有這個客戶
+        if (in_array($row[0], $clients)) {
+            $i = true;
+        }
     
-    $name = DB::table('O庫_material')
-        ->where('料號', $row[1])
-        ->value('品名');
-    $format = DB::table('O庫_material')
-        ->where('料號', $row[1])
-        ->value('規格');
-    $clients = DB::table('客戶別')
-        ->pluck('客戶')
-        ->toArray();
-    $i = false;
-    $j = false;
-    $error = $loop->index + 1;
-    //判斷是否有料號
-    if ($name === null || $format === null) {
-        $mess = trans('oboundpageLang.noisn') . ' ' . trans('oboundpageLang.row') . ' : ' . $error . ' ' . $row[1];
-        echo "<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href='upload';
-    
-                            </script>";
-    }
-    //判斷是否有這個客戶
-    if (in_array($row[0], $clients)) {
-        $i = true;
-    }
-    
-    if ($i === false) {
-        $mess = trans('oboundpageLang.noclient') . ' ' . trans('oboundpageLang.row') . ' : ' . $error . ' ' . $row[0];
-        echo "<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href='upload';
-    
-                            </script>";
+        if ($i === false) {
+            $mess = trans('oboundpageLang.noclient') . ' ' . trans('oboundpageLang.row') . ' : ' . $error . ' ' . $row[0];
+            echo "<script LANGUAGE='JavaScript'>
+                                                                                    window.alert('$mess');
+                                                                                    window.location.href='upload';
+                                                                                    </script>";
+        }
     }
     ?>
 @endforeach
@@ -79,27 +78,30 @@
                             </th>
                         </tr>
                         @foreach ($data as $row)
-                            <tr>
+                            @if (strlen(trim($row[1])) !== 0)
+                                <tr>
 
-                                <td><input type="hidden" id="data0{{ $loop->index }}" name="data0{{ $loop->index }}"
-                                        value="{{ $row[0] }}">{{ $row[0] }}</td>
-                                <td><input type="hidden" id="data1{{ $loop->index }}" name="data1{{ $loop->index }}"
-                                        value="{{ $row[1] }}">{{ $row[1] }}</td>
-                                <td><input type="hidden" id="data2{{ $loop->index }}" name="data2{{ $loop->index }}"
-                                        value="{{ $name }}">{{ $name }}</td>
-                                <td><input type="hidden" id="data3{{ $loop->index }}" name="data3{{ $loop->index }}"
-                                        value="{{ $format }}">{{ $format }}</td>
-                                <td><input class="form-control form-control-lg" id="data4{{ $loop->index }}"
-                                        type="number" name="data4{{ $loop->index }}" value="{{ $row[2] }}"
-                                        min="1" required></td>
-                                <td>
-                                    <input class="form-control form-control-lg" id="data5{{ $loop->index }}"
-                                        type="text" name="data5{{ $loop->index }}" value="{{ $row[3] }}"
-                                        required>
-                                </td>
-                                </td>
-                            </tr>
-                            <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                                    <td><input type="hidden" id="data0{{ $loop->index }}" name="data0{{ $loop->index }}"
+                                            value="{{ $row[0] }}">{{ $row[0] }}</td>
+                                    <td><input type="hidden" id="data1{{ $loop->index }}" name="data1{{ $loop->index }}"
+                                            value="{{ $row[1] }}">{{ $row[1] }}</td>
+                                    <td><input type="hidden" id="data2{{ $loop->index }}" name="data2{{ $loop->index }}"
+                                            value="{{ $name }}">{{ $name }}</td>
+                                    <td><input type="hidden" id="data3{{ $loop->index }}"
+                                            name="data3{{ $loop->index }}"
+                                            value="{{ $format }}">{{ $format }}</td>
+                                    <td><input class="form-control form-control-lg" id="data4{{ $loop->index }}"
+                                            type="number" name="data4{{ $loop->index }}" value="{{ $row[2] }}"
+                                            min="1" required></td>
+                                    <td>
+                                        <input class="form-control form-control-lg" id="data5{{ $loop->index }}"
+                                            type="text" name="data5{{ $loop->index }}" value="{{ $row[3] }}"
+                                            required>
+                                    </td>
+                                    </td>
+                                </tr>
+                                <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                            @endif
                         @endforeach
 
                     </table>
