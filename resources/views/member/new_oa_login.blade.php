@@ -12,11 +12,28 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {{--
     <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords"
+        content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    --}}
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css?v=') . env('APP_VERSION') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
+    {{-- local lang for js --}}
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
+    {{-- for date picker's js --}}
+    <script type="text/javascript" href="{{ asset('/js/moment.min.js?v=') . env('APP_VERSION') }}"></script>
+    {{-- get parameters from url, js version --}}
+    {{-- usage example : var temp = getUrlParameter('parameterName'); --}}
+    {{-- <script type="module" src="{{ asset('/js/getUrlParameter.js?v=') . env('APP_VERSION') }}"></script> --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
     {{-- checkbox on top left of picture --}}
@@ -34,6 +51,38 @@
             left: 0px;
         }
     </style>
+
+    <script>
+        if (window.history.replaceState) {
+            // java script to prvent "confirm form resubmission" dialog
+            // 避免重新整理這個頁面時跳出要你重新提交表單的對話框
+            // (避免重新提交表單)
+            window.history.replaceState(null, null, window.location.href);
+        } // if
+        /**
+
+                                                             __----~~~~~~~~~~~------___
+                                            .  .   ~~//====......          __--~ ~~
+                            -.            \_|//     |||\\  ~~~~~~::::... /~
+                         ___-==_       _-~o~  \/    |||  \\            _/~~-
+                 __---~~~.==~||\=_    -_--~/_-~|-   |\\   \\        _/~
+             _-~~     .=~    |  \\-_    '-~7  /-   /  ||    \      /
+           .~       .~       |   \\ -_    /  /-   /   ||      \   /
+          /  ____  /         |     \\ ~-_/  /|- _/   .||       \ /
+          |~~    ~~|--~~~~--_ \     ~==-/   | \~--===~~        .\
+                   '         ~-|      /|    |-~\~~       __--~~
+                               |-~~-_/ |    |   ~\_   _-~            /\
+                                    /  \     \__   \/~                \__
+                                _--~ _/ | .-~~____--~-/                  ~~==.
+                               ((->/~   '.|||' -_|    ~~-/ ,              . _||
+                                          -_     ~\      ~~---l__i__i__i--~~_/
+                                          _-~-__   ~)  \--______________--~~
+                                        //.-~~~-~_--~- |-------~~~~~~~~
+                                               //.-~~~--\
+                                        神獸保佑，程式碼沒Bug!
+
+        */
+    </script>
 </head>
 
 <body>
@@ -77,7 +126,7 @@
             </ul>
         </div>
     </nav>
-
+    <button type="hidden" id="QueryFlag" name="QueryFlag" value="Posting" style="display: none;"></button>
     <main class="d-flex w-100 h-100 position-relative">
         <div class="container d-flex flex-column">
             <div class="row vh-100">
@@ -192,8 +241,8 @@
                                         </div>
 
                                         <div class="text-center mt-3">
-                                            <input type="submit" class="btn btn-lg btn-primary"
-                                                value="{!! __('loginPageLang.submit') !!}">
+                                            <input style="display: none;" id="subBtn" type="submit"
+                                                class="btn btn-lg btn-primary" value="{!! __('loginPageLang.submit') !!}">
                                         </div>
                                     </form>
                                 </div>
@@ -206,11 +255,13 @@
         </div>
     </main>
 
+    <script src="{{ asset('/js/manifest.js') }}"></script>
+    <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
-    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('/js/jquery.loadingModal.min.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/js/login/register.js?v=') . env('APP_VERSION') }}"></script>
 </body>
 

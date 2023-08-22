@@ -52,3 +52,5 @@ mix.webpackConfig({
         }),
     ],
 });
+
+mix.extract(); // Extract all node_modules vendor libraries into a vendor.js file.

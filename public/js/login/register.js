@@ -4,8 +4,21 @@ $.ajaxSetup({
     },
 });
 
+$(window).on("load", function () {
+    console.log("page loaded!"); // test
+    $("body").loadingModal("hide");
+    $("body").loadingModal("destroy");
+    $("#subBtn").removeAttr("style");
+});
+
 var imgclicked = false;
+
 $(document).ready(function () {
+    $("body").loadingModal({
+        text: "Loading...",
+        animation: "circle",
+    });
+
     $("#fordatabase").on("click", function (event) {
         event.preventDefault();
         if (imgclicked === false) {
@@ -58,7 +71,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "register",
+            url: "/member/register",
             data: {
                 site: site,
                 profilePic: profilePic,
@@ -79,6 +92,7 @@ $(document).ready(function () {
             },
 
             success: function (data) {
+                console.log(data);
                 window.location.href = "/home";
             },
             error: function (err) {
