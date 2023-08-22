@@ -86,8 +86,9 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             {{-- loop thru every database, except for the default Consumables management, so starting at 1 --}}
-                            @for ($i = 1; $i < 14; $i++)
+                            @for ($i = 1; $i < count(config('database_list.databases')); $i++)
                                 @foreach ($test[$i] as $data)
                                     <?php
                                     $maxtime = date_create(date('Y-m-d', strtotime($data->inventory最後更新時間)));
@@ -101,7 +102,7 @@
                                     $buytimeco1 = [];
                                     $database = config('database_list.databases');
                                     foreach ($database as $key => $value) {
-                                        if ($value != $database[$i] && $database[$i] !== 'Consumables management') {
+                                        if ($value !== $database[$i] && $database[$i] !== 'Consumables management') {
                                             \Config::set('database.connections.' . env('DB_CONNECTION') . '.database', $value);
                                             \DB::purge(env('DB_CONNECTION'));
                                             $buytime[$key][0] = $value;
@@ -175,7 +176,7 @@
                                         <td id="datai{{ $i }}{{ $loop->index }}"
                                             name="datai{{ $i }}{{ $loop->index }}">
                                             @foreach ($buytime as $buytime)
-                                                @if ($buytime[2] != null)
+                                                @if ($buytime[2] !== null)
                                                     <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} :
                                                         {{ explode('Consumables management', $buytime[0])[0] }}
                                                         {!! __('bupagelang.senddep') !!} : {{ $buytime[1] }}
@@ -184,7 +185,7 @@
                                                 @endif
                                             @endforeach
                                             @foreach ($buytime1 as $buytime1)
-                                                @if ($buytime1[2] != null)
+                                                @if ($buytime1[2] !== null)
                                                     <span style="white-space: pre-line">{!! __('bupagelang.factory') !!} :
                                                         {{ explode('Consumables management', $buytime1[0])[0] }}
                                                         {!! __('bupagelang.senddep') !!} : {{ $buytime1[1] }}
@@ -200,14 +201,14 @@
                                                 <option style="display: none" disabled selected>{!! __('bupagelang.enterfactory') !!}
                                                 </option>
                                                 @foreach ($buytimeco as $buytime)
-                                                    @if ($buytime[2] != null)
+                                                    @if ($buytime[2] !== null)
                                                         <option>
                                                             {{ str_replace(' Consumables management', ' ', $buytime[0]) }}
                                                         </option>
                                                     @endif
                                                 @endforeach
                                                 @foreach ($buytimeco1 as $buytime1)
-                                                    @if ($buytime1[2] != null)
+                                                    @if ($buytime1[2] !== null)
                                                         <option>
                                                             {{ str_replace(' Consumables management', ' ', $buytime1[0]) }}
                                                         </option>

@@ -525,12 +525,13 @@ class InboundController extends Controller
                         foreach ($test as $k => $a) {
                             $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\n";
                         }
+
                         //無料號
                         if ($name === null || $format === null) {
                             return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
                         } else {
                             //在途量為0
-                            if ($amount === 0 && $inreason !== '調撥' &&  $inreason !== '退庫') {
+                            if ((int)$amount === 0 && $inreason !== '調撥' &&  $inreason !== '退庫') {
                                 return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
                             } else {
 

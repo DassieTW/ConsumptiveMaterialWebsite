@@ -38,12 +38,13 @@
                             <th>{!! __('bupagelang.outfactory') !!}</th>
                             <th>{!! __('bupagelang.receivefac') !!}</th>
                         </tr>
+
                         @foreach ($data as $data)
                             <tr id="{{ $data->調撥單號 }}">
                                 <?php
-                                $database = $data->撥出廠區;
                                 \Config::set('database.connections.' . env('DB_CONNECTION') . '.database', $database);
                                 \DB::purge(env('DB_CONNECTION'));
+                                
                                 $client = DB::table('inventory')
                                     ->where('料號', $data->料號)
                                     ->where('現有庫存', '>', 0)
@@ -59,16 +60,16 @@
                                     ->where('現有庫存', '>', 0)
                                     ->pluck('儲位')
                                     ->toArray();
-
+                                
                                 $count = count($client);
                                 for ($x = 0; $x < $count; $x++) {
                                     $keys[] = 'u' . $x;
                                 }
-                                $jobnumber = DB::table('Login')
-                                    ->pluck('username')
+                                $jobnumber = DB::table('人員信息')
+                                    ->pluck('工號')
                                     ->toArray();
-                                $name = DB::table('Login')
-                                    ->pluck('username')
+                                $name = DB::table('人員信息')
+                                    ->pluck('姓名')
                                     ->toArray();
                                 $test = array_combine($jobnumber, $name);
                                 $result = array_merge_recursive(array_combine($keys, $client), array_combine($keys, $nowstock), array_combine($keys, $position));
@@ -141,8 +142,8 @@
                     value="{!! __('bupagelang.submit') !!}">
             </form>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <button class="btn btn-lg btn-primary"
-                onclick="location.href='{{ route('bu.outlistpage') }}'">{!! __('bupagelang.return') !!}</button>
+            {{-- <button class="btn btn-lg btn-primary"
+                onclick="location.href='{{ route('bu.outlistpage') }}'">{!! __('bupagelang.return') !!}</button> --}}
         </div>
     </div>
 @endsection

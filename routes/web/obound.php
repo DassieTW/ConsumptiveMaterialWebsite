@@ -119,11 +119,9 @@ Route::get('/searchstock', function () {
 })->name('obound.searchstock')->middleware('can:oboundStockSearch,App\Models\O庫');
 
 //O庫-庫存查詢成功
-Route::get('/searchstocksubmit', [OboundController::class, 'searchstocksubmit'])->middleware('can:oboundStockSearch,App\Models\O庫');
-
-Route::post('/searchstocksubmit', [OboundController::class, 'searchstocksubmit'])->name('obound.searchstocksubmit')->middleware('can:oboundStockSearch,App\Models\O庫');
-
-
+Route::get('/searchstocksubmit', function () {
+    return view("obound.searchstockok");
+})->middleware('can:oboundStockSearch,App\Models\O庫');
 
 //O庫-領料
 Route::get('/pick', function () {

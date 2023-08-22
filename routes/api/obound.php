@@ -66,17 +66,22 @@ Route::post('/searchstock', function (Request $request) {
     \DB::purge(env("DB_CONNECTION"));
     $dbName = DB::connection()->getDatabaseName(); // test
 
-    $oboundisn = json_decode($request->input('oboundstockisn'));
+    $oboundisn = json_decode($request->input('oboundisn'));
+    $oboundclient = json_decode($request->input('oboundclient'));
+    $obound = json_decode($request->input('oboundbound'));
     $oboundnogood = json_decode($request->input('oboundnogood'));
-
     $datas = [];
     if ($oboundnogood) {
         $datas = DB::table('O庫不良品inventory')
-            ->where('料號', 'like', $oboundisn . '%')
+            ->where('O庫不良品inventory.料號', 'like', $oboundisn . '%')
+            ->where('O庫不良品inventory.客戶別', 'like', $oboundclient . '%')
+            ->where('O庫不良品inventory.庫別', 'like', $obound . '%')
             ->get();
     } else {
         $datas = DB::table('O庫inventory')
-            ->where('料號', 'like', $oboundisn . '%')
+            ->where('O庫inventory.料號', 'like', $oboundisn . '%')
+            ->where('O庫inventory.客戶別', 'like', $oboundclient . '%')
+            ->where('O庫inventory.庫別', 'like', $obound . '%')
             ->get();
     }
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);

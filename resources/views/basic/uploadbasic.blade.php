@@ -68,13 +68,15 @@
 
                                 </tr>
                                 @foreach ($data as $row)
-                                    <tr>
-                                        <td id="row{{ $loop->index }}"><input type="text"
-                                                class="form-control form-control-lg" id="data0{{ $loop->index }}"
-                                                name="data0{{ $loop->index }}" value="{{ $row[0] }}">
-                                        </td>
-                                    </tr>
-                                    <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                                    @if (strlen(trim($row[0])) !== 0)
+                                        <tr>
+                                            <td id="row{{ $loop->index }}"><input type="text"
+                                                    class="form-control form-control-lg" id="data0{{ $loop->index }}"
+                                                    name="data0{{ $loop->index }}" value="{{ $row[0] }}">
+                                            </td>
+                                        </tr>
+                                        <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                                    @endif
                                 @endforeach
 
                             </table>
