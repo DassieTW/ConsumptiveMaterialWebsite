@@ -1431,6 +1431,57 @@ class MonthController extends Controller
         } // if else
     }
 
+    //單耗查詢下載
+    public function consumedownload(Request $request)
+    {
+        if (Session::has('username')) {
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            $title = $request->input('title');
+            $count = $request->input('count');
+            $Alldata = json_decode($request->input('AllData'));
+            // $stringValueBinder = new StringValueBinder();
+            // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+            // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+
+
+            //填寫表頭
+            for ($i = 0; $i < 9; $i++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+            }
+
+            // 下載
+            for ($i = 0; $i < 9; $i++) {
+                for ($j = 0; $j < $count; $j++) {
+
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
+                }
+            }
+
+            $now = Carbon::now()->format('YmdHis');
+
+            $filename = rawurlencode($request->input('titlename')) . $now . '.xlsx';
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
+            header('Cache-Control: max-age=0');
+
+            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+            $callback = function () use ($writer) {
+                $file = fopen('php://output', 'r');
+                fclose($file);
+            };
+
+            return response()->stream($callback, 200, $headers);
+        } else {
+            return redirect(route('member.login'));
+        } // if else
+    }
+
     //download data
     public function download(Request $request)
     {

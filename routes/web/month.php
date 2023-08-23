@@ -326,6 +326,9 @@ Route::post('/teststand_submit', [MonthController::class, 'teststand'])->name('m
 //站位人力下載
 Route::post('/standdownload', [MonthController::class, 'standdownload'])->name('month.standdownload');
 
+//單耗下載
+Route::post('/consumedownload', [MonthController::class, 'consumedownload'])->name('month.consumedownload');
+
 //非月請購下載
 Route::post('/download', [MonthController::class, 'download'])->name('month.download');
 

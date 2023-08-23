@@ -55,6 +55,7 @@
                     <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                         value="{!! __('monthlyPRpageLang.download') !!}">
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                     <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
                     <div class="input-group" style="width: 40ch;">
@@ -131,7 +132,7 @@
                             <tbody>
                                 @foreach ($data as $data)
                                     <?php
-
+                                    
                                     $data->當月站位人數 = round($data->當月站位人數, 7);
                                     $data->當月開線數 = round($data->當月開線數, 7);
                                     $data->當月開班數 = round($data->當月開班數, 7);

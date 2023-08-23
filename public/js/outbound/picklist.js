@@ -407,7 +407,7 @@ $(document).ready(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").hide();
 
-    if (count === 0) {
+    if (all === 0) {
       notyf.open({
         type: "warning",
         message: Lang.get("basicInfoLang.nodata"),
