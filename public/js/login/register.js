@@ -14,11 +14,6 @@ $(window).on("load", function () {
 var imgclicked = false;
 
 $(document).ready(function () {
-    $("body").loadingModal({
-        text: "Loading...",
-        animation: "circle",
-    });
-
     $("#fordatabase").on("click", function (event) {
         event.preventDefault();
         if (imgclicked === false) {
