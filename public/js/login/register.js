@@ -6,8 +6,8 @@ $.ajaxSetup({
 
 $(window).on("load", function () {
     console.log("page loaded!"); // test
-    $("body").loadingModal("hide");
-    $("body").loadingModal("destroy");
+    // $("body").loadingModal("hide");
+    // $("body").loadingModal("destroy");
     $("#subBtn").removeAttr("style");
 });
 
