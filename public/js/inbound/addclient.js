@@ -390,7 +390,7 @@ $(function () {
         number.push($("#number" + i).text());
         transit.push(parseInt($("#transit" + i).text()));
         amount.push(parseInt($("#amount" + i).val()));
-        console.log($("#newposition" + i).val());
+        // console.log($("#newposition" + i).val());
         if ($("#newposition" + i).val() === null) {
           document.getElementById("positionerror" + i).style.display = "block";
           document
@@ -475,8 +475,19 @@ $(function () {
           Lang.get("inboundpageLang.inlist") +
           " : " +
           data.message;
-        alert(mess);
-        window.location.href = "/inbound/add";
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
+
+        setTimeout(() => (window.location.href = "/inbound/add"), 1000);
       },
       error: function (err) {
         //transaction error

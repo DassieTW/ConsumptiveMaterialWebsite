@@ -16,6 +16,7 @@ $.ajaxSetup({
 var index = 0;
 var count = $("#count").val();
 count = parseInt(count);
+var all = count;
 
 function appenSVg(count) {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -72,7 +73,7 @@ function deleteBtn(index) {
       y: "bottom",
     },
   });
-  count = count - 1;
+  all = all - 1;
   $("#deleteBtn" + index)
     .parent()
     .parent()
@@ -81,6 +82,7 @@ function deleteBtn(index) {
 }
 
 function addBtn(index) {
+  all = all + 1;
   notyf.success({
     message:
       Lang.get("oboundpageLang.add") + Lang.get("oboundpageLang.success"),
@@ -258,7 +260,7 @@ function addBtn(index) {
   count = count + 1;
 }
 
-$(".sendlist").mouseover(function (e) {
+$(".sendlist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#sendpeople").val(ename);
@@ -269,7 +271,7 @@ $(".sendlist").on("click", function (e) {
   $("#sendpeople").val(ename);
 });
 
-$(".picklist").mouseover(function (e) {
+$(".picklist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#pickpeople").val(ename);
@@ -313,8 +315,8 @@ function myFunction2() {
 }
 
 $("#sendpeople").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -322,8 +324,8 @@ $("#sendpeople").on("focus", function () {
   $("#sendmenu").show();
 });
 $("#sendpeople").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -335,8 +337,8 @@ $("#sendpeople").on("blur", function () {
   $("#sendmenu").hide();
 });
 $("#pickpeople").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -344,8 +346,8 @@ $("#pickpeople").on("focus", function () {
   $("#pickmenu").show();
 });
 $("#pickpeople").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -357,10 +359,10 @@ $("#pickpeople").on("blur", function () {
   $("#pickmenu").hide();
 });
 
-$(document).ready(function () {
+$(function () {
   $("#pickpeople").on("input", function () {
-    $(window).keydown(function (event) {
-      if (event.keyCode == 13) {
+    $(window).on("keydown", function (event) {
+      if (event.code === "Enter") {
         event.preventDefault();
         return false;
       }
@@ -370,8 +372,8 @@ $(document).ready(function () {
     $("#pickpeople").val(rfidpick);
   });
   $("#sendpeople").on("input", function () {
-    $(window).keydown(function (event) {
-      if (event.keyCode == 13) {
+    $(window).on("keydown", function (event) {
+      if (event.code === "Enter") {
         event.preventDefault();
         return false;
       }
@@ -387,7 +389,7 @@ $(document).ready(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").remove();
 
-    if (count == 0) {
+    if (all === 0) {
       notyf.open({
         type: "warning",
         message: Lang.get("basicInfoLang.nodata"),
@@ -462,7 +464,7 @@ $(document).ready(function () {
     var check2 = checkpeople.indexOf(pickpeople);
 
     //check has people
-    if (check1 == -1) {
+    if (check1 === -1) {
       notyf.open({
         type: "warning",
         message: Lang.get("oboundpageLang.nosendpeople"),
@@ -478,7 +480,7 @@ $(document).ready(function () {
       return false;
     }
 
-    if (check2 == -1) {
+    if (check2 === -1) {
       notyf.open({
         type: "warning",
         message: Lang.get("oboundpageLang.nopickpeople"),
@@ -496,7 +498,7 @@ $(document).ready(function () {
 
     //check write reason
     for (let i = 0; i < count; i++) {
-      if (amount[i] != advance[i] && reason[i] == "") {
+      if (amount[i] !== advance[i] && reason[i] === "") {
         row = i + 1;
         $("#reasonerrrow")
           .empty()
@@ -593,7 +595,7 @@ $(document).ready(function () {
           document.getElementById("reasonerror").style.display = "none";
         }
         //transcation error
-        else if (err.status == 422) {
+        else if (err.status === 422) {
           var mess = err.responseJSON.message;
           alert(mess);
           window.location.reload();
