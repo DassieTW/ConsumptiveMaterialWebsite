@@ -4,7 +4,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   $(".checkbutton").on("change", function () {
     var count = $("#count").val();
     for (let i = 0; i < count; i++) {
@@ -49,7 +49,7 @@ $(document).ready(function () {
       reason.push($("#remark" + i).val());
     } // for
 
-    if (count == undefined) {
+    if (count === undefined) {
       notyf.open({
         type: "warning",
         message: Lang.get("monthlyPRpageLang.nodata"),
@@ -118,8 +118,20 @@ $(document).ready(function () {
             Lang.get("monthlyPRpageLang.record") +
             " " +
             Lang.get("monthlyPRpageLang.success");
-          alert(mess);
-          window.location.reload();
+
+          notyf.open({
+            type: "success",
+            message: mess,
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+              x: "right",
+              y: "bottom",
+            },
+          });
+
+          setTimeout(() => window.location.reload(), 1500);
         },
         error: function (err) {
           //transaction error

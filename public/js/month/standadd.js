@@ -15,8 +15,8 @@ function myFunction() {
   }
 }
 $("#email").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode === 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -24,8 +24,8 @@ $("#email").on("focus", function () {
   $("#peoplemenu").show();
 });
 $("#email").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -36,7 +36,7 @@ $("#email").on("input", function () {
 $("#email").on("blur", function () {
   $("#peoplemenu").hide();
 });
-$(".peoplelist").mouseover(function (e) {
+$(".peoplelist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#email").val(ename);
@@ -84,7 +84,7 @@ function appenSVg(index) {
   }); // on delete btn click
 } // appenSVg
 
-$(document).ready(function () {
+$(function () {
   $("#stand").on("submit", function (e) {
     e.preventDefault();
 
@@ -427,14 +427,14 @@ $(document).ready(function () {
       },
       error: function (err) {
         //料號長度不為12
-        if (err.status == 420) {
+        if (err.status === 420) {
           document.getElementById("numbererror1").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
           document.getElementById("numbererror").style.display = "none";
         }
         //料號不存在
-        else if (err.status == 421) {
+        else if (err.status === 421) {
           document.getElementById("numbererror").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
@@ -580,11 +580,35 @@ $(document).ready(function () {
           Lang.get("monthlyPRpageLang.record") +
           " " +
           Lang.get("monthlyPRpageLang.stand");
-        alert(mess);
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
 
         var mess2 = Lang.get("monthlyPRpageLang.yellowrepeat");
 
-        alert(mess2);
+        setTimeout(
+          () =>
+            notyf.open({
+              type: "info",
+              message: mess2,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            }),
+          1000
+        );
 
         for (let i = 0; i < row.length; i++) {
           var same = row.filter(function (v) {
@@ -611,7 +635,7 @@ $(document).ready(function () {
       },
       error: function (err) {
         //transaction error
-        if (err.status == 421) {
+        if (err.status === 421) {
           alert(Lang.get("monthlyPRpageLang.yellowrepeat"));
           console.log(err.responseJSON.message);
           //window.location.reload();
@@ -942,7 +966,7 @@ $(document).ready(function () {
           appenSVg(j);
 
           j = j + 1;
-          $("input").change(function () {
+          $("input").on("change", function () {
             for (let i = 0; i < sessionStorage.getItem("standcount"); i++) {
               var nowpeople = $("#nowpeople" + i).val();
               var nowline = $("#nowline" + i).val();

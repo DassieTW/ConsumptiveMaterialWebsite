@@ -282,7 +282,7 @@ $(function () {
           },
         });
 
-        setTimeout(() => (window.location.href = "/home"), 1000);
+        setTimeout(() => (window.location.href = "/home"), 1500);
       },
       error: function (err) {
         //transaction error

@@ -19,8 +19,8 @@ function myFunction() {
   }
 }
 $("#email").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode === 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -28,8 +28,8 @@ $("#email").on("focus", function () {
   $("#peoplemenu").show();
 });
 $("#email").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -40,7 +40,7 @@ $("#email").on("input", function () {
 $("#email").on("blur", function () {
   $("#peoplemenu").hide();
 });
-$(".peoplelist").mouseover(function (e) {
+$(".peoplelist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#email").val(ename);
@@ -50,7 +50,7 @@ $(".peoplelist").on("click", function (e) {
   var ename = $(this).text();
   $("#email").val(ename);
 });
-$(document).ready(function () {
+$(function () {
   function quickSearch() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
@@ -295,7 +295,7 @@ $(document).ready(function () {
         },
         success: function (data) {
           console.log(data);
-          if (data.status == 201) {
+          if (data.status === 201) {
             var mess =
               Lang.get("monthlyPRpageLang.total") +
               " " +
@@ -312,9 +312,20 @@ $(document).ready(function () {
               Lang.get("monthlyPRpageLang.submit") +
               " " +
               Lang.get("monthlyPRpageLang.success");
-            alert(mess);
 
-            window.location.href = "consume";
+            notyf.open({
+              type: "success",
+              message: mess,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            });
+
+            setTimeout(() => (window.location.href = "consume"), 1500);
           } else {
             var mess =
               Lang.get("monthlyPRpageLang.total") +
@@ -330,8 +341,19 @@ $(document).ready(function () {
               Lang.get("monthlyPRpageLang.delete") +
               " " +
               Lang.get("monthlyPRpageLang.success");
-            alert(mess);
-            window.location.href = "consume";
+            notyf.open({
+              type: "success",
+              message: mess,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            });
+
+            setTimeout(() => (window.location.href = "consume"), 1500);
           }
         },
         error: function (err) {

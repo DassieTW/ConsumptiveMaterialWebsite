@@ -38,8 +38,8 @@ function myFunction() {
   }
 }
 $("#email").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode === 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -47,8 +47,8 @@ $("#email").on("focus", function () {
   $("#peoplemenu").show();
 });
 $("#email").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -59,7 +59,7 @@ $("#email").on("input", function () {
 $("#email").on("blur", function () {
   $("#peoplemenu").hide();
 });
-$(".peoplelist").mouseover(function (e) {
+$(".peoplelist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#email").val(ename);
@@ -75,7 +75,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   function quickSearch() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
@@ -100,7 +100,7 @@ $(document).ready(function () {
     quickSearch();
   });
 
-  $("input").change(function () {
+  $("input").on("change", function () {
     for (var i = 0; i < count; i++) {
       var nowpeople = $("#datai" + i).val();
       var nowline = $("#dataj" + i).val();
@@ -170,19 +170,19 @@ $(document).ready(function () {
       check.push($(this).val());
     });
 
-    if (select == "刪除" || select == "删除" || select == "Delete") {
+    if (select === "刪除" || select === "删除" || select === "Delete") {
       select = "刪除";
       var count = check.length;
     }
-    if (select == "更新" || select == "Update") {
+    if (select === "更新" || select === "Update") {
       select = "更新";
       var count = check.length;
     }
-    if (select == "下載" || select == "下载" || select == "Download") {
+    if (select === "下載" || select === "下载" || select === "Download") {
       select = "下載";
       var count = $("#count").val();
     }
-    if (select == "刪除" || select == "更新") {
+    if (select === "刪除" || select === "更新") {
       for (let i = 0; i < count; i++) {
         data0.push($("#dataa" + i).val());
         data1.push($("#datab" + check[i]).val());
@@ -239,7 +239,7 @@ $(document).ready(function () {
       title.push($("#title" + [i]).val());
     }
 
-    checked = $("input[type=checkbox]:checked").length;
+    var checked = $("input[type=checkbox]:checked").length;
 
     data.push(data0);
     data.push(data1);
@@ -341,7 +341,7 @@ $(document).ready(function () {
         success: function (data) {
           console.log(data);
           // update
-          if (data.status == 201) {
+          if (data.status === 201) {
             var mess =
               Lang.get("monthlyPRpageLang.total") +
               " " +
@@ -356,8 +356,19 @@ $(document).ready(function () {
               Lang.get("monthlyPRpageLang.submit") +
               " " +
               Lang.get("monthlyPRpageLang.success");
-            alert(mess);
-            window.location.href = "stand";
+            notyf.open({
+              type: "success",
+              message: mess,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            });
+
+            setTimeout(() => (window.location.href = "stand"), 1500);
           }
           // delete
           else {
@@ -373,8 +384,19 @@ $(document).ready(function () {
               Lang.get("monthlyPRpageLang.delete") +
               " " +
               Lang.get("monthlyPRpageLang.success");
-            alert(mess);
-            window.location.href = "stand";
+            notyf.open({
+              type: "success",
+              message: mess,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            });
+
+            setTimeout(() => (window.location.href = "stand"), 1500);
           }
         },
         error: function (err) {

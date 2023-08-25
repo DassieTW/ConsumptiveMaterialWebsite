@@ -50,7 +50,7 @@ function appenSVg(index) {
   }); // on delete btn click
 } // appenSVg
 
-$(document).ready(function () {
+$(function () {
   appenSVg(0);
   $("#notmonth").on("submit", function (e) {
     e.preventDefault();
@@ -215,7 +215,7 @@ $(document).ready(function () {
       error: function (err) {
         console.log(err);
         //無料號
-        if (err.status == 421) {
+        if (err.status === 421) {
           document.getElementById("numbererror2").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
@@ -235,7 +235,7 @@ $(document).ready(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").hide();
 
-    if (total == 0) {
+    if (total === 0) {
       notyf.open({
         type: "warning",
         message: Lang.get("basicInfoLang.nodata"),
@@ -333,13 +333,24 @@ $(document).ready(function () {
           Lang.get("monthlyPRpageLang.notmonth") +
           Lang.get("monthlyPRpageLang.add") +
           Lang.get("monthlyPRpageLang.success");
-        alert(mess);
-        window.location.href = "importnotmonth";
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
+
+        setTimeout(() => (window.location.href = "importnotmonth"), 1500);
         //window.location.href = "member.newok";
       },
       error: function (err) {
         //transaction error
-        if (err.status == 421) {
+        if (err.status === 421) {
           console.log(err.status);
           alert(err.responseJSON.message);
           window.location.reload();

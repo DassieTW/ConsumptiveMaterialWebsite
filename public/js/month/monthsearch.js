@@ -1,103 +1,114 @@
 $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+  headers: {
+    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+  },
 });
 
+$("#monthsearch").on("submit", function (e) {
+  e.preventDefault();
 
+  // clean up previous input results
+  $(".is-invalid").removeClass("is-invalid");
+  $(".invalid-feedback").remove();
+  var select = $(document.activeElement).val();
 
-$('#monthsearch').on('submit', function (e) {
-    e.preventDefault();
+  if (select === "返回" || select === "return") {
+    window.location.href = "importmonth";
+  }
 
-    // clean up previous input results
-    $('.is-invalid').removeClass('is-invalid');
-    $(".invalid-feedback").remove();
-    var select = ($(document.activeElement).val());
+  var check = [];
+  var checked = $("input[type=checkbox]:checked").length;
 
-    if (select == "返回" || select == "return") {
-        window.location.href = "importmonth";
+  if (!checked) {
+    if (select === "刪除" || select === "删除" || select === "Delete") {
+      notyf.open({
+        type: "warning",
+        message: Lang.get("monthlyPRpageLang.nocheck"),
+        duration: 3000, //miliseconds, use 0 for infinite duration
+        ripple: true,
+        dismissible: true,
+        position: {
+          x: "right",
+          y: "bottom",
+        },
+      });
+      return false;
     }
+  }
 
-    var check = [];
-    checked = $("input[type=checkbox]:checked").length;
+  $("input:checkbox[name='innumber']:checked").each(function () {
+    check.push($(this).val());
+  });
 
+  var count = check.length;
+  var client = [];
+  var machine = [];
+  var production = [];
 
-    if (!checked) {
-        if (select == "刪除" || select == "删除" || select == "Delete") {
-            notyf.open({
-                type: 'warning',
-                message: Lang.get('monthlyPRpageLang.nocheck'),
-                duration: 3000, //miliseconds, use 0 for infinite duration
-                ripple: true,
-                dismissible: true,
-                position: {
-                    x: "right",
-                    y: "bottom"
-                }
-            });
-            return false;
-        }
-    }
+  for (let i = 0; i < count; i++) {
+    client.push($("#client" + check[i]).val());
+    machine.push($("#machine" + check[i]).val());
+    production.push($("#production" + check[i]).val());
+  }
 
+  console.log(client);
+  console.log(count);
+  console.log(machine);
+  console.log(production);
 
-    $("input:checkbox[name='innumber']:checked").each(function () {
-        check.push($(this).val());
-    });
+  $.ajax({
+    type: "POST",
+    url: "monthdelete",
+    data: {
+      client: client,
+      machine: machine,
+      production: production,
+      count: count,
+    },
 
-    var count = check.length;
-    var client = [];
-    var machine = [];
-    var production = [];
+    beforeSend: function () {
+      // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+      $("body").loadingModal({
+        text: "Loading...",
+        animation: "circle",
+      });
+    },
+    complete: function () {
+      $("body").loadingModal("hide");
+      $("body").loadingModal("destroy");
+    },
 
-    for (let i = 0; i < count; i++) {
-        client.push($("#client" + check[i]).val());
-        machine.push($("#machine" + check[i]).val());
-        production.push($("#production" + check[i]).val());
-    }
-
-    console.log(client);
-    console.log(count);
-    console.log(machine);
-    console.log(production);
-
-    $.ajax({
-        type: 'POST',
-        url: "monthdelete",
-        data: {
-            client: client,
-            machine: machine,
-            production: production,
-            count: count,
+    success: function (data) {
+      var mess =
+        Lang.get("monthlyPRpageLang.total") +
+        " " +
+        data.message +
+        " " +
+        Lang.get("monthlyPRpageLang.record") +
+        Lang.get("monthlyPRpageLang.month") +
+        Lang.get("monthlyPRpageLang.delete") +
+        Lang.get("monthlyPRpageLang.success");
+      notyf.open({
+        type: "success",
+        message: mess,
+        duration: 3000, //miliseconds, use 0 for infinite duration
+        ripple: true,
+        dismissible: true,
+        position: {
+          x: "right",
+          y: "bottom",
         },
+      });
 
-        beforeSend: function () {
-            // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-            $('body').loadingModal({
-                text: 'Loading...',
-                animation: 'circle'
-            });
-
-        },
-        complete: function () {
-            $('body').loadingModal('hide');
-            $('body').loadingModal('destroy');
-        },
-
-        success: function (data) {
-
-            var mess = Lang.get('monthlyPRpageLang.total') + ' ' + (data.message) + ' ' + Lang.get('monthlyPRpageLang.record') +
-                Lang.get('monthlyPRpageLang.month') + Lang.get('monthlyPRpageLang.delete') + Lang.get('monthlyPRpageLang.success');
-            alert(mess);
-            window.location.href = "importmonth";
-
-        },
-        error: function (err) {
-            //transaction error
-            if (err.status == 420) {
-                console.log(err.status);
-                var mess = err.responseJSON.message;
-                alert(mess);
-            }
-        },
-    });
+      setTimeout(() => (window.location.href = "importmonth"), 1500);
+    },
+    error: function (err) {
+      //transaction error
+      if (err.status === 420) {
+        console.log(err.status);
+        var mess = err.responseJSON.message;
+        alert(mess);
+      }
+    },
+  });
 });

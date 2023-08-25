@@ -1,5 +1,5 @@
 var imgclicked = false;
-$(document).ready(function () {
+$(function () {
   $("#fordatabase").on("click", function (event) {
     event.preventDefault();
     if (imgclicked === false) {
@@ -42,7 +42,7 @@ $(document).ready(function () {
         );
     } // if else if
 
-    $("#password").focus();
+    $("#password").trigger("focus");
   });
 
   $("#loginForm").on("submit", function (e) {
@@ -100,7 +100,7 @@ $(document).ready(function () {
         window.location.href = "/home";
       },
       error: function (err) {
-        if (err.status == 422) {
+        if (err.status === 422) {
           // when status code is 422, it's a validation issue
           // console.log(err.responseJSON.message); // test
 
@@ -111,7 +111,7 @@ $(document).ready(function () {
             var el = $(document).find('[name="' + i + '"]');
             console.log(el); // test
             el.addClass("is-invalid");
-            el.focus();
+            el.trigger("focus");
             if (el.siblings(".input-group-text").length > 0) {
               el.siblings(".input-group-text").after(
                 $(
@@ -132,14 +132,14 @@ $(document).ready(function () {
             } // if else
           });
         } // if error 422
-        else if (err.status == 420) {
+        else if (err.status === 420) {
           // when login failed
           // Lang = new Lang();
           // console.log(err.responseJSON.message); // test
           // console.log(Lang.getLocale()); // test
           $("#username").addClass("is-invalid");
           $("#password").addClass("is-invalid");
-          $("#username").focus();
+          $("#username").trigger("focus");
           $("#password")
             .siblings(".input-group-text")
             .after(

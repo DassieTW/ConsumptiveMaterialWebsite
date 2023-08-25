@@ -37,6 +37,7 @@
         <div class="card">
             <div class="card-header">
                 <h3>{!! __('inboundpageLang.locationchange') !!}</h3>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
                     placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
                     style="width: 200px">
@@ -108,7 +109,6 @@
                         </table>
 
                 </div>
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 </form>
                 {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('inbound.positionchange')}}'">{!!
             __('inboundpageLang.return') !!}</button> --}}

@@ -175,7 +175,7 @@ $(function () {
           Lang.get("basicInfoLang.matsdata");
 
         notyf.open({
-          type: "info",
+          type: "success",
           message: mess,
           duration: 3000, //miliseconds, use 0 for infinite duration
           ripple: true,

@@ -6,7 +6,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   var title = [];
   var titlecol = [];
   var check;
@@ -46,7 +46,7 @@ $(document).ready(function () {
     checked = $("input[type=checkbox]:checked").length;
     var select = $(document.activeElement).val();
 
-    if (select == "刪除" || select == "Delete" || select == "删除") {
+    if (select === "刪除" || select === "Delete" || select === "删除") {
       if (!checked) {
         notyf.open({
           type: "warning",
@@ -113,12 +113,22 @@ $(document).ready(function () {
             Lang.get("inboundpageLang.isn") +
             " : " +
             data.number;
-          alert(mess);
-          window.location.href = "search";
+          notyf.open({
+            type: "success",
+            message: mess,
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+              x: "right",
+              y: "bottom",
+            },
+          });
+          setTimeout(() => window.location.reload(), 1500);
         },
         error: function (err) {
           //庫存小於入庫數量
-          if (err.status == 420) {
+          if (err.status === 420) {
             var mess =
               Lang.get("inboundpageLang.lessstock") +
               "\n" +
@@ -143,7 +153,7 @@ $(document).ready(function () {
             return false;
           }
           //transaction error
-          else if (err.status == 421) {
+          else if (err.status === 421) {
             console.log(err.status);
             var mess = err.responseJSON.message;
             alert(mess);

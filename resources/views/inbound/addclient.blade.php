@@ -165,8 +165,8 @@
                                                 ->where('客戶別', $data->客戶)
                                                 ->where('製程', $production)
                                                 ->value('下月生產天數');
-
-                                            if ($nextday == 0) {
+                                        
+                                            if ($nextday === 0) {
                                                 $safe = 0;
                                             } else {
                                                 $safe = ($lt * $consume * $nextmps) / $nextday;
@@ -203,13 +203,13 @@
                                             $mpq = DB::table('consumptive_material')
                                                 ->where('料號', $data->料號)
                                                 ->value('MPQ');
-                                            if ($mpq == 0) {
+                                            if ($mpq === 0) {
                                                 $safe = 0;
                                             } else {
                                                 $safe = ($lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange) / $mpq;
                                             }
                                         }
-
+                                        
                                         $showstock = '';
                                         $nowstock = DB::table('inventory')
                                             ->where('料號', $data->料號)
@@ -227,7 +227,7 @@
                                         foreach ($test as $k => $a) {
                                             $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\n";
                                         }
-
+                                        
                                         ?>
                                         <td><a id="deleteBtn{{ $loop->index }}"
                                                 href="javascript:deleteBtn({{ $loop->index }})"><svg width="30"
@@ -308,7 +308,7 @@
                         <ul id="inboundmenu" style="display: none;" class="list-group">
                             @foreach ($peoples as $peopleinf)
                                 <a class="inboundlist list-group-item list-group-item-action"
-                                    href="#">{{ $peopleinf->工號 . ' ' . $peopleinf->姓名 }}</a>
+                                    href="#">{{ $peopleinf->工號 . ' : ' . $peopleinf->姓名 }}</a>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                             @endforeach
                         </ul>

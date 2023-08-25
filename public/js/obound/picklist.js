@@ -559,14 +559,24 @@ $(function () {
           Lang.get("oboundpageLang.outpickok") +
           " : " +
           data.list;
-        alert(mess);
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
 
-        window.location.href = "picklist";
+        setTimeout(() => (window.location.href = "picklist"), 1500);
         //window.location.href = "member.newok";
       },
       error: function (err) {
         //庫別庫存小於實際領用數量
-        if (err.status == 421) {
+        if (err.status === 421) {
           document.getElementById("lessstock").style.display = "block";
           document.getElementById("bound").classList.add("is-invalid");
           $("#lessstock #row").html(

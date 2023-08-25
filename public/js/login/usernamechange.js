@@ -4,7 +4,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   var department = $("#department").val();
   console.log(department);
   function quickSearch() {
@@ -89,7 +89,7 @@ $(document).ready(function () {
         });
         setTimeout(function () {
           location.reload();
-        }, 1000);
+        }, 1500);
       },
       error: function (err) {
         console.log(err);

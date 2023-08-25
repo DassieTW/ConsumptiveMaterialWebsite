@@ -70,8 +70,8 @@ for (var i = 0; i < countb; i++) {
   $("#buyperb" + i).val(buyperb + "%");
 }
 
-$(document).ready(function () {
-  $("input").change(function () {
+$(function () {
+  $("input").on("change", function () {
     for (var i = 0; i < counta; i++) {
       var buyamounta = $("#buyamounta" + i).val();
       var pricea = $("#pricea" + i).val();
@@ -116,7 +116,7 @@ $(document).ready(function () {
     },
   });
 
-  $("#writesrm").click(function () {
+  $("#writesrm").on("click", function () {
     var checka = [];
     $("input:checkbox[name=innumbera]:checked").each(function () {
       checka.push($(this).val());
@@ -287,7 +287,7 @@ $(document).ready(function () {
         }
       }
 
-      if (check1 == count) {
+      if (check1 === count) {
         notyf.open({
           type: "warning",
           message: Lang.get("monthlyPRpageLang.nodata"),
@@ -330,13 +330,23 @@ $(document).ready(function () {
             Lang.get("monthlyPRpageLang.PR") +
             Lang.get("monthlyPRpageLang.submit") +
             Lang.get("monthlyPRpageLang.success");
-          alert(mess);
+          notyf.open({
+            type: "success",
+            message: mess,
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+              x: "right",
+              y: "bottom",
+            },
+          });
 
-          window.location.href = "buylistmake";
+          setTimeout(() => (window.location.href = "buylistmake"), 1500);
         },
         error: function (err) {
           //transaction error
-          if (err.status == 420) {
+          if (err.status === 420) {
             var mess = err.responseJSON.message;
             alert(mess);
             return false;

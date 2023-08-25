@@ -4,7 +4,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   $("#searchnumber").on("submit", function (e) {
     e.preventDefault();
 
@@ -149,7 +149,7 @@ $(document).ready(function () {
       },
       success: function (data) {
         console.log(data);
-        if (data.status == 201) {
+        if (data.status === 201) {
           notyf.open({
             type: "success",
             message:
@@ -169,7 +169,7 @@ $(document).ready(function () {
           setTimeout(function () {
             location.reload();
           }, 1000);
-        } else if (data.status == 202) {
+        } else if (data.status === 202) {
           notyf.open({
             types: [
               {
@@ -196,7 +196,7 @@ $(document).ready(function () {
           setTimeout(function () {
             location.reload();
           }, 1000);
-        } else if (data.status == 421) {
+        } else if (data.status === 421) {
           notyf.open({
             type: "warning",
             message: Lang.get("loginPageLang.jobrepeat"),

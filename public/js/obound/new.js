@@ -41,7 +41,7 @@ function appenSVg(index) {
   }); // on delete btn click
 } // appenSVg
 
-$(document).ready(function () {
+$(function () {
   $("#newmaterial").on("submit", function (e) {
     e.preventDefault();
     // clean up previous input results
@@ -258,11 +258,35 @@ $(document).ready(function () {
           " " +
           Lang.get("oboundpageLang.matsdata");
 
-        alert(mess);
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
 
         var mess2 = Lang.get("oboundpageLang.yellowrepeat");
 
-        alert(mess2);
+        setTimeout(
+          () =>
+            notyf.open({
+              type: "info",
+              message: mess2,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            }),
+          1000
+        );
 
         for (let i = 0; i < row.length; i++) {
           var same = row.filter(function (v) {
@@ -285,7 +309,7 @@ $(document).ready(function () {
       error: function (err) {
         console.log(err.status);
         //transaction error
-        if (err.status == 423) {
+        if (err.status === 423) {
           window.alert(err.responseJSON.message);
           console.log(err.responseJSON.message);
         } // else if

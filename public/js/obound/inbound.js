@@ -49,7 +49,7 @@ function copyoption(count) {
   //$('#position'+ index + 'option').clone().appendTo('#position' + count);
 }
 
-$(".inboundlist").mouseover(function (e) {
+$(".inboundlist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#inpeople").val(ename);
@@ -78,8 +78,8 @@ function myFunction() {
 }
 
 $("#inpeople").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -87,8 +87,8 @@ $("#inpeople").on("focus", function () {
   $("#inboundmenu").show();
 });
 $("#inpeople").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -100,7 +100,7 @@ $("#inpeople").on("blur", function () {
   $("#inboundmenu").hide();
 });
 
-$(document).ready(function () {
+$(function () {
   $("#add").on("submit", function (e) {
     e.preventDefault();
 
@@ -258,8 +258,8 @@ $(document).ready(function () {
   });
 
   $("#inpeople").on("input", function () {
-    $(window).keydown(function (event) {
-      if (event.keyCode == 13) {
+    $(window).on("keydown", function (event) {
+      if (event.code === "Enter") {
         event.preventDefault();
         return false;
       }
@@ -276,7 +276,7 @@ $(document).ready(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").hide();
 
-    if (count == 0) {
+    if (count === 0) {
       notyf.open({
         type: "warning",
         message: Lang.get("basicInfoLang.nodata"),
@@ -351,7 +351,7 @@ $(document).ready(function () {
     }
     var check1 = checkpeople.indexOf(inpeople);
 
-    if (check1 == -1) {
+    if (check1 === -1) {
       notyf.open({
         type: "warning",
         message: Lang.get("oboundpageLang.noinpeople"),
@@ -409,12 +409,23 @@ $(document).ready(function () {
           Lang.get("oboundpageLang.inlist") +
           " : " +
           data.message;
-        alert(mess);
-        window.location.reload();
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
+
+        setTimeout(() => window.location.reload(), 1500);
       },
       error: function (err) {
         //transaction error
-        if (err.status == 421) {
+        if (err.status === 421) {
           alert(err.responseJSON.message);
           window.location.reload();
         }

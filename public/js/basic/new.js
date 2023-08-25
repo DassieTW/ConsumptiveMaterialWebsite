@@ -529,7 +529,7 @@ $(function () {
           Lang.get("basicInfoLang.matsdata");
 
         notyf.open({
-          type: "info",
+          type: "success",
           message: mess,
           duration: 3000, //miliseconds, use 0 for infinite duration
           ripple: true,
@@ -595,7 +595,7 @@ $(function () {
               y: "bottom",
             },
           });
-          setTimeout(() => (window.location.href = "new"), 1000);
+          setTimeout(() => (window.location.href = "new"), 1500);
         } else if (err.status === 423) {
           window.alert(err.responseJSON.message);
         } // else if

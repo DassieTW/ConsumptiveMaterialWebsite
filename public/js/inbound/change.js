@@ -17,7 +17,7 @@ $(window).on("load", function () {
 });
 var count = $("#count").val();
 
-$(document).ready(function () {
+$(function () {
   function quickSearch() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
