@@ -37,7 +37,9 @@ $(function () {
   //     }
 
   // });
-
+  $("#email").on("change", function (event) {
+    $("#emailTail").text($(this).val());
+  });
   var count = $("#count").val();
   $.ajaxSetup({
     headers: {
@@ -58,9 +60,29 @@ $(function () {
     var production = [];
     var machine = [];
     var consume = [];
+    var number90 = [];
+
     var jobnumber = $("#jobnumber").val();
-    var email = $("#email").val();
-    email = email + $("#emailTail option:selected").text();
+    if ($("#email").val() === null) {
+      notyf.open({
+        type: "warning",
+        message: Lang.get("monthlyPRpageLang.noemail"),
+        duration: 3000, //miliseconds, use 0 for infinite duration
+        ripple: true,
+        dismissible: true,
+        position: {
+          x: "right",
+          y: "bottom",
+        },
+      });
+      document.getElementById("email").classList.add("is-invalid");
+      document.getElementById("email").classList.add("is-invalid");
+      document.getElementById("email").focus();
+      return false;
+    } else {
+      var email = $("#email option:selected").text();
+      console.log(email);
+    }
     var count = $("#count").val();
 
     for (let i = 0; i < count; i++) {
@@ -74,6 +96,7 @@ $(function () {
         production.push($("#datai" + i).val());
         number.push($("#dataa" + i).val());
         consume.push($("#datac" + i).val());
+        number90.push($("#dataj" + i).val());
         row.push(i.toString());
       } else {
         continue;
@@ -86,6 +109,7 @@ $(function () {
       data: {
         client: client,
         number: number,
+        number90: number90,
         production: production,
         machine: machine,
         consume: consume,

@@ -77,11 +77,18 @@
                                             type="text" id="number" name="number"
                                             placeholder="{!! __('monthlyPRpageLang.enterisn') !!}"
                                             oninput="if(value.length>12)value=value.slice(0,12)">
-                                        @error('number')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                    </div>
+
+                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+                                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.90isn') !!}</label>
+                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <div class="col-lg-6  col-md-12 col-sm-12">
+                                        <input
+                                            class="form-control form-control-lg col col-auto @error('number90') is-invalid @enderror"
+                                            type="text" id="number90" name="number90"
+                                            placeholder="{!! __('monthlyPRpageLang.enter90isn') !!}"
+                                            oninput="if(value.length>12)value=value.slice(0,12)">
                                     </div>
 
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

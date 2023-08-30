@@ -25,6 +25,7 @@ $(function () {
     var client = [];
     var name = [];
     var number = [];
+    var number90 = [];
     var production = [];
     var machine = [];
     var amount = [];
@@ -42,6 +43,7 @@ $(function () {
       name.push($("#name" + i).val());
       client.push($("#client" + i).val());
       number.push($("#number" + i).val());
+      number90.push($("#number90" + i).val());
       production.push($("#production" + i).val());
       machine.push($("#machine" + i).val());
       amount.push($("#amount" + i).html());
@@ -83,6 +85,8 @@ $(function () {
     data.push(amount);
     data.push(check);
     data.push(reason);
+    data.push(number90);
+
     if (sure !== true) {
       return false;
     } else {

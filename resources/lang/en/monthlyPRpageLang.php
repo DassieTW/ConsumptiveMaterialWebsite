@@ -151,8 +151,10 @@ return [
     'confirmpeople' => 'Confirm People',
     'confirmemail' => 'Confirm Email',
     'reason' => 'Please input Reason',
-    'submitspan' => 'Only the column filled with SRM and This time buy amount > 0 will be submitted',
+    'submitspan' => 'Only the column filled with SRM and This time buy amount > 0 will be submitted or exported',
     'srmspan' => 'Only fill in the tick column',
     'email' => 'Email',
-
+    '90isn' => '90PN',
+    'enter90isn' => 'Please input 90PN',
+    '90isnlength' => '90PN length is not 12',
 ];

@@ -35,9 +35,9 @@
     if ($name === null || $unit === null || $month === '否' || $belong !== '站位') {
         $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[0];
         echo "<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='uploadstand';
-                    </script>";
+                            window.alert('$mess');
+                            window.location.href='uploadstand';
+                            </script>";
     }
     //判斷是否有這個客戶
     if (in_array($row[1], $clients)) {
@@ -47,9 +47,9 @@
     if ($i === false) {
         $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='uploadstand';
-                    </script>";
+                            window.alert('$mess');
+                            window.location.href='uploadstand';
+                            </script>";
     }
     
     //判斷是否有這個機種
@@ -60,9 +60,9 @@
     if ($j === false) {
         $mess = trans('monthlyPRpageLang.nomachine') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
         echo "<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='uploadstand';
-                    </script>";
+                            window.alert('$mess');
+                            window.location.href='uploadstand';
+                            </script>";
     }
     
     //判斷是否有這個製程
@@ -73,9 +73,9 @@
     if ($k === false) {
         $mess = trans('monthlyPRpageLang.noproduction') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[3];
         echo "<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='uploadstand';
-                    </script>";
+                            window.alert('$mess');
+                            window.location.href='uploadstand';
+                            </script>";
     }
     ?>
 @endforeach
@@ -255,16 +255,24 @@
                                 </table>
                             </div>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                            <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
-                            <div class="input-group" style="width: 410px;">
-                                <input type="text" id="email" name="email" class="form-control form-control"
-                                    style="width: 160px;" placeholder="{!! __('loginPageLang.enter_email') !!}" required>
-                                <select class="form-select form-select-lg" style="width: 250px;" id="emailTail">
-                                    <option selected>@pegatroncorp.com</option>
-                                    <option>@intra.pegatroncorp.com</option>
-                                </select>
+                            <div id="emailinputarea">
+                                <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
+                                <div class="col col-8">
+                                    <div class="input-group" style="width: 30ch;">
+                                        <select class="form-select form-select-lg" id="email">
+                                            <option style="display: none" disabled selected value="">
+                                                {!! __('monthlyPRpageLang.noemail') !!}
+                                            </option>
+                                            @foreach ($people as $people)
+                                                <option value="{{ $people->姓名 }}">{{ $people->email }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="input-group-text input-group-text-lg" id="emailTail"></span>
+
+                                    </div>
+                                </div>
                             </div>
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                             <input type="submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.addtodatabase') !!}">

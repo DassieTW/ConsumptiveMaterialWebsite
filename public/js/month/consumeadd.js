@@ -1,51 +1,51 @@
 sessionStorage.clear();
-function myFunction() {
-  var input, filter, ul, li, a, i;
-  ul = document.getElementById("peoplemenu");
-  li = ul.getElementsByTagName("a");
-  input = document.getElementById("email");
-  filter = input.value.toUpperCase();
-  for (i = 0; i < li.length; i++) {
-    a = li[i];
-    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-}
-$("#email").on("focus", function () {
-  $(window).on("keydown", function (event) {
-    if (event.coce === "Enter") {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-});
-$("#email").on("input", function () {
-  $(window).on("keydown", function (event) {
-    if (event.code === "Enter") {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-  myFunction();
-});
-$("#email").on("blur", function () {
-  $("#peoplemenu").hide();
-});
-$(".peoplelist").on("mouseover", function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
-$(".peoplelist").on("click", function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
+// function myFunction() {
+//   var input, filter, ul, li, a, i;
+//   ul = document.getElementById("peoplemenu");
+//   li = ul.getElementsByTagName("a");
+//   input = document.getElementById("email");
+//   filter = input.value.toUpperCase();
+//   for (i = 0; i < li.length; i++) {
+//     a = li[i];
+//     if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+//       li[i].style.display = "";
+//     } else {
+//       li[i].style.display = "none";
+//     }
+//   }
+// }
+// $("#email").on("focus", function () {
+//   $(window).on("keydown", function (event) {
+//     if (event.coce === "Enter") {
+//       event.preventDefault();
+//       return false;
+//     }
+//   });
+//   $("#peoplemenu").show();
+// });
+// $("#email").on("input", function () {
+//   $(window).on("keydown", function (event) {
+//     if (event.code === "Enter") {
+//       event.preventDefault();
+//       return false;
+//     }
+//   });
+//   $("#peoplemenu").show();
+//   myFunction();
+// });
+// $("#email").on("blur", function () {
+//   $("#peoplemenu").hide();
+// });
+// $(".peoplelist").on("mouseover", function (e) {
+//   e.preventDefault();
+//   var ename = $(this).text();
+//   $("#email").val(ename);
+// });
+// $(".peoplelist").on("click", function (e) {
+//   e.preventDefault();
+//   var ename = $(this).text();
+//   $("#email").val(ename);
+// });
 function ScientificNotaionToFixed(x) {
   // toFixed
   if (Math.abs(x) < 1.0) {
@@ -105,6 +105,10 @@ function appenSVg(index) {
 } // appenSVg
 
 $(function () {
+  $("#email").on("change", function (event) {
+    $("#emailTail").text($(this).val());
+  });
+
   $("#consume").on("submit", function (e) {
     e.preventDefault();
 
@@ -122,6 +126,7 @@ $(function () {
     var number = $("#number").val();
     var production = $("#production").val();
     var machine = $("#machine").val();
+    var number90 = $("#90isn").val();
 
     if (client === null) {
       document.getElementById("clienterror").style.display = "block";
@@ -143,8 +148,22 @@ $(function () {
       document.getElementById("number").classList.add("is-invalid");
       document.getElementById("number").focus();
       return false;
+    } else if (number.length !== 12) {
+      document.getElementById("numbererror").style.display = "block";
+      document.getElementById("number").classList.add("is-invalid");
+      document.getElementById("number").focus();
+      return false;
+    } else if (number90 === "") {
+      document.getElementById("90error1").style.display = "block";
+      document.getElementById("90isn").classList.add("is-invalid");
+      document.getElementById("90isn").focus();
+      return false;
+    } else if (number90.length !== 12) {
+      document.getElementById("90error").style.display = "block";
+      document.getElementById("90isn").classList.add("is-invalid");
+      document.getElementById("90isn").focus();
+      return false;
     }
-
     $.ajax({
       type: "POST",
       url: "consumenew",
@@ -153,6 +172,7 @@ $(function () {
         number: number,
         production: production,
         machine: machine,
+        number90: number90,
       },
       beforeSend: function () {
         // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
@@ -252,6 +272,9 @@ $(function () {
           ">" +
           data.production +
           "</span>";
+        let row90isn = document.createElement("td");
+        row90isn.innerHTML =
+          "<span id=" + "90isn" + index + ">" + data.number90 + "</span>";
 
         row.appendChild(rowdelete);
         row.appendChild(rownumber);
@@ -263,25 +286,29 @@ $(function () {
         row.appendChild(rowclient);
         row.appendChild(rowmachine);
         row.appendChild(rowproduction);
+        row.appendChild(row90isn);
 
         body.appendChild(row);
         tbl.appendChild(body);
         appenSVg(index);
       },
       error: function (err) {
-        //料號長度不為12
-        if (err.status === 421) {
-          document.getElementById("numbererror").style.display = "block";
-          document.getElementById("number").classList.add("is-invalid");
-          document.getElementById("number").value = "";
-          document.getElementById("number").focus();
-        }
+        // //料號長度不為12
+        // if (err.status === 421) {
+        //   document.getElementById("numbererror").style.display = "block";
+        //   document.getElementById("number").classList.add("is-invalid");
+        //   document.getElementById("number").value = "";
+        //   document.getElementById("number").focus();
+        // }
         //料號不存在
-        else if (err.status === 420) {
+        if (err.status === 420) {
           document.getElementById("numbererror1").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
           document.getElementById("number").focus();
+        } else {
+          alert(err.responseJSON.message);
+          return false;
         }
       },
     });
@@ -302,9 +329,7 @@ $(function () {
     var consume = [];
     var row = [];
     // var jobnumber = $("#jobnumber").val();
-    if ($("#email").val() !== "") {
-      var email = $("#email").val().toLowerCase() + "@intra.pegatroncorp.com";
-    } else {
+    if ($("#email").val() === null) {
       notyf.open({
         type: "warning",
         message: Lang.get("monthlyPRpageLang.noemail"),
@@ -320,6 +345,9 @@ $(function () {
       document.getElementById("email").classList.add("is-invalid");
       document.getElementById("email").focus();
       return false;
+    } else {
+      var email = $("#email option:selected").text();
+      console.log(email);
     }
 
     var count = 0;
@@ -445,10 +473,11 @@ $(function () {
       error: function (err) {
         //transaction error
         if (err.status === 421) {
-          console.log(err.responseJSON.message);
-          window.location.reload();
+          alert(err.responseJSON.message);
+          return false;
         } else {
-          console.log(err.responseJSON.message);
+          alert(err.responseJSON.message);
+          return false;
         }
       },
     });

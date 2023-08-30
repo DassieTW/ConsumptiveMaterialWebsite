@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Mail;
 
@@ -46,8 +47,8 @@ class MonthController extends Controller
             $machine = $request->input('machine');
             $production = $request->input('production');
             $number = $request->input('number');
+            $number90 = $request->input('number90');
             $send = $request->input('send');
-
             $datas = DB::table('consumptive_material')
                 ->join('月請購_單耗', function ($join) {
                     $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
@@ -57,8 +58,9 @@ class MonthController extends Controller
                 ->where('月請購_單耗.客戶別', 'like', $client . '%')
                 ->where('月請購_單耗.機種', 'like', $machine . '%')
                 ->where('月請購_單耗.製程', 'like', $production . '%')
+                ->where('月請購_單耗.料號90', 'like', $number90 . '%')
                 ->get();
-            $people = DB::table('login')->where('priority', "=", 69)->get();
+            $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
             return view('month.consumesearchok')->with(['data' => $datas, 'people' => $people]);
         } else {
             return redirect(route('member.login'));
@@ -85,7 +87,7 @@ class MonthController extends Controller
                 ->where('月請購_站位.機種', 'like', $machine . '%')
                 ->where('月請購_站位.製程', 'like', $production . '%')
                 ->get();
-            $people = DB::table('login')->where('priority', "=", 69)->get();
+            $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
 
             return view('month.standsearchok')->with(['data' => $datas, 'people' => $people]);
         } else {
@@ -103,6 +105,7 @@ class MonthController extends Controller
             $machine = $request->input('machine');
             $production = $request->input('production');
             $number = $request->input('number');
+            $number90 = $request->input('number90');
             $amount = $request->input('amount');
             $email = $request->input('email');
             $sessemail = \Crypt::encryptString($email);
@@ -111,7 +114,7 @@ class MonthController extends Controller
             $database = \Crypt::encryptString($database);
 
             //delete
-            if ($select == "刪除") {
+            if ($select === "刪除") {
                 for ($i = 0; $i < $count; $i++) {
                     DB::beginTransaction();
                     try {
@@ -119,6 +122,7 @@ class MonthController extends Controller
                             ->where('機種', $machine[$i])
                             ->where('製程', $production[$i])
                             ->where('料號', $number[$i])
+                            ->where('料號90', $number90[$i])
                             ->delete();
                         DB::commit();
                     } catch (\Exception $e) {
@@ -129,7 +133,7 @@ class MonthController extends Controller
                 return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
             }
             //change
-            if ($select == "更新") {
+            if ($select === "更新") {
                 for ($i = 0; $i < $count; $i++) {
                     DB::beginTransaction();
                     try {
@@ -137,6 +141,7 @@ class MonthController extends Controller
                             ->where('機種', $machine[$i])
                             ->where('製程', $production[$i])
                             ->where('料號', $number[$i])
+                            ->where('料號90', $number90[$i])
                             ->update([
                                 '狀態' => "待畫押", //'畫押工號' => $jobnumber,
                                 '畫押信箱' => $email, '單耗' => $amount[$i], '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
@@ -243,40 +248,36 @@ class MonthController extends Controller
         if (Session::has('username')) {
             if ($request->input('client') !== null && $request->input('number') !== null) {
 
-                if (strlen($request->input('number')) === 12) {
-                    $client = $request->input('client');
-                    $machine = $request->input('machine');
-                    $production = $request->input('production');
-                    $number = $request->input('number');
 
-                    $name = DB::table('consumptive_material')->where('料號', $number)
-                        ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('品名');
+                $client = $request->input('client');
+                $machine = $request->input('machine');
+                $production = $request->input('production');
+                $number = $request->input('number');
+                $number90 = $request->input('number90');
 
-                    $format = DB::table('consumptive_material')->where('料號', $number)
-                        ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('規格');
+                $name = DB::table('consumptive_material')->where('料號', $number)
+                    ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('品名');
 
-                    $unit = DB::table('consumptive_material')->where('料號', $number)
-                        ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('單位');
+                $format = DB::table('consumptive_material')->where('料號', $number)
+                    ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('規格');
 
-                    $lt = DB::table('consumptive_material')->where('料號', $number)
-                        ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('LT');
+                $unit = DB::table('consumptive_material')->where('料號', $number)
+                    ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('單位');
 
-                    $lt = round($lt, 3);
-                    if ($name !== null && $format !== null) {
-                        return \Response::json([
-                            'client' => $client, 'machine' => $machine, 'production' => $production, 'number' => $number,
-                            'name' => $name, 'format' => $format, 'unit' => $unit, 'lt' => $lt, /*'nowmps' => $nowmps, 'nowday' => $nowday,
+                $lt = DB::table('consumptive_material')->where('料號', $number)
+                    ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('LT');
+
+                $lt = round($lt, 3);
+                if ($name !== null && $format !== null) {
+                    return \Response::json([
+                        'client' => $client, 'machine' => $machine, 'production' => $production, 'number' => $number,
+                        'name' => $name, 'format' => $format, 'unit' => $unit, 'lt' => $lt, 'number90' => $number90/*'nowmps' => $nowmps, 'nowday' => $nowday,
                             'nextmps' => $nextmps, 'nextday' => $nextday,*/
-                        ]/* Status code here default is 200 ok*/);
-                    }
-                    //沒有料號
-                    else {
-                        return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
-                    }
+                    ]/* Status code here default is 200 ok*/);
                 }
-                //料號長度不為12
+                //沒有料號
                 else {
-                    return \Response::json(['message' => 'isn not 12'], 421/* Status code here default is 200 ok*/);
+                    return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
                 }
             }
         } else {
@@ -350,19 +351,20 @@ class MonthController extends Controller
             try {
                 for ($i = 0; $i < $count; $i++) {
                     $number = $request->input('number')[$i];
+                    $number90 = $request->input('number90')[$i];
                     $client = $request->input('client')[$i];
                     $machine = $request->input('machine')[$i];
                     $production = $request->input('production')[$i];
                     $consume = $request->input('consume')[$i];
 
                     $test = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
-                        ->where('機種', $machine)->where('製程', $production)->value('狀態');
+                        ->where('機種', $machine)->where('製程', $production)->where('料號90', $number90)->value('狀態');
 
                     if ($test === null) {
                         DB::table('月請購_單耗')
                             ->insert([
                                 '料號' => $number, '客戶別' => $client, '機種' => $machine, '製程' => $production,
-                                '單耗' => $consume, //'畫押工號' => $jobnumber,
+                                '單耗' => $consume, '料號90' => $number90,
                                 '畫押信箱' => $email, '狀態' => "待畫押", '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
                             ]);
                         $record++;
@@ -372,8 +374,9 @@ class MonthController extends Controller
                             ->where('機種', $machine)
                             ->where('製程', $production)
                             ->where('料號', $number)
+                            ->where('料號90', $number90)
                             ->update([
-                                '狀態' => "待畫押", //'畫押工號' => $jobnumber,
+                                '狀態' => "待畫押", '料號90' => $number90,
                                 '畫押信箱' => $email, '單耗' => $consume, '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
                             ]);
                         $record++;
@@ -552,66 +555,61 @@ class MonthController extends Controller
                 }
             }
             if ($request->has('search')) {
-                if ($request->input('client') === null && $request->input('machine') === null) {
-                    if (empty($check)) {
-                        return view('month.monthsearchok')->with(['data' => MPS::cursor()]);
-                    } else {
-                        return view('month.monthsearchok')->with(['data' => MPS::cursor()->wherein('製程', $check)]);
-                    }
-                } else if ($request->input('client') !== null && $request->input('machine') === null) {
-                    if (empty($check)) {
-                        return view('month.monthsearchok')->with(['data' => MPS::cursor()->where('客戶別', $request->input('client'))]);
-                    } else {
-                        return view('month.monthsearchok')->with(['data' => MPS::cursor()->wherein('製程', $check)->where('客戶別', $request->input('client'))]);
-                    }
-                } else if ($request->input('client') === null && $request->input('machine') !== null) {
-                    if (empty($check)) {
-                        return view('month.monthsearchok')->with(['data' => MPS::cursor()->where('機種', $request->input('machine'))]);
-                    } else {
-                        return view('month.monthsearchok')->with(['data' => MPS::cursor()->wherein('製程', $check)->where('機種', $request->input('machine'))]);
-                    }
-                } else if ($request->input('client') !== null && $request->input('machine') !== null) {
-                    if (empty($check)) {
-                        return view('month.monthsearchok')->with(['data' => MPS::cursor()->where('機種', $request->input('machine'))->where('客戶別', $request->input('client'))]);
-                    } else {
-                        return view('month.monthsearchok')->with(['data' => MPS::cursor()->wherein('製程', $check)->where('機種', $request->input('machine'))->where('客戶別', $request->input('client'))]);
-                    }
+                if (empty($check)) {
+                    $datas = DB::table('MPS')
+                        ->where('客戶別', 'like', $request->input('client') . '%')
+                        ->where('機種', 'like', $request->input('machine') . '%')
+                        ->get();
+                } else {
+                    $datas = DB::table('MPS')
+                        ->where('客戶別', 'like', $request->input('client') . '%')
+                        ->where('機種', 'like', $request->input('machine') . '%')
+                        ->wherein('製程', $check)
+                        ->get();
                 }
+                return view('month.monthsearchok')->with(['data' => $datas]);
             }
             //add
             else if ($request->has('add')) {
-                if ($request->input('client') === null && $request->input('machine') === null) {
-                    return back()->withErrors([
-                        'client' => trans('validation.required'),
-                        'machine' => trans('validation.required'),
-                    ]);
-                } else if ($request->input('client') === null && $request->input('machine') !== null) {
+
+                if ($request->input('client') === null) {
                     return back()->withErrors([
                         'client' => trans('validation.required'),
                     ]);
-                } else if ($request->input('client') !== null && $request->input('machine') === null) {
+                }
+                if ($request->input('machine') === null) {
                     return back()->withErrors([
                         'machine' => trans('validation.required'),
                     ]);
-                } else if ($request->input('client') !== null && $request->input('machine') !== null) {
-                    if (empty($check)) {
-                        return back()->withErrors([
-                            'production' => trans('validation.required'),
-                        ]);
-                    } else {
-                        $nowmps = $request->input('nowmps');
-                        $nowday = $request->input('nowday');
-                        $nextmps = $request->input('nextmps');
-                        $nextday = $request->input('nextday');
-                        return view('month.monthadd')
-                            ->with('client', $request->input('client'))
-                            ->with('machine', $request->input('machine'))
-                            ->with('production', $check)
-                            ->with('nowmps', $nowmps)
-                            ->with('nowday', $nowday)
-                            ->with('nextmps', $nextmps)
-                            ->with('nextday', $nextday);
-                    }
+                }
+                if ($request->input('number90') === null) {
+                    return back()->withErrors([
+                        'number90' => trans('validation.required'),
+                    ]);
+                }
+                if (strlen($request->input('number90')) !== 12) {
+                    return back()->withErrors([
+                        'number90length' => trans('validation.required'),
+                    ]);
+                }
+                if (empty($check)) {
+                    return back()->withErrors([
+                        'production' => trans('validation.required'),
+                    ]);
+                } else {
+                    $nowmps = $request->input('nowmps');
+                    $nowday = $request->input('nowday');
+                    $nextmps = $request->input('nextmps');
+                    $nextday = $request->input('nextday');
+                    return view('month.monthadd')
+                        ->with('client', $request->input('client'))
+                        ->with('machine', $request->input('machine'))
+                        ->with('production', $check)
+                        ->with('number90', $request->input('number90'))
+                        ->with('nowmps', $nowmps)
+                        ->with('nowday', $nowday)
+                        ->with('nextmps', $nextmps)
+                        ->with('nextday', $nextday);
                 }
             } else {
                 return redirect(route('month.importmonth'));
@@ -630,6 +628,7 @@ class MonthController extends Controller
             $clients = $request->input('client');
             $machines = $request->input('machine');
             $productions = $request->input('production');
+            $number90 = $request->input('number90');
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
@@ -638,6 +637,7 @@ class MonthController extends Controller
                         ->where('客戶別', $clients[$i])
                         ->where('機種', $machines[$i])
                         ->where('製程', $productions[$i])
+                        ->where('料號90', $number90[$i])
                         ->delete();
                 } //for
                 DB::commit();
@@ -664,6 +664,7 @@ class MonthController extends Controller
                     $client = $request->input('client')[$i];
                     $machine = $request->input('machine')[$i];
                     $production = $request->input('production')[$i];
+                    $number90 = $request->input('number90')[$i];
                     $nextmps = $request->input('nextmps')[$i];
                     $nextday = $request->input('nextday')[$i];
                     $nowmps = $request->input('nowmps')[$i];
@@ -673,7 +674,7 @@ class MonthController extends Controller
                     if ($test === null) {
                         DB::table('MPS')
                             ->insert([
-                                '客戶別' => $client, '機種' => $machine, '製程' => $production, '下月MPS' => $nextmps, '下月生產天數' => $nextday,
+                                '客戶別' => $client, '機種' => $machine, '製程' => $production, '料號90' => $number90, '下月MPS' => $nextmps, '下月生產天數' => $nextday,
                                 '本月MPS' => $nowmps, '本月生產天數' => $nowday, '填寫時間' => $now
                             ]);
                     } else {
@@ -681,6 +682,7 @@ class MonthController extends Controller
                             ->where('客戶別', $client)
                             ->where('機種', $machine)
                             ->where('製程', $production)
+                            ->where('料號90', $number90)
                             ->update([
                                 '下月MPS' => $nextmps, '下月生產天數' => $nextday,
                                 '本月MPS' => $nowmps, '本月生產天數' => $nowday, '填寫時間' => $now
@@ -794,14 +796,13 @@ class MonthController extends Controller
                 ]);
             }
 
-            if ($client == "ALL_CLIENT") {
+            if ($client === "ALL_CLIENT") {
                 Session::put("clientChoice", "All Clients"); // for Excel Header
-
 
                 $datas = DB::table('月請購_單耗')
                     ->join('MPS', function ($join) {
                         $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
-                            ->on('MPS.機種', '=', '月請購_單耗.機種')
+                            ->on('MPS.料號90', '=', '月請購_單耗.料號90')
                             ->on('MPS.製程', '=', '月請購_單耗.製程');
                     })
                     ->join('consumptive_material', function ($join) {
@@ -813,41 +814,41 @@ class MonthController extends Controller
                 foreach ($datas as $data) {
                     $test = $data->幣別;
                     if ($test !== $money) {
-                        if ($test == "USD" && $usd == null) {
+                        if ($test === "USD" && $usd === null) {
                             return back()->withErrors([
                                 'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "USD" && $usd != null) {
+                        } else if ($test === "USD" && $usd !== null) {
                             array_push($array, $usd);
-                        } else if ($test == "RMB" && $rmb == null) {
+                        } else if ($test === "RMB" && $rmb === null) {
                             return back()->withErrors([
                                 'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "RMB" && $rmb != null) {
+                        } else if ($test === "RMB" && $rmb !== null) {
                             array_push($array, $rmb);
-                        } else if ($test == "JPY" && $jpy == null) {
+                        } else if ($test === "JPY" && $jpy === null) {
                             return back()->withErrors([
                                 'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "JPY" && $jpy != null) {
+                        } else if ($test === "JPY" && $jpy !== null) {
                             array_push($array, $jpy);
-                        } else if ($test == "TWD" && $twd == null) {
+                        } else if ($test === "TWD" && $twd === null) {
                             return back()->withErrors([
                                 'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "TWD" && $twd != null) {
+                        } else if ($test === "TWD" && $twd !== null) {
                             array_push($array, $twd);
-                        } else if ($test == "VND" && $vnd == null) {
+                        } else if ($test === "VND" && $vnd === null) {
                             return back()->withErrors([
                                 'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "VND" && $vnd != null) {
+                        } else if ($test === "VND" && $vnd !== null) {
                             array_push($array, $vnd);
-                        } else if ($test == "IDR" && $idr == null) {
+                        } else if ($test === "IDR" && $idr === null) {
                             return back()->withErrors([
                                 'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "IDR" && $idr != null) {
+                        } else if ($test === "IDR" && $idr !== null) {
                             array_push($array, $idr);
                         }
                     } else {
@@ -872,41 +873,41 @@ class MonthController extends Controller
                 foreach ($datas2 as $data) {
                     $test = $data->幣別;
                     if ($test !== $money) {
-                        if ($test == "USD" && $usd == null) {
+                        if ($test === "USD" && $usd === null) {
                             return back()->withErrors([
                                 'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "USD" && $usd != null) {
+                        } else if ($test === "USD" && $usd !== null) {
                             array_push($array1, $usd);
-                        } else if ($test == "RMB" && $rmb == null) {
+                        } else if ($test === "RMB" && $rmb === null) {
                             return back()->withErrors([
                                 'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "RMB" && $rmb != null) {
+                        } else if ($test === "RMB" && $rmb !== null) {
                             array_push($array1, $rmb);
-                        } else if ($test == "JPY" && $jpy == null) {
+                        } else if ($test === "JPY" && $jpy === null) {
                             return back()->withErrors([
                                 'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "JPY" && $jpy != null) {
+                        } else if ($test === "JPY" && $jpy !== null) {
                             array_push($array1, $jpy);
-                        } else if ($test == "TWD" && $twd == null) {
+                        } else if ($test === "TWD" && $twd === null) {
                             return back()->withErrors([
                                 'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "TWD" && $twd != null) {
+                        } else if ($test === "TWD" && $twd !== null) {
                             array_push($array1, $twd);
-                        } else if ($test == "VND" && $vnd == null) {
+                        } else if ($test === "VND" && $vnd === null) {
                             return back()->withErrors([
                                 'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "VND" && $vnd != null) {
+                        } else if ($test === "VND" && $vnd !== null) {
                             array_push($array1, $vnd);
-                        } else if ($test == "IDR" && $idr == null) {
+                        } else if ($test === "IDR" && $idr === null) {
                             return back()->withErrors([
                                 'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "IDR" && $idr != null) {
+                        } else if ($test === "IDR" && $idr !== null) {
                             array_push($array1, $idr);
                         } // if else if
                     } else {
@@ -916,16 +917,14 @@ class MonthController extends Controller
                 } // for each
 
                 return view('month.buylistmakeok')->with(['data1' => $datas])->with(['data2' => $datas2])
-                    ->with(['dow1' => $datas])->with(['dow2' => $datas2])
-                    ->with(['rate1' => $array])->with(['rate2' => $array1])
-                    ->with(['drate1' => $array])->with(['drate2' => $array1]);
+                    ->with(['rate1' => $array])->with(['rate2' => $array1]);
             } else {
-                Session::put("clientChoice", "All Clients"); // for Excel Header
+                Session::put("clientChoice", $client); // for Excel Header
 
                 $datas = DB::table('月請購_單耗')
                     ->join('MPS', function ($join) use ($send) {
                         $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
-                            ->on('MPS.機種', '=', '月請購_單耗.機種')
+                            ->on('MPS.料號90', '=', '月請購_單耗.料號90')
                             ->on('MPS.製程', '=', '月請購_單耗.製程');
                     })
                     ->join('consumptive_material', function ($join) use ($send) {
@@ -939,41 +938,41 @@ class MonthController extends Controller
                 foreach ($datas as $data) {
                     $test = $data->幣別;
                     if ($test !== $money) {
-                        if ($test == "USD" && $usd == null) {
+                        if ($test === "USD" && $usd === null) {
                             return back()->withErrors([
                                 'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "USD" && $usd != null) {
+                        } else if ($test === "USD" && $usd !== null) {
                             array_push($array, $usd);
-                        } else if ($test == "RMB" && $rmb == null) {
+                        } else if ($test === "RMB" && $rmb === null) {
                             return back()->withErrors([
                                 'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "RMB" && $rmb != null) {
+                        } else if ($test === "RMB" && $rmb !== null) {
                             array_push($array, $rmb);
-                        } else if ($test == "JPY" && $jpy == null) {
+                        } else if ($test === "JPY" && $jpy === null) {
                             return back()->withErrors([
                                 'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "JPY" && $jpy != null) {
+                        } else if ($test === "JPY" && $jpy !== null) {
                             array_push($array, $jpy);
-                        } else if ($test == "TWD" && $twd == null) {
+                        } else if ($test === "TWD" && $twd === null) {
                             return back()->withErrors([
                                 'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "TWD" && $twd != null) {
+                        } else if ($test === "TWD" && $twd !== null) {
                             array_push($array, $twd);
-                        } else if ($test == "VND" && $vnd == null) {
+                        } else if ($test === "VND" && $vnd === null) {
                             return back()->withErrors([
                                 'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "VND" && $vnd != null) {
+                        } else if ($test === "VND" && $vnd !== null) {
                             array_push($array, $vnd);
-                        } else if ($test == "IDR" && $idr == null) {
+                        } else if ($test === "IDR" && $idr === null) {
                             return back()->withErrors([
                                 'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "IDR" && $idr != null) {
+                        } else if ($test === "IDR" && $idr !== null) {
                             array_push($array, $idr);
                         }
                     } else {
@@ -998,41 +997,41 @@ class MonthController extends Controller
                 foreach ($datas2 as $data) {
                     $test = $data->幣別;
                     if ($test !== $money) {
-                        if ($test == "USD" && $usd == null) {
+                        if ($test === "USD" && $usd === null) {
                             return back()->withErrors([
                                 'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "USD" && $usd != null) {
+                        } else if ($test === "USD" && $usd !== null) {
                             array_push($array1, $usd);
-                        } else if ($test == "RMB" && $rmb == null) {
+                        } else if ($test === "RMB" && $rmb === null) {
                             return back()->withErrors([
                                 'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "RMB" && $rmb != null) {
+                        } else if ($test === "RMB" && $rmb !== null) {
                             array_push($array1, $rmb);
-                        } else if ($test == "JPY" && $jpy == null) {
+                        } else if ($test === "JPY" && $jpy === null) {
                             return back()->withErrors([
                                 'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "JPY" && $jpy != null) {
+                        } else if ($test === "JPY" && $jpy !== null) {
                             array_push($array1, $jpy);
-                        } else if ($test == "TWD" && $twd == null) {
+                        } else if ($test === "TWD" && $twd === null) {
                             return back()->withErrors([
                                 'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "TWD" && $twd != null) {
+                        } else if ($test === "TWD" && $twd !== null) {
                             array_push($array1, $twd);
-                        } else if ($test == "VND" && $vnd == null) {
+                        } else if ($test === "VND" && $vnd === null) {
                             return back()->withErrors([
                                 'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "VND" && $vnd != null) {
+                        } else if ($test === "VND" && $vnd !== null) {
                             array_push($array1, $vnd);
-                        } else if ($test == "IDR" && $idr == null) {
+                        } else if ($test === "IDR" && $idr === null) {
                             return back()->withErrors([
                                 'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
                             ]);
-                        } else if ($test == "IDR" && $idr != null) {
+                        } else if ($test === "IDR" && $idr !== null) {
                             array_push($array1, $idr);
                         }
                     } else {
@@ -1042,9 +1041,7 @@ class MonthController extends Controller
                 }
 
                 return view('month.buylistmakeok')->with(['data1' => $datas])->with(['data2' => $datas2])
-                    ->with(['dow1' => $datas])->with(['dow2' => $datas2])
-                    ->with(['rate1' => $array])->with(['rate2' => $array1])
-                    ->with(['drate1' => $array])->with(['drate2' => $array1]);
+                    ->with(['rate1' => $array])->with(['rate2' => $array1]);
             }
         } else {
             return redirect(route('member.login'));
@@ -1065,21 +1062,17 @@ class MonthController extends Controller
             $client = $Alldata[1];
             $number = $Alldata[2];
             $name = $Alldata[3];
-            $moq = $Alldata[4];
-            $nextneed = $Alldata[5];
-            $nowneed = $Alldata[6];
-            $safe = $Alldata[7];
-            $price = $Alldata[8];
-            $money = $Alldata[9];
-            $rate = $Alldata[10];
-            $amount = $Alldata[11];
-            $stock = $Alldata[12];
-            $buyamount = $Alldata[13];
-            $realneed = $Alldata[14];
-            $buymoney = $Alldata[15];
-            $buyper = $Alldata[16];
-            $needmoney = $Alldata[17];
-            $needper = $Alldata[18];
+            $format = $Alldata[4];
+            $price = $Alldata[5];
+            $money = $Alldata[6];
+            $nowneed = $Alldata[7];
+            $nextneed = $Alldata[8];
+            $stock = $Alldata[9];
+            $amount = $Alldata[10];
+            $buyamount = $Alldata[11];
+            $buymoney = $Alldata[12];
+            $rate = $Alldata[13];
+            $moq = $Alldata[14];
             $check = $request->input('check');
 
             DB::beginTransaction();
@@ -1088,7 +1081,7 @@ class MonthController extends Controller
                     if ($check[$i] !== '0') {
                         DB::table('請購單')
                             ->insert([
-                                'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '安全庫存' => $safe[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '實際需求' => $realneed[$i], '請購金額' => $buymoney[$i], '請購占比' => $buyper[$i], '需求金額' => $needmoney[$i], '需求占比' => $needper[$i], '請購時間' => $now
+                                'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '規格' => $format[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '請購金額' => $buymoney[$i], '請購時間' => $now
                             ]);
                         $record++;
                     }
@@ -1116,9 +1109,9 @@ class MonthController extends Controller
             $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray();
-
+            $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
             unset($sheetData[0]);
-            return view('month.uploadconsume')->with(['data' => $sheetData]);
+            return view('month.uploadconsume')->with(['data' => $sheetData])->with(['people' => $people]);
         } else {
             return redirect(route('member.login'));
         }
@@ -1136,9 +1129,9 @@ class MonthController extends Controller
             $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray();
-
+            $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
             unset($sheetData[0]);
-            return view('month.uploadstand')->with(['data' => $sheetData]);
+            return view('month.uploadstand')->with(['data' => $sheetData])->with(['people' => $people]);
         } else {
             return redirect(route('member.login'));
         }
@@ -1249,6 +1242,7 @@ class MonthController extends Controller
                 $machine = $Alldata[3][$i];
                 $production = $Alldata[4][$i];
                 $number = $Alldata[0][$i];
+                $number90 = $Alldata[8][$i];
                 $check = $Alldata[6][$i];
 
                 if ($check) {
@@ -1256,6 +1250,7 @@ class MonthController extends Controller
                         ->where('機種', $machine)
                         ->where('製程', $production)
                         ->where('料號', $number)
+                        ->where('料號90', $number90)
                         ->update([
                             '狀態' => "已完成", '畫押時間' => $now,
                         ]);
@@ -1264,6 +1259,7 @@ class MonthController extends Controller
                         ->where('機種', $machine)
                         ->where('製程', $production)
                         ->where('料號', $number)
+                        ->where('料號90', $number90)
                         ->update([
                             '狀態' => "待重畫", '畫押時間' => $now,
                         ]);
@@ -1442,6 +1438,7 @@ class MonthController extends Controller
 
             $title = $request->input('title');
             $count = $request->input('count');
+            $titlecount = $request->input('titlecount');
             $Alldata = json_decode($request->input('AllData'));
             // $stringValueBinder = new StringValueBinder();
             // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
@@ -1449,12 +1446,12 @@ class MonthController extends Controller
 
 
             //填寫表頭
-            for ($i = 0; $i < 9; $i++) {
+            for ($i = 0; $i < $titlecount; $i++) {
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
             }
 
             // 下載
-            for ($i = 0; $i < 9; $i++) {
+            for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
 
                     $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
@@ -1566,6 +1563,7 @@ class MonthController extends Controller
             $spreadsheet = new Spreadsheet();
             //$spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
+            $spreadsheet->getDefaultStyle()->getFont()->setName('Microsoft JhengHei');
             $worksheet = $spreadsheet->getActiveSheet();
 
             $count = $request->input('count');
@@ -1574,60 +1572,67 @@ class MonthController extends Controller
             // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
             // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
 
-            $i = 2;
-
+            $i = 3;
             //填寫表頭
-            $worksheet->setCellValueByColumnAndRow(1, 1, 'Item');
-            $worksheet->setCellValueByColumnAndRow(2, 1, 'Part Number');
-            $worksheet->setCellValueByColumnAndRow(3, 1, 'Part Desc');
-            $worksheet->setCellValueByColumnAndRow(4, 1, 'Material Group');
-            $worksheet->setCellValueByColumnAndRow(5, 1, '指定廠牌 / 品牌否');
-            $worksheet->setCellValueByColumnAndRow(6, 1, '指定廠牌_說明');
-            $worksheet->setCellValueByColumnAndRow(7, 1, '廠牌 / 品牌');
-            $worksheet->setCellValueByColumnAndRow(8, 1, '客戶指定否');
-            $worksheet->setCellValueByColumnAndRow(9, 1, '用途');
-            $worksheet->setCellValueByColumnAndRow(10, 1, '是否有驗收要求');
-            $worksheet->setCellValueByColumnAndRow(11, 1, '驗收標準');
-            $worksheet->setCellValueByColumnAndRow(12, 1, '精度等特殊要求');
-            $worksheet->setCellValueByColumnAndRow(13, 1, 'Quantity');
-            $worksheet->setCellValueByColumnAndRow(14, 1, '季度預估用量');
-            $worksheet->setCellValueByColumnAndRow(15, 1, 'Unit');
-            $worksheet->setCellValueByColumnAndRow(16, 1, '需求日期');
-            $worksheet->setCellValueByColumnAndRow(17, 1, 'Applicant');
-            $worksheet->setCellValueByColumnAndRow(18, 1, '保管人');
-            $worksheet->setCellValueByColumnAndRow(19, 1, 'Plant');
-            $worksheet->setCellValueByColumnAndRow(20, 1, '廠別');
-            $worksheet->setCellValueByColumnAndRow(21, 1, '廠別_Other');
-            $worksheet->setCellValueByColumnAndRow(22, 1, '購買類型');
-            $worksheet->setCellValueByColumnAndRow(23, 1, '購買類型_Other');
-            $worksheet->setCellValueByColumnAndRow(24, 1, 'Project');
-            $worksheet->setCellValueByColumnAndRow(25, 1, 'Customer');
-            $worksheet->setCellValueByColumnAndRow(26, 1, '製程別');
-            $worksheet->setCellValueByColumnAndRow(27, 1, '製程別_Other');
-            $worksheet->setCellValueByColumnAndRow(28, 1, '系統別');
-            $worksheet->setCellValueByColumnAndRow(29, 1, 'PR TYPE');
-            $worksheet->setCellValueByColumnAndRow(30, 1, 'S.L');
-            $worksheet->setCellValueByColumnAndRow(31, 1, 'Account Assignment');
-            $worksheet->setCellValueByColumnAndRow(32, 1, 'Cost Center');
-            $worksheet->setCellValueByColumnAndRow(33, 1, 'AUC No.');
-            $worksheet->setCellValueByColumnAndRow(34, 1, 'AUC子號');
-            $worksheet->setCellValueByColumnAndRow(35, 1, 'Int.PO');
-            $worksheet->setCellValueByColumnAndRow(36, 1, 'Purch.Org.');
-            $worksheet->setCellValueByColumnAndRow(37, 1, 'Address');
-            $worksheet->setCellValueByColumnAndRow(38, 1, 'Street / House number');
-            $worksheet->setCellValueByColumnAndRow(39, 1, 'Remark');
-            $worksheet->setCellValueByColumnAndRow(40, 1, '提前備料否');
+            $worksheet->setCellValue("A2", "項次");
+            $worksheet->setCellValue("B2", "耗材料號");
+            $worksheet->setCellValue("C2", "品名");
+            $worksheet->setCellValue("D2", "規格");
+            $worksheet->setCellValue("E2", "單價");
+            $worksheet->setCellValue("F2", "當月需求");
+            $worksheet->setCellValue("G2", "下月需求");
+            $worksheet->setCellValue("H2", "庫存");
+            $worksheet->setCellValue("I2", "廠商未交貨");
+            $worksheet->setCellValue("J2", "實際請購數量");
+            $worksheet->setCellValue("K2", "總價RMB");
+            $worksheet->setCellValue("L2", "台幣(匯率4.326)");
+            $worksheet->setCellValue("M2", "MOQ");
+            $worksheet->setCellValue("A1", "MOQ");
+            $worksheet->mergeCells("A1:M1"); // for the SUM row
+            $database = $request->session()->get('database');
+            $title = explode(" ", $database)[0] . "廠";
+            $title  = $title . date('Y/m');
+            $title = $title . "/01~" . date('Y/m') . "/30號耗材購買明細";
+            $worksheet->setCellValue("A1", $title);
+            $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $worksheet->getStyle("A1")->getFont()->setSize(16);
+            $worksheet->getStyle("A1")->getFont()->setBold(true);
             //填寫內容
             for ($j = 0; $j < $count; $j++) {
-                if ($Alldata[13][$j] > 0) {
+                if ($Alldata[11][$j] > 0) {
+
+                    $worksheet->setCellValueByColumnAndRow(1, $i, $i - 2);
                     $worksheet->setCellValueByColumnAndRow(2, $i, $Alldata[2][$j]);
-                    $worksheet->setCellValueByColumnAndRow(13, $i, $Alldata[13][$j]);
-                    $worksheet->setCellValueByColumnAndRow(14, $i, $Alldata[14][$j]);
+                    $worksheet->setCellValueByColumnAndRow(3, $i, $Alldata[3][$j]);
+                    $worksheet->setCellValueByColumnAndRow(4, $i, $Alldata[4][$j]);
+                    $worksheet->setCellValueByColumnAndRow(5, $i, $Alldata[5][$j]);
+                    $worksheet->setCellValueByColumnAndRow(6, $i, $Alldata[7][$j]);
+                    $worksheet->setCellValueByColumnAndRow(7, $i, $Alldata[8][$j]);
+                    $worksheet->setCellValueByColumnAndRow(8, $i, $Alldata[9][$j]);
+                    $worksheet->setCellValueByColumnAndRow(9, $i, $Alldata[10][$j]);
+                    $worksheet->setCellValueByColumnAndRow(10, $i, $Alldata[11][$j]);
+                    $worksheet->setCellValueByColumnAndRow(11, $i, $Alldata[12][$j]);
+                    $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . "4.326");
+                    $worksheet->setCellValueByColumnAndRow(13, $i, $Alldata[14][$j]);
+
+                    $i++;
                 } else {
                     continue;
                 }
-                $i++;
             }
+            $spreadsheet->getActiveSheet()->getStyle('A2:M2')->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()
+                ->setARGB('c4d79b');
+            $worksheet->getStyle('A2' . ':' . 'M' . $i)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+
+            $worksheet->setCellValue(("K" . $i), ("=SUM(K3" . ":" . "K" . ($i - 1) . ")"));
+            $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . "4.326");
+
+            $worksheet->setCellValue(("B" . $i + 2), "核准:");
+            $worksheet->setCellValue(("E" . $i + 2), "審核:");
+            $worksheet->setCellValue(("K" . $i + 2), "製表:");
+
             // 下載
             $now = Carbon::now()->format('YmdHis');
             $titlename = $request->input('titlename');

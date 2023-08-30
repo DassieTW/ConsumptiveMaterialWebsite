@@ -14,38 +14,6 @@ function myFunction() {
     }
   }
 }
-$("#email").on("focus", function () {
-  $(window).on("keydown", function (event) {
-    if (event.code === "Enter") {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-});
-$("#email").on("input", function () {
-  $(window).on("keydown", function (event) {
-    if (event.code === "Enter") {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-  myFunction();
-});
-$("#email").on("blur", function () {
-  $("#peoplemenu").hide();
-});
-$(".peoplelist").on("mouseover", function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
-$(".peoplelist").on("click", function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
 $.ajaxSetup({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -85,6 +53,10 @@ function appenSVg(index) {
 } // appenSVg
 
 $(function () {
+  $("#email").on("change", function (event) {
+    $("#emailTail").text($(this).val());
+  });
+
   $("#stand").on("submit", function (e) {
     e.preventDefault();
 
@@ -469,9 +441,7 @@ $(function () {
     var nextchange = [];
 
     // var jobnumber = $("#jobnumber").val();
-    if ($("#email").val() !== "") {
-      var email = $("#email").val().toLowerCase() + "@intra.pegatroncorp.com";
-    } else {
+    if ($("#email").val() === null) {
       notyf.open({
         type: "warning",
         message: Lang.get("monthlyPRpageLang.noemail"),
@@ -487,6 +457,9 @@ $(function () {
       document.getElementById("email").classList.add("is-invalid");
       document.getElementById("email").focus();
       return false;
+    } else {
+      var email = $("#email option:selected").text();
+      console.log(email);
     }
 
     var count = 0;

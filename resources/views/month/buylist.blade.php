@@ -85,7 +85,7 @@
                             </div>
                             <div class="row w-100 justify-content-center">
                                 <div class="col col-auto">
-                                    <a href="http://eip.tw.pegatroncorp.com/ExchangeRate.aspx"
+                                    <a href="http://eip.tw.pegatroncorp.com/ExchangeRate"
                                         target="_blank">{!! __('monthlyPRpageLang.exchangeratesearch') !!}</a>
                                 </div>
                             </div>

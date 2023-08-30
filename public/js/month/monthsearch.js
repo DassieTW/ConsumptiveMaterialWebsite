@@ -44,11 +44,13 @@ $("#monthsearch").on("submit", function (e) {
   var client = [];
   var machine = [];
   var production = [];
+  var number90 = [];
 
   for (let i = 0; i < count; i++) {
     client.push($("#client" + check[i]).val());
     machine.push($("#machine" + check[i]).val());
     production.push($("#production" + check[i]).val());
+    number90.push($("#number90" + check[i]).val());
   }
 
   console.log(client);
@@ -63,6 +65,7 @@ $("#monthsearch").on("submit", function (e) {
       client: client,
       machine: machine,
       production: production,
+      number90: number90,
       count: count,
     },
 

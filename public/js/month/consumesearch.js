@@ -3,54 +3,12 @@ $.ajaxSetup({
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
   },
 });
-function myFunction() {
-  var input, filter, ul, li, a, i;
-  ul = document.getElementById("peoplemenu");
-  li = ul.getElementsByTagName("a");
-  input = document.getElementById("email");
-  filter = input.value.toUpperCase();
-  for (i = 0; i < li.length; i++) {
-    a = li[i];
-    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-}
-$("#email").on("focus", function () {
-  $(window).on("keydown", function (event) {
-    if (event.code === "Enter") {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-});
-$("#email").on("input", function () {
-  $(window).on("keydown", function (event) {
-    if (event.code === "Enter") {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-  myFunction();
-});
-$("#email").on("blur", function () {
-  $("#peoplemenu").hide();
-});
-$(".peoplelist").on("mouseover", function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
-$(".peoplelist").on("click", function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
+
 $(function () {
+  $("#email").on("change", function (event) {
+    $("#emailTail").text($(this).val());
+  });
+
   function quickSearch() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
@@ -85,6 +43,7 @@ $(function () {
     var count = $("#count").val();
     var client = [];
     var number = [];
+    var number90 = [];
     var production = [];
     var machine = [];
     var amount = [];
@@ -99,12 +58,11 @@ $(function () {
     var data6 = [];
     var data7 = [];
     var data8 = [];
-    console.log(count);
-    var email = $("#email").val().toLowerCase();
-    email = email + "@intra.pegatroncorp.com";
+    var data9 = [];
     var title = [];
     var titlename = $("#titlename").val();
     var titlecount = $("#titlecount").val();
+
     for (let i = 0; i < count; i++) {
       data0.push($("#client" + i).val());
       data1.push($("#machine" + i).val());
@@ -113,8 +71,9 @@ $(function () {
       data4.push($("#name" + i).val());
       data5.push($("#format" + i).val());
       data6.push($("#amount" + i).val());
-      data7.push($("#email" + i).val());
-      data8.push($("#status" + i).val());
+      data7.push($("#number90" + i).val());
+      data8.push($("#email" + i).val());
+      data9.push($("#status" + i).val());
     }
     for (let i = 0; i < titlecount; i++) {
       title.push($("#title" + [i]).val());
@@ -129,6 +88,7 @@ $(function () {
     for (let i = 0; i < count; i++) {
       client.push($("#client" + check[i]).val());
       number.push($("#number" + check[i]).val());
+      number90.push($("#number90" + check[i]).val());
       production.push($("#production" + check[i]).val());
       machine.push($("#machine" + check[i]).val());
       amount.push($("#amount" + check[i]).val());
@@ -172,7 +132,8 @@ $(function () {
       data.push(data6);
       data.push(data7);
       data.push(data8);
-      console.log(data);
+      data.push(data9);
+      console.log(titlecount);
 
       $.ajax({
         type: "POST",
@@ -249,8 +210,7 @@ $(function () {
       });
     } else {
       if (select === "更新" || select === "Update") {
-        if ($("#email").val() === "") {
-          // alert(Lang.get('monthlyPRpageLang.noemail'));
+        if ($("#email").val() === null) {
           notyf.open({
             type: "warning",
             message: Lang.get("monthlyPRpageLang.noemail"),
@@ -263,9 +223,14 @@ $(function () {
             },
           });
           document.getElementById("email").classList.add("is-invalid");
+          document.getElementById("email").classList.add("is-invalid");
           document.getElementById("email").focus();
           return false;
+        } else {
+          var email = $("#email option:selected").text();
+          console.log(email);
         }
+
         select = "更新";
       }
 
@@ -275,6 +240,7 @@ $(function () {
         data: {
           client: client,
           number: number,
+          number90: number90,
           production: production,
           machine: machine,
           amount: amount,

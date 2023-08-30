@@ -55,24 +55,24 @@
                     <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                         value="{!! __('monthlyPRpageLang.download') !!}">
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                    <div id="emailinputarea">
+                        <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
+                        <div class="col col-8">
+                            <div class="input-group" style="width: 30ch;">
+                                <select class="form-select form-select-lg" id="email">
+                                    <option style="display: none" disabled selected value="">
+                                        {!! __('monthlyPRpageLang.noemail') !!}
+                                    </option>
+                                    @foreach ($people as $people)
+                                        <option value="{{ $people->姓名 }}">{{ $people->email }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="input-group-text input-group-text-lg" id="emailTail"></span>
 
-                    <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
-                    <div class="input-group" style="width: 40ch;">
-                        <input type="text" id="email" name="email" class="form-control form-control-lg"
-                            style="text-align:center;" placeholder="{!! __('loginPageLang.enter_email') !!}">
-                        <span class="input-group-text input-group-text-lg" id="emailTail">@pegatroncorp.com</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <ul id="peoplemenu" style="display: none;" class="list-group">
-                            @foreach ($people as $people)
-                                <a class="peoplelist list-group-item list-group-item-action"
-                                    href="#">{{ $people->姓名 }}</a>
-                                <div class="w-100" style="height: 1ch;"></div>
-                                <!-- </div>breaks cols to a new line-->
-                            @endforeach
-                        </ul>
-                    </div>
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                     <div class="table-responsive text-nowrap">
                         <table class="table">

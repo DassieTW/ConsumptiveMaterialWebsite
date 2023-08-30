@@ -16,6 +16,7 @@ $(function () {
     var client = [];
     var machine = [];
     var production = [];
+    var number90 = [];
     var nextmps = [];
     var nextday = [];
     var nowmps = [];
@@ -25,6 +26,7 @@ $(function () {
       client.push($("#client" + i).text());
       machine.push($("#machine" + i).text());
       production.push($("#production" + i).text());
+      number90.push($("#number90" + i).text());
       nextmps.push($("#nextmps" + i).val());
       nextday.push($("#nextday" + i).val());
       nowmps.push($("#nowmps" + i).val());
@@ -38,6 +40,7 @@ $(function () {
         client: client,
         machine: machine,
         production: production,
+        number90: number90,
         nextmps: nextmps,
         nextday: nextday,
         nowmps: nowmps,

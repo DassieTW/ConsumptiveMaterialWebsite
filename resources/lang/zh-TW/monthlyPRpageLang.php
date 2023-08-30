@@ -145,7 +145,10 @@ return [
     'noload' => '無資料載入',
     'clickmail' => '點選此網址',
     'reason' => '請填寫原因',
-    'submitspan' => '僅會提交有填寫SRM以及本次請購數量>0那一列',
+    'submitspan' => '僅會提交或匯出有填寫SRM單號以及本次請購數量>0那一列',
     'srmspan' => '僅會填寫至打勾的那一列',
     'email' => '畫押信箱',
+    '90isn' => '90料號',
+    'enter90isn' => '請輸入90料號',
+    '90isnlength' => '90料號長度不為12',
 ];

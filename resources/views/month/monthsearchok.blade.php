@@ -53,10 +53,11 @@
                                     <th>{!! __('monthlyPRpageLang.client') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.machine') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.process') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.nextmps') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.nextday') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.90isn') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.nowmps') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.nowday') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.nextmps') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.nextday') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.writetime') !!}</th>
                                 </tr>
                             </thead>
@@ -80,10 +81,13 @@
                                         <td><input type="hidden" id="production{{ $loop->index }}"
                                                 name="production{{ $loop->index }}"
                                                 value="{{ $data->製程 }}">{{ $data->製程 }}</td>
-                                        <td>{{ $data->下月MPS }}</td>
-                                        <td>{{ $data->下月生產天數 }}</td>
+                                        <td><input type="hidden" id="number90{{ $loop->index }}"
+                                                name="number90{{ $loop->index }}"
+                                                value="{{ $data->料號90 }}">{{ $data->料號90 }}</td>
                                         <td>{{ $data->本月MPS }}</td>
                                         <td>{{ $data->本月生產天數 }}</td>
+                                        <td>{{ $data->下月MPS }}</td>
+                                        <td>{{ $data->下月生產天數 }}</td>
                                         <td>{{ $data->填寫時間 }}</td>
                                     </tr>
                                     <input type="hidden" id="count" name="count" value="{{ $loop->count }}">

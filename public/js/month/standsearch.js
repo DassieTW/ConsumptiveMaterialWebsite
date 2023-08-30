@@ -37,38 +37,6 @@ function myFunction() {
     }
   }
 }
-$("#email").on("focus", function () {
-  $(window).on("keydown", function (event) {
-    if (event.code === "Enter") {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-});
-$("#email").on("input", function () {
-  $(window).on("keydown", function (event) {
-    if (event.code === "Enter") {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-  myFunction();
-});
-$("#email").on("blur", function () {
-  $("#peoplemenu").hide();
-});
-$(".peoplelist").on("mouseover", function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
-$(".peoplelist").on("click", function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
 $.ajaxSetup({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -76,6 +44,10 @@ $.ajaxSetup({
 });
 
 $(function () {
+  $("#email").on("change", function (event) {
+    $("#emailTail").text($(this).val());
+  });
+
   function quickSearch() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
@@ -163,8 +135,6 @@ $(function () {
     var check = [];
     var title = [];
     var titlename = $("#titlename").val();
-    var email = $("#email").val().toLowerCase();
-    email = email + "@intra.pegatroncorp.com";
     var titlecount = $("#titlecount").val();
     $("input:checkbox[name=innumber]:checked").each(function () {
       check.push($(this).val());
@@ -283,7 +253,7 @@ $(function () {
         });
         return false;
       }
-      if ($("#email").val() === "") {
+      if ($("#email").val() === null) {
         notyf.open({
           type: "warning",
           message: Lang.get("monthlyPRpageLang.noemail"),
@@ -296,9 +266,14 @@ $(function () {
           },
         });
         document.getElementById("email").classList.add("is-invalid");
+        document.getElementById("email").classList.add("is-invalid");
         document.getElementById("email").focus();
         return false;
+      } else {
+        var email = $("#email option:selected").text();
+        console.log(email);
       }
+
       select = "更新";
     }
     if (select === "刪除" || select === "更新") {

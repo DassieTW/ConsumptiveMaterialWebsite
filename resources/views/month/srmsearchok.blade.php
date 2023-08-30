@@ -53,21 +53,14 @@
                                     <th>{!! __('monthlyPRpageLang.pName') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.buyamount') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.sxbamount') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.moq') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.nextneed') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.nowneed') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.safe') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.nextneed') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.price') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.money') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.rate') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.transit') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.nowstock') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.realneed') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.buyprice') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.needprice') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.buytime') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.needper') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.buyper') !!}</th>
                                 </tr>
                         </thead>
                         <tbody>
@@ -77,9 +70,7 @@
                                     $data->單價 = floatval($data->單價);
                                     $data->安全庫存 = floatval($data->安全庫存);
                                     $data->請購金額 = floatval($data->請購金額);
-                                    $data->需求金額 = floatval($data->需求金額);
                                     $data->現有庫存 = floatval($data->現有庫存);
-                                    $data->實際需求 = floatval($data->實際需求);
                                     $data->本次請購數量 = round($data->本次請購數量, 0);
                                     ?>
                                     <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
@@ -103,21 +94,14 @@
                                     <td><input class="form-control form-control-lg" style="width:120px" type="number"
                                             id="sxbamount{{ $loop->index }}" name="sxbamount{{ $loop->index }}" required
                                             value="{{ $data->本次請購數量 }}" min="0" max="{{ $data->本次請購數量 }}"></td>
-                                    <td>{{ $data->MOQ }}</td>
-                                    <td>{{ $data->下月需求 }}</td>
                                     <td>{{ $data->當月需求 }}</td>
-                                    <td>{{ $data->安全庫存 }}</td>
+                                    <td>{{ $data->下月需求 }}</td>
                                     <td>{{ $data->單價 }}</td>
                                     <td>{{ $data->幣別 }}</td>
                                     <td>{{ $data->匯率 }}</td>
                                     <td>{{ $data->在途數量 }}</td>
                                     <td>{{ $data->現有庫存 }}</td>
-                                    <td>{{ $data->實際需求 }}</td>
-                                    <td>{{ $data->請購金額 }}</td>
-                                    <td>{{ $data->需求金額 }}</td>
                                     <td>{{ $data->請購時間 }}</td>
-                                    <td>{{ $data->需求占比 }}</td>
-                                    <td>{{ $data->請購占比 }}</td>
                                 </tr>
                                 <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
                             @endforeach

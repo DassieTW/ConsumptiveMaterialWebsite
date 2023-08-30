@@ -25,14 +25,28 @@ $(function () {
     var buyamount = [];
     var srmnumber = [];
     var sxbnumber = [];
-
+    console.log(checkcount);
+    if (checkcount === 0) {
+      notyf.open({
+        type: "warning",
+        message: Lang.get("monthlyPRpageLang.nodata"),
+        duration: 3000, //miliseconds, use 0 for infinite duration
+        ripple: true,
+        dismissible: true,
+        position: {
+          x: "right",
+          y: "bottom",
+        },
+      });
+      return false;
+    }
     for (let i = 0; i < checkcount; i++) {
       client.push($("#client" + check[i]).val());
       number.push($("#number" + check[i]).val());
       sxbamount.push($("#sxbamount" + check[i]).val());
       buyamount.push($("#buyamount" + check[i]).val());
       srmnumber.push($("#srmnumber" + check[i]).val());
-      if ($("#sxbnumber" + check[i]).val() == "") {
+      if ($("#sxbnumber" + check[i]).val() === "") {
         row = parseInt(check[i]) + 1;
         mess =
           Lang.get("monthlyPRpageLang.entersxb") +
@@ -58,20 +72,6 @@ $(function () {
       }
     }
 
-    if (checkcount === []) {
-      notyf.open({
-        type: "warning",
-        message: Lang.get("monthlyPRpageLang.nodata"),
-        duration: 3000, //miliseconds, use 0 for infinite duration
-        ripple: true,
-        dismissible: true,
-        position: {
-          x: "right",
-          y: "bottom",
-        },
-      });
-      return false;
-    }
     $.ajax({
       type: "POST",
       url: "srmsubmit",
