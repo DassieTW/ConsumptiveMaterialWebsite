@@ -76,8 +76,8 @@ $(document).ready(function () {
                 notyf.open({
                     type: "success",
                     message:
-                        Lang.get("loginPageLang.user") +
-                        Lang.get("loginPageLang.change") +
+                        Lang.get("loginPageLang.user") + " " +
+                        Lang.get("loginPageLang.change") + " " +
                         Lang.get("loginPageLang.success"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
