@@ -318,7 +318,9 @@ class LoginController extends Controller
 
                 DB::commit();
             } catch (\Exception $e) {
-                dd($e); // test
+                // dd($e); // test
+                return \Response::json(['message' => $e], 420); // Status code here
+
                 DB::rollback();
                 // something went wrong
             } // try catch
