@@ -237,50 +237,96 @@ class LoginController extends Controller
         return redirect()->route('member.New_OA_Login');
     } // OAlogin
 
-    // switch the user ( with priority 0 ) to another site
+    // switch the user ( with $user->available_dblist contains the target site ) to another site
+    // the switch site url href="https://XXXXXXX/switchSite/HQ_TEST_Consumables_management"
+    // and the actual DB Name in Server: HQ TEST Consumables management ( Notice the "_" are now all spaces )
     public function switchSite(Request $request, $site_name)
     {
+        $ifDBListContainsTargetSite = false;
         $DBName = str_replace('_', ' ', $site_name);
-        $previousUser = \Auth::user();
-        $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+        foreach (explode("_", \Auth::user()->available_dblist) as $shortSite) {
+            if ($DBName === ($shortSite . " Consumables management")) {
+                $ifDBListContainsTargetSite = true;
+                break;
+            } // if
+        } // foreach
 
-        \Auth::logout();
+        if ($request->user()->can('canSwitchSites', Login::class) && $ifDBListContainsTargetSite) {
+            $previousUser = \Auth::user();
+            $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
-        $request->session()->invalidate();
+            \Auth::logout();
 
-        $request->session()->regenerateToken();
+            $request->session()->invalidate();
 
-        $request->session()->flush();
+            $request->session()->regenerateToken();
 
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $DBName);
-        \DB::purge(env("DB_CONNECTION"));
+            $request->session()->flush();
 
-        $user = Login::updateOrCreate(
-            ['username' => $previousUser->username],
-            [
-                'password' => $previousUser->password,
-                'priority' => $previousUser->priority,
-                '姓名' => $previousUser->姓名,
-                '部門' => $previousUser->部門,
-                'avatarChoice' => $previousUser->avatarChoice,
-                'email' => $previousUser->email,
-                'last_login_time' => $datetime,
-            ]
-        );
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $DBName);
+            \DB::purge(env("DB_CONNECTION"));
 
-        \Auth::login($user);
-        $request->session()->regenerate();
-        $usernameAuthed = \Auth::user()->username;
-        $prior = \Auth::user()->priority;
-        $avatarChoice = \Auth::user()->avatarChoice;
-        Session::put('username', $usernameAuthed);
-        Session::put('priority', $prior);
-        Session::put('avatarChoice', $avatarChoice);
-        Session::put('department', \Auth::user()->部門);
-        session(['database' => $DBName]);
+            $user = Login::updateOrCreate(
+                ['username' => $previousUser->username],
+                [
+                    'password' => $previousUser->password,
+                    'priority' => $previousUser->priority,
+                    '姓名' => $previousUser->姓名,
+                    '部門' => $previousUser->部門,
+                    'avatarChoice' => $previousUser->avatarChoice,
+                    'email' => $previousUser->email,
+                    'last_login_time' => $datetime,
+                    'update_priority_time' => $datetime,
+                    'available_dblist' => $previousUser->available_dblist,
+                ]
+            );
+
+            \Auth::login($user);
+            $request->session()->regenerate();
+            $usernameAuthed = \Auth::user()->username;
+            $prior = \Auth::user()->priority;
+            $avatarChoice = \Auth::user()->avatarChoice;
+            Session::put('username', $usernameAuthed);
+            Session::put('priority', $prior);
+            Session::put('avatarChoice', $avatarChoice);
+            Session::put('department', \Auth::user()->部門);
+            session(['database' => $DBName]);
+        } // if
 
         return redirect()->back();
     } // switchSite
+
+    // 權限0的User可透過此功能修改可登入DB清單
+    public function update_available_dblist(Request $request)
+    {
+        $username = $request->input('username');
+        $dbListStr = $request->input('list');
+        $databaseArray = config('database_list.databases');
+        $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+        $error = '';
+
+        foreach ($databaseArray as $site) {
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
+            \DB::purge(env("DB_CONNECTION"));
+
+            DB::beginTransaction();
+
+            try {
+                $affected = DB::table('login')
+                    ->where('username', '=', $username)
+                    ->update(['available_dblist' => $dbListStr, 'update_priority_time' => $datetime]);
+
+                DB::commit();
+            } catch (\Exception $e) {
+                dd($e); // test
+                DB::rollback();
+                // something went wrong
+            } // try catch
+        } // foreach
+
+        return \Response::json(['message' => "Updated !"], 200); // Status code here
+
+    } // update_available_dblist
 
     //register newly logged in OA account
     public function register(Request $request)

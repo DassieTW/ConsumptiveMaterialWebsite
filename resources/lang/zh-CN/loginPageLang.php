@@ -80,6 +80,7 @@ return [
     'yellowrepeat' => '黄底标表示资料库已存放在资料库内',
     'data' => '资料',
     'mail' => '信箱',
+    'database_list' => '可登入资料库',
     'selectprofile_pic' => '请选择头像',
 
     // OA SSO Login Page Lang

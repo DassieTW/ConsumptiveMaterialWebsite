@@ -14,7 +14,7 @@ class AddAvilableDbsToLogin extends Migration
     public function up()
     {
         Schema::table('login', function (Blueprint $table) {
-            $table->string('avilable_dblist', 200)->nullable();
+            $table->string('available_dblist', 200)->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddAvilableDbsToLogin extends Migration
     public function down()
     {
         Schema::table('login', function (Blueprint $table) {
-            $table->dropColumn('avilable_dblist');
+            $table->dropColumn('available_dblist');
         });
     }
 }

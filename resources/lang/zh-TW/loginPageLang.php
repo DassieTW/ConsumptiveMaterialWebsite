@@ -80,6 +80,7 @@ return [
     'yellowrepeat' => '黃底標表示資料庫已存放在資料庫內',
     'data' => '資料',
     'mail' => '信箱',
+    'database_list' => '可登入資料庫',
     'selectprofile_pic' => '請選擇頭像',
 
     // OA SSO Login Page Lang

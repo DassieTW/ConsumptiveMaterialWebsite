@@ -1172,22 +1172,12 @@
                                         <span>{{ str_replace('Consumables management', '', \Session::get('database')) }}</span>
                                     </a>
                                     <div class="collapse" id="sitesMenu">
-                                        @php
-                                            $database_list_switcher = config('database_list.databases');
-                                            $database_names_switcher = [];
-                                            foreach ($database_list_switcher as $valuez) {
-                                                $tempz = str_replace(' Consumables management', '', $valuez);
-                                                array_push($database_names_switcher, $tempz);
-                                            } // for each
-                                            
-                                            unset($valuez); // unset the var created in the foreach loop
-                                        @endphp
-                                        @for ($i = 1; $i < count($database_list_switcher); $i++)
-                                            @if (\Session::get('database') != $database_list_switcher[$i])
+                                        @for ($i = 0; $i < count(explode("_", \Auth::user()->available_dblist)); $i++)
+                                            @if (\Session::get('database') != (explode("_", \Auth::user()->available_dblist)[$i] . " Consumables management"))
                                                 <a class="dropdown-item justify-content-center"
-                                                    href="{{ url('/switchSite/' . str_replace(' ', '_', $database_list_switcher[$i])) }}"
-                                                    value="{{ $database_list_switcher[$i] }}">
-                                                    {{ $database_names_switcher[$i] }}</a>
+                                                    href="{{ url('/switchSite/' . str_replace(" ", "_", explode("_", \Auth::user()->available_dblist)[$i]) . "_Consumables_management"); }}"
+                                                    value="{{ explode("_", \Auth::user()->available_dblist)[$i] }}">
+                                                    {{ explode("_", \Auth::user()->available_dblist)[$i] }}</a>
                                             @endif
                                         @endfor
                                     </div>

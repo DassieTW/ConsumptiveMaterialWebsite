@@ -107,11 +107,21 @@ class LoginPolicy         // 所有用戶管理相關權限
 
     public function canSwitchSites(Login $user)
     {
-        // 權限 " 0 " 才能在右上角切換廠別
-        if (intval($user->priority) === 0) {
+        // available_dblist清單非空才能切換廠別
+        if ( !is_null($user->available_dblist) && mb_strlen($user->available_dblist) > 0) {
             return true;
         } else {
             return false;
         } // if else
     } // canSwitchSites
+
+    public function canAddSitesToUser(Login $user)
+    {
+        // 只有權限0 也就是我們IT 才能添加新DB到user的 "available_dblist"
+        if ( intval($user->priority) < 1) {
+            return true;
+        } else {
+            return false;
+        } // if else
+    } // canAddSitesToUser
 }

@@ -1,5 +1,19 @@
 @extends('layouts.adminTemplate')
 @section('css')
+    <style>
+        td,
+        th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
 @endsection
 
 @section('js')
@@ -31,18 +45,21 @@
                         <tr>
                             {{-- <th>{!! __('loginPageLang.change') !!}</th> --}}
                             <th>{!! __('loginPageLang.username') !!}</th>
-                            <th>{!! __('loginPageLang.password') !!}</th>
+                            {{-- <th>{!! __('loginPageLang.password') !!}</th> --}}
                             <th>{!! __('loginPageLang.priority') !!}</th>
                             <th>{!! __('loginPageLang.name') !!}</th>
                             <th>{!! __('loginPageLang.dep') !!}</th>
                             <th>{!! __('loginPageLang.mail') !!}</th>
+                            @can('canAddSitesToUser', App\Models\Login::class)
+                                <th>{!! __('loginPageLang.database_list') !!}</th>
+                            @endcan
                         </tr>
                         @foreach ($data as $data)
                             <tr class="isnRows">
                                 <td><input type="hidden" id="username{{ $loop->index }}"
                                         name="username{{ $loop->index }}"
                                         value="{{ $data->username }}">{{ $data->username }}</td>
-                                <td>{{ $data->password }}</td>
+                                {{-- <td>{{ $data->password }}</td> --}}
                                 <td>
                                     <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch">
                                         <option selected>{{ $data->priority }}</option>
@@ -51,13 +68,51 @@
                                 <td>{{ $data->姓名 }}</td>
                                 <td>{{ $data->部門 }}</td>
                                 <td>{{ $data->email }}</td>
+                                @can('canAddSitesToUser', App\Models\Login::class)
+                                    <td class="justify-content-center">
+                                        <button id="{{ $data->username . '_' . $data->姓名 }}"
+                                            value="{{ $data->available_dblist }}" type="button"
+                                            class="btn btn-outline-info dbInfo" data-bs-toggle="modal"
+                                            data-bs-target="#siteListPicker">Info</button>
+                                    </td>
+                                @endcan
                             </tr>
                             <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
-                            <input type="hidden" id="department" name="department" value="{{ $department }}">
                         @endforeach
                     </table>
                 </div>
             </form>
+
+            @can('canAddSitesToUser', App\Models\Login::class)
+                {{-- Modal --}}
+                <div class="modal" id="siteListPicker" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Available Databases</h3>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    @for ($i = 1; $i < count($db_list); $i++)
+                                        <div class="form-check form-switch col-9">
+                                            <input class="form-check-input dbCheckbox" type="checkbox" role="switch"
+                                                id="{{ trim(str_replace('Consumables management', '', $db_list[$i])) }}"
+                                                value="{{ trim(str_replace('Consumables management', '', $db_list[$i])) }}">
+                                            <label class="form-check-label"
+                                                for="{{ trim(str_replace('Consumables management', '', $db_list[$i])) }}">{{ $db_list[$i] }}</label>
+                                        </div>
+                                    @endfor
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" id="ListConfirm" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endcan
         </div>
     </div>
 @endsection
