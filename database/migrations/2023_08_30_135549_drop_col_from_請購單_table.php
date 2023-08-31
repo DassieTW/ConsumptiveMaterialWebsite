@@ -14,8 +14,11 @@ class DropColFrom請購單Table extends Migration
     public function up()
     {
         Schema::table('請購單', function (Blueprint $table) {
-            $table->string('規格', 100);
-            //
+            $table->dropColumn('實際需求');
+            $table->dropColumn('請購占比');
+            $table->dropColumn('需求金額');
+            $table->dropColumn('需求占比');
+            $table->dropColumn('安全庫存');
         });
     }
 
@@ -26,14 +29,6 @@ class DropColFrom請購單Table extends Migration
      */
     public function down()
     {
-        Schema::table('請購單', function (Blueprint $table) {
-            //
-            // $table->dropColumn('實際需求');
-            // $table->dropColumn('請購占比');
-            // $table->dropColumn('需求金額');
-            // $table->dropColumn('需求占比');
-            // $table->dropColumn('安全庫存');
-            $table->string('規格', 100);
-        });
+        
     }
 }
