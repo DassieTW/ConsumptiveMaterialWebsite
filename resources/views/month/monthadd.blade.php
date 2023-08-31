@@ -27,6 +27,7 @@
                                 <td>{!! __('monthlyPRpageLang.client') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.machine') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.process') !!}</td>
+                                <td>{!! __('monthlyPRpageLang.90isn') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.nextmps') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.nextday') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.nowmps') !!}</td>
@@ -37,6 +38,7 @@
                                     <td><span id="client{{ $loop->index }}">{{ $client }}</span></td>
                                     <td><span id="machine{{ $loop->index }}">{{ $machine }}</span></td>
                                     <td><span id="production{{ $loop->index }}">{{ $production }}</span></td>
+                                    <td><span id="number90{{ $loop->index }}">{{ $number90 }}</span></td>
                                     <td><input class="form-control form-control-lg" type="number"
                                             id="nextmps{{ $loop->index }}" name="nextmps{{ $loop->index }}" required
                                             value="{{ $nextmps }}" step="0.001"

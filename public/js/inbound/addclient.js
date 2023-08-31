@@ -487,11 +487,11 @@ $(function () {
           },
         });
 
-        setTimeout(() => (window.location.href = "/inbound/add"), 1000);
+        setTimeout(() => (window.location.href = "/inbound/add"), 1500);
       },
       error: function (err) {
         //transaction error
-        if (err.status == 421) {
+        if (err.status === 421) {
           alert(err.responseJSON.message);
           window.location.reload();
         }

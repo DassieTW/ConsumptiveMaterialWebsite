@@ -4,7 +4,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   var title = [];
   var titlecol = [];
   var nogood = 1;

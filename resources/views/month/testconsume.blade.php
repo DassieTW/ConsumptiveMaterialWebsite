@@ -55,7 +55,7 @@
     {{-- 使用asset時，須注意Laravel是抓http header裡面的Host作為base url，
     所以若域名不是ip而有經過轉換時要進到Nginx裡面的proxy_set_header裡面確認Host設定值，
     否則會抓到錯誤的Host導致找不到資源 --}}
-    
+
     <script src="{{ asset('/js/manifest.js') }}"></script>
     <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
@@ -121,6 +121,7 @@
                                         <th>{!! __('monthlyPRpageLang.machine') !!}</th>
                                         <th>{!! __('monthlyPRpageLang.process') !!}</th>
                                         <th>{!! __('monthlyPRpageLang.consume') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.90isn') !!}</th>
                                         <th></th>
                                         <th>{!! __('monthlyPRpageLang.reason') !!}</th>
                                     </tr>
@@ -130,7 +131,7 @@
                                     //$data->單耗 = number_format(floatval($data->單耗),12);
                                     $unitConsume = abs((float) $data->單耗) < 1e-20 ? '0' : rtrim(sprintf('%.10F', ((float) $data->單耗)), '0');
                                     // result should be 0 or 1.8392832 or 14.
-
+                                    
                                     if (strpos($unitConsume, '.') === strlen($unitConsume) - 1) {
                                         // if the result is 5. (should be like 5.0)
                                         $data->單耗 = sprintf('%.1F', ((float) $data->單耗));
@@ -162,6 +163,10 @@
                                                     value="{{ $data->製程 }}">{{ $data->製程 }}
                                             </td>
                                             <td class="table-light" id="amount{{ $loop->index }}">{{ $data->單耗 }}
+                                            </td>
+                                            <td><input type="hidden" id="number90{{ $loop->index }}"
+                                                    name="number90{{ $loop->index }}"
+                                                    value="{{ $data->料號90 }}">{{ $data->料號90 }}
                                             </td>
                                             <td><input class="checkbutton" type="checkbox"
                                                     id="check{{ $loop->index }}" name="check{{ $loop->index }}">

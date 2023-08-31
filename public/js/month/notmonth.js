@@ -6,7 +6,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   $("#notmonth").on("submit", function (e) {
     e.preventDefault();
 
@@ -19,13 +19,13 @@ $(document).ready(function () {
     var submit = buttonIndex;
     console.log(client);
     console.log(number);
-    if (submit == "1") {
-      if (client == null) {
+    if (submit === "1") {
+      if (client === null) {
         $("#client").addClass("is-invalid");
         document.getElementById("clienterror").style.display = "block";
         document.getElementById("client").focus();
         return false;
-      } else if (number == "") {
+      } else if (number === "") {
         $("#number").addClass("is-invalid");
         document.getElementById("numbererror").style.display = "block";
         document.getElementById("number").focus();
@@ -67,7 +67,7 @@ $(document).ready(function () {
         error: function (err) {
           console.log(err);
           //無料號
-          if (err.status == 421) {
+          if (err.status === 421) {
             document.getElementById("numbererror2").style.display = "block";
             document.getElementById("number").classList.add("is-invalid");
             document.getElementById("number").value = "";

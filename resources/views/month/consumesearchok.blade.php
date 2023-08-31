@@ -55,22 +55,25 @@
                         value="{!! __('monthlyPRpageLang.download') !!}">
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
+                    <div id="emailinputarea">
+                        <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
+                        <div class="col col-8">
+                            <div class="input-group" style="width: 30ch;">
+                                <select class="form-select form-select-lg" id="email">
+                                    <option style="display: none" disabled selected value="">
+                                        {!! __('monthlyPRpageLang.noemail') !!}
+                                    </option>
+                                    @foreach ($people as $people)
+                                        <option value="{{ $people->姓名 }}">{{ $people->email }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="input-group-text input-group-text-lg" id="emailTail"></span>
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                    <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
-                    <div class="input-group" style="width: 40ch;">
-                        <input type="text" id="email" name="email" class="form-control form-control-lg"
-                            style="text-align:center;" placeholder="{!! __('loginPageLang.enter_email') !!}">
-                        <span class="input-group-text input-group-text-lg" id="emailTail">@pegatroncorp.com</span>
-                    </div>
-                    <div class="input-group">
-                        <ul id="peoplemenu" style="display: none;" class="list-group">
-                            @foreach ($people as $people)
-                                <a class="peoplelist list-group-item list-group-item-action"
-                                    href="#">{{ $people->姓名 }}</a>
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                            @endforeach
-                        </ul>
-                    </div>
+
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -91,11 +94,13 @@
                                     <th><input type="hidden" id="title6" name="title6"
                                             value="單耗">{!! __('monthlyPRpageLang.consume') !!}</th>
                                     <th><input type="hidden" id="title7" name="title7"
-                                            value="畫押信箱">{!! __('monthlyPRpageLang.email') !!}</th>
+                                            value="料號90">{!! __('monthlyPRpageLang.90isn') !!}</th>
                                     <th><input type="hidden" id="title8" name="title8"
+                                            value="畫押信箱">{!! __('monthlyPRpageLang.email') !!}</th>
+                                    <th><input type="hidden" id="title9" name="title9"
                                             value="備註">{!! __('monthlyPRpageLang.remark') !!}</th>
                                 </tr>
-                                <input type="hidden" id="titlecount" name="titlecount" value="9">
+                                <input type="hidden" id="titlecount" name="titlecount" value="10">
 
                             </thead>
                             <tbody>
@@ -150,6 +155,9 @@
                                                 type="text" id="amount{{ $loop->index }}" required
                                                 name="amount{{ $loop->index }}" value="{{ $data->單耗 }}">
                                         </td>
+                                        <td><input type="hidden" id="number90{{ $loop->index }}"
+                                                name="number90{{ $loop->index }}"
+                                                value="{{ $data->料號90 }}">{{ $data->料號90 }}</td>
                                         <td><input type="hidden" id="email{{ $loop->index }}"
                                                 name="email{{ $loop->index }}"
                                                 value="{{ $data->畫押信箱 }}">{{ $data->畫押信箱 }}</td>
@@ -163,21 +171,6 @@
 
                         </table>
                     </div>
-
-                    {{-- <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
-                    {{-- <label class="form-label">{!! __('monthlyPRpageLang.surepeople') !!}</label>
-                <input type="text" id="jobnumber" name="jobnumber" class="form-control form-control"
-                    style="width: 250px" placeholder="{!! __('monthlyPRpageLang.nopeople') !!}">
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
-                    {{-- <label class="form-label">{!! __('monthlyPRpageLang.surepeopleemail') !!}</label>
-                <div class="input-group" style="width: 410px">
-                    <input type="text" id="email" name="email" class="form-control form-control" style="width: 150px"
-                        placeholder="{!! __('loginPageLang.enter_email') !!}">
-                    <div class="input-group-text"><span class="col col-auto">@pegatroncorp.com</span></div>
-                </div>
-
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
 
                 </form>
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

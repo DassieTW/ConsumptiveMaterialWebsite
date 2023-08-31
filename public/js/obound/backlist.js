@@ -278,7 +278,7 @@ function addBtn(index) {
   count = count + 1;
 }
 
-$(".receivelist").mouseover(function (e) {
+$(".receivelist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#pickpeople").val(ename);
@@ -289,7 +289,7 @@ $(".receivelist").on("click", function (e) {
   $("#pickpeople").val(ename);
 });
 
-$(".backlist").mouseover(function (e) {
+$(".backlist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#backpeople").val(ename);
@@ -333,8 +333,8 @@ function myFunction2() {
 }
 
 $("#pickpeople").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -342,8 +342,8 @@ $("#pickpeople").on("focus", function () {
   $("#receivemenu").show();
 });
 $("#pickpeople").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -355,8 +355,8 @@ $("#pickpeople").on("blur", function () {
   $("#receivemenu").hide();
 });
 $("#backpeople").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -364,8 +364,8 @@ $("#backpeople").on("focus", function () {
   $("#backmenu").show();
 });
 $("#backpeople").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -377,14 +377,14 @@ $("#backpeople").on("blur", function () {
   $("#backmenu").hide();
 });
 
-$(document).ready(function () {
+$(function () {
   // $(".amount").hover(function () {
   //     $(this).tooltip();
   // });
 
   $("#pickpeople").on("input", function () {
-    $(window).keydown(function (event) {
-      if (event.keyCode == 13) {
+    $(window).on("keydown", function (event) {
+      if (event.code === "Enter") {
         event.preventDefault();
         return false;
       }
@@ -394,8 +394,8 @@ $(document).ready(function () {
     $("#pickpeople").val(rfidpick);
   });
   $("#backpeople").on("input", function () {
-    $(window).keydown(function (event) {
-      if (event.keyCode == 13) {
+    $(window).on("keydown", function (event) {
+      if (event.code === "Enter") {
         event.preventDefault();
         return false;
       }
@@ -412,7 +412,7 @@ $(document).ready(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").remove();
 
-    if (count == 0) {
+    if (count === 0) {
       notyf.open({
         type: "warning",
         message: Lang.get("basicInfoLang.nodata"),
@@ -482,7 +482,7 @@ $(document).ready(function () {
     var check1 = checkpeople.indexOf(pickpeople);
     var check2 = checkpeople.indexOf(backpeople);
 
-    if (check1 == -1) {
+    if (check1 === -1) {
       notyf.open({
         type: "warning",
         message: Lang.get("oboundpageLang.noreceivepeople"),
@@ -498,7 +498,7 @@ $(document).ready(function () {
       return false;
     }
 
-    if (check2 == -1) {
+    if (check2 === -1) {
       notyf.open({
         type: "warning",
         message: Lang.get("oboundpageLang.nobackpeople"),
@@ -529,7 +529,7 @@ $(document).ready(function () {
     }
 
     for (let i = 0; i < count; i++) {
-      if (status[i] == "good product" || status == "良品") {
+      if (status[i] === "good product" || status === "良品") {
         status[i] = "良品";
       } else {
         status[i] = "不良品";
@@ -581,12 +581,23 @@ $(document).ready(function () {
           Lang.get("oboundpageLang.outbackok") +
           " : " +
           data.list;
-        alert(mess);
-        window.location.href = "backlist";
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
+
+        setTimeout(() => (window.location.href = "backlist"), 1500);
       },
       error: function (err) {
         //transaction error
-        if (err.status == 421) {
+        if (err.status === 421) {
           var mess = err.responseJSON.message;
           alert(mess);
           window.location.reload();

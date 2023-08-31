@@ -1,37 +1,32 @@
 $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+  headers: {
+    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+  },
 });
 
+$(function () {
+  $.ajaxSetup({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
+  });
 
-$(document).ready(function () {
+  $("#form1").on("submit", function (e) {
+    e.preventDefault();
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    // clean up previous input results
+    $(".is-invalid").removeClass("is-invalid");
+    $(".invalid-feedback").remove();
 
-    $('#form1').on('submit', function (e) {
-        e.preventDefault();
+    var client = $("#client").val();
+    var isn = $("#number").val();
+    var send = $("#send").val();
+    if (isn === "") isn = null;
 
+    sessionStorage.setItem("transitclient", JSON.stringify(client)); // for later vue to post request
+    sessionStorage.setItem("transitisn", JSON.stringify(isn)); // for later vue to post request
+    sessionStorage.setItem("transitsend", JSON.stringify(send)); // for later vue to post request
 
-        // clean up previous input results
-        $('.is-invalid').removeClass('is-invalid');
-        $(".invalid-feedback").remove();
-
-        var client = $("#client").val();
-        var isn = $("#number").val();
-        var send = $("#send").val();
-        if (isn === "") isn = null;
-
-        sessionStorage.setItem("transitclient", JSON.stringify(client)); // for later vue to post request
-        sessionStorage.setItem("transitisn", JSON.stringify(isn)); // for later vue to post request
-        sessionStorage.setItem("transitsend", JSON.stringify(send)); // for later vue to post request
-
-        window.location.href = "transitsearch";
-
-    });
-
+    window.location.href = "transitsearch";
+  });
 });

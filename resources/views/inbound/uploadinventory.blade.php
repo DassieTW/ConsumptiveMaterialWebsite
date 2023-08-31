@@ -21,9 +21,9 @@
         if ($name === null || $format === null) {
             $mess = trans('inboundpageLang.noisn') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[1];
             echo "<script LANGUAGE='JavaScript'>
-                                    window.alert('$mess');
-                                    window.location.href='upload';
-                                    </script>";
+                                                                        window.alert('$mess');
+                                                                        window.location.href='upload';
+                                                                        </script>";
         } // if
         //判斷是否有這個客戶
         if (in_array($row[0], $clients)) {
@@ -33,9 +33,9 @@
         if ($i === false) {
             $mess = trans('inboundpageLang.noclient') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[0];
             echo "<script LANGUAGE='JavaScript'>
-                                    window.alert('$mess');
-                                    window.location.href='upload';
-                                    </script>";
+                                                                        window.alert('$mess');
+                                                                        window.location.href='upload';
+                                                                        </script>";
         } // if
     
         //判斷是否有這個儲位
@@ -46,9 +46,9 @@
         if ($j === false) {
             $mess = trans('inboundpageLang.noloc') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[3];
             echo "<script LANGUAGE='JavaScript'>
-                                    window.alert('$mess');
-                                    window.location.href='upload';
-                                    </script>";
+                                                                        window.alert('$mess');
+                                                                        window.location.href='upload';
+                                                                        </script>";
         } // if
     }
     ?>
@@ -94,6 +94,14 @@
                                 </th>
                             </tr>
                             @foreach ($data as $row)
+                                <?php
+                                $name = DB::table('consumptive_material')
+                                    ->where('料號', $row[1])
+                                    ->value('品名');
+                                $format = DB::table('consumptive_material')
+                                    ->where('料號', $row[1])
+                                    ->value('規格');
+                                ?>
                                 @if (strlen(trim($row[1])) !== 0)
                                     <tr>
                                         <td><input type="hidden" id="data0{{ $loop->index }}"

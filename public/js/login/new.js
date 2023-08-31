@@ -4,7 +4,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   $("#new_people").on("submit", function (e) {
     e.preventDefault();
 
@@ -60,7 +60,7 @@ $(document).ready(function () {
       },
       error: function (err) {
         //job number not 9
-        if (err.status == 420) {
+        if (err.status === 420) {
           document.getElementById("numbererror1").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
@@ -68,7 +68,7 @@ $(document).ready(function () {
           return false;
         }
         //job number is repeat
-        else if (err.status == 421) {
+        else if (err.status === 421) {
           document.getElementById("numbererror").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";

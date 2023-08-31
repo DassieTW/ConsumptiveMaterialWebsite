@@ -53,7 +53,7 @@ function appenSVg(index) {
   }); // on delete btn click
 } // appenSVg
 
-$(document).ready(function () {
+$(function () {
   $("#pick").on("submit", function (e) {
     e.preventDefault();
 
@@ -241,7 +241,7 @@ $(document).ready(function () {
       },
       error: function (err) {
         //沒有庫存
-        if (err.status == 420) {
+        if (err.status === 420) {
           document.getElementById("nostock").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("client").classList.add("is-invalid");
@@ -249,7 +249,7 @@ $(document).ready(function () {
           document.getElementById("client").value = "";
         }
         //沒有料號
-        else if (err.status == 421) {
+        else if (err.status === 421) {
           document.getElementById("numbererror1").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
@@ -351,12 +351,23 @@ $(document).ready(function () {
           Lang.get("oboundpageLang.picklistnum") +
           " : " +
           data.message;
-        alert(mess);
-        window.location.reload();
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
+
+        setTimeout(() => window.location.reload(), 1500);
       },
       error: function (err) {
         //transaction error
-        if (err.status == 420) {
+        if (err.status === 420) {
           alert(err.responseJSON.message);
           window.location.reload();
         }

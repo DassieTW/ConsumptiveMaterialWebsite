@@ -4,7 +4,7 @@ $.ajaxSetup({
   },
 });
 
-$(document).ready(function () {
+$(function () {
   $(".checkbutton").on("change", function () {
     var count = $("#count").val();
     for (let i = 0; i < count; i++) {
@@ -25,6 +25,7 @@ $(document).ready(function () {
     var client = [];
     var name = [];
     var number = [];
+    var number90 = [];
     var production = [];
     var machine = [];
     var amount = [];
@@ -42,6 +43,7 @@ $(document).ready(function () {
       name.push($("#name" + i).val());
       client.push($("#client" + i).val());
       number.push($("#number" + i).val());
+      number90.push($("#number90" + i).val());
       production.push($("#production" + i).val());
       machine.push($("#machine" + i).val());
       amount.push($("#amount" + i).html());
@@ -49,7 +51,7 @@ $(document).ready(function () {
       reason.push($("#remark" + i).val());
     } // for
 
-    if (count == undefined) {
+    if (count === undefined) {
       notyf.open({
         type: "warning",
         message: Lang.get("monthlyPRpageLang.nodata"),
@@ -83,6 +85,8 @@ $(document).ready(function () {
     data.push(amount);
     data.push(check);
     data.push(reason);
+    data.push(number90);
+
     if (sure !== true) {
       return false;
     } else {
@@ -118,8 +122,20 @@ $(document).ready(function () {
             Lang.get("monthlyPRpageLang.record") +
             " " +
             Lang.get("monthlyPRpageLang.success");
-          alert(mess);
-          window.location.reload();
+
+          notyf.open({
+            type: "success",
+            message: mess,
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+              x: "right",
+              y: "bottom",
+            },
+          });
+
+          setTimeout(() => window.location.reload(), 1500);
         },
         error: function (err) {
           //transaction error

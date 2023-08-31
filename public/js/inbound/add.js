@@ -478,7 +478,7 @@ $(function () {
           },
         });
 
-        setTimeout(() => (window.location.href = "/inbound/add"), 1000);
+        setTimeout(() => (window.location.href = "/inbound/add"), 1500);
       },
       error: function (err) {
         // //入庫數量大於在途量

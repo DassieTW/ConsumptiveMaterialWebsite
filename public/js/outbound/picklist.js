@@ -266,7 +266,7 @@ function addBtn(index) {
   count = count + 1;
 }
 
-$(".sendlist").mouseover(function (e) {
+$(".sendlist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#sendpeople").val(ename);
@@ -277,7 +277,7 @@ $(".sendlist").on("click", function (e) {
   $("#sendpeople").val(ename);
 });
 
-$(".picklist").mouseover(function (e) {
+$(".picklist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
   $("#pickpeople").val(ename);
@@ -321,8 +321,8 @@ function myFunction2() {
 }
 
 $("#sendpeople").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode === 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -330,8 +330,8 @@ $("#sendpeople").on("focus", function () {
   $("#sendmenu").show();
 });
 $("#sendpeople").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -343,8 +343,8 @@ $("#sendpeople").on("blur", function () {
   $("#sendmenu").hide();
 });
 $("#pickpeople").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode === 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -352,8 +352,8 @@ $("#pickpeople").on("focus", function () {
   $("#pickmenu").show();
 });
 $("#pickpeople").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode === 13) {
+  $(window).on("keydown", function (event) {
+    if (event.code === "Enter") {
       event.preventDefault();
       return false;
     }
@@ -372,13 +372,13 @@ $("#pickpeople").on("blur", function () {
 //       }
 //   });
 
-$(document).ready(function () {
+$(function () {
   var splittext = "儲位:";
   if (locale === "en") splittext = "Location:";
   if (locale === "zh-CN") splittext = "储位:";
   $("#pickpeople").on("input", function () {
-    $(window).keydown(function (event) {
-      if (event.keyCode === 13) {
+    $(window).on("keydown", function (event) {
+      if (event.code === "Enter") {
         event.preventDefault();
         return false;
       }
@@ -389,8 +389,8 @@ $(document).ready(function () {
     $("#pickpeople").val(rfidpick);
   });
   $("#sendpeople").on("input", function () {
-    $(window).keydown(function (event) {
-      if (event.keyCode === 13) {
+    $(window).on("keydown", function (event) {
+      if (event.code === "Enter") {
         event.preventDefault();
         return false;
       }
@@ -606,9 +606,19 @@ $(document).ready(function () {
           Lang.get("outboundpageLang.outpickok") +
           " : " +
           data.list;
-        alert(mess);
+        notyf.open({
+          type: "success",
+          message: mess,
+          duration: 3000, //miliseconds, use 0 for infinite duration
+          ripple: true,
+          dismissible: true,
+          position: {
+            x: "right",
+            y: "bottom",
+          },
+        });
 
-        window.location.href = "picklist";
+        setTimeout(() => (window.location.href = "picklist"), 1500);
         //window.location.href = "member.newok";
       },
       error: function (err) {

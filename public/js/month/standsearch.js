@@ -37,45 +37,17 @@ function myFunction() {
     }
   }
 }
-$("#email").on("focus", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-});
-$("#email").on("input", function () {
-  $(window).keydown(function (event) {
-    if (event.keyCode == 13) {
-      event.preventDefault();
-      return false;
-    }
-  });
-  $("#peoplemenu").show();
-  myFunction();
-});
-$("#email").on("blur", function () {
-  $("#peoplemenu").hide();
-});
-$(".peoplelist").mouseover(function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
-$(".peoplelist").on("click", function (e) {
-  e.preventDefault();
-  var ename = $(this).text();
-  $("#email").val(ename);
-});
 $.ajaxSetup({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
   },
 });
 
-$(document).ready(function () {
+$(function () {
+  $("#email").on("change", function (event) {
+    $("#emailTail").text($(this).val());
+  });
+
   function quickSearch() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
@@ -100,7 +72,7 @@ $(document).ready(function () {
     quickSearch();
   });
 
-  $("input").change(function () {
+  $("input").on("change", function () {
     for (var i = 0; i < count; i++) {
       var nowpeople = $("#datai" + i).val();
       var nowline = $("#dataj" + i).val();
@@ -163,26 +135,24 @@ $(document).ready(function () {
     var check = [];
     var title = [];
     var titlename = $("#titlename").val();
-    var email = $("#email").val().toLowerCase();
-    email = email + "@intra.pegatroncorp.com";
     var titlecount = $("#titlecount").val();
     $("input:checkbox[name=innumber]:checked").each(function () {
       check.push($(this).val());
     });
 
-    if (select == "刪除" || select == "删除" || select == "Delete") {
+    if (select === "刪除" || select === "删除" || select === "Delete") {
       select = "刪除";
       var count = check.length;
     }
-    if (select == "更新" || select == "Update") {
+    if (select === "更新" || select === "Update") {
       select = "更新";
       var count = check.length;
     }
-    if (select == "下載" || select == "下载" || select == "Download") {
+    if (select === "下載" || select === "下载" || select === "Download") {
       select = "下載";
       var count = $("#count").val();
     }
-    if (select == "刪除" || select == "更新") {
+    if (select === "刪除" || select === "更新") {
       for (let i = 0; i < count; i++) {
         data0.push($("#dataa" + i).val());
         data1.push($("#datab" + check[i]).val());
@@ -239,7 +209,7 @@ $(document).ready(function () {
       title.push($("#title" + [i]).val());
     }
 
-    checked = $("input[type=checkbox]:checked").length;
+    var checked = $("input[type=checkbox]:checked").length;
 
     data.push(data0);
     data.push(data1);
@@ -283,7 +253,7 @@ $(document).ready(function () {
         });
         return false;
       }
-      if ($("#email").val() === "") {
+      if ($("#email").val() === null) {
         notyf.open({
           type: "warning",
           message: Lang.get("monthlyPRpageLang.noemail"),
@@ -296,9 +266,14 @@ $(document).ready(function () {
           },
         });
         document.getElementById("email").classList.add("is-invalid");
+        document.getElementById("email").classList.add("is-invalid");
         document.getElementById("email").focus();
         return false;
+      } else {
+        var email = $("#email option:selected").text();
+        console.log(email);
       }
+
       select = "更新";
     }
     if (select === "刪除" || select === "更新") {
@@ -341,7 +316,7 @@ $(document).ready(function () {
         success: function (data) {
           console.log(data);
           // update
-          if (data.status == 201) {
+          if (data.status === 201) {
             var mess =
               Lang.get("monthlyPRpageLang.total") +
               " " +
@@ -356,8 +331,19 @@ $(document).ready(function () {
               Lang.get("monthlyPRpageLang.submit") +
               " " +
               Lang.get("monthlyPRpageLang.success");
-            alert(mess);
-            window.location.href = "stand";
+            notyf.open({
+              type: "success",
+              message: mess,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            });
+
+            setTimeout(() => (window.location.href = "stand"), 1500);
           }
           // delete
           else {
@@ -373,8 +359,19 @@ $(document).ready(function () {
               Lang.get("monthlyPRpageLang.delete") +
               " " +
               Lang.get("monthlyPRpageLang.success");
-            alert(mess);
-            window.location.href = "stand";
+            notyf.open({
+              type: "success",
+              message: mess,
+              duration: 3000, //miliseconds, use 0 for infinite duration
+              ripple: true,
+              dismissible: true,
+              position: {
+                x: "right",
+                y: "bottom",
+              },
+            });
+
+            setTimeout(() => (window.location.href = "stand"), 1500);
           }
         },
         error: function (err) {

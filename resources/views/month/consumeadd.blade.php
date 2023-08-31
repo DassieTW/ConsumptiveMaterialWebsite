@@ -24,7 +24,8 @@
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.client') !!}</label>
                         <select class="form-select form-select-lg" id="client" name="client">
-                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterclient') !!}</option>
+                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterclient') !!}
+                            </option>
                             @foreach ($client as $client)
                                 <option>{{ $client->客戶 }}</option>
                             @endforeach
@@ -35,7 +36,8 @@
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.machine') !!}</label>
                         <select class="form-select form-select-lg" id="machine" name="machine">
-                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.entermachine') !!}</option>
+                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.entermachine') !!}
+                            </option>
                             @foreach ($machine as $machine)
                                 <option>{{ $machine->機種 }}</option>
                             @endforeach
@@ -46,7 +48,8 @@
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.process') !!}</label>
                         <select class="form-select form-select-lg " id="production" name="production">
-                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterprocess') !!}</option>
+                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterprocess') !!}
+                            </option>
                             @foreach ($production as $production)
                                 <option>{{ $production->制程 }}</option>
                             @endforeach
@@ -54,29 +57,47 @@
                         <div class="invalid-feedback" id="productionerror" style="display:none; color:red;">
                             {!! __('monthlyPRpageLang.enterprocess') !!}</div>
                     </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-auto">
+                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
+                                <input class="form-control form-control-lg " type="text" id="number" name="number"
+                                    placeholder="{!! __('monthlyPRpageLang.enterisn') !!}"
+                                    oninput="if(value.length>12)value=value.slice(0,12)">
+                                <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                                    {!! __('monthlyPRpageLang.isnlength') !!}
+                                </div>
+                                <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                                    {!! __('monthlyPRpageLang.noisn') !!}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                {{-- <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
+                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.90isn') !!}</label>
+                                <input class="form-control form-control-lg " type="text" id="90isn" name="90isn"
+                                    placeholder="{!! __('monthlyPRpageLang.enter90isn') !!}"
+                                    oninput="if(value.length>12)value=value.slice(0,12)">
+                                <div class="invalid-feedback" id="90error" style="display:none; color:red;">
+                                    {!! __('monthlyPRpageLang.isnlength') !!}
+                                </div>
+                                <div class="invalid-feedback" id="90error1" style="display:none; color:red;">
+                                    {!! __('monthlyPRpageLang.noisn') !!}
+                                </div>
 
-                    <div class="col-auto">
-                        <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
-                        <input class="form-control form-control-lg " type="text" id="number" name="number"
-                            placeholder="{!! __('monthlyPRpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
-                        <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
-                            {!! __('monthlyPRpageLang.isnlength') !!}
-                        </div>
-                        <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
-                            {!! __('monthlyPRpageLang.noisn') !!}
+                            </div>
                         </div>
                     </div>
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
                     <div class="col-auto">
-                        <label class="col col-auto form-label">&nbsp;</label>
-                        <input type="submit" id="add" name="add"
+                        {{-- <label class="col col-auto form-label">&nbsp;</label> --}}
+                        <input type="submit" id="add" name="add" style="width: 10ch;"
                             class="form-control form-control-lg btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        <button class="btn btn-lg btn-primary" style id="loadconsume">{!! __('monthlyPRpageLang.loadconsume') !!}</button>
                     </div>
 
                 </form>
-                <div class="col-auto">
-                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                    <button class="btn btn-lg btn-primary" id="loadconsume">{!! __('monthlyPRpageLang.loadconsume') !!}</button>
-                </div>
             </div>
         </div>
         <div class="card w-100" id="consumebody">
@@ -97,30 +118,27 @@
                                     <th>{!! __('monthlyPRpageLang.client') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.machine') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.process') !!}</th>
-
+                                    <th>{!! __('monthlyPRpageLang.90isn') !!}</th>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                    <div>
+                    <div id="emailinputarea">
                         <label class="form-label col col-3">{!! __('monthlyPRpageLang.surepeopleemail') !!}:</label>
                         <div class="col col-8">
-                            <div class="input-group" style="width: 40ch;">
-                                <input type="text" id="email" name="email" class="form-control form-control-lg"
-                                    style="text-align:center;" placeholder="{!! __('loginPageLang.enter_email') !!}">
-                                <span class="input-group-text input-group-text-lg" id="emailTail">@pegatroncorp.com</span>
-                            </div>
-                            <div class="input-group">
-                                <ul id="peoplemenu" style="display: none;" class="list-group">
+                            <div class="input-group" style="width: 30ch;">
+                                <select class="form-select form-select-lg" id="email">
+                                    <option style="display: none" disabled selected value="">
+                                        {!! __('monthlyPRpageLang.noemail') !!}
+                                    </option>
                                     @foreach ($people as $people)
-                                        <a class="peoplelist list-group-item list-group-item-action"
-                                            href="#">{{ $people->姓名 }}</a>
-                                        <div class="w-100" style="height: 1ch;"></div>
-                                        <!-- </div>breaks cols to a new line-->
+                                        <option value="{{ $people->姓名 }}">{{ $people->email }}</option>
                                     @endforeach
-                                </ul>
+                                </select>
+                                <span class="input-group-text input-group-text-lg" id="emailTail"></span>
+
                             </div>
                         </div>
                     </div>

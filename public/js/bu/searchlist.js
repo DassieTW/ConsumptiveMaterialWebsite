@@ -185,7 +185,7 @@ $(function () {
               y: "bottom",
             },
           });
-          setTimeout(() => window.location.reload(), 1000);
+          setTimeout(() => window.location.reload(), 1500);
         },
         error: function (err) {
           //transaction error

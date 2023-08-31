@@ -226,7 +226,7 @@ $(document).ready(function () {
               y: "bottom",
             },
           });
-          setTimeout(() => (window.location.href = "outlist"), 1000);
+          setTimeout(() => (window.location.href = "outlist"), 1500);
         },
         error: function (err) {
           //transaction error
