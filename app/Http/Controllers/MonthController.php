@@ -1590,9 +1590,11 @@ class MonthController extends Controller
             $worksheet->setCellValue("A1", "MOQ");
             $worksheet->mergeCells("A1:M1"); // for the SUM row
             $database = $request->session()->get('database');
-            $title = explode(" ", $database)[0] . "廠";
-            $title  = $title . date('Y/m');
-            $title = $title . "/01~" . date('Y/m') . "/30號耗材購買明細";
+            $title = explode(" Consumables management", $database)[0] . "廠";
+            $year = date('Y/', strtotime("last day of 1 month"));
+            $month = date('m/', strtotime("last day of 1 month"));
+            $lastday = date('t', strtotime("last day of 1 month"));
+            $title  = $title . $year . $month . "01" . "~" . $month . $lastday . "號耗材購買明細";
             $worksheet->setCellValue("A1", $title);
             $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             $worksheet->getStyle("A1")->getFont()->setSize(16);
