@@ -17,9 +17,8 @@ $(function () {
     var client = $("#client").val();
     var number = $("#number").val();
     var submit = buttonIndex;
-    console.log(client);
-    console.log(number);
-    if (submit === "1") {
+    console.log(submit);
+    if (submit === 1) {
       if (client === null) {
         $("#client").addClass("is-invalid");
         document.getElementById("clienterror").style.display = "block";
