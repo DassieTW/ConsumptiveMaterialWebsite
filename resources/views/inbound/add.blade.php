@@ -113,7 +113,6 @@
                                     <th>{!! __('inboundpageLang.unit') !!}</th>
                                     <th>{!! __('inboundpageLang.transit') !!}</th>
                                     <th>{!! __('inboundpageLang.nowstock') !!}</th>
-                                    <th>{!! __('inboundpageLang.safe') !!}</th>
                                     <th>{!! __('inboundpageLang.inboundnum') !!}</th>
                                     <th>{!! __('inboundpageLang.inreason') !!}</th>
                                     <th>{!! __('inboundpageLang.oldloc') !!}</th>

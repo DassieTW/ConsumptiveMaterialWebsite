@@ -1,6 +1,15 @@
 sessionStorage.clear();
 
-function appenSVg(count) {
+$.ajaxSetup({
+  headers: {
+    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+  },
+});
+
+var count = 0;
+var flag = 1;
+
+function appenSVg(index) {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   path.setAttribute(
@@ -13,14 +22,31 @@ function appenSVg(count) {
   svg.setAttribute("class", "bi bi-x-circle-fill");
   svg.setAttribute("viewBox", "0 0 20 20");
   svg.appendChild(path);
-  $("#deleteBtn" + count).append(svg);
-  count = count + 1;
+  $("#deleteBtn" + index).append(svg);
+  $("#deleteBtn" + index).on("click", function (e) {
+    e.preventDefault();
+    notyf.success({
+      message:
+        Lang.get("oboundpageLang.delete") + Lang.get("oboundpageLang.success"),
+      duration: 3000, //miliseconds, use 0 for infinite duration
+      ripple: true,
+      dismissible: true,
+      position: {
+        x: "right",
+        y: "bottom",
+      },
+    });
+    count = count - 1;
+    flag = flag - 1;
+    $(this).parent().parent().remove();
+  }); // on delete btn click
 } // appenSVg
 
 function copyoption(count) {
   var select1 = document.getElementById("copyloc");
   var select2 = document.getElementById("newposition" + count);
   select2.innerHTML = select1.innerHTML;
+  console.log(1);
   //$('#position'+ index + 'option').clone().appendTo('#position' + count);
 }
 
@@ -41,9 +67,9 @@ function deleteBtn(index) {
     .parent()
     .remove();
   count = count - 1;
+  flag = flag - 1;
   // on delete btn click
 }
-
 $(".inboundlist").on("mouseover", function (e) {
   e.preventDefault();
   var ename = $(this).text();
@@ -123,7 +149,19 @@ $(function () {
     $("#inpeople").val(rfidpick);
     checkrfidpick = true;
   });
-
+  $("#inreason").on("change", function () {
+    var value = $("#inreason").val();
+    if (value === "其他" || value === "other") {
+      document.getElementById("reason").style.display = "block";
+      document.getElementById("reasonlabel").style.display = "block";
+      document.getElementById("reason").required = true;
+    } else {
+      document.getElementById("reason").style.display = "none";
+      document.getElementById("reasonlabel").style.display = "none";
+      document.getElementById("reason").required = false;
+    }
+  });
+  var index = count;
   $("#add").on("submit", function (e) {
     e.preventDefault();
 
@@ -175,7 +213,7 @@ $(function () {
       success: function (data) {
         if (data.type === "add") {
           document.getElementById("notransit").style.display = "none";
-          sessionStorage.setItem("addclient", count + 1);
+          sessionStorage.setItem("addclient", index + 1);
 
           notyf.success({
             message:
@@ -194,50 +232,40 @@ $(function () {
           var row = document.createElement("tr");
 
           let rowdelete = document.createElement("td");
-          rowdelete.innerHTML =
-            "<a id=" +
-            "deleteBtn" +
-            count +
-            " href=javascript:deleteBtn(" +
-            count +
-            ")></a>";
+          rowdelete.innerHTML = "<a id=" + "deleteBtn" + index + "></a>";
 
           let rowclient = document.createElement("td");
           rowclient.innerHTML =
-            "<span id=" + "client" + count + ">" + data.client + "</span>";
+            "<span id=" + "client" + index + ">" + data.client + "</span>";
 
           let rownumber = document.createElement("td");
           rownumber.innerHTML =
-            "<span id=" + "number" + count + ">" + data.number + "</span>";
+            "<span id=" + "number" + index + ">" + data.number + "</span>";
 
           let rowname = document.createElement("td");
           rowname.innerHTML =
-            "<span id=" + "name" + count + ">" + data.name + "</span>";
+            "<span id=" + "name" + index + ">" + data.name + "</span>";
 
           let rowformat = document.createElement("td");
           rowformat.innerHTML =
-            "<span id=" + "format" + count + ">" + data.format + "</span>";
+            "<span id=" + "format" + index + ">" + data.format + "</span>";
 
           let rowunit = document.createElement("td");
           rowunit.innerHTML =
-            "<span id=" + "unit" + count + ">" + data.unit + "</span>";
+            "<span id=" + "unit" + index + ">" + data.unit + "</span>";
 
           let rowtransit = document.createElement("td");
           rowtransit.innerHTML =
-            "<span id=" + "transit" + count + ">" + data.transit + "</span>";
+            "<span id=" + "transit" + index + ">" + data.transit + "</span>";
 
           let rowstock = document.createElement("td");
           rowstock.innerHTML =
-            "<span id=" + "stock" + count + ">" + data.stock + "</span>";
-
-          let rowsafe = document.createElement("td");
-          rowsafe.innerHTML =
-            "<span id=" + "safe" + count + ">" + data.safe + "</span>";
+            "<span id=" + "stock" + index + ">" + data.stock + "</span>";
 
           let rowamount = document.createElement("td");
           rowamount.innerHTML =
             '<input id="amount' +
-            count +
+            index +
             '"' +
             'type = "number"' +
             'class = "form-control"' +
@@ -248,13 +276,13 @@ $(function () {
 
           let rowinreason = document.createElement("td");
           rowinreason.innerHTML =
-            "<span id=" + "inreason" + count + ">" + data.inreason + "</span>";
+            "<span id=" + "inreason" + index + ">" + data.inreason + "</span>";
 
           let rowpositions = document.createElement("td");
           rowpositions.innerHTML =
             "<span id=" +
             "positions" +
-            count +
+            index +
             ">" +
             data.positions +
             "</span>";
@@ -262,7 +290,7 @@ $(function () {
           let rowlocation = document.createElement("td");
           rowlocation.innerHTML =
             '<select id="newposition' +
-            count +
+            index +
             '"' +
             'class = "form-select form-select-lg"' +
             'style="width: 150px"' +
@@ -276,7 +304,6 @@ $(function () {
           row.appendChild(rowunit);
           row.appendChild(rowtransit);
           row.appendChild(rowstock);
-          row.appendChild(rowsafe);
           row.appendChild(rowamount);
           row.appendChild(rowinreason);
           row.appendChild(rowpositions);
@@ -284,8 +311,8 @@ $(function () {
 
           body.appendChild(row);
           tbl.appendChild(body);
-          appenSVg(count);
-          copyoption(count);
+          appenSVg(index);
+          copyoption(index);
 
           index = index + 1;
           count = count + 1;
@@ -353,7 +380,6 @@ $(function () {
     for (let i = 0; i < $("#checkcount").val(); i++) {
       checkpeople.push($("#checkpeople" + i).val());
     }
-    console.log(inpeople);
 
     var check1 = checkpeople.indexOf(inpeople);
 
@@ -382,7 +408,7 @@ $(function () {
     var inreason = [];
     var row = [];
     var j = 0;
-
+    console.log(sessionStorage.getItem("addclient"));
     for (let i = 0; i < sessionStorage.getItem("addclient"); i++) {
       if ($("#client" + i).text() !== null && $("#client" + i).text() !== "") {
         row[j] = i;
@@ -396,6 +422,24 @@ $(function () {
           document
             .getElementById("newposition" + i)
             .classList.add("is-invalid");
+          var mess =
+            Lang.get("inboundpageLang.row") +
+            " : " +
+            (i + flag) +
+            " " +
+            Lang.get("inboundpageLang.enterloc");
+
+          notyf.open({
+            type: "warning",
+            message: mess,
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+              x: "right",
+              y: "bottom",
+            },
+          });
           return false;
         } else {
           position.push($("#newposition" + i).val());

@@ -215,10 +215,6 @@ $(function () {
           rowstock.innerHTML =
             "<span id=" + "stock" + index + ">" + data.stock + "</span>";
 
-          let rowsafe = document.createElement("td");
-          rowsafe.innerHTML =
-            "<span id=" + "safe" + index + ">" + data.safe + "</span>";
-
           let rowamount = document.createElement("td");
           // rowamount.innerHTML = '<input id="amount' + index + '"' + 'type = "number"' + 'class = "form-control"' + 'min = "1"' + 'value = "1"' + 'style="width: 100px"' + '>';
 
@@ -265,7 +261,6 @@ $(function () {
           row.appendChild(rowunit);
           row.appendChild(rowtransit);
           row.appendChild(rowstock);
-          row.appendChild(rowsafe);
           row.appendChild(rowamount);
           row.appendChild(rowinreason);
           row.appendChild(rowpositions);
