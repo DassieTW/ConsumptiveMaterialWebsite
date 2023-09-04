@@ -181,7 +181,7 @@
                                                             {!! __('basicInfoLang.basicInfo') !!}</a>
                                                     </li>
                                                     <li
-                                                        class="sidebar-item {{ isActiveRoute(['basic/new', 'basic.uploadmaterial', 'basic/upload']) }}">
+                                                        class="sidebar-item {{ isActiveRoute(['basic/new', 'basic.uploadmaterial']) }}">
                                                         <a class="sidebar-link" href="{{ url('basic/new') }}">
                                                             {!! __('basicInfoLang.newMats') !!}</a>
                                                     </li>
@@ -1172,12 +1172,12 @@
                                         <span>{{ str_replace('Consumables management', '', \Session::get('database')) }}</span>
                                     </a>
                                     <div class="collapse" id="sitesMenu">
-                                        @for ($i = 0; $i < count(explode("_", \Auth::user()->available_dblist)); $i++)
-                                            @if (\Session::get('database') != (explode("_", \Auth::user()->available_dblist)[$i] . " Consumables management"))
+                                        @for ($i = 0; $i < count(explode('_', \Auth::user()->available_dblist)); $i++)
+                                            @if (\Session::get('database') != explode('_', \Auth::user()->available_dblist)[$i] . ' Consumables management')
                                                 <a class="dropdown-item justify-content-center"
-                                                    href="{{ url('/switchSite/' . str_replace(" ", "_", explode("_", \Auth::user()->available_dblist)[$i]) . "_Consumables_management"); }}"
-                                                    value="{{ explode("_", \Auth::user()->available_dblist)[$i] }}">
-                                                    {{ explode("_", \Auth::user()->available_dblist)[$i] }}</a>
+                                                    href="{{ url('/switchSite/' . str_replace(' ', '_', explode('_', \Auth::user()->available_dblist)[$i]) . '_Consumables_management') }}"
+                                                    value="{{ explode('_', \Auth::user()->available_dblist)[$i] }}">
+                                                    {{ explode('_', \Auth::user()->available_dblist)[$i] }}</a>
                                             @endif
                                         @endfor
                                     </div>

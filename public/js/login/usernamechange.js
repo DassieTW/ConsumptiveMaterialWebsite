@@ -4,7 +4,7 @@ $.ajaxSetup({
     },
 });
 
-$(document).ready(function () {
+$(function () {
     function quickSearch() {
         // Declare variables
         var input, filter, table, tr, td, i, txtValue;
@@ -76,8 +76,10 @@ $(document).ready(function () {
                 notyf.open({
                     type: "success",
                     message:
-                        Lang.get("loginPageLang.user") + " " +
-                        Lang.get("loginPageLang.change") + " " +
+                        Lang.get("loginPageLang.user") +
+                        " " +
+                        Lang.get("loginPageLang.change") +
+                        " " +
                         Lang.get("loginPageLang.success"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
@@ -104,6 +106,7 @@ $(document).ready(function () {
         // console.log($(this).attr("id")); // test
         const dblist = $(this).attr("value").split("_");
         $(".dbCheckbox").prop("checked", false);
+        
         dblist.forEach((db) => {
             $("[id='" + db + "']").prop("checked", true);
         });
@@ -116,7 +119,7 @@ $(document).ready(function () {
                 ")"
         );
 
-        $(".modal-title").attr('id', $(this).attr("id").split("_")[0]);
+        $(".modal-title").attr("id", $(this).attr("id").split("_")[0]);
     });
 
     $("#ListConfirm").on("click", function () {
@@ -145,8 +148,8 @@ $(document).ready(function () {
             beforeSend: function () {
                 // // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
                 $("body").loadingModal({
-                  text: "Loading...",
-                  animation: "circle",
+                    text: "Loading...",
+                    animation: "circle",
                 });
             },
             complete: function () {
@@ -157,7 +160,8 @@ $(document).ready(function () {
                 notyf.open({
                     type: "success",
                     message:
-                        Lang.get("loginPageLang.change") + " " +
+                        Lang.get("loginPageLang.change") +
+                        " " +
                         Lang.get("loginPageLang.success"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,

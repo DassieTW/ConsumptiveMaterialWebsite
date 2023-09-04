@@ -72,7 +72,7 @@
                                         <tr>
                                             <td id="row{{ $loop->index }}"><input type="text"
                                                     class="form-control form-control-lg" id="data0{{ $loop->index }}"
-                                                    name="data0{{ $loop->index }}" value="{{ $row[0] }}">
+                                                    name="data0{{ $loop->index }}" value="{{ trim($row[0]) }}">
                                             </td>
                                         </tr>
                                         <input type="hidden" id="count" name="count" value="{{ $loop->count }}">

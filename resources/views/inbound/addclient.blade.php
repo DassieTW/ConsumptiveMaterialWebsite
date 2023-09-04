@@ -23,21 +23,19 @@
             <div class="card-body">
                 <form id="add" class="row gx-6 gy-1 align-items-center">
                     @csrf
-                    <div style="display: none" id="showname">{{ $client = App\Models\客戶別::all() }}
+                    <div style="display: none" id="showname">{{ $clients = App\Models\客戶別::all() }}
                         {{ $showreason = App\Models\入庫原因::all() }}</div>
-
                     <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('inboundpageLang.client') !!}</label>
 
                         <select class="form-select form-select-lg" id="client" name="client">
                             <option style="display: none" disabled selected value="">{!! __('inboundpageLang.enterclient') !!}</option>
-                            @foreach ($client as $client)
+                            @foreach ($clients as $client)
                                 <option>{{ $client->客戶 }}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
                             {!! __('inboundpageLang.enterclient') !!}</div>
-
                     </div>
 
                     <div class="col-auto">
@@ -51,6 +49,11 @@
                             @endforeach
                             <option>{!! __('inboundpageLang.other') !!}</option>
                         </select>
+                        <label class="col col-lg-12 form-label" style="display:none;" id="reasonlabel"></label>
+
+                        <input style="display:none;" class="form-control form-control-lg " type="text" id="reason"
+                            name="reason" placeholder="{!! __('inboundpageLang.inputinreason') !!}">
+
                         <div class="invalid-feedback" id="inreasonerror" style="display:none; color:red;">
                             {!! __('inboundpageLang.enterinreason') !!}</div>
                     </div>
@@ -68,17 +71,17 @@
                         <div class="invalid-feedback" id="notransit" style="display:none; color:red;">
                             {!! __('inboundpageLang.notransit') !!}
                         </div>
+
                     </div>
-                    <div class="col-auto">
+
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                    <div class="">
                         <label class="col col-auto form-label"></label>
                         <input type="submit" onclick="buttonIndex=0;" id="addto" name="addto"
                             class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.add') !!}">
                     </div>
-                    <div class="col-auto">
-                        <label class="col col-auto form-label"></label>
-                        <input style="display:none;" class="form-control form-control-lg " type="text" id="reason"
-                            name="reason" placeholder="{!! __('inboundpageLang.inputinreason') !!}">
-                    </div>
+
+
                 </form>
             </div>
         </div>
@@ -108,7 +111,6 @@
                                     <th>{!! __('inboundpageLang.unit') !!}</th>
                                     <th>{!! __('inboundpageLang.transit') !!}</th>
                                     <th>{!! __('inboundpageLang.nowstock') !!}</th>
-                                    <th>{!! __('inboundpageLang.safe') !!}</th>
                                     <th>{!! __('inboundpageLang.inboundnum') !!}</th>
                                     <th>{!! __('inboundpageLang.inreason') !!}</th>
                                     <th>{!! __('inboundpageLang.oldloc') !!}</th>
@@ -136,80 +138,6 @@
                                         $unit = DB::table('consumptive_material')
                                             ->where('料號', $data->料號)
                                             ->value('單位');
-                                        $belong = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('耗材歸屬');
-                                        $lt = DB::table('consumptive_material')
-                                            ->where('料號', $data->料號)
-                                            ->value('LT');
-                                        if ($belong === '單耗') {
-                                            $machine = DB::table('月請購_單耗')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('機種');
-                                            $production = DB::table('月請購_單耗')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('製程');
-                                            $consume = DB::table('月請購_單耗')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('單耗');
-                                            $nextmps = DB::table('MPS')
-                                                ->where('機種', $machine)
-                                                ->where('客戶別', $data->客戶)
-                                                ->where('製程', $production)
-                                                ->value('下月MPS');
-                                            $nextday = DB::table('MPS')
-                                                ->where('機種', $machine)
-                                                ->where('客戶別', $data->客戶)
-                                                ->where('製程', $production)
-                                                ->value('下月生產天數');
-                                        
-                                            if ($nextday === 0) {
-                                                $safe = 0;
-                                            } else {
-                                                $safe = ($lt * $consume * $nextmps) / $nextday;
-                                            }
-                                        } else {
-                                            $machine = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('機種');
-                                            $production = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('製程');
-                                            $nextstand = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('下月站位人數');
-                                            $nextline = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('下月開線數');
-                                            $nextclass = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('下月開班數');
-                                            $nextuse = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('下月每人每日需求量');
-                                            $nextchange = DB::table('月請購_站位')
-                                                ->where('料號', $data->料號)
-                                                ->where('客戶別', $data->客戶)
-                                                ->value('下月每日更換頻率');
-                                            $mpq = DB::table('consumptive_material')
-                                                ->where('料號', $data->料號)
-                                                ->value('MPQ');
-                                            if ($mpq === 0) {
-                                                $safe = 0;
-                                            } else {
-                                                $safe = ($lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange) / $mpq;
-                                            }
-                                        }
-                                        
                                         $showstock = '';
                                         $nowstock = DB::table('inventory')
                                             ->where('料號', $data->料號)
@@ -244,7 +172,6 @@
                                         <td><span id="unit{{ $loop->index }}">{{ $unit }}</td>
                                         <td><span id="transit{{ $loop->index }}">{{ $data->請購數量 }}</td>
                                         <td><span id="stock{{ $loop->index }}">{{ $stock }}</td>
-                                        <td><span id="safe{{ $loop->index }}">{{ $safe }}</td>
                                         <td>
 
                                             <div class="tooltip1">

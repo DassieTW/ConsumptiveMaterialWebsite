@@ -15,42 +15,42 @@
     $k = false;
     $error = $loop->index + 1;
     //判斷是否有這個客戶
-    if (in_array($row[1], $clients)) {
+    if (in_array(trim($row[1]), $clients)) {
         $i = true;
     }
     
     if ($i === false) {
         $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-                                                                                window.alert('$mess');
-                                                                                window.location.href='uploadmonth';
-                                                                                </script>";
+                                                                                                    window.alert('$mess');
+                                                                                                    window.location.href='uploadmonth';
+                                                                                                    </script>";
     }
     
     //判斷是否有這個機種
-    if (in_array($row[2], $machines)) {
+    if (in_array(trim($row[2]), $machines)) {
         $j = true;
     }
     
     if ($j === false) {
         $mess = trans('monthlyPRpageLang.nomachine') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
         echo "<script LANGUAGE='JavaScript'>
-                                                                                window.alert('$mess');
-                                                                                window.location.href='uploadmonth';
-                                                                                </script>";
+                                                                                                    window.alert('$mess');
+                                                                                                    window.location.href='uploadmonth';
+                                                                                                    </script>";
     }
     
     //判斷是否有這個製程
-    if (in_array($row[3], $productions)) {
+    if (in_array(trim($row[3]), $productions)) {
         $k = true;
     }
     
     if ($k === false) {
         $mess = trans('monthlyPRpageLang.noproduction') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[3];
         echo "<script LANGUAGE='JavaScript'>
-                                                                                window.alert('$mess');
-                                                                                window.location.href='uploadmonth';
-                                                                                </script>";
+                                                                                                    window.alert('$mess');
+                                                                                                    window.location.href='uploadmonth';
+                                                                                                    </script>";
     }
     
     ?>
@@ -104,25 +104,25 @@
                             @foreach ($data as $row)
                                 <tr>
 
-                                    <td><span id="data0{{ $loop->index }}">{{ $row[1] }}</span></td>
-                                    <td><span id="data1{{ $loop->index }}">{{ $row[2] }}</span></td>
-                                    <td><span id="data2{{ $loop->index }}">{{ $row[3] }}</span></td>
-                                    <td><span id="data7{{ $loop->index }}">{{ $row[0] }}</span></td>
+                                    <td><span id="data0{{ $loop->index }}">{{ trim($row[1]) }}</span></td>
+                                    <td><span id="data1{{ $loop->index }}">{{ trim($row[2]) }}</span></td>
+                                    <td><span id="data2{{ $loop->index }}">{{ trim($row[3]) }}</span></td>
+                                    <td><span id="data7{{ $loop->index }}">{{ trim($row[0]) }}</span></td>
                                     <td><input class="form-control form-control-lg" type="number"
                                             id="data3{{ $loop->index }}" name="data3{{ $loop->index }}"
-                                            value="{{ $row[4] }}" required step="0.001"
+                                            value="{{ trim($row[4]) }}" required step="0.001"
                                             oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
                                     <td><input class="form-control form-control-lg" type="number"
                                             id="data4{{ $loop->index }}" name="data4{{ $loop->index }}"
-                                            value="{{ $row[5] }}" required step="0.001"
+                                            value="{{ trim($row[5]) }}" required step="0.001"
                                             oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
                                     <td><input class="form-control form-control-lg" type="number"
                                             id="data5{{ $loop->index }}" name="data5{{ $loop->index }}"
-                                            value="{{ $row[6] }}" required step="0.001"
+                                            value="{{ trim($row[6]) }}" required step="0.001"
                                             oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
                                     <td><input class="form-control form-control-lg" type="number"
                                             id="data6{{ $loop->index }}" name="data6{{ $loop->index }}"
-                                            value="{{ $row[7] }}" required step="0.001"
+                                            value="{{ trim($row[7]) }}" required step="0.001"
                                             oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
                                 </tr>
                                 <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
