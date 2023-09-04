@@ -1,13 +1,13 @@
 @foreach ($data as $row)
     <?php
     $name = DB::table('consumptive_material')
-        ->where('料號', $row[2])
+        ->where('料號', trim($row[2]))
         ->value('品名');
     $unit = DB::table('consumptive_material')
-        ->where('料號', $row[2])
+        ->where('料號', trim($row[2]))
         ->value('單位');
     $month = DB::table('consumptive_material')
-        ->where('料號', $row[2])
+        ->where('料號', trim($row[2]))
         ->value('月請購');
     
     $clients = DB::table('客戶別')
@@ -21,21 +21,21 @@
     if ($name === null || $unit === null) {
         $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
         echo "<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='uploadnotmonth';
-                    </script>";
+                                        window.alert('$mess');
+                                        window.location.href='uploadnotmonth';
+                                        </script>";
     }
     //判斷是否有這個客戶
-    if (in_array($row[1], $clients)) {
+    if (in_array(trim($row[1]), $clients)) {
         $i = true;
     }
     
     if ($i === false) {
         $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-                    window.alert('$mess');
-                    window.location.href='uploadnotmonth';
-                    </script>";
+                                        window.alert('$mess');
+                                        window.location.href='uploadnotmonth';
+                                        </script>";
     }
     
     ?>
@@ -94,11 +94,11 @@
 
                                     <td><input class="form-control corm-control-lg" type="text"
                                             id="data0{{ $loop->index }}" name="data0{{ $loop->index }}"
-                                            value="{{ $row[0] }}" required></td>
+                                            value="{{ trim($row[0]) }}" required></td>
                                     <td><input type="hidden" id="data1{{ $loop->index }}" name="data1{{ $loop->index }}"
-                                            value="{{ $row[1] }}">{{ $row[1] }}</td>
+                                            value="{{ trim($row[1]) }}">{{ $row[1] }}</td>
                                     <td><input type="hidden" id="data2{{ $loop->index }}" name="data2{{ $loop->index }}"
-                                            value="{{ $row[2] }}">{{ $row[2] }}</td>
+                                            value="{{ trim($row[2]) }}">{{ $row[2] }}</td>
                                     <td>{{ $name }}</td>
                                     <td>{{ $unit }}</td>
                                     <td><input type="hidden" id="data6{{ $loop->index }}"
@@ -106,10 +106,10 @@
                                             value="{{ $month }}">{{ $month }}</td>
                                     <td><input class="form-control corm-control-lg" type="number"
                                             id="data3{{ $loop->index }}" name="data3{{ $loop->index }}"
-                                            value="{{ $row[3] }}" required></td>
+                                            value="{{ trim($row[3]) }}" required></td>
                                     <td><input class="form-control corm-control-lg" type="text"
                                             id="data4{{ $loop->index }}" name="data4{{ $loop->index }}"
-                                            value="{{ $row[4] }}"></td>
+                                            value="{{ trim($row[4]) }}"></td>
                                     <td>
                                         <select style="width: 150px;" class="form-select form-select-lg "
                                             id="data5{{ $loop->index }}" name="data5{{ $loop->index }}">

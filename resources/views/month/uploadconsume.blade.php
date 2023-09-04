@@ -1,22 +1,22 @@
 @foreach ($data as $row)
     <?php
     $name = DB::table('consumptive_material')
-        ->where('料號', $row[1])
+        ->where('料號', trim($row[1]))
         ->value('品名');
     $format = DB::table('consumptive_material')
-        ->where('料號', $row[1])
+        ->where('料號', trim($row[1]))
         ->value('規格');
     $unit = DB::table('consumptive_material')
-        ->where('料號', $row[1])
+        ->where('料號', trim($row[1]))
         ->value('單位');
     $lt = DB::table('consumptive_material')
-        ->where('料號', $row[1])
+        ->where('料號', trim($row[1]))
         ->value('LT');
     $month = DB::table('consumptive_material')
-        ->where('料號', $row[1])
+        ->where('料號', trim($row[1]))
         ->value('月請購');
     $belong = DB::table('consumptive_material')
-        ->where('料號', $row[1])
+        ->where('料號', trim($row[1]))
         ->value('耗材歸屬');
     $clients = DB::table('客戶別')
         ->pluck('客戶')
@@ -35,47 +35,47 @@
     if ($name === null || $format === null || $month === '否' || $belong !== '單耗') {
         $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-                                                                                                                                    window.alert('$mess');
-                                                                                                                                    window.location.href='uploadconsume';
-                                                                                                                                    </script>";
+                                                                                                                                                                                                            window.alert('$mess');
+                                                                                                                                                                                                            window.location.href='uploadconsume';
+                                                                                                                                                                                                            </script>";
     }
     //判斷是否有這個客戶
-    if (in_array($row[2], $clients)) {
+    if (in_array(trim($row[2]), $clients)) {
         $i = true;
     }
     
     if ($i === false) {
-        $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[0];
+        $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
         echo "<script LANGUAGE='JavaScript'>
-                                                                                                                                    window.alert('$mess');
-                                                                                                                                    window.location.href='uploadconsume';
-                                                                                                                                    </script>";
+                                                                                                                                                                                                            window.alert('$mess');
+                                                                                                                                                                                                            window.location.href='uploadconsume';
+                                                                                                                                                                                                            </script>";
     }
     
     //判斷是否有這個機種
-    if (in_array($row[4], $machines)) {
+    if (in_array(trim($row[4]), $machines)) {
         $j = true;
     }
     
     if ($j === false) {
-        $mess = trans('monthlyPRpageLang.nomachine') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
+        $mess = trans('monthlyPRpageLang.nomachine') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[4];
         echo "<script LANGUAGE='JavaScript'>
-                                                                                                                                    window.alert('$mess');
-                                                                                                                                    window.location.href='uploadconsume';
-                                                                                                                                    </script>";
+                                                                                                                                                                                                            window.alert('$mess');
+                                                                                                                                                                                                            window.location.href='uploadconsume';
+                                                                                                                                                                                                            </script>";
     }
     
     //判斷是否有這個製程
-    if (in_array($row[3], $productions)) {
+    if (in_array(trim($row[3]), $productions)) {
         $k = true;
     }
     
     if ($k === false) {
-        $mess = trans('monthlyPRpageLang.noproduction') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
+        $mess = trans('monthlyPRpageLang.noproduction') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[3];
         echo "<script LANGUAGE='JavaScript'>
-                                                                                                                                    window.alert('$mess');
-                                                                                                                                    window.location.href='uploadconsume';
-                                                                                                                                    </script>";
+                                                                                                                                                                                                            window.alert('$mess');
+                                                                                                                                                                                                            window.location.href='uploadconsume';
+                                                                                                                                                                                                            </script>";
     }
     ?>
 @endforeach
@@ -126,50 +126,36 @@
                                                 value="LT">{!! __('monthlyPRpageLang.lt') !!}</th>
                                         <th><input type="hidden" id="title6" name="title6"
                                                 value="單耗">{!! __('monthlyPRpageLang.consume') !!}</th>
-                                        {{-- <th><input type="hidden" id="title6" name="title6" value="當月每日需求">{!!
-                                    __('monthlyPRpageLang.nowdayneed') !!}</th>
-                                <th><input type="hidden" id="title7" name="title7" value="下月每日需求">{!!
-                                    __('monthlyPRpageLang.nextdayneed') !!}</th>
-                                <th><input type="hidden" id="title8" name="title8" value="安全庫存">{!!
-                                    __('monthlyPRpageLang.safe') !!}</th> --}}
                                         <th><input type="hidden" id="title7" name="title7"
                                                 value="客戶別">{!! __('monthlyPRpageLang.client') !!}</th>
                                         <th><input type="hidden" id="title8" name="title8"
                                                 value="機種">{!! __('monthlyPRpageLang.machine') !!}</th>
                                         <th><input type="hidden" id="title9" name="title9"
                                                 value="製程">{!! __('monthlyPRpageLang.process') !!}</th>
-                                        {{-- <th><input type="hidden" id="title12" name="title12" value="當月MPS">{!!
-                                    __('monthlyPRpageLang.nowmps') !!}</th>
-                                <th><input type="hidden" id="title13" name="title13" value="當月生產天數">{!!
-                                    __('monthlyPRpageLang.nowday') !!}</th>
-                                <th><input type="hidden" id="title14" name="title14" value="下月MPS">{!!
-                                    __('monthlyPRpageLang.nextmps') !!}</th>
-                                <th><input type="hidden" id="title15" name="title15" value="下月生產天數">{!!
-                                    __('monthlyPRpageLang.nextday') !!}</th> --}}
                                     </tr>
                                     @foreach ($data as $row)
                                         <tr id="row{{ $loop->index }}">
                                             <?php
                                             $name = DB::table('consumptive_material')
-                                                ->where('料號', $row[1])
+                                                ->where('料號', trim($row[1]))
                                                 ->value('品名');
                                             $format = DB::table('consumptive_material')
-                                                ->where('料號', $row[1])
+                                                ->where('料號', trim($row[1]))
                                                 ->value('規格');
                                             $unit = DB::table('consumptive_material')
-                                                ->where('料號', $row[1])
+                                                ->where('料號', trim($row[1]))
                                                 ->value('單位');
                                             $lt = DB::table('consumptive_material')
-                                                ->where('料號', $row[1])
+                                                ->where('料號', trim($row[1]))
                                                 ->value('LT');
                                             $lt = round($lt, 3);
                                             ?>
                                             <td><input type="hidden" id="dataj{{ $loop->index }}"
                                                     name="dataj{{ $loop->index }}"
-                                                    value="{{ $row[0] }}">{{ $row[0] }}</td>
+                                                    value="{{ trim($row[0]) }}">{{ trim($row[0]) }}</td>
                                             <td><input type="hidden" id="dataa{{ $loop->index }}"
                                                     name="dataa{{ $loop->index }}"
-                                                    value="{{ $row[1] }}">{{ $row[1] }}</td>
+                                                    value="{{ trim($row[1]) }}">{{ trim($row[1]) }}</td>
                                             <td>{{ $name }}</td>
                                             <td>{{ $format }}</td>
                                             <td>{{ $unit }}</td>
@@ -178,43 +164,20 @@
                                                     value="{{ $lt }}">{{ $lt }}</td>
                                             <td><input style="width:200px" type="number" id="datac{{ $loop->index }}"
                                                     name="datac{{ $loop->index }}" step="0.0000000001" required
-                                                    value="{{ $row[5] }}" class="form-control form-control-lg"
+                                                    value="{{ trim($row[5]) }}" class="form-control form-control-lg"
                                                     min="0.0000000001">
                                             </td>
-                                            {{-- <td><input style="width:200px" class="form-control form-control-lg" type="number"
-                                        id="datad{{$loop->index}}" name="datad{{$loop->index}}" readonly>
-                                    </td>
-                                    <td><input style="width:200px" type="number" id="datae{{$loop->index}}"
-                                            name="datae{{$loop->index}}" readonly class="form-control form-control-lg">
-                                    </td>
-                                    <td><input style="width:200px" type="number" id="dataf{{$loop->index}}"
-                                            name="dataf{{$loop->index}}" readonly class="form-control form-control-lg">
-                                    </td> --}}
+
                                             <td><input type="hidden" id="datag{{ $loop->index }}"
                                                     name="datag{{ $loop->index }}"
-                                                    value="{{ $row[0] }}">{{ $row[0] }}</td>
+                                                    value="{{ trim($row[2]) }}">{{ trim($row[2]) }}</td>
                                             <td><input type="hidden" id="datah{{ $loop->index }}"
                                                     name="datah{{ $loop->index }}"
-                                                    value="{{ $row[1] }}">{{ $row[1] }}</td>
+                                                    value="{{ trim($row[4]) }}">{{ trim($row[4]) }}</td>
                                             <td><input type="hidden" id="datai{{ $loop->index }}"
                                                     name="datai{{ $loop->index }}"
-                                                    value="{{ $row[2] }}">{{ $row[2] }}</td>
-                                            {{-- <td><input class="form-control form-control-lg" style="width:85px" type="number"
-                                        id="dataj{{$loop->index}}" name="dataj{{$loop->index}}" step="0.01" min="0"
-                                    value="{{$row[5]}}">
-                                    </td>
-                                    <td><input class="form-control form-control-lg" style="width:85px" type="number"
-                                            id="datak{{$loop->index}}" name="datak{{$loop->index}}" step="0.01" min="0"
-                                            value="{{$row[6]}}">
-                                    </td>
-                                    <td><input class="form-control form-control-lg" style="width:85px" type="number"
-                                            id="datal{{$loop->index}}" name="datal{{$loop->index}}" step="0.01" min="0"
-                                            value="{{$row[7]}}">
-                                    </td>
-                                    <td><input class="form-control form-control-lg" style="width:85px" type="number"
-                                            id="datam{{$loop->index}}" name="datam{{$loop->index}}" step="0.01" min="0"
-                                            value="{{$row[8]}}">
-                                    </td> --}}
+                                                    value="{{ trim($row[3]) }}">{{ trim($row[3]) }}</td>
+
 
                                         </tr>
                                         <input type="hidden" id="count" name="count" value="{{ $loop->count }}">

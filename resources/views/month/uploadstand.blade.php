@@ -1,22 +1,22 @@
 @foreach ($data as $row)
     <?php
     $name = DB::table('consumptive_material')
-        ->where('料號', $row[0])
+        ->where('料號', trim($row[0]))
         ->value('品名');
     $unit = DB::table('consumptive_material')
-        ->where('料號', $row[0])
+        ->where('料號', trim($row[0]))
         ->value('單位');
     $mpq = DB::table('consumptive_material')
-        ->where('料號', $row[0])
+        ->where('料號', trim($row[0]))
         ->value('MPQ');
     $lt = DB::table('consumptive_material')
-        ->where('料號', $row[0])
+        ->where('料號', trim($row[0]))
         ->value('LT');
     $month = DB::table('consumptive_material')
-        ->where('料號', $row[0])
+        ->where('料號', trim($row[0]))
         ->value('月請購');
     $belong = DB::table('consumptive_material')
-        ->where('料號', $row[0])
+        ->where('料號', trim($row[0]))
         ->value('耗材歸屬');
     $clients = DB::table('客戶別')
         ->pluck('客戶')
@@ -35,47 +35,47 @@
     if ($name === null || $unit === null || $month === '否' || $belong !== '站位') {
         $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[0];
         echo "<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href='uploadstand';
-                            </script>";
+            window.alert('$mess');
+            window.location.href='uploadstand';
+            </script>";
     }
     //判斷是否有這個客戶
-    if (in_array($row[1], $clients)) {
+    if (in_array(trim($row[1]), $clients)) {
         $i = true;
     }
     
     if ($i === false) {
         $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
         echo "<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href='uploadstand';
-                            </script>";
+            window.alert('$mess');
+            window.location.href='uploadstand';
+            </script>";
     }
     
     //判斷是否有這個機種
-    if (in_array($row[2], $machines)) {
+    if (in_array(trim($row[2]), $machines)) {
         $j = true;
     }
     
     if ($j === false) {
         $mess = trans('monthlyPRpageLang.nomachine') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
         echo "<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href='uploadstand';
-                            </script>";
+            window.alert('$mess');
+            window.location.href='uploadstand';
+            </script>";
     }
     
     //判斷是否有這個製程
-    if (in_array($row[3], $productions)) {
+    if (in_array(trim($row[3]), $productions)) {
         $k = true;
     }
     
     if ($k === false) {
         $mess = trans('monthlyPRpageLang.noproduction') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[3];
         echo "<script LANGUAGE='JavaScript'>
-                            window.alert('$mess');
-                            window.location.href='uploadstand';
-                            </script>";
+            window.alert('$mess');
+            window.location.href='uploadstand';
+            </script>";
     }
     ?>
 @endforeach
@@ -175,22 +175,22 @@
                                         <tr id="row{{ $loop->index }}">
                                             <?php
                                             $name = DB::table('consumptive_material')
-                                                ->where('料號', $row[0])
+                                                ->where('料號', trim($row[0]))
                                                 ->value('品名');
                                             $unit = DB::table('consumptive_material')
-                                                ->where('料號', $row[0])
+                                                ->where('料號', trim($row[0]))
                                                 ->value('單位');
                                             $mpq = DB::table('consumptive_material')
-                                                ->where('料號', $row[0])
+                                                ->where('料號', trim($row[0]))
                                                 ->value('MPQ');
                                             $lt = DB::table('consumptive_material')
-                                                ->where('料號', $row[0])
+                                                ->where('料號', trim($row[0]))
                                                 ->value('LT');
                                             $lt = round($lt, 3);
                                             ?>
                                             <td><input type="hidden" id="data0{{ $loop->index }}"
                                                     name="data0{{ $loop->index }}"
-                                                    value="{{ $row[0] }}">{{ $row[0] }}</td>
+                                                    value="{{ trim($row[0]) }}">{{ trim($row[0]) }}</td>
                                             <td>{{ $name }}</td>
                                             <td>{{ $unit }}</td>
                                             <td><input type="hidden" id="data1{{ $loop->index }}"
@@ -200,37 +200,37 @@
                                                     name="data2{{ $loop->index }}"
                                                     value="{{ $lt }}">{{ $lt }}</td>
                                             <td><input style="width:120px" type="number" id="data3{{ $loop->index }}"
-                                                    name="data3{{ $loop->index }}" value="{{ $row[4] }}"
+                                                    name="data3{{ $loop->index }}" value="{{ trim($row[4]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:120px" type="number" id="data4{{ $loop->index }}"
-                                                    name="data4{{ $loop->index }}" value="{{ $row[5] }}"
+                                                    name="data4{{ $loop->index }}" value="{{ trim($row[5]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:120px" type="number" id="data5{{ $loop->index }}"
-                                                    name="data5{{ $loop->index }}" value="{{ $row[6] }}"
+                                                    name="data5{{ $loop->index }}" value="{{ trim($row[6]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:120px" type="number" id="data6{{ $loop->index }}"
-                                                    name="data6{{ $loop->index }}" value="{{ $row[7] }}"
+                                                    name="data6{{ $loop->index }}" value="{{ trim($row[7]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:120px" type="number" id="data7{{ $loop->index }}"
-                                                    name="data7{{ $loop->index }}" value="{{ $row[8] }}"
+                                                    name="data7{{ $loop->index }}" value="{{ trim($row[8]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:150px" type="number" id="data8{{ $loop->index }}"
                                                     name="data8{{ $loop->index }}" readonly step="0.0000001"
                                                     class="form-control form-control-lg"></td>
                                             <td><input style="width:120px" type="number" id="data9{{ $loop->index }}"
-                                                    name="data9{{ $loop->index }}" value="{{ $row[9] }}"
+                                                    name="data9{{ $loop->index }}" value="{{ trim($row[9]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:120px" type="number" id="data10{{ $loop->index }}"
-                                                    name="data10{{ $loop->index }}" value="{{ $row[10] }}"
+                                                    name="data10{{ $loop->index }}" value="{{ trim($row[10]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:120px" type="number" id="data11{{ $loop->index }}"
-                                                    name="data11{{ $loop->index }}" value="{{ $row[11] }}"
+                                                    name="data11{{ $loop->index }}" value="{{ trim($row[11]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:120px" type="number" id="data12{{ $loop->index }}"
-                                                    name="data12{{ $loop->index }}" value="{{ $row[12] }}"
+                                                    name="data12{{ $loop->index }}" value="{{ trim($row[12]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:120px" type="number" id="data13{{ $loop->index }}"
-                                                    name="data13{{ $loop->index }}" value="{{ $row[13] }}"
+                                                    name="data13{{ $loop->index }}" value="{{ trim($row[13]) }}"
                                                     step="0.0000001" class="form-control form-control-lg"></td>
                                             <td><input style="width:150px" type="number" id="data14{{ $loop->index }}"
                                                     name="data14{{ $loop->index }}" readonly step="0.0000001"
@@ -240,13 +240,13 @@
                                                     class="form-control form-control-lg"></td>
                                             <td><input type="hidden" id="data16{{ $loop->index }}"
                                                     name="data16{{ $loop->index }}"
-                                                    value="{{ $row[1] }}">{{ $row[1] }}</td>
+                                                    value="{{ trim($row[1]) }}">{{ trim($row[1]) }}</td>
                                             <td><input type="hidden" id="data17{{ $loop->index }}"
                                                     name="data17{{ $loop->index }}"
-                                                    value="{{ $row[2] }}">{{ $row[2] }}</td>
+                                                    value="{{ trim($row[2]) }}">{{ trim($row[2]) }}</td>
                                             <td><input type="hidden" id="data18{{ $loop->index }}"
                                                     name="data18{{ $loop->index }}"
-                                                    value="{{ $row[3] }}">{{ $row[3] }}</td>
+                                                    value="{{ trim($row[3]) }}">{{ trim($row[3]) }}</td>
                                         </tr>
                                         <input type="hidden" id="count" name="count"
                                             value="{{ $loop->count }}">
