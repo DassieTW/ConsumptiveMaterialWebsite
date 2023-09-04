@@ -103,6 +103,7 @@ $(document).ready(function () {
     $(".dbInfo").on("click", function () {
         // console.log($(this).attr("id")); // test
         const dblist = $(this).attr("value").split("_");
+        $(".dbCheckbox").prop("checked", false);
         dblist.forEach((db) => {
             $("[id='" + db + "']").prop("checked", true);
         });
