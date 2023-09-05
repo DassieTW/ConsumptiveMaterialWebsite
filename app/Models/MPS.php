@@ -30,5 +30,6 @@ class MPS extends Model
         '本月MPS',
         '本月生產天數',
         '填寫時間',
+        '料號90',
     ];
 }
