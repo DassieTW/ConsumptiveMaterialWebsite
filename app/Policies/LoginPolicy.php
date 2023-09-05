@@ -97,7 +97,7 @@ class LoginPolicy         // 所有用戶管理相關權限
 
     public function newPeopleInfo(Login $user)
     {
-        // 權限123才能新增人員訊息
+        // 權限123才能新增人員信息
         if (intval($user->priority) < 4) {
             return true;
         } else {

@@ -1188,6 +1188,9 @@ class MonthController extends Controller
             $username = \Crypt::decryptString(request()->query('u'));
             $database = \Crypt::decryptString(request()->query('d'));
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+            $lang = \Crypt::decryptString(request()->query('l'));
+            request()->getSession()->put('locale', $lang);
+            \App::setLocale($lang);
 
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));

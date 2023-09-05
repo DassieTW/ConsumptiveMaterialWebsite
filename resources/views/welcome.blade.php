@@ -582,7 +582,7 @@
 
                         <div class="ml-12">
                             <div class="mt-2 text-gray-600 dark:text-gray-800 text-md">
-                                包含人員訊息新增/查詢/修改、
+                                包含人員信息新增/查詢/修改、
                                 <br>用戶訊息新增/查詢/修改/刪除、
                                 <br>以及密碼修改。
                             </div>
