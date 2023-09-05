@@ -265,6 +265,7 @@ Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('mont
 
 //單耗畫押page
 Route::get('/testconsume', function () {
+    dd(url()->previous()); // test
     if (
         str_contains(url()->previous(), "lang")
     ) {
