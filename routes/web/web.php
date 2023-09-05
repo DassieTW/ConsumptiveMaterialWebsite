@@ -51,7 +51,7 @@ Route::get('/', function (Request $request) {
         });
 
         \Auth::login($user);
-        $request->session()->regenerate();
+        // $request->session()->regenerate();
         $usernameAuthed = \Auth::user()->username;
         $prior = \Auth::user()->priority;
         $avatarChoice = \Auth::user()->avatarChoice;

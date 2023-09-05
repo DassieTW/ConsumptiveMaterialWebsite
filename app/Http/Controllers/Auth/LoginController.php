@@ -85,7 +85,7 @@ class LoginController extends Controller
         \DB::purge(env("DB_CONNECTION"));
 
         if ($this->attemptLogin($request)) {
-            $request->session()->regenerate();
+            // $request->session()->regenerate();
 
             $usernameAuthed = \Auth::user()->username;
             $prior = \Auth::user()->priority;
@@ -199,7 +199,7 @@ class LoginController extends Controller
             \DB::purge(env("DB_CONNECTION"));
             if ($this->attemptSSOLogin($request)) {
 
-                $request->session()->regenerate();
+                // $request->session()->regenerate();
 
                 DB::beginTransaction();
 
@@ -257,11 +257,11 @@ class LoginController extends Controller
 
             \Auth::logout();
 
-            $request->session()->invalidate();
+            // $request->session()->invalidate();
 
-            $request->session()->regenerateToken();
+            // $request->session()->regenerate();
 
-            $request->session()->flush();
+            // $request->session()->flush();
 
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $DBName);
             \DB::purge(env("DB_CONNECTION"));
@@ -282,7 +282,7 @@ class LoginController extends Controller
             );
 
             \Auth::login($user);
-            $request->session()->regenerate();
+            // $request->session()->regenerate();
             $usernameAuthed = \Auth::user()->username;
             $prior = \Auth::user()->priority;
             $avatarChoice = \Auth::user()->avatarChoice;
@@ -363,7 +363,7 @@ class LoginController extends Controller
         ])->first();
         \Auth::login($user);
 
-        $request->session()->regenerate();
+        // $request->session()->regenerate();
         $usernameAuthed = \Auth::user()->username;
         $prior = \Auth::user()->priority;
         $avatarChoice = \Auth::user()->avatarChoice;
@@ -489,6 +489,8 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        $request->session()->regenerate();
 
         $request->session()->flush();
 
