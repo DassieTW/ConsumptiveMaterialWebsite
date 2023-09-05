@@ -303,9 +303,9 @@ Route::get('/teststand', function () {
         // redirect to MIS SSO page
         $userKey = base64_encode(env('SSO_Key'));
         $sysType = base64_encode(env('SSO_sysType'));
-        $ReDirToUrl = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d;
+        $ReDirToUrl = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . \Crypt::encryptString(request()->getSession()->get('locale'));
         $ReDirToUrl = urlencode($ReDirToUrl);
-        $FailTo = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&SSOfailed=true";
+        $FailTo = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . \Crypt::encryptString(request()->getSession()->get('locale')) . "&SSOfailed=true";
         $FailTo = urlencode($FailTo);
         return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // if
