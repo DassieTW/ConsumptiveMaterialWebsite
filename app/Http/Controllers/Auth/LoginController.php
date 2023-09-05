@@ -351,6 +351,13 @@ class LoginController extends Controller
                 'email' => $email, 'last_login_time' => $datetime
             ]);
 
+        DB::table('人員信息')
+            ->insert([
+                '工號' => $job_id,
+                '姓名' => $name, 
+                '部門' => $department
+            ]);
+
         $user = Login::where([
             'username' => $job_id,
         ])->first();
