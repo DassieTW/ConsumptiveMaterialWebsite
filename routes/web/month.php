@@ -173,7 +173,7 @@ Route::get('/sxbsearch', function () {
 
 //料號單耗(新增)頁面
 Route::get('/consumeadd', function () {
-    $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
+    $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
     return view('month.consumeadd')->with(['client' => 客戶別::cursor()])
         ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with([
             'people' => $people
@@ -182,7 +182,7 @@ Route::get('/consumeadd', function () {
 
 //站位人力(新增)頁面
 Route::get('/standadd', function () {
-    $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
+    $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
     return view('month.standadd')->with(['client' => 客戶別::cursor()])
         ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with([
             'people' => $people
@@ -232,7 +232,7 @@ Route::post('/standchangeordelete', [MonthController::class, 'standchangeordelet
 
 //新增單耗上傳
 Route::get('/uploadconsume', function () {
-    $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
+    $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
     return view('month.consumeadd')->with(['client' => 客戶別::cursor()])
         ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['people' => $people]);
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
@@ -241,7 +241,7 @@ Route::post('/uploadconsume', [MonthController::class, 'uploadconsume'])->name('
 
 //新增站位上傳
 Route::get('/uploadstand', function () {
-    $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
+    $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
     return view('month.standadd')->with(['client' => 客戶別::cursor()])
         ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['people' => $people]);
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
@@ -295,7 +295,7 @@ Route::get('/testconsume', function () {
                 return abort(404);
             } // if else
         } // else
-    } // if else 
+    } // if else
 
 })->withoutMiddleware('auth');
 

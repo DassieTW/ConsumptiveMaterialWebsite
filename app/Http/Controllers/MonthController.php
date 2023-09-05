@@ -358,16 +358,17 @@ class MonthController extends Controller
                     $consume = $request->input('consume')[$i];
 
                     $test = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
-                        ->where('機種', $machine)->where('製程', $production)->where('料號90', $number90)->value('狀態');
+                        ->where('製程', $production)->where('料號90', $number90)->value('狀態');
 
                     if ($test === null) {
                         DB::table('月請購_單耗')
                             ->insert([
                                 '料號' => $number, '客戶別' => $client, '機種' => $machine, '製程' => $production,
                                 '單耗' => $consume, '料號90' => $number90,
-                                '畫押信箱' => $email, '狀態' => "待畫押", '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
+                                '畫押信箱' => $email, '狀態' => "待畫押", '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username
                             ]);
                         $record++;
+
                         array_push($check, $row[$i]);
                     } else if ($test === '待重畫') {
                         月請購_單耗::where('客戶別', $client)
@@ -387,7 +388,9 @@ class MonthController extends Controller
 
                 } //for
                 DB::commit();
-                self::sendconsumemail($email, $sessemail, $username, $database);
+                if ($record > 0) {
+                    self::sendconsumemail($email, $sessemail, $username, $database);
+                }
 
                 return \Response::json(['record' => $record, 'check' => $check]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
@@ -1109,7 +1112,7 @@ class MonthController extends Controller
             $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray();
-            $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
+            $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
             unset($sheetData[0]);
             return view('month.uploadconsume')->with(['data' => $sheetData])->with(['people' => $people]);
         } else {
@@ -1129,7 +1132,7 @@ class MonthController extends Controller
             $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray();
-            $people = DB::table('login')->where('priority', "<=", 1)->where('部門', 'not like', '%' . "IT專案課" . '%')->get();
+            $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
             unset($sheetData[0]);
             return view('month.uploadstand')->with(['data' => $sheetData])->with(['people' => $people]);
         } else {
