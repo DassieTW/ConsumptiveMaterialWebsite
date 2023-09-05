@@ -83,7 +83,6 @@
         </div>
     </nav>
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-    <h1>{{url()->previous()->previous();}}</h1>
     <main class="d-flex">
         <div class="container d-flex flex-column">
             <!-- </div>breaks cols to a new line-->
