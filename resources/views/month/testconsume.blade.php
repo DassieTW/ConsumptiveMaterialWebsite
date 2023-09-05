@@ -64,7 +64,6 @@
     <nav class="navbar navbar-expand navbar-light navbar-bg p-0 m-0">
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
-
                 <div class="dropdown">
                     <a class="dropdown-toggle nav-link" href="#langMenu" data-bs-toggle="dropdown"
                         data-bs-auto-close="outside" data-bs-display="static" aria-expanded="false">
@@ -84,7 +83,7 @@
         </div>
     </nav>
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
+    <h1>{{url()->previous();}}</h1>
     <main class="d-flex">
         <div class="container d-flex flex-column">
             <!-- </div>breaks cols to a new line-->

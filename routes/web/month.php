@@ -267,7 +267,7 @@ Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('mont
 Route::get('/testconsume', function () {
     if (str_contains(url()->previous(), "lang")) {
         // do nothing
-        dd(url()->previous());
+        
     } else {
         if (strcmp(env('APP_ENV'), 'production') === 0 && request()->query('SSOfailed', 'false') == 'false') {
             // redirect to MIS SSO page
