@@ -39,7 +39,7 @@ Route::get('/New_OA_Login', function () {
 
         unset($value); // unset the var created in the foreach loop
 
-        // continue log in process
+        // continue login process
         return view('member.new_oa_login')->with([
             'database_list' => $database_list,
             'database_names' => $database_names
