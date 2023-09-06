@@ -167,11 +167,12 @@
                                                     value="{{ $data->料號90 }}">{{ $data->料號90 }}
                                             </td>
                                             <td><input class="checkbutton" type="checkbox"
-                                                    id="check{{ $loop->index }}" name="check{{ $loop->index }}">
+                                                    id="check{{ $loop->index }}" name="check{{ $loop->index }}"
+                                                    checked>
                                             </td>
                                             <td><input style="width: 120px;" class="form-control formcontrol-lg"
                                                     type="text" id="remark{{ $loop->index }}"
-                                                    name="remark{{ $loop->index }}" required
+                                                    name="remark{{ $loop->index }}"
                                                     placeholder="{!! __('monthlyPRpageLang.reason') !!}"></td>
                                         </tr>
                                         <input type="hidden" id="count" name="count"
