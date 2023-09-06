@@ -65,8 +65,8 @@ Route::get('/', function (Request $request) {
     } // if
     else if (strcmp(env('APP_ENV'), 'production') === 0) {
         // if not, redirect to MIS SSO page
-        $userKey = base64_encode(env('SSO_Key'));
-        $sysType = base64_encode(env('SSO_sysType'));
+        $userKey = urlencode(base64_encode(env('SSO_Key')));
+        $sysType = urlencode(base64_encode(env('SSO_sysType')));
         $ReDirToUrl = env('APP_URL') . "/member/sso";
         $FailTo = env('APP_URL') . "/569";
         return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);

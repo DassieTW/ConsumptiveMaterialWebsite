@@ -267,8 +267,8 @@ Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('mont
 Route::get('/testconsume', function () {
     if (strcmp(env('APP_ENV'), 'production') === 0 && request()->query('SSOfailed', 'false') === 'false') {
         // redirect to MIS SSO page
-        $userKey = base64_encode(env('SSO_Key'));
-        $sysType = base64_encode(env('SSO_sysType'));
+        $userKey = urlencode(base64_encode(env('SSO_Key')));
+        $sysType = urlencode(base64_encode(env('SSO_sysType')));
         $ReDirToUrl = env('APP_URL') . "/month/testconsume?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . \Crypt::encryptString(request()->getSession()->get('locale'));
         $ReDirToUrl = urlencode($ReDirToUrl);
         $FailTo = env('APP_URL') . "/month/testconsume?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . \Crypt::encryptString(request()->getSession()->get('locale')) . "&SSOfailed=true";
@@ -301,8 +301,8 @@ Route::post('/testconsume_submit', [MonthController::class, 'testconsume'])->nam
 Route::get('/teststand', function () {
     if (strcmp(env('APP_ENV'), 'production') === 0 && request()->query('SSOfailed', 'false') == 'false') {
         // redirect to MIS SSO page
-        $userKey = base64_encode(env('SSO_Key'));
-        $sysType = base64_encode(env('SSO_sysType'));
+        $userKey = urlencode(base64_encode(env('SSO_Key')));
+        $sysType = urlencode(base64_encode(env('SSO_sysType')));
         $ReDirToUrl = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . \Crypt::encryptString(request()->getSession()->get('locale'));
         $ReDirToUrl = urlencode($ReDirToUrl);
         $FailTo = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . \Crypt::encryptString(request()->getSession()->get('locale')) . "&SSOfailed=true";
