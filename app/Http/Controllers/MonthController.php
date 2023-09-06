@@ -108,10 +108,10 @@ class MonthController extends Controller
             $number90 = $request->input('number90');
             $amount = $request->input('amount');
             $email = $request->input('email');
-            $sessemail = \Crypt::encryptString($email);
-            $name = \Crypt::encryptString(\Auth::user()->username);
+            $sessemail = $email;
+            $name = \Auth::user()->username;
             $database = $request->session()->get('database');
-            $database = \Crypt::encryptString($database);
+            $database = $database;
 
             //delete
             if ($select === "刪除") {
@@ -185,10 +185,10 @@ class MonthController extends Controller
             $nextchange = $Alldata[18];
             // $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
-            $sessemail = \Crypt::encryptString($email);
-            $name = \Crypt::encryptString(\Auth::user()->username);
+            $sessemail = $email;
+            $name = \Auth::user()->username;
             $database = $request->session()->get('database');
-            $database = \Crypt::encryptString($database);
+            $database = $database;
 
 
             //delete
@@ -343,10 +343,10 @@ class MonthController extends Controller
             $check = array();
             //$jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
-            $sessemail = \Crypt::encryptString($email);
-            $username = \Crypt::encryptString(\Auth::user()->username);
+            $sessemail = $email;
+            $username = \Auth::user()->username;
             $database = $request->session()->get('database');
-            $database = \Crypt::encryptString($database);
+            $database = $database;
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
@@ -413,10 +413,10 @@ class MonthController extends Controller
             $database = $request->session()->get('database');
             // $jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
-            $sessemail = \Crypt::encryptString($email);
-            $name = \Crypt::encryptString(\Auth::user()->username);
+            $sessemail = $email;
+            $name = \Auth::user()->username;
             $database = $request->session()->get('database');
-            $database = \Crypt::encryptString($database);
+            $database = $database;
 
             DB::beginTransaction();
             try {
@@ -1184,11 +1184,11 @@ class MonthController extends Controller
     public function testconsumeOALogin(Request $request)
     {
         if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
-            $email = \Crypt::decryptString(request()->query('r'));
-            $username = \Crypt::decryptString(request()->query('u'));
-            $database = \Crypt::decryptString(request()->query('d'));
+            $email = request()->query('r');
+            $username = request()->query('u');
+            $database = request()->query('d');
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
-            $lang = \Crypt::decryptString(request()->query('l'));
+            $lang = request()->query('l');
             request()->getSession()->put('locale', $lang);
             \App::setLocale($lang);
 
@@ -1286,10 +1286,10 @@ class MonthController extends Controller
     public function teststandOALogin(Request $request)
     {
         if (request()->filled('r') && request()->filled('u') && request()->filled('d')) {
-            $email = \Crypt::decryptString(request()->query('r'));
-            $username = \Crypt::decryptString(request()->query('u'));
-            $database = \Crypt::decryptString(request()->query('d'));
-            $lang = \Crypt::decryptString(request()->query('l'));
+            $email = request()->query('r');
+            $username = request()->query('u');
+            $database = request()->query('d');
+            $lang = request()->query('l');
             request()->getSession()->put('locale', $lang);
             \App::setLocale($lang);
 
@@ -1670,7 +1670,7 @@ class MonthController extends Controller
     //send consume mail
     public static function sendconsumemail($email, $sessemail, $username, $database)
     {
-        $dename = DB::table('login')->where('username', \Crypt::decryptString($username))->value('姓名');
+        $dename = DB::table('login')->where('username', $username)->value('姓名');
         $data = array('email' => urlencode($sessemail), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
@@ -1686,7 +1686,7 @@ class MonthController extends Controller
     //send stand mail
     public static function sendstandmail($email, $sessemail, $name, $database)
     {
-        $dename = DB::table('login')->where('username', \Crypt::decryptString($name))->value('姓名');
+        $dename = DB::table('login')->where('username',$name)->value('姓名');
         $data = array('email' => urlencode($sessemail), 'username' => urlencode($name), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         Mail::send('mail/standcheck', $data,  function ($message) use ($email) {
