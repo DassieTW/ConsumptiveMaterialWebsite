@@ -1292,7 +1292,7 @@ class MonthController extends Controller
             $lang = \Crypt::decryptString(request()->query('l'));
             request()->getSession()->put('locale', $lang);
             \App::setLocale($lang);
-            
+
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
@@ -1671,7 +1671,7 @@ class MonthController extends Controller
     public static function sendconsumemail($email, $sessemail, $username, $database)
     {
         $dename = DB::table('login')->where('username', \Crypt::decryptString($username))->value('姓名');
-        $data = array('email' => $sessemail, 'username' => $username, 'database' => $database, 'name' => $dename);
+        $data = array('email' => urlencode($sessemail), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
 
@@ -1687,7 +1687,7 @@ class MonthController extends Controller
     public static function sendstandmail($email, $sessemail, $name, $database)
     {
         $dename = DB::table('login')->where('username', \Crypt::decryptString($name))->value('姓名');
-        $data = array('email' => $sessemail, 'username' => $name, 'database' => $database, 'name' => $dename);
+        $data = array('email' => urlencode($sessemail), 'username' => urlencode($name), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         Mail::send('mail/standcheck', $data,  function ($message) use ($email) {
             $message->to($email, 'Tutorials Point')->subject('請確認站位資料');
