@@ -1,42 +1,4 @@
-// for (var i = 0; i < count; i++) {
-//     var nowmps = $("#dataj" + i).val();
-//     var nowday = $("#datak" + i).val();
-//     var amount = $("#datac" + i).val();
-//     var nextmps = $("#datal" + i).val();
-//     var nextday = $("#datam" + i).val();
-//     var lt = $("#datab" + i).val();
-//     var nowneed = (nowmps * amount) / nowday;
-//     var nextneed = (nextmps * amount) / nextday;
-//     var safe = nextneed * lt;
-//     nowneed = nowneed.toFixed(7);
-//     nextneed = nextneed.toFixed(7);
-//     safe = safe.toFixed(7);
-//     $('#datad' + i).val(nowneed);
-//     $('#datae' + i).val(nextneed);
-//     $('#dataf' + i).val(safe);
-// }
 $(function () {
-  // $("input").change(function () {
-
-  //     for (var i = 0; i < count; i++) {
-  //         var nowmps = $("#dataj" + i).val();
-  //         var nowday = $("#datak" + i).val();
-  //         var amount = $("#datac" + i).val();
-  //         var nextmps = $("#datal" + i).val();
-  //         var nextday = $("#datam" + i).val();
-  //         var lt = $("#datab" + i).val();
-  //         var nowneed = (nowmps * amount) / nowday;
-  //         var nextneed = (nextmps * amount) / nextday;
-  //         var safe = nextneed * lt;
-  //         nowneed = nowneed.toFixed(7);
-  //         nextneed = nextneed.toFixed(7);
-  //         safe = safe.toFixed(7);
-  //         $('#datad' + i).val(nowneed);
-  //         $('#datae' + i).val(nextneed);
-  //         $('#dataf' + i).val(safe);
-  //     }
-
-  // });
   $("#email").on("change", function (event) {
     $("#emailTail").text($(this).val());
   });

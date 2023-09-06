@@ -265,7 +265,7 @@ Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('mont
 
 //單耗畫押page
 Route::get('/testconsume', function () {
-    if (strcmp(env('APP_ENV'), 'production') === 0 && request()->query('SSOfailed', 'false') == 'false') {
+    if (strcmp(env('APP_ENV'), 'production') === 0 && request()->query('SSOfailed', 'false') === 'false') {
         // redirect to MIS SSO page
         $userKey = base64_encode(env('SSO_Key'));
         $sysType = base64_encode(env('SSO_sysType'));
