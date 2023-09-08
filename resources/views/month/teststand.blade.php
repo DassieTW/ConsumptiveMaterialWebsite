@@ -55,7 +55,7 @@
     {{-- 使用asset時，須注意Laravel是抓http header裡面的Host作為base url，
     所以若域名不是ip而有經過轉換時要進到Nginx裡面的proxy_set_header裡面確認Host設定值，
     否則會抓到錯誤的Host導致找不到資源 --}}
-    
+
     <script src="{{ asset('/js/manifest.js') }}"></script>
     <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
@@ -150,7 +150,7 @@
                                         $data->下月開班數 = floatval($data->下月開班數);
                                         $data->下月每人每日需求量 = floatval($data->下月每人每日需求量);
                                         $data->下月每日更換頻率 = floatval($data->下月每日更換頻率);
-
+                                        
                                         ?>
                                         <tr>
                                             <td><input type="hidden" id="number{{ $loop->index }}"
@@ -194,12 +194,13 @@
                                                 {{ $data->下月每日更換頻率 }}</td>
 
                                             <td><input class="checkbutton" type="checkbox"
-                                                    id="check{{ $loop->index }}" name="check{{ $loop->index }}">
+                                                    id="check{{ $loop->index }}" name="check{{ $loop->index }}"
+                                                    checked>
                                             </td>
                                             <td></td>
                                             <td><input style="width: 120px;" class="form-control formcontrol-lg"
                                                     type="text" id="remark{{ $loop->index }}"
-                                                    name="remark{{ $loop->index }}" required
+                                                    name="remark{{ $loop->index }}"
                                                     placeholder="{!! __('monthlyPRpageLang.reason') !!}"></td>
                                         </tr>
 
