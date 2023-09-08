@@ -6,6 +6,24 @@
             text-align: center;
             vertical-align: middle;
         }
+
+
+        #siteListPicker::-webkit-scrollbar-track {
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            border-radius: 4px;
+            background-color: #F5F5F5;
+        }
+
+        #siteListPicker::-webkit-scrollbar {
+            width: 4px;
+            -webkit-appearance: none;
+        }
+
+        #siteListPicker::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            background-color: rgba(0, 0, 0, 0.3);
+        }
     </style>
 @endsection
 
@@ -78,8 +96,8 @@
 
             @can('canAddSitesToUser', App\Models\Login::class)
                 {{-- Modal --}}
-                <div class="modal" id="siteListPicker" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal fade" id="siteListPicker" aria-hidden="true" aria-labelledby="siteListPicker" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h3 class="modal-title">Available Databases</h3>
@@ -99,8 +117,29 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" id="ListConfirm" class="btn btn-primary">Save Changes</button>
+                                <button type="button" id="DeleteUser" class="btn btn-danger" data-bs-target="#AreYouSureModal"
+                                    data-bs-toggle="modal">Delete
+                                    This User</button>
+                                <button type="button" id="ListConfirm" class="btn btn-primary">Save
+                                    Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="AreYouSureModal" aria-hidden="true" aria-labelledby="AreYouSureModal"
+                    tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Modal 2</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Hide this modal and show the first with the button below.
+                            </div>
+                            <div class="modal-footer">
+                                <button id="ImSure" class="btn btn-warning">YES</button>
                             </div>
                         </div>
                     </div>
