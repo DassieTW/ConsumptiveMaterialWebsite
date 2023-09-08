@@ -14,7 +14,7 @@ class MPS extends Model
     public $timestamps = false;
     protected $table = "MPS";
 
-    protected $primaryKey = ['客戶別', '機種', '製程'];
+    protected $primaryKey = ['客戶別', '機種', '製程', '料號90'];
 
     protected $keyType = 'string';
 
