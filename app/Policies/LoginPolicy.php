@@ -103,7 +103,7 @@ class LoginPolicy         // 所有用戶管理相關權限
         } else {
             return false;
         } // if else
-    } // searchAndUpdate
+    } // newPeopleInfo
 
     public function canSwitchSites(Login $user)
     {
