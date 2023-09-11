@@ -122,10 +122,10 @@ Route::post('/usernamechangeordel', [Auth\LoginController::class, 'usernamechang
 //人員信息查詢頁面
 Route::get('/numbersearch', function () {
     return view('member.searchnumberok')->with(['data' => 人員信息::cursor()]);
-})->name('member.numbersearch')->middleware('can:searchAndUpdateUser,App\Models\Login');
+})->name('member.numbersearch')->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
 //人員信息刪除或修改
-Route::post('/numberchangeordel', [Auth\LoginController::class, 'numberchangeordel'])->name('member.usernamechangeordel')->middleware('can:searchAndUpdateUser,App\Models\Login');
+Route::post('/numberchangeordel', [Auth\LoginController::class, 'numberchangeordel'])->name('member.numberchangeordel')->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
 // IT等級使用者更改可登入DB清單
 Route::post('/update_available_dblist', [Auth\LoginController::class, 'update_available_dblist'])->name('member.usernamechangeordel')->middleware('can:canAddSitesToUser,App\Models\Login');

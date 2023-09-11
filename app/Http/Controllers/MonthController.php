@@ -36,6 +36,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Mail;
+use PhpParser\Node\Expr\Cast\Array_;
 
 class MonthController extends Controller
 {
@@ -556,7 +557,7 @@ class MonthController extends Controller
                 } else {
                     continue;
                 }
-            }
+            } // for
             if ($request->has('search')) {
                 if (empty($check)) {
                     $datas = DB::table('MPS')
@@ -569,9 +570,9 @@ class MonthController extends Controller
                         ->where('機種', 'like', $request->input('machine') . '%')
                         ->wherein('製程', $check)
                         ->get();
-                }
+                } // if else
                 return view('month.monthsearchok')->with(['data' => $datas]);
-            }
+            } // if
             //add
             else if ($request->has('add')) {
 
@@ -657,41 +658,34 @@ class MonthController extends Controller
     //月請購提交
     public function monthsubmit(Request $request)
     {
-
         if (Session::has('username')) {
             $count = $request->input('count');
             $now = Carbon::now();
             DB::beginTransaction();
             try {
+                $res_arr_values = array();
                 for ($i = 0; $i < $count; $i++) {
-                    $client = $request->input('client')[$i];
-                    $machine = $request->input('machine')[$i];
-                    $production = $request->input('production')[$i];
-                    $number90 = $request->input('number90')[$i];
-                    $nextmps = $request->input('nextmps')[$i];
-                    $nextday = $request->input('nextday')[$i];
-                    $nowmps = $request->input('nowmps')[$i];
-                    $nowday = $request->input('nowday')[$i];
-                    $test = DB::table('MPS')->where('客戶別', $client)->where('機種', $machine)
-                        ->where('製程', $production)->value('下月MPS');
-                    if ($test === null) {
-                        DB::table('MPS')
-                            ->insert([
-                                '客戶別' => $client, '機種' => $machine, '製程' => $production, '料號90' => $number90, '下月MPS' => $nextmps, '下月生產天數' => $nextday,
-                                '本月MPS' => $nowmps, '本月生產天數' => $nowday, '填寫時間' => $now
-                            ]);
-                    } else {
-                        DB::table('MPS')
-                            ->where('客戶別', $client)
-                            ->where('機種', $machine)
-                            ->where('製程', $production)
-                            ->where('料號90', $number90)
-                            ->update([
-                                '下月MPS' => $nextmps, '下月生產天數' => $nextday,
-                                '本月MPS' => $nowmps, '本月生產天數' => $nowday, '填寫時間' => $now
-                            ]);
-                    }
+                    $temp = array(
+                        "客戶別" => $request->input('client')[$i],
+                        "機種" => $request->input('machine')[$i],
+                        "製程" => $request->input('production')[$i],
+                        "料號90" => $request->input('number90')[$i],
+                        "下月MPS" => $request->input('nextmps')[$i],
+                        "下月生產天數" => $request->input('nextday')[$i],
+                        "本月MPS" => $request->input('nowmps')[$i],
+                        "本月生產天數" => $request->input('nowday')[$i],
+                        "填寫時間" => $now
+                    );
+
+                    $res_arr_values[] = $temp;
                 } //for
+
+                DB::table('MPS')->upsert(
+                    $res_arr_values,
+                    ['客戶別', '機種', '製程', '料號90'],
+                    ['下月MPS', '下月生產天數', '本月MPS', '本月生產天數', '填寫時間']
+                );
+
                 DB::commit();
                 return \Response::json(['record' => $count] /* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
@@ -1686,7 +1680,7 @@ class MonthController extends Controller
     //send stand mail
     public static function sendstandmail($email, $sessemail, $name, $database)
     {
-        $dename = DB::table('login')->where('username',$name)->value('姓名');
+        $dename = DB::table('login')->where('username', $name)->value('姓名');
         $data = array('email' => urlencode($sessemail), 'username' => urlencode($name), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         Mail::send('mail/standcheck', $data,  function ($message) use ($email) {

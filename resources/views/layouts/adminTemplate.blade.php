@@ -686,7 +686,7 @@
                                                         </a>
                                                     </li>
                                                 @endcan
-                                                @can('searchAndUpdateUser', App\Models\Login::class)
+                                                @can('searchAndUpdatePeople', App\Models\Login::class)
                                                     <li class="sidebar-item {{ isActiveRoute(['member/number']) }}">
                                                         <a class="sidebar-link"
                                                             href="{{ route('member.numbersearch') }}">

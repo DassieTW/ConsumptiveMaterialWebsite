@@ -122,6 +122,10 @@ $(function () {
         $(".modal-title").attr("id", $(this).attr("id").split("_")[0]);
     });
 
+    $("#ImSure").on("click", function (e) {
+        e.preventDefault();
+    });
+
     $("#ListConfirm").on("click", function () {
         var dblist_str = "";
         $(".dbCheckbox").each(function () {

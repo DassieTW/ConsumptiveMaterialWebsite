@@ -21,10 +21,7 @@
     
     if ($i === false) {
         $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
-        echo "<script LANGUAGE='JavaScript'>
-                                                                                                    window.alert('$mess');
-                                                                                                    window.location.href='uploadmonth';
-                                                                                                    </script>";
+        echo "<script LANGUAGE='JavaScript'> window.alert('$mess'); window.location.href='uploadmonth'; </script>";
     }
     
     //判斷是否有這個機種
@@ -35,9 +32,9 @@
     if ($j === false) {
         $mess = trans('monthlyPRpageLang.nomachine') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
         echo "<script LANGUAGE='JavaScript'>
-                                                                                                    window.alert('$mess');
-                                                                                                    window.location.href='uploadmonth';
-                                                                                                    </script>";
+                                                                                                                    window.alert('$mess');
+                                                                                                                    window.location.href='uploadmonth';
+                                                                                                                    </script>";
     }
     
     //判斷是否有這個製程
@@ -48,9 +45,9 @@
     if ($k === false) {
         $mess = trans('monthlyPRpageLang.noproduction') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[3];
         echo "<script LANGUAGE='JavaScript'>
-                                                                                                    window.alert('$mess');
-                                                                                                    window.location.href='uploadmonth';
-                                                                                                    </script>";
+                                                                                                                    window.alert('$mess');
+                                                                                                                    window.location.href='uploadmonth';
+                                                                                                                    </script>";
     }
     
     ?>
