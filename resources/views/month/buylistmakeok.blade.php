@@ -73,8 +73,8 @@
                             $nextneeda = ($data->下月MPS * $data->單耗) / 1000;
                             $nowneeda = ($data->本月MPS * $data->單耗) / 1000;
                             $realneeda = $nextneeda + $nowneeda - $stocka - $amounta;
-                            $realneeda = round($realneeda, 0);
-                            $real = $realneeda < 0 ? 0 : $realneeda;
+                            $realneeda = ceil($realneeda);
+                            $real = $realneeda <= 0 ? 0 : $realneeda;
                             ?>
                             <tr>
                                 <td><input class="innumber" type="checkbox" id="innumbera" name="innumbera"
@@ -137,8 +137,8 @@
                             $nowneedb = ($data->當月站位人數 * $data->當月開線數 * $data->當月開班數 * $data->當月每人每日需求量 * $data->當月每日更換頻率 * $data->本月生產天數) / $data->MPQ;
                             $nextneedb = ($data->下月站位人數 * $data->下月開線數 * $data->下月開班數 * $data->下月每人每日需求量 * $data->下月每日更換頻率 * $data->下月生產天數) / $data->MPQ;
                             $realneedb = $nextneedb + $nowneedb - $stockb - $amountb;
-                            $realneedb = round($realneedb, 0);
-                            $real = $realneedb < 0 ? 0 : $realneedb;
+                            $realneedb = ceil($realneedb);
+                            $real = $realneedb <= 0 ? 0 : $realneedb;
                             ?>
                             <tr>
                                 <td><input class="innumber" type="checkbox" id="innumberb" name="innumberb"
