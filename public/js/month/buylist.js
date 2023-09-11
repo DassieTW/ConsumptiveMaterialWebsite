@@ -74,7 +74,7 @@ $(function () {
     counta = parseInt(counta);
     countb = parseInt(countb);
 
-    count = counta + countb;
+    var count = counta + countb;
     var check1 = 0;
     var data = [];
     var srm = [];
