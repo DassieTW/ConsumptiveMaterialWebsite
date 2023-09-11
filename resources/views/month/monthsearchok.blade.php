@@ -85,7 +85,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($data as $data)
-                                    <tr class="isnRows">
+                                    <tr class="isnRows" id="{{ $loop->index }}">
                                         <?php
                                         $data->本月MPS = round($data->本月MPS, 5);
                                         $data->本月生產天數 = round($data->本月生產天數, 5);

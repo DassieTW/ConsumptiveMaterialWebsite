@@ -12,7 +12,7 @@ function quickSearch() {
   // filter = input.value;
   // Loop through all table rows, and hide those who don't match the search query
   $(".isnRows").each(function (i, obj) {
-    txtValue = $(this).find("input[id^='number90']").val();
+    txtValue = $(this).find("input[id^='90number']").val();
     // console.log("now checking text : " + txtValue); // test
     if (txtValue.indexOf(input) > -1) {
       obj.style.display = "";
@@ -57,7 +57,6 @@ $("#monthsearch").on("submit", function (e) {
   var titlecount = $("#titlecount").val();
 
   if (select === "下載" || select === "下载" || select === "Download") {
-    console.log(1);
     count = $("#count").val();
     for (let i = 0; i < count; i++) {
       data0.push($("#client" + i).val());
