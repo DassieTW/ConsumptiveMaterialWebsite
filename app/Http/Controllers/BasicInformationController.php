@@ -650,47 +650,19 @@ class BasicInformationController extends Controller
                     $safe =   $Alldata[13][$i];
 
                     $test = DB::table('consumptive_material')->where('料號', $number)->value('品名');
-                    /*$delete = ConsumptiveMaterial::onlyTrashed()
-                        ->where('料號', $number)->get();*/
-
-                    // if ($gradea === 'Yes') $gradea = '是';
-                    // if ($gradea === 'No') $gradea = '否';
-
-                    // if ($month === 'Yes') $month = '是';
-                    // if ($month === 'No') $month = '否';
-
-                    // if ($belong === 'Unit Cons.' || $belong === '单耗') $belong = '單耗';
-                    // if ($belong === 'Station') $belong = '站位';
 
                     if ($safe === '') $safe = null;
 
-                    if ($month === "否" && $safe === null) {
-                        $row = $i + 1;
-                        return \Response::json(['message' => $row], 422/* Status code here default is 200 ok*/);
-                    }
 
-                    // $in = iconv('UTF-8//IGNORE', 'GB2312//IGNORE', $name);
 
-                    // $in = iconv('GB2312//IGNORE', 'BIG5//IGNORE', $in);
-
-                    // $out = iconv('BIG5//IGNORE', 'UTF-8//IGNORE', $in);
-
-                    // $in1 = iconv('UTF-8//IGNORE', 'GB2312//IGNORE', $format);
-
-                    // $in1 = iconv('GB2312//IGNORE', 'BIG5//IGNORE', $in1);
-
-                    // $out1 = iconv('BIG5//IGNORE', 'UTF-8//IGNORE', $in1);
-
-                    if ($test === null) {
-                        DB::table('consumptive_material')
-                            ->insert([
-                                '料號' => $number, '品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe
-                            ]);
-                        $record++;
-                        array_push($check, $row[$i]);
-                    } else {
-                        continue;
-                    }
+                    //if ($test === null) {
+                    DB::table('consumptive_material')
+                        ->updateOrInsert([
+                            '料號' => $number
+                        ], ['品名' => $name, '規格' => $format, '單價' => $price, '幣別' => $money, '單位' => $unit, 'MPQ' => $mpq, 'MOQ' => $moq, 'LT' => $lt, '月請購' => $month, 'A級資材' => $gradea, '耗材歸屬' => $belong, '發料部門' => $send, '安全庫存' => $safe]);
+                    $record++;
+                    array_push($check, $row[$i]);
+                    //
                 } //for
                 DB::commit();
                 return \Response::json(['record' => $record, 'check' => $check]/* Status code here default is 200 ok*/);

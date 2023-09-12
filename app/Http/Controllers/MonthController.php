@@ -1494,23 +1494,18 @@ class MonthController extends Controller
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
             $worksheet = $spreadsheet->getActiveSheet();
             $titlecount = $request->input('titlecount');
-            // $Alldata = DB::table('consumptive_material')
-            //     ->join('非月請購', function ($join) {
-            //         $join->on('非月請購.料號', '=', 'consumptive_material.料號')
-            //             ->whereNotNull('SXB單號');
-            //     })->get();
             $Alldata = json_decode($request->input('AllData'));
             $count = $request->input('count');
 
             // dd($Alldata);
 
-            $worksheet->getPageSetup()->setHorizontalCentered(true);
-            // 填寫header & footer of excel when printing
-            $worksheet->getHeaderFooter()->setOddHeader("&C&B" . Session::get("clientChoice") . "  " . Carbon::now()->format('m') . "月耗材匯總");
-            $worksheet->getHeaderFooter()->setOddFooter("&L&B核准：_______________________&C&B審核：_______________________&R&B申請人：_______________________");
+            // $worksheet->getPageSetup()->setHorizontalCentered(true);
+            // // 填寫header & footer of excel when printing
+            // $worksheet->getHeaderFooter()->setOddHeader("&C&B" . Session::get("clientChoice") . "  " . Carbon::now()->format('m') . "月耗材匯總");
+            // $worksheet->getHeaderFooter()->setOddFooter("&L&B核准：_______________________&C&B審核：_______________________&R&B申請人：_______________________");
 
-            // $stringValueBinder = new StringValueBinder();
-            // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+            // // $stringValueBinder = new StringValueBinder();
+            // // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
             // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
 
             //填寫表頭
@@ -1519,29 +1514,28 @@ class MonthController extends Controller
             } // for
 
             //填寫內容
-            $endOfRow = 0;
-            $endOfCol = 0;
-            $alphabet = range('A', 'Z'); // A ~ Z
+
+            // $alphabet = range('A', 'Z'); // A ~ Z
             for ($i = 0; $i < $titlecount; $i++) {
                 for ($j = 0; $j < $count; $j++) {
                     //$string = $i;
                     $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
-                    $endOfRow = $j;
+                    // $endOfRow = $j;
                 } // for
 
-                $endOfCol = $i;
+                // $endOfCol = $i;
             } // for
 
             // dd($endOfRow . "," . $endOfCol); // test
 
-            $worksheet->setCellValue("A" . ($endOfRow + 3), "合計：");
-            $worksheet->mergeCells("A" . ($endOfRow + 3) . ":" . $alphabet[$endOfCol - 4] . ($endOfRow + 3)); // for the SUM row
-            $worksheet->setCellValue($alphabet[$endOfCol] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol] . "2:" . $alphabet[$endOfCol] . ($endOfRow + 2) . ")");
-            $worksheet->setCellValue($alphabet[$endOfCol - 1] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol - 1] . "2:" . $alphabet[$endOfCol - 1] . ($endOfRow + 2) . ")");
-            $worksheet->getStyle($alphabet[$endOfCol] . "2:" . $alphabet[$endOfCol] . ($endOfRow + 3))->getNumberFormat()->setFormatCode('0%');
-            $worksheet->setCellValue($alphabet[$endOfCol - 2] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol - 2] . "2:" . $alphabet[$endOfCol - 2] . ($endOfRow + 2) . ")");
-            $worksheet->setCellValue($alphabet[$endOfCol - 3] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol - 3] . "2:" . $alphabet[$endOfCol - 3] . ($endOfRow + 2) . ")");
-            $worksheet->getStyle($alphabet[$endOfCol - 2] . "2:" . $alphabet[$endOfCol - 2] . ($endOfRow + 3))->getNumberFormat()->setFormatCode('0%');
+            // $worksheet->setCellValue("A" . ($endOfRow + 3), "合計：");
+            // $worksheet->mergeCells("A" . ($endOfRow + 3) . ":" . $alphabet[$endOfCol - 4] . ($endOfRow + 3)); // for the SUM row
+            // $worksheet->setCellValue($alphabet[$endOfCol] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol] . "2:" . $alphabet[$endOfCol] . ($endOfRow + 2) . ")");
+            // $worksheet->setCellValue($alphabet[$endOfCol - 1] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol - 1] . "2:" . $alphabet[$endOfCol - 1] . ($endOfRow + 2) . ")");
+            // $worksheet->getStyle($alphabet[$endOfCol] . "2:" . $alphabet[$endOfCol] . ($endOfRow + 3))->getNumberFormat()->setFormatCode('0%');
+            // $worksheet->setCellValue($alphabet[$endOfCol - 2] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol - 2] . "2:" . $alphabet[$endOfCol - 2] . ($endOfRow + 2) . ")");
+            // $worksheet->setCellValue($alphabet[$endOfCol - 3] . ($endOfRow + 3), "=SUM(" . $alphabet[$endOfCol - 3] . "2:" . $alphabet[$endOfCol - 3] . ($endOfRow + 2) . ")");
+            // $worksheet->getStyle($alphabet[$endOfCol - 2] . "2:" . $alphabet[$endOfCol - 2] . ($endOfRow + 3))->getNumberFormat()->setFormatCode('0%');
 
             // 下載
             $now = Carbon::now()->format('YmdHis');
