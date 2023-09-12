@@ -23,7 +23,7 @@
             <div class="card-body">
                 <form id="add" class="row gx-6 gy-1 align-items-center">
                     @csrf
-                    <div class="col-auto">
+                    {{-- <div class="col-auto">
                         <label class="col col-lg-12 form-label">{!! __('inboundpageLang.client') !!}</label>
 
                         <select class="form-select form-select-lg" id="client" name="client">
@@ -34,7 +34,7 @@
                         </select>
                         <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
                             {!! __('inboundpageLang.enterclient') !!}</div>
-                    </div>
+                    </div> --}}
 
                     <div class="col-auto">
 
@@ -78,9 +78,9 @@
                         <label class="col col-auto form-label"></label>
                         <input type="submit" onclick="buttonIndex=0;" id="addto" name="addto"
                             class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.add') !!}">
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                        {{-- <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <input type="submit" onclick="buttonIndex=1;" id="addclient" name="addclient"
-                            class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.addclient') !!}">
+                            class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.addclient') !!}"> --}}
                     </div>
 
 
@@ -106,7 +106,6 @@
                             <tbody id="inboundaddbody">
                                 <tr>
                                     <th>{!! __('inboundpageLang.delete') !!}</th>
-                                    <th>{!! __('inboundpageLang.client') !!}</th>
                                     <th>{!! __('inboundpageLang.isn') !!}</th>
                                     <th>{!! __('inboundpageLang.pName') !!}</th>
                                     <th>{!! __('inboundpageLang.format') !!}</th>

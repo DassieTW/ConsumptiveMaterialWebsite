@@ -21,7 +21,7 @@ return [
     'importMonthlyData' => 'Import Monthly PR Data',
     'PR' => 'PR',
     'SRM' => 'SRM',
-    'SXB_search' => 'SXB (Search)',
+    'SXB_search' => 'PR Record',
     'on_the_way_search' => 'On-Order Inventory (Search)',
     'client' => 'Clients',
     'enterclient' => 'Please select client',

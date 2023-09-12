@@ -121,32 +121,25 @@ $(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").hide();
 
-    var client = $("#client").val();
     var inreason = $("#inreason").val();
     var number = $("#number").val();
     if (inreason === "其他" || inreason === "other") {
       inreason = $("#reason").val();
     }
-    if (client === null) {
-      document.getElementById("clienterror").style.display = "block";
-      document.getElementById("client").classList.add("is-invalid");
-      document.getElementById("client").focus();
-      return false;
-    } else if (inreason === null) {
+
+    if (inreason === null) {
       document.getElementById("inreasonerror").style.display = "block";
       document.getElementById("inreason").classList.add("is-invalid");
       document.getElementById("inreason").focus();
       return false;
     }
-    var submit = buttonIndex;
+
     $.ajax({
       type: "POST",
       url: "addnew",
       data: {
-        client: client,
         inreason: inreason,
         number: number,
-        submit: submit,
       },
 
       beforeSend: function () {
@@ -186,10 +179,6 @@ $(function () {
 
           let rowdelete = document.createElement("td");
           rowdelete.innerHTML = "<a id=" + "deleteBtn" + index + "></a>";
-
-          let rowclient = document.createElement("td");
-          rowclient.innerHTML =
-            "<span id=" + "client" + index + ">" + data.client + "</span>";
 
           let rownumber = document.createElement("td");
           rownumber.innerHTML =
@@ -254,7 +243,6 @@ $(function () {
             "required>";
 
           row.appendChild(rowdelete);
-          row.appendChild(rowclient);
           row.appendChild(rownumber);
           row.appendChild(rowname);
           row.appendChild(rowformat);
@@ -273,8 +261,6 @@ $(function () {
 
           index = index + 1;
           count = count + 1;
-        } else if (data.type === "client") {
-          window.location.href = "/inbound/addclient";
         }
       },
       error: function (err) {
@@ -297,12 +283,9 @@ $(function () {
         else if (err.status === 422) {
           document.getElementById("notransit").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
-          document.getElementById("client").classList.add("is-invalid");
           document.getElementById("inreason").classList.add("is-invalid");
           document.getElementById("inreason").value = "";
           document.getElementById("number").value = "";
-          document.getElementById("client").value = "";
-          document.getElementById("client").focus();
         }
       },
     });
@@ -370,7 +353,6 @@ $(function () {
       return false;
     }
 
-    var client = [];
     var number = [];
     var position = [];
     var transit = [];
@@ -380,9 +362,8 @@ $(function () {
     var j = 0;
 
     for (let i = 0; i < sessionStorage.getItem("inboundadd"); i++) {
-      if ($("#client" + i).text() !== null && $("#client" + i).text() !== "") {
+      if ($("#number" + i).text() !== null && $("#number" + i).text() !== "") {
         row[j] = i;
-        client.push($("#client" + i).text());
         number.push($("#number" + i).text());
         position.push($("#newposition" + i).val());
         inreason.push($("#inreason" + i).text());
@@ -423,7 +404,6 @@ $(function () {
     }
 
     var data = [];
-    data.push(client);
     data.push(number);
     data.push(position);
     data.push(amount);

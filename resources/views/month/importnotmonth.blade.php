@@ -25,19 +25,6 @@
                             <form id="notmonth" method="POST">
                                 @csrf
                                 <div class="row w-100 justify-content-center mb-3">
-                                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <select class="form-select form-select-lg col col-auto" id="client"
-                                            name="client" required>
-                                            <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.enterclient') !!}</option>
-                                            @foreach ($client as $client)
-                                                <option>{{ $client->客戶 }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
-                                            {!! __('inboundpageLang.enterclient') !!}</div>
-                                    </div>
 
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
@@ -56,14 +43,19 @@
                                             {!! __('inboundpageLang.noisn') !!}
                                         </div>
                                     </div>
+                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+                                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.buyamount') !!}</label>
+                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <div class="col-lg-6  col-md-12 col-sm-12">
+                                        <input class="form-control form-control-lg" type="number" id="amount"
+                                            name="amount" placeholder="{!! __('monthlyPRpageLang.enteramount') !!}">
+                                    </div>
 
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 </div>
                                 <div class="row w-100 justify-content-center">
                                     <div class="col col-auto">
-                                        <input type="submit" onclick="buttonIndex=0;" id="search" name="search"
-                                            class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.search') !!}">
-                                        &emsp;
                                         <input type="submit" onclick="buttonIndex=1;" id="add" name="add"
                                             class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
                                     </div>

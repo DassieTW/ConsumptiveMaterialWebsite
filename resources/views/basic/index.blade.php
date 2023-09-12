@@ -87,7 +87,7 @@
                         <a data-toggle="tab" class="nav-link" id="FactoryExamplea"
                             href="#showfactory">{!! __('basicInfoLang.factory') !!}</a>
                     </li>
-                    <li class="nav-item" id="ClientExample">
+                    {{-- <li class="nav-item" id="ClientExample">
                         <a id="ClientExamplea" data-toggle="tab" class="nav-link"
                             href="#showclient">{!! __('basicInfoLang.client') !!}</a>
                     </li>
@@ -98,7 +98,7 @@
                     <li class="nav-item" id="ProductionExample">
                         <a id="ProductionExamplea" data-toggle="pill" class="nav-link"
                             href="#showprocess">{!! __('basicInfoLang.process') !!}</a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item" id="LineExample">
                         <a id="LineExamplea" data-toggle="tab" class="nav-link" href="#showline">{!! __('basicInfoLang.line') !!}</a>
                     </li>

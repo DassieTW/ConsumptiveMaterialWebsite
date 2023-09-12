@@ -21,7 +21,7 @@ return [
     'importMonthlyData' => '匯入月請購資料',
     'PR' => '請購單',
     'SRM' => 'SRM單',
-    'SXB_search' => 'SXB單(查詢)',
+    'SXB_search' => '請購單紀錄',
     'on_the_way_search' => '在途數量(查詢)',
     'client' => '客戶別',
     'enterclient' => '請選擇客戶別',
