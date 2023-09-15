@@ -56,8 +56,11 @@
                                 </div>
                                 <div class="row w-100 justify-content-center">
                                     <div class="col col-auto">
-                                        <input type="submit" onclick="buttonIndex=1;" id="add" name="add"
-                                            class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
+                                        <input type="submit" id="search" name="search" class="btn btn-lg btn-primary"
+                                            value="{!! __('monthlyPRpageLang.search') !!}">
+                                        &emsp;
+                                        <input type="submit" id="add" name="add" class="btn btn-lg btn-primary"
+                                            value="{!! __('monthlyPRpageLang.add') !!}">
                                     </div>
                                 </div>
                             </form>
@@ -68,21 +71,38 @@
             </div>
 
 
-            {{-- <form style="display: none" action="{{ route('month.notmonthsearch') }}" method="POST"
-            id="notmonthsearchform">
-            @csrf
-            <input type="hidden" id="varr1" name="varr1" value="" />
-            <input type="hidden" id="varr2" name="varr2" value="" />
-        </form> --}}
 
-            <form style="display: none" action="{{ route('month.notmonthadd') }}" method="POST" id="notmonthaddform">
-                @csrf
-                <input type="hidden" id="var1" name="var1" value="" />
-                <input type="hidden" id="var2" name="var2" value="" />
-                <input type="hidden" id="var3" name="var3" value="" />
-                <input type="hidden" id="var4" name="var4" value="" />
-                <input type="hidden" id="var5" name="var5" value="" />
-            </form>
+
+            <div class="card w-75" id="notmonthbody">
+                <div class="card-body">
+                    <form id="notmonthadd" style="display: none">
+                        @csrf
+                        <div class="table-responsive">
+                            <table class="table" id="notmonthaddtable">
+                                <tbody id="notmonthaddbody">
+                                    <tr>
+                                        <th>{!! __('monthlyPRpageLang.delete') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.isn') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.pName') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.buyamount1') !!}</th>
+                                        <th>{!! __('monthlyPRpageLang.description') !!}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+
+                        <div class="row w-100 justify-content-center">
+                            <div class="col col-auto">
+                                <input type="submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.submit') !!}"
+                                    style="width: 80px">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
@@ -124,9 +144,7 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection

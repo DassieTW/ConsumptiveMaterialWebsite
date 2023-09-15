@@ -115,9 +115,6 @@
                                     <tr>
                                         <th>{!! __('monthlyPRpageLang.isn') !!}</th>
                                         <th>{!! __('monthlyPRpageLang.pName') !!}</th>
-                                        <th>{!! __('monthlyPRpageLang.client') !!}</th>
-                                        <th>{!! __('monthlyPRpageLang.machine') !!}</th>
-                                        <th>{!! __('monthlyPRpageLang.process') !!}</th>
                                         <th>{!! __('monthlyPRpageLang.consume') !!}</th>
                                         <th>{!! __('monthlyPRpageLang.90isn') !!}</th>
                                         <th></th>
@@ -150,16 +147,6 @@
                                             <td><input type="hidden" id="name{{ $loop->index }}"
                                                     name="name{{ $loop->index }}"
                                                     value="{{ $name }}">{{ $name }}</td>
-                                            <td><input type="hidden" id="client{{ $loop->index }}"
-                                                    name="client{{ $loop->index }}"
-                                                    value="{{ $data->客戶別 }}">{{ $data->客戶別 }}</td>
-                                            <td><input type="hidden" id="machine{{ $loop->index }}"
-                                                    name="machine{{ $loop->index }}"
-                                                    value="{{ $data->機種 }}">{{ $data->機種 }}</td>
-                                            <td><input type="hidden" id="production{{ $loop->index }}"
-                                                    name="production{{ $loop->index }}"
-                                                    value="{{ $data->製程 }}">{{ $data->製程 }}
-                                            </td>
                                             <td class="table-light" id="amount{{ $loop->index }}">{{ $data->單耗 }}
                                             </td>
                                             <td><input type="hidden" id="number90{{ $loop->index }}"

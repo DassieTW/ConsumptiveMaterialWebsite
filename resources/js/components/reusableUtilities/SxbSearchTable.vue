@@ -1,17 +1,35 @@
 <template>
     <div class="row" style="text-align: left">
         <div class="col col-auto">
-            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            <label for="pnInput" class="col-form-label"
+                >{{ $t("basicInfoLang.quicksearch") }} :</label
+            >
         </div>
         <div class="col col-3 p-0 m-0">
-            <input id="pnInput" class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+            <input
+                id="pnInput"
+                class="text-center form-control form-control-lg"
+                v-bind:placeholder="$t('basicInfoLang.enterisn')"
+                v-model="searchTerm"
+            />
         </div>
     </div>
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
-        :messages="table.messages" :columns="table.columns" :columns1="table.columns1" :rows="table.rows"
-        :rows1="table.rows1" :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+    <table-lite
+        :is-fixed-first-column="true"
+        :is-static-mode="true"
+        :hasCheckbox="false"
+        :isLoading="table.isLoading"
+        :messages="table.messages"
+        :columns="table.columns"
+        :columns1="table.columns1"
+        :rows="table.rows"
+        :rows1="table.rows1"
+        :total="table.totalRecordCount"
+        :page-options="table.pageOptions"
+        :sortable="table.sortable"
+        @is-finished="table.isLoading = false"
+        @return-checked-rows="updateCheckedRows"
+    >
     </table-lite>
 </template>
 
@@ -50,26 +68,23 @@ export default defineComponent({
             let allRowsObj = JSON.parse(mats.value);
             //console.log(allRowsObj.datas.length);
             for (let i = 0; i < allRowsObj.datas.length; i++) {
-                allRowsObj.datas[i].本次請購數量 = parseInt(allRowsObj.datas[i].本次請購數量);
+                allRowsObj.datas[i].本次請購數量 = parseInt(
+                    allRowsObj.datas[i].本次請購數量
+                );
                 data.push(allRowsObj.datas[i]);
             } // for
-            for (let j = 0; j < allRowsObj.datas1.length; j++) {
-                allRowsObj.datas1[j].請購數量 = parseInt(allRowsObj.datas1[j].請購數量);
-                data.push(allRowsObj.datas1[j]);
-            } // for
 
-            document
-                .getElementById("QueryFlag")
-                .click();
+            document.getElementById("QueryFlag").click();
         }); // watch for data change
 
         // Table config
         const table = reactive({
-
             isLoading: false,
             columns: [
                 {
-                    label: app.appContext.config.globalProperties.$t("monthlyPRpageLang.sxb"),
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.sxb"
+                    ),
                     field: "SXB單號",
                     width: "10ch",
                     sortable: true,
@@ -90,94 +105,7 @@ export default defineComponent({
                         );
                     },
                 },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.srm"
-                    ),
-                    field: "SRM單號",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        let returnStr = "";
-                        // console.log(row); // test
-                        if (row.SRM單號 !== undefined) {
-                            returnStr =
-                                '<input type="hidden" id="srm' +
-                                i +
-                                '" name="srm' +
-                                i +
-                                '" value="' +
-                                row.SRM單號 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.SRM單號 +
-                                "</div>";
-                        } // if
-                        else {
-                            returnStr =
-                                '<input type="hidden" id="srm' +
-                                i +
-                                '" name="srm' +
-                                i +
-                                '" value="' +
-                                app.appContext.config.globalProperties.$t(
-                                    "monthlyPRpageLang.notmonth"
-                                ) +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                app.appContext.config.globalProperties.$t(
-                                    "monthlyPRpageLang.notmonth"
-                                ) +
-                                "</div>";
-                        } // else
 
-                        return returnStr;
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.client"
-                    ),
-                    field: "客戶別",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        let returnStr = "";
-                        // console.log(row); // test
-                        if (row.客戶別 !== undefined) {
-                            returnStr =
-                                '<input type="hidden" id="srm' +
-                                i +
-                                '" name="srm' +
-                                i +
-                                '" value="' +
-                                row.客戶別 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.客戶別 +
-                                "</div>";
-                        } // if
-                        else {
-                            returnStr =
-                                '<input type="hidden" id="srm' +
-                                i +
-                                '" name="srm' +
-                                i +
-                                '" value="' +
-                                row.客戶 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.客戶 +
-                                "</div>";
-                        } // else
-
-                        return returnStr;
-                    },
-                },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.isn"
@@ -264,7 +192,6 @@ export default defineComponent({
                         } // else
 
                         return returnStr;
-
                     },
                 },
                 {
@@ -312,9 +239,10 @@ export default defineComponent({
             ],
             rows: computed(() => {
                 return data.filter((x) =>
-                    x.料號.toLowerCase().includes(searchTerm.value.toLowerCase())
+                    x.料號
+                        .toLowerCase()
+                        .includes(searchTerm.value.toLowerCase())
                 );
-
             }),
             totalRecordCount: computed(() => {
                 return table.rows.length;
@@ -329,11 +257,17 @@ export default defineComponent({
                         "basicInfoLang.now_showing"
                     ) +
                     " {0} ~ {1} " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.record") +
+                    app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.record"
+                    ) +
                     ", " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.total") +
+                    app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.total"
+                    ) +
                     " {2} " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.record"),
+                    app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.record"
+                    ),
                 pageSizeChangeLabel: app.appContext.config.globalProperties.$t(
                     "basicInfoLang.records_per_page"
                 ),
@@ -365,9 +299,9 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            console.log(rowsKey)
-            // only check one 
-        }
+            console.log(rowsKey);
+            // only check one
+        };
         return {
             searchTerm,
             table,

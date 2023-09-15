@@ -21,32 +21,10 @@
             </div>
             <div class="row justify-content-center">
                 <div class="card-body">
-                    <div class="d-flex w-100">
+                    <div class="w-100 d-flex container">
                         <form id="seaechForm" action="{{ route('month.buylistmake') }}" method="POST">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
-                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                <div class="col-lg-6  col-md-12 col-sm-12">
-                                    <select
-                                        class="form-select form-select-lg col col-auto @error('client') is-invalid @enderror"
-                                        id="client" name="client">
-                                        <option style="display: none" disabled selected value="">
-                                            {!! __('monthlyPRpageLang.enterclient') !!}</option>
-                                        @foreach ($client as $client)
-                                            <option>{{ $client->客戶 }}</option>
-                                        @endforeach
-                                        <option value="ALL_CLIENT">{!! __('monthlyPRpageLang.allclient') !!}</option>
-                                    </select>
-                                    @error('client')
-                                        <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{!! __('monthlyPRpageLang.enterclient') !!}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
                                 <label class="col col-auto form-label">{!! __('monthlyPRpageLang.money') !!}</label>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
@@ -145,8 +123,8 @@
                 <div class="row w-100 justify-content-center">
                     <div class="col col-auto">
                         <input class="form-control form-control-lg @error('vnd') is-invalid @enderror" type="number"
-                            id="vnd" name="vnd" step="0.000001"
-                            oninput="if(value.length>8)value=value.slice(0,8)" min="0">
+                            id="vnd" name="vnd" step="0.000001" oninput="if(value.length>8)value=value.slice(0,8)"
+                            min="0">
                         @error('vnd')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>

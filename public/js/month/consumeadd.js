@@ -1,51 +1,4 @@
 sessionStorage.clear();
-// function myFunction() {
-//   var input, filter, ul, li, a, i;
-//   ul = document.getElementById("peoplemenu");
-//   li = ul.getElementsByTagName("a");
-//   input = document.getElementById("email");
-//   filter = input.value.toUpperCase();
-//   for (i = 0; i < li.length; i++) {
-//     a = li[i];
-//     if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-//       li[i].style.display = "";
-//     } else {
-//       li[i].style.display = "none";
-//     }
-//   }
-// }
-// $("#email").on("focus", function () {
-//   $(window).on("keydown", function (event) {
-//     if (event.coce === "Enter") {
-//       event.preventDefault();
-//       return false;
-//     }
-//   });
-//   $("#peoplemenu").show();
-// });
-// $("#email").on("input", function () {
-//   $(window).on("keydown", function (event) {
-//     if (event.code === "Enter") {
-//       event.preventDefault();
-//       return false;
-//     }
-//   });
-//   $("#peoplemenu").show();
-//   myFunction();
-// });
-// $("#email").on("blur", function () {
-//   $("#peoplemenu").hide();
-// });
-// $(".peoplelist").on("mouseover", function (e) {
-//   e.preventDefault();
-//   var ename = $(this).text();
-//   $("#email").val(ename);
-// });
-// $(".peoplelist").on("click", function (e) {
-//   e.preventDefault();
-//   var ename = $(this).text();
-//   $("#email").val(ename);
-// });
 function ScientificNotaionToFixed(x) {
   // toFixed
   if (Math.abs(x) < 1.0) {
@@ -122,28 +75,10 @@ $(function () {
       var index = parseInt(sessionStorage.getItem("consumecount"));
     }
 
-    var client = $("#client").val();
     var number = $("#number").val();
-    var production = $("#production").val();
-    var machine = $("#machine").val();
     var number90 = $("#90isn").val();
 
-    if (client === null) {
-      document.getElementById("clienterror").style.display = "block";
-      document.getElementById("client").classList.add("is-invalid");
-      document.getElementById("client").focus();
-      return false;
-    } else if (machine === null) {
-      document.getElementById("machineerror").style.display = "block";
-      document.getElementById("machine").classList.add("is-invalid");
-      document.getElementById("machine").focus();
-      return false;
-    } else if (production === null) {
-      document.getElementById("productionerror").style.display = "block";
-      document.getElementById("production").classList.add("is-invalid");
-      document.getElementById("production").focus();
-      return false;
-    } else if (number === "") {
+    if (number === "") {
       document.getElementById("numbererror1").style.display = "block";
       document.getElementById("number").classList.add("is-invalid");
       document.getElementById("number").focus();
@@ -168,10 +103,7 @@ $(function () {
       type: "POST",
       url: "consumenew",
       data: {
-        client: client,
         number: number,
-        production: production,
-        machine: machine,
         number90: number90,
       },
       beforeSend: function () {
@@ -244,34 +176,6 @@ $(function () {
           'style="width: 200px"' +
           '">';
 
-        // let rownowneed = document.createElement('td');
-        // rownowneed.innerHTML = '<input id="nowneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-        //     'style="width: 200px"' + '" readonly>';
-
-        // let rownextneed = document.createElement('td');
-        // rownextneed.innerHTML = '<input id="nextneed' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-        //     'style="width: 200px"' + '" readonly>';
-
-        // let rowsafestock = document.createElement('td');
-        // rowsafestock.innerHTML = '<input id="safestock' + index + '"' + 'type = "number"' + 'class = "form-control form-control-lg"' +
-        //     'style="width: 200px"' + '" readonly>';
-
-        let rowclient = document.createElement("td");
-        rowclient.innerHTML =
-          "<span id=" + "client" + index + ">" + data.client + "</span>";
-
-        let rowmachine = document.createElement("td");
-        rowmachine.innerHTML =
-          "<span id=" + "machine" + index + ">" + data.machine + "</span>";
-
-        let rowproduction = document.createElement("td");
-        rowproduction.innerHTML =
-          "<span id=" +
-          "production" +
-          index +
-          ">" +
-          data.production +
-          "</span>";
         let row90isn = document.createElement("td");
         row90isn.innerHTML =
           "<span id=" + "90isn" + index + ">" + data.number90 + "</span>";
@@ -283,9 +187,6 @@ $(function () {
         row.appendChild(rowunit);
         row.appendChild(rowlt);
         row.appendChild(rowamount);
-        row.appendChild(rowclient);
-        row.appendChild(rowmachine);
-        row.appendChild(rowproduction);
         row.appendChild(row90isn);
 
         body.appendChild(row);
@@ -293,13 +194,6 @@ $(function () {
         appenSVg(index);
       },
       error: function (err) {
-        // //料號長度不為12
-        // if (err.status === 421) {
-        //   document.getElementById("numbererror").style.display = "block";
-        //   document.getElementById("number").classList.add("is-invalid");
-        //   document.getElementById("number").value = "";
-        //   document.getElementById("number").focus();
-        // }
         //料號不存在
         if (err.status === 420) {
           document.getElementById("numbererror1").style.display = "block";
@@ -322,11 +216,9 @@ $(function () {
     $(".invalid-feedback").hide();
 
     console.log(sessionStorage.getItem("consumecount"));
-    var client = [];
-    var machine = [];
-    var production = [];
     var number = [];
     var consume = [];
+    var number90 = [];
     var row = [];
     // var jobnumber = $("#jobnumber").val();
     if ($("#email").val() === null) {
@@ -352,17 +244,15 @@ $(function () {
 
     var count = 0;
     for (let i = 0; i < sessionStorage.getItem("consumecount"); i++) {
-      if ($("#client" + i).text() !== null && $("#client" + i).text() !== "") {
-        client.push($("#client" + i).text());
-        machine.push($("#machine" + i).text());
-        production.push($("#production" + i).text());
+      if ($("#number" + i).text() !== null && $("#number" + i).text() !== "") {
         number.push($("#number" + i).text());
         consume.push($("#amount" + i).val());
+        number90.push($("#90isn" + i).text());
         row.push(i.toString());
       }
     }
 
-    if (client.length === 0) {
+    if (number.length === 0) {
       notyf.open({
         type: "warning",
         message: Lang.get("monthlyPRpageLang.nodata"),
@@ -377,17 +267,15 @@ $(function () {
       return false;
     }
 
-    count = parseInt(client.length);
+    count = parseInt(number.length);
     console.log(row);
 
     $.ajax({
       type: "POST",
       url: "consumenewsubmit",
       data: {
-        client: client,
-        machine: machine,
-        production: production,
         number: number,
+        number90: number90,
         consume: consume,
         email: email,
         count: count,
@@ -597,18 +485,9 @@ $(function () {
             'step = "0.0000000001"' +
             'style="width: 200px"' +
             '">';
-
-          let rowclient = document.createElement("td");
-          rowclient.innerHTML =
-            "<span id=" + "client" + j + ">" + alldatas[i].客戶別 + "</span>";
-
-          let rowmachine = document.createElement("td");
-          rowmachine.innerHTML =
-            "<span id=" + "machine" + j + ">" + alldatas[i].機種 + "</span>";
-
-          let rowproduction = document.createElement("td");
-          rowproduction.innerHTML =
-            "<span id=" + "production" + j + ">" + alldatas[i].製程 + "</span>";
+          let row90isn = document.createElement("td");
+          row90isn.innerHTML =
+            "<span id=" + "90isn" + j + ">" + alldatas[i].料號90 + "</span>";
 
           row.appendChild(rowdelete);
           row.appendChild(rownumber);
@@ -617,9 +496,7 @@ $(function () {
           row.appendChild(rowunit);
           row.appendChild(rowlt);
           row.appendChild(rowamount);
-          row.appendChild(rowclient);
-          row.appendChild(rowmachine);
-          row.appendChild(rowproduction);
+          row.appendChild(row90isn);
 
           body.appendChild(row);
           tbl.appendChild(body);

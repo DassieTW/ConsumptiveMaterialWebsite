@@ -230,6 +230,9 @@ Route::post('/consumechangeordelete', [MonthController::class, 'consumechangeord
 //站位人力(刪除或修改)
 Route::post('/standchangeordelete', [MonthController::class, 'standchangeordelete'])->name('month.standchangeordelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
+//非月請購刪除
+Route::post('/notmonthdelete', [MonthController::class, 'notmonthdelete'])->name('month.notmonthdelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+
 //新增單耗上傳
 Route::get('/uploadconsume', function () {
     $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();

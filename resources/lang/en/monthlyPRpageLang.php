@@ -19,7 +19,7 @@ return [
     'standUpdate' => 'Station Manpower (Search & Update)',
     'importNonMonthlyData' => 'Import Non-Monthly PR Data',
     'importMonthlyData' => 'Import Monthly PR Data',
-    'PR' => 'PR',
+    'PR' => 'Export PR Detail',
     'SRM' => 'SRM',
     'SXB_search' => 'PR Record',
     'on_the_way_search' => 'On-Order Inventory (Search)',
@@ -157,4 +157,5 @@ return [
     '90isn' => '90PN',
     'enter90isn' => 'Please input 90PN',
     '90isnlength' => '90PN length is not 12',
+    'exportspan' => 'Only the data This time buy amount > 0 will be exported'
 ];

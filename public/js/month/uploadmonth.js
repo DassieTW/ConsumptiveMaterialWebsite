@@ -12,9 +12,7 @@ $(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").remove();
 
-    var client = [];
-    var machine = [];
-    var production = [];
+    var number = [];
     var number90 = [];
     var nowmps = [];
     var nowday = [];
@@ -23,10 +21,8 @@ $(function () {
     var count = $("#count").val();
 
     for (let i = 0; i < count; i++) {
-      client.push($("#data0" + i).text());
-      machine.push($("#data1" + i).text());
-      production.push($("#data2" + i).text());
-      number90.push($("#data7" + i).text());
+      number.push($("#number" + i).text());
+      number90.push($("#90number" + i).text());
       nowmps.push($("#data3" + i).val());
       nowday.push($("#data4" + i).val());
       nextmps.push($("#data5" + i).val());
@@ -37,9 +33,7 @@ $(function () {
       type: "POST",
       url: "monthsubmit",
       data: {
-        client: client,
-        machine: machine,
-        production: production,
+        number: number,
         number90: number90,
         nowmps: nowmps,
         nowday: nowday,

@@ -17,14 +17,10 @@ $(function () {
     $(".invalid-feedback").remove();
 
     var row = [];
-    var client = [];
     var number = [];
-    var production = [];
-    var machine = [];
     var consume = [];
     var number90 = [];
 
-    var jobnumber = $("#jobnumber").val();
     if ($("#email").val() === null) {
       notyf.open({
         type: "warning",
@@ -48,34 +44,35 @@ $(function () {
     var count = $("#count").val();
 
     for (let i = 0; i < count; i++) {
-      if (
-        $("#datag" + i).val() !== null &&
-        $("#datag" + i).val() !== undefined &&
-        $("#datag" + i).val() !== " "
-      ) {
-        client.push($("#datag" + i).val());
-        machine.push($("#datah" + i).val());
-        production.push($("#datai" + i).val());
-        number.push($("#dataa" + i).val());
-        consume.push($("#datac" + i).val());
-        number90.push($("#dataj" + i).val());
+      if ($("#number" + i).val() !== null && $("#number" + i).val() !== "") {
+        number.push($("#number" + i).val());
+        consume.push($("#amount" + i).val());
+        number90.push($("#90isn" + i).val());
         row.push(i.toString());
-      } else {
-        continue;
       }
+    }
+    if (number.length === 0) {
+      notyf.open({
+        type: "warning",
+        message: Lang.get("monthlyPRpageLang.nodata"),
+        duration: 3000, //miliseconds, use 0 for infinite duration
+        ripple: true,
+        dismissible: true,
+        position: {
+          x: "right",
+          y: "bottom",
+        },
+      });
+      return false;
     }
 
     $.ajax({
       type: "POST",
       url: "consumenewsubmit",
       data: {
-        client: client,
         number: number,
         number90: number90,
-        production: production,
-        machine: machine,
         consume: consume,
-        jobnumber: jobnumber,
         email: email,
         count: count,
         row: row,

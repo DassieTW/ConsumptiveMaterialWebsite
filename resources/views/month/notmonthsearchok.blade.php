@@ -18,7 +18,7 @@
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/month/download.js?v=') . env('APP_VERSION') }}"></script>
+    <script src="{{ asset('js/month/notmonthsearch.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -37,9 +37,13 @@
                 <form id="notmonthform" method="POST">
                     @csrf
                     <input type="hidden" id="titlename" name="titlename" value="非月請購">
+
+                    <input type="submit" id="delete" name="delete" class="btn btn-lg btn-primary"
+                        value="{!! __('monthlyPRpageLang.delete') !!}">
+                    &nbsp;
                     <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                         value="{!! __('monthlyPRpageLang.download') !!}">
-
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <notmonth-search-table></notmonth-search-table>
 
                 </form>

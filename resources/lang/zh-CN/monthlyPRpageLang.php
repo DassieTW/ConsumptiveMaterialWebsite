@@ -19,7 +19,7 @@ return [
     'standUpdate' => '站位人力(查询与修改)',
     'importNonMonthlyData' => '汇入非月请购资料',
     'importMonthlyData' => '汇入月请购资料',
-    'PR' => '请购单',
+    'PR' => '汇出请购明细',
     'SRM' => 'SRM单',
     'SXB_search' => '请购单纪录',
     'on_the_way_search' => '在途数量(查询)',
@@ -151,4 +151,5 @@ return [
     '90isn' => '90料号',
     'enter90isn' => '请输入90料号',
     '90isnlength' => '90料号长度不为12',
+    'exportspan' => '仅会汇出本次请购数量 >0 资料'
 ];

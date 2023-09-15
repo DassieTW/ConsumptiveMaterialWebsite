@@ -22,12 +22,9 @@ $(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").remove();
 
-    var client = [];
     var name = [];
     var number = [];
     var number90 = [];
-    var production = [];
-    var machine = [];
     var amount = [];
     var check = [];
     var reason = [];
@@ -41,11 +38,8 @@ $(function () {
 
     for (let i = 0; i < count; i++) {
       name.push($("#name" + i).val());
-      client.push($("#client" + i).val());
       number.push($("#number" + i).val());
       number90.push($("#number90" + i).val());
-      production.push($("#production" + i).val());
-      machine.push($("#machine" + i).val());
       amount.push($("#amount" + i).html());
       check.push($("#check" + i).prop("checked"));
       reason.push($("#remark" + i).val());
@@ -79,9 +73,6 @@ $(function () {
 
     data.push(number);
     data.push(name);
-    data.push(client);
-    data.push(machine);
-    data.push(production);
     data.push(amount);
     data.push(check);
     data.push(reason);

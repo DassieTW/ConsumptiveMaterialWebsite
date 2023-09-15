@@ -12,34 +12,28 @@ $(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").remove();
 
-    var count = $("#count").val();
-    var client = [];
-    var machine = [];
-    var production = [];
+    var number = [];
     var number90 = [];
     var nextmps = [];
     var nextday = [];
     var nowmps = [];
     var nowday = [];
 
+    var count = 1;
     for (let i = 0; i < count; i++) {
-      client.push($("#client" + i).text());
-      machine.push($("#machine" + i).text());
-      production.push($("#production" + i).text());
-      number90.push($("#number90" + i).text());
-      nextmps.push($("#nextmps" + i).val());
-      nextday.push($("#nextday" + i).val());
-      nowmps.push($("#nowmps" + i).val());
-      nowday.push($("#nowday" + i).val());
+      number.push($("#number").text());
+      number90.push($("#number90").text());
+      nextmps.push($("#nextmps").val());
+      nextday.push($("#nextday").val());
+      nowmps.push($("#nowmps").val());
+      nowday.push($("#nowday").val());
     }
 
     $.ajax({
       type: "POST",
       url: "monthsubmit",
       data: {
-        client: client,
-        machine: machine,
-        production: production,
+        number: number,
         number90: number90,
         nextmps: nextmps,
         nextday: nextday,

@@ -22,71 +22,30 @@
                 <form id="consume" class="row gx-6 gy-1 align-items-center">
                     @csrf
                     <div class="col-auto">
-                        <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.client') !!}</label>
-                        <select class="form-select form-select-lg" id="client" name="client">
-                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterclient') !!}
-                            </option>
-                            @foreach ($client as $client)
-                                <option>{{ $client->客戶 }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
-                            {!! __('monthlyPRpageLang.enterclient') !!}</div>
-                    </div>
-                    <div class="col-auto">
-                        <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.machine') !!}</label>
-                        <select class="form-select form-select-lg" id="machine" name="machine">
-                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.entermachine') !!}
-                            </option>
-                            @foreach ($machine as $machine)
-                                <option>{{ $machine->機種 }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback" id="machineerror" style="display:none; color:red;">
-                            {!! __('monthlyPRpageLang.entermachine') !!}</div>
-                    </div>
-                    <div class="col-auto">
-                        <label class="col col-lg-12 form-label">{!! __('monthlyPRpageLang.process') !!}</label>
-                        <select class="form-select form-select-lg " id="production" name="production">
-                            <option style="display: none" disabled selected value="">{!! __('monthlyPRpageLang.enterprocess') !!}
-                            </option>
-                            @foreach ($production as $production)
-                                <option>{{ $production->制程 }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback" id="productionerror" style="display:none; color:red;">
-                            {!! __('monthlyPRpageLang.enterprocess') !!}</div>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-auto">
-                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
-                                <input class="form-control form-control-lg " type="text" id="number" name="number"
-                                    placeholder="{!! __('monthlyPRpageLang.enterisn') !!}"
-                                    oninput="if(value.length>12)value=value.slice(0,12)">
-                                <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
-                                    {!! __('monthlyPRpageLang.isnlength') !!}
-                                </div>
-                                <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
-                                    {!! __('monthlyPRpageLang.noisn') !!}
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                {{-- <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
-                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.90isn') !!}</label>
-                                <input class="form-control form-control-lg " type="text" id="90isn" name="90isn"
-                                    placeholder="{!! __('monthlyPRpageLang.enter90isn') !!}"
-                                    oninput="if(value.length>12)value=value.slice(0,12)">
-                                <div class="invalid-feedback" id="90error" style="display:none; color:red;">
-                                    {!! __('monthlyPRpageLang.isnlength') !!}
-                                </div>
-                                <div class="invalid-feedback" id="90error1" style="display:none; color:red;">
-                                    {!! __('monthlyPRpageLang.noisn') !!}
-                                </div>
-
-                            </div>
+                        <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
+                        <input class="form-control form-control-lg " type="text" id="number" name="number"
+                            placeholder="{!! __('monthlyPRpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
+                        <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
+                            {!! __('monthlyPRpageLang.isnlength') !!}
+                        </div>
+                        <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">
+                            {!! __('monthlyPRpageLang.noisn') !!}
                         </div>
                     </div>
+                    <div class="col-auto">
+                        {{-- <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line--> --}}
+                        <label class="col col-auto form-label">{!! __('monthlyPRpageLang.90isn') !!}</label>
+                        <input class="form-control form-control-lg " type="text" id="90isn" name="90isn"
+                            placeholder="{!! __('monthlyPRpageLang.enter90isn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
+                        <div class="invalid-feedback" id="90error" style="display:none; color:red;">
+                            {!! __('monthlyPRpageLang.isnlength') !!}
+                        </div>
+                        <div class="invalid-feedback" id="90error1" style="display:none; color:red;">
+                            {!! __('monthlyPRpageLang.noisn') !!}
+                        </div>
+
+                    </div>
+
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                     <div class="col-auto">
@@ -164,8 +123,7 @@
                 <div class="row justify-content-center">
                     <div class="card-body">
                         <div class=" w-100">
-                            <form method="post" enctype="multipart/form-data"
-                                action="{{ route('month.uploadconsume') }}">
+                            <form method="post" enctype="multipart/form-data" action="{{ route('month.uploadconsume') }}">
                                 @csrf
                                 <div class="row w-100 justify-content-center mb-3">
                                     <div class="col col-auto ">

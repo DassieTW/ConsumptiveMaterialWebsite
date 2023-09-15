@@ -24,50 +24,6 @@
                             <form action="{{ route('month.consumesearch') }}" method="POST" novalidate>
                                 @csrf
                                 <div class="row w-100 justify-content-center mb-3">
-                                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <select class="form-select form-select-lg col col-auto" id="client"
-                                            name="client">
-                                            <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.enterclient') !!}
-                                            </option>
-                                            @foreach ($client as $client)
-                                                <option>{{ $client->客戶 }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.machine') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <select class="form-select form-select-lg col col-auto" id="machine"
-                                            name="machine">
-                                            <option style="display: none" disabled selected value="">
-                                                {!! __('monthlyPRpageLang.entermachine') !!}</option>
-                                            @foreach ($machine as $machine)
-                                                <option>{{ $machine->機種 }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                    <label class="col col-auto form-label">{!! __('monthlyPRpageLang.process') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <select class="form-select form-select-lg col col-auto" id="production"
-                                            name="production">
-                                            <option style="display: none" disabled selected value="">
-                                                {!! __('monthlyPRpageLang.enterprocess') !!}</option>
-                                            @foreach ($production as $production)
-                                                <option>{{ $production->制程 }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                                     <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

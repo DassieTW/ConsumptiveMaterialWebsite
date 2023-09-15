@@ -80,7 +80,6 @@ $(function () {
       lt.push($("#lt" + check[i]).val());
       safe.push($("#safe" + check[i]).val());
     }
-
     for (let i = 0; i < count; i++) {
       if (month[i] === "否" && safe[i] === "") {
         row = parseInt(check[i]) + 1;

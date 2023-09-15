@@ -1,17 +1,34 @@
 <template>
     <div class="row" style="text-align: left">
         <div class="col col-auto">
-            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            <label for="pnInput" class="col-form-label"
+                >{{ $t("basicInfoLang.quicksearch") }} :</label
+            >
         </div>
         <div class="col col-3 p-0 m-0">
-            <input id="pnInput" class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+            <input
+                id="pnInput"
+                class="text-center form-control form-control-lg"
+                v-bind:placeholder="$t('basicInfoLang.enterisn')"
+                v-model="searchTerm"
+            />
         </div>
     </div>
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
-        :messages="table.messages" :columns="table.columns" :columns1="table.columns1" :rows="table.rows"
-        :rows1="table.rows1" :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+    <table-lite
+        :is-fixed-first-column="true"
+        :isStaticMode="true"
+        :isSlotMode="true"
+        :hasCheckbox="true"
+        :messages="table.messages"
+        :columns="table.columns"
+        :rows="table.rows"
+        :total="table.totalRecordCount"
+        :page-options="table.pageOptions"
+        :sortable="table.sortable"
+        @do-search="doSearch"
+        @is-finished="table.isLoading = false"
+        @return-checked-rows="updateCheckedRows"
+    >
     </table-lite>
 </template>
 
@@ -50,44 +67,19 @@ export default defineComponent({
             let allRowsObj = JSON.parse(mats.value);
             //console.log(allRowsObj.datas.length);
             for (let i = 0; i < allRowsObj.datas.length; i++) {
-                allRowsObj.datas[i].請購數量 = parseInt(allRowsObj.datas[i].請購數量);
+                allRowsObj.datas[i].請購數量 = parseInt(
+                    allRowsObj.datas[i].請購數量
+                );
                 data.push(allRowsObj.datas[i]);
             } // for
 
-            document
-                .getElementById("QueryFlag")
-                .click();
+            document.getElementById("QueryFlag").click();
         }); // watch for data change
 
-        let test = "料號";
         // Table config
         const table = reactive({
-
             isLoading: false,
             columns: [
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.client"
-                    ),
-                    field: "客戶別",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="client' +
-                            i +
-                            '" name="client' +
-                            i +
-                            '" value="' +
-                            row.客戶別 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.客戶別 +
-                            "</div>"
-                        );
-                    },
-                },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.isn"
@@ -203,34 +195,13 @@ export default defineComponent({
                         );
                     },
                 },
-                {
-                    label: app.appContext.config.globalProperties.$t("monthlyPRpageLang.sxb"),
-                    field: "SXB單號",
-                    width: "10ch",
-                    sortable: true,
-                    isKey: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="sxb' +
-                            i +
-                            '" name="sxb' +
-                            i +
-                            '" value="' +
-                            row.SXB單號 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.SXB單號 +
-                            "</div>"
-                        );
-                    },
-                },
             ],
             rows: computed(() => {
                 return data.filter((x) =>
-                    x.料號.toLowerCase().includes(searchTerm.value.toLowerCase())
+                    x.料號
+                        .toLowerCase()
+                        .includes(searchTerm.value.toLowerCase())
                 );
-
             }),
             totalRecordCount: computed(() => {
                 return table.rows.length;
@@ -245,11 +216,17 @@ export default defineComponent({
                         "basicInfoLang.now_showing"
                     ) +
                     " {0} ~ {1} " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.record") +
+                    app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.record"
+                    ) +
                     ", " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.total") +
+                    app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.total"
+                    ) +
                     " {2} " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.record"),
+                    app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.record"
+                    ),
                 pageSizeChangeLabel: app.appContext.config.globalProperties.$t(
                     "basicInfoLang.records_per_page"
                 ),
@@ -281,9 +258,9 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            console.log(rowsKey)
-            // only check one 
-        }
+            console.log(rowsKey);
+            // only check one
+        };
         return {
             searchTerm,
             table,

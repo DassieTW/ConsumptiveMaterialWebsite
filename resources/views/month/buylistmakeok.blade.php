@@ -26,11 +26,6 @@
                 <div class="table-responsive text-nowrap">
                     <table class="table">
                         <tr>
-                            <td>{!! __('monthlyPRpageLang.check') !!}</td>
-                            <td><input type="hidden" id="title0" name="title0" value="SRM單號">{!! __('monthlyPRpageLang.srm') !!}
-                            </td>
-                            <td><input type="hidden" id="title1" name="title1" value="客戶別">{!! __('monthlyPRpageLang.client') !!}
-                            </td>
                             <td><input type="hidden" id="title2" name="title2" value="料號">{!! __('monthlyPRpageLang.isn') !!}
                             </td>
                             <td><input type="hidden" id="title3" name="title3" value="品名">{!! __('monthlyPRpageLang.pName') !!}
@@ -63,11 +58,9 @@
                             <?php
                             $amounta = DB::table('在途量')
                                 ->where('料號', $data->料號)
-                                ->where('客戶', $data->客戶別)
                                 ->sum('請購數量');
                             $stocka = DB::table('inventory')
                                 ->where('料號', $data->料號)
-                                ->where('客戶別', $data->客戶別)
                                 ->sum('現有庫存');
                             $amounta = round($amounta, 0);
                             $nextneeda = ($data->下月MPS * $data->單耗) / 1000;
@@ -77,26 +70,16 @@
                             $real = $realneeda <= 0 ? 0 : $realneeda;
                             ?>
                             <tr>
-                                <td><input class="innumber" type="checkbox" id="innumbera" name="innumbera"
-                                        style="width:20px;height:20px;" value="{{ $loop->index }}"></td>
-                                <td><input class="form-control form-control-lg" type="text"
-                                        id="srmnumbera{{ $loop->index }}" name="srmnumbera{{ $loop->index }}"
-                                        style="width:100px"></td>
-                                <td><input type="hidden" id="clienta{{ $loop->index }}" name="clienta{{ $loop->index }}"
-                                        value="{{ $data->客戶別 }}">{{ $data->客戶別 }}
-                                </td>
                                 <td><input type="hidden" id="numbera{{ $loop->index }}" name="numbera{{ $loop->index }}"
                                         value="{{ $data->料號 }}">{{ $data->料號 }}</td>
                                 <td><input type="hidden" id="namea{{ $loop->index }}" name="namea{{ $loop->index }}"
                                         value="{{ $data->品名 }}">{{ $data->品名 }}</td>
-                                <td><input type="hidden" id="formata{{ $loop->index }}"
-                                        name="formata{{ $loop->index }}"
-                                        value="{{ $data->規格 }}">{{ $data->規格 }}</td>
-                                <td><input type="hidden" id="pricea{{ $loop->index }}"
-                                        name="pricea{{ $loop->index }}"
+                                <td><input type="hidden" id="formata{{ $loop->index }}" name="formata{{ $loop->index }}"
+                                        value="{{ $data->規格 }}">{{ $data->規格 }}
+                                </td>
+                                <td><input type="hidden" id="pricea{{ $loop->index }}" name="pricea{{ $loop->index }}"
                                         value="{{ (float) $data->單價 }}">{{ (float) $data->單價 }}</td>
-                                <td><input type="hidden" id="moneya{{ $loop->index }}"
-                                        name="moneya{{ $loop->index }}"
+                                <td><input type="hidden" id="moneya{{ $loop->index }}" name="moneya{{ $loop->index }}"
                                         value="{{ $data->幣別 }}">{{ $data->幣別 }}</td>
                                 <td><input type="hidden" id="nowneeda{{ $loop->index }}"
                                         name="nowneeda{{ $loop->index }}"
@@ -113,7 +96,7 @@
                                 <td><input class="form-control form-control-lg" type="number"
                                         id="buyamounta{{ $loop->index }}" name="buyamounta{{ $loop->index }}" required
                                         value="{{ $real }}" min="0" max="{{ $real }}"
-                                        style="width:120px"></td>
+                                        style="width:100px" disabled></td>
                                 <td><input class="form-control form-control-lg" id="buymoneya{{ $loop->index }}"
                                         name="buymoneya{{ $loop->index }}" style="width:100px" readonly></td>
                                 <td><input type="hidden" id="ratea{{ $loop->index }}" name="ratea{{ $loop->index }}"
@@ -127,28 +110,12 @@
                             <?php
                             $amountb = DB::table('在途量')
                                 ->where('料號', $data->料號)
-                                ->where('客戶', $data->客戶別)
                                 ->sum('請購數量');
                             $stockb = DB::table('inventory')
                                 ->where('料號', $data->料號)
-                                ->where('客戶別', $data->客戶別)
                                 ->sum('現有庫存');
-                            $amountb = round($amountb, 0);
-                            $nowneedb = ($data->當月站位人數 * $data->當月開線數 * $data->當月開班數 * $data->當月每人每日需求量 * $data->當月每日更換頻率 * $data->本月生產天數) / $data->MPQ;
-                            $nextneedb = ($data->下月站位人數 * $data->下月開線數 * $data->下月開班數 * $data->下月每人每日需求量 * $data->下月每日更換頻率 * $data->下月生產天數) / $data->MPQ;
-                            $realneedb = $nextneedb + $nowneedb - $stockb - $amountb;
-                            $realneedb = ceil($realneedb);
-                            $real = $realneedb <= 0 ? 0 : $realneedb;
                             ?>
                             <tr>
-                                <td><input class="innumber" type="checkbox" id="innumberb" name="innumberb"
-                                        style="width:20px;height:20px;" value="{{ $loop->index }}"></td>
-                                <td><input class="form-control form-control-lg" type="text"
-                                        id="srmnumberb{{ $loop->index }}" name="srmnumberb{{ $loop->index }}"
-                                        style="width:100px"></td>
-                                <td><input type="hidden" id="clientb{{ $loop->index }}"
-                                        name="clientb{{ $loop->index }}"
-                                        value="{{ $data->客戶別 }}">{{ $data->客戶別 }}</td>
                                 <td><input type="hidden" id="numberb{{ $loop->index }}"
                                         name="numberb{{ $loop->index }}"
                                         value="{{ $data->料號 }}">{{ $data->料號 }}</td>
@@ -165,11 +132,9 @@
                                         name="moneyb{{ $loop->index }}"
                                         value="{{ $data->幣別 }}">{{ $data->幣別 }}</td>
                                 <td><input type="hidden" id="nowneedb{{ $loop->index }}"
-                                        name="nowneedb{{ $loop->index }}"
-                                        value="{{ $nowneedb }}">{{ $nowneedb }}</td>
+                                        name="nowneedb{{ $loop->index }}" value="/">/</td>
                                 <td><input type="hidden" id="nextneedb{{ $loop->index }}"
-                                        name="nextneedb{{ $loop->index }}"
-                                        value="{{ $nextneedb }}">{{ $nextneedb }}</td>
+                                        name="nextneedb{{ $loop->index }}" value="/">/</td>
                                 <td><input type="hidden" id="stockb{{ $loop->index }}"
                                         name="stockb{{ $loop->index }}"
                                         value="{{ $stockb }}">{{ round($stockb, 0) }}</td>
@@ -177,13 +142,12 @@
                                         name="amountb{{ $loop->index }}"
                                         value="{{ $amountb }}">{{ round($amountb, 0) }}</td>
                                 <td><input class="form-control form-control-lg" type="number"
-                                        id="buyamountb{{ $loop->index }}" name="buyamountb{{ $loop->index }}"
-                                        required value="{{ $real }}" min="0" max="{{ $real }}"
-                                        style="width:120px"></td>
+                                        id="buyamountb{{ $loop->index }}" name="buyamountb{{ $loop->index }}" required
+                                        value="{{ $data->請購數量 }}" min="0" max="{{ $data->請購數量 }}"
+                                        style="width:100px" disabled></td>
                                 <td><input class="form-control form-control-lg" id="buymoneyb{{ $loop->index }}"
                                         name="buymoneyb{{ $loop->index }}" style="width:100px" readonly></td>
-                                <td><input type="hidden" id="rateb{{ $loop->index }}"
-                                        name="rateb{{ $loop->index }}"
+                                <td><input type="hidden" id="rateb{{ $loop->index }}" name="rateb{{ $loop->index }}"
                                         value="{{ $rate2[$loop->index] }}">{{ $rate2[$loop->index] }}</td>
                                 <td><input type="hidden" id="moqb{{ $loop->index }}" name="moqb{{ $loop->index }}"
                                         value="{{ $data->MOQ }}">{{ $data->MOQ }}</td>
@@ -196,23 +160,15 @@
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                <span style="color: red;">{!! __('monthlyPRpageLang.submitspan') !!}</span>
+                <span style="color: red;">{!! __('monthlyPRpageLang.exportspan') !!}</span>
 
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <input type="submit" id="inser" name="insert" class="btn btn-lg btn-primary"
-                    value="{!! __('monthlyPRpageLang.submit') !!}">
-                &emsp13;
                 <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                     value="{!! __('monthlyPRpageLang.export') !!}">
                 {{-- &emsp13; --}}
                 {{-- <input type="submit" id="download1" name="download1" class="btn btn-lg btn-primary"
                     value="{!! __('monthlyPRpageLang.export1') !!}"> --}}
             </form>
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <span style="color: red;">{!! __('monthlyPRpageLang.srmspan') !!}</span>
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <button class="btn btn-primary" id="writesrm">{!! __('monthlyPRpageLang.writesrm') !!}</button>
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
         </div>
     </div>
