@@ -25,18 +25,6 @@
                             <form id="form1" method="POST">
                                 @csrf
                                 <div class="row w-100 justify-content-center mb-3">
-                                    <label class="col col-auto form-label p-0 m-0">{!! __('monthlyPRpageLang.client') !!}</label>
-                                    <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <select class="form-select form-select-lg col col-auto" id="client"
-                                            name="client">
-                                            <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.enterclient') !!}</option>
-                                            @foreach ($client as $client)
-                                                <option>{{ $client->客戶 }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
                                     <label class="col col-auto form-label p-0 m-0">{!! __('monthlyPRpageLang.isn') !!}</label>
@@ -51,16 +39,6 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                    </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                    <label class="col col-auto form-label p-0 m-0">{!! __('monthlyPRpageLang.sxb') !!}</label>
-                                    <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <input class="form-control form-control-lg @error('sxb') is-invalid @enderror"
-                                            type="text" id="sxb" name="sxb"
-                                            placeholder="{!! __('monthlyPRpageLang.entersxb') !!}">
                                     </div>
 
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

@@ -41,11 +41,8 @@ $(function () {
 
     var select = $(document.activeElement).val();
     var count = $("#count").val();
-    var client = [];
     var number = [];
     var number90 = [];
-    var production = [];
-    var machine = [];
     var amount = [];
     var check = [];
     var data = [];
@@ -56,24 +53,18 @@ $(function () {
     var data4 = [];
     var data5 = [];
     var data6 = [];
-    var data7 = [];
-    var data8 = [];
-    var data9 = [];
     var title = [];
     var titlename = $("#titlename").val();
     var titlecount = $("#titlecount").val();
 
     for (let i = 0; i < count; i++) {
-      data0.push($("#client" + i).val());
-      data1.push($("#machine" + i).val());
-      data2.push($("#production" + i).val());
-      data3.push($("#number" + i).val());
-      data4.push($("#name" + i).val());
-      data5.push($("#format" + i).val());
-      data6.push($("#amount" + i).val());
-      data7.push($("#number90" + i).val());
-      data8.push($("#email" + i).val());
-      data9.push($("#status" + i).val());
+      data0.push($("#number" + i).val());
+      data1.push($("#name" + i).val());
+      data2.push($("#format" + i).val());
+      data3.push($("#amount" + i).val());
+      data4.push($("#number90" + i).val());
+      data5.push($("#email" + i).val());
+      data6.push($("#status" + i).val());
     }
     for (let i = 0; i < titlecount; i++) {
       title.push($("#title" + [i]).val());
@@ -86,11 +77,8 @@ $(function () {
     var count = check.length;
 
     for (let i = 0; i < count; i++) {
-      client.push($("#client" + check[i]).val());
       number.push($("#number" + check[i]).val());
       number90.push($("#number90" + check[i]).val());
-      production.push($("#production" + check[i]).val());
-      machine.push($("#machine" + check[i]).val());
       amount.push($("#amount" + check[i]).val());
     }
     let checked = $("input[type=checkbox]:checked").length;
@@ -130,9 +118,6 @@ $(function () {
       data.push(data4);
       data.push(data5);
       data.push(data6);
-      data.push(data7);
-      data.push(data8);
-      data.push(data9);
       console.log(titlecount);
 
       $.ajax({
@@ -238,11 +223,8 @@ $(function () {
         type: "POST",
         url: "consumechangeordelete",
         data: {
-          client: client,
           number: number,
           number90: number90,
-          production: production,
-          machine: machine,
           amount: amount,
           select: select,
           email: email,

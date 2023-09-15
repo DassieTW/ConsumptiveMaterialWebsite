@@ -25,9 +25,6 @@
             <tr>
                 <th>{!! __('monthlyPRpageLang.isn') !!}</th>
                 <th>{!! __('monthlyPRpageLang.pName') !!}</th>
-                <th>{!! __('monthlyPRpageLang.client') !!}</th>
-                <th>{!! __('monthlyPRpageLang.machine') !!}</th>
-                <th>{!! __('monthlyPRpageLang.process') !!}</th>
                 <th>{!! __('monthlyPRpageLang.consume') !!}</th>
                 <th>{!! __('monthlyPRpageLang.90isn') !!}</th>
             </tr>
@@ -38,18 +35,11 @@
                     <td><input type="hidden" id="name{{ $i }}" name="name{{ $i }}"
                             value="{{ $datas[1][$i] }}">{{ $datas[1][$i] }}
                     </td>
-                    <td><input type="hidden" id="client{{ $i }}" name="client{{ $i }}"
-                            value="{{ $datas[2][$i] }}">{{ $datas[2][$i] }}</td>
-                    <td><input type="hidden" id="machine{{ $i }}" name="machine{{ $i }}"
-                            value="{{ $datas[3][$i] }}">{{ $datas[3][$i] }}</td>
-                    <td><input type="hidden" id="production{{ $i }}" name="production{{ $i }}"
-                            value="{{ $datas[4][$i] }}">{{ $datas[4][$i] }}
-                    </td>
                     <td><input type="hidden" id="amount{{ $i }}" name="amount{{ $i }}"
-                            value="{{ $datas[5][$i] }}">{{ $datas[5][$i] }}</td>
+                            value="{{ $datas[2][$i] }}">{{ $datas[2][$i] }}</td>
                     <td><input type="hidden" id="number90{{ $i }}" name="number90{{ $i }}"
-                            value="{{ $datas[8][$i] }}">{{ $datas[8][$i] }}</td>
-                    @if ($datas[6][$i])
+                            value="{{ $datas[5][$i] }}">{{ $datas[5][$i] }}</td>
+                    @if ($datas[3][$i])
                         <td> <img src="{{ $message->embed(public_path() . '/admin/img/mail/check.png') }}"
                                 width="30px" height="30px" />
 
@@ -60,7 +50,7 @@
                         </td>
                     @endif
                     <td><input type="hidden" id="remark{{ $i }}" name="remark{{ $i }}"
-                            value="{{ $datas[7][$i] }}">{{ $datas[7][$i] }}
+                            value="{{ $datas[4][$i] }}">{{ $datas[4][$i] }}
                     </td>
                 </tr>
             @endfor

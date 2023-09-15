@@ -159,4 +159,5 @@ return [
     '90isn' => '90PN',
     'enter90isn' => 'Please input 90PN',
     '90isnlength' => '90PN length is not 12',
+    'exportspan' => 'Only the data This time buy amount > 0 will be exported'
 ];

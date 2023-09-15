@@ -38,10 +38,8 @@ $("#monthsearch").on("submit", function (e) {
   var checked = $("input[type=checkbox]:checked").length;
 
   var count = check.length;
-  var client = [];
-  var machine = [];
-  var production = [];
   var number90 = [];
+  var number = [];
   var data = [];
   var data0 = [];
   var data1 = [];
@@ -59,15 +57,13 @@ $("#monthsearch").on("submit", function (e) {
   if (select === "下載" || select === "下载" || select === "Download") {
     count = $("#count").val();
     for (let i = 0; i < count; i++) {
-      data0.push($("#client" + i).val());
-      data1.push($("#machine" + i).val());
-      data2.push($("#production" + i).val());
-      data3.push($("#90number" + i).val());
-      data4.push($("#nowmps" + i).val());
-      data5.push($("#nowday" + i).val());
-      data6.push($("#nextmps" + i).val());
-      data7.push($("#nextday" + i).val());
-      data8.push($("#writetime" + i).val());
+      data0.push($("#90number" + i).val());
+      data1.push($("#number" + i).val());
+      data2.push($("#nowmps" + i).val());
+      data3.push($("#nowday" + i).val());
+      data4.push($("#nextmps" + i).val());
+      data5.push($("#nextday" + i).val());
+      data6.push($("#writetime" + i).val());
     }
     for (let i = 0; i < titlecount; i++) {
       title.push($("#title" + [i]).val());
@@ -80,8 +76,6 @@ $("#monthsearch").on("submit", function (e) {
     data.push(data4);
     data.push(data5);
     data.push(data6);
-    data.push(data7);
-    data.push(data8);
 
     $.ajax({
       type: "POST",
@@ -180,18 +174,14 @@ $("#monthsearch").on("submit", function (e) {
 
       var count = check.length;
       for (let i = 0; i < count; i++) {
-        client.push($("#client" + check[i]).val());
-        machine.push($("#machine" + check[i]).val());
-        production.push($("#production" + check[i]).val());
+        number.push($("#number" + check[i]).val());
         number90.push($("#90number" + check[i]).val());
       }
       $.ajax({
         type: "POST",
         url: "monthdelete",
         data: {
-          client: client,
-          machine: machine,
-          production: production,
+          number: number,
           number90: number90,
           count: count,
         },

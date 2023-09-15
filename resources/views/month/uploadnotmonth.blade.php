@@ -1,43 +1,21 @@
 @foreach ($data as $row)
     <?php
-    $name = DB::table('consumptive_material')
-        ->where('料號', trim($row[2]))
-        ->value('品名');
-    $unit = DB::table('consumptive_material')
-        ->where('料號', trim($row[2]))
-        ->value('單位');
-    $month = DB::table('consumptive_material')
-        ->where('料號', trim($row[2]))
-        ->value('月請購');
+    if (strlen(trim($row[0])) !== 0) {
+        $name = DB::table('consumptive_material')
+            ->where('料號', trim($row[0]))
+            ->value('品名');
+        $i = false;
+        $error = $loop->index + 1;
     
-    $clients = DB::table('客戶別')
-        ->pluck('客戶')
-        ->toArray();
-    
-    $i = false;
-    $error = $loop->index + 1;
-    
-    //判斷是否有料號
-    if ($name === null || $unit === null) {
-        $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[2];
-        echo "<script LANGUAGE='JavaScript'>
+        //判斷是否有料號
+        if ($name === null) {
+            $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[0];
+            echo "<script LANGUAGE='JavaScript'>
                                         window.alert('$mess');
                                         window.location.href='uploadnotmonth';
                                         </script>";
+        }
     }
-    //判斷是否有這個客戶
-    if (in_array(trim($row[1]), $clients)) {
-        $i = true;
-    }
-    
-    if ($i === false) {
-        $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
-        echo "<script LANGUAGE='JavaScript'>
-                                        window.alert('$mess');
-                                        window.location.href='uploadnotmonth';
-                                        </script>";
-    }
-    
     ?>
 @endforeach
 @extends('layouts.adminTemplate')
@@ -69,65 +47,43 @@
                         <table class="table" id="test">
                             <tr>
                                 <th><input type="hidden" id="title0" name="title0"
-                                        value="SXB單號">{!! __('monthlyPRpageLang.sxb') !!}</th>
-                                <th><input type="hidden" id="title1" name="title1"
-                                        value="客戶別">{!! __('monthlyPRpageLang.client') !!}</th>
-                                <th><input type="hidden" id="title2" name="title2"
                                         value="料號">{!! __('monthlyPRpageLang.isn') !!}</th>
-                                <th><input type="hidden" id="title3" name="title3"
+                                <th><input type="hidden" id="title1" name="title1"
                                         value="品名">{!! __('monthlyPRpageLang.pName') !!}</th>
-                                <th><input type="hidden" id="title4" name="title4"
-                                        value="單位">{!! __('monthlyPRpageLang.unit') !!}</th>
-                                <th><input type="hidden" id="title5" name="title5"
-                                        value="月請購">{!! __('templateWords.monthly') !!}</th>
-                                <th><input type="hidden" id="title6" name="title6"
+                                <th><input type="hidden" id="title2" name="title2"
                                         value="請購數量">{!! __('monthlyPRpageLang.buyamount1') !!}</th>
-                                <th><input type="hidden" id="title7" name="title7"
+                                <th><input type="hidden" id="title3" name="title3"
                                         value="說明">{!! __('monthlyPRpageLang.description') !!}</th>
-                                <th><input type="hidden" id="title8" name="title8"
-                                        value="管控項次">{!! __('monthlyPRpageLang.control') !!}</th>
-
-                                <input type="hidden" id="time" name="time" value="9">
+                                <input type="hidden" id="titlecount" name="titlecount" value="4">
                             </tr>
                             @foreach ($data as $row)
-                                <tr>
+                                @if (strlen(trim($row[0])) !== 0)
+                                    <tr id="row{{ $loop->index }}">
 
-                                    <td><input class="form-control corm-control-lg" type="text"
-                                            id="data0{{ $loop->index }}" name="data0{{ $loop->index }}"
-                                            value="{{ trim($row[0]) }}" required></td>
-                                    <td><input type="hidden" id="data1{{ $loop->index }}" name="data1{{ $loop->index }}"
-                                            value="{{ trim($row[1]) }}">{{ $row[1] }}</td>
-                                    <td><input type="hidden" id="data2{{ $loop->index }}" name="data2{{ $loop->index }}"
-                                            value="{{ trim($row[2]) }}">{{ $row[2] }}</td>
-                                    <td>{{ $name }}</td>
-                                    <td>{{ $unit }}</td>
-                                    <td><input type="hidden" id="data6{{ $loop->index }}"
-                                            name="data6{{ $loop->index }}"
-                                            value="{{ $month }}">{{ $month }}</td>
-                                    <td><input class="form-control corm-control-lg" type="number"
-                                            id="data3{{ $loop->index }}" name="data3{{ $loop->index }}"
-                                            value="{{ trim($row[3]) }}" required></td>
-                                    <td><input class="form-control corm-control-lg" type="text"
-                                            id="data4{{ $loop->index }}" name="data4{{ $loop->index }}"
-                                            value="{{ trim($row[4]) }}"></td>
-                                    <td>
-                                        <select style="width: 150px;" class="form-select form-select-lg "
-                                            id="data5{{ $loop->index }}" name="data5{{ $loop->index }}">
-                                            <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.entercontrol') !!}
-                                            </option>
-                                            <option>品質問題</option>
-                                            <option>MPS上升</option>
-                                            <option>其他</option>
-                                        </select>
-                                    </td>
+                                        <?php
+                                        $name = DB::table('consumptive_material')
+                                            ->where('料號', trim($row[0]))
+                                            ->value('品名');
+                                        ?>
+                                        <td><input type="hidden" id="number{{ $loop->index }}"
+                                                name="number{{ $loop->index }}"
+                                                value="{{ trim($row[0]) }}">{{ $row[0] }}
+                                        </td>
+                                        <td>{{ $name }}</td>
+                                        <td><input class="form-control corm-control-lg" type="number"
+                                                id="amount{{ $loop->index }}" name="amount{{ $loop->index }}"
+                                                value="{{ trim($row[1]) }}" required style="width: 100px"></td>
+                                        <td><input class="form-control corm-control-lg" type="text"
+                                                id="desc{{ $loop->index }}" name="desc{{ $loop->index }}"
+                                                value="{{ trim($row[2]) }}" style="width: 150px"></td>
 
-                                </tr>
-                                <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                                    </tr>
+                                    <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                                @endif
                             @endforeach
 
                         </table>
                     </div>
-                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <input type="submit" class="btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.addtodatabase') !!}">
                 </form>

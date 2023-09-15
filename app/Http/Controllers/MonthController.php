@@ -36,6 +36,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Mail;
+use Mockery\Undefined;
 use PhpParser\Node\Expr\Cast\Array_;
 
 class MonthController extends Controller
@@ -44,9 +45,6 @@ class MonthController extends Controller
     public function consumesearch(Request $request)
     {
         if (Session::has('username')) {
-            $client = $request->input('client');
-            $machine = $request->input('machine');
-            $production = $request->input('production');
             $number = $request->input('number');
             $number90 = $request->input('number90');
             $send = $request->input('send');
@@ -56,9 +54,6 @@ class MonthController extends Controller
                 }) //->wherenull('月請購_單耗.deleted_at')
                 ->where('consumptive_material.料號', 'like', $number . '%')
                 ->where('consumptive_material.發料部門', 'like', $send . '%')
-                ->where('月請購_單耗.客戶別', 'like', $client . '%')
-                ->where('月請購_單耗.機種', 'like', $machine . '%')
-                ->where('月請購_單耗.製程', 'like', $production . '%')
                 ->where('月請購_單耗.料號90', 'like', $number90 . '%')
                 ->get();
             $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
@@ -102,9 +97,6 @@ class MonthController extends Controller
         if (Session::has('username')) {
             $select = $request->input('select');
             $count = $request->input('count');
-            $client = $request->input('client');
-            $machine = $request->input('machine');
-            $production = $request->input('production');
             $number = $request->input('number');
             $number90 = $request->input('number90');
             $amount = $request->input('amount');
@@ -119,10 +111,7 @@ class MonthController extends Controller
                 for ($i = 0; $i < $count; $i++) {
                     DB::beginTransaction();
                     try {
-                        月請購_單耗::where('客戶別', $client[$i])
-                            ->where('機種', $machine[$i])
-                            ->where('製程', $production[$i])
-                            ->where('料號', $number[$i])
+                        月請購_單耗::where('料號', $number[$i])
                             ->where('料號90', $number90[$i])
                             ->delete();
                         DB::commit();
@@ -138,10 +127,7 @@ class MonthController extends Controller
                 for ($i = 0; $i < $count; $i++) {
                     DB::beginTransaction();
                     try {
-                        月請購_單耗::where('客戶別', $client[$i])
-                            ->where('機種', $machine[$i])
-                            ->where('製程', $production[$i])
-                            ->where('料號', $number[$i])
+                        月請購_單耗::where('料號', $number[$i])
                             ->where('料號90', $number90[$i])
                             ->update([
                                 '狀態' => "待畫押", //'畫押工號' => $jobnumber,
@@ -247,39 +233,33 @@ class MonthController extends Controller
     public function consumenew(Request $request)
     {
         if (Session::has('username')) {
-            if ($request->input('client') !== null && $request->input('number') !== null) {
 
+            $number = $request->input('number');
+            $number90 = $request->input('number90');
 
-                $client = $request->input('client');
-                $machine = $request->input('machine');
-                $production = $request->input('production');
-                $number = $request->input('number');
-                $number90 = $request->input('number90');
+            $name = DB::table('consumptive_material')->where('料號', $number)
+                ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('品名');
 
-                $name = DB::table('consumptive_material')->where('料號', $number)
-                    ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('品名');
+            $format = DB::table('consumptive_material')->where('料號', $number)
+                ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('規格');
 
-                $format = DB::table('consumptive_material')->where('料號', $number)
-                    ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('規格');
+            $unit = DB::table('consumptive_material')->where('料號', $number)
+                ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('單位');
 
-                $unit = DB::table('consumptive_material')->where('料號', $number)
-                    ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('單位');
+            $lt = DB::table('consumptive_material')->where('料號', $number)
+                ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('LT');
 
-                $lt = DB::table('consumptive_material')->where('料號', $number)
-                    ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('LT');
-
-                $lt = round($lt, 3);
-                if ($name !== null && $format !== null) {
-                    return \Response::json([
-                        'client' => $client, 'machine' => $machine, 'production' => $production, 'number' => $number,
-                        'name' => $name, 'format' => $format, 'unit' => $unit, 'lt' => $lt, 'number90' => $number90/*'nowmps' => $nowmps, 'nowday' => $nowday,
+            $lt = round($lt, 3);
+            if ($name !== null && $format !== null) {
+                return \Response::json([
+                    'number' => $number,
+                    'name' => $name, 'format' => $format, 'unit' => $unit, 'lt' => $lt, 'number90' => $number90/*'nowmps' => $nowmps, 'nowday' => $nowday,
                             'nextmps' => $nextmps, 'nextday' => $nextday,*/
-                    ]/* Status code here default is 200 ok*/);
-                }
-                //沒有料號
-                else {
-                    return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
-                }
+                ]/* Status code here default is 200 ok*/);
+            }
+            //沒有料號
+            else {
+                return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
             }
         } else {
             return redirect(route('member.login'));
@@ -342,7 +322,6 @@ class MonthController extends Controller
             $row = $request->input('row');
             $record = 0;
             $check = array();
-            //$jobnumber = $request->input('jobnumber');
             $email = $request->input('email');
             $sessemail = $email;
             $username = \Auth::user()->username;
@@ -353,18 +332,14 @@ class MonthController extends Controller
                 for ($i = 0; $i < $count; $i++) {
                     $number = $request->input('number')[$i];
                     $number90 = $request->input('number90')[$i];
-                    $client = $request->input('client')[$i];
-                    $machine = $request->input('machine')[$i];
-                    $production = $request->input('production')[$i];
                     $consume = $request->input('consume')[$i];
 
-                    $test = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)
-                        ->where('製程', $production)->where('料號90', $number90)->value('狀態');
+                    $test = DB::table('月請購_單耗')->where('料號', $number)->where('料號90', $number90)->value('狀態');
 
                     if ($test === null) {
                         DB::table('月請購_單耗')
                             ->insert([
-                                '料號' => $number, '客戶別' => $client, '機種' => $machine, '製程' => $production,
+                                '料號' => $number,
                                 '單耗' => $consume, '料號90' => $number90,
                                 '畫押信箱' => $email, '狀態' => "待畫押", '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username
                             ]);
@@ -372,10 +347,7 @@ class MonthController extends Controller
 
                         array_push($check, $row[$i]);
                     } else if ($test === '待重畫') {
-                        月請購_單耗::where('客戶別', $client)
-                            ->where('機種', $machine)
-                            ->where('製程', $production)
-                            ->where('料號', $number)
+                        月請購_單耗::where('料號', $number)
                             ->where('料號90', $number90)
                             ->update([
                                 '狀態' => "待畫押", '料號90' => $number90,
@@ -487,13 +459,11 @@ class MonthController extends Controller
         if (Session::has('username')) {
             $number = $request->input('number');
             $name = DB::table('consumptive_material')->where('料號', $number)->value('品名');
-            $unit = DB::table('consumptive_material')->where('料號', $number)->value('單位');
-            $month = DB::table('consumptive_material')->where('料號', $number)->value('月請購');
-            if ($name !== NULL && $unit !== NULL) {
+            if ($name !== NULL) {
 
                 return \Response::json([
-                    'client' => $request->input('client'), 'number' => $number,
-                    'name' => $name, 'unit' => $unit, 'month' => $month
+                    'number' => $number,
+                    'name' => $name, 'amount' => $request->input('amount')
                 ]/* Status code here default is 200 ok*/);
             } else {
                 return \Response::json([], 421/* Status code here default is 200 ok*/);
@@ -503,37 +473,65 @@ class MonthController extends Controller
         }
     }
 
+    //非月請購刪除
+    public function notmonthdelete(Request $request)
+    {
+        if (Session::has('username')) {
+
+            $count = $request->input('count');
+            $number = $request->input('number');
+            $record = 0;
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < $count; $i++) {
+                    if (isset($number[$i])) {
+                        DB::table('非月請購')
+                            ->where('料號', $number[$i])
+                            ->delete();
+                        $record++;
+                    }
+                } //for
+                DB::commit();
+                return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+            } //catch
+        } else {
+            return redirect(route('member.login'));
+        }
+    }
     //非月請購提交
     public function notmonthsubmit(Request $request)
     {
         if (Session::has('username')) {
             $count = $request->input('count');
+            $row = $request->input('row');
             $now = Carbon::now();
+            $check = array();
             DB::beginTransaction();
             try {
+                $res_arr_values = array();
                 for ($i = 0; $i < $count; $i++) {
-                    $client = $request->input('client')[$i];
-                    $number = $request->input('number')[$i];
-                    $amount = $request->input('amount')[$i];
-                    $sxb = $request->input('sxb')[$i];
-                    $say = $request->input('say')[$i];
-                    $test = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
-                    if ($test === null) {
-                        DB::table('在途量')
-                            ->insert(['客戶' => $client, '料號' => $number, '請購數量' => $amount/*, 'created_at' => $now*/]);
-                    } else {
-                        DB::table('在途量')
-                            ->where('客戶', $client)->where('料號', $number)
-                            ->update(['請購數量' => $test + $amount, /*'updated_at' => $now*/]);
-                    }
+                    $temp = array(
+                        "料號" => $request->input('number')[$i],
+                        "請購數量" => $request->input('amount')[$i],
+                        "上傳時間" => $now,
+                        "說明" => $request->input('desc')[$i],
+                    );
 
-                    DB::table('非月請購')
-                        ->insert([
-                            '客戶別' => $client, '料號' => $number, '請購數量' => $amount, '上傳時間' => $now, '說明' => $say, 'SXB單號' => $sxb
-                        ]);
+                    $res_arr_values[] = $temp;
+                    array_push($check, $row[$i]);
                 } //for
+
+                DB::table('非月請購')->upsert(
+                    $res_arr_values,
+                    ['料號'],
+                    ['請購數量', '上傳時間', '說明']
+                );
+
                 DB::commit();
-                return \Response::json(['record' => $count] /* Status code here default is 200 ok*/);
+                return \Response::json(['record' => $count, 'check' => $row] /* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
@@ -548,42 +546,32 @@ class MonthController extends Controller
     {
         if (Session::has('username')) {
             //search
-            $check = array();
-            $count = $request->input('count');
-            $names = DB::table('製程')->pluck('制程');
-            for ($i = 0; $i < $count; $i++) {
-                if ($request->has('innumber' . $i)) {
-                    array_push($check, $names[$i]);
-                } else {
-                    continue;
-                }
-            } // for
             if ($request->has('search')) {
-                if (empty($check)) {
-                    $datas = DB::table('MPS')
-                        ->where('客戶別', 'like', $request->input('client') . '%')
-                        ->where('機種', 'like', $request->input('machine') . '%')
-                        ->get();
-                } else {
-                    $datas = DB::table('MPS')
-                        ->where('客戶別', 'like', $request->input('client') . '%')
-                        ->where('機種', 'like', $request->input('machine') . '%')
-                        ->wherein('製程', $check)
-                        ->get();
-                } // if else
+
+                $datas = DB::table('MPS')
+                    ->where('料號', 'like', $request->input('number') . '%')
+                    ->where('料號90', 'like', $request->input('number90') . '%')
+                    ->get();
+                // if else
                 return view('month.monthsearchok')->with(['data' => $datas]);
             } // if
             //add
             else if ($request->has('add')) {
-
-                if ($request->input('client') === null) {
+                $name = DB::table('consumptive_material')->where('料號', $request->input('number'))
+                    ->where('耗材歸屬', '單耗')->where('月請購', '是')->value('品名');
+                if ($request->input('number') === null) {
                     return back()->withErrors([
-                        'client' => trans('validation.required'),
+                        'number' => trans('validation.required'),
                     ]);
                 }
-                if ($request->input('machine') === null) {
+                if (strlen($request->input('number')) !== 12) {
                     return back()->withErrors([
-                        'machine' => trans('validation.required'),
+                        'numberlength' => trans('validation.required'),
+                    ]);
+                }
+                if ($name === null) {
+                    return back()->withErrors([
+                        'numberno' => trans('validation.required'),
                     ]);
                 }
                 if ($request->input('number90') === null) {
@@ -596,25 +584,17 @@ class MonthController extends Controller
                         'number90length' => trans('validation.required'),
                     ]);
                 }
-                if (empty($check)) {
-                    return back()->withErrors([
-                        'production' => trans('validation.required'),
-                    ]);
-                } else {
-                    $nowmps = $request->input('nowmps');
-                    $nowday = $request->input('nowday');
-                    $nextmps = $request->input('nextmps');
-                    $nextday = $request->input('nextday');
-                    return view('month.monthadd')
-                        ->with('client', $request->input('client'))
-                        ->with('machine', $request->input('machine'))
-                        ->with('production', $check)
-                        ->with('number90', $request->input('number90'))
-                        ->with('nowmps', $nowmps)
-                        ->with('nowday', $nowday)
-                        ->with('nextmps', $nextmps)
-                        ->with('nextday', $nextday);
-                }
+                $nowmps = $request->input('nowmps');
+                $nowday = $request->input('nowday');
+                $nextmps = $request->input('nextmps');
+                $nextday = $request->input('nextday');
+                return view('month.monthadd')
+                    ->with('number90', $request->input('number90'))
+                    ->with('number', $request->input('number'))
+                    ->with('nowmps', $nowmps)
+                    ->with('nowday', $nowday)
+                    ->with('nextmps', $nextmps)
+                    ->with('nextday', $nextday);
             } else {
                 return redirect(route('month.importmonth'));
             }
@@ -629,18 +609,14 @@ class MonthController extends Controller
         if (Session::has('username')) {
 
             $count = $request->input('count');
-            $clients = $request->input('client');
-            $machines = $request->input('machine');
-            $productions = $request->input('production');
+            $number = $request->input('number');
             $number90 = $request->input('number90');
             DB::beginTransaction();
             try {
                 for ($i = 0; $i < $count; $i++) {
 
                     DB::table('MPS')
-                        ->where('客戶別', $clients[$i])
-                        ->where('機種', $machines[$i])
-                        ->where('製程', $productions[$i])
+                        ->where('料號', $number[$i])
                         ->where('料號90', $number90[$i])
                         ->delete();
                 } //for
@@ -668,7 +644,7 @@ class MonthController extends Controller
                     $temp = array(
                         // "客戶別" => $request->input('client')[$i],
                         // "機種" => $request->input('machine')[$i],
-                        "製程" => $request->input('production')[$i],
+                        // "製程" => $request->input('production')[$i],
                         "料號90" => $request->input('number90')[$i],
                         "下月MPS" => $request->input('nextmps')[$i],
                         "下月生產天數" => $request->input('nextday')[$i],
@@ -682,7 +658,7 @@ class MonthController extends Controller
 
                 DB::table('MPS')->upsert(
                     $res_arr_values,
-                    ['製程', '料號90'],
+                    ['料號', '料號90'],
                     ['下月MPS', '下月生產天數', '本月MPS', '本月生產天數', '填寫時間']
                 );
 
@@ -771,7 +747,6 @@ class MonthController extends Controller
     public function buylistmake(Request $request)
     {
         if (Session::has('username')) {
-            $client = $request->input('client');
             $money = $request->input('money');
             $send = $request->input('send');
             $array = array();
@@ -783,263 +758,118 @@ class MonthController extends Controller
             $vnd = $request->input('vnd');
             $idr = $request->input('idr');
 
-            if ($client === null) {
-                return back()->withErrors([
-                    'client' => trans('validation.required'),
-                ]);
-            } else if ($money === null) {
+            if ($money === null) {
                 return back()->withErrors([
                     'money' => trans('validation.required'),
                 ]);
             }
+            $datas = DB::table('月請購_單耗')
+                ->join('MPS', function ($join) {
+                    $join->on('MPS.料號', '=', '月請購_單耗.料號')
+                        ->on('MPS.料號90', '=', '月請購_單耗.料號90');
+                })
+                ->join('consumptive_material', function ($join) {
+                    $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
+                })->where('consumptive_material.發料部門', 'like', $send . '%')
+                ->where('月請購_單耗.狀態', '=', "已完成")->get();
 
-            if ($client === "ALL_CLIENT") {
-                Session::put("clientChoice", "All Clients"); // for Excel Header
-
-                $datas = DB::table('月請購_單耗')
-                    ->join('MPS', function ($join) {
-                        $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
-                            ->on('MPS.料號90', '=', '月請購_單耗.料號90')
-                            ->on('MPS.製程', '=', '月請購_單耗.製程');
-                    })
-                    ->join('consumptive_material', function ($join) {
-                        $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
-                    })->where('consumptive_material.發料部門', 'like', $send . '%')
-                    ->where('月請購_單耗.狀態', '=', "已完成")->get();
-
-
-                foreach ($datas as $data) {
-                    $test = $data->幣別;
-                    if ($test !== $money) {
-                        if ($test === "USD" && $usd === null) {
-                            return back()->withErrors([
-                                'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "USD" && $usd !== null) {
-                            array_push($array, $usd);
-                        } else if ($test === "RMB" && $rmb === null) {
-                            return back()->withErrors([
-                                'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "RMB" && $rmb !== null) {
-                            array_push($array, $rmb);
-                        } else if ($test === "JPY" && $jpy === null) {
-                            return back()->withErrors([
-                                'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "JPY" && $jpy !== null) {
-                            array_push($array, $jpy);
-                        } else if ($test === "TWD" && $twd === null) {
-                            return back()->withErrors([
-                                'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "TWD" && $twd !== null) {
-                            array_push($array, $twd);
-                        } else if ($test === "VND" && $vnd === null) {
-                            return back()->withErrors([
-                                'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "VND" && $vnd !== null) {
-                            array_push($array, $vnd);
-                        } else if ($test === "IDR" && $idr === null) {
-                            return back()->withErrors([
-                                'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "IDR" && $idr !== null) {
-                            array_push($array, $idr);
-                        }
-                    } else {
-                        array_push($array, 1);
-                        continue;
+            foreach ($datas as $data) {
+                $test = $data->幣別;
+                if ($test !== $money) {
+                    if ($test === "USD" && $usd === null) {
+                        return back()->withErrors([
+                            'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "USD" && $usd !== null) {
+                        array_push($array, $usd);
+                    } else if ($test === "RMB" && $rmb === null) {
+                        return back()->withErrors([
+                            'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "RMB" && $rmb !== null) {
+                        array_push($array, $rmb);
+                    } else if ($test === "JPY" && $jpy === null) {
+                        return back()->withErrors([
+                            'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "JPY" && $jpy !== null) {
+                        array_push($array, $jpy);
+                    } else if ($test === "TWD" && $twd === null) {
+                        return back()->withErrors([
+                            'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "TWD" && $twd !== null) {
+                        array_push($array, $twd);
+                    } else if ($test === "VND" && $vnd === null) {
+                        return back()->withErrors([
+                            'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "VND" && $vnd !== null) {
+                        array_push($array, $vnd);
+                    } else if ($test === "IDR" && $idr === null) {
+                        return back()->withErrors([
+                            'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "IDR" && $idr !== null) {
+                        array_push($array, $idr);
                     }
-                } // for each
-
-
-                $datas2 = DB::table('月請購_站位')
-                    ->join('MPS', function ($join) {
-                        $join->on('MPS.客戶別', '=', '月請購_站位.客戶別')
-                            ->on('MPS.機種', '=', '月請購_站位.機種')
-                            ->on('MPS.製程', '=', '月請購_站位.製程');
-                    })
-                    ->join('consumptive_material', function ($join) use ($send) {
-                        $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
-                    })->where('consumptive_material.發料部門', 'like', $send . '%')
-                    ->where('月請購_站位.狀態', '=', "已完成")
-                    ->get();
-
-                foreach ($datas2 as $data) {
-                    $test = $data->幣別;
-                    if ($test !== $money) {
-                        if ($test === "USD" && $usd === null) {
-                            return back()->withErrors([
-                                'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "USD" && $usd !== null) {
-                            array_push($array1, $usd);
-                        } else if ($test === "RMB" && $rmb === null) {
-                            return back()->withErrors([
-                                'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "RMB" && $rmb !== null) {
-                            array_push($array1, $rmb);
-                        } else if ($test === "JPY" && $jpy === null) {
-                            return back()->withErrors([
-                                'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "JPY" && $jpy !== null) {
-                            array_push($array1, $jpy);
-                        } else if ($test === "TWD" && $twd === null) {
-                            return back()->withErrors([
-                                'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "TWD" && $twd !== null) {
-                            array_push($array1, $twd);
-                        } else if ($test === "VND" && $vnd === null) {
-                            return back()->withErrors([
-                                'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "VND" && $vnd !== null) {
-                            array_push($array1, $vnd);
-                        } else if ($test === "IDR" && $idr === null) {
-                            return back()->withErrors([
-                                'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "IDR" && $idr !== null) {
-                            array_push($array1, $idr);
-                        } // if else if
-                    } else {
-                        array_push($array1, 1);
-                        continue;
-                    } // if else
-                } // for each
-
-                return view('month.buylistmakeok')->with(['data1' => $datas])->with(['data2' => $datas2])
-                    ->with(['rate1' => $array])->with(['rate2' => $array1]);
-            } else {
-                Session::put("clientChoice", $client); // for Excel Header
-
-                $datas = DB::table('月請購_單耗')
-                    ->join('MPS', function ($join) use ($send) {
-                        $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
-                            ->on('MPS.料號90', '=', '月請購_單耗.料號90')
-                            ->on('MPS.製程', '=', '月請購_單耗.製程');
-                    })
-                    ->join('consumptive_material', function ($join) use ($send) {
-                        $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
-                    })->where('月請購_單耗.客戶別', $client)
-                    ->where('consumptive_material.發料部門', 'like', $send . '%')
-                    ->where('月請購_單耗.狀態', '=', "已完成")
-                    ->get();
-
-
-                foreach ($datas as $data) {
-                    $test = $data->幣別;
-                    if ($test !== $money) {
-                        if ($test === "USD" && $usd === null) {
-                            return back()->withErrors([
-                                'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "USD" && $usd !== null) {
-                            array_push($array, $usd);
-                        } else if ($test === "RMB" && $rmb === null) {
-                            return back()->withErrors([
-                                'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "RMB" && $rmb !== null) {
-                            array_push($array, $rmb);
-                        } else if ($test === "JPY" && $jpy === null) {
-                            return back()->withErrors([
-                                'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "JPY" && $jpy !== null) {
-                            array_push($array, $jpy);
-                        } else if ($test === "TWD" && $twd === null) {
-                            return back()->withErrors([
-                                'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "TWD" && $twd !== null) {
-                            array_push($array, $twd);
-                        } else if ($test === "VND" && $vnd === null) {
-                            return back()->withErrors([
-                                'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "VND" && $vnd !== null) {
-                            array_push($array, $vnd);
-                        } else if ($test === "IDR" && $idr === null) {
-                            return back()->withErrors([
-                                'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "IDR" && $idr !== null) {
-                            array_push($array, $idr);
-                        }
-                    } else {
-                        array_push($array, 1);
-                        continue;
-                    }
+                } else {
+                    array_push($array, 1);
+                    continue;
                 }
-
-                $datas2 = DB::table('月請購_站位')
-                    ->join('MPS', function ($join) {
-                        $join->on('MPS.客戶別', '=', '月請購_站位.客戶別')
-                            ->on('MPS.機種', '=', '月請購_站位.機種')
-                            ->on('MPS.製程', '=', '月請購_站位.製程');
-                    })
-                    ->join('consumptive_material', function ($join) use ($send) {
-                        $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
-                    })->where('月請購_站位.客戶別', $client)
-                    ->where('consumptive_material.發料部門', 'like', $send . '%')
-                    ->where('月請購_站位.狀態', '=', "已完成")
-                    ->get();
-
-                foreach ($datas2 as $data) {
-                    $test = $data->幣別;
-                    if ($test !== $money) {
-                        if ($test === "USD" && $usd === null) {
-                            return back()->withErrors([
-                                'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "USD" && $usd !== null) {
-                            array_push($array1, $usd);
-                        } else if ($test === "RMB" && $rmb === null) {
-                            return back()->withErrors([
-                                'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "RMB" && $rmb !== null) {
-                            array_push($array1, $rmb);
-                        } else if ($test === "JPY" && $jpy === null) {
-                            return back()->withErrors([
-                                'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "JPY" && $jpy !== null) {
-                            array_push($array1, $jpy);
-                        } else if ($test === "TWD" && $twd === null) {
-                            return back()->withErrors([
-                                'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "TWD" && $twd !== null) {
-                            array_push($array1, $twd);
-                        } else if ($test === "VND" && $vnd === null) {
-                            return back()->withErrors([
-                                'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "VND" && $vnd !== null) {
-                            array_push($array1, $vnd);
-                        } else if ($test === "IDR" && $idr === null) {
-                            return back()->withErrors([
-                                'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                            ]);
-                        } else if ($test === "IDR" && $idr !== null) {
-                            array_push($array1, $idr);
-                        }
-                    } else {
-                        array_push($array1, 1);
-                        continue;
-                    }
-                }
-
-                return view('month.buylistmakeok')->with(['data1' => $datas])->with(['data2' => $datas2])
-                    ->with(['rate1' => $array])->with(['rate2' => $array1]);
-            }
+            } // for each
+            $datas2 = DB::table('非月請購')
+                ->join('consumptive_material', function ($join) {
+                    $join->on('consumptive_material.料號', '=', '非月請購.料號');
+                })->where('consumptive_material.發料部門', 'like', $send . '%')
+                ->whereNull('非月請購.SXB單號')->get();
+            foreach ($datas2 as $data) {
+                $test = $data->幣別;
+                if ($test !== $money) {
+                    if ($test === "USD" && $usd === null) {
+                        return back()->withErrors([
+                            'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "USD" && $usd !== null) {
+                        array_push($array1, $usd);
+                    } else if ($test === "RMB" && $rmb === null) {
+                        return back()->withErrors([
+                            'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "RMB" && $rmb !== null) {
+                        array_push($array1, $rmb);
+                    } else if ($test === "JPY" && $jpy === null) {
+                        return back()->withErrors([
+                            'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "JPY" && $jpy !== null) {
+                        array_push($array1, $jpy);
+                    } else if ($test === "TWD" && $twd === null) {
+                        return back()->withErrors([
+                            'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "TWD" && $twd !== null) {
+                        array_push($array1, $twd);
+                    } else if ($test === "VND" && $vnd === null) {
+                        return back()->withErrors([
+                            'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "VND" && $vnd !== null) {
+                        array_push($array1, $vnd);
+                    } else if ($test === "IDR" && $idr === null) {
+                        return back()->withErrors([
+                            'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
+                        ]);
+                    } else if ($test === "IDR" && $idr !== null) {
+                        array_push($array1, $idr);
+                    } // if else if
+                } else {
+                    array_push($array1, 1);
+                    continue;
+                } // if else
+            } // for each
+            return view('month.buylistmakeok')->with(['data1' => $datas])->with(['data2' => $datas2])
+                ->with(['rate1' => $array])->with(['rate2' => $array1]);
         } else {
             return redirect(route('member.login'));
         } // else
@@ -1238,27 +1068,18 @@ class MonthController extends Controller
         DB::beginTransaction();
         try {
             for ($i = 0; $i < $count; $i++) {
-                $client = $Alldata[2][$i];
-                $machine = $Alldata[3][$i];
-                $production = $Alldata[4][$i];
                 $number = $Alldata[0][$i];
-                $number90 = $Alldata[8][$i];
-                $check = $Alldata[6][$i];
+                $number90 = $Alldata[5][$i];
+                $check = $Alldata[3][$i];
 
                 if ($check) {
-                    月請購_單耗::where('客戶別', $client)
-                        ->where('機種', $machine)
-                        ->where('製程', $production)
-                        ->where('料號', $number)
+                    月請購_單耗::where('料號', $number)
                         ->where('料號90', $number90)
                         ->update([
                             '狀態' => "已完成", '畫押時間' => $now,
                         ]);
                 } else {
-                    月請購_單耗::where('客戶別', $client)
-                        ->where('機種', $machine)
-                        ->where('製程', $production)
-                        ->where('料號', $number)
+                    月請購_單耗::where('料號', $number)
                         ->where('料號90', $number90)
                         ->update([
                             '狀態' => "待重畫", '畫押時間' => $now,
@@ -1494,19 +1315,11 @@ class MonthController extends Controller
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
             $worksheet = $spreadsheet->getActiveSheet();
             $titlecount = $request->input('titlecount');
-            $Alldata = json_decode($request->input('AllData'));
-            $count = $request->input('count');
-
-            // dd($Alldata);
-
-            // $worksheet->getPageSetup()->setHorizontalCentered(true);
-            // // 填寫header & footer of excel when printing
-            // $worksheet->getHeaderFooter()->setOddHeader("&C&B" . Session::get("clientChoice") . "  " . Carbon::now()->format('m') . "月耗材匯總");
-            // $worksheet->getHeaderFooter()->setOddFooter("&L&B核准：_______________________&C&B審核：_______________________&R&B申請人：_______________________");
-
-            // // $stringValueBinder = new StringValueBinder();
-            // // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
-            // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+            $Alldata = DB::table('非月請購')
+                ->join('consumptive_material', function ($join) {
+                    $join->on('consumptive_material.料號', '=', '非月請購.料號');
+                })->whereNull('非月請購.SXB單號')->get();
+            $count = count($Alldata);
 
             //填寫表頭
             for ($i = 0; $i < $titlecount; $i++) {
@@ -1514,17 +1327,12 @@ class MonthController extends Controller
             } // for
 
             //填寫內容
-
-            // $alphabet = range('A', 'Z'); // A ~ Z
             for ($i = 0; $i < $titlecount; $i++) {
+                $string = $request->input('titlecol')[$i];
                 for ($j = 0; $j < $count; $j++) {
-                    //$string = $i;
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
-                    // $endOfRow = $j;
-                } // for
-
-                // $endOfCol = $i;
-            } // for
+                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
+                }
+            }
 
             // dd($endOfRow . "," . $endOfCol); // test
 

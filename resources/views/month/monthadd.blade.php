@@ -24,40 +24,31 @@
                     <div class="table-responsive">
                         <table class="table" id="month">
                             <tr>
-                                <td>{!! __('monthlyPRpageLang.client') !!}</td>
-                                <td>{!! __('monthlyPRpageLang.machine') !!}</td>
-                                <td>{!! __('monthlyPRpageLang.process') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.90isn') !!}</td>
+                                <td>{!! __('monthlyPRpageLang.isn') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.nextmps') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.nextday') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.nowmps') !!}</td>
                                 <td>{!! __('monthlyPRpageLang.nowday') !!}</td>
                             </tr>
-                            @foreach ($production as $production)
-                                <tr>
-                                    <td><span id="client{{ $loop->index }}">{{ $client }}</span></td>
-                                    <td><span id="machine{{ $loop->index }}">{{ $machine }}</span></td>
-                                    <td><span id="production{{ $loop->index }}">{{ $production }}</span></td>
-                                    <td><span id="number90{{ $loop->index }}">{{ $number90 }}</span></td>
-                                    <td><input class="form-control form-control-lg" type="number"
-                                            id="nextmps{{ $loop->index }}" name="nextmps{{ $loop->index }}" required
-                                            value="{{ $nextmps }}" step="0.001"
-                                            oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
-                                    <td><input class="form-control form-control-lg" type="number"
-                                            id="nextday{{ $loop->index }}" name="nextday{{ $loop->index }}" required
-                                            value="{{ $nextday }}" step="0.001"
-                                            oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
-                                    <td><input class="form-control form-control-lg" type="number"
-                                            id="nowmps{{ $loop->index }}" name="nowmps{{ $loop->index }}" required
-                                            value="{{ $nowmps }}" step="0.001"
-                                            oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
-                                    <td><input class="form-control form-control-lg" type="number"
-                                            id="nowday{{ $loop->index }}" name="nowday{{ $loop->index }}" required
-                                            value="{{ $nowday }}" step="0.001"
-                                            oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
-                                </tr>
-                                <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
-                            @endforeach
+
+                            <tr>
+                                <td><span id="number">{{ $number }}</span></td>
+                                <td><span id="number90">{{ $number90 }}</span></td>
+                                <td><input class="form-control form-control-lg" type="number" id="nextmps" name="nextmps"
+                                        required value="{{ $nextmps }}" step="0.001"
+                                        oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                                <td><input class="form-control form-control-lg" type="number" id="nextday" name="nextday"
+                                        required value="{{ $nextday }}" step="0.001"
+                                        oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                                <td><input class="form-control form-control-lg" type="number" id="nowmps" name="nowmps"
+                                        required value="{{ $nowmps }}" step="0.001"
+                                        oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                                <td><input class="form-control form-control-lg" type="number" id="nowday" name="nowday"
+                                        required value="{{ $nowday }}" step="0.001"
+                                        oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                            </tr>
+
                         </table>
                     </div>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

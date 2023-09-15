@@ -62,25 +62,21 @@
                                 <tr>
                                     <th>{!! __('monthlyPRpageLang.delete') !!}</th>
                                     <th><input type="hidden" id="title0" name="title0"
-                                            value="客戶別">{!! __('monthlyPRpageLang.client') !!}</th>
-                                    <th><input type="hidden" id="title1" name="title1"
-                                            value="機種">{!! __('monthlyPRpageLang.machine') !!}</th>
-                                    <th><input type="hidden" id="title2" name="title2"
-                                            value="製程">{!! __('monthlyPRpageLang.process') !!}</th>
-                                    <th><input type="hidden" id="title3" name="title3"
                                             value="90料號">{!! __('monthlyPRpageLang.90isn') !!}</th>
-                                    <th><input type="hidden" id="title4" name="title4"
+                                    <th><input type="hidden" id="title1" name="title1"
+                                            value="料號">{!! __('monthlyPRpageLang.isn') !!}</th>
+                                    <th><input type="hidden" id="title2" name="title2"
                                             value="當月MPS">{!! __('monthlyPRpageLang.nowmps') !!}</th>
-                                    <th><input type="hidden" id="title5" name="title5"
+                                    <th><input type="hidden" id="title3" name="title3"
                                             value="當月生產天數">{!! __('monthlyPRpageLang.nowday') !!}</th>
-                                    <th><input type="hidden" id="title6" name="title6"
+                                    <th><input type="hidden" id="title4" name="title4"
                                             value="下月MPS">{!! __('monthlyPRpageLang.nextmps') !!}</th>
-                                    <th><input type="hidden" id="title7" name="title7"
+                                    <th><input type="hidden" id="title5" name="title5"
                                             value="下月生產天數">{!! __('monthlyPRpageLang.nextday') !!}</th>
-                                    <th><input type="hidden" id="title8" name="title8"
+                                    <th><input type="hidden" id="title6" name="title6"
                                             value="填寫時間">{!! __('monthlyPRpageLang.writetime') !!}</th>
                                 </tr>
-                                <input type="hidden" id="titlecount" name="titlecount" value="9">
+                                <input type="hidden" id="titlecount" name="titlecount" value="7">
 
                             </thead>
                             <tbody>
@@ -94,18 +90,12 @@
                                         ?>
                                         <td><input class="innumber" type="checkbox" id="innumber" name="innumber"
                                                 style="width:20px;height:20px;" value="{{ $loop->index }}"></td>
-                                        <td><input type="hidden" id="client{{ $loop->index }}"
-                                                name="client{{ $loop->index }}"
-                                                value="{{ $data->客戶別 }}">{{ $data->客戶別 }}</td>
-                                        <td><input type="hidden" id="machine{{ $loop->index }}"
-                                                name="machine{{ $loop->index }}"
-                                                value="{{ $data->機種 }}">{{ $data->機種 }}</td>
-                                        <td><input type="hidden" id="production{{ $loop->index }}"
-                                                name="production{{ $loop->index }}"
-                                                value="{{ $data->製程 }}">{{ $data->製程 }}</td>
                                         <td><input type="hidden" id="90number{{ $loop->index }}"
                                                 name="90number{{ $loop->index }}"
                                                 value="{{ $data->料號90 }}">{{ $data->料號90 }}</td>
+                                        <td><input type="hidden" id="number{{ $loop->index }}"
+                                                name="number{{ $loop->index }}"
+                                                value="{{ $data->料號 }}">{{ $data->料號 }}</td>
                                         <td><input type="hidden" id="nowmps{{ $loop->index }}"
                                                 name="nowmps{{ $loop->index }}"
                                                 value="{{ $data->本月MPS }}">{{ $data->本月MPS }}</td>

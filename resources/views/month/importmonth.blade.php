@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="card w-50">
+        <div class="card w-75">
             <div class="card-header">
                 <h3>{!! __('monthlyPRpageLang.importMonthlyData') !!}</h3>
             </div>
@@ -25,40 +25,27 @@
                         <form action="{{ route('month.monthsearchoradd') }}" method="POST">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
-                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.client') !!}</label>
+
+                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
-                                    <select
-                                        class="form-select form-select-lg col col-auto @error('client') is-invalid @enderror"
-                                        id="client" name="client">
-                                        <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.enterclient') !!}</option>
-                                        @foreach ($client as $client)
-                                            <option>{{ $client->客戶 }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('client')
+                                    <input
+                                        class="form-control form-control-lg col col-auto @error('number') is-invalid @enderror @error('numberno') is-invalid @enderror @error('numberlength') is-invalid @enderror"
+                                        type="text" id="number" name="number" placeholder="{!! __('monthlyPRpageLang.enterisn') !!}"
+                                        oninput="if(value.length>12)value=value.slice(0,12)">
+                                    @error('numberno')
                                         <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{!! __('monthlyPRpageLang.enterclient') !!}</strong>
+                                            <strong>{!! __('monthlyPRpageLang.noisn') !!}</strong>
                                         </span>
                                     @enderror
-                                </div>
-
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                <label class="col col-auto form-label">{!! __('monthlyPRpageLang.machine') !!}</label>
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                <div class="col-lg-6  col-md-12 col-sm-12">
-                                    <select
-                                        class="form-select form-select-lg col col-auto @error('machine') is-invalid @enderror"
-                                        id="machine" name="machine">
-                                        <option style="display: none" disabled selected>{!! __('monthlyPRpageLang.entermachine') !!}</option>
-                                        @foreach ($machine as $machine)
-                                            <option>{{ $machine->機種 }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('machine')
+                                    @error('number')
                                         <span class="invalid-feedback d-block" role="alert">
-                                            <strong>{!! __('monthlyPRpageLang.entermachine') !!}</strong>
+                                            <strong>{!! __('monthlyPRpageLang.enterisn') !!}</strong>
+                                        </span>
+                                    @enderror
+                                    @error('numberlength')
+                                        <span class="invalid-feedback d-block" role="alert">
+                                            <strong>{!! __('monthlyPRpageLang.isnlength') !!}</strong>
                                         </span>
                                     @enderror
                                 </div>
@@ -68,7 +55,7 @@
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
                                     <input
-                                        class="form-control form-control-lg col col-auto @error('number90') is-invalid @enderror"
+                                        class="form-control form-control-lg col col-auto @error('number90') is-invalid @enderror @error('number90length') is-invalid @enderror"
                                         type="text" id="number90" name="number90" placeholder="{!! __('monthlyPRpageLang.enter90isn') !!}"
                                         oninput="if(value.length>12)value=value.slice(0,12)">
                                     @error('number90')
@@ -127,34 +114,7 @@
                 </div>
             </div>
         </div>
-        <div class="card w-25">
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            <label class="col col-auto form-label">{!! __('monthlyPRpageLang.process') !!}</label>
-            <table class="table table-borderless">
-                @foreach ($production as $production)
-                    <tr>
-                        <td><input class="innumber" type="checkbox" id="innumber{{ $loop->index }}"
-                                name="innumber{{ $loop->index }}" style="width:20px;height:20px;"></td>
-                        <td>
-                            <h4>{{ $production->制程 }}
-                        </td>
-                    </tr>
-                    <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
-                @endforeach
-                @error('production')
-                    <span class="invalid-feedback d-block" role="alert">
-                        <strong>{!! __('monthlyPRpageLang.enterprocess') !!}</strong>
-                    </span>
-                @enderror
-            </table>
-        </div>
+
         </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <div class="card w-75">
