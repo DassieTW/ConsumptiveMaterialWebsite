@@ -7,7 +7,7 @@ import {
     useRouter
 } from "vue-router";
 
-export default function useNotmonthSearch() {
+export default function useMonthlyPRSearch() {
     const mats = ref("");
     const errors = ref("");
     const router = useRouter();

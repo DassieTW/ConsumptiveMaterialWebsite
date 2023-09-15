@@ -666,8 +666,8 @@ class MonthController extends Controller
                 $res_arr_values = array();
                 for ($i = 0; $i < $count; $i++) {
                     $temp = array(
-                        "客戶別" => $request->input('client')[$i],
-                        "機種" => $request->input('machine')[$i],
+                        // "客戶別" => $request->input('client')[$i],
+                        // "機種" => $request->input('machine')[$i],
                         "製程" => $request->input('production')[$i],
                         "料號90" => $request->input('number90')[$i],
                         "下月MPS" => $request->input('nextmps')[$i],
@@ -682,7 +682,7 @@ class MonthController extends Controller
 
                 DB::table('MPS')->upsert(
                     $res_arr_values,
-                    ['客戶別', '機種', '製程', '料號90'],
+                    ['製程', '料號90'],
                     ['下月MPS', '下月生產天數', '本月MPS', '本月生產天數', '填寫時間']
                 );
 

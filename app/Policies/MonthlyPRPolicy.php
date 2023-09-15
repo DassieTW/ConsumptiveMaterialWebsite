@@ -21,10 +21,28 @@ class MonthlyPRPolicy         // 所有月請購相關權限
      */
     public function viewMonthlyPR(Login $user)   // 是否能使用月請購
     {
-        if( intval($user->priority) < 4 ) {
+        if (intval($user->priority) < 4) {
             return true;
-        }else {
+        } else {
             return false;
         } // if else 
-    }
+    } // viewMonthlyPR
+
+    /**
+     * Determine whether the user can update Unit Price.
+     *
+     * @param  \App\Models\Login  $user
+     * 
+     * @return mixed
+     */
+    public function updateUnitPrice(Login $user)   // 是否更新單價
+    {
+        if (intval($user->priority) < 4) {
+            return true;
+        } else {
+            return false;
+        } // if else 
+    } // updateUnitPrice
+
+
 }
