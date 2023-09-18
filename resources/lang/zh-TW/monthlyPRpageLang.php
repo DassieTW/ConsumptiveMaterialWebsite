@@ -153,5 +153,8 @@ return [
     '90isn' => '90料號',
     'enter90isn' => '請輸入90料號',
     '90isnlength' => '90料號長度不為12',
-    'exportspan' => '僅會匯出本次請購數量 >0 資料'
+    'exportspan' => '僅會匯出本次請購數量 >0 資料',
+    'please_utilize' => '請透過',
+    'matsInfo' => '料件信息(查詢/修改)',
+    'to_update_unit_price' => '更新單價'
 ];

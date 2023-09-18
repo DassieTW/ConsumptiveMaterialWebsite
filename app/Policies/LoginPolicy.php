@@ -107,8 +107,8 @@ class LoginPolicy         // 所有用戶管理相關權限
 
     public function canSwitchSites(Login $user)
     {
-        // available_dblist清單非空才能切換廠別
-        if ( !is_null($user->available_dblist) && mb_strlen($user->available_dblist) > 0) {
+        // available_dblist清單有別廠才能切換廠別
+        if ( !is_null($user->available_dblist) && count(explode("_", $user->available_dblist)) > 1) {
             return true;
         } else {
             return false;

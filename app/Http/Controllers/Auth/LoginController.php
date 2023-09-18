@@ -348,7 +348,7 @@ class LoginController extends Controller
             ->insert([
                 'username' => $job_id, 'password' => "123456", 'priority' => 4,
                 '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic,
-                'email' => $email, 'last_login_time' => $datetime
+                'email' => $email, 'last_login_time' => $datetime, 'available_dblist' =>  str_replace(" Consumables management", "", $department)
             ]);
 
         DB::table('人員信息')

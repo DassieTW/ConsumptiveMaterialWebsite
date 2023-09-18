@@ -157,7 +157,10 @@ return [
     'srmspan' => 'Only fill in the tick column',
     'email' => 'Email',
     '90isn' => '90PN',
-    'enter90isn' => 'Please input 90PN',
-    '90isnlength' => '90PN length is not 12',
-    'exportspan' => 'Only the data This time buy amount > 0 will be exported'
+    'enter90isn' => 'Search 90PN',
+    '90isnlength' => '90PN length incorrect',
+    'exportspan' => 'Only the data This time buy amount > 0 will be exported',
+    'please_utilize' => 'Please Utilize',
+    'matsInfo' => 'Material Info. (Search & Update)',
+    'to_update_unit_price' => 'to Update Unit Price.'
 ];

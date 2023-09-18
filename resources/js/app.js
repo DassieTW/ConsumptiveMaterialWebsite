@@ -51,7 +51,7 @@ import OutboundPickrecordTable from "./components/reusableUtilities/OutboundPick
 import OutboundBackrecordTable from "./components/reusableUtilities/OutboundBackrecordTable.vue";
 import TransitSearchTable from "./components/reusableUtilities/TransitSearchTable.vue";
 import SxbSearchTable from "./components/reusableUtilities/SxbSearchTable.vue";
-import NotmonthSearchTable from "./components/reusableUtilities/NotmonthSearchTable.vue";
+import NonMonthlyPRSearchTable from "./components/reusableUtilities/NonMonthlyPRSearchTable.vue";
 import OboundInboundSearchTable from "./components/reusableUtilities/OboundINSearchTable.vue";
 import OboundISNSearchTable from "./components/reusableUtilities/OboundISNSearch.vue";
 import OboundPickrecordTable from "./components/reusableUtilities/OboundPickrecordTable.vue";
@@ -70,7 +70,7 @@ const app = createApp({
     "outbound-backrecord-table": OutboundBackrecordTable,
     "transit-search-table": TransitSearchTable,
     "sxb-search-table": SxbSearchTable,
-    "notmonth-search-table": NotmonthSearchTable,
+    "non-monthly-search-table": NonMonthlyPRSearchTable,
     "obound-insearch-table": OboundInboundSearchTable,
     "obound-isnsearch-table": OboundISNSearchTable,
     "obound-pickrecord-table": OboundPickrecordTable,

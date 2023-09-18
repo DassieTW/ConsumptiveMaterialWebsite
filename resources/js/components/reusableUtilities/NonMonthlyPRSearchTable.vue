@@ -41,14 +41,14 @@ import {
     watch,
 } from "@vue/runtime-core";
 import TableLite from "./TableLite.vue";
-import useNotmonthSearch from "../../composables/NotmonthSearch.ts";
+import useMonthlyPRSearch from "../../composables/MonthlyPRSearch.ts";
 export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, getMats } = useNotmonthSearch(); // axios get the mats data
+        const { mats, getMats_nonMonthly } = useMonthlyPRSearch(); // axios get the mats data
 
-        onBeforeMount(getMats);
+        onBeforeMount(getMats_nonMonthly);
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance

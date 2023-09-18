@@ -56,7 +56,6 @@
                         <tr>
                             {{-- <th>{!! __('loginPageLang.change') !!}</th> --}}
                             <th>{!! __('loginPageLang.username') !!}</th>
-                            {{-- <th>{!! __('loginPageLang.password') !!}</th> --}}
                             <th>{!! __('loginPageLang.priority') !!}</th>
                             <th>{!! __('loginPageLang.name') !!}</th>
                             <th>{!! __('loginPageLang.dep') !!}</th>
@@ -70,7 +69,6 @@
                                 <td><input type="hidden" id="username{{ $loop->index }}"
                                         name="username{{ $loop->index }}"
                                         value="{{ $data->username }}">{{ $data->username }}</td>
-                                {{-- <td>{{ $data->password }}</td> --}}
                                 <td>
                                     <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch">
                                         <option selected>{{ $data->priority }}</option>

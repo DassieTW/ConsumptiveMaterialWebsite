@@ -14,7 +14,8 @@ class Add90PNToMPSTable extends Migration
     public function up()
     {
         Schema::table('MPS', function (Blueprint $table) {
-            $table->string('料號90', 12);
+            $table->string('料號90', 200);
+            $table->primary(['料號90','料號']);
             //
         });
     }
@@ -28,7 +29,7 @@ class Add90PNToMPSTable extends Migration
     {
         Schema::table('MPS', function (Blueprint $table) {
             $table->dropColumn('料號90');
-            //
+            $table->dropPrimary(['料號90','料號']);
         });
     }
 }

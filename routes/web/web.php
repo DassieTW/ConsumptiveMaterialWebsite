@@ -50,6 +50,15 @@ Route::get('/', function (Request $request) {
             dd($site . "_" . $id);
         });
 
+        // -------------------------------------------------------------------------
+        // update the db_list for user that exist before the db_list function is added
+        if (is_null($user->available_dblist) || count(explode("_", $user->available_dblist)) <= 1) {
+            DB::table('login')
+                ->where('username', '=', $user->username)
+                ->update(['available_dblist' =>  str_replace(" Consumables management", "", $decrypted_site)]);
+        } // if
+        // -------------------------------------------------------------------------
+        
         \Auth::login($user);
         $request->session()->regenerate();
         $usernameAuthed = \Auth::user()->username;
