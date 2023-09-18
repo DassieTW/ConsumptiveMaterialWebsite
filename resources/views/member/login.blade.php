@@ -15,8 +15,6 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
-
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css?v=') . env('APP_VERSION') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">

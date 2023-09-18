@@ -642,7 +642,9 @@ class MonthController extends Controller
                 $res_arr_values = array();
                 for ($i = 0; $i < $count; $i++) {
                     $temp = array(
-                        "料號" => $request->input('number')[$i],
+                        // "客戶別" => $request->input('client')[$i],
+                        // "機種" => $request->input('machine')[$i],
+                        // "製程" => $request->input('production')[$i],
                         "料號90" => $request->input('number90')[$i],
                         "下月MPS" => $request->input('nextmps')[$i],
                         "下月生產天數" => $request->input('nextday')[$i],

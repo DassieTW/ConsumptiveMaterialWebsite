@@ -19,6 +19,7 @@ class 月請購_單耗TableSeeder extends Seeder
     {
         \DB::table('月請購_單耗')->insert([
             '料號' => '4003-07R0000',
+            '料號90' => '90B2BQ100020',
             '客戶別' => 'Fendi',
             '機種' => 'Vulcan',
             '製程' => 'FAE',
@@ -31,6 +32,7 @@ class 月請購_單耗TableSeeder extends Seeder
         //
         \DB::table('月請購_單耗')->insert([
             '料號' => '4608-020K000',
+            '料號90' => '90B2BQ100020',
             '客戶別' => 'Cisco',
             '機種' => 'EZ1K',
             '製程' => 'FATP',
@@ -43,6 +45,7 @@ class 月請購_單耗TableSeeder extends Seeder
         //
         \DB::table('月請購_單耗')->insert([
             '料號' => '4152-01ER000',
+            '料號90' => '90B2BQ100040',
             '客戶別' => 'Fendi',
             '機種' => 'Atlas',
             '製程' => 'LCON',

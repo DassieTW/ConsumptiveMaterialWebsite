@@ -29,6 +29,11 @@ php artisan key:generate <br />
 # Migrate a single file (table)
 php artisan migrate --path=/database/migrations/2022_12_21_165804_create_bulletins_table.php <br />
 
+# Go into Maintenance Mode
+php artisan down --secret="someKey" --render="errors::503"
+# Then IT can access the website by the address below
+https://psz-bu6pe-05v.psz.corp.pegatron/someKey
+
 ## In intra network, under this folder: 
 
 cp .env.server /home/it/PEGA_Projects/ConsumptiveMaterialWebsite/.env

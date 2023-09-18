@@ -25,6 +25,7 @@ class MPSTableSeeder extends Seeder
             '下月生產天數' => 27,
             '本月MPS' => 200000,
             '本月生產天數' => 12,
+            '料號90' => '90B2BQ100020',
             '填寫時間' => Carbon::create(2021, 3, 23, 14, 9, 3, 'GMT')
         ]);
         //
@@ -36,6 +37,7 @@ class MPSTableSeeder extends Seeder
             '下月生產天數' => 54,
             '本月MPS' => 54,
             '本月生產天數' => 6,
+            '料號90' => '90B2BQ100020',
             '填寫時間' => Carbon::create(2021, 1, 27, 17, 6, 52, 'GMT')
         ]);
         //
@@ -47,6 +49,7 @@ class MPSTableSeeder extends Seeder
             '下月生產天數' => 24,
             '本月MPS' => 20000,
             '本月生產天數' => 26,
+            '料號90' => '90B2BQ100040',
             '填寫時間' => Carbon::create(2021, 3, 25, 9, 42, 1, 'GMT')
         ]);
     }

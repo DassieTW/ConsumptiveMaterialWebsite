@@ -147,6 +147,18 @@ Route::post('/buylistmake', [MonthController::class, 'buylistmake'])->name('mont
 
 Route::post('/buylistsubmit', [MonthController::class, 'buylistsubmit'])->name('month.buylistsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
+
+// 更新單價
+Route::get('/UpdateUnitPrice', function () {
+    return view('month.UpdateUnitPrice')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
+})->name('month.UpdateUnitPrice')->middleware('can:updateUnitPrice,App\Models\月請購_單耗');
+
+// 送簽請購單
+Route::get('/SendPRReview', function () {
+    return view('month.SendPRReview')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
+})->name('month.SendPRReview');
+
+
 //在途量(查詢)頁面
 Route::get('/transit', function () {
     return view('month.transit')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
@@ -156,8 +168,6 @@ Route::get('/transit', function () {
 Route::get('/transitsearch', function () {
     return view("month.transitsearchok");
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-// Route::post('/transitsearch', [MonthController::class, 'transitsearch'])->name('month.transitsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //SXB單(查詢)頁面
 Route::get('/sxb', function () {
