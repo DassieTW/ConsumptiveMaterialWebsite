@@ -34,7 +34,7 @@ return [
     'enterisn' => 'Please enter the PN',
     'isnlength' => 'PN length is not 12',
     'noisn' => 'PN does not exist',
-    'nostock' => 'Said Client & Isn pair does not have any stock, cannot bill material requisition',
+    'nostock' => 'Said Isn pair does not have any stock, cannot bill material requisition',
     'submit' => 'Submit',
     'return' => 'return',
     'pName' => 'Description',

@@ -67,29 +67,11 @@ $(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").hide();
 
-    var client = $("#client").val();
-    var machine = $("#machine").val();
-    var production = $("#production").val();
     var line = $("#line").val();
     var usereason = $("#usereason").val();
     var number = $("#number").val();
 
-    if (client === null) {
-      document.getElementById("clienterror").style.display = "block";
-      document.getElementById("client").classList.add("is-invalid");
-      document.getElementById("client").focus();
-      return false;
-    } else if (machine === null) {
-      document.getElementById("machineerror").style.display = "block";
-      document.getElementById("machine").classList.add("is-invalid");
-      document.getElementById("machine").focus();
-      return false;
-    } else if (production === null) {
-      document.getElementById("productionerror").style.display = "block";
-      document.getElementById("production").classList.add("is-invalid");
-      document.getElementById("production").focus();
-      return false;
-    } else if (line === null) {
+    if (line === null) {
       document.getElementById("lineerror").style.display = "block";
       document.getElementById("line").classList.add("is-invalid");
       document.getElementById("line").focus();
@@ -120,9 +102,6 @@ $(function () {
       type: "POST",
       url: "pickadd",
       data: {
-        client: client,
-        machine: machine,
-        production: production,
         line: line,
         usereason: usereason,
         number: number,
@@ -210,23 +189,6 @@ $(function () {
           'style="width: 100px"' +
           ">";
 
-        let rowclient = document.createElement("td");
-        rowclient.innerHTML =
-          "<span id=" + "client" + index + ">" + data.client + "</span>";
-
-        let rowmachine = document.createElement("td");
-        rowmachine.innerHTML =
-          "<span id=" + "machine" + index + ">" + data.machine + "</span>";
-
-        let rowproduction = document.createElement("td");
-        rowproduction.innerHTML =
-          "<span id=" +
-          "production" +
-          index +
-          ">" +
-          data.production +
-          "</span>";
-
         let rowline = document.createElement("td");
         rowline.innerHTML =
           "<span id=" + "line" + index + ">" + data.line + "</span>";
@@ -243,9 +205,6 @@ $(function () {
         row.appendChild(rowsend);
         row.appendChild(rowamount);
         row.appendChild(rowremark);
-        row.appendChild(rowclient);
-        row.appendChild(rowmachine);
-        row.appendChild(rowproduction);
         row.appendChild(rowline);
         row.appendChild(rowusereason);
 
@@ -261,9 +220,7 @@ $(function () {
         if (err.status === 420) {
           document.getElementById("nostock").style.display = "block";
           document.getElementById("number").classList.add("is-invalid");
-          document.getElementById("client").classList.add("is-invalid");
           document.getElementById("number").value = "";
-          document.getElementById("client").value = "";
         }
         //沒有料號
         else if (err.status === 421) {
@@ -307,9 +264,6 @@ $(function () {
 
     console.log(sessionStorage.getItem("pickcount"));
     var data = [];
-    var client = [];
-    var machine = [];
-    var production = [];
     var line = [];
     var usereason = [];
     var number = [];
@@ -320,10 +274,7 @@ $(function () {
     var remark = [];
 
     for (let i = 0; i < sessionStorage.getItem("pickcount"); i++) {
-      if ($("#client" + i).text() !== null && $("#client" + i).text() !== "") {
-        client.push($("#client" + i).text());
-        machine.push($("#machine" + i).text());
-        production.push($("#production" + i).text());
+      if ($("#number" + i).text() !== null && $("#number" + i).text() !== "") {
         line.push($("#line" + i).text());
         usereason.push($("#usereason" + i).text());
         number.push($("#number" + i).text());
@@ -335,9 +286,6 @@ $(function () {
       }
     }
 
-    data.push(client);
-    data.push(machine);
-    data.push(production);
     data.push(line);
     data.push(usereason);
     data.push(number);

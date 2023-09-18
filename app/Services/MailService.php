@@ -27,33 +27,29 @@ class MailService
 
         $databases = config('database_list.databases');
         array_shift($databases); // remove the 'Consumables management' db from array
-        $AllISNClientsPairs = array("isn" => array(), "client" => array());
+        $AllISNClientsPairs = array("isn" => array());
 
         \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
         foreach ($databases as $database) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
             \Log::channel('dbquerys')->info('---------------------------DB :' . $database . '--------------------------');
-            $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號'))->groupBy('客戶別', '料號');
+            $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 料號'))->groupBy('料號');
             $datas = \DB::table('月請購_單耗')
                 ->join('MPS', function ($join) {
-                    $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
-                        ->on('MPS.機種', '=', '月請購_單耗.機種')
-                        ->on('MPS.製程', '=', '月請購_單耗.製程');
+                    $join->on('MPS.料號90', '=', '月請購_單耗.料號90')
+                        ->on('MPS.料號', '=', '月請購_單耗.料號');
                 })
                 ->join('consumptive_material', function ($join) {
                     $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                 })
                 ->leftjoin('safestock報警備註', function ($join) {
                     $join->on('safestock報警備註.料號', '=', '月請購_單耗.料號');
-                    $join->on('safestock報警備註.客戶別', '=', '月請購_單耗.客戶別');
                 })
                 ->leftJoinSub($inventorys, 'suminventory', function ($join) {
-                    $join->on('月請購_單耗.客戶別', '=', 'suminventory.客戶別');
                     $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
                 })
                 ->select(
-                    '月請購_單耗.客戶別',
                     'consumptive_material.料號',
                     'consumptive_material.品名',
                     'consumptive_material.規格',
@@ -67,7 +63,6 @@ class MailService
                     'inventory現有庫存',
                     'safestock報警備註.備註',
                 )->groupBy(
-                    '月請購_單耗.客戶別',
                     'consumptive_material.料號',
                     'consumptive_material.品名',
                     'consumptive_material.規格',
@@ -89,7 +84,7 @@ class MailService
 
 
             foreach ($datas as $data) {
-                $safe =  $data->LT * $data->單耗 * $data->下月MPS / $data->下月生產天數;
+                $safe =  5 * $data->單耗 * $data->下月MPS / 26;
                 $data->安全庫存 = round($safe);
             } // for each
 
@@ -97,7 +92,7 @@ class MailService
             for ($a = 0; $a < $count; $a++) {
                 for ($i = $a; $i + 1 < $count; $i++) {
                     if ((isset($datas[$a])) && (isset($datas[$i + 1]))) {
-                        if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
+                        if ($datas[$a]->料號 === $datas[$i + 1]->料號) {
                             $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
                             unset($datas[$i + 1]);
                             $datas = array_values($datas);
@@ -112,90 +107,6 @@ class MailService
                 }
             }
             $datas = array_values($datas);
-
-            $inventorys1 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號'))->groupBy('客戶別', '料號');
-            $datas1 = DB::table('月請購_站位')
-                ->join('MPS', function ($join) {
-                    $join->on('MPS.客戶別', '=', '月請購_站位.客戶別')
-                        ->on('MPS.機種', '=', '月請購_站位.機種')
-                        ->on('MPS.製程', '=', '月請購_站位.製程');
-                })
-                ->join('consumptive_material', function ($join) {
-                    $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
-                })
-                ->leftjoin('safestock報警備註', function ($join) {
-                    $join->on('safestock報警備註.料號', '=', '月請購_站位.料號');
-                    $join->on('safestock報警備註.客戶別', '=', '月請購_站位.客戶別');
-                })
-                ->leftJoinSub($inventorys1, 'suminventory', function ($join) {
-                    $join->on('月請購_站位.客戶別', '=', 'suminventory.客戶別');
-                    $join->on('月請購_站位.料號', '=', 'suminventory.料號');
-                })
-                ->select(
-                    '月請購_站位.客戶別',
-                    'consumptive_material.料號',
-                    'consumptive_material.品名',
-                    'consumptive_material.規格',
-                    'consumptive_material.LT',
-                    'consumptive_material.月請購',
-                    'consumptive_material.MPQ',
-                    'consumptive_material.安全庫存',
-                    'consumptive_material.耗材歸屬',
-                    '月請購_站位.下月站位人數',
-                    '月請購_站位.下月開線數',
-                    '月請購_站位.下月開班數',
-                    '月請購_站位.下月每人每日需求量',
-                    '月請購_站位.下月每日更換頻率',
-                    'inventory現有庫存',
-                    'safestock報警備註.備註',
-                )->groupBy(
-                    '月請購_站位.客戶別',
-                    'consumptive_material.料號',
-                    'consumptive_material.品名',
-                    'consumptive_material.規格',
-                    'consumptive_material.LT',
-                    'consumptive_material.月請購',
-                    'consumptive_material.MPQ',
-                    'consumptive_material.安全庫存',
-                    'consumptive_material.耗材歸屬',
-                    '月請購_站位.下月站位人數',
-                    '月請購_站位.下月開線數',
-                    '月請購_站位.下月開班數',
-                    '月請購_站位.下月每人每日需求量',
-                    '月請購_站位.下月每日更換頻率',
-                    'inventory現有庫存',
-                    'safestock報警備註.備註',
-                )
-                ->where('consumptive_material.月請購', '=', "是")
-                ->where('consumptive_material.耗材歸屬', '=', "站位")
-                ->where('月請購_站位.狀態', '=', "已完成")
-                ->get()->toArray();
-
-
-            foreach ($datas1 as $data) {
-                $safe =  $data->LT * $data->下月站位人數 * $data->下月開線數 * $data->下月開班數 * $data->下月每人每日需求量 * $data->下月每日更換頻率 / $data->MPQ;
-                $data->安全庫存 = round($safe);
-            }
-
-            $count1 = count($datas1);
-            for ($a = 0; $a < $count1; $a++) {
-                for ($i = $a; $i + 1 < $count1; $i++) {
-                    if ((isset($datas1[$a])) && (isset($datas1[$i + 1]))) {
-                        if ($datas1[$a]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$a]->料號 === $datas1[$i + 1]->料號) {
-                            $datas1[$a]->安全庫存 += $datas1[$i + 1]->安全庫存;
-                            unset($datas1[$i + 1]);
-                            $datas1 = array_values($datas1);
-                        } // if
-                    } // if
-                } // for
-            } // for
-
-            foreach ($datas1 as $key => $value) {
-                if ($value->inventory現有庫存 > $value->安全庫存) {
-                    unset($datas1[$key]);
-                }
-            }
-            $datas1 = array_values($datas1);
 
             $inventorys2 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 ,料號'))->groupBy('料號');
 
@@ -246,10 +157,11 @@ class MailService
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
             $worksheet = $spreadsheet->getActiveSheet();
             $notmonth = \Lang::get('callpageLang.notmonth');
-            $count2 = count($datas) + count($datas1);
+            $ismonth = \Lang::get('callpageLang.ismonth');
+            $count2 = count($datas);
 
             //填寫表頭
-            $worksheet->setCellValueByColumnAndRow(1, 1, \Lang::get('callpageLang.client'));
+            $worksheet->setCellValueByColumnAndRow(1, 1, \Lang::get('callpageLang.month'));
             $worksheet->setCellValueByColumnAndRow(2, 1, \Lang::get('callpageLang.isn'));
             $worksheet->setCellValueByColumnAndRow(3, 1, \Lang::get('callpageLang.pName'));
             $worksheet->setCellValueByColumnAndRow(4, 1, \Lang::get('callpageLang.format'));
@@ -259,7 +171,7 @@ class MailService
 
             //填寫內容
             for ($j = 0; $j < count($datas); $j++) {
-                $worksheet->setCellValueByColumnAndRow(1, $j + 2, $datas[$j]->客戶別);
+                $worksheet->setCellValueByColumnAndRow(1, $j + 2, $ismonth);
                 $worksheet->setCellValueByColumnAndRow(2, $j + 2, $datas[$j]->料號);
                 $worksheet->setCellValueByColumnAndRow(3, $j + 2, $datas[$j]->品名);
                 $worksheet->setCellValueByColumnAndRow(4, $j + 2, $datas[$j]->規格);
@@ -268,21 +180,9 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(7, $j + 2, $datas[$j]->備註);
 
                 array_push($AllISNClientsPairs["isn"], $datas[$j]->料號);
-                array_push($AllISNClientsPairs["client"], $datas[$j]->客戶別);
             } // for
             //填寫內容
-            for ($i = count($datas), $j = 0; $j < count($datas1); $i++, $j++) {
-                $worksheet->setCellValueByColumnAndRow(1, $i + 2, $datas1[$j]->客戶別);
-                $worksheet->setCellValueByColumnAndRow(2, $i + 2, $datas1[$j]->料號);
-                $worksheet->setCellValueByColumnAndRow(3, $i + 2, $datas1[$j]->品名);
-                $worksheet->setCellValueByColumnAndRow(4, $i + 2, $datas1[$j]->規格);
-                $worksheet->setCellValueByColumnAndRow(5, $i + 2, $datas1[$j]->inventory現有庫存);
-                $worksheet->setCellValueByColumnAndRow(6, $i + 2, $datas1[$j]->安全庫存);
-                $worksheet->setCellValueByColumnAndRow(7, $i + 2, $datas1[$j]->備註);
 
-                array_push($AllISNClientsPairs["isn"], $datas1[$j]->料號);
-                array_push($AllISNClientsPairs["client"], $datas1[$j]->客戶別);
-            } // for
             //填寫內容
             for ($i = $count2, $j = 0; $j < count($datas2); $i++, $j++) {
                 $worksheet->setCellValueByColumnAndRow(1, $i + 2, $notmonth);
@@ -307,7 +207,7 @@ class MailService
             $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
             $writer->save(public_path() . "/excel/" . $filename);
 
-            $num = count($datas) + count($datas1) + count($datas2);
+            $num = count($datas) + count($datas2);
 
             if ($num > 0) {
                 Mail::send('mail/safestock', [], function ($message) use ($now, $database) {
@@ -335,10 +235,10 @@ class MailService
             $value_pairs = array();
 
             for ($i = 0; $i < count($AllISNClientsPairs['isn']); $i++) {
-                array_push($value_pairs, [$AllISNClientsPairs['isn'][$i], $AllISNClientsPairs['client'][$i]]);
+                array_push($value_pairs, $AllISNClientsPairs['isn'][$i]);
             } // for
 
-            $all_remarks = DB::table('safestock報警備註')->select('料號', '客戶別')->get();
+            $all_remarks = DB::table('safestock報警備註')->select('料號')->get();
             $all_remarks_pairs = array();
 
             foreach ($all_remarks as $remark) {
@@ -356,7 +256,7 @@ class MailService
 
             $rowsAffected = DB::table('safestock報警備註')
                 ->where(function ($query) use ($diff) {
-                    whereInMultiCol::scopeWhereInMultiple($query, ['料號', '客戶別'], $diff);
+                    whereInMultiCol::scopeWhereInMultiple($query, ['料號'], $diff);
                 })
                 ->delete();
 
@@ -381,10 +281,8 @@ class MailService
             $datas = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
                 ->leftjoin('sluggish報警備註', function ($join) {
                     $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
-                    $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
                 })
                 ->select(
-                    'inventory.客戶別',
                     'inventory.料號',
                     DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
                     DB::raw('sum(inventory.現有庫存) as inventory現有庫存'),
@@ -392,7 +290,7 @@ class MailService
                     'consumptive_material.規格',
                     'sluggish報警備註.備註',
                 )
-                ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'sluggish報警備註.備註')
+                ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'sluggish報警備註.備註')
                 ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間), getdate())>30')
                 ->havingRaw('sum(inventory.現有庫存) > ?', [0])
                 ->get();
@@ -413,26 +311,23 @@ class MailService
             $worksheet = $spreadsheet->getActiveSheet();
 
             //填寫表頭
-            $worksheet->setCellValueByColumnAndRow(1, 1, \Lang::get('callpageLang.client'));
-            $worksheet->setCellValueByColumnAndRow(2, 1, \Lang::get('callpageLang.isn'));
-            $worksheet->setCellValueByColumnAndRow(3, 1, \Lang::get('callpageLang.pName'));
-            $worksheet->setCellValueByColumnAndRow(4, 1, \Lang::get('callpageLang.format'));
-            $worksheet->setCellValueByColumnAndRow(5, 1, \Lang::get('callpageLang.stock'));
-            $worksheet->setCellValueByColumnAndRow(6, 1, \Lang::get('callpageLang.days'));
-            $worksheet->setCellValueByColumnAndRow(7, 1, \Lang::get('callpageLang.mark'));
+            $worksheet->setCellValueByColumnAndRow(1, 1, \Lang::get('callpageLang.isn'));
+            $worksheet->setCellValueByColumnAndRow(2, 1, \Lang::get('callpageLang.pName'));
+            $worksheet->setCellValueByColumnAndRow(3, 1, \Lang::get('callpageLang.format'));
+            $worksheet->setCellValueByColumnAndRow(4, 1, \Lang::get('callpageLang.stock'));
+            $worksheet->setCellValueByColumnAndRow(5, 1, \Lang::get('callpageLang.days'));
+            $worksheet->setCellValueByColumnAndRow(6, 1, \Lang::get('callpageLang.mark'));
 
             //填寫內容
             for ($j = 0; $j < count($datas); $j++) {
-                $worksheet->setCellValueByColumnAndRow(1, $j + 2, $datas[$j]->客戶別);
-                $worksheet->setCellValueByColumnAndRow(2, $j + 2, $datas[$j]->料號);
-                $worksheet->setCellValueByColumnAndRow(3, $j + 2, $datas[$j]->品名);
-                $worksheet->setCellValueByColumnAndRow(4, $j + 2, $datas[$j]->規格);
-                $worksheet->setCellValueByColumnAndRow(5, $j + 2, $datas[$j]->inventory現有庫存);
-                $worksheet->setCellValueByColumnAndRow(6, $j + 2, $datas[$j]->inventory最後更新時間);
-                $worksheet->setCellValueByColumnAndRow(7, $j + 2, $datas[$j]->備註);
+                $worksheet->setCellValueByColumnAndRow(1, $j + 2, $datas[$j]->料號);
+                $worksheet->setCellValueByColumnAndRow(2, $j + 2, $datas[$j]->品名);
+                $worksheet->setCellValueByColumnAndRow(3, $j + 2, $datas[$j]->規格);
+                $worksheet->setCellValueByColumnAndRow(4, $j + 2, $datas[$j]->inventory現有庫存);
+                $worksheet->setCellValueByColumnAndRow(5, $j + 2, $datas[$j]->inventory最後更新時間);
+                $worksheet->setCellValueByColumnAndRow(6, $j + 2, $datas[$j]->備註);
 
                 array_push($AllISNClientsPairsDay["isn"], $datas[$j]->料號);
-                array_push($AllISNClientsPairsDay["client"], $datas[$j]->客戶別);
             } // for
 
             $now = Carbon::now()->format('Ymd');
@@ -474,10 +369,10 @@ class MailService
             $value_pairs_day = array();
 
             for ($i = 0; $i < count($AllISNClientsPairsDay['isn']); $i++) {
-                array_push($value_pairs_day, [$AllISNClientsPairsDay['isn'][$i], $AllISNClientsPairsDay['client'][$i]]);
+                array_push($value_pairs_day, $AllISNClientsPairsDay['isn'][$i]);
             } // for
 
-            $all_remarks_day = DB::table('sluggish報警備註')->select('料號', '客戶別')->get();
+            $all_remarks_day = DB::table('sluggish報警備註')->select('料號')->get();
             $all_remarks_pairs_day = array();
 
             foreach ($all_remarks_day as $remark) {
@@ -493,7 +388,7 @@ class MailService
 
             $rowsAffected = DB::table('sluggish報警備註')
                 ->where(function ($query) use ($diff_day) {
-                    whereInMultiCol::scopeWhereInMultiple($query, ['料號', '客戶別'], $diff_day);
+                    whereInMultiCol::scopeWhereInMultiple($query, ['料號'], $diff_day);
                 })
                 ->delete();
 

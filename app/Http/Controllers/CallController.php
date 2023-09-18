@@ -49,26 +49,22 @@ class CallController extends Controller
         if (Session::has('username')) {
             $send = $request->input('send');
 
-            $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號 '))->groupBy('客戶別', '料號');
+            $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 料號 '))->groupBy('料號');
             $datas = DB::table('月請購_單耗')
                 ->join('MPS', function ($join) {
-                    $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
-                        ->on('MPS.機種', '=', '月請購_單耗.機種')
-                        ->on('MPS.製程', '=', '月請購_單耗.製程');
+                    $join->on('MPS.料號90', '=', '月請購_單耗.料號90')
+                        ->on('MPS.料號', '=', '月請購_單耗.料號');
                 })
                 ->join('consumptive_material', function ($join) {
                     $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                 })
                 ->leftjoin('safestock報警備註', function ($join) {
                     $join->on('safestock報警備註.料號', '=', '月請購_單耗.料號');
-                    $join->on('safestock報警備註.客戶別', '=', '月請購_單耗.客戶別');
                 })
                 ->leftJoinSub($inventorys, 'suminventory', function ($join) {
-                    $join->on('月請購_單耗.客戶別', '=', 'suminventory.客戶別');
                     $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
                 })
                 ->select(
-                    '月請購_單耗.客戶別',
                     'consumptive_material.料號',
                     'consumptive_material.品名',
                     'consumptive_material.規格',
@@ -83,7 +79,6 @@ class CallController extends Controller
                     'inventory現有庫存',
                     'safestock報警備註.備註',
                 )->groupBy(
-                    '月請購_單耗.客戶別',
                     'consumptive_material.料號',
                     'consumptive_material.品名',
                     'consumptive_material.規格',
@@ -107,7 +102,7 @@ class CallController extends Controller
             // dd($datas); // test
 
             foreach ($datas as $data) {
-                $safe =  $data->LT * $data->單耗 * $data->下月MPS / $data->下月生產天數;
+                $safe =  5 * $data->單耗 * $data->下月MPS / 26;
                 $data->安全庫存 = round($safe);
             } // for each
 
@@ -115,7 +110,7 @@ class CallController extends Controller
             for ($a = 0; $a < $count; $a++) {
                 for ($i = $a; $i + 1 < $count; $i++) {
                     if ((isset($datas[$a])) && (isset($datas[$i + 1]))) {
-                        if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
+                        if ($datas[$a]->料號 === $datas[$i + 1]->料號) {
                             $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
                             unset($datas[$i + 1]);
                             $datas = array_values($datas);
@@ -130,93 +125,6 @@ class CallController extends Controller
                 }
             }
             $datas = array_values($datas);
-
-            $inventorys1 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號'))->groupBy('客戶別', '料號');
-            $datas1 = DB::table('月請購_站位')
-                ->join('MPS', function ($join) {
-                    $join->on('MPS.客戶別', '=', '月請購_站位.客戶別')
-                        ->on('MPS.機種', '=', '月請購_站位.機種')
-                        ->on('MPS.製程', '=', '月請購_站位.製程');
-                })
-                ->join('consumptive_material', function ($join) {
-                    $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
-                })
-                ->leftjoin('safestock報警備註', function ($join) {
-                    $join->on('safestock報警備註.料號', '=', '月請購_站位.料號');
-                    $join->on('safestock報警備註.客戶別', '=', '月請購_站位.客戶別');
-                })
-                ->leftJoinSub($inventorys1, 'suminventory', function ($join) {
-                    $join->on('月請購_站位.客戶別', '=', 'suminventory.客戶別');
-                    $join->on('月請購_站位.料號', '=', 'suminventory.料號');
-                })
-
-                ->select(
-                    '月請購_站位.客戶別',
-                    'consumptive_material.料號',
-                    'consumptive_material.品名',
-                    'consumptive_material.規格',
-                    'consumptive_material.LT',
-                    'consumptive_material.月請購',
-                    'consumptive_material.MPQ',
-                    'consumptive_material.安全庫存',
-                    'consumptive_material.耗材歸屬',
-                    'consumptive_material.發料部門',
-                    '月請購_站位.下月站位人數',
-                    '月請購_站位.下月開線數',
-                    '月請購_站位.下月開班數',
-                    '月請購_站位.下月每人每日需求量',
-                    '月請購_站位.下月每日更換頻率',
-                    'inventory現有庫存',
-                    'safestock報警備註.備註',
-                )->groupBy(
-                    '月請購_站位.客戶別',
-                    'consumptive_material.料號',
-                    'consumptive_material.品名',
-                    'consumptive_material.規格',
-                    'consumptive_material.LT',
-                    'consumptive_material.月請購',
-                    'consumptive_material.MPQ',
-                    'consumptive_material.安全庫存',
-                    'consumptive_material.耗材歸屬',
-                    'consumptive_material.發料部門',
-                    '月請購_站位.下月站位人數',
-                    '月請購_站位.下月開線數',
-                    '月請購_站位.下月開班數',
-                    '月請購_站位.下月每人每日需求量',
-                    '月請購_站位.下月每日更換頻率',
-                    'inventory現有庫存',
-                    'safestock報警備註.備註',
-                )
-                ->where('consumptive_material.月請購', '=', "是")
-                ->where('consumptive_material.耗材歸屬', '=', "站位")
-                ->where('consumptive_material.發料部門', 'like', $send . '%')
-                ->where('月請購_站位.狀態', '=', "已完成")
-                ->get()->toArray();
-
-            foreach ($datas1 as $data) {
-                $safe =  $data->LT * $data->下月站位人數 * $data->下月開線數 * $data->下月開班數 * $data->下月每人每日需求量 * $data->下月每日更換頻率 / $data->MPQ;
-                $data->安全庫存 = round($safe);
-            }
-
-            $count1 = count($datas1);
-            for ($a = 0; $a < $count1; $a++) {
-                for ($i = $a; $i + 1 < $count1; $i++) {
-                    if ((isset($datas1[$a])) && (isset($datas1[$i + 1]))) {
-                        if ($datas1[$a]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$a]->料號 === $datas1[$i + 1]->料號) {
-                            $datas1[$a]->安全庫存 += $datas1[$i + 1]->安全庫存;
-                            unset($datas1[$i + 1]);
-                            $datas1 = array_values($datas1);
-                        } // if
-                    } // if
-                } // for
-            } // for
-
-            foreach ($datas1 as $key => $value) {
-                if ($value->inventory現有庫存 > $value->安全庫存) {
-                    unset($datas1[$key]);
-                }
-            }
-            $datas1 = array_values($datas1);
 
             $inventorys2 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存  ,料號'))->groupBy('料號');
             $datas2 = DB::table('consumptive_material')
@@ -261,8 +169,8 @@ class CallController extends Controller
                 }
             }
             $datas2 = array_values($datas2);
-            $num = count($datas) + count($datas1) + count($datas2);
-            return view('call.safe')->with(['data' => $datas])->with(['data1' => $datas1])->with(['data2' => $datas2])->with(['num' => $num]);
+            $num = count($datas) + count($datas2);
+            return view('call.safe')->with(['data' => $datas])->with(['data2' => $datas2])->with(['num' => $num]);
         } else {
             return redirect(route('member.login'));
         }
@@ -309,29 +217,27 @@ class CallController extends Controller
         if (Session::has('username')) {
             $number = $request->input('number');
             $remark = $request->input('remark');
-            $client = $request->input('client');
             if ($number === null) {
                 return \Response::json([]/* Status code here default is 200 ok*/);
             } else {
                 $count = count($remark);
                 DB::beginTransaction();
                 try {
+                    $res_arr_values = array();
                     for ($i = 0; $i < $count; $i++) {
-                        $number = $request->input('number')[$i];
-                        $remark = $request->input('remark')[$i];
-                        $client = $request->input('client')[$i];
+                        $temp = array(
+                            "料號" => $request->input('number')[$i],
+                            "備註" => $request->input('remark')[$i],
+                        );
 
-                        if ($remark !== "") {
-                            DB::table('safestock報警備註')->upsert([
-                                ['料號' => $number, '客戶別' => $client, '備註' => $remark],
-                            ], ['料號', '客戶別'], ['備註']);
-                        } else {
-                            DB::table('safestock報警備註')->where([
-                                ['料號', '=', $number],
-                                ['客戶別', '=', $client],
-                            ])->delete();
-                        }
+                        $res_arr_values[] = $temp;
                     } //for
+
+                    DB::table('safestock報警備註')->upsert(
+                        $res_arr_values,
+                        ['料號'],
+                        ['備註']
+                    );
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -360,14 +266,21 @@ class CallController extends Controller
                 $count = count($number);
                 DB::beginTransaction();
                 try {
+                    $res_arr_values = array();
                     for ($i = 0; $i < $count; $i++) {
-                        $number = $request->input('number')[$i];
-                        $remark = $request->input('remark')[$i];
-                        $client = $request->input('client')[$i];
-                        DB::table('sluggish報警備註')->upsert([
-                            ['料號' => $number, '客戶別' => $client, '備註' => $remark],
-                        ], ['料號', '客戶別'], ['備註']);
+                        $temp = array(
+                            "料號" => $request->input('number')[$i],
+                            "備註" => $request->input('remark')[$i],
+                        );
+
+                        $res_arr_values[] = $temp;
                     } //for
+
+                    DB::table('sluggish報警備註')->upsert(
+                        $res_arr_values,
+                        ['料號'],
+                        ['備註']
+                    );
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();

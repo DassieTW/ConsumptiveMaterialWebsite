@@ -59,7 +59,7 @@
                         <table class="table table-bordered" id="test">
                             <thead>
                                 <tr>
-                                    <th>{!! __('callpageLang.client') !!}</th>
+                                    <th>{!! __('callpageLang.month') !!}</th>
                                     <th>{!! __('callpageLang.isn') !!}</th>
                                     <th>{!! __('callpageLang.pName') !!}</th>
                                     <th>{!! __('callpageLang.format') !!}</th>
@@ -74,12 +74,10 @@
                                     <?php
                                     $astock = DB::table('inventory')
                                         ->where('料號', $data->料號)
-                                        ->where('客戶別', $data->客戶別)
                                         ->pluck('現有庫存')
                                         ->toArray();
                                     $position = DB::table('inventory')
                                         ->where('料號', $data->料號)
-                                        ->where('客戶別', $data->客戶別)
                                         ->pluck('儲位')
                                         ->toArray();
                                     $astock = array_map(function ($v) {
@@ -92,8 +90,7 @@
                                     ?>
 
                                     <tr id="data{{ $loop->index }}" class="isnRows">
-
-                                        <td>{{ $data->客戶別 }}</td>
+                                        <td>{!! __('callpageLang.ismonth') !!}</td>
                                         <td>{{ $data->料號 }}</td>
                                         <input type="hidden" id="client{{ $loop->index }}" value="{{ $data->客戶別 }}">
                                         <input type="hidden" id="number{{ $loop->index }}" value="{{ $data->料號 }}">
@@ -124,45 +121,40 @@
                                 <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
                             @endforeach
 
-                            @foreach ($data1 as $data)
+                            @foreach ($data2 as $data)
                                 <?php
-                                $astock1 = DB::table('inventory')
+                                $astock2 = DB::table('inventory')
+                                    ->select('現有庫存')
                                     ->where('料號', $data->料號)
-                                    ->where('客戶別', $data->客戶別)
-                                    ->pluck('現有庫存')
+                                    ->get()
                                     ->toArray();
-                                $position1 = DB::table('inventory')
+                                $position2 = DB::table('inventory')
+                                    ->select('儲位')
                                     ->where('料號', $data->料號)
-                                    ->where('客戶別', $data->客戶別)
-                                    ->pluck('儲位')
+                                    ->get()
                                     ->toArray();
-                                $astock1 = array_map(function ($v) {
-                                    return round($v, 0);
-                                }, $astock1);
-                                $test1 = array_combine($position1, $astock1);
                                 if ($data->inventory現有庫存 === null) {
                                     $data->inventory現有庫存 = 0;
                                 }
+                                //dd($astock2, $position2);
                                 ?>
 
-                                <tr id="dataa{{ $loop->index }}" class="isnRows1">
-                                    <td>{{ $data->客戶別 }}</td>
+                                <tr id="datab{{ $loop->index }}" class="isnRows2">
+                                    <td>{!! __('callpageLang.notmonth') !!}</td>
                                     <td>{{ $data->料號 }}</td>
-                                    <input type="hidden" id="clienta{{ $loop->index }}" value="{{ $data->客戶別 }}">
-                                    <input type="hidden" id="numbera{{ $loop->index }}" value="{{ $data->料號 }}">
+                                    <input type="hidden" id="numberb{{ $loop->index }}" value="{{ $data->料號 }}">
                                     <td>{{ $data->品名 }}</td>
                                     <td>{{ $data->規格 }}</td>
-                                    <td id="stockb{{ $loop->index }}">{{ $data->inventory現有庫存 }}</td>
-                                    <td id="safeb{{ $loop->index }}">{{ $data->安全庫存 }}</td>
+                                    <td id="stockc{{ $loop->index }}">{{ $data->inventory現有庫存 }}</td>
+                                    <td id="safec{{ $loop->index }}">{{ $data->安全庫存 }}</td>
                                     @if ($data->inventory現有庫存 === 0)
                                         <td>{!! __('callpageLang.nostock') !!}</td>
                                     @else
                                         <td>
-                                            @foreach ($test1 as $k => $a)
-                                                @if ($a > 0)
-                                                    {!! __('callpageLang.loc') !!} : {{ $k }}
-                                                    {!! __('callpageLang.nowstock') !!} :
-                                                    {{ $a }}<br>
+                                            @foreach ($astock2 as $k => $a)
+                                                @if ($a->現有庫存 > 0)
+                                                    {!! __('callpageLang.loc') !!} : {{ $position2[$k]->儲位 }}
+                                                    {!! __('callpageLang.nowstock') !!} : {{ round($a->現有庫存) }}<br>
                                                 @else
                                                     {!! __('callpageLang.nostock') !!}
                                                 @break
@@ -171,65 +163,17 @@
                                     </td>
                                 @endif
                                 <td><input class="form-control form-control-lg" type="text" style="width:100px"
-                                        id="remarka{{ $loop->index }}" value="{{ $data->備註 }}"></td>
+                                        id="remarkb{{ $loop->index }}" value="{{ $data->備註 }}"></td>
                             </tr>
 
-                            <input type="hidden" id="count1" name="count1" value="{{ $loop->count }}">
+                            <input type="hidden" id="count2" name="count2" value="{{ $loop->count }}">
                         @endforeach
 
-                        @foreach ($data2 as $data)
-                            <?php
-                            $astock2 = DB::table('inventory')
-                                ->select('現有庫存')
-                                ->where('料號', $data->料號)
-                                ->get()
-                                ->toArray();
-                            $position2 = DB::table('inventory')
-                                ->select('儲位')
-                                ->where('料號', $data->料號)
-                                ->get()
-                                ->toArray();
-                            if ($data->inventory現有庫存 === null) {
-                                $data->inventory現有庫存 = 0;
-                            }
-                            //dd($astock2, $position2);
-                            ?>
-
-                            <tr id="datab{{ $loop->index }}" class="isnRows2">
-                                <td>{!! __('callpageLang.notmonth') !!}</td>
-                                <td>{{ $data->料號 }}</td>
-                                <input type="hidden" id="numberb{{ $loop->index }}" value="{{ $data->料號 }}">
-                                <td>{{ $data->品名 }}</td>
-                                <td>{{ $data->規格 }}</td>
-                                <td id="stockc{{ $loop->index }}">{{ $data->inventory現有庫存 }}</td>
-                                <td id="safec{{ $loop->index }}">{{ $data->安全庫存 }}</td>
-                                @if ($data->inventory現有庫存 === 0)
-                                    <td>{!! __('callpageLang.nostock') !!}</td>
-                                @else
-                                    <td>
-                                        @foreach ($astock2 as $k => $a)
-                                            @if ($a->現有庫存 > 0)
-                                                {!! __('callpageLang.loc') !!} : {{ $position2[$k]->儲位 }}
-                                                {!! __('callpageLang.nowstock') !!} : {{ round($a->現有庫存) }}<br>
-                                            @else
-                                                {!! __('callpageLang.nostock') !!}
-                                            @break
-                                        @endif
-                                    @endforeach
-                                </td>
-                            @endif
-                            <td><input class="form-control form-control-lg" type="text" style="width:100px"
-                                    id="remarkb{{ $loop->index }}" value="{{ $data->備註 }}"></td>
-                        </tr>
-
-                        <input type="hidden" id="count2" name="count2" value="{{ $loop->count }}">
-                    @endforeach
-
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 </div>
 </div>
 @endsection

@@ -32,9 +32,6 @@
                                 <tr>
                                     <th>{!! __('outboundpageLang.delete') !!}</th>
                                     <th>{!! __('outboundpageLang.add') !!}</th>
-                                    <th>{!! __('outboundpageLang.client') !!}</th>
-                                    <th>{!! __('outboundpageLang.machine') !!}</th>
-                                    <th>{!! __('outboundpageLang.process') !!}</th>
                                     <th>{!! __('outboundpageLang.usereason') !!}</th>
                                     <th>{!! __('outboundpageLang.line') !!}</th>
                                     <th>{!! __('outboundpageLang.isn') !!}</th>
@@ -54,12 +51,10 @@
                                         <?php
                                         $stock = DB::table('inventory')
                                             ->where('料號', $data->料號)
-                                            ->where('客戶別', $data->客戶別)
                                             ->pluck('現有庫存')
                                             ->toArray();
                                         $position = DB::table('inventory')
                                             ->where('料號', $data->料號)
-                                            ->where('客戶別', $data->客戶別)
                                             ->pluck('儲位')
                                             ->toArray();
                                         $test = array_combine($position, $stock);
@@ -81,9 +76,6 @@
                                                     <path
                                                         d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                                                 </svg></a></td>
-                                        <td><span id="client{{ $loop->index }}">{{ $data->客戶別 }}</span></td>
-                                        <td><span id="machine{{ $loop->index }}">{{ $data->機種 }}</span></td>
-                                        <td><span id="production{{ $loop->index }}">{{ $data->製程 }}</span></td>
                                         <td><span id="usereason{{ $loop->index }}">{{ $data->領用原因 }}</span></td>
                                         <td><span id="line{{ $loop->index }}">{{ $data->線別 }}</span></td>
                                         <td><span id="number{{ $loop->index }}">{{ $data->料號 }}</span></td>

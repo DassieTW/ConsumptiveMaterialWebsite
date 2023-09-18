@@ -14,6 +14,8 @@
             />
         </div>
     </div>
+    <div class="w-100" style="height: 1ch"></div>
+    <!-- </div>breaks cols to a new line-->
     <table-lite
         :is-fixed-first-column="true"
         :is-static-mode="true"
@@ -77,70 +79,23 @@ export default defineComponent({
             columns: [
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.client"
+                        "outboundpageLang.isn"
                     ),
-                    field: "客戶別",
-                    width: "12ch",
+                    field: "料號",
+                    width: "15ch",
                     sortable: true,
-                    isKey: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="client' +
+                            '<input type="hidden" id="number' +
                             i +
-                            '" name="client' +
+                            '" name="number' +
                             i +
                             '" value="' +
-                            row.客戶別 +
+                            row.料號 +
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.客戶別 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.machine"
-                    ),
-                    field: "機種",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="machine' +
-                            i +
-                            '" name="machine' +
-                            i +
-                            '" value="' +
-                            row.機種 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.機種 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.process"
-                    ),
-                    field: "製程",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="production' +
-                            i +
-                            '" name="production' +
-                            i +
-                            '" value="' +
-                            row.製程 +
-                            '">' +
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.製程 +
+                            row.料號 +
                             "</div>"
                         );
                     },
@@ -191,29 +146,7 @@ export default defineComponent({
                         );
                     },
                 },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.isn"
-                    ),
-                    field: "料號",
-                    width: "15ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="number' +
-                            i +
-                            '" name="number' +
-                            i +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.料號 +
-                            "</div>"
-                        );
-                    },
-                },
+
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "outboundpageLang.pName"

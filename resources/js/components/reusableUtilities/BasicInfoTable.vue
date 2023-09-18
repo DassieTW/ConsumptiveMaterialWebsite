@@ -14,6 +14,8 @@
             />
         </div>
     </div>
+    <div class="w-100" style="height: 1ch"></div>
+    <!-- </div>breaks cols to a new line-->
     <table-lite
         :is-fixed-first-column="true"
         :isStaticMode="true"
@@ -199,150 +201,6 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.gradea"
-                    ),
-                    field: "A級資材",
-                    width: "9ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        let returnStr = "";
-                        // console.log(row); // test
-                        if (row.A級資材 === "是") {
-                            returnStr =
-                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                                ' id="gradea' +
-                                i +
-                                '" name="gradea' +
-                                i +
-                                '">' +
-                                '<option value="是" selected>' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.yes"
-                                ) +
-                                "</option>" +
-                                '<option value="否">' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.no"
-                                ) +
-                                "</option>" +
-                                "</select>";
-                        } // if
-                        else {
-                            returnStr =
-                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                                ' id="gradea' +
-                                i +
-                                '" name="gradea' +
-                                i +
-                                '">' +
-                                '<option value="是">' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.yes"
-                                ) +
-                                "</option>" +
-                                '<option value="否" selected>' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.no"
-                                ) +
-                                "</option>" +
-                                "</select>";
-                        } // else
-
-                        return returnStr;
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.month"
-                    ),
-                    field: "月請購",
-                    width: "12ch",
-                    sortable: true,
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.senddep"
-                    ),
-                    field: "發料部門",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        let returnStr = "";
-                        returnStr +=
-                            '<select style="width: 10ch;" class="form-select form-select-lg p-0 m-0" id="send' +
-                            i +
-                            '" name="send' +
-                            i +
-                            '">';
-                        senders.forEach((element) => {
-                            if (row.發料部門 === element) {
-                                returnStr +=
-                                    "<option selected>" + element + "</option>";
-                            } // if
-                            else {
-                                returnStr += "<option>" + element + "</option>";
-                            } // else
-                        }); // for each in sender array
-                        returnStr += "</select>";
-                        return returnStr; // return
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.belong"
-                    ),
-                    field: "耗材歸屬",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        let returnStr = "";
-                        // console.log(row); // test
-                        if (row.耗材歸屬 === "單耗") {
-                            returnStr =
-                                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                                ' id="belong' +
-                                i +
-                                '" name="belong' +
-                                i +
-                                '">' +
-                                '<option value="單耗" selected>' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.consume"
-                                ) +
-                                "</option>" +
-                                '<option value="站位">' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.stand"
-                                ) +
-                                "</option>" +
-                                "</select>";
-                        } // if
-                        else {
-                            returnStr =
-                                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                                ' id="belong' +
-                                i +
-                                '" name="belong' +
-                                i +
-                                '">' +
-                                '<option value="單耗">' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.consume"
-                                ) +
-                                "</option>" +
-                                '<option value="站位" selected>' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.stand"
-                                ) +
-                                "</option>" +
-                                "</select>";
-                        } // else
-
-                        return returnStr;
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.price"
                     ),
                     field: "單價",
@@ -480,6 +338,150 @@ export default defineComponent({
                             '"' +
                             ' class="form-control text-center p-0 m-0" min="0">'
                         );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.month"
+                    ),
+                    field: "月請購",
+                    width: "12ch",
+                    sortable: true,
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.gradea"
+                    ),
+                    field: "A級資材",
+                    width: "9ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        let returnStr = "";
+                        // console.log(row); // test
+                        if (row.A級資材 === "是") {
+                            returnStr =
+                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                                ' id="gradea' +
+                                i +
+                                '" name="gradea' +
+                                i +
+                                '">' +
+                                '<option value="是" selected>' +
+                                app.appContext.config.globalProperties.$t(
+                                    "basicInfoLang.yes"
+                                ) +
+                                "</option>" +
+                                '<option value="否">' +
+                                app.appContext.config.globalProperties.$t(
+                                    "basicInfoLang.no"
+                                ) +
+                                "</option>" +
+                                "</select>";
+                        } // if
+                        else {
+                            returnStr =
+                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                                ' id="gradea' +
+                                i +
+                                '" name="gradea' +
+                                i +
+                                '">' +
+                                '<option value="是">' +
+                                app.appContext.config.globalProperties.$t(
+                                    "basicInfoLang.yes"
+                                ) +
+                                "</option>" +
+                                '<option value="否" selected>' +
+                                app.appContext.config.globalProperties.$t(
+                                    "basicInfoLang.no"
+                                ) +
+                                "</option>" +
+                                "</select>";
+                        } // else
+
+                        return returnStr;
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.belong"
+                    ),
+                    field: "耗材歸屬",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        let returnStr = "";
+                        // console.log(row); // test
+                        if (row.耗材歸屬 === "單耗") {
+                            returnStr =
+                                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                                ' id="belong' +
+                                i +
+                                '" name="belong' +
+                                i +
+                                '">' +
+                                '<option value="單耗" selected>' +
+                                app.appContext.config.globalProperties.$t(
+                                    "basicInfoLang.consume"
+                                ) +
+                                "</option>" +
+                                '<option value="站位">' +
+                                app.appContext.config.globalProperties.$t(
+                                    "basicInfoLang.stand"
+                                ) +
+                                "</option>" +
+                                "</select>";
+                        } // if
+                        else {
+                            returnStr =
+                                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                                ' id="belong' +
+                                i +
+                                '" name="belong' +
+                                i +
+                                '">' +
+                                '<option value="單耗">' +
+                                app.appContext.config.globalProperties.$t(
+                                    "basicInfoLang.consume"
+                                ) +
+                                "</option>" +
+                                '<option value="站位" selected>' +
+                                app.appContext.config.globalProperties.$t(
+                                    "basicInfoLang.stand"
+                                ) +
+                                "</option>" +
+                                "</select>";
+                        } // else
+
+                        return returnStr;
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.senddep"
+                    ),
+                    field: "發料部門",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        let returnStr = "";
+                        returnStr +=
+                            '<select style="width: 10ch;" class="form-select form-select-lg p-0 m-0" id="send' +
+                            i +
+                            '" name="send' +
+                            i +
+                            '">';
+                        senders.forEach((element) => {
+                            if (row.發料部門 === element) {
+                                returnStr +=
+                                    "<option selected>" + element + "</option>";
+                            } // if
+                            else {
+                                returnStr += "<option>" + element + "</option>";
+                            } // else
+                        }); // for each in sender array
+                        returnStr += "</select>";
+                        return returnStr; // return
                     },
                 },
                 {

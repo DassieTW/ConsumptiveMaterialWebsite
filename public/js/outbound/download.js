@@ -26,20 +26,17 @@ $(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").remove();
 
-    var titlecount = 21;
+    var titlecount = 18;
     var titlename = $("#titlename").val();
     //download title
 
-    for (let i = 0; i < 21; i++) {
+    for (let i = 0; i < titlecount; i++) {
       title.push($(".vtl-thead-th").eq(i).text());
     }
 
-    titlecol.push("客戶別");
-    titlecol.push("機種");
-    titlecol.push("製程");
+    titlecol.push("料號");
     titlecol.push("領用原因");
     titlecol.push("線別");
-    titlecol.push("料號");
     titlecol.push("品名");
     titlecol.push("規格");
     titlecol.push("單位");
@@ -132,19 +129,16 @@ $(function () {
 
   $("#backtable").on("submit", function (e) {
     e.preventDefault();
-    var titlecount = 22;
+    var titlecount = 19;
     var titlename = $("#titlename").val();
     //download title
-    for (let i = 0; i < 22; i++) {
+    for (let i = 0; i < titlecount; i++) {
       title.push($(".vtl-thead-th").eq(i).text());
     }
 
-    titlecol.push("客戶別");
-    titlecol.push("機種");
-    titlecol.push("製程");
+    titlecol.push("料號");
     titlecol.push("退回原因");
     titlecol.push("線別");
-    titlecol.push("料號");
     titlecol.push("品名");
     titlecol.push("規格");
     titlecol.push("單位");

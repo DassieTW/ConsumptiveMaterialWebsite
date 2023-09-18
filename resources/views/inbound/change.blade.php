@@ -53,7 +53,6 @@
                                     <th>{!! __('inboundpageLang.isn') !!}</th>
                                     <th>{!! __('inboundpageLang.nowstock') !!}</th>
                                     <th>{!! __('inboundpageLang.loc') !!}</th>
-                                    <th>{!! __('inboundpageLang.client') !!}</th>
                                     <th>{!! __('inboundpageLang.updatetime') !!}</th>
                                     <th>{!! __('inboundpageLang.transferamount') !!}</th>
                                     <th>{!! __('inboundpageLang.newloc') !!}</th>
@@ -80,11 +79,8 @@
                                         <td><input type="hidden" id="oldposition{{ $loop->index }}"
                                                 name="oldposition{{ $loop->index }}"
                                                 value="{{ $data->儲位 }}">{{ $data->儲位 }}</td>
-                                        <td><input type="hidden" id="client{{ $loop->index }}"
-                                                name="client{{ $loop->index }}"
-                                                value="{{ $data->客戶別 }}">{{ $data->客戶別 }}</td>
                                         <td>{{ $data->最後更新時間 }}</td>
-                                        <td style="width: 100px"><input type="number" id="amount{{ $loop->index }}"
+                                        <td style="width: 120px"><input type="number" id="amount{{ $loop->index }}"
                                                 class="form-control form-control-lg" name="amount{{ $loop->index }}"
                                                 placeholder="{!! __('inboundpageLang.enteramount') !!}" min="1">
                                         </td>

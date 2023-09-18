@@ -113,8 +113,7 @@ Route::post('/backlistsub', [OutboundController::class, 'backlist'])->name('outb
 
 //出庫-領料紀錄表
 Route::get('/pickrecord', function () {
-    return view('outbound.pickrecord')->with(['client' => 客戶別::cursor()])
-        ->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);
+    return view('outbound.pickrecord')->with(['line' => 線別::cursor()]);
 })->name('outbound.pickrecord')->middleware('can:outboundPickupRecord,App\Models\Outbound');
 
 //Route::post('/pickrecord', [OutboundController::class, 'pickrecord'])->name('outbound.pickrecord');
@@ -128,8 +127,7 @@ Route::get('/pickrecordsearch', function () {
 
 //出庫-退料紀錄表
 Route::get('/backrecord', function () {
-    return view('outbound.backrecord')->with(['client' => 客戶別::cursor()])
-        ->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);
+    return view('outbound.backrecord')->with(['line' => 線別::cursor()]);
 })->name('outbound.backrecord')->middleware('can:outboundReturnRecord,App\Models\Outbound');
 
 //Route::post('/backrecord', [OutboundController::class, 'backrecord'])->name('outbound.backrecord');

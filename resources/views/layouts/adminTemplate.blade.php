@@ -179,11 +179,11 @@
                                                         <a class="sidebar-link" href="{{ url('basic') }}">
                                                             {!! __('basicInfoLang.basicInfo') !!}</a>
                                                     </li>
-                                                    <li
+                                                    {{-- <li
                                                         class="sidebar-item {{ isActiveRoute(['basic/new', 'basic.uploadmaterial']) }}">
                                                         <a class="sidebar-link" href="{{ url('basic/new') }}">
                                                             {!! __('basicInfoLang.newMats') !!}</a>
-                                                    </li>
+                                                    </li> --}}
                                                     <li class="sidebar-item {{ isActiveRoute(['basic/material']) }}">
                                                         <a class="sidebar-link" href="{{ url('basic/material') }}">
                                                             {!! __('basicInfoLang.matsInfo') !!}</a>

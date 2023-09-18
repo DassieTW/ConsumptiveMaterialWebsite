@@ -18,19 +18,15 @@ $(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").remove();
 
-    var client = $("#client").val();
     var isn = $("#number").val();
-    var production = $("#production").val();
-    var send = $("#send").val();
+    var line = $("#line").val();
     var check = $("#date").is(":checked");
     var begin = $("#begin").val();
     var end = $("#end").val();
     if (isn === "") isn = null;
 
-    sessionStorage.setItem("backrecordclient", JSON.stringify(client)); // for later vue to post request
+    sessionStorage.setItem("backrecordline", JSON.stringify(line)); // for later vue to post request
     sessionStorage.setItem("backrecordisn", JSON.stringify(isn)); // for later vue to post request
-    sessionStorage.setItem("backrecordproduction", JSON.stringify(production)); // for later vue to post request
-    sessionStorage.setItem("backrecordsend", JSON.stringify(send)); // for later vue to post request
     sessionStorage.setItem("backrecordcheck", JSON.stringify(check)); // for later vue to post request
     sessionStorage.setItem("backrecordbegin", JSON.stringify(begin)); // for later vue to post request
     sessionStorage.setItem("backrecordend", JSON.stringify(end)); // for later vue to post request

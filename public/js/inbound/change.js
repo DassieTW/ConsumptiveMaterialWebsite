@@ -58,7 +58,6 @@ $(function () {
     var number = $("#number" + i).val();
     var stock = $("#stock" + i).val();
     var oldposition = $("#oldposition" + i).val();
-    var client = $("#client" + i).val();
     var amount = $("#amount" + i).val();
     var newposition = $("#newposition" + i).val();
 
@@ -138,10 +137,7 @@ $(function () {
         Lang.get("inboundpageLang.to") +
         " " +
         newposition +
-        "\n" +
-        Lang.get("inboundpageLang.client") +
-        " : " +
-        client;
+        "\n";
       var sure = window.confirm(mess);
     }
 
@@ -152,7 +148,6 @@ $(function () {
         type: "POST",
         url: "changesubmit",
         data: {
-          client: client,
           number: number,
           oldposition: oldposition,
           amount: amount,

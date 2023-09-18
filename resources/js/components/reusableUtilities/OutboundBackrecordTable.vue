@@ -1,17 +1,35 @@
 <template>
     <div class="row" style="text-align: left">
         <div class="col col-auto">
-            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            <label for="pnInput" class="col-form-label"
+                >{{ $t("basicInfoLang.quicksearch") }} :</label
+            >
         </div>
         <div class="col col-3 p-0 m-0">
-            <input id="pnInput" class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+            <input
+                id="pnInput"
+                class="text-center form-control form-control-lg"
+                v-bind:placeholder="$t('basicInfoLang.enterisn')"
+                v-model="searchTerm"
+            />
         </div>
     </div>
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
-        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-        :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
-        @return-checked-rows="updateCheckedRows"></table-lite>
+    <div class="w-100" style="height: 1ch"></div>
+    <!-- </div>breaks cols to a new line-->
+    <table-lite
+        :is-fixed-first-column="true"
+        :is-static-mode="true"
+        :hasCheckbox="false"
+        :isLoading="table.isLoading"
+        :messages="table.messages"
+        :columns="table.columns"
+        :rows="table.rows"
+        :total="table.totalRecordCount"
+        :page-options="table.pageOptions"
+        :sortable="table.sortable"
+        @is-finished="table.isLoading = false"
+        @return-checked-rows="updateCheckedRows"
+    ></table-lite>
 </template>
 
 <script>
@@ -52,9 +70,7 @@ export default defineComponent({
                 data.push(allRowsObj.datas[i]);
             } // for
 
-            document
-                .getElementById("QueryFlag")
-                .click();
+            document.getElementById("QueryFlag").click();
         }); // watch for data change
 
         // Table config
@@ -62,69 +78,24 @@ export default defineComponent({
             isLoading: false,
             columns: [
                 {
-                    label: app.appContext.config.globalProperties.$t("outboundpageLang.client"),
-                    field: "客戶別",
-                    width: "12ch",
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.isn"
+                    ),
+                    field: "料號",
+                    width: "15ch",
                     sortable: true,
-                    isKey: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="client' +
+                            '<input type="hidden" id="number' +
                             i +
-                            '" name="client' +
+                            '" name="number' +
                             i +
                             '" value="' +
-                            row.客戶別 +
+                            row.料號 +
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.客戶別 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.machine"
-                    ),
-                    field: "機種",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="machine' +
-                            i +
-                            '" name="machine' +
-                            i +
-                            '" value="' +
-                            row.機種 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.機種 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.process"
-                    ),
-                    field: "製程",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="production' +
-                            i +
-                            '" name="production' +
-                            i +
-                            '" value="' +
-                            row.製程 +
-                            '">' +
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.製程 +
+                            row.料號 +
                             "</div>"
                         );
                     },
@@ -175,29 +146,7 @@ export default defineComponent({
                         );
                     },
                 },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.isn"
-                    ),
-                    field: "料號",
-                    width: "15ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="number' +
-                            i +
-                            '" name="number' +
-                            i +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.料號 +
-                            "</div>"
-                        );
-                    },
-                },
+
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "outboundpageLang.pName"
@@ -571,7 +520,9 @@ export default defineComponent({
             ],
             rows: computed(() => {
                 return data.filter((x) =>
-                    x.料號.toLowerCase().includes(searchTerm.value.toLowerCase())
+                    x.料號
+                        .toLowerCase()
+                        .includes(searchTerm.value.toLowerCase())
                 );
             }),
             totalRecordCount: computed(() => {
@@ -587,11 +538,17 @@ export default defineComponent({
                         "basicInfoLang.now_showing"
                     ) +
                     " {0} ~ {1} " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.record") +
+                    app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.record"
+                    ) +
                     ", " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.total") +
+                    app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.total"
+                    ) +
                     " {2} " +
-                    app.appContext.config.globalProperties.$t("basicInfoLang.record"),
+                    app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.record"
+                    ),
                 pageSizeChangeLabel: app.appContext.config.globalProperties.$t(
                     "basicInfoLang.records_per_page"
                 ),
@@ -623,8 +580,8 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            console.log(rowsKey)
-        }
+            console.log(rowsKey);
+        };
         return {
             searchTerm,
             table,

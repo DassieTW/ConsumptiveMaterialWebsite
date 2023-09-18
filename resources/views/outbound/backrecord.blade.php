@@ -25,28 +25,13 @@
                         <form id="form1" method="POST">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
-
-                                <label class="col col-auto form-label">{!! __('outboundpageLang.client') !!}</label>
+                                <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
-                                    <select class="form-select form-select-lg" id="client" name="client">
-                                        <option style="display: none" disabled selected>{!! __('outboundpageLang.enterclient') !!}</option>
-                                        @foreach ($client as $client)
-                                            <option>{{ $client->客戶 }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                <label class="col col-auto form-label">{!! __('outboundpageLang.process') !!}</label>
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                <div class="col-lg-6  col-md-12 col-sm-12">
-                                    <select class="form-select form-select-lg" id="production" name="production">
-                                        <option style="display: none" disabled selected>{!! __('outboundpageLang.enterprocess') !!}
-                                        </option>
-                                        @foreach ($production as $production)
-                                            <option>{{ $production->制程 }}</option>
+                                    <select class="form-select form-select-lg" id="line" name="line">
+                                        <option style="display: none" disabled selected>{!! __('outboundpageLang.enterline') !!}</option>
+                                        @foreach ($line as $line)
+                                            <option>{{ $line->線別 }}</option>
                                         @endforeach
                                     </select>
                                 </div>

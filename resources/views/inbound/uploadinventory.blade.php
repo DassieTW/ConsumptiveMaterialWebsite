@@ -1,12 +1,12 @@
 @foreach ($data as $row)
     <?php
-    if (strlen(trim($row[1])) !== 0) {
+    if (strlen(trim($row[0])) !== 0) {
         //$number = $row[1]
         $name = DB::table('consumptive_material')
-            ->where('料號', trim($row[1]))
+            ->where('料號', trim($row[0]))
             ->value('品名');
         $format = DB::table('consumptive_material')
-            ->where('料號', trim($row[1]))
+            ->where('料號', trim($row[0]))
             ->value('規格');
         $position = DB::table('儲位')->pluck('儲存位置');
         $clients = DB::table('客戶別')
@@ -20,36 +20,24 @@
         $error = $loop->index + 1;
         //判斷是否有料號
         if ($name === null || $format === null) {
-            $mess = trans('inboundpageLang.noisn') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[1];
+            $mess = trans('inboundpageLang.noisn') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[0];
             echo "<script LANGUAGE='JavaScript'>
-                                                                                                                        window.alert('$mess');
-                                                                                                                        window.location.href='upload';
-                                                                                                                        </script>";
-        } // if
-        //判斷是否有這個客戶
-        if (in_array($row[0], $clients)) {
-            $i = true;
-        } // if
-    
-        if ($i === false) {
-            $mess = trans('inboundpageLang.noclient') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[0];
-            echo "<script LANGUAGE='JavaScript'>
-                                                                                                                        window.alert('$mess');
-                                                                                                                        window.location.href='upload';
-                                                                                                                        </script>";
+                        window.alert('$mess');
+                        window.location.href='upload';
+                        </script>";
         } // if
     
         //判斷是否有這個儲位
-        if (in_array($row[3], $positions)) {
+        if (in_array($row[2], $positions)) {
             $j = true;
         } // if
     
         if ($j === false) {
-            $mess = trans('inboundpageLang.noloc') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[3];
+            $mess = trans('inboundpageLang.noloc') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[2];
             echo "<script LANGUAGE='JavaScript'>
-                                                                                                                        window.alert('$mess');
-                                                                                                                        window.location.href='upload';
-                                                                                                                        </script>";
+                            window.alert('$mess');
+                            window.location.href='upload';
+                            </script>";
         } // if
     }
     ?>
@@ -79,8 +67,6 @@
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
-                                <th><input type="hidden" id="title0" name="title0"
-                                        value="客戶別">{!! __('inboundpageLang.client') !!}</th>
                                 <th><input type="hidden" id="title1" name="title1"
                                         value="料號">{!! __('inboundpageLang.isn') !!}
                                 </th>
@@ -97,30 +83,27 @@
                             @foreach ($data as $row)
                                 <?php
                                 $name = DB::table('consumptive_material')
-                                    ->where('料號', trim($row[1]))
+                                    ->where('料號', trim($row[0]))
                                     ->value('品名');
                                 $format = DB::table('consumptive_material')
-                                    ->where('料號', trim($row[1]))
+                                    ->where('料號', trim($row[0]))
                                     ->value('規格');
                                 ?>
-                                @if (strlen(trim($row[1])) !== 0)
+                                @if (strlen(trim($row[0])) !== 0)
                                     <tr>
-                                        <td><input type="hidden" id="data0{{ $loop->index }}"
-                                                name="data0{{ $loop->index }}"
-                                                value="{{ trim($row[0]) }}">{{ trim($row[0]) }}</td>
                                         <td><input type="hidden" id="data1{{ $loop->index }}"
                                                 name="data1{{ $loop->index }}"
-                                                value="{{ trim($row[1]) }}">{{ trim($row[1]) }}</td>
+                                                value="{{ trim($row[0]) }}">{{ trim($row[0]) }}</td>
                                         <td>{{ $name }}</td>
                                         <td>{{ $format }}</td>
                                         <td><input type="number" id="data2{{ $loop->index }}"
-                                                name="data2{{ $loop->index }}" value="{{ trim($row[2]) }}" required
+                                                name="data2{{ $loop->index }}" value="{{ trim($row[1]) }}" required
                                                 min="1" class="form-control form-control-lg"></td>
                                         <td>
                                             <select class="form-select form-select-lg" id="data3{{ $loop->index }}"
                                                 name="data3{{ $loop->index }}" required>
-                                                <option style="display: none" selected value="{{ trim($row[3]) }}">
-                                                    {{ trim($row[3]) }}</option>
+                                                <option style="display: none" selected value="{{ trim($row[2]) }}">
+                                                    {{ trim($row[2]) }}</option>
                                                 @foreach ($positions as $position)
                                                     <option>{{ $position }}</option>
                                                 @endforeach

@@ -14,6 +14,8 @@
             />
         </div>
     </div>
+    <div class="w-100" style="height: 1ch"></div>
+    <!-- </div>breaks cols to a new line-->
     <table-lite
         :is-fixed-first-column="true"
         :is-static-mode="true"
@@ -187,29 +189,6 @@ export default defineComponent({
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.入庫人員 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.client"
-                    ),
-                    field: "客戶別",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="client' +
-                            i +
-                            '" name="client' +
-                            i +
-                            '" value="' +
-                            row.客戶別 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.客戶別 +
                             "</div>"
                         );
                     },

@@ -13,20 +13,17 @@ $(function () {
     $(".invalid-feedback").remove();
 
     var data = [];
-    var client = [];
     var number = [];
     var amount = [];
     var position = [];
     var count = $("#count").val();
 
     for (let i = 0; i < count; i++) {
-      client.push($("#data0" + i).val());
       number.push($("#data1" + i).val());
       amount.push($("#data2" + i).val());
       position.push($("#data3" + i).val());
     }
 
-    data.push(client);
     data.push(number);
     data.push(amount);
     data.push(position);
