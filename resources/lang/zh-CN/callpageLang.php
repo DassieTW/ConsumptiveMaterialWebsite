@@ -31,7 +31,9 @@ return [
     'safe' => '安全库存',
     'nostock' => '目前无任何库存',
     'notmonth' => '非月请购耗材',
+    'ismonth' => '月请购耗材',
+    'month' => '月请购',
     'nowstock' => '现有库存',
-    'saveremark' =>'保存备注',
+    'saveremark' => '保存备注',
     'success' => '成功',
 ];

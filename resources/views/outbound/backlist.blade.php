@@ -28,9 +28,6 @@
                                 <tr>
                                     <th>{!! __('outboundpageLang.delete') !!}</th>
                                     <th>{!! __('outboundpageLang.add') !!}</th>
-                                    <th>{!! __('outboundpageLang.client') !!}</th>
-                                    <th>{!! __('outboundpageLang.machine') !!}</th>
-                                    <th>{!! __('outboundpageLang.process') !!}</th>
                                     <th>{!! __('outboundpageLang.backreason') !!}</th>
                                     <th>{!! __('outboundpageLang.line') !!}</th>
                                     <th>{!! __('outboundpageLang.isn') !!}</th>
@@ -52,13 +49,11 @@
                                         $showstock = '';
                                         $nowstock = DB::table('inventory')
                                             ->where('料號', $data->料號)
-                                            ->where('客戶別', $data->客戶別)
                                             ->where('現有庫存', '>', 0)
                                             ->pluck('現有庫存')
                                             ->toArray();
                                         $nowloc = DB::table('inventory')
                                             ->where('料號', $data->料號)
-                                            ->where('客戶別', $data->客戶別)
                                             ->where('現有庫存', '>', 0)
                                             ->pluck('儲位')
                                             ->toArray();
@@ -84,9 +79,6 @@
                                                     <path
                                                         d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                                                 </svg></a></td>
-                                        <td><span id="client{{ $loop->index }}">{{ $data->客戶別 }}</span></td>
-                                        <td><span id="machine{{ $loop->index }}">{{ $data->機種 }}</span></td>
-                                        <td><span id="production{{ $loop->index }}">{{ $data->製程 }}</span></td>
                                         <td><span id="backreason{{ $loop->index }}">{{ $data->退回原因 }}</span></td>
                                         <td><span id="line{{ $loop->index }}">{{ $data->線別 }}</span></td>
                                         <td><span id="number{{ $loop->index }}">{{ $data->料號 }}</span></td>
@@ -158,7 +150,7 @@
                     <ul id="receivemenu" style="display: none;" class="list-group">
                         @foreach ($people as $people)
                             <a class="receivelist list-group-item list-group-item-action"
-                                href="#">{{ $people->工號 . ' ' . $people->姓名 }}</a>
+                                href="#">{{ $people->工號 . ' : ' . $people->姓名 }}</a>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         @endforeach
                     </ul>
@@ -179,7 +171,7 @@
                     <ul id="backmenu" style="display: none;" class="list-group">
                         @foreach ($people1 as $people)
                             <a class="backlist list-group-item list-group-item-action"
-                                href="#">{{ $people->工號 . ' ' . $people->姓名 }}</a>
+                                href="#">{{ $people->工號 . ' : ' . $people->姓名 }}</a>
                             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         @endforeach
                     </ul>

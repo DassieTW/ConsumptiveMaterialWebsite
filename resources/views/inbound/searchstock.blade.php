@@ -32,33 +32,6 @@
                             <form id="form1" method="POST">
                                 @csrf
                                 <div class="row w-100 justify-content-center mb-3">
-                                    <label class="col col-auto form-label">{!! __('inboundpageLang.client') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <select class="form-select form-select-lg" id="client" name="client">
-                                            <option style="display: none" disabled selected>{!! __('inboundpageLang.enterclient') !!}</option>
-                                            @foreach ($client as $client)
-                                                <option>{{ $client->客戶 }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                    <label class="col col-auto form-label">{!! __('inboundpageLang.loc') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <select class="form-select form-select-lg" id="position" name="position">
-                                            <option style="display: none" disabled selected>{!! __('inboundpageLang.enterloc') !!}
-                                            </option>
-                                            @foreach ($position as $position)
-                                                <option>{{ $position->儲存位置 }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
                                     <label class="col col-auto form-label">{!! __('inboundpageLang.isn') !!}</label>
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                     <div class="col-lg-6  col-md-12 col-sm-12">
@@ -71,6 +44,19 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+                                    </div>
+
+                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <label class="col col-auto form-label">{!! __('inboundpageLang.loc') !!}</label>
+                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <div class="col-lg-6  col-md-12 col-sm-12">
+                                        <select class="form-select form-select-lg" id="position" name="position">
+                                            <option style="display: none" disabled selected>{!! __('inboundpageLang.enterloc') !!}
+                                            </option>
+                                            @foreach ($position as $position)
+                                                <option>{{ $position->儲存位置 }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -93,7 +79,6 @@
                                             <input class="basic" type="checkbox" id="month" name="month"
                                                 style="width:20px;height:20px;" value="1"> {!! __('inboundpageLang.stockmonth') !!}
                                             <div class="w-100" style="height: 1ch;"></div>
-                                            <!-- </div>breaks cols to a new line-->
                                             <input class="basic" type="checkbox" id="nogood" name="nogood"
                                                 style="width:20px;height:20px;" value="2"> {!! __('inboundpageLang.nogood') !!}
                                         </div>

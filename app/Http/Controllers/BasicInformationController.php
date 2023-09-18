@@ -271,7 +271,7 @@ class BasicInformationController extends Controller
                 $worksheet = $spreadsheet->getActiveSheet();
                 $Alldata = DB::table('consumptive_material')->get();
                 $downloadcount = count($Alldata);
-                $arr = ['料號', '品名', '規格', 'A級資材', '月請購', '發料部門', '耗材歸屬', '單價', '幣別', '單位', 'MPQ', 'MOQ', 'LT', '安全庫存'];
+                $arr = ['料號', '品名', '規格', '單價', '幣別', '單位', 'MPQ', 'MOQ', 'LT', '月請購', 'A級資材',  '耗材歸屬', '發料部門', '安全庫存'];
 
                 // $stringValueBinder = new StringValueBinder();
                 // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);

@@ -53,12 +53,10 @@ $(function () {
     var count = $("#count").val();
 
     var number = [];
-    var client = [];
     var remark = [];
 
     for (let i = 0; i < count; i++) {
       if ($("#remark" + i).val() !== "") {
-        client.push($("#client" + i).val());
         number.push($("#number" + i).val());
         remark.push($("#remark" + i).val());
       }
@@ -67,7 +65,6 @@ $(function () {
       type: "POST",
       url: "dayremark",
       data: {
-        client: client,
         number: number,
         remark: remark,
       },

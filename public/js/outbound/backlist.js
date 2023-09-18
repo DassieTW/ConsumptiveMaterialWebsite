@@ -119,33 +119,6 @@ function addBtn(index) {
   rowadd.innerHTML =
     "<a id=" + "addBtn" + count + " href=javascript:addBtn(" + count + ")></a>";
 
-  let rowclient = document.createElement("td");
-  rowclient.innerHTML =
-    "<span id=" +
-    "client" +
-    count +
-    ">" +
-    $("#client" + index).text() +
-    "</span>";
-
-  let rowmachine = document.createElement("td");
-  rowmachine.innerHTML =
-    "<span id=" +
-    "machine" +
-    count +
-    ">" +
-    $("#machine" + index).text() +
-    "</span>";
-
-  let rowproduction = document.createElement("td");
-  rowproduction.innerHTML =
-    "<span id=" +
-    "production" +
-    count +
-    ">" +
-    $("#production" + index).text() +
-    "</span>";
-
   let rowbackreason = document.createElement("td");
   rowbackreason.innerHTML =
     "<span id=" +
@@ -261,9 +234,6 @@ function addBtn(index) {
 
   row.appendChild(rowdelete);
   row.appendChild(rowadd);
-  row.appendChild(rowclient);
-  row.appendChild(rowmachine);
-  row.appendChild(rowproduction);
   row.appendChild(rowbackreason);
   row.appendChild(rowline);
   row.appendChild(rownumber);
@@ -426,9 +396,6 @@ $(function () {
     }
 
     var data = [];
-    var client = [];
-    var machine = [];
-    var production = [];
     var line = [];
     var backreason = [];
     var reason = [];
@@ -454,10 +421,7 @@ $(function () {
     }
 
     for (let i = 0; i < count; i++) {
-      if ($("#client" + i).text() !== null && $("#client" + i).text() !== "") {
-        client.push($("#client" + i).text());
-        machine.push($("#machine" + i).text());
-        production.push($("#production" + i).text());
+      if ($("#number" + i).text() !== null && $("#number" + i).text() !== "") {
         line.push($("#line" + i).text());
         backreason.push($("#backreason" + i).text());
         reason.push($("#reason" + i).val());
@@ -490,7 +454,7 @@ $(function () {
         }
         if ($("#position" + i).val() === null) {
           $("#position" + i).addClass("is-invalid");
-          $("#position" + i).focus();
+          $("#position" + i).trigger("focus");
           notyf.open({
             type: "warning",
             message:
@@ -573,15 +537,12 @@ $(function () {
     }
 
     for (let i = 0; i < count; i++) {
-      if (status[i] === "good product" || status === "良品") {
+      if (status[i] === "good product" || status[i] === "良品") {
         status[i] = "良品";
       } else {
         status[i] = "不良品";
       }
     }
-    data.push(client);
-    data.push(machine);
-    data.push(production);
     data.push(backreason);
     data.push(line);
     data.push(number);

@@ -69,23 +69,6 @@ $(function () {
     }
   }
 
-  var count1 = $("#count1").val();
-  for (var i = 0; i < count1; i++) {
-    var safe = $("#safeb" + i).html();
-    var stock = $("#stockb" + i).html();
-    var percent = stock / safe;
-
-    if (percent < 0.5) {
-      $("#safeb" + i).css("background-color", "red");
-    } else if (percent >= 0.5 && percent < 0.8) {
-      $("#safeb" + i).css("background-color", "orange");
-    } else if (percent >= 0.8) {
-      $("#safeb" + i).css("background-color", "yellow");
-    } else {
-      $("#safeb" + i).css("background-color", "red");
-    }
-  }
-
   var count2 = $("#count2").val();
   for (var i = 0; i < count2; i++) {
     var safe = $("#safec" + i).html();
@@ -104,9 +87,6 @@ $(function () {
   for (let i = 0; i < count; i++) {
     oldmark.push($("#remark" + i).val());
   }
-  for (let i = 0; i < count1; i++) {
-    oldmark.push($("#remarka" + i).val());
-  }
   for (let i = 0; i < count2; i++) {
     oldmark.push($("#remarkb" + i).val());
   }
@@ -115,37 +95,25 @@ $(function () {
     e.preventDefault();
 
     var number = [];
-    var client = [];
     var remark = [];
     var realremark = [];
     for (let i = 0; i < count; i++) {
       //   if ($("#remark" + i).val() !== "") {
-      client.push($("#client" + i).val());
       number.push($("#number" + i).val());
       remark.push($("#remark" + i).val());
       //   }
     }
-    for (let i = 0; i < count1; i++) {
-      //   if ($("#remarka" + i).val() !== "") {
-      client.push($("#clienta" + i).val());
-      number.push($("#numbera" + i).val());
-      remark.push($("#remarka" + i).val());
-      //   }
-    }
     for (let i = 0; i < count2; i++) {
       //if ($("#remarkb" + i).val() !== "") {
-      client.push("非月請購");
       number.push($("#numberb" + i).val());
       remark.push($("#remarkb" + i).val());
       //}
     }
 
-    console.log(client);
     $.ajax({
       type: "POST",
       url: "saferemark",
       data: {
-        client: client,
         number: number,
         remark: remark,
       },

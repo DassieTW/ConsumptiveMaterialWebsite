@@ -29,7 +29,6 @@ $(function () {
     $(".is-invalid").removeClass("is-invalid");
     $(".invalid-feedback").hide();
 
-    var client = $("#client").val();
     var isn = $("#number").val();
     var loc = $("#position").val();
     var send = $("#send").val();
@@ -38,7 +37,6 @@ $(function () {
 
     if (isn === "") isn = null;
 
-    sessionStorage.setItem("inboundstockclient", JSON.stringify(client)); // for later vue to post request
     sessionStorage.setItem("inboundstockisn", JSON.stringify(isn)); // for later vue to post request
     sessionStorage.setItem("inboundstockloc", JSON.stringify(loc)); // for later vue to post request
     sessionStorage.setItem("inboundstocksend", JSON.stringify(send)); // for later vue to post request

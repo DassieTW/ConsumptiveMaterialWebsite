@@ -36,6 +36,7 @@
                     <input type="hidden" id="titlename" name="titlename" value="領料記錄表">
                     <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
                         value="{!! __('outboundpageLang.download') !!}">
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <outbound-pickrecord-table></outbound-pickrecord-table>
                 </form>
 

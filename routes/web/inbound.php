@@ -147,3 +147,22 @@ Route::post('/uploadinventory', [InboundController::class, 'uploadinventory'])->
 
 //上傳資料新增至資料庫
 Route::post('/insertuploadinventory', [InboundController::class, 'insertuploadinventory'])->name('inbound.insertuploadinventory')->middleware('can:viewInbound,App\Models\Inbound');
+
+
+//test
+Route::get('/testinbound', function () {
+    $datas1 = DB::table('月請購_單耗')
+        ->join('MPS', function ($join) {
+            $join->on('MPS.料號90', '=', '月請購_單耗.料號90')
+                ->on('MPS.料號', '=', '月請購_單耗.料號');
+        })
+        ->join('consumptive_material', function ($join) {
+            $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
+        })
+        ->select('MPS.下月MPS', '月請購_單耗.*', DB::raw('(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存)'))
+        ->where('月請購_單耗.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "單耗")->where('consumptive_material.月請購', '=', "是");
+
+    $datas1 = $datas1->select('月請購_單耗.料號', DB::raw('SUM(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存'))
+        ->groupBy('月請購_單耗.料號')->get();
+    dd($datas1);
+})->middleware('can:viewInbound,App\Models\Inbound');

@@ -34,7 +34,7 @@ return [
     'enterisn' => '请输入料号',
     'isnlength' => '料号长度不为12',
     'noisn' => '料号不存在',
-    'nostock' => '该客户&料号没有库存，无法开领料单。 ',
+    'nostock' => '该料号没有库存，无法开领料单。 ',
     'submit' => '提交',
     'return' => '返回',
     'pName' => '品名',

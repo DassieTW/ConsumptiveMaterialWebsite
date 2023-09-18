@@ -44,15 +44,19 @@ class InboundController extends Controller
     {
         if (Session::has('username')) {
 
+
+            $test = DB::table('inventory')
+                ->select('料號', '儲位', '最後更新時間', DB::raw('SUM(現有庫存) as 現有庫存'))
+                ->groupBy('料號', '儲位', '最後更新時間');
+
             $datas = DB::table('consumptive_material')
-                ->join('inventory', 'consumptive_material.料號', '=', 'inventory.料號')
-                ->where('inventory.料號', 'like', $request->input('number') . '%')
-                ->where('inventory.客戶別', 'like', $request->input('client') . '%')
+                ->joinSub($test, 'inventory', function ($join) {
+                    $join->on('inventory.料號', '=', 'consumptive_material.料號');
+                })->where('現有庫存', '>', 0)
+                ->where('consumptive_material.料號', 'like', $request->input('number') . '%')
                 ->where('inventory.儲位', 'like', $request->input('position') . '%')
-                ->where('consumptive_material.發料部門', 'like', $request->input('send') . '%')
-                ->where('現有庫存', '>', 0)
-                ->select('inventory.*', 'consumptive_material.發料部門')
-                ->get();
+                ->where('consumptive_material.發料部門', 'like', $request->input('send') . '%')->get();
+
 
             return view('inbound.change')->with(['data' => $datas]);
         } else {
@@ -67,13 +71,11 @@ class InboundController extends Controller
 
             $number = $request->input('number');
             $oldposition = $request->input('oldposition');
-            $client = $request->input('client');
             $amount = $request->input('amount');
             $newposition = $request->input('newposition');
             //$stock = $request->input('stock');
             $now = Carbon::now();
             $test = DB::table('inventory')
-                ->where('客戶別', $client)
                 ->where('料號', $number)
                 ->where('儲位', $newposition)
                 ->value('現有庫存');
@@ -83,22 +85,19 @@ class InboundController extends Controller
 
                 if ($test !== null) {
                     DB::table('inventory')
-                        ->where('客戶別', $client)
                         ->where('料號', $number)
                         ->where('儲位', $newposition)
                         ->update(['現有庫存' => $test + $amount, '最後更新時間' => $now]);
                 } else {
                     DB::table('inventory')
-                        ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $newposition, '客戶別' => $client, '最後更新時間' => $now]);
+                        ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $newposition, '最後更新時間' => $now]);
                 }
 
                 $stock = DB::table('inventory')
-                    ->where('客戶別', $client)
                     ->where('料號', $number)
                     ->where('儲位', $oldposition)
                     ->value('現有庫存');
                 DB::table('inventory')
-                    ->where('客戶別', $client)
                     ->where('料號', $number)
                     ->where('儲位', $oldposition)
                     ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
@@ -668,10 +667,9 @@ class InboundController extends Controller
             $amount = $request->input('amount');
             $position = $request->input('position');
             $inpeople = $request->input('inpeople');
-            $client = $request->input('client');
             $inreason = $request->input('inreason');
-            $stock = DB::table('inventory')->where('客戶別', $client)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
-            $buy = DB::table('在途量')->where('客戶', $client)->where('料號', $number)->value('請購數量');
+            $stock = DB::table('inventory')->where('料號', $number)->where('儲位', $position)->sum('現有庫存');
+            $buy = DB::table('在途量')->where('料號', $number)->sum('請購數量');
             DB::beginTransaction();
             try {
                 if ($stock < $amount) {
@@ -681,19 +679,16 @@ class InboundController extends Controller
                 }
                 if ($inreason !== '調撥' && $inreason !== '退庫') {
                     DB::table('在途量')
-                        ->where('客戶', $client)
                         ->where('料號', $number)
                         ->update(['請購數量' => $buy + $amount]);
                 }
                 DB::table('inventory')
-                    ->where('客戶別', $client)
                     ->where('料號', $number)
                     ->where('儲位', $position)
                     ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
 
                 DB::table('inbound')
                     ->where('入庫單號', $list)
-                    ->where('客戶別', $client)
                     ->where('料號', $number)
                     ->where('入庫數量', $amount)
                     ->where('入庫人員', $inpeople)
@@ -705,7 +700,7 @@ class InboundController extends Controller
                 DB::rollback();
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
             }
-            return \Response::json(['list' => $list, 'client' => $client, 'number' => $number]/* Status code here default is 200 ok*/);
+            return \Response::json(['list' => $list, 'number' => $number]/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
         }
@@ -1010,22 +1005,16 @@ class InboundController extends Controller
             try {
                 for ($i = 0; $i < $count; $i++) {
 
-                    if (!(in_array($Alldata[3][$i], $positions))) {
-                        DB::table('儲位')
-                            ->insert(['儲存位置' => $Alldata[5][$i]]);
-                    }
-
-                    $stock = DB::table('inventory')->where('客戶別', $Alldata[0][$i])->where('料號', $Alldata[1][$i])->where('儲位', $Alldata[3][$i])->value('現有庫存');
+                    $stock = DB::table('inventory')->where('料號', $Alldata[0][$i])->where('儲位', $Alldata[2][$i])->value('現有庫存');
 
                     if ($stock === null) {
                         DB::table('inventory')
-                            ->insert(['料號' => $Alldata[1][$i], '現有庫存' => $Alldata[2][$i], '儲位' => $Alldata[3][$i], '客戶別' => $Alldata[0][$i], '最後更新時間' => $now]);
+                            ->insert(['料號' => $Alldata[0][$i], '現有庫存' => $Alldata[1][$i], '儲位' => $Alldata[2][$i], '最後更新時間' => $now]);
                     } else {
                         DB::table('inventory')
-                            ->where('客戶別', $Alldata[0][$i])
-                            ->where('料號', $Alldata[1][$i])
-                            ->where('儲位', $Alldata[3][$i])
-                            ->update(['現有庫存' => $stock + $Alldata[2][$i], '最後更新時間' => $now]);
+                            ->where('料號', $Alldata[0][$i])
+                            ->where('儲位', $Alldata[2][$i])
+                            ->update(['現有庫存' => $stock + $Alldata[1][$i], '最後更新時間' => $now]);
                     }
                 } // for
                 DB::commit();

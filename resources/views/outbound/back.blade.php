@@ -22,39 +22,6 @@
                 <form id="back" class="row gx-6 gy-1 align-items-center">
                     @csrf
                     <div class="col-auto">
-                        <label class="col col-lg-12 form-label">{!! __('outboundpageLang.client') !!}</label>
-                        <select class="form-select form-select-lg" id="client" name="client">
-                            <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterclient') !!}</option>
-                            @foreach ($client as $client)
-                                <option>{{ $client->客戶 }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
-                            {!! __('outboundpageLang.enterclient') !!}</div>
-                    </div>
-                    <div class="col-auto">
-                        <label class="col col-lg-12 form-label">{!! __('outboundpageLang.machine') !!}</label>
-                        <select class="form-select form-select-lg" id="machine" name="machine">
-                            <option style="display: none" disabled selected value="">{!! __('outboundpageLang.entermachine') !!}</option>
-                            @foreach ($machine as $machine)
-                                <option>{{ $machine->機種 }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback" id="machineerror" style="display:none; color:red;">
-                            {!! __('outboundpageLang.entermachine') !!}</div>
-                    </div>
-                    <div class="col-auto">
-                        <label class="col col-lg-12 form-label">{!! __('outboundpageLang.process') !!}</label>
-                        <select class="form-select form-select-lg " id="production" name="production">
-                            <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterprocess') !!}</option>
-                            @foreach ($production as $production)
-                                <option>{{ $production->制程 }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback" id="productionerror" style="display:none; color:red;">
-                            {!! __('outboundpageLang.enterprocess') !!}</div>
-                    </div>
-                    <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>
                         <select class="form-select form-select-lg " id="line" name="line">
                             <option style="display: none" disabled selected value="">{!! __('outboundpageLang.enterline') !!}</option>
@@ -124,9 +91,6 @@
                                     <th>{!! __('outboundpageLang.senddep') !!}</th>
                                     <th>{!! __('outboundpageLang.backamount') !!}</th>
                                     <th>{!! __('outboundpageLang.mark') !!}</th>
-                                    <th>{!! __('outboundpageLang.client') !!}</th>
-                                    <th>{!! __('outboundpageLang.machine') !!}</th>
-                                    <th>{!! __('outboundpageLang.process') !!}</th>
                                     <th>{!! __('outboundpageLang.line') !!}</th>
                                     <th>{!! __('outboundpageLang.backreason') !!}</th>
                                 </tr>

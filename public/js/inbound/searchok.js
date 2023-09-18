@@ -10,10 +10,10 @@ $(function () {
   var title = [];
   var titlecol = [];
   var check;
-  var titlecount = 9;
+  var titlecount = 8;
   var titlename = "入庫查詢";
   //download title
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < 8; i++) {
     title.push(
       $(".vtl-thead-th")
         .eq(i + 1)
@@ -69,7 +69,6 @@ $(function () {
     var amount = $("#inboundnum" + check).val();
     var position = $("#position" + check).val();
     var inpeople = $("#inboundpeople" + check).val();
-    var client = $("#client" + check).val();
     var inreason = $("#inboundreason" + check).val();
 
     if (select === "刪除" || select === "Delete" || select === "删除") {
@@ -82,7 +81,6 @@ $(function () {
           amount: amount,
           position: position,
           inpeople: inpeople,
-          client: client,
           inreason: inreason,
         },
 
@@ -106,10 +104,6 @@ $(function () {
             " : " +
             data.list +
             "\n" +
-            Lang.get("inboundpageLang.client") +
-            " : " +
-            data.client +
-            " " +
             Lang.get("inboundpageLang.isn") +
             " : " +
             data.number;
@@ -168,7 +162,6 @@ $(function () {
       titlecol.push("入庫數量");
       titlecol.push("儲位");
       titlecol.push("入庫人員");
-      titlecol.push("客戶別");
       titlecol.push("入庫原因");
       titlecol.push("入庫時間");
       titlecol.push("備註");

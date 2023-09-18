@@ -34,9 +34,8 @@ $(function () {
       if (sessionStorage.getItem("inboundstocknogood") === "true") {
         nogood = 2;
       }
-      var titlecount = 13;
+      var titlecount = 12;
 
-      titlecol.push("客戶別");
       titlecol.push("料號");
       titlecol.push("品名");
       titlecol.push("規格");
@@ -50,9 +49,8 @@ $(function () {
       titlecol.push("儲位");
       titlecol.push("呆滯天數");
     } else {
-      var titlecount = 12;
+      var titlecount = 11;
 
-      titlecol.push("客戶別");
       titlecol.push("料號");
       titlecol.push("品名");
       titlecol.push("規格");

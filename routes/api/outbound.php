@@ -21,9 +21,7 @@ Route::post('/pickrecord', function (Request $request) {
     \DB::purge(env("DB_CONNECTION"));
     $dbName = DB::connection()->getDatabaseName(); // test
 
-    $pickrecordclient = json_decode($request->input('pickrecordclient'));
-    $pickrecordproduction = json_decode($request->input('pickrecordproduction'));
-    $pickrecordsend = json_decode($request->input('pickrecordsend'));
+    $pickrecordline = json_decode($request->input('pickrecordline'));
     $pickrecordisn = json_decode($request->input('pickrecordisn'));
     $pickrecordcheck = json_decode($request->input('pickrecordcheck'));
     $pickrecordbegin = date(json_decode($request->input('pickrecordbegin')));
@@ -40,9 +38,7 @@ Route::post('/pickrecord', function (Request $request) {
             $join->on('outbound.料號', '=', 'consumptive_material.料號')
                 ->whereNotNull('領料人員');
         })->where('consumptive_material.料號', 'like', $pickrecordisn . '%')
-        ->where('outbound.客戶別', 'like', $pickrecordclient . '%')
-        ->where('outbound.製程', 'like', $pickrecordproduction . '%')
-        ->where('consumptive_material.發料部門', 'like', $pickrecordsend . '%')->get();
+        ->where('outbound.線別', 'like', $pickrecordline . '%')->get();
 
     if ($pickrecordcheck) {
         $datas = $datas->whereBetween('出庫時間', [$pickrecordbegin, $end])->values();
@@ -55,9 +51,7 @@ Route::post('/backrecord', function (Request $request) {
     \DB::purge(env("DB_CONNECTION"));
     $dbName = DB::connection()->getDatabaseName(); // test
 
-    $backrecordclient = json_decode($request->input('backrecordclient'));
-    $backrecordproduction = json_decode($request->input('backrecordproduction'));
-    $backrecordsend = json_decode($request->input('backrecordsend'));
+    $backrecordline = json_decode($request->input('backrecordline'));
     $backrecordisn = json_decode($request->input('backrecordisn'));
     $backrecordcheck = json_decode($request->input('backrecordcheck'));
     $backrecordbegin = date(json_decode($request->input('backrecordbegin')));
@@ -73,9 +67,7 @@ Route::post('/backrecord', function (Request $request) {
             $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
                 ->whereNotNull('收料人員');
         })->where('consumptive_material.料號', 'like', $backrecordisn . '%')
-        ->where('出庫退料.客戶別', 'like', $backrecordclient . '%')
-        ->where('出庫退料.製程', 'like', $backrecordproduction . '%')
-        ->where('consumptive_material.發料部門', 'like', $backrecordsend . '%')->get();
+        ->where('出庫退料.線別', 'like', $backrecordline . '%')->get();
 
     if ($backrecordcheck) {
         $datas = $datas->whereBetween('入庫時間', [$backrecordbegin, $end])->values();

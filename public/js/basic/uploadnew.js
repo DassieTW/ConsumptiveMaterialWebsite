@@ -220,7 +220,10 @@ $(function () {
           document.getElementById("row" + diff[i]).style.backgroundColor =
             "yellow";
         }
-        // window.location.href = "/basic";
+        setTimeout(
+          () => (window.location.href = "/basic/materialsearch"),
+          3000
+        );
       },
       error: function (err) {
         console.log(err.status);

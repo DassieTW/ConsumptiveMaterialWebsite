@@ -35,7 +35,10 @@ Route::post('/transit', function (Request $request) {
     $datas = DB::table('consumptive_material')
         ->joinSub($test, '在途量', function ($join) {
             $join->on('在途量.料號', '=', 'consumptive_material.料號');
-        })->where('請購數量', '>', 0)->get();
+        })->where('consumptive_material.料號', 'like', $transitisn . '%')
+        ->where('consumptive_material.發料部門', 'like', $transitsend . '%')
+
+        ->where('請購數量', '>', 0)->get();
 
     //dd($datas);
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);

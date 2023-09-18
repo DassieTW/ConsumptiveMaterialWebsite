@@ -57,7 +57,6 @@
                         <table class="table table-bordered" id="test">
                             <thead>
                                 <tr>
-                                    <th>{!! __('callpageLang.client') !!}</th>
                                     <th>{!! __('callpageLang.isn') !!}</th>
                                     <th>{!! __('callpageLang.pName') !!}</th>
                                     <th>{!! __('callpageLang.format') !!}</th>
@@ -77,7 +76,6 @@
                                     $stayday = (int) $interval;
                                     $astock = DB::table('inventory')
                                         ->where('料號', $data->料號)
-                                        ->where('客戶別', $data->客戶別)
                                         ->pluck('現有庫存')
                                         ->toArray();
                                     $astock = array_map(function ($v) {
@@ -85,14 +83,12 @@
                                     }, $astock);
                                     $position = DB::table('inventory')
                                         ->where('料號', $data->料號)
-                                        ->where('客戶別', $data->客戶別)
                                         ->pluck('儲位')
                                         ->toArray();
                                     $test = array_combine($position, $astock);
                                     ?>
 
                                     <tr id="data1{{ $loop->index }}" class="isnRows">
-                                        <td>{{ $data->客戶別 }}</td>
                                         <td>{{ $data->料號 }}</td>
                                         <input type="hidden" id="client{{ $loop->index }}" value="{{ $data->客戶別 }}">
                                         <input type="hidden" id="number{{ $loop->index }}" value="{{ $data->料號 }}">
