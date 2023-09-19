@@ -14,7 +14,7 @@ class 在途量 extends Model
     public $timestamps = false;
     protected $table = "在途量";
 
-    protected $primaryKey = ['客戶','料號'];
+    protected $primaryKey = ['料號'];
 
     protected $keyType = 'string';
 
@@ -22,7 +22,7 @@ class 在途量 extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        '客戶',
+        // '客戶',
         '料號',
         '請購數量',
     ];

@@ -18,9 +18,9 @@ class Outbound extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        '客戶別',
-        '機種',
-        '製程',
+        // '客戶別',
+        // '機種',
+        // '製程',
         '領用原因',
         '線別',
         '料號',

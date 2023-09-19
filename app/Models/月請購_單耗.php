@@ -14,7 +14,7 @@ class 月請購_單耗 extends Model
     public $timestamps = false;
     protected $table = "月請購_單耗";
 
-    protected $primaryKey = ['料號', '客戶別', '料號90', '製程'];
+    protected $primaryKey = ['料號', '料號90'];
 
     protected $keyType = 'string';
 
@@ -23,9 +23,9 @@ class 月請購_單耗 extends Model
 
     protected $fillable = [
         '料號',
-        '客戶別',
-        '機種',
-        '製程',
+        // '客戶別',
+        // '機種',
+        // '製程',
         '單耗',
         '狀態',
         '畫押工號',

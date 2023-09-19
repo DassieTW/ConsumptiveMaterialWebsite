@@ -14,7 +14,7 @@ class 不良品 extends Model
     public $timestamps = false;
     protected $table = "不良品";
 
-    protected $primaryKey = ['料號','客戶別'];
+    protected $primaryKey = ['料號'];
 
     protected $keyType = 'string';
 
@@ -23,7 +23,7 @@ class 不良品 extends Model
 
     protected $fillable = [
         '料號',
-        '客戶別',
+        // '客戶別',
         '入庫原因',
         '入庫數量',
     ];

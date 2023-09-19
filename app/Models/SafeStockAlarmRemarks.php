@@ -12,7 +12,7 @@ class SafeStockAlarmRemarks extends Model
     public $timestamps = false;
     protected $table = "safestock報警備註";
 
-    protected $primaryKey = ['料號','客戶別'];
+    protected $primaryKey = ['料號'];
 
     protected $keyType = 'string';
 
@@ -20,7 +20,7 @@ class SafeStockAlarmRemarks extends Model
 
     protected $fillable = [
         '料號',
-        '客戶別',
+        // '客戶別',
         '備註',
     ];
 }

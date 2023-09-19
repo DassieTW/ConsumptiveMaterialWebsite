@@ -19,7 +19,7 @@ class 請購單 extends Model
 
     protected $fillable = [
         'SRM單號',
-        '客戶',
+        // '客戶',
         '料號',
         '品名',
         'MOQ',

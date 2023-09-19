@@ -14,7 +14,7 @@ class Inventory extends Model
     public $timestamps = false;
     protected $table = "inventory";
 
-    protected $primaryKey = array('料號', '儲位', '客戶別');
+    protected $primaryKey = ['料號', '儲位'];
 
     protected $keyType = 'string';
 
@@ -25,7 +25,7 @@ class Inventory extends Model
         '料號',
         '現有庫存',
         '儲位',
-        '客戶別',
+        // '客戶別',
         '最後更新時間',
     ];
 }

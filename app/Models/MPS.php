@@ -14,7 +14,7 @@ class MPS extends Model
     public $timestamps = false;
     protected $table = "MPS";
 
-    protected $primaryKey = ['客戶別', '機種', '製程', '料號90', '料號'];
+    protected $primaryKey = ['料號', '料號90'];
 
     protected $keyType = 'string';
 
@@ -22,14 +22,15 @@ class MPS extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        '客戶別',
-        '機種',
-        '製程',
+        // '客戶別',
+        // '機種',
+        // '製程',
         '下月MPS',
         '下月生產天數',
         '本月MPS',
         '本月生產天數',
         '填寫時間',
         '料號90',
+        '料號',
     ];
 }

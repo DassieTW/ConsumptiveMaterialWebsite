@@ -18,7 +18,7 @@ class 非月請購 extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        '客戶別',
+        // '客戶別',
         '料號',
         '請購數量',
         '上傳時間',
