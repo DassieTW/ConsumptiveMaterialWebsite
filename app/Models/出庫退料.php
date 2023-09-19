@@ -18,9 +18,9 @@ class 出庫退料 extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        '客戶別',
-        '機種',
-        '製程',
+        // '客戶別',
+        // '機種',
+        // '製程',
         '退回原因',
         '線別',
         '料號',

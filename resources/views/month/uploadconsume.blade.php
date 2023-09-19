@@ -1,33 +1,34 @@
 @foreach ($data as $row)
     <?php
-    $name = DB::table('consumptive_material')
-        ->where('料號', trim($row[1]))
-        ->value('品名');
-    $format = DB::table('consumptive_material')
-        ->where('料號', trim($row[1]))
-        ->value('規格');
-    $unit = DB::table('consumptive_material')
-        ->where('料號', trim($row[1]))
-        ->value('單位');
-    $lt = DB::table('consumptive_material')
-        ->where('料號', trim($row[1]))
-        ->value('LT');
-    $month = DB::table('consumptive_material')
-        ->where('料號', trim($row[1]))
-        ->value('月請購');
-    $belong = DB::table('consumptive_material')
-        ->where('料號', trim($row[1]))
-        ->value('耗材歸屬');
-    $error = $loop->index + 1;
-    //判斷是否有料號
-    if ($name === null || $format === null || $month === '否' || $belong !== '單耗') {
-        $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
-        echo "<script LANGUAGE='JavaScript'>
-                                                                                window.alert('$mess');
-                                                                                window.location.href='uploadconsume';
-                                                                                </script>";
+    if (strlen(trim($row[0])) !== 0) {
+        $name = DB::table('consumptive_material')
+            ->where('料號', trim($row[1]))
+            ->value('品名');
+        $format = DB::table('consumptive_material')
+            ->where('料號', trim($row[1]))
+            ->value('規格');
+        $unit = DB::table('consumptive_material')
+            ->where('料號', trim($row[1]))
+            ->value('單位');
+        $lt = DB::table('consumptive_material')
+            ->where('料號', trim($row[1]))
+            ->value('LT');
+        $month = DB::table('consumptive_material')
+            ->where('料號', trim($row[1]))
+            ->value('月請購');
+        $belong = DB::table('consumptive_material')
+            ->where('料號', trim($row[1]))
+            ->value('耗材歸屬');
+        $error = $loop->index + 1;
+        //判斷是否有料號
+        if ($name === null || $format === null || $month === '否' || $belong !== '單耗') {
+            $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
+            echo "<script LANGUAGE='JavaScript'>
+                                                                                            window.alert('$mess');
+                                                                                            window.location.href='uploadconsume';
+                                                                                            </script>";
+        }
     }
-    
     ?>
 @endforeach
 @extends('layouts.adminTemplate')
@@ -75,40 +76,43 @@
                                                 value="單耗">{!! __('monthlyPRpageLang.consume') !!}</th>
                                     </tr>
                                     @foreach ($data as $row)
-                                        <tr id="row{{ $loop->index }}">
-                                            <?php
-                                            $name = DB::table('consumptive_material')
-                                                ->where('料號', trim($row[1]))
-                                                ->value('品名');
-                                            $format = DB::table('consumptive_material')
-                                                ->where('料號', trim($row[1]))
-                                                ->value('規格');
-                                            $unit = DB::table('consumptive_material')
-                                                ->where('料號', trim($row[1]))
-                                                ->value('單位');
-                                            $lt = DB::table('consumptive_material')
-                                                ->where('料號', trim($row[1]))
-                                                ->value('LT');
-                                            $lt = round($lt, 3);
-                                            ?>
-                                            <td><input type="hidden" id="90isn{{ $loop->index }}"
-                                                    name="90isn{{ $loop->index }}"
-                                                    value="{{ trim($row[0]) }}">{{ trim($row[0]) }}</td>
-                                            <td><input type="hidden" id="number{{ $loop->index }}"
-                                                    name="number{{ $loop->index }}"
-                                                    value="{{ trim($row[1]) }}">{{ trim($row[1]) }}</td>
-                                            <td>{{ $name }}</td>
-                                            <td>{{ $format }}</td>
-                                            <td>{{ $unit }}</td>
-                                            <td>{{ $lt }}</td>
-                                            <td><input style="width:200px" type="number" id="amount{{ $loop->index }}"
-                                                    name="amount{{ $loop->index }}" step="0.0000000001" required
-                                                    value="{{ trim($row[2]) }}" class="form-control form-control-lg"
-                                                    min="0.0000000001">
-                                            </td>
+                                        @if (strlen(trim($row[0])) !== 0)
+                                            <tr id="row{{ $loop->index }}">
+                                                <?php
+                                                $name = DB::table('consumptive_material')
+                                                    ->where('料號', trim($row[1]))
+                                                    ->value('品名');
+                                                $format = DB::table('consumptive_material')
+                                                    ->where('料號', trim($row[1]))
+                                                    ->value('規格');
+                                                $unit = DB::table('consumptive_material')
+                                                    ->where('料號', trim($row[1]))
+                                                    ->value('單位');
+                                                $lt = DB::table('consumptive_material')
+                                                    ->where('料號', trim($row[1]))
+                                                    ->value('LT');
+                                                $lt = round($lt, 3);
+                                                ?>
+                                                <td><input type="hidden" id="90isn{{ $loop->index }}"
+                                                        name="90isn{{ $loop->index }}"
+                                                        value="{{ trim($row[0]) }}">{{ trim($row[0]) }}</td>
+                                                <td><input type="hidden" id="number{{ $loop->index }}"
+                                                        name="number{{ $loop->index }}"
+                                                        value="{{ trim($row[1]) }}">{{ trim($row[1]) }}</td>
+                                                <td>{{ $name }}</td>
+                                                <td>{{ $format }}</td>
+                                                <td>{{ $unit }}</td>
+                                                <td>{{ $lt }}</td>
+                                                <td><input style="width:200px" type="number"
+                                                        id="amount{{ $loop->index }}" name="amount{{ $loop->index }}"
+                                                        step="0.0000000001" required value="{{ trim($row[2]) }}"
+                                                        class="form-control form-control-lg" min="0.0000000001">
+                                                </td>
 
-                                        </tr>
-                                        <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                                            </tr>
+                                            <input type="hidden" id="count" name="count"
+                                                value="{{ $loop->count }}">
+                                        @endif
                                     @endforeach
 
                                 </table>

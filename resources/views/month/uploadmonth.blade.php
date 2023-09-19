@@ -1,20 +1,21 @@
 @foreach ($data as $row)
     <?php
-    $name = DB::table('consumptive_material')
-        ->where('料號', trim($row[1]))
-        ->value('品名');
-    $i = false;
-    $error = $loop->index + 1;
+    if (strlen(trim($row[0])) !== 0) {
+        $name = DB::table('consumptive_material')
+            ->where('料號', trim($row[1]))
+            ->value('品名');
+        $i = false;
+        $error = $loop->index + 1;
     
-    //判斷是否有料號
-    if ($name === null) {
-        $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
-        echo "<script LANGUAGE='JavaScript'>
-        window.alert('$mess');
-        window.location.href='uploadmonth';
-        </script>";
+        //判斷是否有料號
+        if ($name === null) {
+            $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
+            echo "<script LANGUAGE='JavaScript'>
+                window.alert('$mess');
+                window.location.href='uploadmonth';
+                </script>";
+        }
     }
-    
     ?>
 @endforeach
 @extends('layouts.adminTemplate')
@@ -60,27 +61,29 @@
                                 <input type="hidden" id="time" name="time" value="6">
                             </tr>
                             @foreach ($data as $row)
-                                <tr>
-                                    <td><span id="90number{{ $loop->index }}">{{ trim($row[0]) }}</span></td>
-                                    <td><span id="number{{ $loop->index }}">{{ trim($row[1]) }}</span></td>
-                                    <td><input class="form-control form-control-lg" type="number"
-                                            id="data3{{ $loop->index }}" name="data3{{ $loop->index }}"
-                                            value="{{ trim($row[2]) }}" required step="0.001"
-                                            oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
-                                    <td><input class="form-control form-control-lg" type="number"
-                                            id="data4{{ $loop->index }}" name="data4{{ $loop->index }}"
-                                            value="{{ trim($row[3]) }}" required step="0.001"
-                                            oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
-                                    <td><input class="form-control form-control-lg" type="number"
-                                            id="data5{{ $loop->index }}" name="data5{{ $loop->index }}"
-                                            value="{{ trim($row[4]) }}" required step="0.001"
-                                            oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
-                                    <td><input class="form-control form-control-lg" type="number"
-                                            id="data6{{ $loop->index }}" name="data6{{ $loop->index }}"
-                                            value="{{ trim($row[5]) }}" required step="0.001"
-                                            oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
-                                </tr>
-                                <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                                @if (strlen(trim($row[0])) !== 0)
+                                    <tr>
+                                        <td><span id="90number{{ $loop->index }}">{{ trim($row[0]) }}</span></td>
+                                        <td><span id="number{{ $loop->index }}">{{ trim($row[1]) }}</span></td>
+                                        <td><input class="form-control form-control-lg" type="number"
+                                                id="data3{{ $loop->index }}" name="data3{{ $loop->index }}"
+                                                value="{{ trim($row[2]) }}" required step="0.001"
+                                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                                        <td><input class="form-control form-control-lg" type="number"
+                                                id="data4{{ $loop->index }}" name="data4{{ $loop->index }}"
+                                                value="{{ trim($row[3]) }}" required step="0.001"
+                                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                                        <td><input class="form-control form-control-lg" type="number"
+                                                id="data5{{ $loop->index }}" name="data5{{ $loop->index }}"
+                                                value="{{ trim($row[4]) }}" required step="0.001"
+                                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                                        <td><input class="form-control form-control-lg" type="number"
+                                                id="data6{{ $loop->index }}" name="data6{{ $loop->index }}"
+                                                value="{{ trim($row[5]) }}" required step="0.001"
+                                                oninput="if(value.length>5)value=value.slice(0,5)" min="0"></td>
+                                    </tr>
+                                    <input type="hidden" id="count" name="count" value="{{ $loop->count }}">
+                                @endif
                             @endforeach
 
                         </table>
