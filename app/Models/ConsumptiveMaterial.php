@@ -65,7 +65,7 @@ class ConsumptiveMaterial extends Model
         'LT',
         '月請購',
         'A級資材',
-        '耗材歸屬',
+        // '耗材歸屬',
         '發料部門',
         '安全庫存',
     ];

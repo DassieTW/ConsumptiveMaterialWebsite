@@ -88,7 +88,10 @@ class Add90PNToMPSTable extends Migration
             $table->string('客戶別', 45)->nullable()->change();
             $table->dropPrimary();
             $table->primary('料號');
-            //
+        });
+
+        Schema::table('consumptive_material', function (Blueprint $table) {
+            $table->dropColumn('耗材歸屬');
         });
     }
 

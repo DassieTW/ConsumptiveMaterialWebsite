@@ -354,7 +354,7 @@ class LoginController extends Controller
         DB::table('人員信息')
             ->insert([
                 '工號' => $job_id,
-                '姓名' => $name, 
+                '姓名' => $name,
                 '部門' => $department
             ]);
 
@@ -462,23 +462,15 @@ class LoginController extends Controller
     //用戶信息查詢
     public function searchusername(Request $request)
     {
-        if (Session::has('username')) {
-            // if ($request->input('username') === null) {
-            //     return view('member.searchusernameok')->with(['data' => Login::cursor()]);
-            // } else if ($request->input('username') !== null) {
-            $input = $request->input('username');
+        $input = $request->input('username');
 
-            $datas = DB::table('login')
-                ->where('username', 'like', $input . '%')
-                ->where('priority', '<>', 1)
-                ->get();
+        $datas = DB::table('login')
+            ->where('username', 'like', $input . '%')
+            ->where('priority', '<>', 1)
+            ->get();
 
-            return view("member.searchusernameok")
-                ->with(['data' => $datas]);
-            // }
-        } else {
-            return redirect(route('member.login'));
-        }
+        return view("member.searchusernameok")
+            ->with(['data' => $datas]);
     }
 
     //logout
@@ -500,51 +492,46 @@ class LoginController extends Controller
     //人員信息刪除,新增
     public function numberchangeordel(Request $request)
     {
-        if (Session::has('username')) {
+        $select = $request->input('select');
+        $count = $request->input('count');
+        $number = $request->input('number');
+        $numbers = DB::table('人員信息')->pluck('工號');
+        $newname = $request->input('newname');
+        $newnumber = $request->input('newnumber');
+        $newdep = $request->input('newdep');
 
-            $select = $request->input('select');
-            $count = $request->input('count');
-            $number = $request->input('number');
-            $numbers = DB::table('人員信息')->pluck('工號');
-            $newname = $request->input('newname');
-            $newnumber = $request->input('newnumber');
-            $newdep = $request->input('newdep');
-
-            //delete
-            if ($select === "刪除") {
-                for ($i = 0; $i < $count; $i++) {
-                    DB::beginTransaction();
-                    try {
-                        DB::table('人員信息')
-                            ->where('工號', $number[$i])
-                            ->delete();
-                        DB::commit();
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                    }
-                }
-                return \Response::json(['message' => $count, 'status' => 202]/* Status code here default is 200 ok*/);
-            }
-            //new
-            else {
-
+        //delete
+        if ($select === "刪除") {
+            for ($i = 0; $i < $count; $i++) {
                 DB::beginTransaction();
-                //job number repeat
-                for ($i = 0; $i < count($numbers); $i++) {
-                    if (strcasecmp($newnumber, $numbers[$i]) === 0) {
-                        return \Response::json(['message' => Lang::get('loginPageLang.jobrepeat')], 421/* Status code here default is 200 ok*/);
-                    } else {
-                        continue;
-                    }
+                try {
+                    DB::table('人員信息')
+                        ->where('工號', $number[$i])
+                        ->delete();
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
                 }
-
-                DB::table('人員信息')->insert(['工號' => $newnumber, '姓名' => $newname, '部門' => $newdep]);
-                DB::commit();
-                return \Response::json(['message' => $count, 'status' => 201]/* Status code here default is 200 ok*/);
             }
-        } else {
-            return redirect(route('member.login'));
+            return \Response::json(['message' => $count, 'status' => 202]/* Status code here default is 200 ok*/);
         }
-    }
+        //new
+        else {
+
+            DB::beginTransaction();
+            //job number repeat
+            for ($i = 0; $i < count($numbers); $i++) {
+                if (strcasecmp($newnumber, $numbers[$i]) === 0) {
+                    return \Response::json(['message' => Lang::get('loginPageLang.jobrepeat')], 421/* Status code here default is 200 ok*/);
+                } else {
+                    continue;
+                }
+            }
+
+            DB::table('人員信息')->insert(['工號' => $newnumber, '姓名' => $newname, '部門' => $newdep]);
+            DB::commit();
+            return \Response::json(['message' => $count, 'status' => 201]/* Status code here default is 200 ok*/);
+        } // if else
+    } // numberchangeordel
 }

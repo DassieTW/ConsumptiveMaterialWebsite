@@ -16,12 +16,12 @@
         $month = DB::table('consumptive_material')
             ->where('料號', trim($row[1]))
             ->value('月請購');
-        $belong = DB::table('consumptive_material')
-            ->where('料號', trim($row[1]))
-            ->value('耗材歸屬');
+        // $belong = DB::table('consumptive_material')
+        //     ->where('料號', trim($row[1]))
+        //     ->value('耗材歸屬');
         $error = $loop->index + 1;
         //判斷是否有料號
-        if ($name === null || $format === null || $month === '否' || $belong !== '單耗') {
+        if ($name === null || $format === null || $month === '否') {
             $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
             echo "<script LANGUAGE='JavaScript'>
                                                                                             window.alert('$mess');

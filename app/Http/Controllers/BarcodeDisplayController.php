@@ -182,8 +182,14 @@ class BarcodeDisplayController extends Controller
     public function decompose(Request $request)
     {
         $fileName = public_path('upload') . '/' . $request->input('fileName');
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($fileName);
-        //                    echo $fileName; // test
+
+        $testAgainstFormats = [
+            \PhpOffice\PhpSpreadsheet\IOFactory::READER_XLS,
+            \PhpOffice\PhpSpreadsheet\IOFactory::READER_XLSX,
+        ];
+
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($fileName, 1, $testAgainstFormats);
+
         $worksheet = $spreadsheet->getActiveSheet();
 
         $spreadsheetBarcodesArray = array();

@@ -47,7 +47,7 @@ Route::post('/safesearch', function (Request $request) {
             'consumptive_material.LT',
             'consumptive_material.月請購',
             'consumptive_material.安全庫存',
-            'consumptive_material.耗材歸屬',
+            // 'consumptive_material.耗材歸屬',
             'consumptive_material.發料部門',
             '月請購_單耗.單耗',
             'MPS.下月MPS',
@@ -62,7 +62,7 @@ Route::post('/safesearch', function (Request $request) {
             'consumptive_material.LT',
             'consumptive_material.月請購',
             'consumptive_material.安全庫存',
-            'consumptive_material.耗材歸屬',
+            // 'consumptive_material.耗材歸屬',
             'consumptive_material.發料部門',
             '月請購_單耗.單耗',
             'MPS.下月MPS',
@@ -71,7 +71,7 @@ Route::post('/safesearch', function (Request $request) {
             'safestock報警備註.備註',
         )
         ->where('consumptive_material.月請購', '=', "是")
-        ->where('consumptive_material.耗材歸屬', '=', "單耗")
+        // ->where('consumptive_material.耗材歸屬', '=', "單耗")
         ->where('月請購_單耗.狀態', '=', "已完成")
         ->get()->toArray();
 
@@ -130,7 +130,7 @@ Route::post('/safesearch', function (Request $request) {
             'consumptive_material.月請購',
             'consumptive_material.MPQ',
             'consumptive_material.安全庫存',
-            'consumptive_material.耗材歸屬',
+            // 'consumptive_material.耗材歸屬',
             'consumptive_material.發料部門',
             '月請購_站位.下月站位人數',
             '月請購_站位.下月開線數',
@@ -148,7 +148,7 @@ Route::post('/safesearch', function (Request $request) {
             'consumptive_material.月請購',
             'consumptive_material.MPQ',
             'consumptive_material.安全庫存',
-            'consumptive_material.耗材歸屬',
+            // 'consumptive_material.耗材歸屬',
             'consumptive_material.發料部門',
             '月請購_站位.下月站位人數',
             '月請購_站位.下月開線數',
@@ -159,7 +159,7 @@ Route::post('/safesearch', function (Request $request) {
             'safestock報警備註.備註',
         )
         ->where('consumptive_material.月請購', '=', "是")
-        ->where('consumptive_material.耗材歸屬', '=', "站位")
+        // ->where('consumptive_material.耗材歸屬', '=', "站位")
         ->where('月請購_站位.狀態', '=', "已完成")
         ->get()->toArray();
 

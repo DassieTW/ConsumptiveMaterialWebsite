@@ -59,8 +59,8 @@
                                 </th>
                                 <th><input type="hidden" id="title2" name="title10"
                                         value="A級資材">{!! __('basicInfoLang.gradea') !!}</th>
-                                <th><input type="hidden" id="title2" name="title11"
-                                        value="耗材歸屬">{!! __('basicInfoLang.belong') !!}</th>
+                                {{-- <th><input type="hidden" id="title2" name="title11"
+                                        value="耗材歸屬">{!! __('basicInfoLang.belong') !!}</th> --}}
                                 <th><input type="hidden" id="title2" name="title12"
                                         value="發料部門">{!! __('basicInfoLang.senddep') !!}</th>
                                 <th><input type="hidden" id="title2" name="title13"
@@ -132,7 +132,7 @@
                                             <option value="否">{!! __('basicInfoLang.no') !!}</option>
                                         </select>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <select style="width:100px" class="form-select form-select-lg "
                                             id="data11a{{ $loop->index }}" name="data11a{{ $loop->index }}"
                                             value="{{ $row[11] }}" required>
@@ -142,13 +142,13 @@
                                             <option value="單耗">{!! __('basicInfoLang.consume') !!}</option>
                                             <option value="站位">{!! __('basicInfoLang.stand') !!}</option>
                                         </select>
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         <select style="width:150px" class="form-select form-select-lg "
-                                            id="data12a{{ $loop->index }}" name="data12a{{ $loop->index }}"
-                                            value="{{ $row[12] }}" required>
-                                            <option style="display: none" selected value="{{ $row[12] }}">
-                                                {{ $row[12] }}
+                                            id="data11a{{ $loop->index }}" name="data11a{{ $loop->index }}"
+                                            value="{{ $row[11] }}" required>
+                                            <option style="display: none" selected value="{{ $row[11] }}">
+                                                {{ $row[11] }}
                                             </option>
                                             @foreach ($senddata as $send)
                                                 <option>{{ $send->發料部門 }}</option>
@@ -156,8 +156,8 @@
                                         </select>
                                     </td>
                                     <td><input class="form-control form-control-lg " style="width:100px" type="number"
-                                            id="data13a{{ $loop->index }}" name="data13a{{ $loop->index }}"
-                                            value="{{ $row[13] }}" min="0">
+                                            id="data12a{{ $loop->index }}" name="data12a{{ $loop->index }}"
+                                            value="{{ $row[12] }}" min="0">
                                     </td>
 
                                 </tr>

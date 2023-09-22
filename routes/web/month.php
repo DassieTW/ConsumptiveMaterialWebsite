@@ -75,7 +75,6 @@ Route::get('/notmonthsearchok', function () {
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 // Route::post('/notmonthsearchok', function (Request $request) {
-
 //     if ($request->input('varr1') === null && $request->input('varr2') === null) {
 //         $datas = DB::table('consumptive_material')
 //             ->join('非月請購', function ($join) {

@@ -43,13 +43,9 @@ Route::get('/sluggishmaterial', function () {
 
     unset($value); // unset the var created in the foreach loop
 
-    if (Session::has('username')) {
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
-        \DB::purge(env("DB_CONNECTION"));
-        return view('bu.material')->with(['database_list' => $database_list, 'database_names' => $database_names]);
-    } else {
-        return redirect(route('member.login'));
-    } // if else
+    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
+    \DB::purge(env("DB_CONNECTION"));
+    return view('bu.material')->with(['database_list' => $database_list, 'database_names' => $database_names]);
 });
 
 Route::post('/sluggishmaterial', [BUController::class, 'sluggishmaterial'])->name('bu.sluggishmaterial');
@@ -59,20 +55,16 @@ Route::post('/transsluggish', [BUController::class, 'transsluggish'])->name('bu.
 
 //調撥單查詢頁面
 Route::get('/searchlist', function () {
-    if (Session::has('username')) {
-        $database_list = config('database_list.databases');
-        $database_names = array();
-        foreach ($database_list as $value) {
-            $temp = str_replace(" Consumables management", "", $value);
-            array_push($database_names, $temp);
-        } // for each
+    $database_list = config('database_list.databases');
+    $database_names = array();
+    foreach ($database_list as $value) {
+        $temp = str_replace(" Consumables management", "", $value);
+        array_push($database_names, $temp);
+    } // for each
 
-        unset($value); // unset the var created in the foreach loop
+    unset($value); // unset the var created in the foreach loop
 
-        return view('bu.searchlist')->with(['database_list' => $database_list, 'database_names' => $database_names]);
-    } else {
-        return redirect(route('member.login'));
-    } // if else
+    return view('bu.searchlist')->with(['database_list' => $database_list, 'database_names' => $database_names]);
 })->name('bu.searchlist');
 
 //調撥單查詢

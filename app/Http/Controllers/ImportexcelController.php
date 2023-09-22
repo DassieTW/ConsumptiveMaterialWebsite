@@ -14,23 +14,29 @@ class ImportExcelController extends Controller
     function index()
     {
 
-     return view('test');
+        return view('test');
     }
 
     function import(Request $request)
     {
-     $this->validate($request, [
-      'select_file'  => 'required|mimes:xls,xlsx'
-     ]);
-     $path = $request->file('select_file')->getRealPath();
+        $this->validate($request, [
+            'select_file'  => 'required|mimes:xls,xlsx'
+        ]);
+        $path = $request->file('select_file')->getRealPath();
 
-     $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
+        $testAgainstFormats = [
+            \PhpOffice\PhpSpreadsheet\IOFactory::READER_XLS,
+            \PhpOffice\PhpSpreadsheet\IOFactory::READER_XLSX,
+        ];
 
-     $sheetData = $spreadsheet->getActiveSheet()->toArray();
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path, 1, $testAgainstFormats);
 
-     unset($sheetData[0]);
-     return view('import')->with(['data' => $sheetData]);
-     /*if($data->count() > 0)
+
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+        unset($sheetData[0]);
+        return view('import')->with(['data' => $sheetData]);
+        /*if($data->count() > 0)
      {
       foreach($data->toArray() as $key => $value)
       {
@@ -52,6 +58,6 @@ class ImportExcelController extends Controller
        DB::table('tbl_customer')->insert($insert_data);
       }
      }*/
-     //return back()->with('success', 'Excel Data Imported successfully.');
+        //return back()->with('success', 'Excel Data Imported successfully.');
     }
 }

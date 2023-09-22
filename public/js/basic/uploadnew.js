@@ -23,7 +23,7 @@ $(function () {
     var lt = [];
     var month = [];
     var gradea = [];
-    var belong = [];
+    // var belong = [];
     var send = [];
     var safe = [];
     var row = [];
@@ -47,9 +47,9 @@ $(function () {
         lt.push($("#data8a" + i).val());
         month.push($("#data9a" + i).val());
         gradea.push($("#data10a" + i).val());
-        belong.push($("#data11a" + i).val());
-        send.push($("#data12a" + i).val());
-        safe.push($("#data13a" + i).val());
+        // belong.push($("#data11a" + i).val());
+        send.push($("#data11a" + i).val());
+        safe.push($("#data12a" + i).val());
         row.push(i.toString());
       } else {
         continue;
@@ -132,7 +132,7 @@ $(function () {
     data.push(lt);
     data.push(month);
     data.push(gradea);
-    data.push(belong);
+    // data.push(belong);
     data.push(send);
     data.push(safe);
 

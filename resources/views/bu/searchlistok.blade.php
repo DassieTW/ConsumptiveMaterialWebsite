@@ -164,10 +164,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                </form>
             </div>
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-            </form>
-            {{-- <button class="btn btn-lg btn-primary" onclick="location.href='{{route('bu.searchlist')}}'">{!! __('bupagelang.return') !!}</button> --}}
         </div>
-    </div>
-@endsection
+    @endsection

@@ -15,9 +15,9 @@
     $month = DB::table('consumptive_material')
         ->where('料號', trim($row[0]))
         ->value('月請購');
-    $belong = DB::table('consumptive_material')
-        ->where('料號', trim($row[0]))
-        ->value('耗材歸屬');
+    // $belong = DB::table('consumptive_material')
+    //     ->where('料號', trim($row[0]))
+    //     ->value('耗材歸屬');
     $clients = DB::table('客戶別')
         ->pluck('客戶')
         ->toArray();
@@ -32,7 +32,7 @@
     $k = false;
     $error = $loop->index + 1;
     //判斷是否有料號
-    if ($name === null || $unit === null || $month === '否' || $belong !== '站位') {
+    if ($name === null || $unit === null || $month === '否') {
         $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[0];
         echo "<script LANGUAGE='JavaScript'>
             window.alert('$mess');

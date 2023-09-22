@@ -41,7 +41,7 @@ $(function () {
         var gradea = [];
         var month = [];
         var send = [];
-        var belong = [];
+        // var belong = [];
         var price = [];
         var money = [];
         var unit = [];
@@ -75,7 +75,7 @@ $(function () {
             gradea.push($("#gradea" + check[i]).val());
             month.push($("#month" + check[i]).val());
             send.push($("#send" + check[i]).val());
-            belong.push($("#belong" + check[i]).val());
+            // belong.push($("#belong" + check[i]).val());
             price.push($("#price" + check[i]).val());
             money.push($("#money" + check[i]).val());
             unit.push($("#unit" + check[i]).val());
@@ -129,7 +129,7 @@ $(function () {
             data.push(gradea);
             data.push(month);
             data.push(send);
-            data.push(belong);
+            // data.push(belong);
             data.push(price);
             data.push(money);
             data.push(unit);
@@ -180,7 +180,7 @@ $(function () {
                         },
                     });
                     //window.location.href = "material";
-                    setTimeout(() => window.location.reload(), 1500); // 3
+                    // setTimeout(() => window.location.reload(), 1500); // 3
                 },
                 error: function (err) {
                     //transaction error

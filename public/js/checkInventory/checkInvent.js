@@ -233,8 +233,7 @@ $(function () {
           reMonthlyBought.push(myObjs[a].月請購);
 
           reGradeAMats.push(myObjs[a].A級資材);
-          // reGPmaterial.push(myObjs[a].GP料件);  //砍了 廠區說不會用到
-          reAttribution.push(myObjs[a].耗材歸屬);
+          // reAttribution.push(myObjs[a].耗材歸屬);
           reProvideDepartment.push(myObjs[a].發料部門);
           reSafeStock.push(myObjs[a].安全庫存);
 
@@ -1423,8 +1422,7 @@ $(window).on("load", function () {
             reMonthlyBought.push(myObjs[a].月請購);
 
             reGradeAMats.push(myObjs[a].A級資材);
-            // reGPmaterial.push(myObjs[a].GP料件);  //砍了 廠區說不會用到
-            reAttribution.push(myObjs[a].耗材歸屬);
+            // reAttribution.push(myObjs[a].耗材歸屬);
             reProvideDepartment.push(myObjs[a].發料部門);
             reSafeStock.push(myObjs[a].安全庫存);
 

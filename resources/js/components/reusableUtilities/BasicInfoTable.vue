@@ -402,60 +402,60 @@ export default defineComponent({
                         return returnStr;
                     },
                 },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.belong"
-                    ),
-                    field: "耗材歸屬",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        let returnStr = "";
-                        // console.log(row); // test
-                        if (row.耗材歸屬 === "單耗") {
-                            returnStr =
-                                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                                ' id="belong' +
-                                i +
-                                '" name="belong' +
-                                i +
-                                '">' +
-                                '<option value="單耗" selected>' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.consume"
-                                ) +
-                                "</option>" +
-                                '<option value="站位">' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.stand"
-                                ) +
-                                "</option>" +
-                                "</select>";
-                        } // if
-                        else {
-                            returnStr =
-                                '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
-                                ' id="belong' +
-                                i +
-                                '" name="belong' +
-                                i +
-                                '">' +
-                                '<option value="單耗">' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.consume"
-                                ) +
-                                "</option>" +
-                                '<option value="站位" selected>' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.stand"
-                                ) +
-                                "</option>" +
-                                "</select>";
-                        } // else
+                // {
+                //     label: app.appContext.config.globalProperties.$t(
+                //         "basicInfoLang.belong"
+                //     ),
+                //     field: "耗材歸屬",
+                //     width: "10ch",
+                //     sortable: true,
+                //     display: function (row, i) {
+                //         let returnStr = "";
+                //         // console.log(row); // test
+                //         if (row.耗材歸屬 === "單耗") {
+                //             returnStr =
+                //                 '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                //                 ' id="belong' +
+                //                 i +
+                //                 '" name="belong' +
+                //                 i +
+                //                 '">' +
+                //                 '<option value="單耗" selected>' +
+                //                 app.appContext.config.globalProperties.$t(
+                //                     "basicInfoLang.consume"
+                //                 ) +
+                //                 "</option>" +
+                //                 '<option value="站位">' +
+                //                 app.appContext.config.globalProperties.$t(
+                //                     "basicInfoLang.stand"
+                //                 ) +
+                //                 "</option>" +
+                //                 "</select>";
+                //         } // if
+                //         else {
+                //             returnStr =
+                //                 '<select style="width: 10ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                //                 ' id="belong' +
+                //                 i +
+                //                 '" name="belong' +
+                //                 i +
+                //                 '">' +
+                //                 '<option value="單耗">' +
+                //                 app.appContext.config.globalProperties.$t(
+                //                     "basicInfoLang.consume"
+                //                 ) +
+                //                 "</option>" +
+                //                 '<option value="站位" selected>' +
+                //                 app.appContext.config.globalProperties.$t(
+                //                     "basicInfoLang.stand"
+                //                 ) +
+                //                 "</option>" +
+                //                 "</select>";
+                //         } // else
 
-                        return returnStr;
-                    },
-                },
+                //         return returnStr;
+                //     },
+                // },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.senddep"

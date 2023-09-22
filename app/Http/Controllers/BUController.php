@@ -42,32 +42,19 @@ class BUController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
-    /*public function index()
-    {
-        //
-        if (Session::has('username')) {
-            return view('bu.index');
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
-
     //搜尋呆滯庫存
     public function sluggish()
     {
-        //
-        if (Session::has('username')) {
 
-            $database = config('database_list.databases');
+        $database = config('database_list.databases');
 
-            foreach ($database as $key => $value) {
+        foreach ($database as $key => $value) {
 
-                if ($value !== 'Consumables management') {
-                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
-                    \DB::purge(env("DB_CONNECTION"));
+            if ($value !== 'Consumables management') {
+                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
+                \DB::purge(env("DB_CONNECTION"));
 
-                    /* $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
+                /* $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
                     ->select(
                         'inventory.料號',
                         'consumptive_material.品名',
@@ -81,100 +68,81 @@ class BUController extends Controller
                     ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
                     ->get();*/
 
-                    $datas[$key] = DB::table('inventory')->join('consumptive_material', 'consumptive_material.料號', '=', 'inventory.料號')
-                        ->select(
-                            'inventory.料號',
-                            'consumptive_material.品名',
-                            'consumptive_material.規格',
-                            'consumptive_material.單位',
-                            DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
-                            DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
-                        )
-                        ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
-                        ->havingRaw('sum(inventory.現有庫存) > ?', [0])
-                        ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
-                        ->get();
-                } // if
-            } // for each
+                $datas[$key] = DB::table('inventory')->join('consumptive_material', 'consumptive_material.料號', '=', 'inventory.料號')
+                    ->select(
+                        'inventory.料號',
+                        'consumptive_material.品名',
+                        'consumptive_material.規格',
+                        'consumptive_material.單位',
+                        DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                        DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                    )
+                    ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
+                    ->havingRaw('sum(inventory.現有庫存) > ?', [0])
+                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
+                    ->get();
+            } // if
+        } // for each
 
 
-            //dd($datas);
-            return view('bu.sluggish')->with(['test' => $datas]);
-            /*return view('bu.sluggish')->with(['data0' => $datas[0]])->with(['data1' => $datas[1]])->with(['data2' => $datas[2]])
-            ->with(['data3' => $datas[3]])->with(['data4' => $datas[4]]);*/
-        } else {
-            return redirect(route('member.login'));
-        }
+        //dd($datas);
+        return view('bu.sluggish')->with(['test' => $datas]);
     }
 
     //調撥單新增and提交
     public function transsluggish(Request $request)
     {
         $database_list = config('database_list.databases');
-        if (Session::has('username')) {
-            /*$count = $request->input('check'.'4'.'0');
+        /*$count = $request->input('check'.'4'.'0');
             dd($count);*/
-            $database = $request->input('factory');
+        $database = $request->input('factory');
 
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
+        \DB::purge(env("DB_CONNECTION"));
+        $oldstock = $request->input('oldstock');
+        $number = $request->input('number');
+        $name = $request->input('name');
+        $format = $request->input('format');
+        $unit = $request->input('unit');
+        $amount = $request->input('amount');
+        $receive = $request->input('receive');
+        $nowstock = DB::table('inventory')->where('料號', $number)->sum('現有庫存');
+        if ($oldstock == $nowstock) {
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
             \DB::purge(env("DB_CONNECTION"));
-            $oldstock = $request->input('oldstock');
-            $number = $request->input('number');
-            $name = $request->input('name');
-            $format = $request->input('format');
-            $unit = $request->input('unit');
-            $amount = $request->input('amount');
-            $receive = $request->input('receive');
-            $nowstock = DB::table('inventory')->where('料號', $number)->sum('現有庫存');
-            if ($oldstock == $nowstock) {
-                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database_list[0]);
-                \DB::purge(env("DB_CONNECTION"));
-                $z = '0001';
-                $max = DB::table('調撥單')->max('開單時間');
-                $maxtime = date_create(date('Y-m-d', strtotime($max)));
-                $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
-                $interval = date_diff($maxtime, $nowtime);
-                $interval = $interval->format('%R%a');
-                $interval = (int)($interval);
-                if ($interval > 0) {
-                    $opentime = 'DB-' . Carbon::now()->format('Ymd') . $z;
-                } else {
-                    $num = DB::table('調撥單')->max('調撥單號');
-                    $test = str_replace("DB-", "", $num);
-                    $num = intval($test);
-                    $num++;
-                    $num = strval($num);
-                    $opentime = 'DB-' . $num;
-                }
-                DB::beginTransaction();
-                try {
-                    DB::table('調撥單')
-                        ->insert([
-                            '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '庫存' => $oldstock,
-                            '調撥數量' => $amount, '撥出廠區' => $database, '接收廠區' => $receive, '調撥單號' => $opentime, '開單時間' => Carbon::now(), '狀態' => '待撥出'
-                        ]);
-
-                    DB::commit();
-                    return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                }
+            $z = '0001';
+            $max = DB::table('調撥單')->max('開單時間');
+            $maxtime = date_create(date('Y-m-d', strtotime($max)));
+            $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
+            $interval = date_diff($maxtime, $nowtime);
+            $interval = $interval->format('%R%a');
+            $interval = (int)($interval);
+            if ($interval > 0) {
+                $opentime = 'DB-' . Carbon::now()->format('Ymd') . $z;
             } else {
-                return \Response::json(['message' => $oldstock], 421/* Status code here default is 200 ok*/);
+                $num = DB::table('調撥單')->max('調撥單號');
+                $test = str_replace("DB-", "", $num);
+                $num = intval($test);
+                $num++;
+                $num = strval($num);
+                $opentime = 'DB-' . $num;
+            }
+            DB::beginTransaction();
+            try {
+                DB::table('調撥單')
+                    ->insert([
+                        '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '庫存' => $oldstock,
+                        '調撥數量' => $amount, '撥出廠區' => $database, '接收廠區' => $receive, '調撥單號' => $opentime, '開單時間' => Carbon::now(), '狀態' => '待撥出'
+                    ]);
+
+                DB::commit();
+                return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
             }
         } else {
-            return redirect(route('member.login'));
-        }
-    }
-
-    //調撥單查詢頁面
-    public function searchlist(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('bu.searchlist')->with(['factory' => 廠別::cursor()])->with(['factory1' => 廠別::cursor()]);
-        } else {
-            return redirect(route('member.login'));
+            return \Response::json(['message' => $oldstock], 421/* Status code here default is 200 ok*/);
         }
     }
 
@@ -679,103 +647,93 @@ class BUController extends Controller
     //調撥單查詢下載
     public function downloadlist(Request $request)
     {
-        if (Session::has('username')) {
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
 
-            $spreadsheet = new Spreadsheet();
-            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
+        $worksheet = $spreadsheet->getActiveSheet();
 
-            $worksheet = $spreadsheet->getActiveSheet();
+        $titlecount = $request->input('titlecount');
+        $count = $request->input('count');
+        $Alldata = json_decode($request->input('AllData'));
 
-            $titlecount = $request->input('titlecount');
-            $count = $request->input('count');
-            $Alldata = json_decode($request->input('AllData'));
-
-            // $stringValueBinder = new StringValueBinder();
-            // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
-            // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+        // $stringValueBinder = new StringValueBinder();
+        // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+        // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
 
 
 
-            //填寫表頭
-            for ($i = 0; $i < $titlecount; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
+        //填寫表頭
+        for ($i = 0; $i < $titlecount; $i++) {
+            $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
+        }
+
+        for ($i = 0; $i < $titlecount; $i++) {
+            for ($j = 0; $j < $count; $j++) {
+
+                $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
             }
+        }
 
-            for ($i = 0; $i < $titlecount; $i++) {
-                for ($j = 0; $j < $count; $j++) {
+        // 下載
+        $now = Carbon::now()->format('YmdHis');
+        $titlename = $request->input('titlename');
+        $filename = rawurlencode($titlename) . $now . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
+        header('Cache-Control: max-age=0');
 
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
-                }
-            }
+        $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        $callback = function () use ($writer) {
+            $file = fopen('php://output', 'r');
+            fclose($file);
+        };
 
-            // 下載
-            $now = Carbon::now()->format('YmdHis');
-            $titlename = $request->input('titlename');
-            $filename = rawurlencode($titlename) . $now . '.xlsx';
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
-            header('Cache-Control: max-age=0');
-
-            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
-            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $writer->save('php://output');
-            $callback = function () use ($writer) {
-                $file = fopen('php://output', 'r');
-                fclose($file);
-            };
-
-            return response()->stream($callback, 200, $headers);
-        } else {
-            return redirect(route('member.login'));
-        } // if else
+        return response()->stream($callback, 200, $headers);
     }
 
     public function sluggishmaterial(Request $request)
     {
-        //
-        if (Session::has('username')) {
-            $number = $request->input('number');
-            $table = $request->input('table');
+        $number = $request->input('number');
+        $table = $request->input('table');
 
-            if ($number === null) {
-                return back()->withErrors([
+        if ($number === null) {
+            return back()->withErrors([
 
-                    'number' => trans('bupagelang.enterisn'),
-                ]);
-            } else if (strlen($number) !== 12) {
-                return back()->withErrors([
+                'number' => trans('bupagelang.enterisn'),
+            ]);
+        } else if (strlen($number) !== 12) {
+            return back()->withErrors([
 
-                    'number' => trans('bupagelang.isnlength'),
-                ]);
-            } else {
-                $database = config('database_list.databases');
-
-                foreach ($database as $key => $value) {
-                    if ($value !== 'Consumables management') {
-                        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
-                        \DB::purge(env("DB_CONNECTION"));
-                        $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
-                            ->select(
-                                'inventory.料號',
-                                'consumptive_material.品名',
-                                'consumptive_material.規格',
-                                'consumptive_material.單位',
-                                DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
-                                DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
-                            )
-                            ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
-                            ->havingRaw('sum(inventory.現有庫存) > ?', [0])
-                            ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
-                            ->where('inventory.料號', '=', $number)
-                            ->get();
-                    } // if
-                } // foreach
-
-                return view('bu.sluggish1')->with(['test' => $datas])
-                    ->with(['table' => $table]);
-            }
+                'number' => trans('bupagelang.isnlength'),
+            ]);
         } else {
-            return redirect(route('member.login'));
+            $database = config('database_list.databases');
+
+            foreach ($database as $key => $value) {
+                if ($value !== 'Consumables management') {
+                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $value);
+                    \DB::purge(env("DB_CONNECTION"));
+                    $datas[$key] = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
+                        ->select(
+                            'inventory.料號',
+                            'consumptive_material.品名',
+                            'consumptive_material.規格',
+                            'consumptive_material.單位',
+                            DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
+                            DB::raw('sum(inventory.現有庫存) as inventory現有庫存')
+                        )
+                        ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
+                        ->havingRaw('sum(inventory.現有庫存) > ?', [0])
+                        ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
+                        ->where('inventory.料號', '=', $number)
+                        ->get();
+                } // if
+            } // foreach
+
+            return view('bu.sluggish1')->with(['test' => $datas])
+                ->with(['table' => $table]);
         }
     }
 }

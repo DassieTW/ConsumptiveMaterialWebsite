@@ -56,7 +56,7 @@ class MailService
                     'consumptive_material.LT',
                     'consumptive_material.月請購',
                     'consumptive_material.安全庫存',
-                    'consumptive_material.耗材歸屬',
+                    // 'consumptive_material.耗材歸屬',
                     '月請購_單耗.單耗',
                     'MPS.下月MPS',
                     'MPS.下月生產天數',
@@ -69,7 +69,7 @@ class MailService
                     'consumptive_material.LT',
                     'consumptive_material.月請購',
                     'consumptive_material.安全庫存',
-                    'consumptive_material.耗材歸屬',
+                    // 'consumptive_material.耗材歸屬',
                     '月請購_單耗.單耗',
                     'MPS.下月MPS',
                     'MPS.下月生產天數',
@@ -77,7 +77,7 @@ class MailService
                     'safestock報警備註.備註',
                 )
                 ->where('consumptive_material.月請購', '=', "是")
-                ->where('consumptive_material.耗材歸屬', '=', "單耗")
+                // ->where('consumptive_material.耗材歸屬', '=', "單耗")
                 ->where('月請購_單耗.狀態', '=', "已完成")
                 ->get()->toArray();
 

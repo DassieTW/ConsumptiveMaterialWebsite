@@ -25,7 +25,7 @@ class CreateConsumptiveMaterialTable extends Migration
             $table->double('LT');
             $table->string('月請購', 4);
             $table->string('A級資材', 4);
-            $table->string('耗材歸屬', 45);
+            // $table->string('耗材歸屬', 45);
             $table->string('發料部門', 45);
             $table->integer('安全庫存')->nullable();
             //$table->timestamps();

@@ -94,7 +94,12 @@ class OboundController extends Controller
             ]);
             $path = $request->file('select_file')->getRealPath();
 
-            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
+            $testAgainstFormats = [
+                \PhpOffice\PhpSpreadsheet\IOFactory::READER_XLS,
+                \PhpOffice\PhpSpreadsheet\IOFactory::READER_XLSX,
+            ];
+
+            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path, 1, $testAgainstFormats);
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray();
 
@@ -408,7 +413,12 @@ class OboundController extends Controller
             ]);
             $path = $request->file('select_file')->getRealPath();
 
-            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
+            $testAgainstFormats = [
+                \PhpOffice\PhpSpreadsheet\IOFactory::READER_XLS,
+                \PhpOffice\PhpSpreadsheet\IOFactory::READER_XLSX,
+            ];
+
+            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path, 1, $testAgainstFormats);
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray();
 
@@ -416,8 +426,8 @@ class OboundController extends Controller
             return view('obound.uploadinventory')->with(['data' => $sheetData]);
         } else {
             return redirect(route('member.login'));
-        }
-    }
+        } // if else
+    } // uploadinventory
 
 
 
@@ -1044,56 +1054,51 @@ class OboundController extends Controller
     //download
     public function download(Request $request)
     {
-        if (Session::has('username')) {
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $titlecount = $request->input('titlecount');
+        $titlename = $request->input('titlename');
+        $nogood = $request->input('nogood');
 
-            $spreadsheet = new Spreadsheet();
-            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
-            $worksheet = $spreadsheet->getActiveSheet();
-            $titlecount = $request->input('titlecount');
-            $titlename = $request->input('titlename');
-            $nogood = $request->input('nogood');
-
-            if ($titlename === "O庫領料記錄表") {
-                $Alldata = DB::table('O庫outbound')
-                    ->whereNotNull('發料人員')->get();
-            } else if ($titlename === "O庫庫存") {
-                if ($nogood === "2") {
-                    $titlename = "O庫不良品庫存";
-                    $Alldata = DB::table('O庫不良品inventory')->get();
-                } else {
-                    $Alldata = DB::table('O庫inventory')->get();
-                }
+        if ($titlename === "O庫領料記錄表") {
+            $Alldata = DB::table('O庫outbound')
+                ->whereNotNull('發料人員')->get();
+        } else if ($titlename === "O庫庫存") {
+            if ($nogood === "2") {
+                $titlename = "O庫不良品庫存";
+                $Alldata = DB::table('O庫不良品inventory')->get();
             } else {
-                $Alldata = DB::table('O庫出庫退料')
-                    ->whereNotNull('收料人員')->get();
+                $Alldata = DB::table('O庫inventory')->get();
             }
-            $count = count($Alldata);
-
-            //填寫表頭
-            for ($i = 0; $i < $titlecount; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
-            }
-
-            //填寫內容
-            for ($i = 0; $i < $titlecount; $i++) {
-                $string = $request->input('titlecol')[$i];
-                for ($j = 0; $j < $count; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
-                }
-            }
-
-
-            // 下載
-            $now = Carbon::now()->format('YmdHis');
-            $filename = rawurlencode($titlename) . $now . '.xlsx';
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="' . $filename . '"');
-            header('Cache-Control: max-age=0');
-
-            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $writer->save('php://output');
         } else {
-            return redirect(route('member.login'));
+            $Alldata = DB::table('O庫出庫退料')
+                ->whereNotNull('收料人員')->get();
         }
+        $count = count($Alldata);
+
+        //填寫表頭
+        for ($i = 0; $i < $titlecount; $i++) {
+            $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
+        }
+
+        //填寫內容
+        for ($i = 0; $i < $titlecount; $i++) {
+            $string = $request->input('titlecol')[$i];
+            for ($j = 0; $j < $count; $j++) {
+                $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
+            }
+        }
+
+
+        // 下載
+        $now = Carbon::now()->format('YmdHis');
+        $filename = rawurlencode($titlename) . $now . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
     }
 }
