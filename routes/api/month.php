@@ -95,3 +95,21 @@ Route::post('/notmonth', function (Request $request) {
 
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
+
+Route::post('/month', function (Request $request) {
+    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+    \DB::purge(env("DB_CONNECTION"));
+    $dbName = DB::connection()->getDatabaseName(); // test
+
+    //dd($transitsend);
+    // dd($send);
+    $datas = [];
+    // dd(json_decode($request->input('LookInTargets'))); // test
+    $datas = DB::table('MPS')
+        ->where('料號', 'like', $request->input('number') . '%')
+        ->where('料號90', 'like', $request->input('number90') . '%')
+        ->get();
+
+
+    return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
+});

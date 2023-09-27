@@ -83,7 +83,9 @@ Route::post('/searchstock', function (Request $request) {
                 $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
             })
             ->select('MPS.下月MPS', '月請購_單耗.*', DB::raw('(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存)'))
-            ->where('月請購_單耗.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "單耗")->where('consumptive_material.月請購', '=', "是");
+            ->where('月請購_單耗.狀態', '=', "已完成")
+            // ->where('consumptive_material.耗材歸屬', '=', "單耗")
+            ->where('consumptive_material.月請購', '=', "是");
 
         $datas1 = $datas1->select('月請購_單耗.料號', DB::raw('SUM(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存'))
             ->groupBy('月請購_單耗.料號')->get();
@@ -132,7 +134,9 @@ Route::post('/searchstock', function (Request $request) {
                 $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
             })
             ->select('MPS.下月MPS', '月請購_單耗.*', DB::raw('(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存)'))
-            ->where('月請購_單耗.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "單耗")->where('consumptive_material.月請購', '=', "是");
+            ->where('月請購_單耗.狀態', '=', "已完成")
+            // ->where('consumptive_material.耗材歸屬', '=', "單耗")
+            ->where('consumptive_material.月請購', '=', "是");
 
         $datas1 = $datas1->select('月請購_單耗.料號', DB::raw('SUM(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存'))
             ->groupBy('月請購_單耗.料號')->get();
@@ -178,7 +182,8 @@ Route::post('/searchstock', function (Request $request) {
                 $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
             })
             ->select('MPS.本月MPS', '月請購_單耗.*', DB::raw('(MPS.本月MPS * 月請購_單耗.單耗) as 月使用量)'))
-            ->where('月請購_單耗.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "單耗");
+            ->where('月請購_單耗.狀態', '=', "已完成");
+            // ->where('consumptive_material.耗材歸屬', '=', "單耗");
 
         $datas1 = $datas1->select('月請購_單耗.料號', DB::raw('SUM(MPS.本月MPS * 月請購_單耗.單耗) as 月使用量'))
             ->groupBy('月請購_單耗.料號')->get();

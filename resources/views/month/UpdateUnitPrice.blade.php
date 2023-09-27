@@ -33,7 +33,7 @@
                 <div class="col col-auto m-0 p-0">
                     <span>{!! __('monthlyPRpageLang.please_utilize') !!}</span>
                     &nbsp;
-                    <a href="{{ url('/basic/materialsearch') }}">{!! __('monthlyPRpageLang.matsInfo') !!}</a>
+                    <a href="{{ url('/basic/materialsearch') }}">{!! __('basicInfoLang.matsInfo') !!}</a>
                     &nbsp;
                     <span>{!! __('monthlyPRpageLang.to_update_unit_price') !!}</span>
                 </div>

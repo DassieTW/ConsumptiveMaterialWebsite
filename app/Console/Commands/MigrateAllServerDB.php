@@ -43,6 +43,7 @@ class MigrateAllServerDB extends Command
             foreach ($databaseArray as $site) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
                 \DB::purge(env("DB_CONNECTION"));
+                $this->warn("Now migrating: {$site}");
                 $this->call('migrate');
             } // foreach
         } catch (Exception $e) {

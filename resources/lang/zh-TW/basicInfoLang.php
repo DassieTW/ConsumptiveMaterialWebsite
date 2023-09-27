@@ -15,7 +15,7 @@ return [
     'page_name' => '基礎資料',
     'basicInfo' => '基礎信息',
     'newMats' => '新增料件',
-    'matsInfo' => '料件信息(查詢/修改)',
+    'matsInfo' => '料件信息',
     'change' => '更新',
     'delete' => '刪除',
     'exampleExcel' => '範例格式下載',

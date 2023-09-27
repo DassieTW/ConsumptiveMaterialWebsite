@@ -44,6 +44,7 @@ class MigrateAllDB extends Command
                 foreach ($databaseArray as $site) {
                     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
                     \DB::purge(env("DB_CONNECTION"));
+                    $this->warn("Now migrating: {$site}");
                     if ($this->option('seed')) {
                         $this->call('migrate:fresh', [
                             '--seed' => true,

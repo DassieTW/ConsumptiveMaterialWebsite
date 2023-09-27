@@ -155,6 +155,5 @@ return [
     '90isnlength' => '90料号长度不为12',
     'exportspan' => '仅会汇出本次请购数量 >0 资料',
     'please_utilize' => '请透过',
-    'matsInfo' => '料件信息(查询/修改)',
     'to_update_unit_price' => '更新单价'
 ];

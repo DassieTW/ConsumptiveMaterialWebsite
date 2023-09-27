@@ -161,6 +161,5 @@ return [
     '90isnlength' => '90PN length incorrect',
     'exportspan' => 'Only the data This time buy amount > 0 will be exported',
     'please_utilize' => 'Please Utilize',
-    'matsInfo' => 'Material Info. (Search & Update)',
     'to_update_unit_price' => 'to Update Unit Price.'
 ];

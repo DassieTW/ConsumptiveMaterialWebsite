@@ -29,9 +29,9 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, getMats_Monthly } = useMonthlyPRSearch(); // axios get the mats data
+        const { mats, getMats_nonMonthly } = useMonthlyPRSearch(); // axios get the mats data
 
-        onBeforeMount(getMats_Monthly);
+        onBeforeMount(getMats_nonMonthly);
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance

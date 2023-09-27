@@ -15,14 +15,14 @@ export default function useMonthlyPRSearch() {
     const getMats_Monthly = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        let notmonthclient = sessionStorage.getItem("notmonthclient");
-        let notmonthisn = sessionStorage.getItem("notmonthisn");
+        let month90isn = sessionStorage.getItem("month90isn");
+        let monthisn = sessionStorage.getItem("monthisn");
 
         try {
-            let response = await axios.post('/api/month/notmonth', {
+            let response = await axios.post('/api/month/month', {
                 DB: getDB.data,
-                notmonthclient: notmonthclient,
-                notmonthisn: notmonthisn,
+                number: month90isn,
+                number90: monthisn,
             });
 
             mats.value = JSON.stringify(response.data);

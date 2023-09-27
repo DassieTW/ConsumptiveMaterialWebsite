@@ -25,7 +25,6 @@
                         <form action="{{ route('month.monthsearchoradd') }}" method="POST">
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
-
                                 <label class="col col-auto form-label">{!! __('monthlyPRpageLang.isn') !!}</label>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
@@ -110,12 +109,11 @@
                                         value="{!! __('monthlyPRpageLang.add') !!}">
                                 </div>
                             </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-
-        </form>
         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
         <div class="card w-75">
             <div class="card-header">

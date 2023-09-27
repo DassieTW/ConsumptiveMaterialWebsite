@@ -274,7 +274,9 @@ Route::post('/daysearch', function (Request $request) {
                 $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
             })
             ->select('MPS.下月MPS', 'MPS.下月生產天數', '月請購_單耗.*', DB::raw('(MPS.下月MPS * 月請購_單耗.單耗 * consumptive_material.LT / MPS.下月生產天數) as 安全庫存)'))
-            ->where('月請購_單耗.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "單耗")->where('consumptive_material.月請購', '=', "是");
+            ->where('月請購_單耗.狀態', '=', "已完成")
+            // ->where('consumptive_material.耗材歸屬', '=', "單耗")
+            ->where('consumptive_material.月請購', '=', "是");
 
         $datas1 = $datas1->select('月請購_單耗.客戶別', '月請購_單耗.料號', DB::raw('SUM(MPS.下月MPS * 月請購_單耗.單耗 * consumptive_material.LT / MPS.下月生產天數) as 安全庫存'))
             ->groupBy('月請購_單耗.料號', '月請購_單耗.客戶別')->get();
@@ -291,7 +293,8 @@ Route::post('/daysearch', function (Request $request) {
             })
             ->select('MPS.*', '月請購_站位.*', DB::raw('(consumptive_material.LT * 月請購_站位.下月站位人數 * 月請購_站位.下月開線數
                         * 月請購_站位.下月開班數 * 月請購_站位.下月每人每日需求量 * 月請購_站位.下月每日更換頻率 / consumptive_material.MPQ) as 安全庫存'))
-            ->where('月請購_站位.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "站位");
+            ->where('月請購_站位.狀態', '=', "已完成");
+            // ->where('consumptive_material.耗材歸屬', '=', "站位");
 
         $datas2 = $datas2->select('月請購_站位.客戶別', '月請購_站位.料號', DB::raw('SUM(consumptive_material.LT * 月請購_站位.下月站位人數 * 月請購_站位.下月開線數
                     * 月請購_站位.下月開班數 * 月請購_站位.下月每人每日需求量 * 月請購_站位.下月每日更換頻率 / consumptive_material.MPQ) as 安全庫存'))
@@ -344,7 +347,9 @@ Route::post('/daysearch', function (Request $request) {
                 $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
             })
             ->select('MPS.下月MPS', 'MPS.下月生產天數', '月請購_單耗.*', DB::raw('(MPS.下月MPS * 月請購_單耗.單耗 * consumptive_material.LT / MPS.下月生產天數) as 安全庫存)'))
-            ->where('月請購_單耗.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "單耗")->where('consumptive_material.月請購', '=', "是");
+            ->where('月請購_單耗.狀態', '=', "已完成")
+            // ->where('consumptive_material.耗材歸屬', '=', "單耗")
+            ->where('consumptive_material.月請購', '=', "是");
 
         $datas1 = $datas1->select('月請購_單耗.客戶別', '月請購_單耗.料號', DB::raw('SUM(MPS.下月MPS * 月請購_單耗.單耗 * consumptive_material.LT / MPS.下月生產天數) as 安全庫存'))
             ->groupBy('月請購_單耗.料號', '月請購_單耗.客戶別')->get();
@@ -361,7 +366,8 @@ Route::post('/daysearch', function (Request $request) {
             })
             ->select('MPS.*', '月請購_站位.*', DB::raw('(consumptive_material.LT * 月請購_站位.下月站位人數 * 月請購_站位.下月開線數
                         * 月請購_站位.下月開班數 * 月請購_站位.下月每人每日需求量 * 月請購_站位.下月每日更換頻率 / consumptive_material.MPQ) as 安全庫存'))
-            ->where('月請購_站位.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "站位");
+            ->where('月請購_站位.狀態', '=', "已完成");
+            // ->where('consumptive_material.耗材歸屬', '=', "站位");
 
         $datas2 = $datas2->select('月請購_站位.客戶別', '月請購_站位.料號', DB::raw('SUM(consumptive_material.LT * 月請購_站位.下月站位人數 * 月請購_站位.下月開線數
                     * 月請購_站位.下月開班數 * 月請購_站位.下月每人每日需求量 * 月請購_站位.下月每日更換頻率 / consumptive_material.MPQ) as 安全庫存'))
@@ -414,7 +420,8 @@ Route::post('/daysearch', function (Request $request) {
                 $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
             })
             ->select('MPS.本月MPS', '月請購_單耗.*', DB::raw('(MPS.本月MPS * 月請購_單耗.單耗) as 月使用量)'))
-            ->where('月請購_單耗.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "單耗");
+            ->where('月請購_單耗.狀態', '=', "已完成");
+            // ->where('consumptive_material.耗材歸屬', '=', "單耗");
 
         $datas1 = $datas1->select('月請購_單耗.客戶別', '月請購_單耗.料號', DB::raw('SUM(MPS.本月MPS * 月請購_單耗.單耗) as 月使用量'))
             ->groupBy('月請購_單耗.料號', '月請購_單耗.客戶別')->get();
@@ -431,7 +438,8 @@ Route::post('/daysearch', function (Request $request) {
             })
             ->select('MPS.*', '月請購_站位.*', DB::raw('(MPS.本月生產天數 * 月請購_站位.當月站位人數 * 月請購_站位.當月開線數
                         * 月請購_站位.當月開班數 * 月請購_站位.當月每人每日需求量 * 月請購_站位.當月每日更換頻率 / consumptive_material.MPQ) as 月使用量'))
-            ->where('月請購_站位.狀態', '=', "已完成")->where('consumptive_material.耗材歸屬', '=', "站位");
+            ->where('月請購_站位.狀態', '=', "已完成");
+            // ->where('consumptive_material.耗材歸屬', '=', "站位");
 
         $datas2 = $datas2->select('月請購_站位.客戶別', '月請購_站位.料號', DB::raw('SUM(MPS.本月生產天數 * 月請購_站位.當月站位人數 * 月請購_站位.當月開線數
                     * 月請購_站位.當月開班數 * 月請購_站位.當月每人每日需求量 * 月請購_站位.當月每日更換頻率 / consumptive_material.MPQ) as 月使用量'))

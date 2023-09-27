@@ -42,7 +42,7 @@
     //判斷是否有這個客戶
     if (in_array(trim($row[1]), $clients)) {
         $i = true;
-    }
+    } // if
     
     if ($i === false) {
         $mess = trans('monthlyPRpageLang.noclient') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
@@ -50,7 +50,7 @@
             window.alert('$mess');
             window.location.href='uploadstand';
             </script>";
-    }
+    } // if
     
     //判斷是否有這個機種
     if (in_array(trim($row[2]), $machines)) {

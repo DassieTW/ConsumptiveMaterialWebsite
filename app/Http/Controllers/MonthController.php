@@ -564,7 +564,7 @@ class MonthController extends Controller
         } else {
             return redirect(route('month.importmonth'));
         } // if else
-    }
+    } // monthsearchoradd
 
     //月請購刪除
     public function monthdelete(Request $request)

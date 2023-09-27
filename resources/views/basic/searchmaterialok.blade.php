@@ -89,11 +89,10 @@
                                                 value="{!! __('basicInfoLang.upload1') !!}">
                                         </div>
                                     </div>
+                                </div>
                             </form>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
