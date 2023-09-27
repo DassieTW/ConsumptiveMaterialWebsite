@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\style\Borders;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Mail;
 use Mockery\Undefined;
@@ -1292,11 +1293,11 @@ class MonthController extends Controller
     public function buylistdownload(Request $request)
     {
 
-        $spreadsheet = new Spreadsheet();
-        //$spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
-        $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
-        $spreadsheet->getDefaultStyle()->getFont()->setName('Microsoft JhengHei');
-        $worksheet = $spreadsheet->getActiveSheet();
+            $spreadsheet = new Spreadsheet();
+            // $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+            // $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
+            $spreadsheet->getDefaultStyle()->getFont()->setName('Microsoft JhengHei');
+            $worksheet = $spreadsheet->getActiveSheet();
 
         $count = $request->input('count');
         $Alldata = json_decode($request->input('AllData'));
@@ -1335,19 +1336,24 @@ class MonthController extends Controller
         for ($j = 0; $j < $count; $j++) {
             if ($Alldata[11][$j] > 0) {
 
-                $worksheet->setCellValueByColumnAndRow(1, $i, $i - 2);
-                $worksheet->setCellValueByColumnAndRow(2, $i, $Alldata[2][$j]);
-                $worksheet->setCellValueByColumnAndRow(3, $i, $Alldata[3][$j]);
-                $worksheet->setCellValueByColumnAndRow(4, $i, $Alldata[4][$j]);
-                $worksheet->setCellValueByColumnAndRow(5, $i, $Alldata[5][$j]);
-                $worksheet->setCellValueByColumnAndRow(6, $i, $Alldata[7][$j]);
-                $worksheet->setCellValueByColumnAndRow(7, $i, $Alldata[8][$j]);
-                $worksheet->setCellValueByColumnAndRow(8, $i, $Alldata[9][$j]);
-                $worksheet->setCellValueByColumnAndRow(9, $i, $Alldata[10][$j]);
-                $worksheet->setCellValueByColumnAndRow(10, $i, $Alldata[11][$j]);
-                $worksheet->setCellValueByColumnAndRow(11, $i, $Alldata[12][$j]);
-                $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . "4.326");
-                $worksheet->setCellValueByColumnAndRow(13, $i, $Alldata[14][$j]);
+                    $worksheet->setCellValueByColumnAndRow(1, $i, $i - 2);
+                    $worksheet->setCellValueByColumnAndRow(2, $i, $Alldata[2][$j]);
+                    $worksheet->setCellValueByColumnAndRow(3, $i, $Alldata[3][$j]);
+                    $worksheet->setCellValueByColumnAndRow(4, $i, $Alldata[4][$j]);
+                    $worksheet->setCellValueByColumnAndRow(5, $i, $Alldata[5][$j]);
+                    if ($Alldata[7][$j] === "/") {
+                        $worksheet->getStyle("F" . $i)->getBorders()->setDiagonalDirection(Borders::DIAGONAL_BOTH)->getDiagonal()->setBorderStyle(Border::BORDER_THIN);
+                        $worksheet->getStyle("G" . $i)->getBorders()->setDiagonalDirection(Borders::DIAGONAL_BOTH)->getDiagonal()->setBorderStyle(Border::BORDER_THIN);
+                    } else {
+                        $worksheet->setCellValueByColumnAndRow(6, $i, $Alldata[7][$j]);
+                        $worksheet->setCellValueByColumnAndRow(7, $i, $Alldata[8][$j]);
+                    }
+                    $worksheet->setCellValueByColumnAndRow(8, $i, $Alldata[9][$j]);
+                    $worksheet->setCellValueByColumnAndRow(9, $i, $Alldata[10][$j]);
+                    $worksheet->setCellValueByColumnAndRow(10, $i, $Alldata[11][$j]);
+                    $worksheet->setCellValueByColumnAndRow(11, $i, $Alldata[12][$j]);
+                    $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . "4.326");
+                    $worksheet->setCellValueByColumnAndRow(13, $i, $Alldata[14][$j]);
 
                 $i++;
             } else {
@@ -1367,21 +1373,25 @@ class MonthController extends Controller
         $worksheet->setCellValue(("E" . $i + 2), "審核:");
         $worksheet->setCellValue(("K" . $i + 2), "製表:");
 
-        // 下載
-        $now = Carbon::now()->format('YmdHis');
-        $titlename = $request->input('titlename');
-        $filename = rawurlencode($titlename) . $now . '.xlsx';
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
-        header('Cache-Control: max-age=0');
+            // 下載
+            $now = Carbon::now()->format('YmdHis');
+            $titlename = $request->input('titlename');
+            // $filename = rawurlencode($titlename) . $now . '.xlsx';
+            $filename = rawurlencode($titlename) . $now . '.pdf';
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
+            header('Cache-Control: max-age=0');
 
-        $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('php://output');
-        $callback = function () use ($writer) {
-            $file = fopen('php://output', 'r');
-            fclose($file);
-        };
+            // $writer->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
+            // $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Mpdf');
+            $writer->save('php://output');
+            $callback = function () use ($writer) {
+                $file = fopen('php://output', 'r');
+                fclose($file);
+            };
+
 
         return response()->stream($callback, 200, $headers);
     }
