@@ -17,7 +17,7 @@ class CreateMPSTable extends Migration
             $table->string('客戶別', 45);
             $table->string('機種', 45);
             $table->string('製程', 45);
-            $table->string('料號', 12);
+            $table->primary(['客戶別','機種','製程']);
             $table->double('下月MPS');
             $table->double('下月生產天數');
             $table->double('本月MPS');

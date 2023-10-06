@@ -65,44 +65,9 @@ Route::post('/srmsearch', [MonthController::class, 'srmsearch'])->name('month.sr
 Route::post('/srmsubmit', [MonthController::class, 'srmsubmit'])->name('month.srmsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //非月請購查詢
-// Route::post('/notmonthsearch', function (Request $request) {
-//     return \Response::json(['client' => $request->input('client'), 'number' => $request->input('number')]/* Status code here default is 200 ok*/);
-// })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-
 Route::get('/notmonthsearchok', function () {
     return view('month.notmonthsearchok');
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-// Route::post('/notmonthsearchok', function (Request $request) {
-//     if ($request->input('varr1') === null && $request->input('varr2') === null) {
-//         $datas = DB::table('consumptive_material')
-//             ->join('非月請購', function ($join) {
-//                 $join->on('非月請購.料號', '=', 'consumptive_material.料號');
-//             })->select('非月請購.*', 'consumptive_material.品名')->get();
-//         return view('month.notmonthsearchok')->with(['data' => $datas]);
-//     } else if ($request->input('varr1') !== null && $request->input('var2') === null) {
-//         $datas = DB::table('consumptive_material')
-//             ->join('非月請購', function ($join) {
-//                 $join->on('非月請購.料號', '=', 'consumptive_material.料號');
-//             })->select('非月請購.*', 'consumptive_material.品名')->get();
-//         return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
-//     } else if ($request->input('varr1') === null && $request->input('varr2') !== null) {
-//         $datas = DB::table('consumptive_material')
-//             ->join('非月請購', function ($join) {
-//                 $join->on('非月請購.料號', '=', 'consumptive_material.料號');
-//             })->select('非月請購.*', 'consumptive_material.品名')
-//             ->where('非月請購.料號', 'like', $request->input('varr2') . '%')->get();
-//         return view('month.notmonthsearchok')->with(['data' => $datas]);
-//     } else if ($request->input('varr1') !== null && $request->input('varr2') !== null) {
-//         $datas = DB::table('consumptive_material')
-//             ->join('非月請購', function ($join) {
-//                 $join->on('非月請購.料號', '=', 'consumptive_material.料號');
-//             })->select('非月請購.*', 'consumptive_material.品名')
-//             ->where('非月請購.料號', 'like', $request->input('varr2') . '%')->get();
-//         return view('month.notmonthsearchok')->with(['data' => $datas->where('客戶別', $request->input('client'))]);
-//     }
-// })->name('month.notmonthsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //非月請購新增
 Route::post('/notmonthadd', [MonthController::class, 'notmonthadd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
@@ -139,7 +104,7 @@ Route::post('/monthadd', [MonthController::class, 'monthadd'])->name('month.mont
 Route::post('/monthsubmit', [MonthController::class, 'monthsubmit'])->name('month.monthsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::get('/buylistmake', function () {
-    return view('month.buylist')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
+    return view('month.buylist')->with(['client' => 客戶別::cursor(), 'send' => 發料部門::cursor()]);
 })->name('month.buylist')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/buylistmake', [MonthController::class, 'buylistmake'])->name('month.buylistmake')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
@@ -152,11 +117,20 @@ Route::get('/UpdateUnitPrice', function () {
     return view('month.UpdateUnitPrice')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
 })->name('month.UpdateUnitPrice')->middleware('can:updateUnitPrice,App\Models\月請購_單耗');
 
-// 送簽請購單
-Route::get('/SendPRReview', function () {
-    return view('month.SendPRReview')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
+// 送簽請購單 匯率畫面
+Route::get('/PreSendPRReview', function () {
+    return abort(503); // test
+    return view('month.PreSendPRReview');
+})->name('month.PreSendPRReview');
+
+// 送簽請購單 列表
+Route::post('/SendPRReview', function () {
+    return view('month.SendPRReview');
 })->name('month.SendPRReview');
 
+Route::get('/SendPRReview', function () {
+    return view('month.SendPRReview');
+})->name('month.SendPRReview');
 
 //在途量(查詢)頁面
 Route::get('/transit', function () {

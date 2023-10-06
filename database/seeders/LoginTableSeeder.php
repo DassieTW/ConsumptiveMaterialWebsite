@@ -21,15 +21,16 @@ class LoginTableSeeder extends Seeder
         $login->username = '1';
         // $login->password = Hash::make('111');
         $login->password = '111';
-        $login->priority = 1;
+        $login->priority = 0;
         $login->姓名 = '權限1_測試';
         $login->avatarChoice = 1;
+        $login->available_dblist = "BB1_HQ TEST";
         $login->save();
 
         $login2 = new Login;
         $login2->username = '2';
         $login2->password = '222';
-        $login2->priority = 2;
+        $login2->priority = 1;
         $login2->姓名 = '權限2_測試';
         $login2->avatarChoice = 2;
         $login2->save();

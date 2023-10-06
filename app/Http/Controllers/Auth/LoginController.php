@@ -156,11 +156,11 @@ class LoginController extends Controller
         } // else
     } // attemptSSOLogin
 
-    protected function attemptRecentlyLoginDBForMultiSiteUsers(Request $request, $PrevSite)
+    protected function attemptRecentlyLoginDBForMultiSiteUsers(Request $request)
     {
         $databaseArray = config('database_list.databases');
         $latestLoginTime = new DateTime("1996-12-10 16:52:36.000");
-        $mostrecentDB = $PrevSite;
+        $mostrecentDB = null;
 
         foreach ($databaseArray as $site) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
@@ -170,11 +170,23 @@ class LoginController extends Controller
             ])->first();
 
             if ($user !== null) {
-                $tempDateTime = new DateTime($user->last_login_time);
-                if ($tempDateTime > $latestLoginTime) {
-                    $mostrecentDB = $site;
-                    $latestLoginTime = $tempDateTime;
+                if ($user->available_dblist == null) {
+                    $tempDateTime = new DateTime($user->last_login_time);
+                    if ($tempDateTime > $latestLoginTime) {
+                        $mostrecentDB = $site;
+                        $latestLoginTime = $tempDateTime;
+                    } // if
                 } // if
+                else {
+                    if (in_array(str_replace(" Consumables management", "", $site), explode("_", $user->available_dblist))) {
+                        // if available_dblist contains current site
+                        $tempDateTime = new DateTime($user->last_login_time);
+                        if ($tempDateTime > $latestLoginTime) {
+                            $mostrecentDB = $site;
+                            $latestLoginTime = $tempDateTime;
+                        } // if
+                    } // if
+                } // else
             } // if
 
         } // foreach
@@ -194,47 +206,41 @@ class LoginController extends Controller
         // Session::put('office_mail', "Mail@test"); // test
         // return redirect()->route('member.New_OA_Login'); // test
 
-        foreach ($databaseArray as $site) {
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
-            \DB::purge(env("DB_CONNECTION"));
-            if ($this->attemptSSOLogin($request)) {
+        try {
+            $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
-                $request->session()->regenerate();
-
-                DB::beginTransaction();
-
-                try {
-                    $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
-
-                    $recentSite = $this->attemptRecentlyLoginDBForMultiSiteUsers($request, $site);
-                    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $recentSite);
-                    \DB::purge(env("DB_CONNECTION"));
-                    $encrypt_site = \Crypt::encrypt($recentSite);
-
-                    $affected = DB::table('login')
-                        ->where('username', '=', \Auth::user()->username)
-                        ->update(['last_login_time' => $datetime]);
-
-                    DB::commit();
-
-                    $encrypt_id = \Crypt::encrypt($request->work_id);
-                    return redirect('/?S=' . $encrypt_id . '&D=' . $encrypt_site);
-                    // all good
-                } catch (\Exception $e) {
-                    dd($e); // test
-                    DB::rollback();
-                    return \Response::json(['message' => $e], 420); // Status code here
-                    // something went wrong
-                } // try catch
+            $recentSite = $this->attemptRecentlyLoginDBForMultiSiteUsers($request);
+            if ($recentSite == null) {
+                // if the OA account is new to us
+                Session::put('work_id', $request->work_id);
+                Session::put('user_name', $request->user_name);
+                Session::put('dept_name', $request->dept_name);
+                Session::put('office_mail', $request->office_mail);
+                return redirect()->route('member.New_OA_Login');
             } // if
-        } // foreach
 
-        // if the OA account is new to us
-        Session::put('work_id', $request->work_id);
-        Session::put('user_name', $request->user_name);
-        Session::put('dept_name', $request->dept_name);
-        Session::put('office_mail', $request->office_mail);
-        return redirect()->route('member.New_OA_Login');
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $recentSite);
+            \DB::purge(env("DB_CONNECTION"));
+            $encrypt_site = \Crypt::encrypt($recentSite);
+
+            DB::beginTransaction();
+            
+            $affected = DB::table('login')
+                ->where('username', '=', \Auth::user()->username)
+                ->update(['last_login_time' => $datetime]);
+
+            DB::commit();
+
+            $encrypt_id = \Crypt::encrypt($request->work_id);
+            return redirect('/?S=' . $encrypt_id . '&D=' . $encrypt_site);
+            // all good
+        } catch (\Exception $e) {
+            dd($e); // test
+            DB::rollback();
+            return \Response::json(['message' => $e], 420); // Status code here
+            // something went wrong
+        } // try catch
+
     } // OAlogin
 
     // switch the user ( with $user->available_dblist contains the target site ) to another site

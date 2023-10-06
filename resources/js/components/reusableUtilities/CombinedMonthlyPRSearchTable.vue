@@ -29,9 +29,9 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, getMats_nonMonthly } = useMonthlyPRSearch(); // axios get the mats data
+        const { mats, getMats_CombinedMonthly } = useMonthlyPRSearch(); // axios get the mats data
 
-        onBeforeMount(getMats_nonMonthly);
+        onBeforeMount(getMats_CombinedMonthly);
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance
@@ -46,9 +46,9 @@ export default defineComponent({
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
         watch(mats, () => {
-            console.log(JSON.parse(mats.value)); // test
+            // console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
-            //console.log(allRowsObj.datas.length);
+            // console.log(allRowsObj); // test
             for (let i = 0; i < allRowsObj.datas.length; i++) {
                 allRowsObj.datas[i].請購數量 = parseInt(allRowsObj.datas[i].請購數量);
                 data.push(allRowsObj.datas[i]);

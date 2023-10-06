@@ -25,12 +25,6 @@ class 在途量TableSeeder extends Seeder
         \DB::table('在途量')->insert([
             '客戶' => 'GUCCI',
             '料號' => '4017-01HL000',
-            '請購數量' => 150
-        ]);
-        //
-        \DB::table('在途量')->insert([
-            '客戶' => 'NAPA',
-            '料號' => '4017-01HL000',
             '請購數量' => 800
         ]);
     }

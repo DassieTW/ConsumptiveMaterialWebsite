@@ -13,6 +13,7 @@ class 非月請購 extends Model
 
     public $timestamps = false;
     protected $table = "非月請購";
+    protected $primaryKey = '料號';
 
     //PK no return 0
     public $incrementing = false;

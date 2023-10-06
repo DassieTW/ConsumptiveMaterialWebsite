@@ -18,7 +18,7 @@ class 非月請購TableSeeder extends Seeder
         //
         $unmonth = new 非月請購;
         $unmonth->客戶別 = 'Fendi';
-        $unmonth->料號 = '4152-01EV000';
+        $unmonth->料號 = '4017-01HL000';
         $unmonth->請購數量 = -49;
         $unmonth->上傳時間 = Carbon::create(2020, 12, 10, 15, 46, 30, 'GMT');
         $unmonth->說明 = '';

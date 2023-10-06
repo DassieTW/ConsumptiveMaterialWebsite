@@ -62,9 +62,34 @@ export default function useMonthlyPRSearch() {
         } // try catch
     } // getMats_nonMonthly
 
+    const getMats_CombinedMonthly = async () => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        let notmonthclient = sessionStorage.getItem("notmonthclient");
+        let notmonthisn = sessionStorage.getItem("notmonthisn");
+
+        try {
+            let response = await axios.post('/api/month/combined_month', {
+                DB: getDB.data,
+                notmonthisn: notmonthisn,
+            });
+
+            mats.value = JSON.stringify(response.data);
+            console.log(JSON.parse(mats.value)); // test
+        } catch (e) {
+            console.log(e); // test
+            for (const key in e.response.data.errors) {
+                errors.value += e.response.data.errors[key][0] + '  ';
+            } // for each errors
+
+            console.log(errors.value); // test
+        } // try catch
+    } // getMats_CombinedMonthly
+
     return {
         mats,
         getMats_Monthly,
-        getMats_nonMonthly
+        getMats_nonMonthly,
+        getMats_CombinedMonthly
     } // return
 } // useConsumptiveMaterials
