@@ -58,9 +58,9 @@ class ChangeTable extends Migration
             $table->string('客戶別', 45)->nullable()->change();
         });
 
-        Schema::table('MPS', function (Blueprint $table) {
-            $table->dropPrimary(['客戶別', '機種', '製程']);
-        });
+        // Schema::table('MPS', function (Blueprint $table) {
+        //     $table->dropPrimary(['客戶別', '機種', '製程']);
+        // });
         Schema::table('MPS', function (Blueprint $table) {
             $table->string('客戶別', 45)->nullable()->change();
             $table->string('機種', 45)->nullable()->change();
