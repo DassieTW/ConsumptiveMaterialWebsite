@@ -58,9 +58,9 @@ class ChangeTable extends Migration
             $table->string('客戶別', 45)->nullable()->change();
         });
 
-        // Schema::table('MPS', function (Blueprint $table) {
-        //     $table->dropPrimary(['客戶別', '機種', '製程']);
-        // });
+        Schema::table('MPS', function (Blueprint $table) {
+            $table->dropPrimary(['客戶別', '機種', '製程']);
+        });
         Schema::table('MPS', function (Blueprint $table) {
             $table->string('客戶別', 45)->nullable()->change();
             $table->string('機種', 45)->nullable()->change();
@@ -70,9 +70,9 @@ class ChangeTable extends Migration
             $table->primary(['料號', '料號90']);
         });
 
-        // Schema::table('月請購_單耗', function (Blueprint $table) {
-        //     $table->dropPrimary(['料號', '客戶別', '機種', '製程']);
-        // });
+        Schema::table('月請購_單耗', function (Blueprint $table) {
+            $table->dropPrimary(['料號', '客戶別', '機種', '製程']);
+        });
 
         DB::statement("ALTER TABLE [月請購_單耗] ALTER COLUMN [客戶別] nvarchar(45) NULL;");
         DB::statement("ALTER TABLE [月請購_單耗] ALTER COLUMN [機種] nvarchar(45) NULL;");
@@ -99,18 +99,18 @@ class ChangeTable extends Migration
             $table->primary('料號');
         });
 
-        // Schema::table('safestock報警備註', function (Blueprint $table) {
-        //     $table->dropPrimary(['料號', '客戶別']);
-        // });
+        Schema::table('safestock報警備註', function (Blueprint $table) {
+            $table->dropPrimary(['料號', '客戶別']);
+        });
 
         DB::statement("ALTER TABLE [safestock報警備註] ALTER COLUMN [客戶別] nvarchar(45) NULL;");
 
         Schema::table('safestock報警備註', function (Blueprint $table) {
             $table->primary('料號');
         });
-        // Schema::table('sluggish報警備註', function (Blueprint $table) {
-        //     $table->dropPrimary(['料號', '客戶別']);
-        // });
+        Schema::table('sluggish報警備註', function (Blueprint $table) {
+            $table->dropPrimary(['料號', '客戶別']);
+        });
 
         DB::statement("ALTER TABLE [sluggish報警備註] ALTER COLUMN [客戶別] nvarchar(45) NULL;");
 

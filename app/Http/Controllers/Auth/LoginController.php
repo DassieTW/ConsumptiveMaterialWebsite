@@ -226,7 +226,7 @@ class LoginController extends Controller
             DB::beginTransaction();
             
             $affected = DB::table('login')
-                ->where('username', '=', \Auth::user()->username)
+                ->where('username', '=', $request->work_id)
                 ->update(['last_login_time' => $datetime]);
 
             DB::commit();
