@@ -528,6 +528,7 @@ class InboundController extends Controller
         $count = $request->input('count');
         $now = Carbon::now();
         $Alldata = json_decode($request->input('AllData'));
+        dd($Alldata); //test
         DB::beginTransaction();
         try {
             for ($i = 0; $i < $count; $i++) {

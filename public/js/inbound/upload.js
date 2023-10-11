@@ -27,6 +27,7 @@ $(function () {
     data.push(number);
     data.push(amount);
     data.push(position);
+    console.log(JSON.stringify(data)); // test
     $.ajax({
       type: "POST",
       url: "insertuploadinventory",
