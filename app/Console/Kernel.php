@@ -35,6 +35,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('call:safestock')->daily()->timezone('Asia/Taipei');
         $schedule->command('call:sluggish')->daily()->timezone('Asia/Taipei');
         $schedule->command('barcodeimg:clear')->daily()->timezone('Asia/Taipei');
+        $schedule->command('mssql:backup')->weekly()->timezone('Asia/Taipei');
         $schedule->command('logs:clear')->quarterly('03:00')->timezone('Asia/Taipei'); // At 03:00 in every 3 month.
         $schedule->command('log:clear')->quarterly('03:00')->timezone('Asia/Taipei'); // At 03:00 in every 3 month.
         $schedule->command('telescope:prune --hours=48')->daily(); // Prune the laravel telescope records created over 48 hours ago
