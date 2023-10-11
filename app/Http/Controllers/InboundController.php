@@ -429,7 +429,7 @@ class InboundController extends Controller
                 })
                 ->select('MPS.本月MPS', '月請購_單耗.*', DB::raw('(MPS.本月MPS * 月請購_單耗.單耗) as 月使用量)'))
                 ->where('月請購_單耗.狀態', '=', "已完成");
-                // ->where('consumptive_material.耗材歸屬', '=', "單耗");
+            // ->where('consumptive_material.耗材歸屬', '=', "單耗");
 
             $datas1 = $datas1->select('月請購_單耗.料號', DB::raw('SUM(MPS.本月MPS * 月請購_單耗.單耗) as 月使用量'))
                 ->groupBy('月請購_單耗.料號')->get();
@@ -528,22 +528,23 @@ class InboundController extends Controller
         $count = $request->input('count');
         $now = Carbon::now();
         $Alldata = json_decode($request->input('AllData'));
-        dd($Alldata); //test
+        // dd($Alldata); //test
         DB::beginTransaction();
         try {
             for ($i = 0; $i < $count; $i++) {
+                if ($Alldata[0][$i] != null && $Alldata[0][$i] != "") {
+                    $stock = DB::table('inventory')->where('料號', $Alldata[0][$i])->where('儲位', $Alldata[2][$i])->value('現有庫存');
 
-                $stock = DB::table('inventory')->where('料號', $Alldata[0][$i])->where('儲位', $Alldata[2][$i])->value('現有庫存');
-
-                if ($stock === null) {
-                    DB::table('inventory')
-                        ->insert(['料號' => $Alldata[0][$i], '現有庫存' => $Alldata[1][$i], '儲位' => $Alldata[2][$i], '最後更新時間' => $now]);
-                } else {
-                    DB::table('inventory')
-                        ->where('料號', $Alldata[0][$i])
-                        ->where('儲位', $Alldata[2][$i])
-                        ->update(['現有庫存' => $stock + $Alldata[1][$i], '最後更新時間' => $now]);
-                }
+                    if ($stock === null) {
+                        DB::table('inventory')
+                            ->insert(['料號' => $Alldata[0][$i], '現有庫存' => $Alldata[1][$i], '儲位' => $Alldata[2][$i], '最後更新時間' => $now]);
+                    } else {
+                        DB::table('inventory')
+                            ->where('料號', $Alldata[0][$i])
+                            ->where('儲位', $Alldata[2][$i])
+                            ->update(['現有庫存' => $stock + $Alldata[1][$i], '最後更新時間' => $now]);
+                    } // if else
+                } // if
             } // for
             DB::commit();
         } catch (\Exception $e) {
