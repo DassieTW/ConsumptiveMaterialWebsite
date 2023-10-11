@@ -526,6 +526,7 @@ class InboundController extends Controller
     {
         $positions = DB::table('儲位')->pluck('儲存位置')->toArray();
         $count = $request->input('count');
+        $validRecordCount = 0 ;
         $now = Carbon::now();
         $Alldata = json_decode($request->input('AllData'));
         // dd($Alldata); //test
@@ -534,7 +535,7 @@ class InboundController extends Controller
             for ($i = 0; $i < $count; $i++) {
                 if ($Alldata[0][$i] != null && $Alldata[0][$i] != "") {
                     $stock = DB::table('inventory')->where('料號', $Alldata[0][$i])->where('儲位', $Alldata[2][$i])->value('現有庫存');
-
+                    $validRecordCount = $validRecordCount + 1;
                     if ($stock === null) {
                         DB::table('inventory')
                             ->insert(['料號' => $Alldata[0][$i], '現有庫存' => $Alldata[1][$i], '儲位' => $Alldata[2][$i], '最後更新時間' => $now]);
@@ -552,6 +553,6 @@ class InboundController extends Controller
             $mess = $e->getmessage();
             return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
         }
-        return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
+        return \Response::json(['message' => $validRecordCount]/* Status code here default is 200 ok*/);
     }
 }
