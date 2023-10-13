@@ -18,6 +18,7 @@
         $i = false;
         $j = false;
         $error = $loop->index + 1;
+        
         //判斷是否有料號
         if ($name === null || $format === null) {
             $mess = trans('inboundpageLang.noisn') . ' ' . trans('inboundpageLang.row') . ' : ' . $error . ' ' . $row[0];

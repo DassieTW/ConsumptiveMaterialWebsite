@@ -4,6 +4,25 @@
 
 @section('js')
     <!--for this page's sepcified js -->
+    <script>
+        function ScientificNotaionToFixed(x) {
+            // toFixed
+            if (Math.abs(x.value) < 1.0) {
+                var e = parseInt(x.value.toString().split("e-")[1]);
+                if (e) {
+                    x.value *= Math.pow(10, e - 1);
+                    x.value = "0." + new Array(e).join("0") + x.value.toString().substring(2);
+                } // if
+            } else {
+                var e = parseInt(x.value.toString().split("+")[1]);
+                if (e > 20) {
+                    e -= 20;
+                    x.value /= Math.pow(10, e);
+                    x.value += new Array(e + 1).join("0");
+                } // if
+            } // if-else
+        } // to prevent scientific notaion
+    </script>
     <script src="{{ asset('js/month/consumeadd.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
@@ -51,7 +70,7 @@
                     <div class="col-auto">
                         {{-- <label class="col col-auto form-label">&nbsp;</label> --}}
                         <input type="submit" id="add" name="add" style="width: 10ch;"
-                            class="form-control form-control-lg btn btn-lg btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
+                            class="form-control form-control-lg btn btn-primary" value="{!! __('monthlyPRpageLang.add') !!}">
                         <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                         <button class="btn btn-lg btn-primary" style id="loadconsume">{!! __('monthlyPRpageLang.loadconsume') !!}</button>
                     </div>
@@ -68,16 +87,16 @@
                             <tbody id="consumeaddbody">
                                 <tr>
                                     <th>{!! __('monthlyPRpageLang.delete') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.90isn') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.isn') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.pName') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.format') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.unit') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.lt') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.consume') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.client') !!}</th>
+                                    {{-- <th>{!! __('monthlyPRpageLang.client') !!}</th>
                                     <th>{!! __('monthlyPRpageLang.machine') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.process') !!}</th>
-                                    <th>{!! __('monthlyPRpageLang.90isn') !!}</th>
+                                    <th>{!! __('monthlyPRpageLang.process') !!}</th> --}}
                                 </tr>
                             </tbody>
                         </table>

@@ -1,511 +1,555 @@
 sessionStorage.clear();
-function ScientificNotaionToFixed(x) {
-  // toFixed
-  if (Math.abs(x) < 1.0) {
-    var e = parseInt(x.toString().split("e-")[1]);
-    if (e) {
-      x *= Math.pow(10, e - 1);
-      x = "0." + new Array(e).join("0") + x.toString().substring(2);
-    }
-  } else {
-    var e = parseInt(x.toString().split("+")[1]);
-    if (e > 20) {
-      e -= 20;
-      x /= Math.pow(10, e);
-      x += new Array(e + 1).join("0");
-    } // if
-  } // if-else
-
-  return x;
-} // to prevent scientific notaion
-
 $.ajaxSetup({
-  headers: {
-    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-  },
+    headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
 });
 
 function appenSVg(index) {
-  var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute(
-    "d",
-    "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"
-  );
-  svg.setAttribute("width", "30");
-  svg.setAttribute("height", "30");
-  svg.setAttribute("fill", "#c94466");
-  svg.setAttribute("class", "bi bi-x-circle-fill");
-  svg.setAttribute("viewBox", "0 0 20 20");
-  svg.appendChild(path);
-  $("#deleteBtn" + index).append(svg);
-  $("#deleteBtn" + index).on("click", function (e) {
-    e.preventDefault();
-    notyf.success({
-      message:
-        Lang.get("monthlyPRpageLang.delete") +
-        Lang.get("monthlyPRpageLang.success"),
-      duration: 3000, //miliseconds, use 0 for infinite duration
-      ripple: true,
-      dismissible: true,
-      position: {
-        x: "right",
-        y: "bottom",
-      },
-    });
-    $(this).parent().parent().remove();
-  }); // on delete btn click
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute(
+        "d",
+        "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"
+    );
+    svg.setAttribute("width", "30");
+    svg.setAttribute("height", "30");
+    svg.setAttribute("fill", "#c94466");
+    svg.setAttribute("class", "bi bi-x-circle-fill");
+    svg.setAttribute("viewBox", "0 0 20 20");
+    svg.appendChild(path);
+    $("#deleteBtn" + index).append(svg);
+    $("#deleteBtn" + index).on("click", function (e) {
+        e.preventDefault();
+        notyf.success({
+            message:
+                Lang.get("monthlyPRpageLang.delete") +
+                Lang.get("monthlyPRpageLang.success"),
+            duration: 3000, //miliseconds, use 0 for infinite duration
+            ripple: true,
+            dismissible: true,
+            position: {
+                x: "right",
+                y: "bottom",
+            },
+        });
+        $(this).parent().parent().remove();
+    }); // on delete btn click
 } // appenSVg
 
 $(function () {
-  $("#email").on("change", function (event) {
-    $("#emailTail").text($(this).val());
-  });
-
-  $("#consume").on("submit", function (e) {
-    e.preventDefault();
-
-    // clean up previous input results
-    $(".is-invalid").removeClass("is-invalid");
-    $(".invalid-feedback").hide();
-
-    if (sessionStorage.getItem("consumecount") === null) {
-      var index = 0;
-    } else {
-      var index = parseInt(sessionStorage.getItem("consumecount"));
-    }
-
-    var number = $("#number").val();
-    var number90 = $("#90isn").val();
-
-    if (number === "") {
-      document.getElementById("numbererror1").style.display = "block";
-      document.getElementById("number").classList.add("is-invalid");
-      document.getElementById("number").focus();
-      return false;
-    } else if (number.length !== 12) {
-      document.getElementById("numbererror").style.display = "block";
-      document.getElementById("number").classList.add("is-invalid");
-      document.getElementById("number").focus();
-      return false;
-    } else if (number90 === "") {
-      document.getElementById("90error1").style.display = "block";
-      document.getElementById("90isn").classList.add("is-invalid");
-      document.getElementById("90isn").focus();
-      return false;
-    } else if (number90.length !== 12) {
-      document.getElementById("90error").style.display = "block";
-      document.getElementById("90isn").classList.add("is-invalid");
-      document.getElementById("90isn").focus();
-      return false;
-    }
-    $.ajax({
-      type: "POST",
-      url: "consumenew",
-      data: {
-        number: number,
-        number90: number90,
-      },
-      beforeSend: function () {
-        // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-        $("body").loadingModal({
-          text: "Loading...",
-          animation: "circle",
-        });
-      },
-      complete: function () {
-        $("body").loadingModal("hide");
-        $("body").loadingModal("destroy");
-      },
-      success: function (data) {
-        sessionStorage.setItem("consumecount", index + 1);
-
-        notyf.success({
-          message:
-            Lang.get("monthlyPRpageLang.add") +
-            Lang.get("monthlyPRpageLang.success"),
-          duration: 3000, //miliseconds, use 0 for infinite duration
-          ripple: true,
-          dismissible: true,
-          position: {
-            x: "right",
-            y: "bottom",
-          },
-        });
-
-        document.getElementById("consumeadd").style.display = "block";
-        var tbl = document.getElementById("consumeaddtable");
-        var body = document.getElementById("consumeaddbody");
-        var row = document.createElement("tr");
-
-        row.setAttribute("id", "row" + index);
-
-        let rowdelete = document.createElement("td");
-        rowdelete.innerHTML = "<a id=" + "deleteBtn" + index + "></a>";
-
-        let rownumber = document.createElement("td");
-        rownumber.innerHTML =
-          "<span id=" + "number" + index + ">" + data.number + "</span>";
-
-        let rowname = document.createElement("td");
-        rowname.innerHTML =
-          "<span id=" + "name" + index + ">" + data.name + "</span>";
-
-        let rowformat = document.createElement("td");
-        rowformat.innerHTML =
-          "<span id=" + "format" + index + ">" + data.format + "</span>";
-
-        let rowunit = document.createElement("td");
-        rowunit.innerHTML =
-          "<span id=" + "unit" + index + ">" + data.unit + "</span>";
-
-        let rowlt = document.createElement("td");
-        rowlt.innerHTML =
-          "<span id=" + "lt" + index + ">" + data.lt + "</span>";
-
-        let rowamount = document.createElement("td");
-        rowamount.innerHTML =
-          '<input id="amount' +
-          index +
-          '"' +
-          'type = "number"' +
-          'class = "form-control form-control-lg"' +
-          'min = "0.0000000001"' +
-          'value = "0"' +
-          'step = "0.0000000001"' +
-          'style="width: 200px"' +
-          '">';
-
-        let row90isn = document.createElement("td");
-        row90isn.innerHTML =
-          "<span id=" + "90isn" + index + ">" + data.number90 + "</span>";
-
-        row.appendChild(rowdelete);
-        row.appendChild(rownumber);
-        row.appendChild(rowname);
-        row.appendChild(rowformat);
-        row.appendChild(rowunit);
-        row.appendChild(rowlt);
-        row.appendChild(rowamount);
-        row.appendChild(row90isn);
-
-        body.appendChild(row);
-        tbl.appendChild(body);
-        appenSVg(index);
-      },
-      error: function (err) {
-        //料號不存在
-        if (err.status === 420) {
-          document.getElementById("numbererror1").style.display = "block";
-          document.getElementById("number").classList.add("is-invalid");
-          document.getElementById("number").value = "";
-          document.getElementById("number").focus();
-        } else {
-          alert(err.responseJSON.message);
-          return false;
-        }
-      },
+    $("#email").on("change", function (event) {
+        $("#emailTail").text($(this).val());
     });
-  });
 
-  $("#consumeadd").on("submit", function (e) {
-    e.preventDefault();
+    $("#consume").on("submit", function (e) {
+        e.preventDefault();
 
-    // clean up previous input results
-    $(".is-invalid").removeClass("is-invalid");
-    $(".invalid-feedback").hide();
-
-    console.log(sessionStorage.getItem("consumecount"));
-    var number = [];
-    var consume = [];
-    var number90 = [];
-    var row = [];
-    // var jobnumber = $("#jobnumber").val();
-    if ($("#email").val() === null) {
-      notyf.open({
-        type: "warning",
-        message: Lang.get("monthlyPRpageLang.noemail"),
-        duration: 3000, //miliseconds, use 0 for infinite duration
-        ripple: true,
-        dismissible: true,
-        position: {
-          x: "right",
-          y: "bottom",
-        },
-      });
-      document.getElementById("email").classList.add("is-invalid");
-      document.getElementById("email").classList.add("is-invalid");
-      document.getElementById("email").focus();
-      return false;
-    } else {
-      var email = $("#email option:selected").text();
-      console.log(email);
-    }
-
-    var count = 0;
-    for (let i = 0; i < sessionStorage.getItem("consumecount"); i++) {
-      if ($("#number" + i).text() !== null && $("#number" + i).text() !== "") {
-        number.push($("#number" + i).text());
-        consume.push($("#amount" + i).val());
-        number90.push($("#90isn" + i).text());
-        row.push(i.toString());
-      }
-    }
-
-    if (number.length === 0) {
-      notyf.open({
-        type: "warning",
-        message: Lang.get("monthlyPRpageLang.nodata"),
-        duration: 3000, //miliseconds, use 0 for infinite duration
-        ripple: true,
-        dismissible: true,
-        position: {
-          x: "right",
-          y: "bottom",
-        },
-      });
-      return false;
-    }
-
-    count = parseInt(number.length);
-    console.log(row);
-
-    $.ajax({
-      type: "POST",
-      url: "consumenewsubmit",
-      data: {
-        number: number,
-        number90: number90,
-        consume: consume,
-        email: email,
-        count: count,
-        row: row,
-      },
-      beforeSend: function () {
-        // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-        $("body").loadingModal({
-          text: "Loading...",
-          animation: "circle",
-        });
-      },
-      complete: function () {
-        $("body").loadingModal("hide");
-        $("body").loadingModal("destroy");
-      },
-      success: function (data) {
-        var mess =
-          Lang.get("monthlyPRpageLang.total") +
-          " : " +
-          count +
-          Lang.get("monthlyPRpageLang.record") +
-          " " +
-          Lang.get("monthlyPRpageLang.data") +
-          " ， " +
-          Lang.get("monthlyPRpageLang.success") +
-          " " +
-          Lang.get("monthlyPRpageLang.new") +
-          " : " +
-          data.record +
-          " " +
-          Lang.get("monthlyPRpageLang.record") +
-          " " +
-          Lang.get("monthlyPRpageLang.consume");
-
-        notyf.open({
-          type: "success",
-          message: mess,
-          duration: 3000, //miliseconds, use 0 for infinite duration
-          ripple: true,
-          dismissible: true,
-          position: {
-            x: "right",
-            y: "bottom",
-          },
-        });
-
-        var mess2 = Lang.get("monthlyPRpageLang.yellowrepeat");
-
-        setTimeout(
-          () =>
-            notyf.open({
-              type: "info",
-              message: mess2,
-              duration: 3000, //miliseconds, use 0 for infinite duration
-              ripple: true,
-              dismissible: true,
-              position: {
-                x: "right",
-                y: "bottom",
-              },
-            }),
-          1000
-        );
-
-        for (let i = 0; i < row.length; i++) {
-          var same = row.filter(function (v) {
-            return data.check.indexOf(v) > -1;
-          });
-          var diff = row.filter(function (v) {
-            return data.check.indexOf(v) == -1;
-          });
-        }
-        for (let i = 0; i < same.length; i++) {
-          $("#row" + same[i]).remove();
-          count = count - 1;
-        }
-        for (let i = 0; i < diff.length; i++) {
-          document.getElementById("row" + diff[i]).style.backgroundColor =
-            "yellow";
-        }
-      },
-      error: function (err) {
-        //transaction error
-        if (err.status === 421) {
-          alert(err.responseJSON.message);
-          return false;
-        } else {
-          alert(err.responseJSON.message);
-          return false;
-        }
-      },
-    });
-  });
-
-  $("#loadconsume").one("click", function (e) {
-    e.preventDefault();
-    var origin = parseInt(sessionStorage.getItem("consumecount"));
-
-    if (sessionStorage.getItem("consumecount") === null) {
-      var j = 0;
-    } else {
-      var j = origin;
-    }
-
-    // clean up previous input results
-    $(".is-invalid").removeClass("is-invalid");
-    $(".invalid-feedback").hide();
-
-    $("loadconsume").data("clicked", true);
-    $.ajax({
-      type: "POST",
-      url: "loadconsume",
-      beforeSend: function () {
-        // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
-        $("body").loadingModal({
-          text: "Loading...",
-          animation: "circle",
-        });
-      },
-      complete: function () {
-        $("body").loadingModal("hide");
-        $("body").loadingModal("destroy");
-      },
-      success: function (data) {
-        $("#loadconsume").remove();
-        alldatas = JSON.parse(JSON.stringify(data.datas));
-
-        if (alldatas.length === 0) {
-          notyf.open({
-            type: "warning",
-            message: Lang.get("monthlyPRpageLang.noload"),
-            duration: 3000, //miliseconds, use 0 for infinite duration
-            ripple: true,
-            dismissible: true,
-            position: {
-              x: "right",
-              y: "bottom",
-            },
-          });
-        } else {
-          notyf.open({
-            type: "success",
-            message: Lang.get("monthlyPRpageLang.loadsuccess"),
-            duration: 3000, //miliseconds, use 0 for infinite duration
-            ripple: true,
-            dismissible: true,
-            position: {
-              x: "right",
-              y: "bottom",
-            },
-          });
-        }
+        // clean up previous input results
+        $(".is-invalid").removeClass("is-invalid");
+        $(".invalid-feedback").hide();
 
         if (sessionStorage.getItem("consumecount") === null) {
-          sessionStorage.setItem("consumecount", alldatas.length);
+            var index = 0;
         } else {
-          var length =
-            parseInt(alldatas.length) +
-            parseInt(sessionStorage.getItem("consumecount"));
-          sessionStorage.setItem("consumecount", length);
+            var index = parseInt(sessionStorage.getItem("consumecount"));
         }
 
-        for (let i = 0; i < alldatas.length; i++) {
-          var consume = Number(alldatas[i].單耗);
+        var number = $("#number").val();
+        var number90 = $("#90isn").val();
 
-          document.getElementById("consumeadd").style.display = "block";
-          var tbl = document.getElementById("consumeaddtable");
-          var body = document.getElementById("consumeaddbody");
-          var row = document.createElement("tr");
-          row.setAttribute("id", "row" + j);
-
-          let rowdelete = document.createElement("td");
-          rowdelete.innerHTML = "<a id=" + "deleteBtn" + j + "></a>";
-
-          let rownumber = document.createElement("td");
-          rownumber.innerHTML =
-            "<span id=" + "number" + j + ">" + alldatas[i].料號 + "</span>";
-
-          let rowname = document.createElement("td");
-          rowname.innerHTML =
-            "<span id=" + "name" + j + ">" + alldatas[i].品名 + "</span>";
-
-          let rowformat = document.createElement("td");
-          rowformat.innerHTML =
-            "<span id=" + "format" + j + ">" + alldatas[i].規格 + "</span>";
-
-          let rowunit = document.createElement("td");
-          rowunit.innerHTML =
-            "<span id=" + "unit" + j + ">" + alldatas[i].單位 + "</span>";
-
-          let rowlt = document.createElement("td");
-          rowlt.innerHTML =
-            "<span id=" + "lt" + j + ">" + alldatas[i].LT + "</span>";
-
-          let rowamount = document.createElement("td");
-          rowamount.innerHTML =
-            '<input id="amount' +
-            j +
-            '"' +
-            'type = "number"' +
-            'class = "form-control form-control-lg"' +
-            'min = "0.0000000001"' +
-            'value = "' +
-            ScientificNotaionToFixed(consume) +
-            '"' +
-            'step = "0.0000000001"' +
-            'style="width: 200px"' +
-            '">';
-          let row90isn = document.createElement("td");
-          row90isn.innerHTML =
-            "<span id=" + "90isn" + j + ">" + alldatas[i].料號90 + "</span>";
-
-          row.appendChild(rowdelete);
-          row.appendChild(rownumber);
-          row.appendChild(rowname);
-          row.appendChild(rowformat);
-          row.appendChild(rowunit);
-          row.appendChild(rowlt);
-          row.appendChild(rowamount);
-          row.appendChild(row90isn);
-
-          body.appendChild(row);
-          tbl.appendChild(body);
-          appenSVg(j);
-
-          j = j + 1;
+        if (number === "") {
+            document.getElementById("numbererror1").style.display = "block";
+            document.getElementById("number").classList.add("is-invalid");
+            document.getElementById("number").focus();
+            return false;
+        } else if (number.length !== 12) {
+            document.getElementById("numbererror").style.display = "block";
+            document.getElementById("number").classList.add("is-invalid");
+            document.getElementById("number").focus();
+            return false;
+        } else if (number90 === "") {
+            document.getElementById("90error1").style.display = "block";
+            document.getElementById("90isn").classList.add("is-invalid");
+            document.getElementById("90isn").focus();
+            return false;
+        } else if (number90.length !== 12) {
+            document.getElementById("90error").style.display = "block";
+            document.getElementById("90isn").classList.add("is-invalid");
+            document.getElementById("90isn").focus();
+            return false;
         }
-      },
-      error: function (err) {},
+        $.ajax({
+            type: "POST",
+            url: "consumenew",
+            data: {
+                number: number,
+                number90: number90,
+            },
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
+                });
+            },
+            complete: function () {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+            },
+            success: function (data) {
+                sessionStorage.setItem("consumecount", index + 1);
+
+                notyf.success({
+                    message:
+                        Lang.get("monthlyPRpageLang.add") +
+                        Lang.get("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                document.getElementById("consumeadd").style.display = "block";
+                var tbl = document.getElementById("consumeaddtable");
+                var body = document.getElementById("consumeaddbody");
+                var row = document.createElement("tr");
+
+                row.setAttribute("id", "row" + index);
+
+                let rowdelete = document.createElement("td");
+                rowdelete.innerHTML = "<a id=" + "deleteBtn" + index + "></a>";
+
+                let row90isn = document.createElement("td");
+                row90isn.innerHTML =
+                    "<span id=" +
+                    "90isn" +
+                    index +
+                    ">" +
+                    data.number90 +
+                    "</span>";
+
+                let rownumber = document.createElement("td");
+                rownumber.innerHTML =
+                    "<span id=" +
+                    "number" +
+                    index +
+                    ">" +
+                    data.number +
+                    "</span>";
+
+                let rowname = document.createElement("td");
+                rowname.innerHTML =
+                    "<span id=" + "name" + index + ">" + data.name + "</span>";
+
+                let rowformat = document.createElement("td");
+                rowformat.innerHTML =
+                    "<span id=" +
+                    "format" +
+                    index +
+                    ">" +
+                    data.format +
+                    "</span>";
+
+                let rowunit = document.createElement("td");
+                rowunit.innerHTML =
+                    "<span id=" + "unit" + index + ">" + data.unit + "</span>";
+
+                let rowlt = document.createElement("td");
+                rowlt.innerHTML =
+                    "<span id=" + "lt" + index + ">" + data.lt + "</span>";
+
+                let rowamount = document.createElement("td");
+                rowamount.innerHTML =
+                    '<input id="amount' +
+                    index +
+                    '"' +
+                    'type = "number"' +
+                    'oninput="ScientificNotaionToFixed(this)"' +
+                    'class = "form-control form-control-lg"' +
+                    'min = "0.0000000001"' +
+                    'value = "0"' +
+                    'step = "0.0000000001"' +
+                    'style="width: 200px"' +
+                    '">';
+
+                row.appendChild(rowdelete);
+                row.appendChild(row90isn);
+                row.appendChild(rownumber);
+                row.appendChild(rowname);
+                row.appendChild(rowformat);
+                row.appendChild(rowunit);
+                row.appendChild(rowlt);
+                row.appendChild(rowamount);
+
+                body.appendChild(row);
+                tbl.appendChild(body);
+                appenSVg(index);
+            },
+            error: function (err) {
+                //料號不存在
+                if (err.status === 420) {
+                    document.getElementById("numbererror1").style.display =
+                        "block";
+                    document
+                        .getElementById("number")
+                        .classList.add("is-invalid");
+                    document.getElementById("number").value = "";
+                    document.getElementById("number").focus();
+                } else {
+                    alert(err.responseJSON.message);
+                    return false;
+                }
+            },
+        });
     });
-  }); // on load btn click
+
+    $("#consumeadd").on("submit", function (e) {
+        e.preventDefault();
+
+        // clean up previous input results
+        $(".is-invalid").removeClass("is-invalid");
+        $(".invalid-feedback").hide();
+
+        console.log("Rows count : " + sessionStorage.getItem("consumecount")); // test
+        console.log($("#amount0").val()); // test
+        
+        var number = [];
+        var consume = [];
+        var number90 = [];
+        var row = [];
+        // var jobnumber = $("#jobnumber").val();
+        if ($("#email").val() === null) {
+            notyf.open({
+                type: "warning",
+                message: Lang.get("monthlyPRpageLang.noemail"),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom",
+                },
+            });
+            document.getElementById("email").classList.add("is-invalid");
+            document.getElementById("email").classList.add("is-invalid");
+            document.getElementById("email").focus();
+            return false;
+        } else {
+            var email = $("#email option:selected").text();
+            console.log(email);
+        } // if else
+
+        var count = 0;
+        for (let i = 0; i < sessionStorage.getItem("consumecount"); i++) {
+            if (
+                $("#number" + i).text() !== null &&
+                $("#number" + i).text() !== ""
+            ) {
+                number.push(
+                    $("#number" + i)
+                        .text()
+                        .trim()
+                );
+                consume.push($("#amount" + i).val());
+                number90.push(
+                    $("#90isn" + i)
+                        .text()
+                        .trim()
+                );
+                row.push(i.toString());
+            } // if
+        } // for
+
+        if (number.length === 0) {
+            notyf.open({
+                type: "warning",
+                message: Lang.get("monthlyPRpageLang.nodata"),
+                duration: 3000, //miliseconds, use 0 for infinite duration
+                ripple: true,
+                dismissible: true,
+                position: {
+                    x: "right",
+                    y: "bottom",
+                },
+            });
+            return false;
+        } // if
+
+        count = parseInt(number.length);
+        console.log(row);
+
+        $.ajax({
+            type: "POST",
+            url: "consumenewsubmit",
+            data: {
+                number: number,
+                number90: number90,
+                consume: consume,
+                email: email,
+                count: count,
+                row: row,
+            },
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
+                });
+            },
+            complete: function () {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+            },
+            success: function (data) {
+                var mess =
+                    Lang.get("monthlyPRpageLang.total") +
+                    " : " +
+                    count +
+                    Lang.get("monthlyPRpageLang.record") +
+                    " " +
+                    Lang.get("monthlyPRpageLang.data") +
+                    " ， " +
+                    Lang.get("monthlyPRpageLang.success") +
+                    " " +
+                    Lang.get("monthlyPRpageLang.new") +
+                    " : " +
+                    data.record +
+                    " " +
+                    Lang.get("monthlyPRpageLang.record") +
+                    " " +
+                    Lang.get("monthlyPRpageLang.consume");
+
+                notyf.open({
+                    type: "success",
+                    message: mess,
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                var mess2 = Lang.get("monthlyPRpageLang.yellowrepeat");
+
+                setTimeout(
+                    () =>
+                        notyf.open({
+                            type: "info",
+                            message: mess2,
+                            duration: 3000, //miliseconds, use 0 for infinite duration
+                            ripple: true,
+                            dismissible: true,
+                            position: {
+                                x: "right",
+                                y: "bottom",
+                            },
+                        }),
+                    1000
+                );
+
+                for (let i = 0; i < row.length; i++) {
+                    var same = row.filter(function (v) {
+                        return data.check.indexOf(v) > -1;
+                    });
+                    var diff = row.filter(function (v) {
+                        return data.check.indexOf(v) == -1;
+                    });
+                }
+                for (let i = 0; i < same.length; i++) {
+                    $("#row" + same[i]).remove();
+                    count = count - 1;
+                }
+                for (let i = 0; i < diff.length; i++) {
+                    document.getElementById(
+                        "row" + diff[i]
+                    ).style.backgroundColor = "yellow";
+                }
+            },
+            error: function (err) {
+                //transaction error
+                if (err.status === 421) {
+                    alert(err.responseJSON.message);
+                    return false;
+                } else {
+                    alert(err.responseJSON.message);
+                    return false;
+                }
+            },
+        });
+    });
+
+    $("#loadconsume").one("click", function (e) {
+        e.preventDefault();
+        var origin = parseInt(sessionStorage.getItem("consumecount"));
+
+        if (sessionStorage.getItem("consumecount") === null) {
+            var j = 0;
+        } else {
+            var j = origin;
+        }
+
+        // clean up previous input results
+        $(".is-invalid").removeClass("is-invalid");
+        $(".invalid-feedback").hide();
+
+        $("loadconsume").data("clicked", true);
+        $.ajax({
+            type: "POST",
+            url: "loadconsume",
+            beforeSend: function () {
+                // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
+                });
+            },
+            complete: function () {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+            },
+            success: function (data) {
+                $("#loadconsume").remove();
+                alldatas = JSON.parse(JSON.stringify(data.datas));
+
+                if (alldatas.length === 0) {
+                    notyf.open({
+                        type: "warning",
+                        message: Lang.get("monthlyPRpageLang.noload"),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom",
+                        },
+                    });
+                } else {
+                    notyf.open({
+                        type: "success",
+                        message: Lang.get("monthlyPRpageLang.loadsuccess"),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom",
+                        },
+                    });
+                }
+
+                if (sessionStorage.getItem("consumecount") === null) {
+                    sessionStorage.setItem("consumecount", alldatas.length);
+                } else {
+                    var length =
+                        parseInt(alldatas.length) +
+                        parseInt(sessionStorage.getItem("consumecount"));
+                    sessionStorage.setItem("consumecount", length);
+                }
+
+                for (let i = 0; i < alldatas.length; i++) {
+                    var consume = Number(alldatas[i].單耗);
+
+                    document.getElementById("consumeadd").style.display =
+                        "block";
+                    var tbl = document.getElementById("consumeaddtable");
+                    var body = document.getElementById("consumeaddbody");
+                    var row = document.createElement("tr");
+                    row.setAttribute("id", "row" + j);
+
+                    let rowdelete = document.createElement("td");
+                    rowdelete.innerHTML = "<a id=" + "deleteBtn" + j + "></a>";
+
+                    let rownumber = document.createElement("td");
+                    rownumber.innerHTML =
+                        "<span id=" +
+                        "number" +
+                        j +
+                        ">" +
+                        alldatas[i].料號 +
+                        "</span>";
+
+                    let rowname = document.createElement("td");
+                    rowname.innerHTML =
+                        "<span id=" +
+                        "name" +
+                        j +
+                        ">" +
+                        alldatas[i].品名 +
+                        "</span>";
+
+                    let rowformat = document.createElement("td");
+                    rowformat.innerHTML =
+                        "<span id=" +
+                        "format" +
+                        j +
+                        ">" +
+                        alldatas[i].規格 +
+                        "</span>";
+
+                    let rowunit = document.createElement("td");
+                    rowunit.innerHTML =
+                        "<span id=" +
+                        "unit" +
+                        j +
+                        ">" +
+                        alldatas[i].單位 +
+                        "</span>";
+
+                    let rowlt = document.createElement("td");
+                    rowlt.innerHTML =
+                        "<span id=" +
+                        "lt" +
+                        j +
+                        ">" +
+                        alldatas[i].LT +
+                        "</span>";
+
+                    let rowamount = document.createElement("td");
+                    rowamount.innerHTML =
+                        '<input id="amount' +
+                        j +
+                        '"' +
+                        'type = "number"' +
+                        'class = "form-control form-control-lg"' +
+                        'min = "0.0000000001"' +
+                        'value = "' +
+                        ScientificNotaionToFixed(consume) +
+                        '"' +
+                        'step = "0.0000000001"' +
+                        'style="width: 200px"' +
+                        '">';
+                    let row90isn = document.createElement("td");
+                    row90isn.innerHTML =
+                        "<span id=" +
+                        "90isn" +
+                        j +
+                        ">" +
+                        alldatas[i].料號90 +
+                        "</span>";
+
+                    row.appendChild(rowdelete);
+                    row.appendChild(rownumber);
+                    row.appendChild(rowname);
+                    row.appendChild(rowformat);
+                    row.appendChild(rowunit);
+                    row.appendChild(rowlt);
+                    row.appendChild(rowamount);
+                    row.appendChild(row90isn);
+
+                    body.appendChild(row);
+                    tbl.appendChild(body);
+                    appenSVg(j);
+
+                    j = j + 1;
+                }
+            },
+            error: function (err) {},
+        });
+    }); // on load btn click
 });

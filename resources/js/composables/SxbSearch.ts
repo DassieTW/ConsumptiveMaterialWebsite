@@ -15,7 +15,7 @@ export default function useSxbSearch() {
     const getMats = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        let sxbclient = sessionStorage.getItem("sxbclient");
+        // let sxbclient = sessionStorage.getItem("sxbclient");
         let sxbisn = sessionStorage.getItem("sxbisn");
         let sxbsend = sessionStorage.getItem("sxbsend");
         let sxbsxb = sessionStorage.getItem("sxbsend");
@@ -29,7 +29,7 @@ export default function useSxbSearch() {
         try {
             let response = await axios.post('/api/month/sxb', {
                 DB: getDB.data,
-                sxbclient: sxbclient,
+                // sxbclient: sxbclient,
                 sxbisn: sxbisn,
                 sxbsend: sxbsend,
                 sxbsxb: sxbsxb,

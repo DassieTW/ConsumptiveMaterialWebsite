@@ -518,8 +518,9 @@ class InboundController extends Controller
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
 
         unset($sheetData[0]);
+
         return view('inbound.uploadinventory')->with(['data' => $sheetData]);
-    }
+    } // uploadinventory
 
     //上傳資料新增至資料庫
     public function insertuploadinventory(Request $request)

@@ -246,58 +246,14 @@ class MonthController extends Controller
         if ($name !== null && $format !== null) {
             return \Response::json([
                 'number' => $number,
-                'name' => $name, 'format' => $format, 'unit' => $unit, 'lt' => $lt, 'number90' => $number90/*'nowmps' => $nowmps, 'nowday' => $nowday,
-                            'nextmps' => $nextmps, 'nextday' => $nextday,*/
+                'name' => $name, 'format' => $format, 'unit' => $unit, 'lt' => $lt, 'number90' => $number90
             ]/* Status code here default is 200 ok*/);
         } // if
         //沒有料號
         else {
             return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
         } // else
-    }
-
-    //站位人力(新增)
-    // public function standnew(Request $request)
-    // {
-    //     if ($request->input('client') !== null && $request->input('number') !== null) {
-
-    //         if (strlen($request->input('number')) === 12) {
-    //             $client = $request->input('client');
-    //             $machine = $request->input('machine');
-    //             $production = $request->input('production');
-    //             $number = $request->input('number');
-
-    //             $name = DB::table('consumptive_material')->where('料號', $number)
-    //                 ->where('耗材歸屬', '站位')->where('月請購', '是')->value('品名');
-
-    //             $mpq = DB::table('consumptive_material')->where('料號', $number)
-    //                 ->where('耗材歸屬', '站位')->where('月請購', '是')->value('MPQ');
-
-    //             $unit = DB::table('consumptive_material')->where('料號', $number)
-    //                 ->where('耗材歸屬', '站位')->where('月請購', '是')->value('單位');
-
-    //             $lt = DB::table('consumptive_material')->where('料號', $number)
-    //                 ->where('耗材歸屬', '站位')->where('月請購', '是')->value('LT');
-
-    //             $lt = round($lt, 3);
-    //             if ($name !== null && $mpq !== null) {
-
-    //                 return \Response::json([
-    //                     'client' => $client, 'machine' => $machine, 'production' => $production, 'number' => $number,
-    //                     'name' => $name, 'unit' => $unit, 'lt' => $lt, 'mpq' => $mpq,
-    //                 ]/* Status code here default is 200 ok*/);
-    //             }
-    //             //沒有料號
-    //             else {
-    //                 return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
-    //             }
-    //         }
-    //         //料號長度不為12
-    //         else {
-    //             return \Response::json(['message' => 'isn not 12'], 421/* Status code here default is 200 ok*/);
-    //         }
-    //     }
-    // }
+    } // consumenew
 
 
     //提交料號單耗

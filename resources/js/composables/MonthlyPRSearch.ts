@@ -46,7 +46,7 @@ export default function useMonthlyPRSearch() {
         try {
             let response = await axios.post('/api/month/notmonth', {
                 DB: getDB.data,
-                notmonthclient: notmonthclient,
+                // notmonthclient: notmonthclient,
                 notmonthisn: notmonthisn,
             });
 
