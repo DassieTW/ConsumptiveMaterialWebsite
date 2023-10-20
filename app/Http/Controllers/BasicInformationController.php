@@ -258,12 +258,12 @@ class BasicInformationController extends Controller
             $arr = ['料號', '品名', '規格', '單價', '幣別', '單位', 'MPQ', 'MOQ', 'LT', '月請購', 'A級資材', '發料部門', '安全庫存'];
 
             //填寫表頭
-            for ($i = 0; $i < 14; $i++) {
+            for ($i = 0; $i < 13; $i++) {
                 $worksheet->setCellValueByColumnAndRow($i + 1, 1, $arr[$i]);
             }
 
             //填寫內容
-            for ($i = 0; $i < 14; $i++) {
+            for ($i = 0; $i < 13; $i++) {
                 $string  = $arr[$i];
                 for ($j = 0; $j < $downloadcount; $j++) {
                     $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
