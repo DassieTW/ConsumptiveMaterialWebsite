@@ -44,11 +44,11 @@ mix.webpackConfig({
     },
     plugins: [
         new WebpackShellPlugin({
-            onBuildStart: [
+            onBuildStart: [],
+            onBuildEnd: [
                 "php artisan lang:js --quiet",
                 "php artisan lang:js resources/js/vue-translations.js --no-lib --quiet",
             ],
-            onBuildEnd: [],
         }),
     ],
 });

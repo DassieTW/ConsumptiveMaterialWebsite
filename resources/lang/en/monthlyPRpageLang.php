@@ -58,7 +58,7 @@ return [
     'needper' => 'Percent of requisitions',
     'buyper' => 'Percent of needs',
     'sxbamounterr' => 'The amount of SXB can not be greater than the buying amount of this time',
-    'row' => 'In Row',
+    'row' => 'On Row',
     'total' => 'Total',
     'record' => 'record',
     'submit' => 'Submit',

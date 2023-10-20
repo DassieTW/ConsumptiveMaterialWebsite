@@ -106,7 +106,7 @@ return [
     'inputpickpeople' => 'Please input Pickup person job number',
     'inputbackpeople' => 'Please input Return person job number',
     'inputreceivepeople' => 'Please input Receiver job number',
-    'row' => 'In Row',
+    'row' => 'On Row',
     'total' => 'Total',
     'record' => 'record',
     'rfidinputreceivepeople' => 'Please click here to tap the Receiver\'s ID card',

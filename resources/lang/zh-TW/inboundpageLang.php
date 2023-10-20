@@ -64,7 +64,7 @@ return [
     'inboundtime' => '入庫時間',
     'mark' => '備註',
     'download' => '下載',
-    'addtodatabase' => '新增至資料庫',
+    'addtodatabase' => '加入庫存',
     'days' => '呆滯天數',
     'price' => '單價',
     'money' => '幣別',

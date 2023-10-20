@@ -18,4 +18,5 @@ return [
     'Unknown_errors' => 'Unknown Errors',
     'Invalid_file_format' => 'Unsupported File Extension',
     'Failed_to_move_uploaded_file' => 'Failed to Move Uploaded File',
+    'Content_errors' => 'There are errors within the file.',
 ];

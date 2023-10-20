@@ -90,7 +90,7 @@ return [
     'nocheck' => 'Please check the items to be submitted',
     'check' => 'Check',
     'submit' =>'Submit',
-    'addtodatabase' => 'Add to database',
+    'addtodatabase' => 'Add to Database',
     'yellowrepeat' => 'Yellow background means that the data already exist in the database',
     'data' => 'data',
     'nodata' => 'Nothing to submit',

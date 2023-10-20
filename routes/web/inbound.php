@@ -143,12 +143,6 @@ Route::get('/uploadinventory', function () {
     return view('inbound.upload');
 })->middleware('can:viewInbound,App\Models\Inbound');
 
-Route::post('/uploadinventory', [InboundController::class, 'uploadinventory'])->name('inbound.uploadinventory')->middleware('can:viewInbound,App\Models\Inbound');
-
-//上傳資料新增至資料庫
-Route::post('/insertuploadinventory', [InboundController::class, 'insertuploadinventory'])->name('inbound.insertuploadinventory')->middleware('can:viewInbound,App\Models\Inbound');
-
-
 //test
 Route::get('/testinbound', function () {
     $datas1 = DB::table('月請購_單耗')

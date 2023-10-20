@@ -83,7 +83,7 @@ return [
         'array' => 'The :attribute must not have more than :max items.',
     ],
     'mimes' => '档案格式错误，需为 :values 档',
-    'mimetypes' => '档案格式错误，需为 xls , xlsx 档',
+    'mimetypes' => '档案格式错误，需为 xls 或 xlsx 档',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
         'file' => 'The :attribute must be at least :min kilobytes.',

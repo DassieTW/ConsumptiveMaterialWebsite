@@ -138,7 +138,7 @@
           <!-- </div>breaks cols to a new line-->
           <div class="row w-100 justify-content-between align-items-center p-0 m-0">
             <div class="vtl-paging-change-div col col-auto p-0 m-0">
-              <span class="vtl-paging-count-label col col-auto pe-0">{{
+              <span class="vtl-paging-count-label col col-auto">{{
                   messages.pageSizeChangeLabel
               }}</span>
               <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
@@ -146,7 +146,8 @@
                   {{ pageOption.text }}
                 </option>
               </select>
-              <span class="vtl-paging-page-label col col-auto pe-0">{{
+              &nbsp;&nbsp;
+              <span class="vtl-paging-page-label col col-auto">{{
                   messages.gotoPageLabel
               }}</span>
               <select class="vtl-paging-page-dropdown col col-auto" v-model="setting.page">

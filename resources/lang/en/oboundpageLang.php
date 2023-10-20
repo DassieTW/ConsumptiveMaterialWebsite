@@ -37,7 +37,7 @@ return [
     'amountzero' => 'The amount of storage cannot be less than or equal to 0',
     'inlist' => 'Inbound list number',
     'nocheck' => 'Please tick the items you want to delete/update',
-    'row' => 'In Row',
+    'row' => 'On Row',
     'noclient' => 'Client does not exist',
     'total' => 'Total',
     'record' => 'record',

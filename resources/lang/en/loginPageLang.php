@@ -73,7 +73,7 @@ return [
     'total' => 'Total',
     'record' => 'Record',
     'usernamerepeat' => 'The account is repeated, please enter again.',
-    'row' => 'In Row',
+    'row' => 'On Row',
     'check' => 'Check',
     'nocheck' => 'Please tick the items you want to submit',
     'pre_page' => 'Prev.',

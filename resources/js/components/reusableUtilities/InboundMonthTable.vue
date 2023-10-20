@@ -148,6 +148,29 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.nowstock"
+                    ),
+                    field: "現有庫存",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="stock' +
+                            i +
+                            '" name="stock' +
+                            i +
+                            '" value="' +
+                            row.現有庫存 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.現有庫存 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.unit"
                     ),
                     field: "單位",
@@ -165,6 +188,52 @@ export default defineComponent({
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.單位 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.monthuse"
+                    ),
+                    field: "月使用量",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="monthuse' +
+                            i +
+                            '" name="monthuse' +
+                            i +
+                            '" value="' +
+                            row.月使用量 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.月使用量 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.stockmonth"
+                    ),
+                    field: "庫存使用月數",
+                    width: "14ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="monthstock' +
+                            i +
+                            '" name="monthstock' +
+                            i +
+                            '" value="' +
+                            row.庫存使用月數 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.庫存使用月數 +
                             "</div>"
                         );
                     },
@@ -215,29 +284,29 @@ export default defineComponent({
                         );
                     },
                 },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.gradea"
-                    ),
-                    field: "A級資材",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="gradea' +
-                            i +
-                            '" name="grades' +
-                            i +
-                            '" value="' +
-                            row.A級資材 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.A級資材 +
-                            "</div>"
-                        );
-                    },
-                },
+                // {
+                //     label: app.appContext.config.globalProperties.$t(
+                //         "basicInfoLang.gradea"
+                //     ),
+                //     field: "A級資材",
+                //     width: "10ch",
+                //     sortable: true,
+                //     display: function (row, i) {
+                //         return (
+                //             '<input type="hidden" id="gradea' +
+                //             i +
+                //             '" name="grades' +
+                //             i +
+                //             '" value="' +
+                //             row.A級資材 +
+                //             '">' +
+                //             '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                //             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                //             row.A級資材 +
+                //             "</div>"
+                //         );
+                //     },
+                // },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.month"
@@ -257,75 +326,6 @@ export default defineComponent({
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.月請購 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.nowstock"
-                    ),
-                    field: "現有庫存",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="stock' +
-                            i +
-                            '" name="stock' +
-                            i +
-                            '" value="' +
-                            row.現有庫存 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.現有庫存 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.monthuse"
-                    ),
-                    field: "月使用量",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="monthuse' +
-                            i +
-                            '" name="monthuse' +
-                            i +
-                            '" value="' +
-                            row.月使用量 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.月使用量 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.stockmonth"
-                    ),
-                    field: "庫存使用月數",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="monthstock' +
-                            i +
-                            '" name="monthstock' +
-                            i +
-                            '" value="' +
-                            row.庫存使用月數 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.庫存使用月數 +
                             "</div>"
                         );
                     },

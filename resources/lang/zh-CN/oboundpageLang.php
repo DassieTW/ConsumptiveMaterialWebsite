@@ -37,7 +37,7 @@ return [
     'amountzero' => '入库数量不可小于等于零',
     'inlist' => '入库单号',
     'nocheck' => '请勾选欲删除/更新项目',
-    'row' => '在列',
+    'row' => '在行',
     'noclient' => '客户不存在',
     'total' => '共',
     'record' => '笔',

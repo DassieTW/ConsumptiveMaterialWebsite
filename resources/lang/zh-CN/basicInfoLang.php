@@ -79,7 +79,7 @@ return [
     'records_per_page' => '每页笔数 : ',
     'go_to_page' => '现在页数 : ',
     'success' => '成功',
-    'row' => '在列',
+    'row' => '在行',
     'repeat' => '资料已存放在资料库内，请检查。 ',
     'uploaderror' => '不是基础信息批量上传的格式',
     'room' => '备品室',

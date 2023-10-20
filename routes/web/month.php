@@ -118,16 +118,6 @@ Route::get('/UpdateUnitPrice', function () {
 })->name('month.UpdateUnitPrice')->middleware('can:updateUnitPrice,App\Models\月請購_單耗');
 
 // 送簽請購單 匯率畫面
-Route::get('/PreSendPRReview', function () {
-    return abort(503); // test
-    return view('month.PreSendPRReview');
-})->name('month.PreSendPRReview');
-
-// 送簽請購單 列表
-Route::post('/SendPRReview', function () {
-    return view('month.SendPRReview');
-})->name('month.SendPRReview');
-
 Route::get('/SendPRReview', function () {
     return view('month.SendPRReview');
 })->name('month.SendPRReview');

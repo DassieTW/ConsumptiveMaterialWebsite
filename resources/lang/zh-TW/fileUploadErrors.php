@@ -18,4 +18,5 @@ return [
     'Unknown_errors' => '未知錯誤',
     'Invalid_file_format' => '請上傳.xlsx或.xls檔',
     'Failed_to_move_uploaded_file' => '無法移動檔案至伺服器資料夾',
+    'Content_errors' => '檔案內容有錯誤',
 ];

@@ -148,6 +148,29 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.stock"
+                    ),
+                    field: "庫存",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="stock' +
+                            i +
+                            '" name="stock' +
+                            i +
+                            '" value="' +
+                            row.現有庫存 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.現有庫存 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.unit"
                     ),
                     field: "單位",
@@ -165,6 +188,98 @@ export default defineComponent({
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.單位 +
+                            "</div>"
+                        );
+                    },
+                },
+                // {
+                //     label: app.appContext.config.globalProperties.$t(
+                //         "basicInfoLang.gradea"
+                //     ),
+                //     field: "A級資材",
+                //     width: "10ch",
+                //     sortable: true,
+                //     display: function (row, i) {
+                //         return (
+                //             '<input type="hidden" id="gradea' +
+                //             i +
+                //             '" name="gradea' +
+                //             i +
+                //             '" value="' +
+                //             row.A級資材 +
+                //             '">' +
+                //             '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                //             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                //             row.A級資材 +
+                //             "</div>"
+                //         );
+                //     },
+                // },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.loc"
+                    ),
+                    field: "儲位",
+                    width: "12ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="loc' +
+                            i +
+                            '" name="loc' +
+                            i +
+                            '" value="' +
+                            row.儲位 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.儲位 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.month"
+                    ),
+                    field: "月請購",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="month' +
+                            i +
+                            '" name="month' +
+                            i +
+                            '" value="' +
+                            row.月請購 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.月請購 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.safe"
+                    ),
+                    field: "安全庫存",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="safe' +
+                            i +
+                            '" name="safe' +
+                            i +
+                            '" value="' +
+                            row.安全庫存 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.安全庫存 +
                             "</div>"
                         );
                     },
@@ -211,121 +326,6 @@ export default defineComponent({
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.幣別 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.gradea"
-                    ),
-                    field: "A級資材",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="gradea' +
-                            i +
-                            '" name="gradea' +
-                            i +
-                            '" value="' +
-                            row.A級資材 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.A級資材 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.month"
-                    ),
-                    field: "月請購",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="month' +
-                            i +
-                            '" name="month' +
-                            i +
-                            '" value="' +
-                            row.月請購 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.月請購 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.stock"
-                    ),
-                    field: "庫存",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="stock' +
-                            i +
-                            '" name="stock' +
-                            i +
-                            '" value="' +
-                            row.現有庫存 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.現有庫存 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.safe"
-                    ),
-                    field: "安全庫存",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="safe' +
-                            i +
-                            '" name="safe' +
-                            i +
-                            '" value="' +
-                            row.安全庫存 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.安全庫存 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.loc"
-                    ),
-                    field: "儲位",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="loc' +
-                            i +
-                            '" name="loc' +
-                            i +
-                            '" value="' +
-                            row.儲位 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.儲位 +
                             "</div>"
                         );
                     },

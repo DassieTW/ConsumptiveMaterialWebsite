@@ -69,7 +69,7 @@ return [
     'name' => '姓名',
     'jobnum' => '工号',
     'amounterr1' => '实际拨出数量>现有库存',
-    'row' => '在列',
+    'row' => '在行',
     'checktrans' => '确认是否拨出',
     'changeok' => '已顺利更新',
     'searchpicklist' => '搜寻接收单',
