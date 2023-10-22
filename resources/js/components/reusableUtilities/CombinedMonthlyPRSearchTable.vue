@@ -299,6 +299,7 @@ export default defineComponent({
 
         let locsArray = Array();
         watch(mats, () => {
+            return;
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",

@@ -623,8 +623,7 @@
                                                 </ul>
                                             </li>
                                         @endcan
-
-                                        @can('viewCheckInvent', App\Models\Checking_inventory::class)
+                                        {{-- @can('viewCheckInvent', App\Models\Checking_inventory::class)
                                             <li
                                                 class="sidebar-item {{ isActiveRoute(['checking/', 'checking.index']) }}">
                                                 <a data-bs-target="#checking" data-bs-toggle="collapse"
@@ -641,7 +640,6 @@
                                                             d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
                                                     </svg>
                                                     <span class="align-middle">{!! __('templateWords.checkIvent') !!}</span>
-                                                    {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
                                                 </a>
                                                 <ul id="checking" class="sidebar-dropdown list-unstyled collapse"
                                                     data-bs-parent="#sidebar" style="">
@@ -666,7 +664,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                        @endcan
+                                        @endcan --}}
                                         <li class="sidebar-item {{ isActiveRoute(['member/', 'member.index']) }}">
                                             <a href="#auth" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed">

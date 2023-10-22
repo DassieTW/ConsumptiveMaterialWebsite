@@ -195,6 +195,9 @@ export default defineComponent({
                         y: "bottom",
                     },
                 });
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
                 return;
             } // if
 
@@ -225,6 +228,9 @@ export default defineComponent({
                         y: "bottom",
                     },
                 });
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
                 return;
             } // if
 
@@ -255,6 +261,9 @@ export default defineComponent({
                         y: "bottom",
                     },
                 });
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
                 return;
             } // if
 
