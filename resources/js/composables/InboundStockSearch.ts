@@ -115,8 +115,8 @@ export default function useInboundStockSearch() {
             });
 
             mats.value = JSON.stringify(response.data);
-            // console.log(JSON.stringify(response.data)); // test
-            resolve(); // Promise fulfilled
+            console.log(JSON.stringify(response.data)); // test
+            return true;
         } catch (e) {
             console.log(e); // test
             for (const key in e.response.data.errors) {
@@ -124,9 +124,8 @@ export default function useInboundStockSearch() {
             } // for each errors
             console.log(errors.value); // test
         } // try catch
-
-        reject(); // Promise rejected
-
+        
+        return false;
     }; // uploadToDB
 
     return {

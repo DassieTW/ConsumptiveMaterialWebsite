@@ -174,11 +174,12 @@ export default defineComponent({
         const data = reactive([]);
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
-        const onSendToDBClick = () => {
+        const onSendToDBClick = async () => {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
             });
+
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
@@ -277,18 +278,10 @@ export default defineComponent({
             } // for
 
             // console.log(input_data); // test
+            await uploadToDB(input_data);
 
-            async () => {
-                $("body").loadingModal({
-                    text: "Loading...",
-                    animation: "circle",
-                });
-                const result = await uploadToDB(input_data);
-                console.log(result); // test
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-            } // wait for upload
-
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
         } // onSendToDBClick
 
         let locsArray = Array();
