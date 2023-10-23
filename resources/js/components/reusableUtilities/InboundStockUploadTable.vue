@@ -183,7 +183,7 @@ export default defineComponent({
 
         const onSendToDBClick = async () => {
             await triggerModal();
-            // console.log("The modal should be triggered by now."); // test
+            console.log("The modal should be triggered by now."); // test
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
@@ -272,6 +272,7 @@ export default defineComponent({
                 return;
             } // if
 
+            let start = Date.now();
             for (let i = 0; i < input_data.length; i++) {
                 for (let j = 0; j < JSON.parse(mats.value).data.length; j++) {
                     if (input_data[i][0] === JSON.parse(mats.value).data[j].料號 && input_data[i][2] === JSON.parse(mats.value).data[j].儲位) {
@@ -280,6 +281,8 @@ export default defineComponent({
                     } // if
                 } // for
             } // for
+            let timeTaken = Date.now() - start;
+            console.log("Total time taken : " + timeTaken + " milliseconds");
 
             // console.log(input_data); // test
             await uploadToDB(input_data);
