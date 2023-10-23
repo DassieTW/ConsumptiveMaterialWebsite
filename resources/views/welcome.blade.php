@@ -403,9 +403,11 @@
         .navSvg path {
             stroke: rgb(58, 58, 58);
         }
+
         .navSvg polyline {
             stroke: rgb(58, 58, 58);
         }
+
         .navSvg line {
             stroke: rgb(58, 58, 58);
         }
@@ -414,49 +416,50 @@
             .navSvg path {
                 stroke: rgb(141, 141, 141);
             }
+
             .navSvg polyline {
                 stroke: rgb(141, 141, 141);
             }
+
             .navSvg line {
                 stroke: rgb(141, 141, 141);
             }
         }
     </style>
 
-    <title>{{ __('templateWords.websiteName')}}</title>
+    <title>{{ __('templateWords.websiteName') }}</title>
 </head>
 
 <body class="antialiased">
     <div
         class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-
         <div class="fixed top-0 right-0 px-3 pt-3">
             <div class="dropdown fixed top-0 right-0 px-3 pt-3">
                 @if (Auth::check())
-                <a class="nav-icon d-inline-block d-md-none" href="{{ route('member.index') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="feather feather-home align-middle navSvg">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                    </svg>
-                </a>
+                    <a class="nav-icon d-inline-block d-md-none" href="{{ route('member.index') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-home align-middle navSvg">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </a>
                 @else
-                <a class="nav-icon d-inline-block d-md-none" href="{{ url('/member/login') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="feather feather-log-in align-middle navSvg">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                        <polyline points="10 17 15 12 10 7"></polyline>
-                        <line x1="15" y1="12" x2="3" y2="12"></line>
-                    </svg>
-                </a>
+                    <a class="nav-icon d-inline-block d-md-none" href="{{ url('/member/login') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-log-in align-middle navSvg">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                            <polyline points="10 17 15 12 10 7"></polyline>
+                            <line x1="15" y1="12" x2="3" y2="12"></line>
+                        </svg>
+                    </a>
                 @endif
 
                 <a class="nav-icon dropdown-toggle d-inline-block d-md-none" href="#" data-bs-toggle="dropdown"
                     data-bs-auto-close="outside" data-bs-display="static" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="feather feather-book-open align-middle navSvg">
                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
@@ -464,17 +467,17 @@
                 </a>
 
                 @if (Auth::check())
-                <a href="{{ url('home') }}"
-                    class="text-lg text-gray-700 dark:text-white underline d-none d-sm-none d-md-block">{{ __('welcomePageLang.menu')}}</a>
+                    <a href="{{ url('home') }}"
+                        class="text-lg text-gray-700 dark:text-white underline d-none d-sm-none d-md-block">{{ __('welcomePageLang.menu') }}</a>
                 @else
-                <a href="{{ url('/member/login') }}"
-                    class="text-lg text-gray-700 dark:text-white underline d-none d-sm-none d-md-block">{{ __('welcomePageLang.login_btn')}}</a>
+                    <a href="{{ url('/member/login') }}"
+                        class="text-lg text-gray-700 dark:text-white underline d-none d-sm-none d-md-block">{{ __('welcomePageLang.login_btn') }}</a>
                 @endif
                 <br class="d-none d-md-block">
                 <a class="text-lg text-gray-700 dark:text-white underline dropdown-toggle align-middle d-none d-sm-none d-md-block"
                     href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static"
                     aria-expanded="false">
-                    {{ __('templateWords.language')}}</a>
+                    {{ __('templateWords.language') }}</a>
 
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
@@ -491,7 +494,7 @@
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="flex text-gray-900 dark:text-white justify-center pt-8 sm:pt-0">
                 <p style="font-size: 2rem;">
-                    {{ __('welcomePageLang.header')}}
+                    {{ __('welcomePageLang.header') }}
                 </p>
             </div>
 
@@ -529,7 +532,8 @@
                                     d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5zM3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/barcode') }}" class="underline text-gray-900 dark:text-black">條碼生成</a>
+                                <a href="{{ url('/barcode') }}"
+                                    class="underline text-gray-900 dark:text-black">條碼生成</a>
                             </div>
                         </div>
 
@@ -554,7 +558,8 @@
                                     d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/home') }}" class="underline text-gray-900 dark:text-black">耗材管理</a>
+                                <a href="{{ url('/home') }}"
+                                    class="underline text-gray-900 dark:text-black">耗材管理</a>
                             </div>
                         </div>
 
@@ -576,7 +581,8 @@
                                 <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/member') }}" class="underline text-gray-900 dark:text-black">用戶管理</a>
+                                <a href="{{ url('/member') }}"
+                                    class="underline text-gray-900 dark:text-black">用戶管理</a>
                             </div>
                         </div>
 

@@ -177,7 +177,7 @@ class LoginController extends Controller
             ])->first();
 
             if ($user !== null) {
-                if ($user->available_dblist == null) {
+                if ($user->available_dblist == null || $user->available_dblist == "" || count(explode("_", $user->available_dblist)) <= 1) {
                     $tempDateTime = new DateTime($user->last_login_time);
                     if ($tempDateTime > $latestLoginTime) {
                         $mostrecentDB = $site;
