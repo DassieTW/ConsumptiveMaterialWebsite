@@ -267,8 +267,6 @@ export default defineComponent({
                 return;
             } // if
 
-            // console.log(input_data); // data[row#][col#]  test
-
             for (let i = 0; i < input_data.length; i++) {
                 for (let j = 0; j < JSON.parse(mats.value).data.length; j++) {
                     if (input_data[i][0] === JSON.parse(mats.value).data[j].料號 && input_data[i][2] === JSON.parse(mats.value).data[j].儲位) {
@@ -285,9 +283,10 @@ export default defineComponent({
                     animation: "circle",
                 });
                 const result = await uploadToDB(input_data);
+                console.log(result); // test
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
-                // do something else here after firstFunction completes
+                return;
             } // wait for upload
         } // onSendToDBClick
 
