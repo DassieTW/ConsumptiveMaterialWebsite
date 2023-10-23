@@ -77,6 +77,7 @@ return [
 
     // debug notice
     'clear_cache' => '網站功能或顯示異常時，請先依照以下文件清理瀏覽器快取',
+    'first_thing_first' => '若畫面顯示缺漏，請先按下鍵盤 Shift + Ctrl + R',
     'edge' => 'Edge',
     'chrome' => 'Chrome',
 ];

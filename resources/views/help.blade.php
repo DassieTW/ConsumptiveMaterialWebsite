@@ -13,7 +13,10 @@
                 <strong>{!! __('templateWords.clear_cache') !!}</strong>
             </div>
             <div class="card-body w-100">
-                <div class="w-100" style="font-size: 2rem;"><strong>{!! __('templateWords.chrome') !!}</strong></div>
+                <div class="w-100" style="font-size: 1.5rem;"><strong>{!! __('templateWords.first_thing_first') !!}</strong></div>
+                <img class="w-100" src="{{ asset('/admin/img/photos/keybd.png') }}" alt="keyboard">
+                <div class="w-100" style="height: 2.5rem;"></div><!-- </div>breaks cols to a new line-->
+                <div class="w-100" style="font-size: 1.5rem;"><strong>{!! __('templateWords.chrome') !!}</strong></div>
                 <iframe class="w-100" src="{{ asset('/download/Chrome設定.pdf') }}" width="100%"
                     style="height:25cm; border: 3px solid black;">
                     This browser does not support embedded PDFs.
@@ -22,9 +25,9 @@
                         PDF</a>
                 </iframe>
 
-                <div class="w-100" style="height: 2cm;"></div><!-- </div>breaks cols to a new line-->
+                <div class="w-100" style="height: 2.5rem;"></div><!-- </div>breaks cols to a new line-->
 
-                <div class="w-100" style="font-size: 2rem;"><strong>{!! __('templateWords.edge') !!}</strong></div>
+                <div class="w-100" style="font-size: 1.5rem;"><strong>{!! __('templateWords.edge') !!}</strong></div>
                 <iframe class="w-100" src="{{ asset('/download/Edge設定.pdf') }}" width="100%"
                     style="height:25cm; border: 3px solid black;">
                     This browser does not support embedded PDFs.

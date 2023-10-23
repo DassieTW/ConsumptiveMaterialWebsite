@@ -277,17 +277,14 @@ export default defineComponent({
             } // for
 
             // console.log(input_data); // test
-            async () => {
-                $("body").loadingModal({
-                    text: "Loading...",
-                    animation: "circle",
-                });
-                const result = await uploadToDB(input_data);
-                console.log(result); // test
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // wait for upload
+
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            uploadToDB(input_data);
+
         } // onSendToDBClick
 
         let locsArray = Array();
@@ -330,6 +327,8 @@ export default defineComponent({
             // check if upload successful or not
             if (mats.value !== "" && JSON.parse(mats.value).record > 0) {
                 uploadToDBReady.value = false;
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
                 notyf.open({
                     type: "success",
                     message: app.appContext.config.globalProperties.$t("inboundpageLang.total") + " " + JSON.parse(mats.value).record + " " + app.appContext.config.globalProperties.$t("inboundpageLang.record") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.change") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.success"),

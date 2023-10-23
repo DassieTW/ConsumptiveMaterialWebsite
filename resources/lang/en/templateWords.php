@@ -78,6 +78,7 @@ return [
 
     // debug notice
     'clear_cache' => 'When Website Behaves Unexpectedly, Please Refer to The Following Docs.',
+    'first_thing_first' => 'If it seems like there\'s someting missing, try pressing Shift + Ctrl + R on your keyboard first.',
     'edge' => 'Edge',
     'chrome' => 'Chrome',
 ];
