@@ -176,12 +176,14 @@ export default defineComponent({
                 animation: "circle",
             });
 
-            return true;
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
         } // triggerModal
 
         const onSendToDBClick = async () => {
             await triggerModal();
-            console.log("The modal should be triggered by now."); // test
+            // console.log("The modal should be triggered by now."); // test
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
