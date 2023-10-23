@@ -102,16 +102,12 @@ export default defineComponent({
         const file = ref();
         let input_data;
 
-        const onUploadClick = () => {
+        const onUploadClick = async () => {
             isInvalid_DB.value = false;
 
             mats.value = "";
             if (file.value) {
-                $("body").loadingModal({
-                    text: "Loading...",
-                    animation: "circle",
-                });
-
+                await triggerModal();
                 // console.log(file.value); // test
                 if (file.value.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.value.type == "application/vnd.ms-excel" || file.value.type == "application/vnd.ms-excel" || file.value.type == ".csv") {
                     const reader = new FileReader();
@@ -174,11 +170,17 @@ export default defineComponent({
         const data = reactive([]);
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
-        const onSendToDBClick = async () => {
+        const triggerModal = async () => {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
             });
+
+            return true;
+        } // triggerModal
+
+        const onSendToDBClick = async () => {
+            await triggerModal();
 
             isInvalid_DB.value = false;
             let rowsCount = 0;
@@ -285,12 +287,9 @@ export default defineComponent({
         } // onSendToDBClick
 
         let locsArray = Array();
-        watch(queryResult, () => {
+        watch(queryResult, async () => {
             data.splice(0); // cleanup data from previous upload
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
+            await triggerModal();
 
             let allRowsObj = JSON.parse(queryResult.value);
             //console.log(allRowsObj.data.length);
