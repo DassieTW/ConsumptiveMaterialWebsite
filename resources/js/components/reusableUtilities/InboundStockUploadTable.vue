@@ -278,12 +278,16 @@ export default defineComponent({
 
             // console.log(input_data); // test
 
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-
-            uploadToDB(input_data);
+            async () => {
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
+                });
+                const result = await uploadToDB(input_data);
+                console.log(result); // test
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+            } // wait for upload
 
         } // onSendToDBClick
 

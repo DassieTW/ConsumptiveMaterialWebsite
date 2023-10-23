@@ -52,7 +52,7 @@ export default function useInboundStockSearch() {
         try {
             let response = await axios.post('/api/inbound/validateISN', {
                 DB: getDB.data,
-                isnArray: JSON.stringify(inputArray) 
+                isnArray: JSON.stringify(inputArray)
             });
 
             queryResult.value = JSON.stringify(response.data);
@@ -107,16 +107,16 @@ export default function useInboundStockSearch() {
     const uploadToDB = async (inputArray) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        console.log(inputArray); // test
+        // console.log(inputArray); // test
         try {
             let response = await axios.post('/api/inbound/uploadToDB', {
                 DB: getDB.data,
-                isnArray: JSON.stringify(inputArray) 
+                isnArray: JSON.stringify(inputArray)
             });
 
             mats.value = JSON.stringify(response.data);
             // console.log(JSON.stringify(response.data)); // test
-            return true;
+            resolve(); // Promise fulfilled
         } catch (e) {
             console.log(e); // test
             for (const key in e.response.data.errors) {
@@ -125,7 +125,8 @@ export default function useInboundStockSearch() {
             console.log(errors.value); // test
         } // try catch
 
-        return false;
+        reject(); // Promise rejected
+
     }; // uploadToDB
 
     return {
