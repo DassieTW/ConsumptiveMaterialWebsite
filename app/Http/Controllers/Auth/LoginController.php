@@ -98,7 +98,14 @@ class LoginController extends Controller
             Session::put('department', $department);
 
             $this->authenticated($request, \Auth::user()); // set the login db
-
+            if (\Auth::user()->preferred_lang == null) {
+                Session::put('locale', 'en');
+                \App::setLocale('en');
+            } else {
+                Session::put('locale', \Auth::user()->preferred_lang);
+                \App::setLocale(\Auth::user()->preferred_lang);
+            } // else
+            
             DB::beginTransaction();
 
             try {
@@ -224,7 +231,7 @@ class LoginController extends Controller
             $encrypt_site = \Crypt::encrypt($recentSite);
 
             DB::beginTransaction();
-            
+
             $affected = DB::table('login')
                 ->where('username', '=', $request->work_id)
                 ->update(['last_login_time' => $datetime]);
@@ -354,7 +361,7 @@ class LoginController extends Controller
             ->insert([
                 'username' => $job_id, 'password' => "123456", 'priority' => 4,
                 '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic,
-                'email' => $email, 'last_login_time' => $datetime, 'available_dblist' =>  str_replace(" Consumables management", "", $department)
+                'email' => $email, 'last_login_time' => $datetime, 'available_dblist' =>  str_replace(" Consumables management", "", $site)
             ]);
 
         DB::table('人員信息')

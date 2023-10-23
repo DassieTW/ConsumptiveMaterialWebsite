@@ -58,7 +58,7 @@ Route::get('/', function (Request $request) {
                 ->update(['available_dblist' =>  str_replace(" Consumables management", "", $decrypted_site)]);
         } // if
         // -------------------------------------------------------------------------
-        
+
         \Auth::login($user);
         $request->session()->regenerate();
         $usernameAuthed = \Auth::user()->username;
@@ -69,6 +69,14 @@ Route::get('/', function (Request $request) {
         Session::put('avatarChoice', $avatarChoice);
         Session::put('department', \Auth::user()->部門);
         session(['database' => $decrypted_site]);
+
+        if (\Auth::user()->preferred_lang == null) {
+            Session::put('locale', 'en');
+            \App::setLocale('en');
+        } else {
+            Session::put('locale', \Auth::user()->preferred_lang);
+            \App::setLocale(\Auth::user()->preferred_lang);
+        } // else
 
         return view('welcome');
     } // if
@@ -125,6 +133,13 @@ Route::get('/lang/{type}', function (Request $request, $type) {
     $session = $request->getSession();
     $session->put('locale', $type);
     \App::setLocale($type);
+
+    if (Auth::check()) {
+        // The user is logged in
+        \DB::table('login')->where('username', Auth::user()->username)
+            ->update(['preferred_lang' => $type]);
+    } // if
+
     return Redirect::back();
 })->withoutMiddleware('auth');
 

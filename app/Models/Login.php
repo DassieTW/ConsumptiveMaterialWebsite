@@ -35,7 +35,8 @@ class Login extends Authenticatable
         'email',
         'last_login_time',
         'update_priority_time',
-        'available_dblist'
+        'available_dblist',
+        'preferred_lang',
     ];
 
     /**
