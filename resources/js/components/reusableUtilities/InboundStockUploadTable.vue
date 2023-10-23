@@ -280,6 +280,10 @@ export default defineComponent({
 
             // console.log(input_data); // test
             async () => {
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
+                });
                 const result = await uploadToDB(input_data);
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
