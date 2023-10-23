@@ -116,7 +116,9 @@ export default function useInboundStockSearch() {
 
             mats.value = JSON.stringify(response.data);
             console.log(JSON.stringify(response.data)); // test
-            return true;
+            return new Promise((resolve, reject) => {
+                resolve(true);
+            });
         } catch (e) {
             console.log(e); // test
             for (const key in e.response.data.errors) {
@@ -124,8 +126,10 @@ export default function useInboundStockSearch() {
             } // for each errors
             console.log(errors.value); // test
         } // try catch
-        
-        return false;
+
+        return new Promise((resolve, reject) => {
+            resolve(false);
+        });
     }; // uploadToDB
 
     return {
