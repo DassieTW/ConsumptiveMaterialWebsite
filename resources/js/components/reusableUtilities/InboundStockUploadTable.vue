@@ -279,9 +279,12 @@ export default defineComponent({
             } // for
 
             // console.log(input_data); // test
-            uploadToDB(input_data);
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
+            async () => {
+                const result = await uploadToDB(input_data);
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                // do something else here after firstFunction completes
+            } // wait for upload
         } // onSendToDBClick
 
         let locsArray = Array();
