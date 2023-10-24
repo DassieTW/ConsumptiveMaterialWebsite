@@ -92,7 +92,7 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, queryResult, locations, validateISN, getLocs, getExistingStock, uploadToDB } = useInboundStockSearch(); // axios get the mats data
+        const { mats, queryResult, locations, validateISN, getLocs, uploadToDB } = useInboundStockSearch(); // axios get the mats data
         onBeforeMount(getLocs);
 
         let isInvalid = ref(false); // validation
@@ -136,7 +136,6 @@ export default defineComponent({
                             } // for
 
                             validateISN(tempArr);
-                            getExistingStock(input_data);
                         } // else
                     };
 
@@ -273,19 +272,9 @@ export default defineComponent({
             } // if
 
             let start = Date.now();
-            for (let i = 0; i < input_data.length; i++) {
-                for (let j = 0; j < JSON.parse(mats.value).data.length; j++) {
-                    if (input_data[i][0] === JSON.parse(mats.value).data[j].料號 && input_data[i][2] === JSON.parse(mats.value).data[j].儲位) {
-                        input_data[i][1] = input_data[i][1] + parseInt(JSON.parse(mats.value).data[j].現有庫存);
-                        break;
-                    } // if
-                } // for
-            } // for
-            let timeTaken = Date.now() - start;
-            console.log("Total time taken : " + timeTaken + " milliseconds");
-
-            // console.log(input_data); // test
             await uploadToDB(input_data);
+            let timeTaken = Date.now() - start;
+            console.log("Total time taken : " + timeTaken + " milliseconds");            
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");

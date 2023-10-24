@@ -64,7 +64,7 @@ return [
     'inboundtime' => '入库时间',
     'mark' => '备注',
     'download' => '下载',
-    'addtodatabase' => '加入库存',
+    'addtodatabase' => '更新库存',
     'days' => '呆滞天数',
     'price' => '单价',
     'money' => '币别',

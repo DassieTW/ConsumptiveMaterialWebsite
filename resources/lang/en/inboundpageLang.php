@@ -64,7 +64,7 @@ return [
     'inboundtime' => 'Inbound time',
     'mark' => 'Remarks',
     'download' => 'Download',
-    'addtodatabase' => 'Add to Inventory',
+    'addtodatabase' => 'Update Inventory',
     'days' => 'Passive days',
     'price' => 'Unit price' ,
     'money' => 'Currency',

@@ -85,25 +85,6 @@ export default function useInboundStockSearch() {
         } // try catch
     } // getLocs
 
-    const getExistingStock = async (inputArray) => {
-        errors.value = "";
-        let getDB = await axios.post('/getCurrentDB');
-
-        try {
-            let response = await axios.post('/api/inbound/getExistingStock', {
-                DB: getDB.data,
-            });
-
-            mats.value = JSON.stringify(response.data);
-        } catch (e) {
-            console.log(e); // test
-            for (const key in e.response.data.errors) {
-                errors.value += e.response.data.errors[key][0] + '  ';
-            } // for each errors
-            console.log(errors.value); // test
-        } // try catch
-    } // getExistingStock
-
     const uploadToDB = async (inputArray) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
@@ -139,7 +120,6 @@ export default function useInboundStockSearch() {
         getMats,
         validateISN,
         getLocs,
-        getExistingStock,
         uploadToDB,
     } // return
 } // useInboundStockSearch
