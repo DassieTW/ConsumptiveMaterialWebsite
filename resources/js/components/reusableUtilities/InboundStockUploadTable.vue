@@ -274,7 +274,7 @@ export default defineComponent({
             let start = Date.now();
             await uploadToDB(input_data);
             let timeTaken = Date.now() - start;
-            console.log("Total time taken : " + timeTaken + " milliseconds");            
+            console.log("Total time taken : " + timeTaken + " milliseconds");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
@@ -303,17 +303,12 @@ export default defineComponent({
                 locsArray.push(element.儲存位置);
             });
 
+            uploadToDBReady.value = true;
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
 
         watch(mats, () => {
-            // console.log(mats.value); // test
-            // check if existing stock query is complete or not
-            if (mats.value !== "" && JSON.parse(mats.value).data != undefined && JSON.parse(mats.value).data != null && JSON.parse(mats.value).data != "") {
-                uploadToDBReady.value = true;
-            } // if
-
             // check if upload successful or not
             if (mats.value !== "" && JSON.parse(mats.value).record > 0) {
                 uploadToDBReady.value = false;

@@ -191,7 +191,6 @@ $(function () {
           $("body").loadingModal("hide");
           $("body").loadingModal("destroy");
         },
-
         success: function (blob, status, xhr) {
           console.log(status); // test
           // check for a filename
