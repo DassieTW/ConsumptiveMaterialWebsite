@@ -35,50 +35,23 @@ class InboundController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
-    {
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
-        \DB::purge(env("DB_CONNECTION"));
-        $dbName = \DB::connection()->getDatabaseName(); // test
-
-        $inputArray = json_decode($request->isnArray);
-        $combinedValueStr = "";
-        foreach ($inputArray as $singleIsn) {
-            if ($combinedValueStr == "") {
-                $combinedValueStr = $combinedValueStr . "('" . $singleIsn . "')";
-            } else {
-                $combinedValueStr = $combinedValueStr . ", ('" . $singleIsn . "')";
-            } // else
-        } // foreach
-
-        $existIsn = ("Select input_array.料號 From (values " . $combinedValueStr . ") input_array(料號)");
-
-        $allResult = \DB::table('consumptive_material')
-            ->rightJoinSub($existIsn, 'input_array', function ($join) {
-                $join->on('consumptive_material.料號', '=', 'input_array.料號');
-            })->get();
-
-        return \Response::json(['data' => $allResult, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
-    } // show
-
-    public function showLocs(Request $request)
-    {
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
-        \DB::purge(env("DB_CONNECTION"));
-        $dbName = \DB::connection()->getDatabaseName(); // test
-
-        $allResult = \DB::table('儲位')->select("儲存位置")->get();
-
-        return \Response::json(['data' => $allResult, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
-    } // show
-
     public function showStocks(Request $request)
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
 
-        $allResult = \DB::table('inventory')->select(["料號", "現有庫存", "儲位"])->get();
+        $inputArray_isn = json_decode($request->isnArray);
+        $inputArray_loc = json_decode($request->locArray);
+
+        $query = \DB::table('inventory');
+        for ($i = 0; $i < count($inputArray_isn); $i++) {
+            $query->orWhere([
+                ['料號', '=', $inputArray_isn[$i]],
+                ['儲位', '=', $inputArray_loc[$i]]
+            ]);
+        } // for
+        $allResult = $query->get();
 
         return \Response::json(['data' => $allResult, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showStocks
@@ -97,7 +70,6 @@ class InboundController extends Controller
         $dbName = \DB::connection()->getDatabaseName(); // test
 
         $Alldata = json_decode($request->input('isnArray'));
-        // dd($Alldata); //test
         try {
             $res_arr_values = array();
             for ($i = 1; $i < count($Alldata); $i++) {

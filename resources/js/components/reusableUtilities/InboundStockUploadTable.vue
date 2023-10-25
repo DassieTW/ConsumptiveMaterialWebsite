@@ -80,6 +80,7 @@ import {
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
+import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
 export default defineComponent({
     name: "App",
     components: { TableLite },
@@ -92,7 +93,9 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, queryResult, locations, validateISN, getLocs, uploadToDB } = useInboundStockSearch(); // axios get the mats data
+        const { mats, uploadToDB, getExistingStock } = useInboundStockSearch();
+        const { queryResult, locations, validateISN, getLocs } = useCommonlyUsedFunctions();
+
         onBeforeMount(getLocs);
 
         let isInvalid = ref(false); // validation
@@ -102,9 +105,21 @@ export default defineComponent({
         const file = ref();
         let input_data;
 
+        const findDuplicates = (arr) => {
+            let sorted_arr = arr.slice().sort(); // You can define the comparing function here. 
+            // JS by default uses a crappy string compare.
+            // (we use slice to clone the array so the original array won't be modified)
+            let results = [];
+            for (let i = 0; i < sorted_arr.length - 1; i++) {
+                if (sorted_arr[i + 1] == sorted_arr[i]) {
+                    results.push(sorted_arr[i]);
+                } // if
+            } // for
+            return results;
+        } // findDuplicates
+
         const onUploadClick = async () => {
             isInvalid_DB.value = false;
-
             mats.value = "";
             if (file.value) {
                 await triggerModal();
@@ -121,7 +136,7 @@ export default defineComponent({
                         /* Convert array of arrays */
                         input_data = XLSX.utils.sheet_to_json(ws, { header: 1 });
                         // console.log(input_data); // data[row#][col#]  test
-                        if (input_data[0][0] === undefined || input_data[0][1] === undefined || input_data[0][2] === undefined) {
+                        if (input_data === undefined || input_data[0] === undefined || input_data[0][0] === undefined || input_data[0][1] === undefined || input_data[0][2] === undefined) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else if (input_data[0][0].trim() !== "料號" || input_data[0][1].trim() !== "數量" || input_data[0][2].trim() !== "儲位") {
@@ -130,17 +145,21 @@ export default defineComponent({
                         } else {
                             let tempArr = Array();
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
+                                if (input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
                                     tempArr.push(input_data[i][0].trim());
                                 } // if
+                                else {
+                                    input_data.splice(i, 1); // remove the empty row
+                                    i = i - 1;
+                                } // else
                             } // for
 
+                            // console.log(tempArr); // test
                             validateISN(tempArr);
                         } // else
                     };
 
                     reader.readAsBinaryString(file.value);
-
                 } // if
                 else {
                     isInvalid.value = true;
@@ -160,6 +179,8 @@ export default defineComponent({
 
         const onInputChange = (event) => {
             isInvalid.value = false;
+            data.splice(0); // cleanup data from previous upload
+            queryResult.value = "";
             file.value = event.target.files ? event.target.files[0] : null;
         } // onInputChange
 
@@ -205,6 +226,8 @@ export default defineComponent({
                 return;
             } // if
 
+            // ----------------------------------------------
+            // validate if all the isn exist
             for (let j = 0; j < data.length && hasError == false; j++) {
                 if (data[j].月請購 === "" || data[j].月請購 === null || data[j].月請購.toLowerCase() === "null") {
                     hasError = true;
@@ -238,6 +261,8 @@ export default defineComponent({
                 return;
             } // if
 
+            // ----------------------------------------------
+            // validate if all the loc exist
             for (let j = 0; j < data.length && hasError == false; j++) {
                 if (!locsArray.includes(data[j].儲位)) {
                     hasError = true;
@@ -271,49 +296,97 @@ export default defineComponent({
                 return;
             } // if
 
+            // ----------------------------------------------
+            // validate if there's duplicate values in excel
+            let duplicatedArray = Array();
+            for (let i = 1; i < input_data.length; i++) {
+                if (input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
+                    duplicatedArray.push(input_data[i][0].trim() + "_" + input_data[i][2].trim());
+                } // if
+            } // for
+
+            let findDuplicatesResult = findDuplicates(duplicatedArray);
+            // console.log(findDuplicatesResult); // test
+            if (findDuplicatesResult.length > 0) {
+                isInvalid_DB.value = true;
+                validation_err_msg.value =
+                    app.appContext.config.globalProperties.$t("inboundpageLang.repeated_isn_loc_pair") +
+                    " : " + findDuplicatesResult[0].split("_")[0] +
+                    " (" + findDuplicatesResult[0].split("_")[1] + ")";
+
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                return;
+            } // if
+            // ----------------------------------------------
+
+            // get existing stock for sum up
+            let tempArr_isn = Array();
+            let tempArr_loc = Array();
+            for (let i = 1; i < input_data.length; i++) {
+                if (input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
+                    tempArr_isn.push(input_data[i][0].trim());
+                    tempArr_loc.push(input_data[i][2].trim());
+                } // if
+            } // for
+
             let start = Date.now();
-            await uploadToDB(input_data);
+            let result = await getExistingStock(tempArr_isn, tempArr_loc); // get the existing stock
+            if (result === "success") {
+                // console.log(JSON.parse(mats.value).data); // test
+                for (let i = 1; i < input_data.length; i++) {
+                    tempArr_isn.push();
+                    tempArr_loc.push(input_data[i][2].trim());
+                    let foundObj = JSON.parse(mats.value).data.find(
+                        (o) => {
+                            return (o.料號 === input_data[i][0].trim() && o.儲位 === input_data[i][2].trim());
+                        });
+
+                    if (foundObj !== undefined) {
+                        input_data[i][1] = parseInt(input_data[i][1]) + parseInt(foundObj.現有庫存);
+                    } // if
+                } // for
+            } // if
+            else {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
 
+            // actually updating database now
+            start = Date.now();
+            result = await uploadToDB(input_data);
+            timeTaken = Date.now() - start;
+            console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
-        } // onSendToDBClick
 
-        let locsArray = Array();
-        watch(queryResult, async () => {
-            data.splice(0); // cleanup data from previous upload
-            await triggerModal();
-
-            let allRowsObj = JSON.parse(queryResult.value);
-            //console.log(allRowsObj.data.length);
-            for (let i = 0; i < allRowsObj.data.length; i++) {
-                allRowsObj.data[i].數量 = parseInt(
-                    input_data[i + 1][1]
-                );
-
-                // console.log(input_data[i + 1][2]); // test
-                allRowsObj.data[i].儲位 = input_data[i + 1][2].trim();
-                allRowsObj.data[i].excel_row_num = i + 1;
-
-                data.push(allRowsObj.data[i]);
-            } // for
-
-            JSON.parse(locations.value).data.forEach(element => {
-                locsArray.push(element.儲存位置);
-            });
-
-            uploadToDBReady.value = true;
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
-        }); // watch for data change
-
-        watch(mats, () => {
-            // check if upload successful or not
-            if (mats.value !== "" && JSON.parse(mats.value).record > 0) {
+            if (result === "success") {
                 uploadToDBReady.value = false;
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
                 notyf.open({
                     type: "success",
                     message: app.appContext.config.globalProperties.$t("inboundpageLang.total") + " " + JSON.parse(mats.value).record + " " + app.appContext.config.globalProperties.$t("inboundpageLang.record") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.change") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.success"),
@@ -326,6 +399,51 @@ export default defineComponent({
                     },
                 });
             } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+        } // onSendToDBClick
+
+        let locsArray = Array();
+        watch(queryResult, async () => {
+            await triggerModal();
+            if (queryResult.value == "") {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                return;
+            } // if
+
+            let allRowsObj = JSON.parse(queryResult.value);
+            // console.log(allRowsObj.data.length);
+            for (let i = 0; i < allRowsObj.data.length; i++) {
+                allRowsObj.data[i].數量 = parseInt(
+                    input_data[i + 1][1]
+                );
+
+                // console.log(input_data[i + 1][2]); // test
+                allRowsObj.data[i].儲位 = input_data[i + 1][2].toString().trim();
+                allRowsObj.data[i].excel_row_num = i + 1;
+
+                data.push(allRowsObj.data[i]);
+            } // for
+
+            JSON.parse(locations.value).data.forEach(element => {
+                locsArray.push(element.儲存位置);
+            });
+
+            uploadToDBReady.value = true;
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
         }); // watch for data change
 
         // Table config

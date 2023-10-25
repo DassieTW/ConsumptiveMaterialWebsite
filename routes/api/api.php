@@ -31,3 +31,6 @@ Route::post('/news', function (Request $request) {
     // dd($datas); // test
     return \Response::json(['datas' => $datas], 200/* Status code here default is 200 ok*/);
 });
+
+Route::post('/validateISN', 'api\CommonlyUsedController@showISN');
+Route::post('/getLocs', 'api\CommonlyUsedController@showLocs');

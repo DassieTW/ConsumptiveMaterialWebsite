@@ -211,7 +211,5 @@ Route::post('/searchstock', function (Request $request) {
     return \Response::json(['datas' => $datas, "dbName" => $dbName, "month" => $inboundmonth], 200/* Status code here default is 200 ok*/);
 });
 
-Route::post('/validateISN', 'api\InboundController@show');
-Route::post('/getLocs', 'api\InboundController@showLocs');
 Route::post('/getExistingStock', 'api\InboundController@showStocks');
 Route::post('/uploadToDB', 'api\InboundController@update');
