@@ -9,8 +9,6 @@ import {
 
 export default function useInboundStockSearch() {
     const mats = ref("");
-    const queryResult = ref("");
-    const locations = ref("");
     const errors = ref("");
     const router = useRouter();
 
@@ -43,47 +41,29 @@ export default function useInboundStockSearch() {
             } // for each errors
             console.log(errors.value); // test
         } // try catch
-    } // get mats
+    } // getMats
 
-    const validateISN = async (inputArray) => {
+    const getExistingStock = async (isnArray, locArray) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
 
         try {
-            let response = await axios.post('/api/inbound/validateISN', {
+            let response = await axios.post('/api/inbound/getExistingStock', {
                 DB: getDB.data,
-                isnArray: JSON.stringify(inputArray)
+                isnArray: JSON.stringify(isnArray),
+                locArray: JSON.stringify(locArray),
             });
 
-            queryResult.value = JSON.stringify(response.data);
-        } catch (e) {
-            console.log(e); // test
-            for (const key in e.response.data.errors) {
-                errors.value += e.response.data.errors[key][0] + '  ';
-            } // for each errors
-            console.log(errors.value); // test
-        } // try catch
-    } // validateISN
-
-    const getLocs = async () => {
-        errors.value = "";
-        let getDB = await axios.post('/getCurrentDB');
-
-        try {
-            let response = await axios.post('/api/inbound/getLocs', {
-                DB: getDB.data
+            mats.value = JSON.stringify(response.data);
+            // console.log(JSON.stringify(response.data)); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
             });
-
-            locations.value = JSON.stringify(response.data);
-            // console.log(locations.value); // test
         } catch (e) {
             console.log(e); // test
-            for (const key in e.response.data.errors) {
-                errors.value += e.response.data.errors[key][0] + '  ';
-            } // for each errors
-            console.log(errors.value); // test
+            return e;
         } // try catch
-    } // getLocs
+    } // getExistingStock
 
     const uploadToDB = async (inputArray) => {
         errors.value = "";
@@ -98,28 +78,18 @@ export default function useInboundStockSearch() {
             mats.value = JSON.stringify(response.data);
             console.log(JSON.stringify(response.data)); // test
             return new Promise((resolve, reject) => {
-                resolve(true);
+                resolve("success");
             });
         } catch (e) {
             console.log(e); // test
-            for (const key in e.response.data.errors) {
-                errors.value += e.response.data.errors[key][0] + '  ';
-            } // for each errors
-            console.log(errors.value); // test
+            return e;
         } // try catch
-
-        return new Promise((resolve, reject) => {
-            resolve(false);
-        });
     }; // uploadToDB
 
     return {
         mats,
-        queryResult,
-        locations,
         getMats,
-        validateISN,
-        getLocs,
+        getExistingStock,
         uploadToDB,
     } // return
 } // useInboundStockSearch
