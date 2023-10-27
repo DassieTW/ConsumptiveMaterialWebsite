@@ -131,7 +131,7 @@ return [
     'timepart' => 'Time period',
     'stand' => 'Station Manpower',
     'nopeople' => 'Please enter Signatory\'s Staff ID',
-    'noemail' => 'Please enter Signatory\'s email',
+    'noemail' => 'Please enter Signatory',
     'data' => 'data',
     'yellowrepeat' => 'Yellow background means that the data already exist in the database',
     'writesrm' => 'Write SRM number',

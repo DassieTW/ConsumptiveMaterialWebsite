@@ -22,27 +22,14 @@ Route::post('/sxb', 'api\MonthlyPRController@showSXB');
 
 Route::post('/notmonth', 'api\MonthlyPRController@showNonMonthly');
 
+Route::post('/rejectedUC', 'api\MonthlyPRController@showRejectedUnitConsumption');
+Route::post('/checkersMail', 'api\MonthlyPRController@showCheckersEmail');
+Route::post('/send_UC_to_DB', 'api\MonthlyPRController@update_UnitConsumption');
+
 Route::post('/combined_month', function (Request $request) {
     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
     \DB::purge(env("DB_CONNECTION"));
     $dbName = DB::connection()->getDatabaseName(); // test
-
-    // $money = $request->input('money');
-    // $send = $request->input('send');
-    // $array = array();
-    // $array1 = array();
-    // $usd = $request->input('usd');
-    // $jpy = $request->input('jpy');
-    // $twd = $request->input('twd');
-    // $rmb = $request->input('rmb');
-    // $vnd = $request->input('vnd');
-    // $idr = $request->input('idr');
-
-    // if ($money === null) {
-    //     return back()->withErrors([
-    //         'money' => trans('validation.required'),
-    //     ]);
-    // } // if
 
     $datas = DB::table('月請購_單耗')
         ->join('MPS', function ($join) {

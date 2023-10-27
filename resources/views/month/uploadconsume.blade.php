@@ -1,36 +1,3 @@
-@foreach ($data as $row)
-    <?php
-    if (strlen(trim($row[0])) !== 0) {
-        $name = DB::table('consumptive_material')
-            ->where('料號', trim($row[1]))
-            ->value('品名');
-        $format = DB::table('consumptive_material')
-            ->where('料號', trim($row[1]))
-            ->value('規格');
-        $unit = DB::table('consumptive_material')
-            ->where('料號', trim($row[1]))
-            ->value('單位');
-        $lt = DB::table('consumptive_material')
-            ->where('料號', trim($row[1]))
-            ->value('LT');
-        $month = DB::table('consumptive_material')
-            ->where('料號', trim($row[1]))
-            ->value('月請購');
-        // $belong = DB::table('consumptive_material')
-        //     ->where('料號', trim($row[1]))
-        //     ->value('耗材歸屬');
-        $error = $loop->index + 1;
-        //判斷是否有料號
-        if ($name === null || $format === null || $month === '否') {
-            $mess = trans('monthlyPRpageLang.noisn') . ' ' . trans('monthlyPRpageLang.row') . ' : ' . $error . ' ' . $row[1];
-            echo "<script LANGUAGE='JavaScript'>
-                                                                                            window.alert('$mess');
-                                                                                            window.location.href='uploadconsume';
-                                                                                            </script>";
-        } // if
-    }
-    ?>
-@endforeach
 @extends('layouts.adminTemplate')
 @section('css')
 @endsection
@@ -54,7 +21,7 @@
                         <h3>{!! __('monthlyPRpageLang.isnConsumeAdd') !!}</h3>
                     </div>
                     <div class="card-body">
-
+                        
                         <form id="uploadconsume" method="POST">
                             @csrf
                             <div class="table-responsive">

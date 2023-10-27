@@ -11,7 +11,7 @@
                     <div class="input-group w-75">
                         <label class="input-group-text">1</label>
                         <select class="form-select form-select-lg text-center" :class="{ 'is-invalid': isInvalid }"
-                            v-model="selectedValue1" id="money" name="money">
+                            v-model="selectedValue1" id="currency1" name="currency1">
                             <option selected>RMB</option>
                             <option>USD</option>
                             <option>JPY</option>
@@ -30,7 +30,7 @@
                             <strong>{{ validation_err_msg }}</strong>
                         </span>
                         <select class="col col-2 form-select form-select-lg text-center"
-                            :class="{ 'is-invalid': isInvalid }" v-model="selectedValue2" id="money" name="money">
+                            :class="{ 'is-invalid': isInvalid }" v-model="selectedValue2" id="currency2" name="currency2">
                             <option style="display: none" disabled selected value="">
                                 {{ $t("monthlyPRpageLang.entermoney") }}</option>
                             <option>RMB</option>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
+                <div class="w-100" style="height: 5ch"></div><!-- </div>breaks cols to a new line-->
                 <div class="row justify-content-between">
                     <div class="row col col-auto">
                         <div class="col col-auto">
@@ -78,7 +78,7 @@
                 <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                     <strong>{{ validation_err_msg }}</strong>
                 </span>
-                <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false"
+                <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
                     :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                     :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                     @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>

@@ -29,14 +29,13 @@
                   </div>
                 </th>
                 <th v-for="(col, index) in columns" class="vtl-thead-th m-0 p-0" :class="col.headerClasses" :key="index"
-                  :style="
-                    Object.assign(
-                      {
-                        width: col.width ? col.width : 'auto',
-                      },
-                      col.headerStyles
-                    )
-                  ">
+                  :style="Object.assign(
+                    {
+                      width: col.width ? col.width : 'auto',
+                    },
+                    col.headerStyles
+                  )
+                    ">
                   <div class="vtl-thead-column" :class="{
                     'vtl-sortable': col.sortable,
                     'vtl-both': col.sortable,
@@ -52,11 +51,10 @@
             </thead>
             <tbody v-if="rows.length > 0" class="vtl-tbody">
               <template v-if="isStaticMode">
-                <tr v-for="(row, i) in localRows" :key="i" class="vtl-tbody-tr" :class="
-                  typeof rowClasses === 'function'
-                    ? rowClasses(row)
-                    : rowClasses
-                " @click="$emit('row-clicked', row)">
+                <tr v-for="(row, i) in localRows" :key="i" class="vtl-tbody-tr" :class="typeof rowClasses === 'function'
+                  ? rowClasses(row)
+                  : rowClasses
+                  " @click="$emit('row-clicked', row)">
                   <td v-if="hasCheckbox" class="vtl-tbody-td m-0 p-0">
                     <div>
                       <!-- <input
@@ -70,16 +68,16 @@
                         :value="row[setting.keyColumn]"
                         @click="checked"
                       /> -->
-                      <input type="checkbox" class="vtl-tbody-checkbox" :ref="
-                        (el) => {
-                          rowCheckbox[i] = el;
-                        }
-                      " :value="i" :id="'checkbox' + i" @click="checked" />
+                      <input type="checkbox" class="vtl-tbody-checkbox" :ref="(el) => {
+                        rowCheckbox[i] = el;
+                      }
+                        " :value="i" :id="'checkbox' + i" @click="checked" />
                     </div>
                   </td>
                   <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td py-0 m-0" align="center"
                     :class="col.columnClasses" :style="col.columnStyles">
                     <div v-if="col.display" v-html="col.display(row, i)"></div>
+                    <div v-else-if="col.hasInput" @change="$emit('row-input', row, i)" v-html="col.hasInput(row, i)"></div>
                     <template v-else>
                       <div v-if="setting.isSlotMode && slots[col.field]">
                         <slot :name="col.field" :row="row" :key="i"></slot>
@@ -90,18 +88,16 @@
                 </tr>
               </template>
               <template v-else>
-                <tr v-for="(row, i) in rows" :key="i" class="vtl-tbody-tr" :class="
-                  typeof rowClasses === 'function'
-                    ? rowClasses(row)
-                    : rowClasses
-                " @click="$emit('row-clicked', row)">
+                <tr v-for="(row, i) in rows" :key="i" class="vtl-tbody-tr" :class="typeof rowClasses === 'function'
+                  ? rowClasses(row)
+                  : rowClasses
+                  " @click="$emit('row-clicked', row)">
                   <td v-if="hasCheckbox" class="vtl-tbody-td p-0 m-0">
                     <div>
-                      <input type="checkbox" class="vtl-tbody-checkbox" :ref="
-                        (el) => {
-                          rowCheckbox[i] = el;
-                        }
-                      " :value="row[setting.keyColumn]" @click="checked" />
+                      <input type="checkbox" class="vtl-tbody-checkbox" :ref="(el) => {
+                        rowCheckbox[i] = el;
+                      }
+                        " :value="row[setting.keyColumn]" @click="checked" />
                     </div>
                   </td>
                   <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td py-0 m-0" align="center"
@@ -125,12 +121,12 @@
           <div class="vtl-paging-info col col-auto p-0 m-0">
             <div role="status" aria-live="polite">
               {{
-                  stringFormat(
-                    messages.pagingInfo,
-                    setting.offset,
-                    setting.limit,
-                    total
-                  )
+                stringFormat(
+                  messages.pagingInfo,
+                  setting.offset,
+                  setting.limit,
+                  total
+                )
               }}
             </div>
           </div>
@@ -139,7 +135,7 @@
           <div class="row w-100 justify-content-between align-items-center p-0 m-0">
             <div class="vtl-paging-change-div col col-auto p-0 m-0">
               <span class="vtl-paging-count-label col col-auto">{{
-                  messages.pageSizeChangeLabel
+                messages.pageSizeChangeLabel
               }}</span>
               <select class="vtl-paging-count-dropdown" v-model="setting.pageSize">
                 <option v-for="pageOption in pageOptions" :value="pageOption.value" :key="pageOption.value">
@@ -148,7 +144,7 @@
               </select>
               &nbsp;&nbsp;
               <span class="vtl-paging-page-label col col-auto">{{
-                  messages.gotoPageLabel
+                messages.gotoPageLabel
               }}</span>
               <select class="vtl-paging-page-dropdown col col-auto" v-model="setting.page">
                 <option v-for="n in setting.maxPage" :key="n" :value="parseInt(n)">
@@ -291,6 +287,7 @@ export default defineComponent({
     "is-finished",
     "get-now-page",
     "row-clicked",
+    "row-input",
   ],
   props: {
     // 是否讀取中 (is data loading)

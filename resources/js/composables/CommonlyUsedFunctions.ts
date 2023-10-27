@@ -11,8 +11,10 @@ export default function useCommonlyUsedFunctions() {
     const queryResult = ref("");
     const locations = ref("");
     const errors = ref("");
+    const manualResult = ref("");
     const router = useRouter();
 
+    // for uploaded excel
     const validateISN = async (inputArray) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
@@ -24,14 +26,35 @@ export default function useCommonlyUsedFunctions() {
             });
 
             queryResult.value = JSON.stringify(response.data);
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
         } catch (e) {
             console.log(e); // test
-            for (const key in e.response.data.errors) {
-                errors.value += e.response.data.errors[key][0] + '  ';
-            } // for each errors
-            console.log(errors.value); // test
+            return e;
         } // try catch
     } // validateISN
+
+    // for user type-in
+    const validateISN_manual = async (inputArray) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/validateISN', {
+                DB: getDB.data,
+                isnArray: JSON.stringify(inputArray)
+            });
+
+            manualResult.value = JSON.stringify(response.data);
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // validateISN_manual
 
     const getLocs = async () => {
         errors.value = "";
@@ -44,19 +67,21 @@ export default function useCommonlyUsedFunctions() {
 
             locations.value = JSON.stringify(response.data);
             // console.log(locations.value); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
         } catch (e) {
             console.log(e); // test
-            for (const key in e.response.data.errors) {
-                errors.value += e.response.data.errors[key][0] + '  ';
-            } // for each errors
-            console.log(errors.value); // test
+            return e;
         } // try catch
     } // getLocs
 
     return {
         queryResult,
+        manualResult,
         locations,
         validateISN,
+        validateISN_manual,
         getLocs,
     } // return
 } // useCommonlyUsedFunctions

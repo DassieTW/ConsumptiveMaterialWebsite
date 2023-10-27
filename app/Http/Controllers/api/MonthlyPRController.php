@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\在途量;
+use Carbon\Carbon;
 
 class MonthlyPRController extends Controller
 {
@@ -114,6 +114,32 @@ class MonthlyPRController extends Controller
         return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showSXB
 
+    //load re-check consume
+    public function showRejectedUnitConsumption(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
+        $datas = \DB::table('consumptive_material')
+            ->join('月請購_單耗', function ($join) {
+                $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
+            })
+            ->where('狀態', '待重畫')->get();
+
+        return \Response::json(['datas' => $datas, "dbName" => $dbName]/* Status code here default is 200 ok*/);
+    } // showRejectedUnitConsumption
+
+    public function showCheckersEmail(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
+        $people = \DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
+        return \Response::json(['data' => $people, "dbName" => $dbName]/* Status code here default is 200 ok*/);
+    } // showCheckersEmail
+
     /**
      * Update the specified resource in storage.
      *
@@ -125,6 +151,77 @@ class MonthlyPRController extends Controller
     {
         //
     }
+
+    //send consume mail
+    public static function sendconsumemail($email, $sessemail, $username, $database)
+    {
+        $dename = \DB::table('login')->where('username', $username)->value('姓名');
+        $data = array('email' => urlencode($sessemail), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
+
+        \Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
+
+            $message->to($email, 'Tutorials Point')->subject('請確認單耗資料');
+            $message->bcc('vincent6_yeh@pegatroncorp.com');
+            // $message->attach(public_path() . '/download/LineExample.xlsx');
+            $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+        });
+    }
+
+    //提交料號單耗
+    public function update_UnitConsumption(Request $request)
+    {
+        $count = $request->input('count');
+        $row = $request->input('row');
+        $record = 0;
+        $check = array();
+        $email = $request->input('email');
+        $sessemail = $email;
+        $username = \Auth::user()->username;
+        $database = $request->session()->get('database');
+        $database = $database;
+
+        try {
+            $res_arr_values = array();
+            for ($i = 0; $i < $count; $i++) {
+                $number = $request->input('number')[$i];
+                $number90 = $request->input('number90')[$i];
+                $consume = $request->input('consume')[$i];
+
+                $temp = array(
+                    "料號" => $number,
+                    '料號90' => $number90,
+                    '單耗' => $consume,
+                    '畫押信箱' => $email,
+                    '狀態' => "待畫押",
+                    '送單時間' => Carbon::now(),
+                    '送單人' => \Auth::user()->username
+                );
+
+                $res_arr_values[] = $temp;
+                array_push($check, $row[$i]);
+            } //for
+
+            \DB::beginTransaction();
+
+            $record = \DB::table('月請購_單耗')->upsert(
+                $res_arr_values,
+                ['料號', '料號90'],
+                ['單耗', '畫押信箱', '狀態', '送單時間', '送單人']
+            );
+
+            \DB::commit();
+
+            if ($record > 0) {
+                self::sendconsumemail($email, $sessemail, $username, $database);
+            } // if
+
+            return \Response::json(['record' => $record, 'check' => $check]/* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+        } //try - catch
+
+    } // consumenewsubmit
 
     /**
      * Remove the specified resource from storage.

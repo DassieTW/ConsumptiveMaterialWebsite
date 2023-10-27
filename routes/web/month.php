@@ -146,11 +146,7 @@ Route::get('/sxbsearch', function () {
 
 //料號單耗(新增)頁面
 Route::get('/consumeadd', function () {
-    $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
-    return view('month.consumeadd')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with([
-            'people' => $people
-        ]);
+    return view('month.consumeadd');
 })->name('month.consumeadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //站位人力(新增)頁面

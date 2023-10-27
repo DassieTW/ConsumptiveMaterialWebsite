@@ -105,7 +105,7 @@ class LoginController extends Controller
                 Session::put('locale', \Auth::user()->preferred_lang);
                 \App::setLocale(\Auth::user()->preferred_lang);
             } // else
-            
+
             DB::beginTransaction();
 
             try {
@@ -291,6 +291,7 @@ class LoginController extends Controller
                     'last_login_time' => $datetime,
                     'update_priority_time' => $datetime,
                     'available_dblist' => $previousUser->available_dblist,
+                    'preferred_lang' => $previousUser->preferred_lang,
                 ]
             );
 
@@ -303,6 +304,8 @@ class LoginController extends Controller
             Session::put('priority', $prior);
             Session::put('avatarChoice', $avatarChoice);
             Session::put('department', \Auth::user()->部門);
+            Session::put('locale', $previousUser->preferred_lang);
+            \App::setLocale($previousUser->preferred_lang);
             session(['database' => $DBName]);
         } // if
 
