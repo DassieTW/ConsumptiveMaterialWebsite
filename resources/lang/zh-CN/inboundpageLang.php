@@ -84,7 +84,7 @@ return [
     'total' => '共',
     'record' => '笔',
     'nocheck' => '请勾选欲删除/更新项目',
-    'lessstock' => '目前库存小于入库数量，无法删除此笔入库。',
+    'lessstock' => '有库存小于入库数量，无法删除一些入库单。',
     'noclient' => '客户不存在',
     'noloc' => '储位不存在',
     'enterisn' => '请输入料号',

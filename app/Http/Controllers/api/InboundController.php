@@ -114,6 +114,10 @@ class InboundController extends Controller
     //刪除 入庫資訊
     public function destroy(Request $request)
     {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
         $now = Carbon::now();
         $list = json_decode($request->input('list'));
         $isn = json_decode($request->input('isn'));
@@ -121,44 +125,55 @@ class InboundController extends Controller
         $position = json_decode($request->input('position'));
         $inpeople = json_decode($request->input('inpeople'));
         $inreason = json_decode($request->input('inreason'));
+        $inboundtime = json_decode($request->input('inboundtime'));
 
+        $error_list = [];
+        $success_list = [];
         for ($i = 0; $i < count($list); $i++) {
-            $stock = \DB::table('inventory')->where('料號', $isn)->where('儲位', $position)->sum('現有庫存');
-            $buy = \DB::table('在途量')->where('料號', $isn)->sum('請購數量');
+            $stock = \DB::table('inventory')->where('料號', $isn[$i])->where('儲位', $position[$i])->sum('現有庫存');
+            $buy = \DB::table('在途量')->where('料號', $isn[$i])->sum('請購數量');
+            if ($stock < $amount[$i]) {
+                if ($stock === null) $stock = 0;
+                array_push($error_list, [$list[$i], $isn[$i], $inpeople[$i], $amount[$i], $inboundtime[$i]]);
+                continue;
+            } // if
+
             \DB::beginTransaction();
             try {
-                if ($stock < $amount) {
-                    if ($stock === null) $stock = 0;
-
-                    return \Response::json(['stock' => $stock, 'amount' => $amount], 420/* Status code here default is 200 ok*/);
-                } // if
-
-                if ($inreason !== '調撥' && $inreason !== '退庫') {
+                if ($inreason[$i] !== '調撥' && $inreason[$i] !== '退庫') {
                     \DB::table('在途量')
                         ->where('料號', $isn)
-                        ->update(['請購數量' => $buy + $amount]);
+                        ->update(['請購數量' => $buy + $amount[$i]]);
                 } // if
 
                 \DB::table('inventory')
                     ->where('料號', $isn)
-                    ->where('儲位', $position)
-                    ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
+                    ->where('儲位', $position[$i])
+                    ->update(['現有庫存' => $stock - $amount[$i], '最後更新時間' => $now]);
 
                 \DB::table('inbound')
-                    ->where('入庫單號', $list)
-                    ->where('料號', $isn)
-                    ->where('入庫數量', $amount)
-                    ->where('入庫人員', $inpeople)
-                    ->where('入庫原因', $inreason)
-                    ->where('儲位', $position)
+                    ->where('入庫單號', $list[$i])
+                    ->where('料號', $isn[$i])
+                    ->where('入庫數量', $amount[$i])
+                    ->where('入庫人員', $inpeople[$i])
+                    ->where('入庫原因', $inreason[$i])
+                    ->where('儲位', $position[$i])
                     ->delete();
+
                 \DB::commit();
+
+                array_push($success_list, [$list[$i], $isn[$i], $inpeople[$i], $inboundtime[$i]]);
             } catch (\Exception $e) {
                 \DB::rollback();
                 return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
             } // try catch
-
-            return \Response::json(['list' => $list, 'isn' => $isn]/* Status code here default is 200 ok*/);
         } // for each record to delete
+
+        if (count($error_list) > 0) {
+            return \Response::json(['error_list' => $error_list, 'success_list' => $success_list], 420/* Status code here default is 200 ok*/);
+        } // if
+        else {
+            return \Response::json(['success_list' => $success_list]/* Status code here default is 200 ok*/);
+        } // else
     } // destroy
 }

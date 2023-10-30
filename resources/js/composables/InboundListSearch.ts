@@ -9,7 +9,6 @@ import {
 
 export default function useInboundListSearch() {
     const mats = ref("");
-    const deleteResult = ref("");
     const router = useRouter();
     const getMats = async () => {
         let getDB = await axios.post('/getCurrentDB');
@@ -41,7 +40,6 @@ export default function useInboundListSearch() {
     } // get mats
 
     const deleteRows = async (inputArray) => {
-        deleteResult.value = "";
         let getDB = await axios.post('/getCurrentDB');
         // let gettest = await axios.post('/basic/materialsearch');
         // console.log(gettest); // test
@@ -55,22 +53,21 @@ export default function useInboundListSearch() {
                 position: JSON.stringify(inputArray.position),
                 inpeople: JSON.stringify(inputArray.inpeople),
                 inreason: JSON.stringify(inputArray.inreason),
+                inboundtime: JSON.stringify(inputArray.intime),
             });
 
-            deleteResult.value = JSON.stringify(response.data);
-            // console.log( JSON.parse(mats.value)); // test
+            // console.log(response); // test
             return new Promise((resolve, reject) => {
                 resolve("success");
             });
         } catch (e) {
-            console.log(e); // test
+            // console.log(e); // test
             return e;
         } // try catch
     } // deleteRows
 
     return {
         mats,
-        deleteResult,
         getMats,
         deleteRows
     } // return

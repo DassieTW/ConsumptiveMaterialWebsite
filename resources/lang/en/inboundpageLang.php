@@ -84,7 +84,7 @@ return [
     'total' => 'Total',
     'record' => 'Records',
     'nocheck' => 'Please tick the items you want to delete/update',
-    'lessstock' => 'The current inventory is less than the inbound amount, can not delete this inbound list.',
+    'lessstock' => 'Current inventory is less than the inbound amount, cannot delete some of the inbound lists.',
     'noclient' => 'Client does not exist',
     'noloc' => 'Location does not exist',
     'enterisn' => 'Please enter the PN',

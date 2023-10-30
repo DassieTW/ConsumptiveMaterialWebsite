@@ -10,11 +10,11 @@
             </div>
         </div>
         <div class="col col-auto">
-            <!-- <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
+            <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
                 @click="DeleteRowsClick">
                 {{ $t('basicInfoLang.delete') }}
             </button>
-            &nbsp; -->
+            &nbsp;
             <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
                 :value="$t('inboundpageLang.download')" @click="OutputExcelClick">
                 {{ $t('inboundpageLang.download') }}
@@ -44,7 +44,7 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, deleteResult, getMats, deleteRows } = useInboundListSearch(); // axios get the mats data
+        const { mats, getMats, deleteRows } = useInboundListSearch(); // axios get the mats data
 
         onBeforeMount(getMats);
 
@@ -56,47 +56,41 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
+        let checkedRows;
         const DeleteRowsClick = async () => {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
             });
 
-            let rows_to_be_deleted = Array();
-            let result = await deleteRows();
+            let rows_to_be_deleted = {
+                list: [],
+                isn: [],
+                amount: [],
+                position: [],
+                inpeople: [],
+                inreason: [],
+                intime: []
+            };
 
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
-
-            if (result === "success") {
-                notyf.open({
-                    type: "success",
-                    message: app.appContext.config.globalProperties.$t("inboundpageLang.total") + " " + JSON.parse(mats.value).record + " " + app.appContext.config.globalProperties.$t("inboundpageLang.record") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.change") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.success"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
+            if (checkedRows !== undefined && checkedRows.length > 0) {
+                checkedRows.forEach(rowNum => {
+                    rows_to_be_deleted.list.push(document.getElementById("inboundlist" + rowNum).value);
+                    rows_to_be_deleted.isn.push(document.getElementById("number" + rowNum).value);
+                    rows_to_be_deleted.amount.push(document.getElementById("inboundnum" + rowNum).value);
+                    rows_to_be_deleted.position.push(document.getElementById("position" + rowNum).value);
+                    rows_to_be_deleted.inpeople.push(document.getElementById("inboundpeople" + rowNum).value);
+                    rows_to_be_deleted.inreason.push(document.getElementById("inboundreason" + rowNum).value);
+                    rows_to_be_deleted.intime.push(document.getElementsByName("inboundtime" + rowNum)[0].getAttribute("id"));
                 });
-            } // if
-            else {
-                //庫存小於入庫數量
-                if (e.status === 420) {
-                    var mess =
-                        app.appContext.config.globalProperties.$t("inboundpageLang.lessstock") +
-                        "\n" +
-                        app.appContext.config.globalProperties.$t("inboundpageLang.nowstock") +
-                        " : " +
-                        e.responseJSON.stock +
-                        " " +
-                        app.appContext.config.globalProperties.$t("inboundpageLang.inboundnum") +
-                        " : " +
-                        e.responseJSON.amount;
+
+                // console.log(rows_to_be_deleted); // test
+                let result = await deleteRows(rows_to_be_deleted);
+
+                if (result === "success") {
                     notyf.open({
-                        type: "warning",
-                        message: mess,
+                        type: "success",
+                        message: app.appContext.config.globalProperties.$t("inboundpageLang.change") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.success"),
                         duration: 3000, //miliseconds, use 0 for infinite duration
                         ripple: true,
                         dismissible: true,
@@ -105,15 +99,67 @@ export default defineComponent({
                             y: "bottom",
                         },
                     });
-                    return false;
-                } // if 
-                else if (e.status === 421) {
-                    console.log(e.status);
-                    var mess = e.responseJSON.message;
-                    alert(mess);
-                }
-            } // else
 
+                    rows_to_be_deleted.intime.forEach(element => {
+                        let indexOfObject = data.findIndex(object => {
+                            return parseInt(object.id) === parseInt(element.replace('inboundtime', ''));
+                        });
+
+                        data.splice(indexOfObject, 1);
+                    });
+
+                    document.getElementsByClassName("vtl-tbody-checkbox").forEach(element => {
+                        if (element.checked) {
+                            element.click();
+                        } // if
+                    });
+
+                    checkedRows = [];
+                } // if
+                else {
+                    //庫存小於入庫數量
+                    console.log(result.response.data); // test
+                    if (result.response.status === 420) {
+                        let mess =
+                            app.appContext.config.globalProperties.$t("inboundpageLang.lessstock");
+
+                        notyf.open({
+                            type: "warning",
+                            message: mess,
+                            duration: 3000, //miliseconds, use 0 for infinite duration
+                            ripple: true,
+                            dismissible: true,
+                            position: {
+                                x: "right",
+                                y: "bottom",
+                            },
+                        });
+
+                        // console.log(result.response.data.success_list); // test
+                        result.response.data.success_list.forEach(element => {
+                            let indexOfObject = data.findIndex(object => {
+                                return parseInt(object.id) === parseInt(element[3].replace('inboundtime', ''));
+                            });
+
+                            data.splice(indexOfObject, 1);
+
+                            let unclickRowNum = parseInt(document.getElementById(element[3]).getAttribute("name").replace('inboundtime', ''));
+                            if (document.getElementsByClassName("vtl-tbody-checkbox")[unclickRowNum].checked) {
+                                document.getElementsByClassName("vtl-tbody-checkbox")[unclickRowNum].click();
+                            } // if
+
+                            checkedRows.splice(unclickRowNum, 1);
+                        });
+                    } // if 
+                    else if (result.response.status === 421) {
+                        var mess = result.response.data.message;
+                        alert(mess);
+                    } // else if
+                } // else
+            } // if
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
         } // DeleteRowsClick
 
         const OutputExcelClick = () => {
@@ -159,10 +205,11 @@ export default defineComponent({
         const data = reactive([]);
 
         watch(mats, () => {
-            console.log(JSON.parse(mats.value)); // test
+            // console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
             //console.log(allRowsObj.datas.length);
             for (let i = 0; i < allRowsObj.datas.length; i++) {
+                allRowsObj.datas[i].id = i;
                 data.push(allRowsObj.datas[i]);
             } // for
         }); // watch for data change
@@ -320,7 +367,7 @@ export default defineComponent({
                     display: function (row, i) {
                         return (
                             '<input type="hidden" id="inboundtime' +
-                            i +
+                            row.id +
                             '" name="inboundtime' +
                             i +
                             '" value="' +
@@ -421,6 +468,7 @@ export default defineComponent({
 
         const updateCheckedRows = (rowsKey) => {
             // console.log(rowsKey);
+            checkedRows = rowsKey;
         };
 
         return {

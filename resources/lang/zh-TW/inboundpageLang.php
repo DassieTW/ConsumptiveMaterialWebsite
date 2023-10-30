@@ -84,7 +84,7 @@ return [
     'total' => '共',
     'record' => '筆',
     'nocheck' => '請勾選欲刪除/更新項目',
-    'lessstock' => '目前庫存小於入庫數量，無法刪除此筆入庫。',
+    'lessstock' => '有庫存小於入庫數量，無法刪除部分入庫單。',
     'noclient' => '客戶不存在',
     'noloc' => '儲位不存在',
     'enterisn' => '請輸入料號',
