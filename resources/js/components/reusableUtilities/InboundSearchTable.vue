@@ -1,35 +1,32 @@
 <template>
-    <div class="row" style="text-align: left">
-        <div class="col col-auto">
-            <label for="pnInput" class="col-form-label"
-                >{{ $t("basicInfoLang.quicksearch") }} :</label
-            >
+    <div class="row justify-content-between">
+        <div class="row col col-auto">
+            <div class="col col-auto">
+                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            </div>
+            <div class="col col-6 p-0 m-0">
+                <input id="pnInput" class="text-center form-control form-control-lg"
+                    v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+            </div>
         </div>
-        <div class="col col-3 p-0 m-0">
-            <input
-                id="pnInput"
-                class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('basicInfoLang.enterisn')"
-                v-model="searchTerm"
-            />
+        <div class="col col-auto">
+            <!-- <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
+                @click="DeleteRowsClick">
+                {{ $t('basicInfoLang.delete') }}
+            </button>
+            &nbsp; -->
+            <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                :value="$t('inboundpageLang.download')" @click="OutputExcelClick">
+                {{ $t('inboundpageLang.download') }}
+            </button>
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite
-        :is-fixed-first-column="true"
-        :is-static-mode="true"
-        :hasCheckbox="true"
-        :isLoading="table.isLoading"
-        :messages="table.messages"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-        :page-options="table.pageOptions"
-        :sortable="table.sortable"
-        @is-finished="table.isLoading = false"
-        @return-checked-rows="updateCheckedRows"
-    ></table-lite>
+    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true" :isLoading="table.isLoading"
+        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+        :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
+        @return-checked-rows="updateCheckedRows"></table-lite>
 </template>
 
 <script>
@@ -41,12 +38,13 @@ import {
     watch,
 } from "@vue/runtime-core";
 import TableLite from "./TableLite.vue";
+import * as XLSX from 'xlsx';
 import useInboundListSearch from "../../composables/InboundListSearch.ts";
 export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, getMats } = useInboundListSearch(); // axios get the mats data
+        const { mats, deleteResult, getMats, deleteRows } = useInboundListSearch(); // axios get the mats data
 
         onBeforeMount(getMats);
 
@@ -58,9 +56,107 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
+        const DeleteRowsClick = async () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            let rows_to_be_deleted = Array();
+            let result = await deleteRows();
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+
+            if (result === "success") {
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("inboundpageLang.total") + " " + JSON.parse(mats.value).record + " " + app.appContext.config.globalProperties.$t("inboundpageLang.record") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.change") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // if
+            else {
+                //庫存小於入庫數量
+                if (e.status === 420) {
+                    var mess =
+                        app.appContext.config.globalProperties.$t("inboundpageLang.lessstock") +
+                        "\n" +
+                        app.appContext.config.globalProperties.$t("inboundpageLang.nowstock") +
+                        " : " +
+                        e.responseJSON.stock +
+                        " " +
+                        app.appContext.config.globalProperties.$t("inboundpageLang.inboundnum") +
+                        " : " +
+                        e.responseJSON.amount;
+                    notyf.open({
+                        type: "warning",
+                        message: mess,
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom",
+                        },
+                    });
+                    return false;
+                } // if 
+                else if (e.status === 421) {
+                    console.log(e.status);
+                    var mess = e.responseJSON.message;
+                    alert(mess);
+                }
+            } // else
+
+        } // DeleteRowsClick
+
+        const OutputExcelClick = () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = Array();
+            for (let i = 0; i < data.length; i++) {
+                let tempObj = new Object;
+                tempObj.入庫單號 = data[i].入庫單號;
+                tempObj.料號 = data[i].料號;
+                tempObj.入庫數量 = data[i].入庫數量;
+                tempObj.儲位 = data[i].儲位;
+                tempObj.入庫人員 = data[i].入庫人員;
+                tempObj.入庫原因 = data[i].入庫原因;
+                tempObj.入庫時間 = data[i].入庫時間;
+                tempObj.備註 = data[i].備註;
+                rows.push(tempObj);
+            } // for
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("inboundpageLang.stock"));
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "inboundpageLang.inlist"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
+
         // pour the data in
         const data = reactive([]);
-        // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
         watch(mats, () => {
             console.log(JSON.parse(mats.value)); // test
@@ -69,8 +165,6 @@ export default defineComponent({
             for (let i = 0; i < allRowsObj.datas.length; i++) {
                 data.push(allRowsObj.datas[i]);
             } // for
-
-            document.getElementById("QueryFlag").click();
         }); // watch for data change
 
         // Table config
@@ -326,26 +420,15 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            console.log(rowsKey);
-            // only check one
-            let count = $(".vtl-paging-count-dropdown").val();
-            rowsKey = parseInt(rowsKey);
-            for (let i = 0; i < count; i++) {
-                if (i !== rowsKey) {
-                    $("#checkbox" + i).prop("disabled", true);
-                } else {
-                    $("#checkbox" + i).prop("disabled", false);
-                }
-            }
-            if (isNaN(rowsKey)) {
-                console.log(1);
-                $(".vtl-tbody-checkbox").prop("disabled", false);
-            }
+            // console.log(rowsKey);
         };
+
         return {
             searchTerm,
             table,
             updateCheckedRows,
+            DeleteRowsClick,
+            OutputExcelClick
         };
     }, // setup
 });

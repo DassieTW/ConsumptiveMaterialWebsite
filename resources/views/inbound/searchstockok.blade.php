@@ -1,24 +1,27 @@
 @extends('layouts.adminTemplate')
 @section('css')
     <style>
-        /* hide scrollbar but still scrollable */
-        .scrollableWithoutScrollbar {
-            -ms-overflow-style: none !important;
-            /* IE and Edge */
-            scrollbar-width: none !important;
-            /* FireFox */
+        .scrollableWithoutScrollbar::-webkit-scrollbar-track {
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            border-radius: 4px;
+            background-color: #F5F5F5;
         }
 
         .scrollableWithoutScrollbar::-webkit-scrollbar {
-            /* Chrome, Safari and Opera */
-            display: none !important;
+            height: 4px;
+            -webkit-appearance: none;
+        }
+
+        .scrollableWithoutScrollbar::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            background-color: rgba(0, 0, 0, 0.3);
         }
     </style>
 @endsection
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/inbound/searchstockok.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -29,23 +32,15 @@
                 <vue-bread-crumb></vue-bread-crumb>
             </div>
         </div>
-        <button type="hidden" id="QueryFlag" name="QueryFlag" value="Posting" style="display: none;"></button>
         <div class="card">
             <div class="card-body">
-                <form id="inboundsearch" method="POST">
-                    @csrf
-                    <input type="submit" id="download" name="download" class="btn btn-lg btn-primary"
-                        value="{!! __('inboundpageLang.download') !!}">
-                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                    @if (Session::get('month'))
-                        <input type="hidden" id="titlename" name="titlename" value="庫存使用月數">
-                        <inbound-month-table></inbound-month-table>
-                    @else
-                        <input type="hidden" id="titlename" name="titlename" value="庫存">
-                        <inbound-stock-table></inbound-stock-table>
-                    @endif
-                </form>
+                @if (Session::get('month'))
+                    <input type="hidden" id="titlename" name="titlename" value="庫存使用月數">
+                    <inbound-month-table></inbound-month-table>
+                @else
+                    <input type="hidden" id="titlename" name="titlename" value="庫存">
+                    <inbound-stock-table></inbound-stock-table>
+                @endif
             </div>
         </div>
     </div>

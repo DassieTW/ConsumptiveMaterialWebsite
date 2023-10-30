@@ -44,6 +44,9 @@ Route::post('/search', function (Request $request) {
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
 
+//入庫-查詢刪除
+Route::post('/delete', 'api\InboundController@destroy');
+
 // 庫存查詢
 Route::post('/searchstock', function (Request $request) {
     \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
@@ -183,7 +186,7 @@ Route::post('/searchstock', function (Request $request) {
             })
             ->select('MPS.本月MPS', '月請購_單耗.*', DB::raw('(MPS.本月MPS * 月請購_單耗.單耗) as 月使用量)'))
             ->where('月請購_單耗.狀態', '=', "已完成");
-            // ->where('consumptive_material.耗材歸屬', '=', "單耗");
+        // ->where('consumptive_material.耗材歸屬', '=', "單耗");
 
         $datas1 = $datas1->select('月請購_單耗.料號', DB::raw('SUM(MPS.本月MPS * 月請購_單耗.單耗) as 月使用量'))
             ->groupBy('月請購_單耗.料號')->get();

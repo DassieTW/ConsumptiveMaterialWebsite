@@ -1,35 +1,26 @@
 <template>
-    <div class="row" style="text-align: left">
-        <div class="col col-auto">
-            <label for="pnInput" class="col-form-label"
-                >{{ $t("basicInfoLang.quicksearch") }} :</label
-            >
+    <div class="row justify-content-between">
+        <div class="row col col-auto">
+            <div class="col col-auto">
+                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            </div>
+            <div class="col col-6 p-0 m-0">
+                <input id="pnInput" class="text-center form-control form-control-lg"
+                    v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+            </div>
         </div>
-        <div class="col col-3 p-0 m-0">
-            <input
-                id="pnInput"
-                class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('basicInfoLang.enterisn')"
-                v-model="searchTerm"
-            />
+        <div class="col col-auto">
+            <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                :value="$t('inboundpageLang.download')" @click="OutputExcelClick">{{ $t('inboundpageLang.download')
+                }}</button>
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite
-        :is-fixed-first-column="true"
-        :is-static-mode="true"
-        :hasCheckbox="false"
-        :isLoading="table.isLoading"
-        :messages="table.messages"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-        :page-options="table.pageOptions"
-        :sortable="table.sortable"
-        @is-finished="table.isLoading = false"
-        @return-checked-rows="updateCheckedRows"
-    ></table-lite>
+    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
+        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+        :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
+        @return-checked-rows="updateCheckedRows"></table-lite>
 </template>
 
 <script>
@@ -41,6 +32,7 @@ import {
     watch,
 } from "@vue/runtime-core";
 import TableLite from "./TableLite.vue";
+import * as XLSX from 'xlsx';
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
 export default defineComponent({
     name: "App",
@@ -58,22 +50,62 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
+        const OutputExcelClick = () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = Array();
+            for (let i = 0; i < data.length; i++) {
+                let tempObj = new Object;
+                tempObj.料號 = data[i].料號;
+                tempObj.品名 = data[i].品名;
+                tempObj.規格 = data[i].規格;
+                tempObj.現有庫存 = data[i].現有庫存;
+                tempObj.單位 = data[i].單位;
+                tempObj.儲位 = data[i].儲位;
+                tempObj.月請購 = data[i].月請購;
+                tempObj.安全庫存 = data[i].安全庫存;
+                tempObj.單價 = data[i].單價;
+                tempObj.幣別 = data[i].幣別;
+                tempObj.呆滯天數 = data[i].呆滯天數;
+                rows.push(tempObj);
+            } // for
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("inboundpageLang.stock"));
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "inboundpageLang.stock"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
+
         // pour the data in
         const data = reactive([]);
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
         watch(mats, () => {
-            console.log(JSON.parse(mats.value)); // test
+            // console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
             //console.log(allRowsObj.datas.length);
             for (let i = 0; i < allRowsObj.datas.length; i++) {
                 data.push(allRowsObj.datas[i]);
             } // for
-
-            document.getElementById("QueryFlag").click();
+            // console.log(data); // test
         }); // watch for data change
 
         // Table config
-
         const table = reactive({
             isLoading: false,
             columns: [
@@ -423,6 +455,7 @@ export default defineComponent({
             searchTerm,
             table,
             updateCheckedRows,
+            OutputExcelClick,
         };
     }, // setup
 });

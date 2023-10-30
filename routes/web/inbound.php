@@ -28,8 +28,6 @@ use App\Models\ConsumptiveMaterial;
 |
 */
 
-
-
 //入庫
 Route::get('/', function () {
     return view('inbound.index');
@@ -39,8 +37,6 @@ Route::get('/', function () {
 Route::get('/search',  function () {
     return view('inbound.search')->with(['client' => 客戶別::cursor()]);
 })->name('inbound.search')->middleware('can:viewInbound,App\Models\Inbound');
-
-//Route::post('/search', [InboundController::class, 'search'])->name('inbound.search');
 
 //入庫-查詢ok
 Route::get('/inquire', function () {
@@ -89,23 +85,17 @@ Route::get('/searchstock', function () {
         ->with(['senddep' => 發料部門::cursor()]);
 })->name('inbound.searchstock')->middleware('can:viewInbound,App\Models\Inbound');
 
-//Route::post('/searchstock', [InboundController::class, 'searchstock'])->name('inbound.searchstock');
-
-//入庫-庫存查詢成功
+//入庫-庫存查詢結果
 Route::get('/searchstocksubmit', function () {
     Session::put("month", false);
     return view("inbound.searchstockok");
 })->middleware('can:viewInbound,App\Models\Inbound');
 
-//入庫-庫存查詢成功(月使用量)
+//入庫-庫存查詢結果(月使用量)
 Route::get('/searchstocksubmit1', function () {
     Session::put("month", true);
     return view("inbound.searchstockok");
 })->middleware('can:viewInbound,App\Models\Inbound');
-
-
-//入庫-查詢刪除
-Route::post('/delete', [InboundController::class, 'delete'])->name('inbound.delete')->middleware('can:viewInbound,App\Models\Inbound');
 
 //入庫-儲位調撥頁面
 Route::get('/positionchange', function () {
@@ -123,42 +113,7 @@ Route::post('/change', [InboundController::class, 'change'])->name('inbound.chan
 //入庫-儲位調撥提交
 Route::post('/changesubmit', [InboundController::class, 'changesubmit'])->name('inbound.changesubmit')->middleware('can:viewInbound,App\Models\Inbound');
 
-
-
-//Route::post('/upload', [InboundController::class, 'upload'])->name('inbound.upload');
-
-//入庫-新增提交(By客戶別)
-Route::post('/addclientsubmit', [InboundController::class, 'addclientsubmit'])->name('inbound.addclientsubmit')->middleware('can:viewInbound,App\Models\Inbound');
-
-//資料下載
-Route::post('/download', [InboundController::class, 'download'])->name('inbound.download')->middleware('can:viewInbound,App\Models\Inbound');
-
-
 //新增料件上傳
 Route::get('/upload', function () {
     return view('inbound.upload');
 })->name('inbound.upload')->middleware('can:viewInbound,App\Models\Inbound');
-
-Route::get('/uploadinventory', function () {
-    return view('inbound.upload');
-})->middleware('can:viewInbound,App\Models\Inbound');
-
-//test
-Route::get('/testinbound', function () {
-    $datas1 = DB::table('月請購_單耗')
-        ->join('MPS', function ($join) {
-            $join->on('MPS.料號90', '=', '月請購_單耗.料號90')
-                ->on('MPS.料號', '=', '月請購_單耗.料號');
-        })
-        ->join('consumptive_material', function ($join) {
-            $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
-        })
-        ->select('MPS.下月MPS', '月請購_單耗.*', DB::raw('(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存)'))
-        ->where('月請購_單耗.狀態', '=', "已完成")
-        // ->where('consumptive_material.耗材歸屬', '=', "單耗")
-        ->where('consumptive_material.月請購', '=', "是");
-
-    $datas1 = $datas1->select('月請購_單耗.料號', DB::raw('SUM(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存'))
-        ->groupBy('月請購_單耗.料號')->get();
-    dd($datas1);
-})->middleware('can:viewInbound,App\Models\Inbound');

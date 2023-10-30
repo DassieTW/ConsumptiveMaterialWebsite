@@ -73,12 +73,12 @@ class InboundController extends Controller
         try {
             $res_arr_values = array();
             for ($i = 1; $i < count($Alldata); $i++) {
-                $number = $Alldata[$i][0];
+                $isn = $Alldata[$i][0];
                 $amount = $Alldata[$i][1];
                 $loc = $Alldata[$i][2];
 
                 $temp = array(
-                    "料號" => $number,
+                    "料號" => $isn,
                     '現有庫存' => $amount,
                     '儲位' => $loc,
                     '最後更新時間' => Carbon::now()
@@ -110,8 +110,55 @@ class InboundController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+    //刪除 入庫資訊
+    public function destroy(Request $request)
     {
-        //
-    }
+        $now = Carbon::now();
+        $list = json_decode($request->input('list'));
+        $isn = json_decode($request->input('isn'));
+        $amount = json_decode($request->input('amount'));
+        $position = json_decode($request->input('position'));
+        $inpeople = json_decode($request->input('inpeople'));
+        $inreason = json_decode($request->input('inreason'));
+
+        for ($i = 0; $i < count($list); $i++) {
+            $stock = \DB::table('inventory')->where('料號', $isn)->where('儲位', $position)->sum('現有庫存');
+            $buy = \DB::table('在途量')->where('料號', $isn)->sum('請購數量');
+            \DB::beginTransaction();
+            try {
+                if ($stock < $amount) {
+                    if ($stock === null) $stock = 0;
+
+                    return \Response::json(['stock' => $stock, 'amount' => $amount], 420/* Status code here default is 200 ok*/);
+                } // if
+
+                if ($inreason !== '調撥' && $inreason !== '退庫') {
+                    \DB::table('在途量')
+                        ->where('料號', $isn)
+                        ->update(['請購數量' => $buy + $amount]);
+                } // if
+
+                \DB::table('inventory')
+                    ->where('料號', $isn)
+                    ->where('儲位', $position)
+                    ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
+
+                \DB::table('inbound')
+                    ->where('入庫單號', $list)
+                    ->where('料號', $isn)
+                    ->where('入庫數量', $amount)
+                    ->where('入庫人員', $inpeople)
+                    ->where('入庫原因', $inreason)
+                    ->where('儲位', $position)
+                    ->delete();
+                \DB::commit();
+            } catch (\Exception $e) {
+                \DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+            } // try catch
+
+            return \Response::json(['list' => $list, 'isn' => $isn]/* Status code here default is 200 ok*/);
+        } // for each record to delete
+    } // destroy
 }
