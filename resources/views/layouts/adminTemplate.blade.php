@@ -352,7 +352,7 @@
                                                 <ul id="monthly" class="sidebar-dropdown list-unstyled collapse"
                                                     data-bs-parent="#sidebar" style="">
                                                     <li
-                                                        class="sidebar-item {{ isActiveRoute(['month/consumeadd', 'month/consumenewok', 'month/uploadconsume', 'month/insertuploadconsume']) }}">
+                                                        class="sidebar-item {{ isActiveRoute(['month/consumeadd']) }}">
                                                         <a class="sidebar-link" href="{{ route('month.consumeadd') }}">
                                                             {!! __('templateWords.isnConsumeAdd') !!}
                                                         </a>

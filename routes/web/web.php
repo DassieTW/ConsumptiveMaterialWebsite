@@ -197,6 +197,10 @@ Route::post('/getCurrentDB', function () {
     return DB::connection()->getDatabaseName();
 });
 
+Route::post('/getCurrentUsername', function (Request $request) {
+    return $request->user()->username;
+});
+
 Route::get('/storage/barcodeImg/{filename}', function ($filename) {
     // due to multiple project nginx settings, the php artisan storage:link won't work
     // so we get the storage path ourselves

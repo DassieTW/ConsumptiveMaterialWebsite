@@ -29,7 +29,7 @@
                     {{ $t('monthlyPRpageLang.add') }}
                 </button>
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <button v-if="oneClickBtn" class="col col-auto btn btn-lg btn-warning" @click="addRejectedToTable">
+                <button class="col col-auto btn btn-lg btn-warning" @click="addRejectedToTable">
                     {{ $t('monthlyPRpageLang.loadconsume') }}
                 </button>
             </div>
@@ -105,7 +105,7 @@
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
             <div class="row w-100 justify-content-between">
-                <label class="form-label col col-3">{{ $t('monthlyPRpageLang.surepeopleemail') }}:</label>
+                <label class="form-label col col-auto">{{ $t('monthlyPRpageLang.surepeopleemail') }}:</label>
                 <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="row col col-auto">
                     <div class="input-group">
@@ -166,13 +166,11 @@ export default defineComponent({
         let uploadToDBReady = ref(false); // validation
         const all_mails = reactive([]);
         const file = ref();
-        let oneClickBtn = ref(true);
         let input_data;
         let checkedRows = [];
         const searchTerm = ref(""); // Search text
         const selected_mail = ref(""); // Mail reciever name
         const data = reactive([]); // pour the data into table
-
 
         const findDuplicates = (arr) => {
             let sorted_arr = arr.slice().sort(); // You can define the comparing function here. 
@@ -197,7 +195,7 @@ export default defineComponent({
                 return;
             } // if
             else {
-                await validateISN_manual([isn_input.value]);
+                await validateISN_manual([isn_input.value.trim()]);
                 // console.log(allRowsObj); // test
                 allRowsObj = JSON.parse(manualResult.value);
                 if (allRowsObj.data[0].月請購 === "" || allRowsObj.data[0].月請購 === null || allRowsObj.data[0].月請購.toLowerCase() === "null") {
@@ -211,7 +209,7 @@ export default defineComponent({
                 return;
             } // if
             else {
-                allRowsObj.data[0].料號90 = isn90_input.value;
+                allRowsObj.data[0].料號90 = isn90_input.value.trim();
                 if (data.length == 0) {
                     allRowsObj.data[0].id = 0;
                 } else {
@@ -219,17 +217,26 @@ export default defineComponent({
                 } // if else
                 allRowsObj.data[0].doubleCheck = false;
                 allRowsObj.data[0].單耗 = 0;
+
+                // remove duplicate data from other input
+                let indexOfObject = data.findIndex(object => {
+                    return (object.料號90 === allRowsObj.data[0].料號90 && object.料號 === allRowsObj.data[0].料號);
+                });
+
+                if (indexOfObject != -1) { // if an existing record is found in table
+                    data.splice(indexOfObject, 1);
+                } // if
+
                 data.push(allRowsObj.data[0]);
             } // else
         } // addManually
 
         const addRejectedToTable = async () => {
             await getRejected();
-            oneClickBtn.value = false;
             if (JSON.parse(mats.value).datas.length < 1) {
                 notyf.open({
                     type: "warning",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.nodata"),
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.noload"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
@@ -241,6 +248,14 @@ export default defineComponent({
             } // if
             else {
                 // console.log(mats.value); // test
+
+                // remove all the old rejected data in table
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].doubleCheck) {
+                        data.splice(i, 1);
+                    } // if
+                } // for
+
                 let allRowsObj = JSON.parse(mats.value);
                 for (let i = 0; i < allRowsObj.datas.length; i++) {
                     if (data.length == 0) {
@@ -249,8 +264,30 @@ export default defineComponent({
                         allRowsObj.datas[i].id = parseInt(data[data.length - 1].id) + 1;
                     } // if else
                     allRowsObj.datas[i].doubleCheck = true;
+
+                    // remove duplicate data from other input
+                    let indexOfObject = data.findIndex(object => {
+                        return (object.料號90 === allRowsObj.datas[i].料號90 && object.料號 === allRowsObj.datas[i].料號);
+                    });
+
+                    if (indexOfObject != -1) { // if an existing record is found in table
+                        data.splice(indexOfObject, 1);
+                    } // if
+
                     data.push(allRowsObj.datas[i]);
                 } // for
+
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + allRowsObj.datas.length + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.loadsuccess"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
             } // else
         } // addRejectedToTable
 
@@ -315,7 +352,7 @@ export default defineComponent({
 
         const onInputChange = (event) => {
             isInvalid.value = false;
-            data.splice(0); // cleanup data from previous upload
+            // data.splice(0); // cleanup data from previous upload
             queryResult.value = "";
             file.value = event.target.files ? event.target.files[0] : null;
         } // onInputChange
@@ -342,7 +379,9 @@ export default defineComponent({
                     return parseInt(object.id) === parseInt(deleteID);
                 });
 
-                data.splice(indexOfObject, 1);
+                if (indexOfObject != -1) {
+                    data.splice(indexOfObject, 1);
+                } // if
             } // for
 
             document.querySelectorAll('.vtl-tbody-checkbox').forEach(el => el.checked = false);
@@ -356,10 +395,9 @@ export default defineComponent({
         } // deleteRow
 
         const onSendToDBClick = async () => {
-            // console.log(selected_mail); // test
-            return;
+            // console.log(selected_mail.value); // test
             await triggerModal();
-            console.log("The modal should be triggered by now."); // test
+            // console.log("The modal should be triggered by now."); // test
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
@@ -394,10 +432,7 @@ export default defineComponent({
             if (hasError) {
                 isInvalid_DB.value = true;
                 validation_err_msg.value =
-                    "Excel " +
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.row") +
-                    " " + data[rowsCount].excel_row_num + " " +
-                    "(" + data[rowsCount].料號 + ") " +
+                    data[rowsCount].料號 + " " +
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn");
 
                 notyf.open({
@@ -418,11 +453,11 @@ export default defineComponent({
             } // if
 
             // ----------------------------------------------
-            // validate if there's duplicate values in excel
+            // validate if there's duplicate values in table
             let duplicatedArray = Array();
-            for (let i = 1; i < input_data.length; i++) {
-                if (input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                    duplicatedArray.push(input_data[i][0].trim() + "_" + input_data[i][2].trim());
+            for (let i = 1; i < data.length; i++) {
+                if (data[i].料號 != null && data[i].料號.trim() != "") {
+                    duplicatedArray.push(data[i].料號.trim() + "_" + data[i].料號90.trim());
                 } // if
             } // for
 
@@ -431,7 +466,7 @@ export default defineComponent({
             if (findDuplicatesResult.length > 0) {
                 isInvalid_DB.value = true;
                 validation_err_msg.value =
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.repeated_isn_loc_pair") +
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.repeated_isn_90_pair") +
                     " : " + findDuplicatesResult[0].split("_")[0] +
                     " (" + findDuplicatesResult[0].split("_")[1] + ")";
 
@@ -452,56 +487,20 @@ export default defineComponent({
                 return;
             } // if
             // ----------------------------------------------
-
-            // get existing stock for sum up
-            let tempArr_isn = Array();
-            let tempArr_loc = Array();
-            for (let i = 1; i < input_data.length; i++) {
-                if (input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                    tempArr_isn.push(input_data[i][0].trim());
-                    tempArr_loc.push(input_data[i][2].trim());
-                } // if
+            // prepare the data arrays to be sent
+            let pnArray = [];
+            let pn90Array = [];
+            let ucArray = [];
+            for (let j = 0; j < data.length; j++) {
+                pnArray.push(data[j].料號);
+                pn90Array.push(data[j].料號90);
+                ucArray.push(data[j].單耗);
             } // for
-
-            let start = Date.now();
-            let result = await getExistingStock(tempArr_isn, tempArr_loc); // get the existing stock
-            if (result === "success") {
-                // console.log(JSON.parse(mats.value).data); // test
-                for (let i = 1; i < input_data.length; i++) {
-                    tempArr_isn.push();
-                    tempArr_loc.push(input_data[i][2].trim());
-                    let foundObj = JSON.parse(mats.value).data.find(
-                        (o) => {
-                            return (o.料號 === input_data[i][0].trim() && o.儲位 === input_data[i][2].trim());
-                        });
-
-                    if (foundObj !== undefined) {
-                        input_data[i][1] = parseInt(input_data[i][1]) + parseInt(foundObj.現有庫存);
-                    } // if
-                } // for
-            } // if
-            else {
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-            } // else
-            let timeTaken = Date.now() - start;
-            console.log("Total time taken : " + timeTaken + " milliseconds");
-
+            // console.log(ucArray); //test
             // actually updating database now
-            start = Date.now();
-            result = await uploadToDB(input_data);
-            timeTaken = Date.now() - start;
+            let start = Date.now();
+            let result = await uploadToDB(pnArray, pn90Array, ucArray, selected_mail.value);
+            let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
@@ -545,7 +544,7 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(queryResult.value);
-            // console.log(data.length); // test
+            // console.log(data); // test
             for (let i = 0; i < allRowsObj.data.length; i++) {
                 allRowsObj.data[i].料號90 = input_data[i + 1][0];
                 allRowsObj.data[i].單耗 = input_data[i + 1][2];
@@ -557,9 +556,18 @@ export default defineComponent({
                 allRowsObj.data[i].doubleCheck = false;
 
                 // console.log(allRowsObj.data[i].單耗); // test
+                let indexOfObject = data.findIndex(object => {
+                    return (object.料號90 === allRowsObj.data[i].料號90 && object.料號 === allRowsObj.data[i].料號);
+                });
+
+                if (indexOfObject != -1) { // if an existing record is found in table
+                    data.splice(indexOfObject, 1);
+                } // if
+
                 data.push(allRowsObj.data[i]);
             } // for
 
+            console.log(data); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
@@ -574,7 +582,7 @@ export default defineComponent({
 
         watch(selected_mail, () => {
             if (selected_mail.value != undefined && selected_mail.value != "" && selected_mail.value != null) {
-                uploadToDBReady.value =true;
+                uploadToDBReady.value = true;
             } // if
         });
 
@@ -962,7 +970,6 @@ export default defineComponent({
             table,
             all_mails,
             selected_mail,
-            oneClickBtn,
             updateCheckedRows,
             rowUserInput,
             addManually,

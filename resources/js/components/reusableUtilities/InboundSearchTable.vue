@@ -105,7 +105,9 @@ export default defineComponent({
                             return parseInt(object.id) === parseInt(element.replace('inboundtime', ''));
                         });
 
-                        data.splice(indexOfObject, 1);
+                        if (indexOfObject != -1) {
+                            data.splice(indexOfObject, 1);
+                        } // if
                     });
 
                     document.getElementsByClassName("vtl-tbody-checkbox").forEach(element => {
@@ -141,7 +143,9 @@ export default defineComponent({
                                 return parseInt(object.id) === parseInt(element[3].replace('inboundtime', ''));
                             });
 
-                            data.splice(indexOfObject, 1);
+                            if (indexOfObject != -1) {
+                                data.splice(indexOfObject, 1);
+                            } // if
 
                             let unclickRowNum = parseInt(document.getElementById(element[3]).getAttribute("name").replace('inboundtime', ''));
                             if (document.getElementsByClassName("vtl-tbody-checkbox")[unclickRowNum].checked) {

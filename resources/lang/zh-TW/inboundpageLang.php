@@ -66,6 +66,7 @@ return [
     'download' => '下載',
     'addtodatabase' => '加入庫存',
     'repeated_isn_loc_pair' => '有重複的料號＋儲位',
+    'repeated_isn_90_pair' => '有重複的料號＋90料號',
     'days' => '呆滯天數',
     'price' => '單價',
     'money' => '幣別',

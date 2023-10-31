@@ -66,6 +66,7 @@ return [
     'download' => '下载',
     'addtodatabase' => '加入库存',
     'repeated_isn_loc_pair' => '有重复的料号＋储位',
+    'repeated_isn_90_pair' => '有重复的料号＋90料号',
     'days' => '呆滞天数',
     'price' => '单价',
     'money' => '币别',

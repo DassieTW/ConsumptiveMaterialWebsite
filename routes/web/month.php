@@ -202,15 +202,6 @@ Route::post('/standchangeordelete', [MonthController::class, 'standchangeordelet
 //非月請購刪除
 Route::post('/notmonthdelete', [MonthController::class, 'notmonthdelete'])->name('month.notmonthdelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//新增單耗上傳
-Route::get('/uploadconsume', function () {
-    $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
-    return view('month.consumeadd')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['people' => $people]);
-})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/uploadconsume', [MonthController::class, 'uploadconsume'])->name('month.uploadconsume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //新增站位上傳
 Route::get('/uploadstand', function () {
     $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();

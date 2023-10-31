@@ -49,14 +49,19 @@ export default function useUnitConsumptionSearch() {
         } // try catch
     } // getCheckersMails
 
-    const uploadToDB = async (inputArray) => {
+    const uploadToDB = async (pnArray, pn90Array, ucArray, email) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        // console.log(inputArray); // test
+        let username = await axios.post('/getCurrentUsername');
+        // console.log(username); // test
         try {
             let response = await axios.post('/api/month/send_UC_to_DB', {
                 DB: getDB.data,
-                isnArray: JSON.stringify(inputArray)
+                username: username.data,
+                number: JSON.stringify(pnArray),
+                number90: JSON.stringify(pn90Array),
+                consume: JSON.stringify(ucArray),
+                email: email,
             });
 
             mats.value = JSON.stringify(response.data);
