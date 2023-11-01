@@ -22,6 +22,11 @@
 
 @section('js')
     <!--for this page's sepcified js -->
+    <script>
+        $(function() {
+            sessionStorage.setItem("lookInType", JSON.stringify("1"));
+        });
+    </script>
 @endsection
 @section('content')
     <div id="mountingPoint">
