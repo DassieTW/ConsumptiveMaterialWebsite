@@ -294,12 +294,12 @@ export default defineComponent({
         const onUploadClick = async () => {
             isInvalid_DB.value = false;
             mats.value = "";
+            await triggerModal();
             if (file.value) {
-                await triggerModal();
                 // console.log(file.value); // test
                 if (file.value.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.value.type == "application/vnd.ms-excel" || file.value.type == "application/vnd.ms-excel" || file.value.type == ".csv") {
                     const reader = new FileReader();
-                    reader.onload = (e) => {
+                    reader.onload = async (e) => {
                         /* Parse data */
                         const bstr = e.target.result;
                         const wb = XLSX.read(bstr, { type: 'binary' });
@@ -317,8 +317,9 @@ export default defineComponent({
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
                             let tempArr = Array();
+                            
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
+                                if (input_data[i][1] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
                                     tempArr.push(input_data[i][1].trim());
                                 } // if
                                 else {
@@ -328,7 +329,8 @@ export default defineComponent({
                             } // for
 
                             // console.log(tempArr); // test
-                            validateISN(tempArr);
+                            await triggerModal();
+                            await validateISN(tempArr);
                         } // else
                     };
 
@@ -359,6 +361,7 @@ export default defineComponent({
 
 
         const triggerModal = async () => {
+            console.log("Loading Modal Triggered!"); // test
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
@@ -544,7 +547,7 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(queryResult.value);
-            // console.log(data); // test
+            console.log(allRowsObj); // test
             for (let i = 0; i < allRowsObj.data.length; i++) {
                 allRowsObj.data[i].料號90 = input_data[i + 1][0];
                 allRowsObj.data[i].單耗 = input_data[i + 1][2];
@@ -555,19 +558,10 @@ export default defineComponent({
                 } // if else
                 allRowsObj.data[i].doubleCheck = false;
 
-                // console.log(allRowsObj.data[i].單耗); // test
-                let indexOfObject = data.findIndex(object => {
-                    return (object.料號90 === allRowsObj.data[i].料號90 && object.料號 === allRowsObj.data[i].料號);
-                });
-
-                if (indexOfObject != -1) { // if an existing record is found in table
-                    data.splice(indexOfObject, 1);
-                } // if
-
                 data.push(allRowsObj.data[i]);
             } // for
 
-            console.log(data); // test
+            // console.log(data); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
@@ -758,8 +752,7 @@ export default defineComponent({
                                 '">' +
                                 '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
-                                app.appContext.config.globalProperties.$t("monthlyPRpageLang.row") +
-                                " " + row.excel_row_num +
+                                app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn") +
                                 "</div>"
                             );
                         } // if

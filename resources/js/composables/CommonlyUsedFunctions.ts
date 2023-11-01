@@ -26,6 +26,7 @@ export default function useCommonlyUsedFunctions() {
             });
 
             queryResult.value = JSON.stringify(response.data);
+            // console.log(response.data); // test
             return new Promise((resolve, reject) => {
                 resolve("success");
             });

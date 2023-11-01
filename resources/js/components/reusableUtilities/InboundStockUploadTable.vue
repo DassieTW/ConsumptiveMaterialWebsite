@@ -121,12 +121,12 @@ export default defineComponent({
         const onUploadClick = async () => {
             isInvalid_DB.value = false;
             mats.value = "";
+            await triggerModal();
             if (file.value) {
-                await triggerModal();
                 // console.log(file.value); // test
                 if (file.value.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.value.type == "application/vnd.ms-excel" || file.value.type == "application/vnd.ms-excel" || file.value.type == ".csv") {
                     const reader = new FileReader();
-                    reader.onload = (e) => {
+                    reader.onload = async (e) => {
                         /* Parse data */
                         const bstr = e.target.result;
                         const wb = XLSX.read(bstr, { type: 'binary' });
@@ -145,7 +145,7 @@ export default defineComponent({
                         } else {
                             let tempArr = Array();
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
+                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
                                     tempArr.push(input_data[i][0].trim());
                                 } // if
                                 else {
@@ -155,7 +155,8 @@ export default defineComponent({
                             } // for
 
                             // console.log(tempArr); // test
-                            validateISN(tempArr);
+                            await triggerModal();
+                            await validateISN(tempArr);
                         } // else
                     };
 

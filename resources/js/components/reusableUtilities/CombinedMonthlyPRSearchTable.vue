@@ -143,7 +143,7 @@ export default defineComponent({
                     if (file.value) {
                         const reader = new FileReader();
 
-                        reader.onload = (e) => {
+                        reader.onload = async (e) => {
                             /* Parse data */
                             const bstr = e.target.result;
                             const wb = XLSX.read(bstr, { type: 'binary' });
@@ -155,12 +155,13 @@ export default defineComponent({
                             // console.log(input_data); // data[row#][col#]  test
                             let tempArr = Array();
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
+                                if (input_data[i][0] != undefined && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
                                     tempArr.push(input_data[i][0].trim());
                                 } // if
                             } // for
 
-                            validateISN(tempArr);
+                            await triggerModal();
+                            await validateISN(tempArr);
                             getExistingStock(input_data);
                         };
 
@@ -182,6 +183,8 @@ export default defineComponent({
 
             file.value = null;
             document.getElementById('excel_input').value = "";
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
         } // onUploadClick
 
         const onInputChange = (event) => {

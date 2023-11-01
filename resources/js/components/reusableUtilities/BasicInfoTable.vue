@@ -88,9 +88,9 @@ export default defineComponent({
         const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
         watch(mats, () => {
-            console.log(JSON.parse(mats.value)); // test
+            // console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
-            console.log(allRowsObj.datas.length);
+            // console.log(allRowsObj.datas.length);
             for (let i = 0; i < allRowsObj.senders.length; i++) {
                 senders.push(allRowsObj.senders[i]);
             } // for
