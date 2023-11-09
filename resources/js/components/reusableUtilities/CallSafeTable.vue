@@ -1,45 +1,23 @@
 <template>
     <div class="row" style="text-align: left">
         <div class="col col-auto">
-            <label for="pnInput" class="col-form-label"
-                >{{ $t("basicInfoLang.quicksearch") }} :</label
-            >
+            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
         </div>
         <div class="col col-3 p-0 m-0">
-            <input
-                id="pnInput"
-                class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('basicInfoLang.enterisn')"
-                v-model="searchTerm"
-            />
+            <input id="pnInput" class="text-center form-control form-control-lg"
+                v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite
-        :is-fixed-first-column="true"
-        :isStaticMode="true"
-        :isSlotMode="true"
-        :hasCheckbox="true"
-        :messages="table.messages"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-        :page-options="table.pageOptions"
-        :sortable="table.sortable"
-        @do-search="doSearch"
-        @is-finished="table.isLoading = false"
-        @return-checked-rows="updateCheckedRows"
-    >
+    <table-lite :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="true"
+        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+        :page-options="table.pageOptions" :sortable="table.sortable" @do-search="doSearch"
+        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
         <template v-slot:月請購="{ row, key }">
             <div v-if="row.月請購 == '是'">
-                <select
-                    @change="(event) => (row.月請購 = event.target.value)"
-                    style="width: 7ch"
-                    class="col col-auto form-select form-select-lg p-0 m-0"
-                    :id="'month' + key"
-                    :name="'month' + key"
-                >
+                <select @change="(event) => (row.月請購 = event.target.value)" style="width: 7ch"
+                    class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + key" :name="'month' + key">
                     <option value="是" selected>
                         {{ $t("basicInfoLang.yes") }}
                     </option>
@@ -47,13 +25,8 @@
                 </select>
             </div>
             <div v-else>
-                <select
-                    @change="(event) => (row.月請購 = event.target.value)"
-                    style="width: 7ch"
-                    class="col col-auto form-select form-select-lg p-0 m-0"
-                    :id="'month' + key"
-                    :name="'month' + key"
-                >
+                <select @change="(event) => (row.月請購 = event.target.value)" style="width: 7ch"
+                    class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + key" :name="'month' + key">
                     <option value="是">{{ $t("basicInfoLang.yes") }}</option>
                     <option value="否" selected>
                         {{ $t("basicInfoLang.no") }}
@@ -64,15 +37,8 @@
 
         <template v-slot:安全庫存="{ row, key }">
             <div v-if="row.月請購 == '否'">
-                <input
-                    class="form-control text-center p-0 m-0"
-                    style="width: 8ch"
-                    type="number"
-                    :id="'safe' + key"
-                    :name="'safe' + key"
-                    :value="row.安全庫存"
-                    min="0"
-                />
+                <input class="form-control text-center p-0 m-0" style="width: 8ch" type="number" :id="'safe' + key"
+                    :name="'safe' + key" :value="row.安全庫存" min="0" />
             </div>
             <div v-else>{{ $t("basicInfoLang.differ_by_client") }}</div>
         </template>
@@ -566,3 +532,10 @@ export default defineComponent({
     }, // setup
 });
 </script>
+<style scoped>
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
+    color: #fff;
+    background-color: #196241;
+    border-color: #196241;
+}
+</style>

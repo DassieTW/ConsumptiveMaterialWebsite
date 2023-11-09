@@ -1,35 +1,19 @@
 <template>
     <div class="row" style="text-align: left">
         <div class="col col-auto">
-            <label for="pnInput" class="col-form-label"
-                >{{ $t("basicInfoLang.quicksearch") }} :</label
-            >
+            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
         </div>
         <div class="col col-3 p-0 m-0">
-            <input
-                id="pnInput"
-                class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('basicInfoLang.enterisn')"
-                v-model="searchTerm"
-            />
+            <input id="pnInput" class="text-center form-control form-control-lg"
+                v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite
-        :is-fixed-first-column="true"
-        :is-static-mode="true"
-        :hasCheckbox="false"
-        :isLoading="table.isLoading"
-        :messages="table.messages"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-        :page-options="table.pageOptions"
-        :sortable="table.sortable"
-        @is-finished="table.isLoading = false"
-        @return-checked-rows="updateCheckedRows"
-    ></table-lite>
+    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
+        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+        :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
+        @return-checked-rows="updateCheckedRows"></table-lite>
 </template>
 
 <script>
@@ -567,3 +551,10 @@ export default defineComponent({
     }, // setup
 });
 </script>
+<style scoped>
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
+    color: #fff;
+    background-color: #196241;
+    border-color: #196241;
+}
+</style>

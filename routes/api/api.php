@@ -34,3 +34,5 @@ Route::post('/news', function (Request $request) {
 
 Route::post('/validateISN', 'api\CommonlyUsedController@showISN');
 Route::post('/getLocs', 'api\CommonlyUsedController@showLocs');
+
+Route::post('/SSZ', 'api\SSZPickMatsController@store');

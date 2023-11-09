@@ -89,11 +89,6 @@ Route::post('/notmonthaddok', function (Request $request) {
 //非月請購提交
 Route::post('/notmonthsubmit', [MonthController::class, 'notmonthsubmit'])->name('month.notmonthsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//月請購查詢
-Route::get('/monthinf', [MonthController::class, 'monthsearchoradd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/monthinf', [MonthController::class, 'monthsearchoradd'])->name('month.monthsearchoradd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //月請購刪除
 Route::post('/monthdelete', [MonthController::class, 'monthdelete'])->name('month.monthdelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 

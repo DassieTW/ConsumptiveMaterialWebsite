@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Sentry\Util\JSON;
 
 class MonthlyPRController extends Controller
 {
@@ -24,10 +25,44 @@ class MonthlyPRController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeMonthlyPR(Request $request)
     {
-        //
-    }
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+        $now = Carbon::now();
+        $data_length = count(json_decode($request->input('number')));
+        try {
+            $res_arr_values = array();
+            for ($i = 0; $i < $data_length; $i++) {
+                $temp = array(
+                    "料號" => json_decode($request->input('number'))[$i],
+                    "料號90" => json_decode($request->input('number90'))[$i],
+                    "下月MPS" => json_decode($request->input('nextmps'))[$i],
+                    "下月生產天數" => json_decode($request->input('nextday'))[$i],
+                    "本月MPS" => json_decode($request->input('nowmps'))[$i],
+                    "本月生產天數" => json_decode($request->input('nowday'))[$i],
+                    "填寫時間" => $now
+                );
+
+                $res_arr_values[] = $temp;
+            } //for
+
+            \DB::beginTransaction();
+
+            $count = \DB::table('MPS')->upsert(
+                $res_arr_values,
+                ['料號', '料號90'],
+                ['下月MPS', '下月生產天數', '本月MPS', '本月生產天數', '填寫時間']
+            );
+
+            \DB::commit();
+            return \Response::json(['record' => $count] /* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+        } // try - catch
+    } // storeMonthlyPR
 
     /**
      * Display the specified resource.
@@ -140,6 +175,18 @@ class MonthlyPRController extends Controller
         return \Response::json(['data' => $people, "dbName" => $dbName]/* Status code here default is 200 ok*/);
     } // showCheckersEmail
 
+    public function showMPS(Request $request) // get 月請購
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
+        $results = \DB::table('MPS')
+            ->get();
+
+        return \Response::json(['data' => $results, "dbName" => $dbName]/* Status code here default is 200 ok*/);
+    } // showMPS
+
     /**
      * Update the specified resource in storage.
      *
@@ -147,10 +194,6 @@ class MonthlyPRController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     //send consume mail
     public static function sendconsumemail($email, $username, $database)
@@ -224,8 +267,34 @@ class MonthlyPRController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroyMPS(Request $request)
     {
-        //
-    }
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $database = \DB::connection()->getDatabaseName(); // test
+
+        $number = json_decode($request->input('isn'));
+        $number90 = json_decode($request->input('isn90'));
+        $query = \DB::table('MPS');
+        for ($i = 0; $i < count($number90); $i++) {
+            $single_isn =  $number[$i];
+            $single_isn90 = $number90[$i];
+            $query->orWhere(
+                function ($semiquery) use ($single_isn, $single_isn90) {
+                    $semiquery->where('料號', '=', $single_isn)
+                        ->where('料號90', '=', $single_isn90);
+                }
+            );
+        } //for
+
+        \DB::beginTransaction();
+        try {
+            $result = $query->delete();
+            \DB::commit();
+            return \Response::json(['deleted_rows_count' => $result]/* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+        } //catch
+    } // destroyMPS
 }

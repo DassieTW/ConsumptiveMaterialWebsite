@@ -408,18 +408,7 @@ class MonthController extends Controller
     //月請購查詢 or 添加
     public function monthsearchoradd(Request $request)
     {
-        //search
-        if ($request->has('search')) {
-
-            $datas = DB::table('MPS')
-                ->where('料號', 'like', $request->input('number') . '%')
-                ->where('料號90', 'like', $request->input('number90') . '%')
-                ->get();
-            // if else
-            return view('month.monthsearchok')->with(['data' => $datas]);
-        } // if
-        //add
-        else if ($request->has('add')) {
+        if ($request->has('add')) {
             $name = DB::table('consumptive_material')->where('料號', $request->input('number'))
                 // ->where('耗材歸屬', '單耗')
                 ->where('月請購', '是')
@@ -464,70 +453,6 @@ class MonthController extends Controller
             return redirect(route('month.importmonth'));
         } // if else
     } // monthsearchoradd
-
-    //月請購刪除
-    public function monthdelete(Request $request)
-    {
-        $count = $request->input('count');
-        $number = $request->input('number');
-        $number90 = $request->input('number90');
-        DB::beginTransaction();
-        try {
-            for ($i = 0; $i < $count; $i++) {
-
-                DB::table('MPS')
-                    ->where('料號', $number[$i])
-                    ->where('料號90', $number90[$i])
-                    ->delete();
-            } //for
-            DB::commit();
-            return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-        } //catch
-    }
-
-    //月請購提交
-    public function monthsubmit(Request $request)
-    {
-        $count = $request->input('count');
-        $now = Carbon::now();
-
-        try {
-            $res_arr_values = array();
-            for ($i = 0; $i < $count; $i++) {
-                $temp = array(
-                    // "客戶別" => $request->input('client')[$i],
-                    // "機種" => $request->input('machine')[$i],
-                    // "製程" => $request->input('production')[$i],
-                    "料號" => $request->input('number')[$i],
-                    "料號90" => $request->input('number90')[$i],
-                    "下月MPS" => $request->input('nextmps')[$i],
-                    "下月生產天數" => $request->input('nextday')[$i],
-                    "本月MPS" => $request->input('nowmps')[$i],
-                    "本月生產天數" => $request->input('nowday')[$i],
-                    "填寫時間" => $now
-                );
-
-                $res_arr_values[] = $temp;
-            } //for
-
-            DB::beginTransaction();
-
-            DB::table('MPS')->upsert(
-                $res_arr_values,
-                ['料號', '料號90'],
-                ['下月MPS', '下月生產天數', '本月MPS', '本月生產天數', '填寫時間']
-            );
-
-            DB::commit();
-            return \Response::json(['record' => $count] /* Status code here default is 200 ok*/);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
-        } // try - catch
-    } // monthsubmit
 
     //SRM單(查詢)
     public function srmsearch(Request $request)

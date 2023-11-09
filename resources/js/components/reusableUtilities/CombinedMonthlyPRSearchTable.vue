@@ -309,22 +309,38 @@ export default defineComponent({
             });
 
             let allRowsObj = JSON.parse(queryResult.value);
-            //console.log(allRowsObj.data.length);
-            for (let i = 0; i < allRowsObj.data.length; i++) {
-                allRowsObj.data[i].數量 = parseInt(
-                    input_data[i + 1][1]
-                );
+            // console.log(allRowsObj.data); // test
+            let singleEntry = {};
 
-                allRowsObj.data[i].儲位 = input_data[i + 1][2].trim();
-                allRowsObj.data[i].excel_row_num = i + 1;
+            for (let i = 1; i < input_data.length; i++) {
+                singleEntry.料號90 = input_data[i][0].toString().trim();
+                singleEntry.料號 = input_data[i][1].toString().trim();
+                singleEntry.單耗 = input_data[i][2];
+                singleEntry.doubleCheck = false;
 
-                data.push(allRowsObj.data[i]);
+                if (data.length == 0) {
+                    singleEntry.id = 0;
+                } else {
+                    singleEntry.id = parseInt(data[data.length - 1].id) + 1;
+                } // if else
+
+                let indexOfObject = allRowsObj.data.findIndex(object => {
+                    return (object.料號 === singleEntry.料號);
+                });
+
+                if (indexOfObject != -1) { // if an existing record is found
+                    singleEntry = Object.assign(singleEntry, allRowsObj.data[indexOfObject]);
+                    // console.log(singleEntry); // test
+                } // if
+                else {
+                    singleEntry.月請購 = "";
+                } // else
+
+                data.push(singleEntry);
+                singleEntry = {};
             } // for
 
-            JSON.parse(locations.value).data.forEach(element => {
-                locsArray.push(element.儲存位置);
-            });
-
+            // console.log(data); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
@@ -656,3 +672,10 @@ export default defineComponent({
     }, // setup
 });
 </script>
+<style scoped>
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
+    color: #fff;
+    background-color: #196241;
+    border-color: #196241;
+}
+</style>

@@ -40,7 +40,7 @@ class CommonlyUsedController extends Controller
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
 
-        $inputArray = json_decode($request->isnArray);
+        $inputArray = json_decode($request->input('isnArray'));
         $combinedValueStr = "";
         foreach ($inputArray as $singleIsn) {
             if ($combinedValueStr == "") {

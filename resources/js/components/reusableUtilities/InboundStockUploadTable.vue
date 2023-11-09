@@ -300,9 +300,10 @@ export default defineComponent({
             // ----------------------------------------------
             // validate if there's duplicate values in excel
             let duplicatedArray = Array();
-            for (let i = 1; i < input_data.length; i++) {
-                if (input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                    duplicatedArray.push(input_data[i][0].trim() + "_" + input_data[i][2].trim());
+            for (let i = 0; i < data.length; i++) {
+                // console.log(data[i].料號.trim() + "_" + data[i].儲位.toString().trim()); // test
+                if (data[i].料號 != null && data[i].料號.trim() != "") {
+                    duplicatedArray.push(data[i].料號.toString().trim() + "_" + data[i].儲位.toString().trim());
                 } // if
             } // for
 
@@ -426,16 +427,35 @@ export default defineComponent({
 
             let allRowsObj = JSON.parse(queryResult.value);
             // console.log(allRowsObj.data.length);
-            for (let i = 0; i < allRowsObj.data.length; i++) {
-                allRowsObj.data[i].數量 = parseInt(
-                    input_data[i + 1][1]
+            let singleEntry = {};
+
+            for (let i = 1; i < input_data.length; i++) {
+                singleEntry.料號 = input_data[i][0].toString().trim();
+                singleEntry.數量 = parseInt(
+                    input_data[i][1]
                 );
+                singleEntry.儲位 = input_data[i][2].toString().trim();
+                singleEntry.excel_row_num = i + 1;
 
-                // console.log(input_data[i + 1][2]); // test
-                allRowsObj.data[i].儲位 = input_data[i + 1][2].toString().trim();
-                allRowsObj.data[i].excel_row_num = i + 1;
+                if (data.length == 0) {
+                    singleEntry.id = 0;
+                } else {
+                    singleEntry.id = parseInt(data[data.length - 1].id) + 1;
+                } // if else
 
-                data.push(allRowsObj.data[i]);
+                let indexOfObject = allRowsObj.data.findIndex(object => {
+                    return (object.料號 === singleEntry.料號);
+                });
+
+                if (indexOfObject != -1) { // if an existing record is found
+                    singleEntry = Object.assign(singleEntry, allRowsObj.data[indexOfObject]);
+                } // if
+                else {
+                    singleEntry.月請購 = "";
+                } // else
+
+                data.push(singleEntry);
+                singleEntry = {};
             } // for
 
             JSON.parse(locations.value).data.forEach(element => {
@@ -773,3 +793,10 @@ export default defineComponent({
     }, // setup
 });
 </script>
+<style scoped>
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
+    color: #fff;
+    background-color: #196241;
+    border-color: #196241;
+}
+</style>

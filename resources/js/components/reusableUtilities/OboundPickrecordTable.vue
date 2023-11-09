@@ -589,3 +589,10 @@ export default defineComponent({
     }, // setup
 });
 </script>
+<style scoped>
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
+    color: #fff;
+    background-color: #196241;
+    border-color: #196241;
+}
+</style>

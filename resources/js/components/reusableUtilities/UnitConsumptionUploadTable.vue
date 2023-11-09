@@ -317,7 +317,7 @@ export default defineComponent({
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
                             let tempArr = Array();
-                            
+
                             for (let i = 1; i < input_data.length; i++) {
                                 if (input_data[i][1] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
                                     tempArr.push(input_data[i][1].trim());
@@ -458,9 +458,9 @@ export default defineComponent({
             // ----------------------------------------------
             // validate if there's duplicate values in table
             let duplicatedArray = Array();
-            for (let i = 1; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 if (data[i].料號 != null && data[i].料號.trim() != "") {
-                    duplicatedArray.push(data[i].料號.trim() + "_" + data[i].料號90.trim());
+                    duplicatedArray.push(data[i].料號.toString().trim() + "_" + data[i].料號90.toString().trim());
                 } // if
             } // for
 
@@ -469,7 +469,7 @@ export default defineComponent({
             if (findDuplicatesResult.length > 0) {
                 isInvalid_DB.value = true;
                 validation_err_msg.value =
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.repeated_isn_90_pair") +
+                    app.appContext.config.globalProperties.$t("inboundpageLang.repeated_isn_90_pair") +
                     " : " + findDuplicatesResult[0].split("_")[0] +
                     " (" + findDuplicatesResult[0].split("_")[1] + ")";
 
@@ -547,18 +547,35 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(queryResult.value);
-            console.log(allRowsObj); // test
-            for (let i = 0; i < allRowsObj.data.length; i++) {
-                allRowsObj.data[i].料號90 = input_data[i + 1][0];
-                allRowsObj.data[i].單耗 = input_data[i + 1][2];
-                if (data.length == 0) {
-                    allRowsObj.data[i].id = 0;
-                } else {
-                    allRowsObj.data[i].id = parseInt(data[data.length - 1].id) + 1;
-                } // if else
-                allRowsObj.data[i].doubleCheck = false;
+            // console.log(allRowsObj.data); // test
+            let singleEntry = {};
 
-                data.push(allRowsObj.data[i]);
+            for (let i = 1; i < input_data.length; i++) {
+                singleEntry.料號90 = input_data[i][0].toString().trim();
+                singleEntry.料號 = input_data[i][1].toString().trim();
+                singleEntry.單耗 = input_data[i][2];
+                singleEntry.doubleCheck = false;
+
+                if (data.length == 0) {
+                    singleEntry.id = 0;
+                } else {
+                    singleEntry.id = parseInt(data[data.length - 1].id) + 1;
+                } // if else
+
+                let indexOfObject = allRowsObj.data.findIndex(object => {
+                    return (object.料號 === singleEntry.料號);
+                });
+
+                if (indexOfObject != -1) { // if an existing record is found
+                    singleEntry = Object.assign(singleEntry, allRowsObj.data[indexOfObject]);
+                    // console.log(singleEntry); // test
+                } // if
+                else {
+                    singleEntry.月請購 = "";
+                } // else
+
+                data.push(singleEntry);
+                singleEntry = {};
             } // for
 
             // console.log(data); // test
@@ -661,7 +678,7 @@ export default defineComponent({
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.90isn"
                     ),
-                    field: "90料號",
+                    field: "料號90",
                     width: "15ch",
                     sortable: true,
                     display: function (row, i) {
@@ -975,3 +992,10 @@ export default defineComponent({
     }, // setup
 });
 </script>
+<style scoped>
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
+    color: #fff;
+    background-color: #196241;
+    border-color: #196241;
+}
+</style>

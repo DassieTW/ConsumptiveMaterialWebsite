@@ -37,7 +37,7 @@
             <div class="card-header">
                 <h3>{!! __('monthlyPRpageLang.importMonthlyData') !!}</h3>
                 <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
-                    placeholder="{!! __('monthlyPRpageLang.enter90isn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                    placeholder="{!! __('monthlyPRpageLang.enter90isn') !!}"
                     style="width: 200px">
 
             </div>
