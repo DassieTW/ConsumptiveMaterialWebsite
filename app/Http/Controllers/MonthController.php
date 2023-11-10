@@ -375,6 +375,7 @@ class MonthController extends Controller
         $row = $request->input('row');
         $now = Carbon::now();
         $check = array();
+        $record = 0;
         try {
             $res_arr_values = array();
             for ($i = 0; $i < $count; $i++) {
@@ -391,19 +392,25 @@ class MonthController extends Controller
 
             DB::beginTransaction();
 
-            DB::table('非月請購')->upsert(
-                $res_arr_values,
-                ['料號'],
-                ['請購數量', '上傳時間', '說明']
-            );
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 200, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('非月請購')->upsert(
+                    $whole_load[$i],
+                    ['料號'],
+                    ['請購數量', '上傳時間', '說明']
+                );
+
+                $record = $record + $temp_record;
+            } // for
 
             DB::commit();
-            return \Response::json(['record' => $count, 'check' => $row] /* Status code here default is 200 ok*/);
+            return \Response::json(['record' => $record, 'check' => $row] /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
         }
-    }
+    } // notmonthsubmit
 
     //月請購查詢 or 添加
     public function monthsearchoradd(Request $request)

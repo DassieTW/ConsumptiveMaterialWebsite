@@ -16,7 +16,6 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
 // import TableLite from "./TableLite.vue";
 import MonthlyPRImportTable from "./MonthlyPRImportTable.vue";
 import MonthlyPRSearchTable from "./MonthlyPRSearchTable.vue";

@@ -203,7 +203,7 @@ class CallController extends Controller
     //安全庫存備註
     public function saferemark(Request $request)
     {
-
+        $record = 0;
         $number = $request->input('number');
         $remark = $request->input('remark');
         if ($number === null) {
@@ -222,19 +222,27 @@ class CallController extends Controller
                 } //for
 
                 DB::beginTransaction();
-                DB::table('safestock報警備註')->upsert(
-                    $res_arr_values,
-                    ['料號'],
-                    ['備註']
-                );
+
+                // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+                $whole_load = array_chunk($res_arr_values, 200, true);
+                for ($i = 0; $i < count($whole_load); $i++) {
+                    $temp_record = \DB::table('safestock報警備註')->upsert(
+                        $whole_load[$i],
+                        ['料號'],
+                        ['備註']
+                    );
+
+                    $record = $record + $temp_record;
+                } // for
+
                 DB::commit();
+
+                return \Response::json(["record" => $record]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
                 $mess = $e->getMessage();
                 return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
             } // try catch
-
-            return \Response::json([]/* Status code here default is 200 ok*/);
         } // if else
     } // saferemark
 
@@ -244,6 +252,7 @@ class CallController extends Controller
         $number = $request->input('number');
         $remark = $request->input('remark');
         $client = $request->input('client');
+        $record = 0;
         if ($number === null) {
             return \Response::json([]/* Status code here default is 200 ok*/);
         } else {
@@ -260,19 +269,27 @@ class CallController extends Controller
                 } //for
 
                 DB::beginTransaction();
-                DB::table('sluggish報警備註')->upsert(
-                    $res_arr_values,
-                    ['料號'],
-                    ['備註']
-                );
+
+                // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+                $whole_load = array_chunk($res_arr_values, 200, true);
+                for ($i = 0; $i < count($whole_load); $i++) {
+                    $temp_record = \DB::table('sluggish報警備註')->upsert(
+                        $whole_load[$i],
+                        ['料號'],
+                        ['備註']
+                    );
+
+                    $record = $record + $temp_record;
+                } // for
+
                 DB::commit();
+
+                return \Response::json(['records' => $record]/* Status code here default is 200 ok*/);
             } catch (\Exception $e) {
                 DB::rollback();
                 $mess = $e->getMessage();
                 return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
-            }
-
-            return \Response::json([]/* Status code here default is 200 ok*/);
+            } // try catch
         } // if else
     } // dayremark
 }

@@ -31,6 +31,7 @@ class MonthlyPRController extends Controller
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
         $now = Carbon::now();
+        $record = 0;
         $data_length = count(json_decode($request->input('number')));
         try {
             $res_arr_values = array();
@@ -50,14 +51,20 @@ class MonthlyPRController extends Controller
 
             \DB::beginTransaction();
 
-            $count = \DB::table('MPS')->upsert(
-                $res_arr_values,
-                ['料號', '料號90'],
-                ['下月MPS', '下月生產天數', '本月MPS', '本月生產天數', '填寫時間']
-            );
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 200, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('MPS')->upsert(
+                    $whole_load[$i],
+                    ['料號', '料號90'],
+                    ['下月MPS', '下月生產天數', '本月MPS', '本月生產天數', '填寫時間']
+                );
+
+                $record = $record + $temp_record;
+            } // for
 
             \DB::commit();
-            return \Response::json(['record' => $count] /* Status code here default is 200 ok*/);
+            return \Response::json(['record' => $record] /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             \DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
@@ -240,12 +247,18 @@ class MonthlyPRController extends Controller
             } //for
 
             \DB::beginTransaction();
+            
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 200, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('月請購_單耗')->upsert(
+                    $whole_load[$i],
+                    ['料號', '料號90'],
+                    ['單耗', '畫押信箱', '狀態', '送單時間', '送單人']
+                );
 
-            $record = \DB::table('月請購_單耗')->upsert(
-                $res_arr_values,
-                ['料號', '料號90'],
-                ['單耗', '畫押信箱', '狀態', '送單時間', '送單人']
-            );
+                $record = $record + $temp_record;
+            } // for
 
             \DB::commit();
 

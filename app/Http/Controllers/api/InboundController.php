@@ -63,12 +63,12 @@ class InboundController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request) // 庫存上傳
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
-
+        $record = 0;
         $Alldata = json_decode($request->input('isnArray'));
         try {
             $res_arr_values = array();
@@ -89,11 +89,17 @@ class InboundController extends Controller
 
             \DB::beginTransaction();
 
-            $record = \DB::table('inventory')->upsert(
-                $res_arr_values,
-                ['料號', '儲位'],
-                ['料號', '儲位', '現有庫存', '最後更新時間']
-            );
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 200, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('inventory')->upsert(
+                    $whole_load[$i],
+                    ['料號', '儲位'],
+                    ['料號', '儲位', '現有庫存', '最後更新時間']
+                );
+
+                $record = $record + $temp_record;
+            } // for
 
             \DB::commit();
 
