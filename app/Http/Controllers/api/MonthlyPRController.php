@@ -236,7 +236,7 @@ class MonthlyPRController extends Controller
                 $temp = array(
                     "料號" => $number[$i],
                     '料號90' => $number90[$i],
-                    '單耗' => $consume[$i],
+                    '單耗' => floatval($consume[$i]),
                     '畫押信箱' => $email,
                     '狀態' => "待畫押",
                     '送單時間' => Carbon::now(),
