@@ -31,5 +31,8 @@ Route::post('/send_UC_to_DB', 'api\MonthlyPRController@update_UnitConsumption');
 Route::post('/mps', 'api\MonthlyPRController@showMPS');
 Route::post('/delete_mps', 'api\MonthlyPRController@destroyMPS');
 Route::post('/submit_monthlypr', 'api\MonthlyPRController@storeMonthlyPR');
+Route::post('/delete_nonmps', 'api\MonthlyPRController@destroyNonMPS');
+Route::post('/submit_nonmonthlypr', 'api\MonthlyPRController@storeNonMonthlyPR');
+
 
 

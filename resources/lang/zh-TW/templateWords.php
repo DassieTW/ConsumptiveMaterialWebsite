@@ -23,6 +23,7 @@ return [
     'inbound' => '入庫',
     'outbound' => '出庫',
     'monthly' => '月請購',
+    'nonmonthly' => '非月請購',
     'obound' => 'O庫',
     'callsys' => '報警系統',
     'bu' => 'BU耗材管理',

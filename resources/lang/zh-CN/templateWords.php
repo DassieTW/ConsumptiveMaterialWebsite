@@ -25,6 +25,7 @@ return [
     'inbound' => '入库',
     'outbound' => '出库',
     'monthly' => '月请购',
+    'nonmonthly' => '非月请购',
     'obound' => 'O库',
     'callsys' => '报警系统',
     'bu' => 'BU耗材管理',

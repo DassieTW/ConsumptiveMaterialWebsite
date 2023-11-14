@@ -71,6 +71,50 @@ class MonthlyPRController extends Controller
         } // try - catch
     } // storeMonthlyPR
 
+    public function storeNonMonthlyPR(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
+        $count = count(json_decode($request->input('number')));
+        $now = Carbon::now();
+        $record = 0;
+        try {
+            $res_arr_values = array();
+            for ($i = 0; $i < $count; $i++) {
+                $temp = array(
+                    "料號" => json_decode($request->input('number'))[$i],
+                    "請購數量" => json_decode($request->input('amount'))[$i],
+                    "說明" => json_decode($request->input('desc'))[$i],
+                    "上傳時間" => $now,
+                );
+
+                $res_arr_values[] = $temp;
+            } // for
+
+            \DB::beginTransaction();
+
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 200, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('非月請購')->upsert(
+                    $whole_load[$i],
+                    ['料號'],
+                    ['請購數量', '上傳時間', '說明']
+                );
+
+                $record = $record + $temp_record;
+            } // for
+
+            \DB::commit();
+            return \Response::json(['record' => $record] /* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+        } // try catch
+    } // storeNonMonthlyPR
+
     /**
      * Display the specified resource.
      *
@@ -92,7 +136,7 @@ class MonthlyPRController extends Controller
             })->get();
 
 
-        return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
+        return \Response::json(['data' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showNonMonthly
 
     public function showTransit(Request $request) // get 在途量
@@ -247,7 +291,7 @@ class MonthlyPRController extends Controller
             } //for
 
             \DB::beginTransaction();
-            
+
             // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
             $whole_load = array_chunk($res_arr_values, 200, true);
             for ($i = 0; $i < count($whole_load); $i++) {
@@ -272,7 +316,7 @@ class MonthlyPRController extends Controller
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
         } //try - catch
 
-    } // consumenewsubmit
+    } // update_UnitConsumption
 
     /**
      * Remove the specified resource from storage.
@@ -310,4 +354,25 @@ class MonthlyPRController extends Controller
             return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
         } //catch
     } // destroyMPS
+
+    public function destroyNonMPS(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $database = \DB::connection()->getDatabaseName(); // test
+
+        $count = count(json_decode($request->input('number')));
+        $number = json_decode($request->input('number'));
+        \DB::beginTransaction();
+        try {
+            \DB::table('非月請購')
+                ->whereIn('料號', $number)
+                ->delete();
+            \DB::commit();
+            return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+        } //catch
+    } // destroyNonMPS
 }

@@ -77,7 +77,7 @@ return [
     'add' => '添加',
     'exampleExcel' => '範例格式下載',
     'plz_upload' => '請上傳Excel檔',
-    'upload' => '批量上傳',
+    'upload' => '上傳',
     'isnlength' => '料號長度不為12',
     'noisn' => '料號不存在',
     'format' => '規格',
@@ -155,5 +155,6 @@ return [
     '90isnlength' => '90料號長度不為12',
     'exportspan' => '僅會匯出本次請購數量 >0 資料',
     'please_utilize' => '請透過',
-    'to_update_unit_price' => '更新單價'
+    'to_update_unit_price' => '更新單價',
+    'repeated_isn' => '有重複的料號',
 ];

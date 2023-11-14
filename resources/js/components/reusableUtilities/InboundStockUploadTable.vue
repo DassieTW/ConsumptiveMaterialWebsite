@@ -467,6 +467,10 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         }); // watch for data change
 
+        watch(data, () => {
+            document.getElementsByClassName("vtl-table")[0].scrollIntoView({ behavior: "smooth" });
+        });
+
         // Table config
         const table = reactive({
             isLoading: false,

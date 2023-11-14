@@ -43,6 +43,23 @@
             -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
             background-color: rgba(0, 0, 0, 0.3);
         }
+
+        .scrollableWithoutScrollbar::-webkit-scrollbar-track {
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            border-radius: 4px;
+            background-color: #F5F5F5;
+        }
+
+        .scrollableWithoutScrollbar::-webkit-scrollbar {
+            height: 4px;
+            -webkit-appearance: none;
+        }
+
+        .scrollableWithoutScrollbar::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            background-color: rgba(0, 0, 0, 0.3);
+        }
     </style>
     @yield('css')
     {{-- local lang for js --}}
@@ -160,8 +177,7 @@
                                         @can('viewBasicInfo', App\Models\ConsumptiveMaterial::class)
                                             <li class="sidebar-item {{ isActiveRoute(['basic/', 'basic.index']) }}">
                                                 <a data-bs-target="#basicInfo" data-bs-toggle="collapse"
-                                                    class="sidebar-link collapsed" aria-expanded="false"
-                                                    id="myCollapsible">
+                                                    class="sidebar-link collapsed" aria-expanded="false" id="myCollapsible">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         fill="currentColor" class="bi bi-info-circle align-middle me-2"
                                                         viewBox="0 0 16 16">
@@ -351,8 +367,7 @@
                                                 </a>
                                                 <ul id="monthly" class="sidebar-dropdown list-unstyled collapse"
                                                     data-bs-parent="#sidebar" style="">
-                                                    <li
-                                                        class="sidebar-item {{ isActiveRoute(['month/consumeadd']) }}">
+                                                    <li class="sidebar-item {{ isActiveRoute(['month/consumeadd']) }}">
                                                         <a class="sidebar-link" href="{{ route('month.consumeadd') }}">
                                                             {!! __('templateWords.isnConsumeAdd') !!}
                                                         </a>
@@ -375,14 +390,13 @@
                                                             {!! __('templateWords.standUpdate') !!}
                                                         </a>
                                                     </li> --}}
-                                                    <li
-                                                        class="sidebar-item {{ isActiveRoute(['month/importmonth', 'month/uploadmonth', 'month/monthinf']) }}">
+                                                    <li class="sidebar-item {{ isActiveRoute(['month/importmonth']) }}">
                                                         <a class="sidebar-link" href="{{ route('month.importmonth') }}">
                                                             {!! __('templateWords.importMonthlyData') !!}
                                                         </a>
                                                     </li>
                                                     <li
-                                                        class="sidebar-item {{ isActiveRoute(['month/importnotmonth', 'month/uploadnotmonth', 'month/notmonthinf', 'month/notmonthsearchok', 'month/notmonthaddok']) }}">
+                                                        class="sidebar-item {{ isActiveRoute(['month/importnotmonth']) }}">
                                                         <a class="sidebar-link"
                                                             href="{{ route('month.importnotmonth') }}">
                                                             {!! __('templateWords.importNonMonthlyData') !!}
@@ -399,7 +413,8 @@
                                                         </a>
                                                     </li> --}}
                                                     @can('updateUnitPrice', App\Models\月請購_單耗::class)
-                                                        <li class="sidebar-item {{ isActiveRoute(['month/UpdateUnitPrice']) }}">
+                                                        <li
+                                                            class="sidebar-item {{ isActiveRoute(['month/UpdateUnitPrice']) }}">
                                                             <a class="sidebar-link"
                                                                 href="{{ route('month.UpdateUnitPrice') }}">
                                                                 {!! __('monthlyPRpageLang.UpdateUnitPrice') !!}

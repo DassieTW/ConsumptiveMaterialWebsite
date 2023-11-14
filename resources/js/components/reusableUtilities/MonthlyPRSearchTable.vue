@@ -38,7 +38,7 @@
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                 <strong>{{ validation_err_msg }}</strong>
             </span>
-            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
+            <table-lite id="searchTable" :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
@@ -105,20 +105,17 @@ export default defineComponent({
             } // if
 
             for (let i = 0; i < checkedRows.length; i++) {
-                let deleteID_90 = document.getElementsByClassName("vtl-tbody-tr")[checkedRows[i]].children[1].firstChild.firstChild.getAttribute("id");
-                let deleteID = document.getElementsByClassName("vtl-tbody-tr")[checkedRows[i]].children[2].firstChild.firstChild.getAttribute("id");
-
-                ninetyisn.push(document.getElementById(deleteID_90).value);
-                isn.push(document.getElementById(deleteID).value);
+                let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
+                ninetyisn.push($($(selectedRow).find("input")[1]).val());
+                isn.push($($(selectedRow).find("input")[2]).val());
             } // for
 
-            // console.log(isn); // test
             await triggerModal();
             let result = await deleteMPS(ninetyisn, isn);
             if (result === "success") {
                 for (let i = 0; i < checkedRows.length; i++) {
-                    let deleteID = document.getElementsByClassName("vtl-tbody-tr")[checkedRows[i]].children[1].firstChild.firstChild.getAttribute("id");
-                    deleteID = deleteID.replace('ninetyisn', '');
+                    let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
+                    let deleteID = $($(selectedRow).find("input")[1]).attr("id").replace('ninetyisn', '');
 
                     let indexOfObject = data.findIndex(object => {
                         return parseInt(object.id) === parseInt(deleteID);
@@ -491,14 +488,14 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
     position: absolute;
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     overflow: hidden;
     top: 0;
     right: 0;
     background-color: #00838d;
     border: none;
-    border-radius: 0 4px 0 55px;
+    border-radius: 0 4px 0 60px;
     transition-duration: .2s;
 }
 
@@ -508,17 +505,18 @@ export default defineComponent({
     border-radius: 0 4px 0 82px;
 
     .go-arrow {
-        margin-top: -30px;
-        margin-right: -30px;
-        transform-origin: top right;
+        margin-top: -25px;
+        margin-right: -25px;
+        transform-origin: top center;
         transform: scale(1.5);
     }
 }
 
 .go-arrow {
-    margin-top: -10px;
-    margin-right: -10px;
+    margin-top: -5px;
+    margin-right: -5px;
     color: white;
     transition-duration: .2s;
+    rotate: 30deg;
 }
 </style>

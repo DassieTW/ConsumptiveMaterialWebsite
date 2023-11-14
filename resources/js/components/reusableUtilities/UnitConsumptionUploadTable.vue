@@ -597,6 +597,10 @@ export default defineComponent({
             } // if
         });
 
+        watch(data, () => {
+            document.getElementsByClassName("vtl-table")[0].scrollIntoView({ behavior: "smooth" });
+        });
+
         function initialScientificNotaionToFixed(x) {
             // toFixed
             if (Math.abs(x) < 1.0) {

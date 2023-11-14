@@ -47,8 +47,7 @@ Route::get('/importnotmonth', function () {
 
 //匯入月請購資料頁面
 Route::get('/importmonth', function () {
-    return view('month.importmonth')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()]);
+    return view('month.importmonth');
 })->name('month.importmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //SRM單數量頁面
@@ -64,40 +63,6 @@ Route::post('/srmsearch', [MonthController::class, 'srmsearch'])->name('month.sr
 //SRM單(提交)
 Route::post('/srmsubmit', [MonthController::class, 'srmsubmit'])->name('month.srmsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//非月請購查詢
-Route::get('/notmonthsearchok', function () {
-    return view('month.notmonthsearchok');
-})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//非月請購新增
-Route::post('/notmonthadd', [MonthController::class, 'notmonthadd'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::get('/notmonthaddok', function () {
-    return view('month.importnotmonth')->with(['client' => 客戶別::cursor()]);
-})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/notmonthaddok', function (Request $request) {
-    return view('month.notmonthadd')
-        ->with('client', $request->input('var1'))
-        ->with('number', $request->input('var2'))
-        ->with('name', $request->input('var3'))
-        ->with('unit', $request->input('var4'))
-        ->with('month', $request->input('var5'))
-        ->with(['showclient' => 客戶別::cursor()]);
-})->name('month.notmonthadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//非月請購提交
-Route::post('/notmonthsubmit', [MonthController::class, 'notmonthsubmit'])->name('month.notmonthsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//月請購刪除
-Route::post('/monthdelete', [MonthController::class, 'monthdelete'])->name('month.monthdelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//月請購添加
-Route::post('/monthadd', [MonthController::class, 'monthadd'])->name('month.monthadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//月請購提交
-Route::post('/monthsubmit', [MonthController::class, 'monthsubmit'])->name('month.monthsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 Route::get('/buylistmake', function () {
     return view('month.buylist')->with(['client' => 客戶別::cursor(), 'send' => 發料部門::cursor()]);
 })->name('month.buylist')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
@@ -109,7 +74,7 @@ Route::post('/buylistsubmit', [MonthController::class, 'buylistsubmit'])->name('
 
 // 更新單價
 Route::get('/UpdateUnitPrice', function () {
-    return view('month.UpdateUnitPrice')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
+    return view('month.UpdateUnitPrice');
 })->name('month.UpdateUnitPrice')->middleware('can:updateUnitPrice,App\Models\月請購_單耗');
 
 // 送簽請購單 匯率畫面
@@ -137,8 +102,6 @@ Route::get('/sxbsearch', function () {
     return view("month.sxbsearchok");
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-// Route::post('/sxbsearch', [MonthController::class, 'sxbsearch'])->name('month.sxbsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //料號單耗(新增)頁面
 Route::get('/consumeadd', function () {
     return view('month.consumeadd');
@@ -153,15 +116,8 @@ Route::get('/standadd', function () {
         ]);
 })->name('month.standadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-
-//料號單耗(新增)
-Route::post('/consumenew', [MonthController::class, 'consumenew'])->name('month.consumenew')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //站位人力(新增)
 Route::post('/standnew', [MonthController::class, 'standnew'])->name('month.standnew')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//提交料號單耗
-Route::post('/consumenewsubmit', [MonthController::class, 'consumenewsubmit'])->name('month.consumenewsubmitok')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //提交站位人力
 Route::post('/standnewsubmit', [MonthController::class, 'standnewsubmit'])->name('month.standnewsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
@@ -194,9 +150,6 @@ Route::post('/consumechangeordelete', [MonthController::class, 'consumechangeord
 //站位人力(刪除或修改)
 Route::post('/standchangeordelete', [MonthController::class, 'standchangeordelete'])->name('month.standchangeordelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//非月請購刪除
-Route::post('/notmonthdelete', [MonthController::class, 'notmonthdelete'])->name('month.notmonthdelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //新增站位上傳
 Route::get('/uploadstand', function () {
     $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
@@ -205,21 +158,6 @@ Route::get('/uploadstand', function () {
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/uploadstand', [MonthController::class, 'uploadstand'])->name('month.uploadstand')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//非月請購上傳
-Route::get('/uploadnotmonth', function () {
-    return view('month.importnotmonth')->with(['client' => 客戶別::cursor()]);
-})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/uploadnotmonth', [MonthController::class, 'uploadnotmonth'])->name('month.uploadnotmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//月請購上傳
-Route::get('/uploadmonth', function () {
-    return view('month.importmonth')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()]);
-})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/uploadmonth', [MonthController::class, 'uploadmonth'])->name('month.uploadmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //單耗畫押page
 Route::get('/testconsume', function () {

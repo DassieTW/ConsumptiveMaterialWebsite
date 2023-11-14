@@ -12,31 +12,6 @@ export default function useMonthlyPRSearch() {
     const errors = ref("");
     const router = useRouter();
 
-    const getMats_Monthly = async () => {
-        errors.value = "";
-        let getDB = await axios.post('/getCurrentDB');
-        let month90isn = sessionStorage.getItem("month90isn");
-        let monthisn = sessionStorage.getItem("monthisn");
-
-        try {
-            let response = await axios.post('/api/month/month', {
-                DB: getDB.data,
-                number: month90isn,
-                number90: monthisn,
-            });
-
-            mats.value = JSON.stringify(response.data);
-            //console.log(JSON.parse(mats.value)); // test
-        } catch (e) {
-            console.log(e); // test
-            for (const key in e.response.data.errors) {
-                errors.value += e.response.data.errors[key][0] + '  ';
-            } // for each errors
-
-            console.log(errors.value); // test
-        } // try catch
-    } // getMats_Monthly
-
     const getMats_MPS = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
@@ -78,6 +53,26 @@ export default function useMonthlyPRSearch() {
         } // try catch
     } // deleteMPS
 
+    const deleteNonMPS = async (ISN) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        // console.log(inputArray); // test
+        try {
+            let response = await axios.post('/api/month/delete_nonmps', {
+                DB: getDB.data,
+                number: JSON.stringify(ISN)
+            });
+
+            console.log(response.data); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // deleteNonMPS
+
     const getMats_nonMonthly = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
@@ -87,11 +82,10 @@ export default function useMonthlyPRSearch() {
         try {
             let response = await axios.post('/api/month/notmonth', {
                 DB: getDB.data,
-                // notmonthclient: notmonthclient,
-                notmonthisn: notmonthisn,
             });
 
-            console.log(response.data); // test
+            // console.log(response.data); // test
+            mats.value = JSON.stringify(response.data);
             return new Promise((resolve, reject) => {
                 resolve("success");
             });
@@ -130,12 +124,35 @@ export default function useMonthlyPRSearch() {
         } // try catch
     } // uploadMonthlyToDB
 
+    const uploadNonMonthlyToDB = async (number, amount, desc) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/month/submit_nonmonthlypr', {
+                DB: getDB.data,
+                number: JSON.stringify(number),
+                amount: JSON.stringify(amount),
+                desc: JSON.stringify(desc),
+            });
+
+            console.log(response.data); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // uploadNonMonthlyToDB
+
     return {
         mats,
-        getMats_Monthly,
         getMats_MPS,
         deleteMPS,
         getMats_nonMonthly,
-        uploadMonthlyToDB
+        deleteNonMPS,
+        uploadMonthlyToDB,
+        uploadNonMonthlyToDB
     } // return
 } // useConsumptiveMaterials

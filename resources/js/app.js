@@ -54,7 +54,7 @@ import TransitSearchTable from "./components/reusableUtilities/TransitSearchTabl
 import SxbSearchTable from "./components/reusableUtilities/SxbSearchTable.vue";
 import UnitConsumptionUploadTable from "./components/reusableUtilities/UnitConsumptionUploadTable.vue";
 import MonthlyPRTable from "./components/reusableUtilities/MonthlyPRTable.vue";
-import NonMonthlyPRSearchTable from "./components/reusableUtilities/NonMonthlyPRSearchTable.vue";
+import NonMonthlyPRTable from "./components/reusableUtilities/NonMonthlyPRTable.vue";
 import CombinedMonthlyPRSearchTable from "./components/reusableUtilities/CombinedMonthlyPRSearchTable.vue"
 import OboundInboundSearchTable from "./components/reusableUtilities/OboundINSearchTable.vue";
 import OboundISNSearchTable from "./components/reusableUtilities/OboundISNSearch.vue";
@@ -77,7 +77,7 @@ const app = createApp({
     "sxb-search-table": SxbSearchTable,
     "unit-consumption-upload-table": UnitConsumptionUploadTable,
     "monthly-pr-table": MonthlyPRTable,
-    "non-monthly-search-table": NonMonthlyPRSearchTable,
+    "non-monthly-pr-table": NonMonthlyPRTable,
     "combined-monthly-search-table": CombinedMonthlyPRSearchTable,
     "obound-insearch-table": OboundInboundSearchTable,
     "obound-isnsearch-table": OboundISNSearchTable,

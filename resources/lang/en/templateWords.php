@@ -24,6 +24,7 @@ return [
     'inbound' => 'Inbound',
     'outbound' => 'Outbound',
     'monthly' => 'Monthly PR',
+    'nonmonthly' => 'Non-Monthly PR',
     'obound' => 'Vendor Stock',
     'callsys' => 'Alarm System',
     'bu' => 'BU C.M.',

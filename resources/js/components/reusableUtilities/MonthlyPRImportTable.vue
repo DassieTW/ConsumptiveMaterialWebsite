@@ -52,11 +52,11 @@
             <div class="row justify-content-between">
                 <div class="row col col-auto">
                     <div class="col col-auto">
-                        <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }}
+                        <label for="pnInput1" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }}
                             :</label>
                     </div>
                     <div class="col col-auto p-0 m-0">
-                        <input id="pnInput" class="text-center form-control form-control-lg"
+                        <input id="pnInput1" class="text-center form-control form-control-lg"
                             v-bind:placeholder="$t('monthlyPRpageLang.enter90isn')" v-model="searchTerm" />
                     </div>
                 </div>
@@ -446,6 +446,10 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         }); // watch for data change
 
+        watch(data, () => {
+            document.getElementsByClassName("vtl-table")[0].scrollIntoView({ behavior: "smooth" });
+        });
+
         // Table config
         const table = reactive({
             isLoading: false,
@@ -708,14 +712,14 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
     position: absolute;
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     overflow: hidden;
     top: 0;
     right: 0;
     background-color: #00838d;
     border: none;
-    border-radius: 0 4px 0 55px;
+    border-radius: 0 4px 0 60px;
     transition-duration: .2s;
 }
 
@@ -725,17 +729,18 @@ export default defineComponent({
     border-radius: 0 4px 0 82px;
 
     .go-arrow {
-        margin-top: -30px;
-        margin-right: -30px;
-        transform-origin: top right;
+        margin-top: -25px;
+        margin-right: -25px;
+        transform-origin: top center;
         transform: scale(1.5);
     }
 }
 
 .go-arrow {
-    margin-top: -10px;
-    margin-right: -10px;
+    margin-top: -5px;
+    margin-right: -5px;
     color: white;
     transition-duration: .2s;
+    rotate: 30deg;
 }
 </style>

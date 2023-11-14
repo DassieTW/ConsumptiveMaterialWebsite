@@ -51,7 +51,7 @@ return [
     'return' => '返回',
     'errorpassword2' => '密碼並不相符',
     'errorpassword' => '舊密碼輸入錯誤',
-    'upload' => '批量上傳',
+    'upload' => '上傳',
     'plz_upload' => '請上傳Excel檔',
     'exampleExcel' => '範例格式下載',
     'jobnumber' => '工號',
