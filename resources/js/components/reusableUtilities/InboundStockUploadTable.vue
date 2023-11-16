@@ -41,13 +41,21 @@
             <h3>{{ $t('inboundpageLang.stockupload') }}</h3>
         </div> -->
         <div class="card-body">
-            <div class="row" style="text-align: left">
-                <div class="col col-auto">
-                    <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            <div class="row justify-content-between">
+                <div class="row col col-auto">
+                    <div class="col col-auto">
+                        <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+                    </div>
+                    <div class="col col-6 p-0 m-0">
+                        <input id="pnInput" class="text-center form-control form-control-lg"
+                            v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+                    </div>
                 </div>
-                <div class="col col-3 p-0 m-0">
-                    <input id="pnInput" class="text-center form-control form-control-lg"
-                        v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+                <div class="col col-auto">
+                    <button v-if="uploadToDBReady" type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
+                        @click="onSendToDBClick">
+                        <i class="bi bi-cloud-upload-fill"></i>
+                    </button>
                 </div>
             </div>
             <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
@@ -58,13 +66,6 @@
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
-
-            <div class="row w-100 justify-content-center">
-                <button v-if="uploadToDBReady" type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
-                    @click="onSendToDBClick">
-                    {{ $t('inboundpageLang.addtodatabase') }}
-                </button>
-            </div>
         </div>
     </div>
 </template>
@@ -480,7 +481,7 @@ export default defineComponent({
                         "monthlyPRpageLang.isn"
                     ),
                     field: "料號",
-                    width: "15ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table

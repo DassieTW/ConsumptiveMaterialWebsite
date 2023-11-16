@@ -31,7 +31,7 @@
 
             <h2 class="col-auto">{!! __('templateWords.inbound') !!}</h2>
             <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
-                <vue-bread-crumb></vue-bread-crumb>
+                {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
         <div class="card">

@@ -179,8 +179,8 @@ $(function () {
                             y: "bottom",
                         },
                     });
-                    //window.location.href = "material";
-                    // setTimeout(() => window.location.reload(), 1500); // 3
+
+                    setTimeout(() => window.location.reload(), 1500); // 3
                 },
                 error: function (err) {
                     //transaction error

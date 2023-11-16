@@ -1,13 +1,14 @@
 <template>
     <div class="card">
-        <button class="go-corner" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse"
-            aria-expanded="false" aria-controls="multiCollapse1 multiCollapse2">
-            <div class="go-arrow">
-                {{ $t("monthlyPRpageLang.upload1") }}
-            </div>
-        </button>
         <div class="card-header">
-            <h3>{{ $t("monthlyPRpageLang.search") }}</h3>
+            <div class="row">
+                <h3 class="col col-auto m-0">{{ $t("monthlyPRpageLang.search") }}</h3>
+                <button class="col col-auto btn btn-light m-0 p-0" data-bs-toggle="collapse"
+                    data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapse1 multiCollapse2">
+                    <i class="bi bi-arrow-left-right"> </i>
+                    {{ $t("monthlyPRpageLang.importMonthlyData") }}
+                </button>
+            </div>
         </div>
 
         <div class="w-100" style="height: 2rem;"></div><!-- </div>breaks cols to a new line-->
@@ -25,13 +26,14 @@
                 </div>
                 <div class="col col-auto">
                     <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
-                        :value="$t('basicInfoLang.delete')" @click="deleteRow">{{ $t('basicInfoLang.delete')
-                        }}</button>
+                        :value="$t('basicInfoLang.delete')" @click="deleteRow">
+                        <i class="bi bi-trash3-fill"></i>
+                    </button>
                     &nbsp;
                     <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
-                        :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick">{{
-                            $t('monthlyPRpageLang.download')
-                        }}</button>
+                        :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick">
+                        <i class="bi bi-file-earmark-arrow-down-fill"></i>
+                    </button>
                 </div>
             </div>
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -246,7 +248,7 @@ export default defineComponent({
                         "monthlyPRpageLang.90isn"
                     ),
                     field: "料號90",
-                    width: "15ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -483,40 +485,4 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.go-corner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    overflow: hidden;
-    top: 0;
-    right: 0;
-    background-color: #00838d;
-    border: none;
-    border-radius: 0 4px 0 60px;
-    transition-duration: .2s;
-}
-
-.go-corner:hover {
-    width: 82px;
-    height: 82px;
-    border-radius: 0 4px 0 82px;
-
-    .go-arrow {
-        margin-top: -25px;
-        margin-right: -25px;
-        transform-origin: top center;
-        transform: scale(1.5);
-    }
-}
-
-.go-arrow {
-    margin-top: -5px;
-    margin-right: -5px;
-    color: white;
-    transition-duration: .2s;
-    rotate: 30deg;
-}
 </style>

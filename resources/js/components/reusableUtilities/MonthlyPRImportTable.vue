@@ -1,13 +1,14 @@
 <template>
     <div class="card w-100">
-        <button class="go-corner" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse"
-            aria-expanded="false" aria-controls="multiCollapse1 multiCollapse2">
-            <div class="go-arrow">
-                {{ $t("monthlyPRpageLang.search") }}
-            </div>
-        </button>
         <div class="card-header">
-            <h3>{{ $t("monthlyPRpageLang.importMonthlyData") }}</h3>
+            <div class="row">
+                <h3 class="col col-auto m-0">{{ $t("monthlyPRpageLang.importMonthlyData") }}</h3>
+                <button class="col col-auto btn btn-light m-0 p-0" data-bs-toggle="collapse"
+                    data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapse1 multiCollapse2">
+                    <i class="bi bi-arrow-left-right"> </i>
+                    {{ $t("monthlyPRpageLang.search") }}
+                </button>
+            </div>
         </div>
 
         <div class="row justify-content-center">
@@ -62,8 +63,9 @@
                 </div>
                 <div class="col col-auto">
                     <button v-if="uploadToDBReady" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
-                        :value="$t('basicInfoLang.delete')" @click="deleteRow">{{ $t('basicInfoLang.delete')
-                        }}</button>
+                        :value="$t('basicInfoLang.delete')" @click="deleteRow">
+                        <i class="bi bi-trash3-fill"></i>
+                    </button>
                 </div>
             </div>
             <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
@@ -459,7 +461,7 @@ export default defineComponent({
                         "monthlyPRpageLang.90isn"
                     ),
                     field: "料號90",
-                    width: "15ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -482,7 +484,7 @@ export default defineComponent({
                         "monthlyPRpageLang.isn"
                     ),
                     field: "料號",
-                    width: "15ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
@@ -705,42 +707,5 @@ export default defineComponent({
     color: #fff;
     background-color: #196241;
     border-color: #196241;
-}
-
-.go-corner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    overflow: hidden;
-    top: 0;
-    right: 0;
-    background-color: #00838d;
-    border: none;
-    border-radius: 0 4px 0 60px;
-    transition-duration: .2s;
-}
-
-.go-corner:hover {
-    width: 82px;
-    height: 82px;
-    border-radius: 0 4px 0 82px;
-
-    .go-arrow {
-        margin-top: -25px;
-        margin-right: -25px;
-        transform-origin: top center;
-        transform: scale(1.5);
-    }
-}
-
-.go-arrow {
-    margin-top: -5px;
-    margin-right: -5px;
-    color: white;
-    transition-duration: .2s;
-    rotate: 30deg;
 }
 </style>

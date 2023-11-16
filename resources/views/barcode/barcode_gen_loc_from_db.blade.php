@@ -15,7 +15,7 @@
                 <h2 class="pb-3">{!! __('templateWords.locBarcode') !!}</h2>
             </div>
             <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block" id="mountingPoint">
-                <vue-bread-crumb></vue-bread-crumb>
+                {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
         <div class="row">

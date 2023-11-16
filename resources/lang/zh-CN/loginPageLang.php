@@ -53,7 +53,7 @@ return [
     'errorpassword' => '旧密码输入错误',
     'upload' => '批量上传',
     'plz_upload' => '请上传Excel档',
-    'exampleExcel' => '范例格式下载',
+    'exampleExcel' => '格式下载',
     'jobnumber' => '工号',
     'jobrepeat' => '工号重复',
     'joblength' => '工号长度不为9',

@@ -11,8 +11,9 @@
         </div>
         <div class="col col-auto">
             <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
-                :value="$t('inboundpageLang.download')" @click="OutputExcelClick">{{ $t('inboundpageLang.download')
-                }}</button>
+                :value="$t('inboundpageLang.download')" @click="OutputExcelClick">
+                <i class="bi bi-file-earmark-arrow-down-fill"></i>
+            </button>
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
@@ -114,7 +115,7 @@ export default defineComponent({
                         "inboundpageLang.isn"
                     ),
                     field: "料號",
-                    width: "15ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (

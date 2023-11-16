@@ -18,7 +18,7 @@ return [
     'matsInfo' => '料件信息',
     'change' => '更新',
     'delete' => '删除',
-    'exampleExcel' => '范例格式下载',
+    'exampleExcel' => '格式下载',
     'factory' => '厂别',
     'client' => '客户别',
     'machine' => '机种',

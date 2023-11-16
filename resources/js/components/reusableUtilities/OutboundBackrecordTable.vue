@@ -66,7 +66,7 @@ export default defineComponent({
                         "outboundpageLang.isn"
                     ),
                     field: "料號",
-                    width: "15ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -112,7 +112,7 @@ export default defineComponent({
                         "outboundpageLang.line"
                     ),
                     field: "線別",
-                    width: "9ch",
+                    width: "8ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -182,7 +182,7 @@ export default defineComponent({
                         "outboundpageLang.unit"
                     ),
                     field: "單位",
-                    width: "9ch",
+                    width: "8ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -205,7 +205,7 @@ export default defineComponent({
                         "outboundpageLang.backamount"
                     ),
                     field: "預退數量",
-                    width: "17ch",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -228,7 +228,7 @@ export default defineComponent({
                         "outboundpageLang.realbackamount"
                     ),
                     field: "實際退回數量",
-                    width: "22ch",
+                    width: "15ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -275,7 +275,7 @@ export default defineComponent({
                         "outboundpageLang.backdiffreason"
                     ),
                     field: "實退差異原因",
-                    width: "26ch",
+                    width: "23ch",
                     sortable: true,
                     display: function (row, i) {
                         if (row.實退差異原因 === null) row.實退差異原因 = "";
@@ -322,7 +322,7 @@ export default defineComponent({
                         "outboundpageLang.receivepeople"
                     ),
                     field: "收料人員",
-                    width: "14ch",
+                    width: "10ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -345,7 +345,7 @@ export default defineComponent({
                         "outboundpageLang.receivepeoplenum"
                     ),
                     field: "收料人員工號",
-                    width: "17ch",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -368,7 +368,7 @@ export default defineComponent({
                         "outboundpageLang.backpeople"
                     ),
                     field: "退料人員",
-                    width: "14ch",
+                    width: "10ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -391,7 +391,7 @@ export default defineComponent({
                         "outboundpageLang.backpeoplenum"
                     ),
                     field: "退料人員工號",
-                    width: "17ch",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -414,7 +414,7 @@ export default defineComponent({
                         "outboundpageLang.backlistnum"
                     ),
                     field: "退料單號",
-                    width: "17ch",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -483,7 +483,7 @@ export default defineComponent({
                         "outboundpageLang.status"
                     ),
                     field: "功能狀況",
-                    width: "14ch",
+                    width: "10ch",
                     sortable: true,
                     display: function (row, i) {
                         return (

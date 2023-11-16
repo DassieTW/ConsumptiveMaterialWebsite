@@ -10,14 +10,20 @@
             </div>
         </div>
         <div class="col col-auto">
-            <input type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
+            <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
                 :value="$t('basicInfoLang.delete')">
+                <i class="bi bi-trash3-fill"></i>
+            </button>
             &nbsp;
-            <input type="submit" id="change" name="change" class="col col-auto btn btn-lg btn-primary"
+            <button type="submit" id="change" name="change" class="col col-auto btn btn-lg btn-primary"
                 :value="$t('basicInfoLang.change')">
+                <i class="bi bi-cloud-upload-fill"></i>
+            </button>
             &nbsp;
-            <input type="submit" id="download" name="download" class="col col-auto btn btn-lg btn-success"
+            <button type="submit" id="download" name="download" class="col col-auto btn btn-lg btn-success"
                 :value="$t('basicInfoLang.download')">
+                <i class="bi bi-file-earmark-arrow-down-fill"></i>
+            </button>
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>

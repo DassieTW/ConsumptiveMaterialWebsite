@@ -24,7 +24,7 @@
 
 
     <div id="mountingPoint">
-        <vue-bread-crumb></vue-bread-crumb>
+        {{-- <vue-bread-crumb></vue-bread-crumb> --}}
         <basic-info-table></basic-info-table>
     </div>
 

@@ -69,7 +69,7 @@ export default defineComponent({
                         "monthlyPRpageLang.isn"
                     ),
                     field: "料號",
-                    width: "15ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (

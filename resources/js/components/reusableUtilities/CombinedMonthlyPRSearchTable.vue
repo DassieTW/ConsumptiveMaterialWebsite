@@ -63,8 +63,9 @@
                         </div>
                     </div>
                     <div class="col col-auto">
-                        <input type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
-                            :value="$t('basicInfoLang.delete')">
+                        <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger">
+                            <i class="bi bi-trash3-fill"></i>
+                        </button>
                         &nbsp;
                         <input type="submit" id="change" name="change" class="col col-auto btn btn-lg btn-primary"
                             :value="$t('basicInfoLang.change')">
@@ -354,7 +355,7 @@ export default defineComponent({
                         "monthlyPRpageLang.isn"
                     ),
                     field: "料號",
-                    width: "15ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table

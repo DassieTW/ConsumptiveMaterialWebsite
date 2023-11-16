@@ -36,7 +36,7 @@
         <div class="row mb-2 mb-xl-3 justify-content-between">
             <h2 class="col-auto">{!! __('templateWords.userManage') !!}</h2>
             <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
-                <vue-bread-crumb></vue-bread-crumb>
+                {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
     </div>
@@ -118,7 +118,7 @@
                                 <button type="button" id="DeleteUser" class="btn btn-danger" data-bs-target="#AreYouSureModal"
                                     data-bs-toggle="modal">Delete
                                     This User</button>
-                                <button type="button" id="ListConfirm" class="btn btn-primary">Save
+                                <button type="button" id="ListConfirm" class="btn btn-success">Save
                                     Changes</button>
                             </div>
                         </div>
@@ -129,15 +129,10 @@
                     tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5">Modal 2</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Hide this modal and show the first with the button below.
-                            </div>
-                            <div class="modal-footer">
-                                <button id="ImSure" class="btn btn-warning">YES</button>
+                            <div class="modal-body row justify-content-center">
+                                <span class="col col-auto">Are You Sure ?</span>
+                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                <button id="imsure" class="col col-auto btn btn-outline-danger" data-bs-dismiss="modal">YES</button>
                             </div>
                         </div>
                     </div>

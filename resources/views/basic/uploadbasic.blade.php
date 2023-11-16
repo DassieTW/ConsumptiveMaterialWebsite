@@ -12,12 +12,12 @@
 
             <h2 class="col-auto">{!! __('basicInfoLang.basicInfo') !!}</h2>
             <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
-                <vue-bread-crumb></vue-bread-crumb>
+                {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
         <div class="card">
             <div class="card-header" id="mountingPoint">
-                <vue-bread-crumb></vue-bread-crumb>
+                {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
 
             <div class="card-body">

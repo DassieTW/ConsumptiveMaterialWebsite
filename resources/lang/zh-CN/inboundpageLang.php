@@ -43,7 +43,7 @@ return [
     'transit' => '在途量',
     'amount' => '数量',
     'plz_upload' => '请上传Excel档',
-    'exampleExcel' => '范例格式下载',
+    'exampleExcel' => '格式下载',
     'upload' => '批量上传',
     'pName' => '品名',
     'format' => '规格',

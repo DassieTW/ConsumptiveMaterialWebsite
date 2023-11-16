@@ -66,7 +66,7 @@ export default defineComponent({
                         "outboundpageLang.isn"
                     ),
                     field: "料號",
-                    width: "15ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -112,7 +112,7 @@ export default defineComponent({
                         "outboundpageLang.line"
                     ),
                     field: "線別",
-                    width: "9ch",
+                    width: "8ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -182,7 +182,7 @@ export default defineComponent({
                         "outboundpageLang.unit"
                     ),
                     field: "單位",
-                    width: "9ch",
+                    width: "8ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -205,7 +205,7 @@ export default defineComponent({
                         "outboundpageLang.pickamount"
                     ),
                     field: "預領數量",
-                    width: "15ch",
+                    width: "10ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -228,7 +228,7 @@ export default defineComponent({
                         "outboundpageLang.realpickamount"
                     ),
                     field: "實際領用數量",
-                    width: "22ch",
+                    width: "10ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -275,7 +275,7 @@ export default defineComponent({
                         "outboundpageLang.diffreason"
                     ),
                     field: "實領差異原因",
-                    width: "25ch",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         if (row.實領差異原因 === null) row.實領差異原因 = "";
@@ -322,7 +322,7 @@ export default defineComponent({
                         "outboundpageLang.pickpeople"
                     ),
                     field: "領料人員",
-                    width: "14ch",
+                    width: "10ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -345,7 +345,7 @@ export default defineComponent({
                         "outboundpageLang.pickpeoplenum"
                     ),
                     field: "領料人員工號",
-                    width: "17ch",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -368,7 +368,7 @@ export default defineComponent({
                         "outboundpageLang.sendpeople"
                     ),
                     field: "發料人員",
-                    width: "14ch",
+                    width: "10ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -391,7 +391,7 @@ export default defineComponent({
                         "outboundpageLang.sendpeoplenum"
                     ),
                     field: "發料人員工號",
-                    width: "17ch",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -414,7 +414,7 @@ export default defineComponent({
                         "outboundpageLang.picklistnum"
                     ),
                     field: "領料單號",
-                    width: "17ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (

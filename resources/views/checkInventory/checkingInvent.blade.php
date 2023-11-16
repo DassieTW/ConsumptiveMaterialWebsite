@@ -20,7 +20,7 @@
 
             {{-- this div will not be visible if screen is smaller than lg --}}
             <div class="col-auto ml-auto text-right mt-n1 d-none d-lg-block" id="mountingPoint">
-                <vue-bread-crumb></vue-bread-crumb>
+                {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
         <div class="row">

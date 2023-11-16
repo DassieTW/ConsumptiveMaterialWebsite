@@ -24,7 +24,7 @@ return [
     'enterformat' => '请输入规格',
     'isnrepeat' => '料号重复',
     'addtodatabase' => '新增至资料库',
-    'exampleExcel' => '范例格式下载',
+    'exampleExcel' => '格式下载',
     'plz_upload' => '请上传Excel档',
     'upload' => '批量上传',
     'inreason' => '入库原因',

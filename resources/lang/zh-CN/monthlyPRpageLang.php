@@ -75,7 +75,7 @@ return [
     'nextmps' => '下月MPS',
     'nextday' => '下月生产天数',
     'add' => '添加',
-    'exampleExcel' => '范例格式下载',
+    'exampleExcel' => '格式下载',
     'plz_upload' => '请上传Excel档',
     'upload' => '上传',
     'isnlength' => '料号长度不为12',
