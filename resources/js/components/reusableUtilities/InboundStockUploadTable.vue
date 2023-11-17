@@ -51,12 +51,6 @@
                             v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
                     </div>
                 </div>
-                <div class="col col-auto">
-                    <button v-if="uploadToDBReady" type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
-                        @click="onSendToDBClick">
-                        <i class="bi bi-cloud-upload-fill"></i>
-                    </button>
-                </div>
             </div>
             <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
@@ -65,7 +59,16 @@
             <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false"
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
+                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+            </table-lite>
+            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+            <div class="row w-100 justify-content-center">
+                <button v-if="uploadToDBReady" type="submit" name="upload"
+                    class="col col-2 fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
+                    <i class="bi bi-cloud-upload-fill"></i>
+                    {{ $t('inboundpageLang.upload1') }}
+                </button>
+            </div>
         </div>
     </div>
 </template>

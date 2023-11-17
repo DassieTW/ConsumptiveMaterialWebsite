@@ -90,7 +90,7 @@
                 <div class="col col-auto">
                     <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
                         @click="deleteRow">
-                        <i class="bi bi-trash3-fill"></i>
+                        <i class="bi bi-trash3-fill fs-4"></i>
                     </button>
                 </div>
             </div>
@@ -120,8 +120,10 @@
                         <span class="input-group-text input-group-text-lg" id="emailTail">{{ selected_mail }}</span>
                     </div>
                 </div>
-                <button v-if="uploadToDBReady" type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
+                <button v-if="uploadToDBReady" type="submit" name="upload" 
+                    class="col col-2 fs-3 text-center btn btn-lg btn-info"
                     @click="onSendToDBClick">
+                    <i class="bi bi-envelope-check-fill"></i>
                     {{ $t('monthlyPRpageLang.submit') }}
                 </button>
             </div>

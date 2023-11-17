@@ -10,25 +10,18 @@
             </div>
         </div>
         <div class="col col-auto">
-            <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
-                :value="$t('basicInfoLang.delete')">
-                <i class="bi bi-trash3-fill"></i>
+            <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger" @click="deleteRow">
+                <i class="bi bi-trash3-fill fs-4"></i>
             </button>
             &nbsp;
-            <button type="submit" id="change" name="change" class="col col-auto btn btn-lg btn-primary"
-                :value="$t('basicInfoLang.change')">
-                <i class="bi bi-cloud-upload-fill"></i>
-            </button>
-            &nbsp;
-            <button type="submit" id="download" name="download" class="col col-auto btn btn-lg btn-success"
-                :value="$t('basicInfoLang.download')">
-                <i class="bi bi-file-earmark-arrow-down-fill"></i>
+            <button id="download" name="download" class="col col-auto btn btn-lg btn-success" @click="OutputExcelClick">
+                <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
             </button>
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="true"
+    <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="true"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
         :page-options="table.pageOptions" :sortable="table.sortable" @do-search="doSearch"
         @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
@@ -61,6 +54,14 @@
             <div v-else>{{ $t("basicInfoLang.differ_by_client") }}</div>
         </template>
     </table-lite>
+    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+    <div class="row w-100 justify-content-center">
+        <!-- <button type="submit" id="change" name="change" class="col col-2 fs-3 text-center btn btn-lg btn-info"
+            :value="$t('basicInfoLang.change')">
+            <i class="bi bi-cloud-upload-fill"></i>
+            {{ $t('basicInfoLang.change') }}
+        </button> -->
+    </div>
 </template>
 
 <script>
@@ -71,13 +72,14 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
+import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useConsumptiveMaterials from "../../composables/ConsumptiveMaterials.ts";
 export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, getMats } = useConsumptiveMaterials(); // axios get the mats data
+        const { mats, getMats, deletePN } = useConsumptiveMaterials(); // axios get the mats data
 
         onBeforeMount(getMats);
 
@@ -92,6 +94,137 @@ export default defineComponent({
         // pour the data in
         const data = reactive([]);
         const senders = reactive([]); // access the value by senders[0], senders[1] ...
+        let checkedRows = [];
+
+        const deleteRow = async () => {
+            let isn = [];
+
+            if (checkedRows.length == 0) {
+                notyf.open({
+                    type: "warning",
+                    message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                return;
+            } // if
+
+            for (let i = 0; i < checkedRows.length; i++) {
+                let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
+                isn.push($($(selectedRow).find("input")[1]).val());
+            } // for
+
+            await triggerModal();
+            let result = await deletePN(isn);
+            if (result === "success") {
+                for (let i = 0; i < checkedRows.length; i++) {
+                    let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
+                    let deleteID = $($(selectedRow).find("input")[1]).attr("id").replace('number', '');
+
+                    let indexOfObject = data.findIndex(object => {
+                        return parseInt(object.id) === parseInt(deleteID);
+                    });
+
+                    if (indexOfObject != -1) {
+                        data.splice(indexOfObject, 1);
+                    } // if
+                } // for
+
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                document.querySelectorAll('.vtl-tbody-checkbox').forEach(el => el.checked = false);
+
+                if (document.querySelector(".vtl-thead-checkbox").checked) {
+                    document.querySelector(".vtl-thead-checkbox").click();
+                } // if
+                checkedRows = [];
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // deleteRow
+
+        const OutputExcelClick = async () => {
+            await triggerModal();
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = Array();
+
+            for (let i = 0; i < data.length; i++) {
+                let tempObj = new Object;
+                tempObj.料號 = data[i].料號;
+                tempObj.品名 = data[i].品名;
+                tempObj.規格 = data[i].規格;
+                tempObj.單價 = parseFloat(data[i].單價.toString());
+                tempObj.幣別 = data[i].幣別;
+                tempObj.單位 = data[i].單位;
+                tempObj.MPQ = parseInt(data[i].MPQ.toString());
+                tempObj.MOQ = parseInt(data[i].MOQ.toString());
+                tempObj.LT = parseInt(data[i].LT.toString());
+                tempObj.月請購 = data[i].月請購;
+                tempObj.A級資材 = data[i].A級資材;
+                tempObj.發料部門 = data[i].發料部門;
+                tempObj.安全庫存 = data[i].安全庫存;
+                rows.push(tempObj);
+            } // for
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.stock"));
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "basicInfoLang.matssearch"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
+
+        const triggerModal = async () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        } // triggerModal
 
         watch(mats, () => {
             // console.log(JSON.parse(mats.value)); // test
@@ -102,6 +235,7 @@ export default defineComponent({
             } // for
 
             for (let i = 0; i < allRowsObj.datas.length; i++) {
+                allRowsObj.datas[i].id = i;
                 data.push(allRowsObj.datas[i]);
             } // for
 
@@ -124,7 +258,7 @@ export default defineComponent({
                         // console.log(row);
                         return (
                             '<input type="hidden" id="number' +
-                            i +
+                            row.id +
                             '" name="number' +
                             i +
                             '" value="' +
@@ -539,13 +673,16 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            console.log(rowsKey);
+            // console.log(rowsKey); // test
+            checkedRows = rowsKey;
         };
 
         return {
             searchTerm,
             table,
             updateCheckedRows,
+            deleteRow,
+            OutputExcelClick
         };
     }, // setup
 });

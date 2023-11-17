@@ -12,12 +12,12 @@
         <div class="col col-auto">
             <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
                 @click="DeleteRowsClick">
-                <i class="bi bi-trash3-fill"></i>
+                <i class="bi bi-trash3-fill fs-4"></i>
             </button>
             &nbsp;
             <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
                 :value="$t('inboundpageLang.download')" @click="OutputExcelClick">
-                <i class="bi bi-file-earmark-arrow-down-fill"></i>
+                <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
             </button>
         </div>
     </div>

@@ -54,19 +54,7 @@ $(function () {
             check.push($(this).val());
         });
 
-        if (select === "刪除" || select === "删除" || select === "Delete") {
-            select = "刪除";
-        }
-        if (select === "更新" || select === "Update") {
-            select = "更新";
-        }
-        if (
-            select === "下載" ||
-            select === "下载" ||
-            select === "Download Excel"
-        ) {
-            select = "下載";
-        }
+        select = "更新";
 
         var count = check.length;
 

@@ -222,7 +222,7 @@ $(function () {
         }
         setTimeout(
           () => (window.location.href = "/basic/materialsearch"),
-          3000
+          1000
         );
       },
       error: function (err) {

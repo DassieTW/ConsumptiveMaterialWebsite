@@ -3,8 +3,7 @@
         <div class="card-header">
             <div class="row">
                 <h3 class="col col-auto m-0">{{ $t("monthlyPRpageLang.search") }}</h3>
-                <button class="col col-auto btn btn-light m-0 p-0" data-bs-toggle="collapse"
-                    data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapse1 multiCollapse2">
+                <button class="col col-auto btn btn-light m-0 p-0 flip-btn" @click="(flip = !flip)">
                     <i class="bi bi-arrow-left-right"> </i>
                     {{ $t("monthlyPRpageLang.importNonMonthlyData") }}
                 </button>
@@ -27,12 +26,12 @@
                 <div class="col col-auto">
                     <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
                         :value="$t('basicInfoLang.delete')" @click="deleteRow">
-                        <i class="bi bi-trash3-fill"></i>
+                        <i class="bi bi-trash3-fill fs-4"></i>
                     </button>
                     &nbsp;
                     <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
                         :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick">
-                        <i class="bi bi-file-earmark-arrow-down-fill"></i>
+                        <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
                     </button>
                 </div>
             </div>
@@ -49,7 +48,7 @@
 </template>
 
 <script>
-import { defineComponent, defineExpose, reactive, ref, computed } from "vue";
+import { defineComponent, reactive, ref, computed } from "vue";
 import {
     getCurrentInstance,
     onBeforeMount,
@@ -397,6 +396,7 @@ export default defineComponent({
         };
 
         return {
+            flip: ref(false),
             isInvalid_DB,
             validation_err_msg,
             searchTerm,

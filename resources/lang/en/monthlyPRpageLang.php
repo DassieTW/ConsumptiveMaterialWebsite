@@ -22,7 +22,7 @@ return [
     'PR' => 'Export All PR Data',
     // 'SRM' => 'SRM',
     'UpdateUnitPrice' => 'Update Unit Price',
-    'SendPRReview' => 'Apply for PR Review',
+    'SendPRReview' => 'Apply',
     'SXB_search' => 'PR Record',
     'on_the_way_search' => 'On-Order Inventory (Search)',
     'client' => 'Clients',

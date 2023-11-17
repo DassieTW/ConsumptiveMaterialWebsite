@@ -3,18 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\入庫原因;
-use App\Models\客戶別;
 use App\Models\發料部門;
-use App\Models\製程;
-use App\Models\領用原因;
-use App\Models\領用部門;
-use App\Models\廠別;
-use App\Models\線別;
-use App\Models\機種;
-use App\Models\儲位;
-use App\Models\退回原因;
-use App\Models\O庫;
 use App\Models\ConsumptiveMaterial;
 use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -247,50 +236,9 @@ class BasicInformationController extends Controller
                 ], 409/* Status code here default is 200 ok*/);
             }
         }
-        //download
-        else if ($request->input('select') == "下載") {
-
-            $spreadsheet = new Spreadsheet();
-            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
-            $worksheet = $spreadsheet->getActiveSheet();
-            $Alldata = DB::table('consumptive_material')->get();
-            $downloadcount = count($Alldata);
-            $arr = ['料號', '品名', '規格', '單價', '幣別', '單位', 'MPQ', 'MOQ', 'LT', '月請購', 'A級資材', '發料部門', '安全庫存'];
-
-            //填寫表頭
-            for ($i = 0; $i < 13; $i++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, 1, $arr[$i]);
-            } // for
-
-            //填寫內容
-            for ($i = 0; $i < 13; $i++) {
-                $string  = $arr[$i];
-                for ($j = 0; $j < $downloadcount; $j++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
-                } // for
-            } // for
-
-
-            // 下載
-            $now = Carbon::now()->format('YmdHis');
-            //rawurlencode('呆滯庫存查詢');
-            $filename = rawurlencode('料件查詢') . $now . '.xlsx';
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="' . $filename . '"');
-            header('Cache-Control: max-age=0');
-
-            $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
-            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $writer->save('php://output');
-            $callback = function () use ($writer) {
-                $file = fopen('php://output', 'r');
-                fclose($file);
-            };
-
-            return response()->stream($callback, 200, $headers);
-        } else {
+        else {
             return redirect(route('basic.material'));
-        }
+        } // if else
     }
 
     //新增料件

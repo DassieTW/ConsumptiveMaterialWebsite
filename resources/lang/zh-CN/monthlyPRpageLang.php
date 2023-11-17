@@ -22,7 +22,7 @@ return [
     'PR' => '汇出所有请购明细',
     // 'SRM' => 'SRM单',
     'UpdateUnitPrice' => '上传最新单价',
-    'SendPRReview' => '送签请购单',
+    'SendPRReview' => '送签',
     'SXB_search' => '请购单纪录',
     'on_the_way_search' => '在途数量(查询)',
     'client' => '客户别',

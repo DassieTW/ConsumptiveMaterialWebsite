@@ -54,3 +54,5 @@ Route::post('/mats', function (Request $request) {
 
     return \Response::json(['datas' => $datas, 'senders' => $senders, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
+
+Route::post('/delete_pn', 'api\BasicInfoController@destroyPN');
