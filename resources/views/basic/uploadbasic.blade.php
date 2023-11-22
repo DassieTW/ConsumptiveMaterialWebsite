@@ -15,11 +15,7 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
-        <div class="card">
-            <div class="card-header" id="mountingPoint">
-                {{-- <vue-bread-crumb></vue-bread-crumb> --}}
-            </div>
-
+        <div class="card" id="mountingPoint">
             <div class="card-body">
                 <div class="d-flex w-100 h-100">
                     <div class="mb-3">

@@ -36,7 +36,12 @@
             </div>
         </div>
     </div>
-    <div class="card">
+
+    <button id="togglebtn" class="btn btn-primary col col-auto" type="button" data-bs-toggle="collapse"
+        data-bs-target="#importedtable" aria-expanded="false" aria-controls="importedtable" style="display: none;">
+    </button>
+
+    <div class="card collapse" id="importedtable">
         <!-- <div class="card-header">
             <h3>{{ $t('inboundpageLang.stockupload') }}</h3>
         </div> -->
@@ -187,6 +192,9 @@ export default defineComponent({
             data.splice(0); // cleanup data from previous upload
             queryResult.value = "";
             file.value = event.target.files ? event.target.files[0] : null;
+            if ($("#importedtable").hasClass("show")) {
+                $("#togglebtn").click();
+            } // if
         } // onInputChange
 
         const searchTerm = ref(""); // Search text
@@ -465,6 +473,10 @@ export default defineComponent({
             JSON.parse(locations.value).data.forEach(element => {
                 locsArray.push(element.儲存位置);
             });
+
+            if (!$("#importedtable").hasClass("show")) {
+                $("#togglebtn").click();
+            } // if
 
             uploadToDBReady.value = true;
             $("body").loadingModal("hide");

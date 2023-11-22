@@ -24,7 +24,7 @@ return [
     'enterformat' => 'Please enter the Specification',
     'isnrepeat' => 'Duplicate Part Number',
     'addtodatabase' => 'Add to database',
-    'exampleExcel' => 'Example Template Download',
+    'exampleExcel' => 'Example Download',
     'plz_upload' => 'Upload an Excel File',
     'upload' => 'Batch Upload',
     'inreason' => 'Inbound Reasons',

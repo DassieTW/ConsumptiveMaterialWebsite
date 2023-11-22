@@ -56,3 +56,6 @@ Route::post('/mats', function (Request $request) {
 });
 
 Route::post('/delete_pn', 'api\BasicInfoController@destroyPN');
+Route::post('/update_pn', 'api\BasicInfoController@updatePN');
+Route::post('/get_dispatcher', 'api\BasicInfoController@showDispatcher');
+

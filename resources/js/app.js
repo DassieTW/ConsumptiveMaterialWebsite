@@ -43,7 +43,8 @@ import Vue3Langjs from "vue3-langjs";
 import vueTranslations from "./vue-translations";
 import router from "./vue-router/route";
 import BreadCrumbNav from "./components/breadcrumb/BreadCrumbNav.vue";
-import BasicInfoTable from "./components/reusableUtilities/BasicInfoTable.vue";
+import MatsInfoTable from "./components/reusableUtilities/MatsInfoTable.vue";
+import MatsInfoUploadTable from "./components/reusableUtilities/MatsInfoUploadTable.vue";
 import InboundSearchTable from "./components/reusableUtilities/InboundSearchTable.vue";
 import InboundStockTable from "./components/reusableUtilities/InboundStockTable.vue";
 import InboundMonthTable from "./components/reusableUtilities/InboundMonthTable.vue";
@@ -66,7 +67,8 @@ import NewsTable from "./components/reusableUtilities/NewsTable.vue";
 const app = createApp({
   components: {
     "vue-bread-crumb": BreadCrumbNav,
-    "basic-info-table": BasicInfoTable,
+    "mats-info-table": MatsInfoTable,
+    "mats-info-upload-table": MatsInfoUploadTable,
     "inbound-search-table": InboundSearchTable,
     "inbound-stock-table": InboundStockTable,
     "inbound-month-table": InboundMonthTable,

@@ -3,7 +3,6 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('js/basic/material.js?v=') . env('APP_VERSION') }}"></script>
     <!--for this page's sepcified js -->
 @endsection
 @section('content')
@@ -15,61 +14,9 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
-        <button type="hidden" id="QueryFlag" name="QueryFlag" value="Posting" style="display: none;"></button>
         <div class="card">
             <div class="card-body">
-                <form id="materialsearch" method="POST">
-                    @csrf
-                    <basic-info-table></basic-info-table>
-                </form>
-            </div>
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-        </div>
-        <div class="row justify-content-center">
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-            <div class="card w-75">
-                <div class="card-header">
-                    <h3>{!! __('basicInfoLang.upload') !!}</h3>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="card-body">
-                        <div class=" w-100">
-                            <form method="post" enctype="multipart/form-data" action="{{ route('basic.uploadmaterial') }}">
-                                @csrf
-                                <div class="row w-100 justify-content-center mb-3">
-                                    <div class="col col-auto ">
-                                        <a href="{{ asset('download/MaterialExample.xlsx') }}"
-                                            download>{!! __('basicInfoLang.exampleExcel') !!}</a>
-                                    </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                    <label class="col col-auto form-label p-0 m-0">{!! __('basicInfoLang.plz_upload') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                    <div class="col col-auto">
-                                        <input class="form-control @error('select_file') is-invalid @enderror"
-                                            type="file" name="select_file" />
-                                        @error('select_file')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="row w-100 justify-content-center">
-                                        <div class="col col-auto">
-                                            <input type="submit" name="upload" class="btn btn-lg btn-primary"
-                                                value="{!! __('basicInfoLang.upload1') !!}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                <mats-info-table></mats-info-table>
             </div>
         </div>
     </div>

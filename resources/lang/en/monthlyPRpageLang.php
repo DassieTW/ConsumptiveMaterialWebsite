@@ -75,7 +75,7 @@ return [
     'nextmps' => 'MPS PROX',
     'nextday' => 'Prod. Days PROX',
     'add' => 'Add',
-    'exampleExcel' => 'Example Template Download',
+    'exampleExcel' => 'Example Download',
     'plz_upload' => 'Upload an Excel File',
     'upload' => 'Batch Upload',
     'isnlength' => 'PN length is not 12',

@@ -73,10 +73,11 @@ export default defineComponent({
         const { mats, getMats_nonMonthly, deleteNonMPS } = useMonthlyPRSearch();
         const { queryResult, validateISN } = useCommonlyUsedFunctions();
         const triggerSearchUpdate = async () => {
-            await triggerModal();
             await getMats_nonMonthly();
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
+            
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
         } // triggerSearchUpdate
 
         let isInvalid_DB = ref(false); // add to DB validation

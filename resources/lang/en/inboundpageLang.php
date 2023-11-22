@@ -43,7 +43,7 @@ return [
     'transit' => 'Qty in Transit',
     'amount' => 'Qty',
     'plz_upload' => 'Upload an Excel File',
-    'exampleExcel' => 'Example Template Download',
+    'exampleExcel' => 'Example Download',
     'upload' => 'Batch Upload',
     'pName' => 'Descr.',
     'format' => 'Spec.',

@@ -25,7 +25,7 @@ return [
     'gen' => 'Generate',
     'batch_upload' => 'Batch Generate',
     'plz_upload' => 'Upload an Excel File',
-    'exampleExcel' => 'Example/Template Download',
+    'exampleExcel' => 'Example Download',
     'Temporary_Storage_Zone' => 'Temporary Storage Zone',
     'Delete_Notice' => 'Deleting here only means the barcode will not be printed.',
     'print_amount' => 'Print Qty',

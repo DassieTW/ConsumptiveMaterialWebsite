@@ -67,12 +67,25 @@ export default defineComponent({
             );
         });
 
-        const onclasschange = (classattrvalue) => {
-            // console.log(classattrvalue); // test
+        const triggerModal = async () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        } // triggerModal
+
+        const onclasschange = async (classattrvalue) => {
+            await triggerModal();
             const classlist = classattrvalue.split(' ');
             if (classlist.includes('transition')) {
-                myChild2.value.triggerSearchUpdate();
+                await myChild2.value.triggerSearchUpdate();
             } // if
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
         } // onclasschange
 
         return {
