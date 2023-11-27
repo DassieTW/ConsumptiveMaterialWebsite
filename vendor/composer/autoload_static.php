@@ -821,6 +821,8 @@ class ComposerStaticInit3a337aa382200259a249a8921ee7c950
         'App\\Http\\Controllers\\OutboundController' => __DIR__ . '/../..' . '/app/Http/Controllers/OutboundController.php',
         'App\\Http\\Controllers\\PostController' => __DIR__ . '/../..' . '/app/Http/Controllers/PostController.php',
         'App\\Http\\Controllers\\PriorityController' => __DIR__ . '/../..' . '/app/Http/Controllers/PriorityController.php',
+        'App\\Http\\Controllers\\api\\BasicInfoController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/BasicInfoController.php',
+        'App\\Http\\Controllers\\api\\CommonlyUsedController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/CommonlyUsedController.php',
         'App\\Http\\Controllers\\api\\InboundController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/InboundController.php',
         'App\\Http\\Controllers\\api\\MonthlyPRController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/MonthlyPRController.php',
         'App\\Http\\Controllers\\api\\SSZPickMatsController' => __DIR__ . '/../..' . '/app/Http/Controllers/api/SSZPickMatsController.php',

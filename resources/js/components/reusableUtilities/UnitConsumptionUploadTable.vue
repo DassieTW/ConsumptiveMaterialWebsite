@@ -1,5 +1,5 @@
 <template>
-    <div class="card w-100" id="consumehead">
+    <div class="card" id="consumehead">
         <div class="card-header">
             <h3>{{ $t('monthlyPRpageLang.isnConsumeAdd') }}</h3>
         </div>
@@ -39,35 +39,29 @@
         <div class="card-header">
             <h3>{{ $t("monthlyPRpageLang.upload") }}</h3>
         </div>
+        <div class="card-body">
+            <div class="row justify-content-center mb-3">
+                <div class="col col-auto">
+                    <a :href="exampleUrl" download>
+                        {{ $t('monthlyPRpageLang.exampleExcel') }}
+                    </a>
+                </div>
 
-        <div class="row justify-content-center">
-            <div class="card-body">
-                <div class=" w-100">
-                    <div class="row w-100 justify-content-center mb-3">
-                        <div class="col col-auto ">
-                            <a :href="exampleUrl" download>
-                                {{ $t('monthlyPRpageLang.exampleExcel') }}
-                            </a>
-                        </div>
-
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <label class="col col-auto form-label">{{ $t('monthlyPRpageLang.plz_upload') }}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="col col-auto">
-                            <input class="form-control" :class="{ 'is-invalid': isInvalid }" id="excel_input" type="file"
-                                name="select_file" @change="onInputChange" />
-                            <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
-                                <strong>{{ validation_err_msg }}</strong>
-                            </span>
-                        </div>
-                        <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="row w-100 justify-content-center">
-                            <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
-                                @click="onUploadClick">
-                                {{ $t('monthlyPRpageLang.upload1') }}
-                            </button>
-                        </div>
-                    </div>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                <label class="col col-auto form-label">{{ $t('monthlyPRpageLang.plz_upload') }}</label>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col col-auto">
+                    <input class="form-control" :class="{ 'is-invalid': isInvalid }" id="excel_input" type="file"
+                        name="select_file" @change="onInputChange" />
+                    <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
+                        <strong>{{ validation_err_msg }}</strong>
+                    </span>
+                </div>
+                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="row justify-content-center">
+                    <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary" @click="onUploadClick">
+                        {{ $t('monthlyPRpageLang.upload1') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -106,10 +100,10 @@
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-            <div class="row w-100 justify-content-between">
+            <div class="row justify-content-between align-items-center">
                 <label class="form-label col col-auto">{{ $t('monthlyPRpageLang.surepeopleemail') }}:</label>
                 <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="row col col-auto">
+                <div class="col col-auto">
                     <div class="input-group">
                         <select class="form-select form-select-lg col col-auto" v-model="selected_mail">
                             <option style="display: none;" disabled selected value="">
@@ -120,12 +114,13 @@
                         <span class="input-group-text input-group-text-lg" id="emailTail">{{ selected_mail }}</span>
                     </div>
                 </div>
-                <button v-if="uploadToDBReady" type="submit" name="upload" 
-                    class="col col-2 fs-3 text-center btn btn-lg btn-info"
-                    @click="onSendToDBClick">
-                    <i class="bi bi-envelope-check-fill"></i>
-                    {{ $t('monthlyPRpageLang.submit') }}
-                </button>
+                <div class="col col-auto">
+                    <button v-if="uploadToDBReady" name="upload" class="col col-auto fs-3 text-center btn btn-lg btn-info"
+                        @click="onSendToDBClick">
+                        <i class="bi bi-envelope-check-fill"></i>
+                        {{ $t('monthlyPRpageLang.submit') }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>

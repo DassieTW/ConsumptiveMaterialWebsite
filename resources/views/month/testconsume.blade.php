@@ -140,29 +140,39 @@
                                     ?>
                                     <tbody>
                                         <tr>
-                                            <td><input type="hidden" id="number{{ $loop->index }}"
-                                                    name="number{{ $loop->index }}"
-                                                    value="{{ $data->料號 }}">{{ $data->料號 }}</td>
-                                            <td><input type="hidden" id="name{{ $loop->index }}"
-                                                    name="name{{ $loop->index }}"
-                                                    value="{{ $name }}">{{ $name }}</td>
-                                            <td class="table-light" id="amount{{ $loop->index }}">{{ $data->單耗 }}
+                                            <td>
+                                                <input type="hidden" id="number{{ $loop->index }}"
+                                                    name="number{{ $loop->index }}" value="{{ $data->料號 }}">
+                                                {{ $data->料號 }}
                                             </td>
-                                            <td><input type="hidden" id="number90{{ $loop->index }}"
-                                                    name="number90{{ $loop->index }}"
-                                                    value="{{ $data->料號90 }}">{{ $data->料號90 }}
+                                            <td>
+                                                <input type="hidden" id="name{{ $loop->index }}"
+                                                    name="name{{ $loop->index }}" value="{{ $name }}">
+                                                {{ $name }}
                                             </td>
-                                            <td><input class="checkbutton" type="checkbox"
+                                            <td class="table-light" id="amount{{ $loop->index }}">
+                                                {{ $data->單耗 }}
+                                            </td>
+                                            <td>
+                                                <input type="hidden" id="number90{{ $loop->index }}"
+                                                    name="number90{{ $loop->index }}" value="{{ $data->料號90 }}">
+                                                {{ $data->料號90 }}
+                                            </td>
+                                            <td>
+                                                <input class="checkbutton" type="checkbox"
                                                     id="check{{ $loop->index }}" name="check{{ $loop->index }}"
                                                     checked>
                                             </td>
-                                            <td><input style="width: 120px;" class="form-control formcontrol-lg"
+                                            <td>
+                                                <input style="width: 120px;" class="form-control formcontrol-lg"
                                                     type="text" id="remark{{ $loop->index }}"
                                                     name="remark{{ $loop->index }}"
-                                                    placeholder="{!! __('monthlyPRpageLang.reason') !!}"></td>
+                                                    placeholder="{!! __('monthlyPRpageLang.reason') !!}">
+                                            </td>
                                         </tr>
                                         <input type="hidden" id="count" name="count"
-                                            value="{{ $loop->count }}"></td>
+                                            value="{{ $loop->count }}">
+                                        </td>
                                 @endforeach
                                 </tbody>
                             </table>
@@ -191,5 +201,4 @@
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('js/month/testconsume.js?v=') . env('APP_VERSION') }}"></script>
-
 </body>

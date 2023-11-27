@@ -33,6 +33,8 @@ Route::post('/delete_mps', 'api\MonthlyPRController@destroyMPS');
 Route::post('/submit_monthlypr', 'api\MonthlyPRController@storeMonthlyPR');
 Route::post('/delete_nonmps', 'api\MonthlyPRController@destroyNonMPS');
 Route::post('/submit_nonmonthlypr', 'api\MonthlyPRController@storeNonMonthlyPR');
+Route::post('/generate_buylist', 'api\MonthlyPRController@showBuylist');
+
 
 
 

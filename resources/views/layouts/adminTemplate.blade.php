@@ -401,16 +401,6 @@
                                                             {!! __('templateWords.importNonMonthlyData') !!}
                                                         </a>
                                                     </li>
-                                                    <li class="sidebar-item {{ isActiveRoute(['month/buylist']) }}">
-                                                        <a class="sidebar-link" href="{{ route('month.buylist') }}">
-                                                            {!! __('monthlyPRpageLang.PR') !!}
-                                                        </a>
-                                                    </li>
-                                                    {{-- <li class="sidebar-item {{ isActiveRoute(['month/srm']) }}">
-                                                        <a class="sidebar-link" href="{{ route('month.srm') }}">
-                                                            {!! __('monthlyPRpageLang.SRM') !!}
-                                                        </a>
-                                                    </li> --}}
                                                     @can('updateUnitPrice', App\Models\月請購_單耗::class)
                                                         <li
                                                             class="sidebar-item {{ isActiveRoute(['month/UpdateUnitPrice']) }}">
@@ -422,7 +412,7 @@
                                                     @endcan
                                                     <li class="sidebar-item {{ isActiveRoute(['month/SendPRReview']) }}">
                                                         <a class="sidebar-link" href="{{ route('month.SendPRReview') }}">
-                                                            {!! __('monthlyPRpageLang.SendPRReview') !!}
+                                                            {!! __('monthlyPRpageLang.PR') !!}
                                                         </a>
                                                     </li>
                                                     <li class="sidebar-item {{ isActiveRoute(['month/sxb']) }}">

@@ -10,8 +10,8 @@
             </div>
         </div>
 
-        <div class="card-body justify-content-center">
-            <div class="row w-100 justify-content-center mb-3">
+        <div class="card-body">
+            <div class="row justify-content-center mb-3">
                 <div class="col col-auto">
                     <a :href="exampleUrl" download>
                         {{ $t('monthlyPRpageLang.exampleExcel') }}
@@ -29,7 +29,7 @@
                     </span>
                 </div>
                 <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="row w-100 justify-content-center">
+                <div class="row justify-content-center">
                     <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary" @click="onUploadClick">
                         {{ $t('monthlyPRpageLang.upload1') }}
                     </button>
@@ -72,12 +72,14 @@
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
 
             <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="row w-100 justify-content-center">
-                <button v-if="uploadToDBReady" type="submit" name="upload"
-                    class="col col-2 fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
-                    <i class="bi bi-cloud-upload-fill"></i>
-                    {{ $t('monthlyPRpageLang.upload1') }}
-                </button>
+            <div class="row justify-content-center">
+                <div class="col col-auto">
+                    <button v-if="uploadToDBReady" type="submit" name="upload"
+                        class="col col-auto fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
+                        <i class="bi bi-cloud-upload-fill"></i>
+                        {{ $t('monthlyPRpageLang.upload1') }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -177,7 +179,7 @@ export default defineComponent({
                         if (input_data === undefined || input_data[0] === undefined || input_data[0][0] === undefined || input_data[0][1] === undefined || input_data[0][2] === undefined) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
-                        } else if (input_data[0][0].trim() !== "料號" || !input_data[0][1].trim().toLowerCase().includes("數量") || !input_data[0][2].trim().toLowerCase().includes("說明")) {
+                        } else if (input_data[0][0].trim() !== "料號" || !input_data[0][1].trim().toLowerCase().includes("當月需求")) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
@@ -244,7 +246,6 @@ export default defineComponent({
 
         const onSendToDBClick = async () => {
             await triggerModal();
-            // console.log("The modal should be triggered by now."); // test
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
@@ -337,19 +338,22 @@ export default defineComponent({
             } // if
             // ----------------------------------------------
             // actually updating database now
-            number, amount, desc
             let number = [];
+            let thisMonthDemand = [];
+            let nextMonthDemand = [];
             let amount = [];
             let desc = [];
             for (let i = 0; i < data.length; i++) {
                 number.push(data[i].料號);
+                thisMonthDemand.push(data[i].當月需求);
+                nextMonthDemand.push(data[i].下月需求);
                 amount.push(data[i].請購數量);
                 desc.push(data[i].說明);
             } // for
 
             // console.log(number); // test
             let start = Date.now();
-            let result = await uploadNonMonthlyToDB(number, amount, desc);
+            let result = await uploadNonMonthlyToDB(number, thisMonthDemand, nextMonthDemand, amount, desc);
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");
@@ -385,6 +389,10 @@ export default defineComponent({
         } // onSendToDBClick
 
         watch(queryResult, async () => {
+            validation_err_msg.value =
+                app.appContext.config.globalProperties.$t("barcodeGenerator.temp_save_error") +
+                " Excel " +
+                app.appContext.config.globalProperties.$t("monthlyPRpageLang.row");
             await triggerModal();
             if (queryResult.value == "") {
                 $("body").loadingModal("hide");
@@ -393,35 +401,45 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(queryResult.value);
-            // console.log(allRowsObj.data); // test
             let singleEntry = {};
 
+            console.log(input_data); // test
             for (let i = 1; i < input_data.length; i++) {
-                singleEntry.料號 = input_data[i][0].toString().trim();
-                singleEntry.請購數量 = parseInt(input_data[i][1].toString().replace(/,/g, ''), 10);;
-                singleEntry.說明 = input_data[i][2].toString().trim();
-                singleEntry.excel_row_num = i + 1;
+                try {
+                    singleEntry.料號 = input_data[i][0].toString().trim();
+                    singleEntry.當月需求 = parseFloat(input_data[i][1].toString().replace(/,/g, ''));
+                    singleEntry.下月需求 = parseFloat(input_data[i][2].toString().replace(/,/g, ''));
+                    singleEntry.請購數量 = parseInt(input_data[i][3].toString().replace(/,/g, ''), 10);
+                    singleEntry.說明 = input_data[i][4].toString().trim();
+                    singleEntry.excel_row_num = i + 1;
+                    if (data.length == 0) {
+                        singleEntry.id = 0;
+                    } else {
+                        singleEntry.id = parseInt(data[data.length - 1].id) + 1;
+                    } // if else
 
-                if (data.length == 0) {
-                    singleEntry.id = 0;
-                } else {
-                    singleEntry.id = parseInt(data[data.length - 1].id) + 1;
-                } // if else
+                    let indexOfObject = allRowsObj.data.findIndex(object => {
+                        return (object.料號 === singleEntry.料號);
+                    });
 
-                let indexOfObject = allRowsObj.data.findIndex(object => {
-                    return (object.料號 === singleEntry.料號);
-                });
+                    if (indexOfObject != -1) { // if an existing record is found
+                        singleEntry = Object.assign(singleEntry, allRowsObj.data[indexOfObject]);
+                    } // if
+                    else {
+                        singleEntry.月請購 = "";
+                    } // else
 
-                if (indexOfObject != -1) { // if an existing record is found
-                    singleEntry = Object.assign(singleEntry, allRowsObj.data[indexOfObject]);
-                } // if
-                else {
-                    singleEntry.月請購 = "";
-                } // else
+                    data.push(singleEntry);
+                } catch (error) {
+                    console.log(error); // test
+                    validation_err_msg.value = validation_err_msg.value + " " + i + "、";
+                    isInvalid_DB.value = true;
+                } // try - catch
 
-                data.push(singleEntry);
                 singleEntry = {};
             } // for
+
+            validation_err_msg.value = validation_err_msg.value.slice(0, -1); // Remove the last character "、"
 
             if (!$("#importedtable").hasClass("show")) {
                 $("#togglebtn").click();
@@ -520,6 +538,52 @@ export default defineComponent({
                                 "</div>"
                             );
                         } // else
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.nowneed"
+                    ),
+                    field: "當月需求",
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="nowneed' +
+                            i +
+                            '" name="nowneed' +
+                            i +
+                            '" value="' +
+                            row.當月需求 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseFloat(row.當月需求) +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.nextneed"
+                    ),
+                    field: "下月需求",
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="nextneed' +
+                            row.id +
+                            '" name="nextneed' +
+                            i +
+                            '" value="' +
+                            row.下月需求 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseFloat(row.下月需求) +
+                            "</div>"
+                        );
                     },
                 },
                 {

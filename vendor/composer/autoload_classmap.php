@@ -36,6 +36,8 @@ return array(
     'App\\Http\\Controllers\\OutboundController' => $baseDir . '/app/Http/Controllers/OutboundController.php',
     'App\\Http\\Controllers\\PostController' => $baseDir . '/app/Http/Controllers/PostController.php',
     'App\\Http\\Controllers\\PriorityController' => $baseDir . '/app/Http/Controllers/PriorityController.php',
+    'App\\Http\\Controllers\\api\\BasicInfoController' => $baseDir . '/app/Http/Controllers/api/BasicInfoController.php',
+    'App\\Http\\Controllers\\api\\CommonlyUsedController' => $baseDir . '/app/Http/Controllers/api/CommonlyUsedController.php',
     'App\\Http\\Controllers\\api\\InboundController' => $baseDir . '/app/Http/Controllers/api/InboundController.php',
     'App\\Http\\Controllers\\api\\MonthlyPRController' => $baseDir . '/app/Http/Controllers/api/MonthlyPRController.php',
     'App\\Http\\Controllers\\api\\SSZPickMatsController' => $baseDir . '/app/Http/Controllers/api/SSZPickMatsController.php',

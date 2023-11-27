@@ -7,7 +7,6 @@
             vertical-align: middle;
         }
 
-
         #siteListPicker::-webkit-scrollbar-track {
             -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
             border-radius: 4px;

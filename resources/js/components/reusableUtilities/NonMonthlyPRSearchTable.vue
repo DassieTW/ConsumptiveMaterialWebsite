@@ -4,7 +4,7 @@
             <div class="row">
                 <h3 class="col col-auto m-0">{{ $t("monthlyPRpageLang.search") }}</h3>
                 <button class="col col-auto btn btn-light m-0 p-0 flip-btn" @click="(flip = !flip)">
-                    <i class="bi bi-arrow-left-right"> </i>
+                    <i class="bi bi-arrow-left-right"></i>
                     {{ $t("monthlyPRpageLang.importNonMonthlyData") }}
                 </button>
             </div>
@@ -74,7 +74,7 @@ export default defineComponent({
         const { queryResult, validateISN } = useCommonlyUsedFunctions();
         const triggerSearchUpdate = async () => {
             await getMats_nonMonthly();
-            
+
             return new Promise((resolve, reject) => {
                 resolve("success");
             });
@@ -278,6 +278,52 @@ export default defineComponent({
                             '<div class="scrollableWithoutScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.品名 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.nowneed"
+                    ),
+                    field: "當月需求",
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="nowneed' +
+                            i +
+                            '" name="nowneed' +
+                            i +
+                            '" value="' +
+                            row.當月需求 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseFloat(row.當月需求) +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.nextneed"
+                    ),
+                    field: "下月需求",
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="nextneed' +
+                            row.id +
+                            '" name="nextneed' +
+                            i +
+                            '" value="' +
+                            row.下月需求 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseFloat(row.下月需求) +
                             "</div>"
                         );
                     },

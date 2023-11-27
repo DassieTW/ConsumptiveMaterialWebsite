@@ -18,7 +18,7 @@ class InboundPolicy
      */
     public function viewInbound(Login $user)
     {
-        if (intval($user->priority) < 4) {
+        if (intval($user->priority) < 3) {
             return true;
         } else {
             return false;

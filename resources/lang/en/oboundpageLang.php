@@ -122,7 +122,7 @@ return [
     'other' => 'other',
     'good' => 'Good product',
     'nogood' => 'rejects',
-    'inboundnum' => 'Inbound Amount',
+    'inboundnum' => 'Inbound Amt',
     'nobound' => 'Library does not exist',
     'new' => 'New',
     'lessstock1' => 'The current inventory is less than the receipt quantity. This receipt cannot be deleted.',

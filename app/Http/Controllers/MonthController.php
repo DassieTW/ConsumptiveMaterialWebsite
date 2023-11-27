@@ -350,136 +350,6 @@ class MonthController extends Controller
         return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
     } // srmsubmit
 
-    //請購單-產生
-    public function buylistmake(Request $request)
-    {
-        $money = $request->input('money');
-        $send = $request->input('send');
-        $array = array();
-        $array1 = array();
-        $usd = $request->input('usd');
-        $jpy = $request->input('jpy');
-        $twd = $request->input('twd');
-        $rmb = $request->input('rmb');
-        $vnd = $request->input('vnd');
-        $idr = $request->input('idr');
-
-        if ($money === null) {
-            return back()->withErrors([
-                'money' => trans('validation.required'),
-            ]);
-        } // if
-
-        $datas = DB::table('月請購_單耗')
-            ->join('MPS', function ($join) {
-                $join->on('MPS.料號', '=', '月請購_單耗.料號')
-                    ->on('MPS.料號90', '=', '月請購_單耗.料號90');
-            })
-            ->join('consumptive_material', function ($join) {
-                $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
-            })->where('consumptive_material.發料部門', 'like', $send . '%')
-            ->where('月請購_單耗.狀態', '=', "已完成")->get();
-
-        foreach ($datas as $data) {
-            $test = $data->幣別;
-            if ($test !== $money) {
-                if ($test === "USD" && $usd === null) {
-                    return back()->withErrors([
-                        'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "USD" && $usd !== null) {
-                    array_push($array, $usd);
-                } else if ($test === "RMB" && $rmb === null) {
-                    return back()->withErrors([
-                        'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "RMB" && $rmb !== null) {
-                    array_push($array, $rmb);
-                } else if ($test === "JPY" && $jpy === null) {
-                    return back()->withErrors([
-                        'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "JPY" && $jpy !== null) {
-                    array_push($array, $jpy);
-                } else if ($test === "TWD" && $twd === null) {
-                    return back()->withErrors([
-                        'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "TWD" && $twd !== null) {
-                    array_push($array, $twd);
-                } else if ($test === "VND" && $vnd === null) {
-                    return back()->withErrors([
-                        'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "VND" && $vnd !== null) {
-                    array_push($array, $vnd);
-                } else if ($test === "IDR" && $idr === null) {
-                    return back()->withErrors([
-                        'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "IDR" && $idr !== null) {
-                    array_push($array, $idr);
-                }
-            } else {
-                array_push($array, 1);
-                continue;
-            } // if else
-        } // for each
-        $datas2 = DB::table('非月請購')
-            ->join('consumptive_material', function ($join) {
-                $join->on('consumptive_material.料號', '=', '非月請購.料號');
-            })->where('consumptive_material.發料部門', 'like', $send . '%')
-            ->whereNull('非月請購.SXB單號')->get();
-        foreach ($datas2 as $data) {
-            $test = $data->幣別;
-            if ($test !== $money) {
-                if ($test === "USD" && $usd === null) {
-                    return back()->withErrors([
-                        'usd' => trans('monthlyPRpageLang.plz_write') . 'USD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "USD" && $usd !== null) {
-                    array_push($array1, $usd);
-                } else if ($test === "RMB" && $rmb === null) {
-                    return back()->withErrors([
-                        'rmb' => trans('monthlyPRpageLang.plz_write') . 'RMB TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "RMB" && $rmb !== null) {
-                    array_push($array1, $rmb);
-                } else if ($test === "JPY" && $jpy === null) {
-                    return back()->withErrors([
-                        'jpy' => trans('monthlyPRpageLang.plz_write') . 'JPY TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "JPY" && $jpy !== null) {
-                    array_push($array1, $jpy);
-                } else if ($test === "TWD" && $twd === null) {
-                    return back()->withErrors([
-                        'twd' => trans('monthlyPRpageLang.plz_write') . 'TWD TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "TWD" && $twd !== null) {
-                    array_push($array1, $twd);
-                } else if ($test === "VND" && $vnd === null) {
-                    return back()->withErrors([
-                        'vnd' => trans('monthlyPRpageLang.plz_write') . 'VND TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "VND" && $vnd !== null) {
-                    array_push($array1, $vnd);
-                } else if ($test === "IDR" && $idr === null) {
-                    return back()->withErrors([
-                        'idr' => trans('monthlyPRpageLang.plz_write') . 'IDR TO' . ' ' . $money . trans('monthlyPRpageLang.rate'),
-                    ]);
-                } else if ($test === "IDR" && $idr !== null) {
-                    array_push($array1, $idr);
-                } // if else if
-            } else {
-                array_push($array1, 1);
-                continue;
-            } // if else
-        } // for each
-
-        return view('month.buylistmakeok')->with(['data1' => $datas])->with(['data2' => $datas2])
-            ->with(['rate1' => $array])->with(['rate2' => $array1]);
-    } // buylistmake
-
     //請購單-提交
     public function buylistsubmit(Request $request)
     {
@@ -867,7 +737,7 @@ class MonthController extends Controller
         $year = date('Y/', strtotime("last day of 1 month"));
         $month = date('m/', strtotime("last day of 1 month"));
         $lastday = date('t', strtotime("last day of 1 month"));
-        $title  = $title . $year . $month . "01" . "~" . $month . $lastday . "號耗材購買明細";
+        $title  = $title . $year . $month . "01" . "-" . $month . $lastday . "號耗材購買明細";
         $worksheet->setCellValue("A1", $title);
         $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $worksheet->getStyle("A1")->getFont()->setSize(16);
@@ -875,7 +745,6 @@ class MonthController extends Controller
         //填寫內容
         for ($j = 0; $j < $count; $j++) {
             if ($Alldata[11][$j] > 0) {
-
                 $worksheet->setCellValueByColumnAndRow(1, $i, $i - 2);
                 $worksheet->setCellValueByColumnAndRow(2, $i, $Alldata[2][$j]);
                 $worksheet->setCellValueByColumnAndRow(3, $i, $Alldata[3][$j]);
@@ -898,8 +767,9 @@ class MonthController extends Controller
                 $i++;
             } else {
                 continue;
-            }
-        }
+            } // if else
+        } // for
+
         $spreadsheet->getActiveSheet()->getStyle('A2:M2')->getFill()
             ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()
@@ -916,7 +786,6 @@ class MonthController extends Controller
         // 下載
         $now = Carbon::now()->format('YmdHis');
         $titlename = $request->input('titlename');
-        // $filename = rawurlencode($titlename) . $now . '.xlsx';
         $filename = rawurlencode($titlename) . $now . '.pdf';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');

@@ -13,8 +13,6 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
-        <div class="row justify-content-center">
-            <combined-monthly-search-table></combined-monthly-search-table>
-        </div>
+        <combined-monthly-search-table></combined-monthly-search-table>
     </div>
 @endsection

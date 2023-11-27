@@ -157,4 +157,5 @@ return [
     'please_utilize' => '请透过',
     'to_update_unit_price' => '更新单价',
     'repeated_isn' => '有重复的料号',
+    'shallow_delete' => '此处删除仅代表不会送签，完全删除请至 汇入(非)月请购',
 ];

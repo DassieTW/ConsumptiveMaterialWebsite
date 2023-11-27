@@ -222,7 +222,6 @@ class MailService
                         }
                     }
                     $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-                    $message->bcc('Tony_Tseng@pegatroncorp.com');
 
                     $message->attach(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
                     $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
@@ -262,8 +261,6 @@ class MailService
 
             \Log::channel('dbquerys')->info('--------------------------deleted ' . $rowsAffected . ' rows in ' . $database . ' 安全庫存備註Table--------------------------');
         } // for each
-
-
     } // 安全庫存 寄警報信
 
     public function day() // 呆滯天數 寄警報信
@@ -355,7 +352,6 @@ class MailService
                     }
 
                     $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-                    $message->bcc('Tony_Tseng@pegatroncorp.com');
 
                     $message->attach(public_path() . '/excel/' . $database . 'Passive Day' . $now . '.xlsx');
                     $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');

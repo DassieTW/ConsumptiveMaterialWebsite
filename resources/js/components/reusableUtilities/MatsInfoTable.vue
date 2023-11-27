@@ -54,12 +54,14 @@
         </template>
     </table-lite>
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-    <div class="row w-100 justify-content-center">
-        <button type="submit" id="change" name="change" class="col col-2 fs-3 text-center btn btn-lg btn-info"
-            @click="onSendToDBClick">
-            <i class="bi bi-cloud-upload-fill"></i>
-            {{ $t('basicInfoLang.change') }}
-        </button>
+    <div class="row justify-content-center">
+        <div class="col col-auto">
+            <button type="submit" id="change" name="change" class="col col-auto fs-3 text-center btn btn-lg btn-info"
+                @click="onSendToDBClick">
+                <i class="bi bi-cloud-upload-fill"></i>
+                {{ $t('basicInfoLang.change') }}
+            </button>
+        </div>
     </div>
 </template>
 

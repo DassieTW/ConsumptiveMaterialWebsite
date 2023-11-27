@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Sentry\Util\JSON;
 
+use function Swoole\Coroutine\Http\get;
+
 class MonthlyPRController extends Controller
 {
     /**
@@ -85,6 +87,8 @@ class MonthlyPRController extends Controller
             for ($i = 0; $i < $count; $i++) {
                 $temp = array(
                     "料號" => json_decode($request->input('number'))[$i],
+                    "當月需求" => json_decode($request->input('thisdemand'))[$i],
+                    "下月需求" => json_decode($request->input('nextdemand'))[$i],
                     "請購數量" => json_decode($request->input('amount'))[$i],
                     "說明" => json_decode($request->input('desc'))[$i],
                     "上傳時間" => $now,
@@ -101,7 +105,7 @@ class MonthlyPRController extends Controller
                 $temp_record = \DB::table('非月請購')->upsert(
                     $whole_load[$i],
                     ['料號'],
-                    ['請購數量', '上傳時間', '說明']
+                    ['當月需求', '下月需求', '請購數量', '上傳時間', '說明']
                 );
 
                 $record = $record + $temp_record;
@@ -129,11 +133,25 @@ class MonthlyPRController extends Controller
 
         $datas = [];
 
-        $datas = \DB::table('consumptive_material')
+        $currentStockByPN = \DB::table('inventory')
+            ->select('料號', \DB::raw('SUM(現有庫存) as total_stock'))
+            ->groupBy('料號');
+
+        $inTransit = \DB::table('在途量')
+            ->select('料號', \DB::raw('SUM(請購數量) as in_transit'))
+            ->groupBy('料號');
+
+        $temp = \DB::table('consumptive_material')
             ->join('非月請購', function ($join) {
                 $join->on('非月請購.料號', '=', 'consumptive_material.料號')
                     ->whereNull('SXB單號');
-            })->get();
+            });
+
+        $datas = $temp
+            ->leftJoinSub($currentStockByPN, 'sum_stock', '非月請購.料號', '=', 'sum_stock.料號')
+            ->leftJoinSub($inTransit, 'shipping', '非月請購.料號', '=', 'shipping.料號')
+            ->select('非月請購.*', 'consumptive_material.*', 'sum_stock.total_stock', 'shipping.in_transit')
+            ->get();
 
 
         return \Response::json(['data' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
@@ -146,7 +164,7 @@ class MonthlyPRController extends Controller
         $dbName = \DB::connection()->getDatabaseName(); // test
 
         $transitisn = json_decode($request->input('transitisn'));
-        $transitsend = json_decode($request->input('transitsend'));
+        // $transitsend = json_decode($request->input('transitsend'));
 
         //dd($transitsend);
         // dd($send);
@@ -159,7 +177,6 @@ class MonthlyPRController extends Controller
             ->joinSub($test, '在途量', function ($join) {
                 $join->on('在途量.料號', '=', 'consumptive_material.料號');
             })->where('consumptive_material.料號', 'like', $transitisn . '%')
-            ->where('consumptive_material.發料部門', 'like', $transitsend . '%')
             ->where('請購數量', '>', 0)->get();
 
         //dd($datas);
@@ -237,6 +254,39 @@ class MonthlyPRController extends Controller
 
         return \Response::json(['data' => $results, "dbName" => $dbName]/* Status code here default is 200 ok*/);
     } // showMPS
+
+    public function showBuylist(Request $request) // get 月請購 請購單
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
+        $currentStockByPN = \DB::table('inventory')
+            ->select('料號', \DB::raw('SUM(現有庫存) as total_stock'))
+            ->groupBy('料號');
+
+        $inTransit = \DB::table('在途量')
+            ->select('料號', \DB::raw('SUM(請購數量) as in_transit'))
+            ->groupBy('料號');
+
+        $temp = \DB::table('月請購_單耗')
+            ->join('MPS', function ($join) {
+                $join->on('MPS.料號', '=', '月請購_單耗.料號')
+                    ->on('MPS.料號90', '=', '月請購_單耗.料號90');
+            })
+            ->join('consumptive_material', function ($join) {
+                $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
+            });
+
+        $datas = $temp
+            ->leftJoinSub($currentStockByPN, 'sum_stock', '月請購_單耗.料號', '=', 'sum_stock.料號')
+            ->leftJoinSub($inTransit, 'shipping', '月請購_單耗.料號', '=', 'shipping.料號')
+            ->select('月請購_單耗.*', 'MPS.*', 'consumptive_material.*', 'sum_stock.total_stock', 'shipping.in_transit')
+            ->where('月請購_單耗.狀態', '=', "已完成")
+            ->get();
+
+        return \Response::json(['data' => $datas, "dbName" => $dbName]/* Status code here default is 200 ok*/);
+    } // showBuylist
 
     /**
      * Update the specified resource in storage.

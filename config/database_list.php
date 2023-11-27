@@ -33,6 +33,12 @@ return [
         '越南 PHP-SMT Consumables management',
         '越南 PVN-SMT Consumables management',
         '新店 Consumables management',
+        '蘇州-自動化 Consumables management',
+        '蘇州-治具 Consumables management',
+        '巴淡-自動化 Consumables management',
+        '巴淡-治具 Consumables management',
+        '越南-自動化 Consumables management',
+        '越南-治具 Consumables management',
         'HQ TEST Consumables management',
     ],
 

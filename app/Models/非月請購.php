@@ -21,6 +21,8 @@ class 非月請購 extends Model
     protected $fillable = [
         // '客戶別',
         '料號',
+        '當月需求',
+        '下月需求',
         '請購數量',
         '上傳時間',
         '說明',

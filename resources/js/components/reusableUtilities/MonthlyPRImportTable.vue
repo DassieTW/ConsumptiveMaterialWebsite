@@ -10,34 +10,29 @@
             </div>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="card-body">
-                <div class="w-100">
-                    <div class="row w-100 justify-content-center mb-3">
-                        <div class="col col-auto">
-                            <a :href="exampleUrl" download>
-                                {{ $t('monthlyPRpageLang.exampleExcel') }}
-                            </a>
-                        </div>
+        <div class="card-body">
+            <div class="row justify-content-center mb-3">
+                <div class="col col-auto">
+                    <a :href="exampleUrl" download>
+                        {{ $t('monthlyPRpageLang.exampleExcel') }}
+                    </a>
+                </div>
 
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <label class="col col-auto form-label">{{ $t('monthlyPRpageLang.plz_upload') }}</label>
-                        <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="col col-auto">
-                            <input class="form-control" :class="{ 'is-invalid': isInvalid }" id="excel_input" type="file"
-                                name="select_file" @change="onInputChange" />
-                            <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
-                                <strong>{{ validation_err_msg }}</strong>
-                            </span>
-                        </div>
-                        <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-                        <div class="row w-100 justify-content-center">
-                            <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
-                                @click="onUploadClick">
-                                {{ $t('monthlyPRpageLang.upload1') }}
-                            </button>
-                        </div>
-                    </div>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                <label class="col col-auto form-label">{{ $t('monthlyPRpageLang.plz_upload') }}</label>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col col-auto">
+                    <input class="form-control" :class="{ 'is-invalid': isInvalid }" id="excel_input" type="file"
+                        name="select_file" @change="onInputChange" />
+                    <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
+                        <strong>{{ validation_err_msg }}</strong>
+                    </span>
+                </div>
+                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="row justify-content-center">
+                    <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary" @click="onUploadClick">
+                        {{ $t('monthlyPRpageLang.upload1') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -77,12 +72,14 @@
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
 
             <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="row w-100 justify-content-center">
-                <button v-if="uploadToDBReady" type="submit" name="upload"
-                    class="col col-2 fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
-                    <i class="bi bi-cloud-upload-fill"></i>
-                    {{ $t('monthlyPRpageLang.upload1') }}
-                </button>
+            <div class="row justify-content-center">
+                <div class="col col-auto">
+                    <button v-if="uploadToDBReady" type="submit" name="upload"
+                        class="col col-auto fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
+                        <i class="bi bi-cloud-upload-fill"></i>
+                        {{ $t('monthlyPRpageLang.upload1') }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>

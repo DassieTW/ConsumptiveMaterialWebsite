@@ -47,7 +47,7 @@ return [
     'upload' => 'Batch Upload',
     'pName' => 'Descr.',
     'format' => 'Spec.',
-    'nowstock' => 'Nowstock',
+    'nowstock' => 'Stock',
     'safe' => 'Safety Stock',
     'inpeople' => 'Inbound People',
     'oldloc' => 'Original Location',

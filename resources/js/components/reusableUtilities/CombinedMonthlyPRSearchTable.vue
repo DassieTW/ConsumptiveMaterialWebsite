@@ -1,92 +1,92 @@
 <template>
     <div class="card">
         <div class="card-header ">
-            <h3>{{ $t("monthlyPRpageLang.SendPRReview") }}</h3>
+            <h3>{{ $t("monthlyPRpageLang.PR") }}</h3>
         </div>
-        <div class="row justify-content-center">
-            <div class="card-body">
-                <div id="seaechForm" class="row w-100 m-0 p-0 justify-content-center align-items-center">
-                    <label class="col col-auto form-label">{{ $t("monthlyPRpageLang.rate") }}</label>
-                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                    <div class="input-group w-75">
-                        <label class="input-group-text">1</label>
-                        <select class="form-select form-select-lg text-center" :class="{ 'is-invalid': isInvalid }"
-                            v-model="selectedValue1" id="currency1" name="currency1">
-                            <option selected>RMB</option>
-                            <option>USD</option>
-                            <option>JPY</option>
-                            <option>TWD</option>
-                            <option>VND</option>
-                            <option>IDR</option>
-                        </select>
-                        <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
-                            <strong>{{ validation_err_msg }}</strong>
-                        </span>
-                        <label class="input-group-text">to</label>
-                        <input class="form-control form-control-lg text-center" :class="{ 'is-invalid': isInvalid }"
-                            type="number" id="rate_to" name="rate_to" step="0.000001"
-                            oninput="if(value.length>8)value=value.slice(0,8)" min="0">
-                        <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
-                            <strong>{{ validation_err_msg }}</strong>
-                        </span>
-                        <select class="col col-2 form-select form-select-lg text-center"
-                            :class="{ 'is-invalid': isInvalid }" v-model="selectedValue2" id="currency2" name="currency2">
-                            <option style="display: none" disabled selected value="">
-                                {{ $t("monthlyPRpageLang.entermoney") }}</option>
-                            <option>RMB</option>
-                            <option>USD</option>
-                            <option>JPY</option>
-                            <option>TWD</option>
-                            <option>VND</option>
-                            <option>IDR</option>
-                        </select>
-                        <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
-                            <strong>{{ validation_err_msg }}</strong>
-                        </span>
-                    </div>
-                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+        <div class="card-body">
+            <div id="seaechForm" class="row m-0 p-0 justify-content-center align-items-center">
+                <label class="col col-auto form-label">{{ $t("monthlyPRpageLang.rate") }}</label>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="input-group w-75">
+                    <label class="input-group-text">1</label>
+                    <select class="form-select form-select-lg text-center" v-model="selectedValue1" id="currency1"
+                        name="currency1">
+                        <option selected>RMB</option>
+                        <option>USD</option>
+                        <option>JPY</option>
+                        <option>TWD</option>
+                        <option>VND</option>
+                        <option>IDR</option>
+                    </select>
+                    <label class="input-group-text">to</label>
+                    <input class="form-control form-control-lg text-center"
+                        :class="{ 'is-invalid': isInvalid_currencyValue }" type="number" id="rate_to" name="rate_to"
+                        step="0.000001" oninput="if(value.length>8)value=value.slice(0,8)" min="0" v-model="inputValue">
+                    <select class="col col-2 form-select form-select-lg text-center"
+                        :class="{ 'is-invalid': isInvalid_currencySelect }" v-model="selectedValue2" id="currency2"
+                        name="currency2">
+                        <option style="display: none" disabled selected value="">
+                            {{ $t("monthlyPRpageLang.entermoney") }}</option>
+                        <option>RMB</option>
+                        <option>USD</option>
+                        <option>JPY</option>
+                        <option>TWD</option>
+                        <option>VND</option>
+                        <option>IDR</option>
+                    </select>
+                    <span v-if="isInvalid" class="invalid-feedback d-block text-center" role="alert">
+                        <strong>{{ validation_err_msg }}</strong>
+                    </span>
+                </div>
+                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                <div class="col col-auto">
+                    <a href="http://eip.tw.pegatroncorp.com/ExchangeRate" target="_blank">{{
+                        $t('monthlyPRpageLang.exchangeratesearch') }}</a>
+                </div>
+            </div>
+
+            <div class="w-100" style="height: 5ch"></div><!-- </div>breaks cols to a new line-->
+            <div class="row justify-content-between">
+                <div class="row col col-auto">
                     <div class="col col-auto">
-                        <a href="http://eip.tw.pegatroncorp.com/ExchangeRate" target="_blank">{{
-                            $t('monthlyPRpageLang.exchangeratesearch') }}</a>
+                        <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+                    </div>
+                    <div class="col col-6 p-0 m-0">
+                        <input id="pnInput" class="text-center form-control form-control-lg"
+                            v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
                     </div>
                 </div>
-
-                <div class="w-100" style="height: 5ch"></div><!-- </div>breaks cols to a new line-->
-                <div class="row justify-content-between">
-                    <div class="row col col-auto">
-                        <div class="col col-auto">
-                            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
-                        </div>
-                        <div class="col col-6 p-0 m-0">
-                            <input id="pnInput" class="text-center form-control form-control-lg"
-                                v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
-                        </div>
-                    </div>
-                    <div class="col col-auto">
-                        <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
-                            :value="$t('basicInfoLang.delete')" @click="deleteRow">
-                            <i class="bi bi-trash3-fill fs-4"></i>
-                        </button>
-                        &nbsp;
-                        <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
-                            :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick">
-                            <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
-                        </button>
-                    </div>
+                <div class="col col-auto">
+                    <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
+                        :value="$t('basicInfoLang.delete')" @click="deleteRow">
+                        <i class="bi bi-trash3-fill fs-4"></i>
+                    </button>
+                    &nbsp;
+                    <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                        :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick">
+                        <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
+                    </button>
                 </div>
-
-                <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-                <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
+            </div>
+            <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
+            <div class="row justify-content-between">
+                <span v-if="isInvalid_DB" class="col col-auto text-danger" role="alert">
                     <strong>{{ validation_err_msg }}</strong>
                 </span>
-                <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
-                    :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
-                    :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                    @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
+                <span v-else class="col col-auto text-danger" role="alert">
+                    <strong></strong>
+                </span>
+                <span class="col col-auto text-danger fs-5">{{ $t('monthlyPRpageLang.shallow_delete') }}</span>
+            </div>
+            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
+                :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+                :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
 
-                <div class="row w-100 justify-content-center">
+            <div class="row justify-content-center">
+                <div class="col col-auto">
                     <button v-if="uploadToDBReady" type="submit" name="upload"
-                        class="col col-2 fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
+                        class="col col-auto fs-3 text-center btn btn-lg btn-info" @click="onSendClick">
                         <i class="bi bi-envelope-check-fill"></i>
                         {{ $t('monthlyPRpageLang.SendPRReview') }}
                     </button>
@@ -111,8 +111,6 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        let exampleUrl = ref(window.location.origin);
-
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
@@ -120,91 +118,110 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, getMats_MPS, getMats_nonMonthly } = useMonthlyPRSearch(); // axios get the mats data
-        onBeforeMount(getMats_MPS, getMats_nonMonthly);
+        const { mats, getMats_Buylist, getMats_nonMonthly } = useMonthlyPRSearch(); // axios get the mats data
+        // onBeforeMount(getMats_MPS, getMats_nonMonthly);
 
         const selectedValue1 = ref('RMB');
         const selectedValue2 = ref('');
+        const inputValue = ref(null);
         let isInvalid = ref(false); // validation
+        let isInvalid_currencyValue = ref(false); // validation
+        let isInvalid_currencySelect = ref(false); // validation
+
         let isInvalid_DB = ref(false); // add to DB validation
         let validation_err_msg = ref("");
-        let uploadToDBReady = ref(true); // validation
-        const file = ref();
-        let input_data;
+        let uploadToDBReady = ref(false); // validation
 
-        const onUploadClick = () => {
-            isInvalid_DB.value = false;
-            if (file.value) {
-                $("body").loadingModal({
-                    text: "Loading...",
-                    animation: "circle",
-                });
+        const MPSData = ref(null);
+        const nonMPSData = ref(null);
+        const combinedData = ref(null);
 
-                // console.log(file.value); // test
-                if (file.value.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.value.type == "application/vnd.ms-excel" || file.value.type == "application/vnd.ms-excel" || file.value.type == ".csv") {
-                    if (file.value) {
-                        const reader = new FileReader();
+        const searchTerm = ref(""); // Search text
 
-                        reader.onload = async (e) => {
-                            /* Parse data */
-                            const bstr = e.target.result;
-                            const wb = XLSX.read(bstr, { type: 'binary' });
-                            /* Get first worksheet */
-                            const wsname = wb.SheetNames[0];
-                            const ws = wb.Sheets[wsname];
-                            /* Convert array of arrays */
-                            input_data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-                            // console.log(input_data); // data[row#][col#]  test
-                            let tempArr = Array();
-                            for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][0] != undefined && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                                    tempArr.push(input_data[i][0].trim());
-                                } // if
-                            } // for
+        // pour the data in
+        const data = reactive([]);
 
-                            await triggerModal();
-                            await validateISN(tempArr);
-                            getExistingStock(input_data);
-                        };
+        const triggerModal = async () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
 
-                        reader.readAsBinaryString(file.value);
-
-                    } // if
-                } // if
-                else {
-                    $("body").loadingModal("hide");
-                    $("body").loadingModal("destroy");
-                    isInvalid.value = true;
-                    validation_err_msg.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.entermoney");
-                } // else
-            } // if
-            else {
-                isInvalid.value = true;
-                validation_err_msg.value = app.appContext.config.globalProperties.$t("validation.required");
-            } // else
-
-            file.value = null;
-            document.getElementById('excel_input').value = "";
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
-        } // onUploadClick
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        } // triggerModal
 
         const onInputChange = (event) => {
             isInvalid.value = false;
             file.value = event.target.files ? event.target.files[0] : null;
         } // onInputChange
 
-        const searchTerm = ref(""); // Search text
+        const OutputExcelClick = async () => {
+            await triggerModal();
 
-        // pour the data in
-        const data = reactive([]);
-        // const senders = reactive([]); // access the value by senders[0], senders[1] ...
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
 
-        const onSendToDBClick = () => {
+            let rows = Array();
+
+            for (let i = 0; i < data.length; i++) {
+                let tempObj = new Object;
+                tempObj.料號 = data[i].料號;
+                tempObj.品名 = data[i].品名;
+                tempObj.規格 = data[i].規格;
+                tempObj.單價 = data[i].單價;
+                tempObj.當月需求 = data[i].當月需求;
+                tempObj.下月需求 = data[i].下月需求;
+                tempObj.現有庫存 = data[i].現有庫存;
+                tempObj.在途量 = data[i].在途量;
+                tempObj.本次請購數量 = data[i].本次請購數量;
+                tempObj.請購金額 = parseFloat(data[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                tempObj.匯率 = parseFloat(data[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                tempObj.MOQ = data[i].MOQ;
+                rows.push(tempObj);
+            } // for
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.price"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowneed"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextneed"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowstock"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(" + selectedValue1.value + ")",
+                    selectedValue2.value + "(" + app.appContext.config.globalProperties.$t("monthlyPRpageLang.rate") + " " + inputValue.value + ")",
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
+                ]],
+                { origin: "A1" });
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.stock"));
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "monthlyPRpageLang.PR"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
+
+        const onSendClick = () => {
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
-            // console.log(data.length); //test
+
             if (data.length <= 0) {
                 notyf.open({
                     type: "warning",
@@ -280,69 +297,120 @@ export default defineComponent({
                 return;
             } // if
 
-            // console.log(input_data); // data[row#][col#]  test
-            let tempArr = Array();
+        } // onSendClick
 
-            for (let i = 0; i < input_data.length; i++) {
-                for (let j = 0; j < JSON.parse(mats.value).data.length; j++) {
-                    if (input_data[i][0] === JSON.parse(mats.value).data[j].料號 && input_data[i][2] === JSON.parse(mats.value).data[j].儲位) {
-                        input_data[i][1] = input_data[i][1] + parseInt(JSON.parse(mats.value).data[j].現有庫存);
-                        break;
+        watch([selectedValue1, selectedValue2, inputValue], async () => {
+            // console.log(selectedValue1.value); // test
+            // console.log(inputValue.value); // test
+            // console.log(selectedValue2.value); // test
+            await triggerModal();
+            data.splice(0);
+            isInvalid.value = false;
+            isInvalid_currencySelect.value = false;
+            isInvalid_currencyValue.value = false;
+            if (selectedValue2.value == "" || selectedValue2.value === null) {
+                isInvalid.value = true;
+                isInvalid_currencySelect.value = true;
+                validation_err_msg.value = app.appContext.config.globalProperties.$t("validation.required");
+            } // if
+
+            if (inputValue.value === 0 || inputValue.value === null) {
+                isInvalid.value = true;
+                isInvalid_currencyValue.value = true;
+                validation_err_msg.value = app.appContext.config.globalProperties.$t("validation.required");
+            } // if
+
+            // if all is good, proceed on generating the CombinedPRTable
+            if (isInvalid.value === false) {
+                await getMats_Buylist();
+                MPSData.value = JSON.parse(mats.value).data;
+                await getMats_nonMonthly();
+                nonMPSData.value = JSON.parse(mats.value).data;
+
+                console.log(MPSData.value); // test
+                console.log(nonMPSData.value); // test
+
+                let singleEntry = {};
+                // push to table
+                for (let i = 0; i < MPSData.value.length; i++) {
+                    singleEntry.料號 = MPSData.value[i].料號.toString().trim();
+                    singleEntry.品名 = MPSData.value[i].品名.toString().trim();
+                    singleEntry.規格 = MPSData.value[i].規格.toString().trim();
+                    singleEntry.單價 = parseFloat(MPSData.value[i].單價);
+                    singleEntry.當月需求 = parseInt(MPSData.value[i].本月MPS) * parseFloat(MPSData.value[i].單耗);
+                    singleEntry.下月需求 = parseInt(MPSData.value[i].下月MPS) * parseFloat(MPSData.value[i].單耗);
+                    if (MPSData.value[i].total_stock === null) {
+                        singleEntry.現有庫存 = 0;
+                    } else {
+                        singleEntry.現有庫存 = parseInt(MPSData.value[i].total_stock);
+                    } // if else
+
+                    if (MPSData.value[i].in_transit === null) {
+                        singleEntry.在途量 = 0;
+                    } else {
+                        singleEntry.在途量 = Math.round(parseFloat(MPSData.value[i].in_transit));
+                    } // if else
+
+                    singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求 - singleEntry.現有庫存 - singleEntry.在途量);
+                    if (singleEntry.本次請購數量 <= 0) {
+                        singleEntry.本次請購數量 = 0;
                     } // if
-                } // for
-            } // for
 
-            // console.log(input_data); // test
-            uploadToDB(input_data);
+                    singleEntry.請購金額 = (singleEntry.本次請購數量 * singleEntry.單價).toFixed(5);
+                    singleEntry.匯率 = (singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5);
+                    singleEntry.MOQ = parseInt(MPSData.value[i].MOQ.toString().trim());
 
-        } // onSendToDBClick
+                    singleEntry.id = i;
 
-        watch([selectedValue1, selectedValue2], () => {
-            console.log(selectedValue1.value); // test
-            console.log(selectedValue2.value); // test
-        });
-
-        let locsArray = Array();
-        watch(mats, () => {
-            return;
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-
-            let allRowsObj = JSON.parse(queryResult.value);
-            // console.log(allRowsObj.data); // test
-            let singleEntry = {};
-
-            for (let i = 1; i < input_data.length; i++) {
-                singleEntry.料號90 = input_data[i][0].toString().trim();
-                singleEntry.料號 = input_data[i][1].toString().trim();
-                singleEntry.單耗 = input_data[i][2];
-                singleEntry.doubleCheck = false;
-
-                if (data.length == 0) {
-                    singleEntry.id = 0;
-                } else {
-                    singleEntry.id = parseInt(data[data.length - 1].id) + 1;
-                } // if else
-
-                let indexOfObject = allRowsObj.data.findIndex(object => {
-                    return (object.料號 === singleEntry.料號);
-                });
-
-                if (indexOfObject != -1) { // if an existing record is found
-                    singleEntry = Object.assign(singleEntry, allRowsObj.data[indexOfObject]);
+                    data.push(singleEntry);
                     // console.log(singleEntry); // test
-                } // if
-                else {
-                    singleEntry.月請購 = "";
-                } // else
+                    singleEntry = {};
+                } // for
 
-                data.push(singleEntry);
-                singleEntry = {};
-            } // for
+                for (let i = 0; i < nonMPSData.value.length; i++) {
+                    singleEntry.料號 = nonMPSData.value[i].料號.toString().trim();
+                    singleEntry.品名 = nonMPSData.value[i].品名.toString().trim();
+                    singleEntry.規格 = nonMPSData.value[i].規格.toString().trim();
+                    singleEntry.單價 = parseFloat(nonMPSData.value[i].單價);
+                    singleEntry.當月需求 = parseFloat(nonMPSData.value[i].當月需求);
+                    singleEntry.下月需求 = parseFloat(nonMPSData.value[i].下月需求);
+                    if (nonMPSData.value[i].total_stock === null) {
+                        singleEntry.現有庫存 = 0;
+                    } else {
+                        singleEntry.現有庫存 = parseInt(nonMPSData.value[i].total_stock);
+                    } // if else
 
-            // console.log(data); // test
+                    if (nonMPSData.value[i].in_transit === null) {
+                        singleEntry.在途量 = 0;
+                    } else {
+                        singleEntry.在途量 = Math.round(parseFloat(nonMPSData.value[i].in_transit));
+                    } // if else
+
+                    singleEntry.本次請購數量 = Math.ceil(nonMPSData.value[i].請購數量);
+                    if (singleEntry.本次請購數量 <= 0) {
+                        singleEntry.本次請購數量 = 0;
+                    } // if
+
+                    singleEntry.請購金額 = (singleEntry.本次請購數量 * singleEntry.單價).toFixed(5);
+                    singleEntry.匯率 = (singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5);
+                    singleEntry.MOQ = parseInt(nonMPSData.value[i].MOQ.toString().trim());
+
+                    singleEntry.id = i + MPSData.value.length;
+
+                    data.push(singleEntry);
+                    singleEntry = {};
+                } // for
+
+
+                document.getElementsByClassName("vtl-thead-column")[9].innerHTML =
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") +
+                    "(" + selectedValue1.value + ")";
+
+                document.getElementsByClassName("vtl-thead-column")[10].innerHTML =
+                    "(" + selectedValue2.value + " " + inputValue.value + ")";
+
+            } // if
+
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
@@ -359,35 +427,19 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號 +
-                                "</div>"
-                            );
-                        } else { // isn exist in database
-                            return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號 +
-                                "</div>"
-                            );
-                        } // if else
+                        return (
+                            '<input type="hidden" id="isn' +
+                            row.id +
+                            '" name="isn' +
+                            i +
+                            '" value="' +
+                            row.料號 +
+                            '">' +
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.料號 +
+                            "</div>"
+                        );
                     },
                 },
                 {
@@ -395,40 +447,22 @@ export default defineComponent({
                         "monthlyPRpageLang.pName"
                     ),
                     field: "品名",
-                    width: "14ch",
+                    width: "13ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="name' +
-                                i +
-                                '" name="name' +
-                                i +
-                                '" value="' +
-                                row.品名 +
-                                '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                app.appContext.config.globalProperties.$t("inboundpageLang.row") +
-                                " " + row.excel_row_num +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="name' +
-                                i +
-                                '" name="name' +
-                                i +
-                                '" value="' +
-                                row.品名 +
-                                '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.品名 +
-                                "</div>"
-                            );
-                        } // else
+                        return (
+                            '<input type="hidden" id="name' +
+                            i +
+                            '" name="name' +
+                            i +
+                            '" value="' +
+                            row.品名 +
+                            '">' +
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.品名 +
+                            "</div>"
+                        );
                     },
                 },
                 {
@@ -436,159 +470,227 @@ export default defineComponent({
                         "inboundpageLang.format"
                     ),
                     field: "規格",
-                    width: "14ch",
+                    width: "13ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="format' +
-                                i +
-                                '" name="format' +
-                                i +
-                                '" value="' +
-                                row.規格 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar text-danger"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                app.appContext.config.globalProperties.$t("inboundpageLang.noisn") +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="format' +
-                                i +
-                                '" name="format' +
-                                i +
-                                '" value="' +
-                                row.規格 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                row.規格 +
-                                "</div>"
-                            );
-                        } // else
+                        return (
+                            '<input type="hidden" id="format' +
+                            i +
+                            '" name="format' +
+                            i +
+                            '" value="' +
+                            row.規格 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.規格 +
+                            "</div>"
+                        );
                     },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.amount"
+                        "basicInfoLang.price"
                     ),
-                    field: "數量",
-                    width: "10ch",
+                    field: "單價",
+                    width: "9ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="amount' +
-                                i +
-                                '" name="amount' +
-                                i +
-                                '" value="' +
-                                row.數量 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar text-danger"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                row.數量 +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="amount' +
-                                i +
-                                '" name="amount' +
-                                i +
-                                '" value="' +
-                                row.數量 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                row.數量 +
-                                "</div>"
-                            );
-                        } // else
+                        return (
+                            '<input type="hidden" id="price' +
+                            i +
+                            '" name="price' +
+                            i +
+                            '" value="' +
+                            row.單價 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.單價 +
+                            "</div>"
+                        );
                     },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.unit"
+                        "monthlyPRpageLang.nowneed"
                     ),
-                    field: "單位",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="unit' +
-                                i +
-                                '" name="unit' +
-                                i +
-                                '" value="' +
-                                row.單位 +
-                                '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                "?" +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="unit' +
-                                i +
-                                '" name="unit' +
-                                i +
-                                '" value="' +
-                                row.單位 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                row.單位 +
-                                "</div>"
-                            );
-                        } // else
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.loc"
-                    ),
-                    field: "儲位",
+                    field: "當月需求",
                     width: "12ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (locsArray.includes(row.儲位)) {
-                            return (
-                                '<input type="hidden" id="loc' +
-                                i +
-                                '" name="loc' +
-                                i +
-                                '" value="' +
-                                row.儲位 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                row.儲位 +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="loc' +
-                                i +
-                                '" name="loc' +
-                                i +
-                                '" value="' +
-                                row.儲位 +
-                                '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                row.儲位 + " " + app.appContext.config.globalProperties.$t("inboundpageLang.noloc") +
-                                "</div>"
-                            );
-                        } // else
+                        return (
+                            '<input type="hidden" id="nowneed' +
+                            i +
+                            '" name="nowneed' +
+                            i +
+                            '" value="' +
+                            row.當月需求 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseFloat(row.當月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.nextneed"
+                    ),
+                    field: "下月需求",
+                    width: "12ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="nextneed' +
+                            row.id +
+                            '" name="nextneed' +
+                            i +
+                            '" value="' +
+                            row.下月需求 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseFloat(row.下月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.nowstock"
+                    ),
+                    field: "現有庫存",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="nowstock' +
+                            row.id +
+                            '" name="nowstock' +
+                            i +
+                            '" value="' +
+                            row.現有庫存 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseInt(row.現有庫存).toLocaleString("en-US") +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.transit"
+                    ),
+                    field: "在途量",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="transit' +
+                            i +
+                            '" name="transit' +
+                            i +
+                            '" value="' +
+                            row.在途量 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseInt(row.在途量).toLocaleString("en-US") +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.buyamount"
+                    ),
+                    field: "本次請購數量",
+                    width: "12ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="buyamount' +
+                            row.id +
+                            '" name="buyamount' +
+                            i +
+                            '" value="' +
+                            row.本次請購數量 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseInt(row.本次請購數量).toLocaleString("en-US") +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.buyprice"
+                    ) + "(" + selectedValue1.value + ")",
+                    field: "請購金額",
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="buyprice' +
+                            row.id +
+                            '" name="buyprice' +
+                            i +
+                            '" value="' +
+                            row.請購金額 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseFloat(row.請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: selectedValue2.value + "(" + inputValue.value + ")",
+                    field: "匯率",
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="rate' +
+                            row.id +
+                            '" name="rate' +
+                            i +
+                            '" value="' +
+                            row.匯率 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            parseFloat(row.匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.moq"
+                    ),
+                    field: "MOQ",
+                    width: "8ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="moq' +
+                            row.id +
+                            '" name="moq' +
+                            i +
+                            '" value="' +
+                            row.MOQ +
+                            '">' +
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.MOQ +
+                            "</div>"
+                        );
                     },
                 },
             ],
@@ -659,17 +761,20 @@ export default defineComponent({
 
         return {
             selectedValue1,
+            inputValue,
             selectedValue2,
             isInvalid,
+            isInvalid_currencyValue,
+            isInvalid_currencySelect,
             isInvalid_DB,
             validation_err_msg,
             uploadToDBReady,
             searchTerm,
             table,
             updateCheckedRows,
-            onUploadClick,
             onInputChange,
-            onSendToDBClick,
+            OutputExcelClick,
+            onSendClick,
         };
     }, // setup
 });

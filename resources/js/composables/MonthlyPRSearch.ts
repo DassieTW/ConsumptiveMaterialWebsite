@@ -124,7 +124,7 @@ export default function useMonthlyPRSearch() {
         } // try catch
     } // uploadMonthlyToDB
 
-    const uploadNonMonthlyToDB = async (number, amount, desc) => {
+    const uploadNonMonthlyToDB = async (number, thisdemand, nextdemand, amount, desc) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
 
@@ -132,6 +132,8 @@ export default function useMonthlyPRSearch() {
             let response = await axios.post('/api/month/submit_nonmonthlypr', {
                 DB: getDB.data,
                 number: JSON.stringify(number),
+                thisdemand: JSON.stringify(thisdemand),
+                nextdemand: JSON.stringify(nextdemand),
                 amount: JSON.stringify(amount),
                 desc: JSON.stringify(desc),
             });
@@ -146,6 +148,26 @@ export default function useMonthlyPRSearch() {
         } // try catch
     } // uploadNonMonthlyToDB
 
+    const getMats_Buylist = async () => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        // console.log(inputArray); // test
+        try {
+            let response = await axios.post('/api/month/generate_buylist', {
+                DB: getDB.data,
+            });
+
+            mats.value = JSON.stringify(response.data);
+            // console.log(JSON.stringify(response.data)); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // getMats_Buylist
+
     return {
         mats,
         getMats_MPS,
@@ -153,6 +175,7 @@ export default function useMonthlyPRSearch() {
         getMats_nonMonthly,
         deleteNonMPS,
         uploadMonthlyToDB,
-        uploadNonMonthlyToDB
+        uploadNonMonthlyToDB,
+        getMats_Buylist
     } // return
 } // useConsumptiveMaterials
