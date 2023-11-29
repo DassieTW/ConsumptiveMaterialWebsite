@@ -41,10 +41,10 @@ class MonthlyPRController extends Controller
                 $temp = array(
                     "料號" => json_decode($request->input('number'))[$i],
                     "料號90" => json_decode($request->input('number90'))[$i],
-                    "下月MPS" => json_decode($request->input('nextmps'))[$i],
-                    "下月生產天數" => json_decode($request->input('nextday'))[$i],
-                    "本月MPS" => json_decode($request->input('nowmps'))[$i],
-                    "本月生產天數" => json_decode($request->input('nowday'))[$i],
+                    "下月MPS" => floatval(json_decode($request->input('nextmps'))[$i]),
+                    "下月生產天數" => floatval(json_decode($request->input('nextday'))[$i]),
+                    "本月MPS" => floatval(json_decode($request->input('nowmps'))[$i]),
+                    "本月生產天數" => floatval(json_decode($request->input('nowday'))[$i]),
                     "填寫時間" => $now
                 );
 
@@ -69,6 +69,7 @@ class MonthlyPRController extends Controller
             return \Response::json(['record' => $record] /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             \DB::rollback();
+            dd($e);
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
         } // try - catch
     } // storeMonthlyPR

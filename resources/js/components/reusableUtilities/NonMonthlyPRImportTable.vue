@@ -558,7 +558,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            parseFloat(row.當月需求) +
+                            parseFloat(row.當月需求).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
                     },
@@ -581,7 +581,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            parseFloat(row.下月需求) +
+                            parseFloat(row.下月需求).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
                     },

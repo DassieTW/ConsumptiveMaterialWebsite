@@ -408,10 +408,10 @@ export default defineComponent({
             for (let i = 1; i < input_data.length; i++) {
                 singleEntry.料號90 = input_data[i][0].toString().trim();
                 singleEntry.料號 = input_data[i][1].toString().trim();
-                singleEntry.本月MPS = input_data[i][2];
-                singleEntry.本月生產天數 = input_data[i][3];
-                singleEntry.下月MPS = input_data[i][4];
-                singleEntry.下月生產天數 = input_data[i][5];
+                singleEntry.本月MPS = parseFloat(input_data[i][2].toString().replace(/,/g, ''));
+                singleEntry.本月生產天數 = parseFloat(input_data[i][3].toString().replace(/,/g, ''));
+                singleEntry.下月MPS = parseFloat(input_data[i][4].toString().replace(/,/g, ''));
+                singleEntry.下月生產天數 = parseFloat(input_data[i][5].toString().replace(/,/g, ''));
                 singleEntry.excel_row_num = i + 1;
 
                 if (data.length == 0) {
@@ -535,7 +535,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            parseInt(row.本月MPS).toLocaleString('en', { useGrouping: true }) +
+                            parseFloat(row.本月MPS).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
                     },
@@ -558,7 +558,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            parseInt(row.本月生產天數) +
+                            parseFloat(row.本月生產天數).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
                     },
@@ -581,7 +581,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            parseInt(row.下月MPS).toLocaleString('en', { useGrouping: true }) +
+                            parseFloat(row.下月MPS).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
                     },
@@ -604,7 +604,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            parseInt(row.下月生產天數) +
+                            parseFloat(row.下月生產天數).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
                     },
