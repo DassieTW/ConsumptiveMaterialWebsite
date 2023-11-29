@@ -277,6 +277,11 @@ class MonthlyPRController extends Controller
             ->join('consumptive_material', function ($join) {
                 $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
             });
+        // ---------------------- test ----------------------
+        // ->select('月請購_單耗.*', 'MPS.*', 'consumptive_material.*')
+        // ->where('月請購_單耗.狀態', '=', "已完成")
+        // ->get();
+        // dd($temp); // test
 
         $datas = $temp
             ->leftJoinSub($currentStockByPN, 'sum_stock', '月請購_單耗.料號', '=', 'sum_stock.料號')

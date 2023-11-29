@@ -57,8 +57,7 @@
                     </div>
                 </div>
                 <div class="col col-auto">
-                    <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
-                        :value="$t('basicInfoLang.delete')" @click="deleteRow">
+                    <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger" @click="deleteRow">
                         <i class="bi bi-trash3-fill fs-4"></i>
                     </button>
                     &nbsp;
@@ -78,7 +77,7 @@
                 </span>
                 <span class="col col-auto text-danger fs-5">{{ $t('monthlyPRpageLang.shallow_delete') }}</span>
             </div>
-            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
+            <table-lite id="searchTable" :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
@@ -124,12 +123,13 @@ export default defineComponent({
         const selectedValue1 = ref('RMB');
         const selectedValue2 = ref('');
         const inputValue = ref(null);
-        let isInvalid = ref(false); // validation
-        let isInvalid_currencyValue = ref(false); // validation
-        let isInvalid_currencySelect = ref(false); // validation
+        let isInvalid = ref(true); // validation
+        let isInvalid_currencyValue = ref(true); // validation
+        let isInvalid_currencySelect = ref(true); // validation
 
         let isInvalid_DB = ref(false); // add to DB validation
-        let validation_err_msg = ref("");
+        let validation_err_msg = ref(app.appContext.config.globalProperties.$t("validation.required"));
+        let checkedRows = [];
         let uploadToDBReady = ref(false); // validation
 
         const MPSData = ref(null);
@@ -157,6 +157,44 @@ export default defineComponent({
             file.value = event.target.files ? event.target.files[0] : null;
         } // onInputChange
 
+        const deleteRow = () => {
+            if (checkedRows.length == 0) {
+                notyf.open({
+                    type: "warning",
+                    message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                return;
+            } // if
+
+            for (let i = 0; i < checkedRows.length; i++) {
+                let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
+                let deleteID = $($(selectedRow).find("input")[1]).attr("id").replace('isn', '');
+
+                let indexOfObject = data.findIndex(object => {
+                    return parseInt(object.id) === parseInt(deleteID);
+                });
+
+                if (indexOfObject != -1) {
+                    data.splice(indexOfObject, 1);
+                } // if
+            } // for
+
+            document.querySelectorAll('.vtl-tbody-checkbox').forEach(el => el.checked = false);
+            if (document.querySelector(".vtl-thead-checkbox").checked) {
+                document.querySelector(".vtl-thead-checkbox").click();
+            } // if
+            checkedRows = [];
+
+        } // deleteRowv
+
         const OutputExcelClick = async () => {
             await triggerModal();
 
@@ -175,11 +213,11 @@ export default defineComponent({
                 tempObj.品名 = data[i].品名;
                 tempObj.規格 = data[i].規格;
                 tempObj.單價 = data[i].單價;
-                tempObj.當月需求 = data[i].當月需求;
-                tempObj.下月需求 = data[i].下月需求;
-                tempObj.現有庫存 = data[i].現有庫存;
-                tempObj.在途量 = data[i].在途量;
-                tempObj.本次請購數量 = data[i].本次請購數量;
+                tempObj.當月需求 = parseFloat(data[i].當月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                tempObj.下月需求 = parseFloat(data[i].下月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                tempObj.現有庫存 = parseInt(data[i].現有庫存).toLocaleString("en-US");
+                tempObj.在途量 = parseInt(data[i].在途量).toLocaleString("en-US");
+                tempObj.本次請購數量 = parseInt(data[i].本次請購數量).toLocaleString("en-US");
                 tempObj.請購金額 = parseFloat(data[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                 tempObj.匯率 = parseFloat(data[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                 tempObj.MOQ = data[i].MOQ;
@@ -187,7 +225,7 @@ export default defineComponent({
             } // for
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
-            
+
             // change header name
             XLSX.utils.sheet_add_aoa(worksheet,
                 [[
@@ -300,9 +338,6 @@ export default defineComponent({
         } // onSendClick
 
         watch([selectedValue1, selectedValue2, inputValue], async () => {
-            // console.log(selectedValue1.value); // test
-            // console.log(inputValue.value); // test
-            // console.log(selectedValue2.value); // test
             await triggerModal();
             data.splice(0);
             isInvalid.value = false;
@@ -327,11 +362,12 @@ export default defineComponent({
                 await getMats_nonMonthly();
                 nonMPSData.value = JSON.parse(mats.value).data;
 
-                console.log(MPSData.value); // test
-                console.log(nonMPSData.value); // test
+                // console.log(MPSData.value); // test
+                // console.log(nonMPSData.value); // test
 
                 let singleEntry = {};
-                // push to table
+                let tempAll = [];
+                // push temp
                 for (let i = 0; i < MPSData.value.length; i++) {
                     singleEntry.料號 = MPSData.value[i].料號.toString().trim();
                     singleEntry.品名 = MPSData.value[i].品名.toString().trim();
@@ -356,13 +392,13 @@ export default defineComponent({
                         singleEntry.本次請購數量 = 0;
                     } // if
 
-                    singleEntry.請購金額 = (singleEntry.本次請購數量 * singleEntry.單價).toFixed(5);
-                    singleEntry.匯率 = (singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5);
+                    singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
+                    singleEntry.匯率 = parseFloat((singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5));
                     singleEntry.MOQ = parseInt(MPSData.value[i].MOQ.toString().trim());
 
                     singleEntry.id = i;
 
-                    data.push(singleEntry);
+                    tempAll.push(singleEntry);
                     // console.log(singleEntry); // test
                     singleEntry = {};
                 } // for
@@ -391,16 +427,52 @@ export default defineComponent({
                         singleEntry.本次請購數量 = 0;
                     } // if
 
-                    singleEntry.請購金額 = (singleEntry.本次請購數量 * singleEntry.單價).toFixed(5);
-                    singleEntry.匯率 = (singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5);
+                    singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
+                    singleEntry.匯率 = parseFloat((singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5));
                     singleEntry.MOQ = parseInt(nonMPSData.value[i].MOQ.toString().trim());
 
                     singleEntry.id = i + MPSData.value.length;
 
-                    data.push(singleEntry);
+                    tempAll.push(singleEntry);
                     singleEntry = {};
                 } // for
 
+                // sum by 料號
+                let sum_result = Object.values(tempAll.reduce((accumulator, currentValue) => {
+                    if (!accumulator[currentValue.料號]) { // if the current 料號 is fisrt met, then we create a index for it
+                        accumulator[currentValue.料號] =
+                        {
+                            料號: currentValue.料號,
+                            品名: currentValue.品名,
+                            規格: currentValue.規格,
+                            單價: currentValue.單價,
+                            當月需求: 0,
+                            下月需求: 0,
+                            現有庫存: currentValue.現有庫存,
+                            在途量: currentValue.在途量,
+                            本次請購數量: 0,
+                            請購金額: 0,
+                            匯率: 0,
+                            MOQ: currentValue.MOQ
+                        };
+                    } // if
+
+                    // sum the value by index
+                    accumulator[currentValue.料號].當月需求 += currentValue.當月需求;
+                    accumulator[currentValue.料號].下月需求 += currentValue.下月需求;
+                    accumulator[currentValue.料號].本次請購數量 += currentValue.本次請購數量;
+                    accumulator[currentValue.料號].請購金額 += currentValue.請購金額;
+                    accumulator[currentValue.料號].匯率 += currentValue.匯率;
+                    // console.log(accumulator); // test
+                    return accumulator;
+                }, {}));
+
+                // console.log(sum_result); // test
+
+                // push to table
+                for (let j = 0; j < sum_result.length; j++) {
+                    data.push(sum_result[j]);
+                } // for
 
                 document.getElementsByClassName("vtl-thead-column")[9].innerHTML =
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") +
@@ -408,8 +480,14 @@ export default defineComponent({
 
                 document.getElementsByClassName("vtl-thead-column")[10].innerHTML =
                     "(" + selectedValue2.value + " " + inputValue.value + ")";
-
             } // if
+
+            if (data.length > 0) {
+                uploadToDBReady.value = true;
+            } // if
+            else {
+                uploadToDBReady.value = false;
+            } // else
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
@@ -756,7 +834,8 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            // console.log(rowsKey);
+            // console.log(rowsKey); // test
+            checkedRows = rowsKey;
         };
 
         return {
@@ -773,6 +852,7 @@ export default defineComponent({
             table,
             updateCheckedRows,
             onInputChange,
+            deleteRow,
             OutputExcelClick,
             onSendClick,
         };
