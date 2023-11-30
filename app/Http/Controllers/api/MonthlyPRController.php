@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Sentry\Util\JSON;
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\style\Borders;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Mail;
 
 use function Swoole\Coroutine\Http\get;
 
@@ -373,6 +379,110 @@ class MonthlyPRController extends Controller
         } //try - catch
 
     } // update_UnitConsumption
+
+    //寄出請購單
+    public static function sendPRMail(Request $request)
+    {
+        $spreadsheet = new Spreadsheet();
+        // $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+        // $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Microsoft JhengHei');
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $Alldata = json_decode($request->input('AllData'));
+        $request_user = $request->input('User');
+        $rate = json_decode($request->input('Rate'));
+        dd($request_user["email"]); // user
+        // $stringValueBinder = new StringValueBinder();
+        // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
+        // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
+
+        $i = 3;
+        //填寫表頭
+        $worksheet->setCellValue("A2", "項次");
+        $worksheet->setCellValue("B2", "耗材料號");
+        $worksheet->setCellValue("C2", "品名");
+        $worksheet->setCellValue("D2", "規格");
+        $worksheet->setCellValue("E2", "單價");
+        $worksheet->setCellValue("F2", "當月需求");
+        $worksheet->setCellValue("G2", "下月需求");
+        $worksheet->setCellValue("H2", "庫存");
+        $worksheet->setCellValue("I2", "廠商未交貨");
+        $worksheet->setCellValue("J2", "實際請購數量");
+        $worksheet->setCellValue("K2", "總價RMB");
+        $worksheet->setCellValue("L2", "台幣(匯率4.326)");
+        $worksheet->setCellValue("M2", "MOQ");
+        $worksheet->mergeCells("A1:M1"); // for the SUM row
+        $database = $request->session()->get('database');
+        $title = explode(" Consumables management", $database)[0] . "廠";
+        $year = date('Y/', strtotime("last day of 1 month"));
+        $month = date('m/', strtotime("last day of 1 month"));
+        $lastday = date('t', strtotime("last day of 1 month"));
+        $title  = $title . $year . $month . "01" . "-" . $month . $lastday . "號耗材購買明細";
+        $worksheet->setCellValue("A1", $title);
+        $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle("A1")->getFont()->setSize(16);
+        $worksheet->getStyle("A1")->getFont()->setBold(true);
+        //填寫內容
+        for ($j = 0; $j < $count; $j++) {
+            if ($Alldata[11][$j] > 0) {
+                $worksheet->setCellValueByColumnAndRow(1, $i, $i - 2);
+                $worksheet->setCellValueByColumnAndRow(2, $i, $Alldata[2][$j]);
+                $worksheet->setCellValueByColumnAndRow(3, $i, $Alldata[3][$j]);
+                $worksheet->setCellValueByColumnAndRow(4, $i, $Alldata[4][$j]);
+                $worksheet->setCellValueByColumnAndRow(5, $i, $Alldata[5][$j]);
+                if ($Alldata[7][$j] === "/") {
+                    $worksheet->getStyle("F" . $i)->getBorders()->setDiagonalDirection(Borders::DIAGONAL_BOTH)->getDiagonal()->setBorderStyle(Border::BORDER_THIN);
+                    $worksheet->getStyle("G" . $i)->getBorders()->setDiagonalDirection(Borders::DIAGONAL_BOTH)->getDiagonal()->setBorderStyle(Border::BORDER_THIN);
+                } else {
+                    $worksheet->setCellValueByColumnAndRow(6, $i, $Alldata[7][$j]);
+                    $worksheet->setCellValueByColumnAndRow(7, $i, $Alldata[8][$j]);
+                }
+                $worksheet->setCellValueByColumnAndRow(8, $i, $Alldata[9][$j]);
+                $worksheet->setCellValueByColumnAndRow(9, $i, $Alldata[10][$j]);
+                $worksheet->setCellValueByColumnAndRow(10, $i, $Alldata[11][$j]);
+                $worksheet->setCellValueByColumnAndRow(11, $i, $Alldata[12][$j]);
+                $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . $rate);
+                $worksheet->setCellValueByColumnAndRow(13, $i, $Alldata[14][$j]);
+
+                $i++;
+            } else {
+                continue;
+            } // if else
+        } // for
+
+        $spreadsheet->getActiveSheet()->getStyle('A2:M2')->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('c4d79b');
+        $worksheet->getStyle('A2' . ':' . 'M' . $i)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+
+        $worksheet->setCellValue(("K" . $i), ("=SUM(K3" . ":" . "K" . ($i - 1) . ")"));
+        $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . "4.326");
+
+        $worksheet->setCellValue(("B" . $i + 2), "核准:");
+        $worksheet->setCellValue(("E" . $i + 2), "審核:");
+        $worksheet->setCellValue(("K" . $i + 2), "製表:");
+
+        // 下載
+        $now = Carbon::now()->format('Ymd');
+        $filename = $database . 'Safe Stock' . $now . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save(public_path() . "/excel/" . $filename);
+
+        Mail::send('mail/pr_review', [], function ($message) use ($now, $database, $request_user) {
+            $message->to($request_user["email"])->subject('PR Review');
+            $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+            $message->attach(public_path() . '/excel/' . $database . \Lang::get("monthlyPRpageLang.page_name") . $now . '.pdf');
+            $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
+        });
+
+        \File::delete(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
+    } // sendconsumemail
 
     /**
      * Remove the specified resource from storage.

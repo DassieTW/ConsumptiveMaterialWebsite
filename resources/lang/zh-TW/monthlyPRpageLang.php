@@ -53,7 +53,7 @@ return [
     'transit' => '在途量',
     'nowstock' => '現有庫存',
     'realneed' => '實際需求',
-    'buyprice' => '請購金額',
+    'buyprice' => '總價',
     'needprice' => '需求金額',
     'needper' => '需求占比',
     'buyper' => '請購占比',

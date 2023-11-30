@@ -24,7 +24,6 @@ class MailService
      */
     public function download() // 安全庫存 寄警報信
     {
-
         $databases = config('database_list.databases');
         array_shift($databases); // remove the 'Consumables management' db from array
         $AllISNClientsPairs = array("isn" => array());

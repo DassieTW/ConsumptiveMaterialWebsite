@@ -117,7 +117,7 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, getMats_Buylist, getMats_nonMonthly } = useMonthlyPRSearch(); // axios get the mats data
+        const { mats, getMats_Buylist, getMats_nonMonthly, sendBuylist } = useMonthlyPRSearch(); // axios get the mats data
         // onBeforeMount(getMats_MPS, getMats_nonMonthly);
 
         const selectedValue1 = ref('RMB');
@@ -151,11 +151,6 @@ export default defineComponent({
                 resolve();
             });
         } // triggerModal
-
-        const onInputChange = (event) => {
-            isInvalid.value = false;
-            file.value = event.target.files ? event.target.files[0] : null;
-        } // onInputChange
 
         const deleteRow = () => {
             if (checkedRows.length == 0) {
@@ -239,7 +234,7 @@ export default defineComponent({
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"),
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(" + selectedValue1.value + ")",
-                    selectedValue2.value + "(" + app.appContext.config.globalProperties.$t("monthlyPRpageLang.rate") + " " + inputValue.value + ")",
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(" + selectedValue2.value + " " + inputValue.value + ")",
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
                 ]],
                 { origin: "A1" });
@@ -255,7 +250,9 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // OutputExcelClick
 
-        const onSendClick = () => {
+        const onSendClick = async () => {
+            await triggerModal();
+
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
@@ -275,22 +272,46 @@ export default defineComponent({
                 return;
             } // if
 
-            for (let j = 0; j < data.length && hasError == false; j++) {
-                if (data[j].月請購 === "" || data[j].月請購 === null || data[j].月請購.toLowerCase() === "null") {
-                    hasError = true;
-                    rowsCount = j;
-                } // if
+            // ----------------------------------------------
+            // actually updating database now
+            let number = [];
+            let number90 = [];
+            let nextmps = [];
+            let nextday = [];
+            let nowmps = [];
+            let nowday = [];
+            for (let i = 0; i < data.length; i++) {
+                number.push(data[i].料號);
+                number90.push(data[i].料號90);
+                nextmps.push(data[i].下月MPS);
+                nextday.push(data[i].下月生產天數);
+                nowmps.push(data[i].本月MPS);
+                nowday.push(data[i].本月生產天數);
             } // for
 
-            if (hasError) {
-                isInvalid_DB.value = true;
-                validation_err_msg.value =
-                    "Excel " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.row") +
-                    " " + data[rowsCount].excel_row_num + " " +
-                    "(" + data[rowsCount].料號 + ") " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.noisn");
+            // console.log(number); // test
+            let start = Date.now();
+            let result = await sendBuylist(inputValue.value);
+            let timeTaken = Date.now() - start;
+            console.log("Total time taken : " + timeTaken + " milliseconds");
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
 
+            if (result === "success") {
+                uploadToDBReady.value = false;
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + data.length + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // if
+            else {
                 notyf.open({
                     type: "error",
                     message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
@@ -302,38 +323,7 @@ export default defineComponent({
                         y: "bottom",
                     },
                 });
-                return;
-            } // if
-
-            for (let j = 0; j < data.length && hasError == false; j++) {
-                if (!locsArray.includes(data[j].儲位)) {
-                    hasError = true;
-                    rowsCount = j;
-                } // if
-            } // for
-
-            if (hasError) {
-                isInvalid_DB.value = true;
-                validation_err_msg.value =
-                    "Excel " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.row") +
-                    " " + data[rowsCount].excel_row_num + " " +
-                    "(" + data[rowsCount].儲位 + ") " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.noloc");
-
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-                return;
-            } // if
+            } // else
 
         } // onSendClick
 
@@ -373,8 +363,8 @@ export default defineComponent({
                     singleEntry.品名 = MPSData.value[i].品名.toString().trim();
                     singleEntry.規格 = MPSData.value[i].規格.toString().trim();
                     singleEntry.單價 = parseFloat(MPSData.value[i].單價);
-                    singleEntry.當月需求 = parseInt(MPSData.value[i].本月MPS) * parseFloat(MPSData.value[i].單耗);
-                    singleEntry.下月需求 = parseInt(MPSData.value[i].下月MPS) * parseFloat(MPSData.value[i].單耗);
+                    singleEntry.當月需求 = parseInt(MPSData.value[i].本月MPS) * parseFloat(MPSData.value[i].單耗) / 1000;
+                    singleEntry.下月需求 = parseInt(MPSData.value[i].下月MPS) * parseFloat(MPSData.value[i].單耗) / 1000;
                     if (MPSData.value[i].total_stock === null) {
                         singleEntry.現有庫存 = 0;
                     } else {
@@ -388,7 +378,7 @@ export default defineComponent({
                     } // if else
 
                     singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求 - singleEntry.現有庫存 - singleEntry.在途量);
-                    if (singleEntry.本次請購數量 <= 0) {
+                    if (singleEntry.本次請購數量 < 0) {
                         singleEntry.本次請購數量 = 0;
                     } // if
 
@@ -479,7 +469,8 @@ export default defineComponent({
                     "(" + selectedValue1.value + ")";
 
                 document.getElementsByClassName("vtl-thead-column")[10].innerHTML =
-                    "(" + selectedValue2.value + " " + inputValue.value + ")";
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") +
+                    "(" + selectedValue2.value + " <small>" + inputValue.value + "</small>)";
             } // if
 
             if (data.length > 0) {
@@ -728,7 +719,9 @@ export default defineComponent({
                     },
                 },
                 {
-                    label: selectedValue2.value + "(" + inputValue.value + ")",
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.buyprice"
+                    ) + "(" + selectedValue2.value + " " + inputValue.value + ")",
                     field: "匯率",
                     width: "13ch",
                     sortable: true,
@@ -851,7 +844,6 @@ export default defineComponent({
             searchTerm,
             table,
             updateCheckedRows,
-            onInputChange,
             deleteRow,
             OutputExcelClick,
             onSendClick,

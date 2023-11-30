@@ -168,6 +168,29 @@ export default function useMonthlyPRSearch() {
         } // try catch
     } // getMats_Buylist
 
+    const sendBuylist = async (rate) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        let user = await axios.post('/getCurrentUser');
+        // console.log(user); // test
+        try {
+            let response = await axios.post('/api/month/sendPRMail', {
+                DB: getDB.data,
+                User: user.data,
+                Rate: JSON.stringify(rate),
+            });
+
+            mats.value = JSON.stringify(response.data);
+            // console.log(JSON.stringify(response.data)); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // sendBuylist
+
     return {
         mats,
         getMats_MPS,
@@ -176,6 +199,7 @@ export default function useMonthlyPRSearch() {
         deleteNonMPS,
         uploadMonthlyToDB,
         uploadNonMonthlyToDB,
-        getMats_Buylist
+        getMats_Buylist,
+        sendBuylist,
     } // return
 } // useConsumptiveMaterials
