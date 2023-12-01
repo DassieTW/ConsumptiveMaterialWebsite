@@ -4,10 +4,21 @@
 <head>
     <meta charset="utf-8">
     <title>{{ __('monthlyPRpageLang.page_name') }}</title>
+    <style>
+        table, th, td {
+            border: 3px solid black;
+            border-collapse: collapse;
+        }
+
+        table {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>{{ __('monthlyPRpageLang.page_name') }}</h1>
+    <h2>{{ __('monthlyPRpageLang.page_name') }}</h1>
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
     <h2>Please have a look at the attached file.</h2>
     <table>
