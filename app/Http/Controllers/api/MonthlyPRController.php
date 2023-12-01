@@ -392,7 +392,7 @@ class MonthlyPRController extends Controller
         $Alldata = json_decode($request->input('AllData'));
         $request_user = $request->input('User');
         $rate = json_decode($request->input('Rate'));
-        dd($request_user["email"]); // user
+        // dd($request_user["email"]); // user
         // $stringValueBinder = new StringValueBinder();
         // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
         // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format

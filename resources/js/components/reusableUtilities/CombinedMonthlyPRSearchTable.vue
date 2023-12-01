@@ -377,7 +377,7 @@ export default defineComponent({
                         singleEntry.在途量 = Math.round(parseFloat(MPSData.value[i].in_transit));
                     } // if else
 
-                    singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求 - singleEntry.現有庫存 - singleEntry.在途量);
+                    singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求);
                     if (singleEntry.本次請購數量 < 0) {
                         singleEntry.本次請購數量 = 0;
                     } // if
@@ -389,6 +389,7 @@ export default defineComponent({
                     singleEntry.id = i;
 
                     tempAll.push(singleEntry);
+                    data.push(singleEntry); // test
                     // console.log(singleEntry); // test
                     singleEntry = {};
                 } // for
@@ -427,6 +428,8 @@ export default defineComponent({
                     singleEntry = {};
                 } // for
 
+                // console.log(tempAll); // test
+
                 // sum by 料號
                 let sum_result = Object.values(tempAll.reduce((accumulator, currentValue) => {
                     if (!accumulator[currentValue.料號]) { // if the current 料號 is fisrt met, then we create a index for it
@@ -450,18 +453,42 @@ export default defineComponent({
                     // sum the value by index
                     accumulator[currentValue.料號].當月需求 += currentValue.當月需求;
                     accumulator[currentValue.料號].下月需求 += currentValue.下月需求;
-                    accumulator[currentValue.料號].本次請購數量 += currentValue.本次請購數量;
-                    accumulator[currentValue.料號].請購金額 += currentValue.請購金額;
-                    accumulator[currentValue.料號].匯率 += currentValue.匯率;
+                    return accumulator;
+                }, {}));
+
+                // Calculate result rows
+                let final_result = Object.values(sum_result.reduce((accumulator, currentValue) => {
+                    if (!accumulator[currentValue.料號]) { // if the current 料號 is fisrt met, then we create a index for it
+                        accumulator[currentValue.料號] =
+                        {
+                            料號: currentValue.料號,
+                            品名: currentValue.品名,
+                            規格: currentValue.規格,
+                            單價: currentValue.單價,
+                            當月需求: currentValue.當月需求,
+                            下月需求: currentValue.下月需求,
+                            現有庫存: currentValue.現有庫存,
+                            在途量: currentValue.在途量,
+                            本次請購數量: 0,
+                            請購金額: 0,
+                            匯率: 0,
+                            MOQ: currentValue.MOQ
+                        };
+                    } // if
+
+                    // calculate the value by index
+                    accumulator[currentValue.料號].本次請購數量 = Math.ceil(currentValue.當月需求 + currentValue.下月需求 - currentValue.現有庫存 - currentValue.在途量);
+                    accumulator[currentValue.料號].請購金額 = parseFloat((currentValue.本次請購數量 * currentValue.單價).toFixed(5));
+                    accumulator[currentValue.料號].匯率 = parseFloat((currentValue.請購金額 * parseFloat(inputValue.value)).toFixed(5));
                     // console.log(accumulator); // test
                     return accumulator;
                 }, {}));
 
-                // console.log(sum_result); // test
+                // console.log(final_result); // test
 
                 // push to table
-                for (let j = 0; j < sum_result.length; j++) {
-                    data.push(sum_result[j]);
+                for (let j = 0; j < final_result.length; j++) {
+                    data.push(final_result[j]);
                 } // for
 
                 document.getElementsByClassName("vtl-thead-column")[9].innerHTML =
