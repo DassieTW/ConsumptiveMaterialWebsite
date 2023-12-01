@@ -179,14 +179,14 @@ export default defineComponent({
                         if (input_data === undefined || input_data[0] === undefined || input_data[0][0] === undefined || input_data[0][1] === undefined || input_data[0][2] === undefined) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
-                        } else if (input_data[0][0].trim() !== "90料號" || input_data[0][1].trim() !== "料號" || !input_data[0][2].trim().toLowerCase().includes("mps")) {
+                        } else if (input_data[0][0].toString().trim() !== "90料號" || input_data[0][1].toString().trim() !== "料號" || !input_data[0][2].toString().trim().toLowerCase().includes("mps")) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
                             let tempArr = Array();
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                                    tempArr.push(input_data[i][1].trim());
+                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].toString().trim() != "" && input_data[i][0].toString().trim() != null) {
+                                    tempArr.push(input_data[i][1].toString().trim());
                                 } // if
                                 else {
                                     input_data.splice(i, 1); // remove the empty row
@@ -408,7 +408,7 @@ export default defineComponent({
             for (let i = 1; i < input_data.length; i++) {
                 singleEntry.料號90 = input_data[i][0].toString().trim();
                 singleEntry.料號 = input_data[i][1].toString().trim();
-                if (input_data[i][2] === undefined || input_data[i][2].trim() === "") {
+                if (input_data[i][2] == undefined || input_data[i][2].toString().trim() == "") {
                     isInvalid.value = true;
                     validation_err_msg.value =
                         singleEntry.料號90 + "->" + singleEntry.料號 + " " +
@@ -421,7 +421,7 @@ export default defineComponent({
                 } // if
                 singleEntry.本月MPS = parseFloat(input_data[i][2].toString().replace(/,/g, ''));
                 // -------------------------------------------------------------------------------
-                if (input_data[i][3] === undefined || input_data[i][3].trim() === "") {
+                if (input_data[i][3] == undefined || input_data[i][3].toString().trim() == "") {
                     isInvalid.value = true;
                     validation_err_msg.value =
                         singleEntry.料號90 + "->" + singleEntry.料號 + " " +
@@ -434,7 +434,7 @@ export default defineComponent({
                 } // if
                 singleEntry.本月生產天數 = parseFloat(input_data[i][3].toString().replace(/,/g, ''));
                 // -------------------------------------------------------------------------------
-                if (input_data[i][4] === undefined || input_data[i][4].trim() === "") {
+                if (input_data[i][4] == undefined || input_data[i][4].toString().trim() == "") {
                     isInvalid.value = true;
                     validation_err_msg.value =
                         singleEntry.料號90 + "->" + singleEntry.料號 + " " +
@@ -447,7 +447,7 @@ export default defineComponent({
                 } // if
                 singleEntry.下月MPS = parseFloat(input_data[i][4].toString().replace(/,/g, ''));
                 // -------------------------------------------------------------------------------
-                if (input_data[i][5] === undefined || input_data[i][5].trim() === "") {
+                if (input_data[i][5] == undefined || input_data[i][5].toString().trim() == "") {
                     isInvalid.value = true;
                     validation_err_msg.value =
                         singleEntry.料號90 + "->" + singleEntry.料號 + " " +
