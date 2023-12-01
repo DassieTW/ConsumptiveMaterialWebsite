@@ -469,8 +469,8 @@ export default defineComponent({
                     if (accumulator[currentValue.料號].本次請購數量 < 0) {
                         accumulator[currentValue.料號].本次請購數量 = 0;
                     } // if
-                    accumulator[currentValue.料號].請購金額 = parseFloat((currentValue.本次請購數量 * currentValue.單價).toFixed(5));
-                    accumulator[currentValue.料號].匯率 = parseFloat((currentValue.請購金額 * parseFloat(inputValue.value)).toFixed(5));
+                    accumulator[currentValue.料號].請購金額 = parseFloat((accumulator[currentValue.料號].本次請購數量 * currentValue.單價).toFixed(5));
+                    accumulator[currentValue.料號].匯率 = parseFloat((accumulator[currentValue.料號].請購金額 * parseFloat(inputValue.value)).toFixed(5));
                     // console.log(accumulator); // test
                     return accumulator;
                 }, {}));
