@@ -400,16 +400,33 @@ class MonthlyPRController extends Controller
     //寄出請購單
     public static function sendPRMail(Request $request)
     {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
         $spreadsheet = new Spreadsheet();
         // $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
         // $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
         $spreadsheet->getDefaultStyle()->getFont()->setName('Microsoft JhengHei');
         $worksheet = $spreadsheet->getActiveSheet();
 
-        $Alldata = json_decode($request->input('AllData'));
         $request_user = $request->input('User');
-        $rate = json_decode($request->input('Rate'));
-        // dd($request_user["email"]); // user
+        $Currency1 = json_decode($request->input('Currency1'));
+        $Rate = json_decode($request->input('Rate'));
+        $Currency2 = json_decode($request->input('Currency2'));
+        $PN = json_decode($request->input('PN'));
+        $pName = json_decode($request->input('pName'));
+        $Spec = json_decode($request->input('Spec'));
+        $Unit_price = json_decode($request->input('Unit_price'));
+        $nowNeed = json_decode($request->input('nowNeed'));
+        $nextNeed = json_decode($request->input('nextNeed'));
+        $Stock = json_decode($request->input('Stock'));
+        $in_Transit = json_decode($request->input('in_Transit'));
+        $ReqAmount = json_decode($request->input('ReqAmount'));
+        $total_price1 = json_decode($request->input('total_price1'));
+        $total_price2 = json_decode($request->input('total_price2'));
+        $MOQ = json_decode($request->input('MOQ'));
+        // dd($ReqAmount[0]); // test
         // $stringValueBinder = new StringValueBinder();
         // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
         // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
@@ -426,41 +443,36 @@ class MonthlyPRController extends Controller
         $worksheet->setCellValue("H2", "庫存");
         $worksheet->setCellValue("I2", "廠商未交貨");
         $worksheet->setCellValue("J2", "實際請購數量");
-        $worksheet->setCellValue("K2", "總價RMB");
-        $worksheet->setCellValue("L2", "台幣(匯率4.326)");
+        $worksheet->setCellValue("K2", "總價" . $Currency1);
+        $worksheet->setCellValue("L2", "總價(" . $Currency2 . " " . $Rate . ")");
         $worksheet->setCellValue("M2", "MOQ");
         $worksheet->mergeCells("A1:M1"); // for the SUM row
-        $database = $request->session()->get('database');
-        $title = explode(" Consumables management", $database)[0] . "廠";
+        $title = explode(" Consumables management", $dbName)[0] . "廠 ";
         $year = date('Y/', strtotime("last day of 1 month"));
-        $month = date('m/', strtotime("last day of 1 month"));
+        $month = date('m', strtotime("last day of 1 month"));
         $lastday = date('t', strtotime("last day of 1 month"));
-        $title  = $title . $year . $month . "01" . "-" . $month . $lastday . "號耗材購買明細";
+        $title  = $title . $month . "月 耗材購買明細";
         $worksheet->setCellValue("A1", $title);
         $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $worksheet->getStyle("A1")->getFont()->setSize(16);
         $worksheet->getStyle("A1")->getFont()->setBold(true);
         //填寫內容
-        for ($j = 0; $j < $count; $j++) {
-            if ($Alldata[11][$j] > 0) {
+        for ($j = 0; $j < count($PN); $j++) {
+            if ($ReqAmount[$j] !== "0" || $ReqAmount[$j] != 0) {
                 $worksheet->setCellValueByColumnAndRow(1, $i, $i - 2);
-                $worksheet->setCellValueByColumnAndRow(2, $i, $Alldata[2][$j]);
-                $worksheet->setCellValueByColumnAndRow(3, $i, $Alldata[3][$j]);
-                $worksheet->setCellValueByColumnAndRow(4, $i, $Alldata[4][$j]);
-                $worksheet->setCellValueByColumnAndRow(5, $i, $Alldata[5][$j]);
-                if ($Alldata[7][$j] === "/") {
-                    $worksheet->getStyle("F" . $i)->getBorders()->setDiagonalDirection(Borders::DIAGONAL_BOTH)->getDiagonal()->setBorderStyle(Border::BORDER_THIN);
-                    $worksheet->getStyle("G" . $i)->getBorders()->setDiagonalDirection(Borders::DIAGONAL_BOTH)->getDiagonal()->setBorderStyle(Border::BORDER_THIN);
-                } else {
-                    $worksheet->setCellValueByColumnAndRow(6, $i, $Alldata[7][$j]);
-                    $worksheet->setCellValueByColumnAndRow(7, $i, $Alldata[8][$j]);
-                }
-                $worksheet->setCellValueByColumnAndRow(8, $i, $Alldata[9][$j]);
-                $worksheet->setCellValueByColumnAndRow(9, $i, $Alldata[10][$j]);
-                $worksheet->setCellValueByColumnAndRow(10, $i, $Alldata[11][$j]);
-                $worksheet->setCellValueByColumnAndRow(11, $i, $Alldata[12][$j]);
-                $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . $rate);
-                $worksheet->setCellValueByColumnAndRow(13, $i, $Alldata[14][$j]);
+                $worksheet->setCellValueByColumnAndRow(2, $i, $PN[$j]);
+                $worksheet->setCellValueByColumnAndRow(3, $i, $pName[$j]);
+                $worksheet->setCellValueByColumnAndRow(4, $i, $Spec[$j]);
+                $worksheet->setCellValueByColumnAndRow(5, $i, $Unit_price[$j]);
+                $worksheet->setCellValueByColumnAndRow(6, $i, $nowNeed[$j]);
+                $worksheet->setCellValueByColumnAndRow(7, $i, $nextNeed[$j]);
+                $worksheet->setCellValueByColumnAndRow(8, $i, $Stock[$j]);
+                $worksheet->setCellValueByColumnAndRow(9, $i, $in_Transit[$j]);
+                $worksheet->setCellValueByColumnAndRow(10, $i, $ReqAmount[$j]);
+                $worksheet->setCellValueByColumnAndRow(11, $i, $total_price1[$j]);
+                $worksheet->setCellValueByColumnAndRow(12, $i, $total_price2[$j]);
+                // $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . $Rate);
+                $worksheet->setCellValueByColumnAndRow(13, $i, $MOQ[$j]);
 
                 $i++;
             } else {
@@ -475,30 +487,54 @@ class MonthlyPRController extends Controller
         $worksheet->getStyle('A2' . ':' . 'M' . $i)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
         $worksheet->setCellValue(("K" . $i), ("=SUM(K3" . ":" . "K" . ($i - 1) . ")"));
-        $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . "4.326");
+        $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . $Rate);
 
         $worksheet->setCellValue(("B" . $i + 2), "核准:");
         $worksheet->setCellValue(("E" . $i + 2), "審核:");
         $worksheet->setCellValue(("K" . $i + 2), "製表:");
 
-        // 下載
-        $now = Carbon::now()->format('Ymd');
-        $filename = $database . 'Safe Stock' . $now . '.xlsx';
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
-        header('Cache-Control: max-age=0');
+        $worksheet->getStyle('A2:M2')->getAlignment()->setHorizontal('center');
+        $worksheet->getStyle('A3:A' . ($i + 1))->getAlignment()->setHorizontal('center');
+        $worksheet->getStyle('K3:L' . ($i + 1))->getAlignment()->setHorizontal('right');
+        foreach ($worksheet->getColumnIterator() as $column) {
+            $worksheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+        } // foreach
 
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $now = Carbon::now()->format('Ymd');
+        $filename = $title . \Lang::get("monthlyPRpageLang.page_name") . "_" . $now . '.pdf';
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Mpdf');
         $writer->save(public_path() . "/excel/" . $filename);
 
-        Mail::send('mail/pr_review', [], function ($message) use ($now, $database, $request_user) {
-            $message->to($request_user["email"])->subject('PR Review');
-            $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-            $message->attach(public_path() . '/excel/' . $database . \Lang::get("monthlyPRpageLang.page_name") . $now . '.pdf');
-            $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-        });
+        $data = array(
+            'Currency1' => $Currency1,
+            'Rate' => $Rate,
+            'Currency2' => $Currency2,
+            'PN' => $PN,
+            'pName' => $pName,
+            'Spec' => $Spec,
+            'Unit_price' => $Unit_price,
+            'nowNeed' => $nowNeed,
+            'nextNeed' => $nextNeed,
+            'Stock' => $Stock,
+            'in_Transit' => $in_Transit,
+            'ReqAmount' => $ReqAmount,
+            'total_price1' => $total_price1,
+            'total_price2' => $total_price2,
+            'MOQ' => $MOQ
+        );
+        Mail::send(
+            'mail/pr_review',
+            $data,
+            function ($message) use ($filename, $request_user) {
+                $message->to($request_user["email"])->subject('Consumables Management PR Review');
+                $message->bcc('Vincent6_Yeh@pegatroncorp.com');
+                $message->attach(public_path() . '/excel/' . $filename);
+                $message->from('CM_No-Reply@pegatroncorp.com', 'Consumables_Management_No-Reply');
+            }
+        );
 
-        \File::delete(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
+        \File::delete(public_path() . '/excel/' . $filename);
     } // sendconsumemail
 
     /**

@@ -267,23 +267,41 @@ export default defineComponent({
             // ----------------------------------------------
             // actually updating database now
             let number = [];
-            let number90 = [];
-            let nextmps = [];
-            let nextday = [];
-            let nowmps = [];
-            let nowday = [];
+            let pName = [];
+            let spec = [];
+            let unit_price = [];
+            let nowNeed = [];
+            let nextNeed = [];
+            let stock = [];
+            let in_transit = [];
+            let req_amount = [];
+            let total_price_default_currency = [];
+            let total_price_other_currency = [];
+            let moq = [];
+
             for (let i = 0; i < data.length; i++) {
                 number.push(data[i].料號);
-                number90.push(data[i].料號90);
-                nextmps.push(data[i].下月MPS);
-                nextday.push(data[i].下月生產天數);
-                nowmps.push(data[i].本月MPS);
-                nowday.push(data[i].本月生產天數);
+                pName.push(data[i].品名);
+                spec.push(data[i].規格);
+                unit_price.push(data[i].單價);
+                nowNeed.push(parseFloat(data[i].當月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                nextNeed.push(parseFloat(data[i].下月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                stock.push(parseInt(data[i].現有庫存).toLocaleString("en-US"));
+                in_transit.push(parseInt(data[i].在途量).toLocaleString("en-US"));
+                req_amount.push(parseInt(data[i].本次請購數量).toLocaleString("en-US"));
+                total_price_default_currency.push(parseFloat(data[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                total_price_other_currency.push(parseFloat(data[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                moq.push(data[i].MOQ);
             } // for
 
-            // console.log(number); // test
+            // console.log(req_amount); // test
             let start = Date.now();
-            let result = await sendBuylist(inputValue.value);
+            let result = await sendBuylist(
+                Currency.value, inputValue.value, selectedValue2.value,
+                number, pName, spec, unit_price,
+                nowNeed, nextNeed, stock, in_transit, req_amount,
+                total_price_default_currency, total_price_other_currency, moq);
+
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");

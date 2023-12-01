@@ -187,7 +187,12 @@ export default function useMonthlyPRSearch() {
         } // try catch
     } // getMats_Buylist
 
-    const sendBuylist = async (rate) => {
+    const sendBuylist = async (
+        currency1, rate, currency2,
+        number, pName, spec, unit_price,
+        nowNeed, nextNeed, stock, in_transit, req_amount,
+        total_price_default_currency, total_price_other_currency, moq
+    ) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
         let user = await axios.post('/getCurrentUser');
@@ -196,11 +201,24 @@ export default function useMonthlyPRSearch() {
             let response = await axios.post('/api/month/sendPRMail', {
                 DB: getDB.data,
                 User: user.data,
+                Currency1: JSON.stringify(currency1),
                 Rate: JSON.stringify(rate),
+                Currency2: JSON.stringify(currency2),
+                PN: JSON.stringify(number),
+                pName: JSON.stringify(pName),
+                Spec: JSON.stringify(spec),
+                Unit_price: JSON.stringify(unit_price),
+                nowNeed: JSON.stringify(nowNeed),
+                nextNeed: JSON.stringify(nextNeed),
+                Stock: JSON.stringify(stock),
+                in_Transit: JSON.stringify(in_transit),
+                ReqAmount: JSON.stringify(req_amount),
+                total_price1: JSON.stringify(total_price_default_currency),
+                total_price2: JSON.stringify(total_price_other_currency),
+                MOQ: JSON.stringify(moq)
             });
 
-            mats.value = JSON.stringify(response.data);
-            // console.log(JSON.stringify(response.data)); // test
+            console.log(response.data); // test
             return new Promise((resolve, reject) => {
                 resolve("success");
             });

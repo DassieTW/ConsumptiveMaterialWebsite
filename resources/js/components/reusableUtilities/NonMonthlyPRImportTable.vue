@@ -407,9 +407,46 @@ export default defineComponent({
             for (let i = 1; i < input_data.length; i++) {
                 try {
                     singleEntry.料號 = input_data[i][0].toString().trim();
+
+                    if (input_data[i][1] == undefined || input_data[i][1].toString().trim() == "") {
+                        isInvalid.value = true;
+                        validation_err_msg.value =
+                            singleEntry.料號 + " " +
+                            app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowneed") + " " +
+                            app.appContext.config.globalProperties.$t("validation.required");
+
+                        $("body").loadingModal("hide");
+                        $("body").loadingModal("destroy");
+                        return;
+                    } // if
                     singleEntry.當月需求 = parseFloat(input_data[i][1].toString().replace(/,/g, ''));
+                    // -------------------------------------------------------------------------------
+                    if (input_data[i][2] == undefined || input_data[i][2].toString().trim() == "") {
+                        isInvalid.value = true;
+                        validation_err_msg.value =
+                            singleEntry.料號 + " " +
+                            app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextneed") + " " +
+                            app.appContext.config.globalProperties.$t("validation.required");
+
+                        $("body").loadingModal("hide");
+                        $("body").loadingModal("destroy");
+                        return;
+                    } // if
                     singleEntry.下月需求 = parseFloat(input_data[i][2].toString().replace(/,/g, ''));
+                    // -------------------------------------------------------------------------------
+                    if (input_data[i][3] == undefined || input_data[i][3].toString().trim() == "") {
+                        isInvalid.value = true;
+                        validation_err_msg.value =
+                            singleEntry.料號 + " " +
+                            app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount1") + " " +
+                            app.appContext.config.globalProperties.$t("validation.required");
+
+                        $("body").loadingModal("hide");
+                        $("body").loadingModal("destroy");
+                        return;
+                    } // if
                     singleEntry.請購數量 = parseInt(input_data[i][3].toString().replace(/,/g, ''), 10);
+                    // -------------------------------------------------------------------------------
                     singleEntry.說明 = input_data[i][4].toString().trim();
                     singleEntry.excel_row_num = i + 1;
                     if (data.length == 0) {
