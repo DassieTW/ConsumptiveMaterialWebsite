@@ -12,7 +12,7 @@
         }
 
         table,
-        tr,
+        th,
         td {
             border: 2px solid black;
             border-collapse: collapse;
