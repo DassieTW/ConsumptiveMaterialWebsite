@@ -463,16 +463,16 @@ class MonthlyPRController extends Controller
                 $worksheet->setCellValueByColumnAndRow(2, $i, $PN[$j]);
                 $worksheet->setCellValueByColumnAndRow(3, $i, $pName[$j]);
                 $worksheet->setCellValueByColumnAndRow(4, $i, $Spec[$j]);
-                $worksheet->setCellValueByColumnAndRow(5, $i, $Unit_price[$j]);
-                $worksheet->setCellValueByColumnAndRow(6, $i, $nowNeed[$j]);
-                $worksheet->setCellValueByColumnAndRow(7, $i, $nextNeed[$j]);
-                $worksheet->setCellValueByColumnAndRow(8, $i, $Stock[$j]);
-                $worksheet->setCellValueByColumnAndRow(9, $i, $in_Transit[$j]);
-                $worksheet->setCellValueByColumnAndRow(10, $i, $ReqAmount[$j]);
-                $worksheet->setCellValueByColumnAndRow(11, $i, $total_price1[$j]);
-                $worksheet->setCellValueByColumnAndRow(12, $i, $total_price2[$j]);
+                $worksheet->setCellValueByColumnAndRow(5, $i, strval($Unit_price[$j]));
+                $worksheet->setCellValueByColumnAndRow(6, $i, strval($nowNeed[$j]));
+                $worksheet->setCellValueByColumnAndRow(7, $i, strval($nextNeed[$j]));
+                $worksheet->setCellValueByColumnAndRow(8, $i, strval($Stock[$j]));
+                $worksheet->setCellValueByColumnAndRow(9, $i, strval($in_Transit[$j]));
+                $worksheet->setCellValueByColumnAndRow(10, $i, strval($ReqAmount[$j]));
+                $worksheet->setCellValueByColumnAndRow(11, $i, strval($total_price1[$j]));
+                $worksheet->setCellValueByColumnAndRow(12, $i, strval($total_price2[$j]));
                 // $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . $Rate);
-                $worksheet->setCellValueByColumnAndRow(13, $i, $MOQ[$j]);
+                $worksheet->setCellValueByColumnAndRow(13, $i, strval($MOQ[$j]));
 
                 $i++;
             } else {
@@ -495,7 +495,7 @@ class MonthlyPRController extends Controller
 
         $worksheet->getStyle('A2:M2')->getAlignment()->setHorizontal('center');
         $worksheet->getStyle('A3:A' . ($i + 1))->getAlignment()->setHorizontal('center');
-        $worksheet->getStyle('K3:L' . ($i + 1))->getAlignment()->setHorizontal('right');
+        $worksheet->getStyle('E3:L' . ($i + 1))->getAlignment()->setHorizontal('right');
         foreach ($worksheet->getColumnIterator() as $column) {
             $worksheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         } // foreach
