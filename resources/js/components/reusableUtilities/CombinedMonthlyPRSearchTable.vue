@@ -9,15 +9,8 @@
                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="input-group w-75">
                     <label class="input-group-text">1</label>
-                    <select class="form-select form-select-lg text-center" v-model="selectedValue1" id="currency1"
-                        name="currency1">
-                        <option selected>RMB</option>
-                        <option>USD</option>
-                        <option>JPY</option>
-                        <option>TWD</option>
-                        <option>VND</option>
-                        <option>IDR</option>
-                    </select>
+                    <input class="input-group-text col col-2 text-center" v-model="Currency" id="currency1" name="currency1"
+                        disabled>
                     <label class="input-group-text">to</label>
                     <input class="form-control form-control-lg text-center"
                         :class="{ 'is-invalid': isInvalid_currencyValue }" type="number" id="rate_to" name="rate_to"
@@ -117,10 +110,9 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, getMats_Buylist, getMats_nonMonthly, sendBuylist } = useMonthlyPRSearch(); // axios get the mats data
-        // onBeforeMount(getMats_MPS, getMats_nonMonthly);
+        const { mats, Currency, getMats_Buylist, getMats_nonMonthly, sendBuylist, getCurrency } = useMonthlyPRSearch(); // axios get the mats data
+        onBeforeMount(getCurrency);
 
-        const selectedValue1 = ref('RMB');
         const selectedValue2 = ref('');
         const inputValue = ref(null);
         let isInvalid = ref(true); // validation
@@ -233,7 +225,7 @@ export default defineComponent({
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowstock"),
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"),
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(" + selectedValue1.value + ")",
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(" + Currency.value + ")",
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(" + selectedValue2.value + " " + inputValue.value + ")",
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
                 ]],
@@ -327,7 +319,7 @@ export default defineComponent({
 
         } // onSendClick
 
-        watch([selectedValue1, selectedValue2, inputValue], async () => {
+        watch([Currency, selectedValue2, inputValue], async () => {
             await triggerModal();
             data.splice(0);
             isInvalid.value = false;
@@ -378,10 +370,6 @@ export default defineComponent({
                     } // if else
 
                     singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求);
-                    if (singleEntry.本次請購數量 < 0) {
-                        singleEntry.本次請購數量 = 0;
-                    } // if
-
                     singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
                     singleEntry.匯率 = parseFloat((singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5));
                     singleEntry.MOQ = parseInt(MPSData.value[i].MOQ.toString().trim());
@@ -478,6 +466,9 @@ export default defineComponent({
 
                     // calculate the value by index
                     accumulator[currentValue.料號].本次請購數量 = Math.ceil(currentValue.當月需求 + currentValue.下月需求 - currentValue.現有庫存 - currentValue.在途量);
+                    if (accumulator[currentValue.料號].本次請購數量 < 0) {
+                        accumulator[currentValue.料號].本次請購數量 = 0;
+                    } // if
                     accumulator[currentValue.料號].請購金額 = parseFloat((currentValue.本次請購數量 * currentValue.單價).toFixed(5));
                     accumulator[currentValue.料號].匯率 = parseFloat((currentValue.請購金額 * parseFloat(inputValue.value)).toFixed(5));
                     // console.log(accumulator); // test
@@ -493,7 +484,7 @@ export default defineComponent({
 
                 document.getElementsByClassName("vtl-thead-column")[9].innerHTML =
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") +
-                    "(" + selectedValue1.value + ")";
+                    "(" + Currency.value + ")";
 
                 document.getElementsByClassName("vtl-thead-column")[10].innerHTML =
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") +
@@ -725,7 +716,7 @@ export default defineComponent({
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.buyprice"
-                    ) + "(" + selectedValue1.value + ")",
+                    ) + "(" + Currency.value + ")",
                     field: "請購金額",
                     width: "13ch",
                     sortable: true,
@@ -859,7 +850,7 @@ export default defineComponent({
         };
 
         return {
-            selectedValue1,
+            Currency,
             inputValue,
             selectedValue2,
             isInvalid,

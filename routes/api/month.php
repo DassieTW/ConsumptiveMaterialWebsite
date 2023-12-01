@@ -35,6 +35,7 @@ Route::post('/delete_nonmps', 'api\MonthlyPRController@destroyNonMPS');
 Route::post('/submit_nonmonthlypr', 'api\MonthlyPRController@storeNonMonthlyPR');
 Route::post('/generate_buylist', 'api\MonthlyPRController@showBuylist');
 Route::post('/sendPRMail', 'api\MonthlyPRController@sendPRMail');
+Route::post('/getCurrency', 'api\MonthlyPRController@showCurrency');
 
 
 

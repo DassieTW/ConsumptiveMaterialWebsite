@@ -10,6 +10,7 @@ import {
 export default function useMonthlyPRSearch() {
     const mats = ref("");
     const errors = ref("");
+    const Currency = ref("");
     const router = useRouter();
 
     const getMats_MPS = async () => {
@@ -148,8 +149,26 @@ export default function useMonthlyPRSearch() {
         } // try catch
     } // uploadNonMonthlyToDB
 
+    const getCurrency = async () => {
+        let getDB = await axios.post('/getCurrentDB');
+        // console.log(inputArray); // test
+        try {
+            let response = await axios.post('/api/month/getCurrency', {
+                DB: getDB.data,
+            });
+
+            Currency.value = response.data.data[0].幣別;
+            // console.log(response.data.data[0].幣別); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // getCurrency
+
     const getMats_Buylist = async () => {
-        errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
         // console.log(inputArray); // test
         try {
@@ -193,12 +212,14 @@ export default function useMonthlyPRSearch() {
 
     return {
         mats,
+        Currency,
         getMats_MPS,
         deleteMPS,
         getMats_nonMonthly,
         deleteNonMPS,
         uploadMonthlyToDB,
         uploadNonMonthlyToDB,
+        getCurrency,
         getMats_Buylist,
         sendBuylist,
     } // return
