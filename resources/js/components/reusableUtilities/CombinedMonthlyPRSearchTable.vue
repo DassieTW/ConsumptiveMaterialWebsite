@@ -389,7 +389,7 @@ export default defineComponent({
                     singleEntry.id = i;
 
                     tempAll.push(singleEntry);
-                    data.push(singleEntry); // test
+                    // data.push(singleEntry); // test
                     // console.log(singleEntry); // test
                     singleEntry = {};
                 } // for
