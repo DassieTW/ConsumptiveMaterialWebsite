@@ -408,10 +408,58 @@ export default defineComponent({
             for (let i = 1; i < input_data.length; i++) {
                 singleEntry.料號90 = input_data[i][0].toString().trim();
                 singleEntry.料號 = input_data[i][1].toString().trim();
+                if (input_data[i][2] === undefined || input_data[i][2].trim() === "") {
+                    isInvalid.value = true;
+                    validation_err_msg.value =
+                        singleEntry.料號90 + "->" + singleEntry.料號 + " " +
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowmps") + " " +
+                        app.appContext.config.globalProperties.$t("validation.required");
+
+                    $("body").loadingModal("hide");
+                    $("body").loadingModal("destroy");
+                    return;
+                } // if
                 singleEntry.本月MPS = parseFloat(input_data[i][2].toString().replace(/,/g, ''));
+                // -------------------------------------------------------------------------------
+                if (input_data[i][3] === undefined || input_data[i][3].trim() === "") {
+                    isInvalid.value = true;
+                    validation_err_msg.value =
+                        singleEntry.料號90 + "->" + singleEntry.料號 + " " +
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowday") + " " +
+                        app.appContext.config.globalProperties.$t("validation.required");
+
+                    $("body").loadingModal("hide");
+                    $("body").loadingModal("destroy");
+                    return;
+                } // if
                 singleEntry.本月生產天數 = parseFloat(input_data[i][3].toString().replace(/,/g, ''));
+                // -------------------------------------------------------------------------------
+                if (input_data[i][4] === undefined || input_data[i][4].trim() === "") {
+                    isInvalid.value = true;
+                    validation_err_msg.value =
+                        singleEntry.料號90 + "->" + singleEntry.料號 + " " +
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextmps") + " " +
+                        app.appContext.config.globalProperties.$t("validation.required");
+
+                    $("body").loadingModal("hide");
+                    $("body").loadingModal("destroy");
+                    return;
+                } // if
                 singleEntry.下月MPS = parseFloat(input_data[i][4].toString().replace(/,/g, ''));
+                // -------------------------------------------------------------------------------
+                if (input_data[i][5] === undefined || input_data[i][5].trim() === "") {
+                    isInvalid.value = true;
+                    validation_err_msg.value =
+                        singleEntry.料號90 + "->" + singleEntry.料號 + " " +
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextday") + " " +
+                        app.appContext.config.globalProperties.$t("validation.required");
+
+                    $("body").loadingModal("hide");
+                    $("body").loadingModal("destroy");
+                    return;
+                } // if
                 singleEntry.下月生產天數 = parseFloat(input_data[i][5].toString().replace(/,/g, ''));
+                // -------------------------------------------------------------------------------
                 singleEntry.excel_row_num = i + 1;
 
                 if (data.length == 0) {
