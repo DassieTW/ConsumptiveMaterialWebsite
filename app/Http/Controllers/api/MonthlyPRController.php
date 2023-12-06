@@ -198,28 +198,20 @@ class MonthlyPRController extends Controller
 
         $sxbisn = json_decode($request->input('sxbisn'));
         $sxbsend = json_decode($request->input('sxbsend'));
-        $sxbcheck = json_decode($request->input('sxbcheck'));
         $sxbbegin = date(json_decode($request->input('sxbbegin')));
         $sxbend = strtotime(json_decode($request->input('sxbend')));
         $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $sxbend));
 
-        //dd($transitsend);
-        // dd($send);
+        // dd($send); // test
         $datas = [];
-        $datas1 = [];
-        // dd(json_decode($request->input('LookInTargets'))); // test
         $datas = \DB::table('consumptive_material')
             ->join('請購單', function ($join) {
                 $join->on('請購單.料號', '=', 'consumptive_material.料號')
                     ->whereNotNull('SXB單號');
             })->where('consumptive_material.料號', 'like', $sxbisn . '%')
             ->where('consumptive_material.發料部門', 'like', $sxbsend . '%')
+            ->whereBetween('請購時間', [$sxbbegin, $end])
             ->get();
-
-
-        if ($sxbcheck) {
-            $datas = $datas->whereBetween('請購時間', [$sxbbegin, $end])->values();
-        }
 
         return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showSXB
@@ -443,7 +435,7 @@ class MonthlyPRController extends Controller
         $worksheet->setCellValue("H2", "庫存");
         $worksheet->setCellValue("I2", "廠商未交貨");
         $worksheet->setCellValue("J2", "實際請購數量");
-        $worksheet->setCellValue("K2", "總價" . $Currency1);
+        $worksheet->setCellValue("K2", "總價(" . $Currency1 . ")");
         $worksheet->setCellValue("L2", "總價(" . $Currency2 . " " . $Rate . ")");
         $worksheet->setCellValue("M2", "MOQ");
         $worksheet->mergeCells("A1:M1"); // for the SUM row
@@ -535,6 +527,8 @@ class MonthlyPRController extends Controller
         );
 
         \File::delete(public_path() . '/excel/' . $filename);
+
+        //
     } // sendconsumemail
 
     /**

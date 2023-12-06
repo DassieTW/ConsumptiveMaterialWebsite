@@ -54,16 +54,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                    <div class="row w-100 justify-content-center align-items-center">
-                                        <input class="basic col col-auto p-0 m-0" type="checkbox" id="date"
-                                            name="date" style="width:20px;height:20px;">
-                                        <span class="col col-auto p-1 m-0">{!! __('monthlyPRpageLang.timepart') !!}</span>
-                                    </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
 
                                     <div class="row w-100 justify-content-center">
                                         <div class="col col-auto">

@@ -206,6 +206,7 @@ export default defineComponent({
                 tempObj.在途量 = parseInt(data[i].在途量).toLocaleString("en-US");
                 tempObj.本次請購數量 = parseInt(data[i].本次請購數量).toLocaleString("en-US");
                 tempObj.請購金額 = parseFloat(data[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                tempObj.幣別 = data[i].幣別;
                 tempObj.匯率 = parseFloat(data[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                 tempObj.MOQ = data[i].MOQ;
                 rows.push(tempObj);
@@ -276,6 +277,7 @@ export default defineComponent({
             let in_transit = [];
             let req_amount = [];
             let total_price_default_currency = [];
+            let total_price_default_currency_name = [];
             let total_price_other_currency = [];
             let moq = [];
 
@@ -290,6 +292,7 @@ export default defineComponent({
                 in_transit.push(parseInt(data[i].在途量).toLocaleString("en-US"));
                 req_amount.push(parseInt(data[i].本次請購數量).toLocaleString("en-US"));
                 total_price_default_currency.push(parseFloat(data[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                total_price_default_currency_name.push(data[i].幣別);
                 total_price_other_currency.push(parseFloat(data[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
                 moq.push(data[i].MOQ);
             } // for
@@ -389,6 +392,7 @@ export default defineComponent({
 
                     singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求);
                     singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
+                    singleEntry.幣別 = MPSData.value[i].幣別.toString().trim().toUpperCase();
                     singleEntry.匯率 = parseFloat((singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5));
                     singleEntry.MOQ = parseInt(MPSData.value[i].MOQ.toString().trim());
 
@@ -425,6 +429,7 @@ export default defineComponent({
                     } // if
 
                     singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
+                    singleEntry.幣別 = nonMPSData.value[i].幣別.toString().trim().toUpperCase();
                     singleEntry.匯率 = parseFloat((singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5));
                     singleEntry.MOQ = parseInt(nonMPSData.value[i].MOQ.toString().trim());
 
@@ -451,6 +456,7 @@ export default defineComponent({
                             在途量: currentValue.在途量,
                             本次請購數量: 0,
                             請購金額: 0,
+                            幣別: currentValue.幣別,
                             匯率: 0,
                             MOQ: currentValue.MOQ
                         };
@@ -477,6 +483,7 @@ export default defineComponent({
                             在途量: currentValue.在途量,
                             本次請購數量: 0,
                             請購金額: 0,
+                            幣別: currentValue.幣別,
                             匯率: 0,
                             MOQ: currentValue.MOQ
                         };
@@ -750,6 +757,29 @@ export default defineComponent({
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseFloat(row.請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "basicInfoLang.money"
+                    ),
+                    field: "幣別",
+                    width: "7ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<input type="hidden" id="money' +
+                            row.id +
+                            '" name="money' +
+                            i +
+                            '" value="' +
+                            row.幣別 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.幣別.toString().trim().toUpperCase() +
                             "</div>"
                         );
                     },

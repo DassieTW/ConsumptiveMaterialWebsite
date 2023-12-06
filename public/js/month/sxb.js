@@ -22,7 +22,6 @@ $(function () {
     var isn = $("#number").val();
     var sxb = $("#sxb").val();
     var send = $("#send").val();
-    var check = $("#date").is(":checked");
     var begin = $("#begin").val();
     var end = $("#end").val();
 
@@ -33,7 +32,6 @@ $(function () {
     sessionStorage.setItem("sxbisn", JSON.stringify(isn)); // for later vue to post request
     sessionStorage.setItem("sxbsend", JSON.stringify(send)); // for later vue to post request
     sessionStorage.setItem("sxbsxb", JSON.stringify(sxb)); // for later vue to post request
-    sessionStorage.setItem("sxbcheck", JSON.stringify(check)); // for later vue to post request
     sessionStorage.setItem("sxbbegin", JSON.stringify(begin)); // for later vue to post request
     sessionStorage.setItem("sxbend", JSON.stringify(end)); // for later vue to post request
 
