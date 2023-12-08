@@ -48,8 +48,8 @@
                     <th>{{ __('monthlyPRpageLang.nowstock') }}</th>
                     <th>{{ __('monthlyPRpageLang.transit') }}</th>
                     <th>{{ __('monthlyPRpageLang.buyamount') }}</th>
-                    <th>{{ __('monthlyPRpageLang.buyprice') . '(' . $Currency1 . ')' }}</th>
-                    <th>{{ __('monthlyPRpageLang.buyprice') . '(' . $Currency2 . ' ' . $Rate . ')' }}</th>
+                    <th>{{ __('monthlyPRpageLang.buyprice') }}</th>
+                    <th>{{ __('monthlyPRpageLang.buyprice') . '(USD)' }}</th>
                     <th>{{ __('monthlyPRpageLang.moq') }}</th>
                 </tr>
             </thead>
@@ -59,13 +59,13 @@
                         <td>{{ $PN[$a] }}</td>
                         <td>{{ $pName[$a] }}</td>
                         <td>{{ $Spec[$a] }}</td>
-                        <td>{{ $Unit_price[$a] }}</td>
+                        <td>{{ $Unit_price[$a] . ' ' . $currency_name[$a] }}</td>
                         <td>{{ $nowNeed[$a] }}</td>
                         <td>{{ $nextNeed[$a] }}</td>
                         <td>{{ $Stock[$a] }}</td>
                         <td>{{ $in_Transit[$a] }}</td>
                         <td>{{ $ReqAmount[$a] }}</td>
-                        <td>{{ $total_price1[$a] }}</td>
+                        <td>{{ $total_price1[$a] . ' ' . $currency_name[$a] }}</td>
                         <td>{{ $total_price2[$a] }}</td>
                         <td>{{ $MOQ[$a] }}</td>
                     </tr>

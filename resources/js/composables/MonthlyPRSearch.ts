@@ -157,8 +157,8 @@ export default function useMonthlyPRSearch() {
                 DB: getDB.data,
             });
 
-            Currency.value = response.data.data[0].幣別;
-            // console.log(response.data.data[0].幣別); // test
+            Currency.value = JSON.parse(JSON.parse(response.data.data));
+            // console.log(response.data); // test
             return new Promise((resolve, reject) => {
                 resolve("success");
             });
@@ -187,11 +187,11 @@ export default function useMonthlyPRSearch() {
         } // try catch
     } // getMats_Buylist
 
-    const sendBuylist = async (
-        currency1, rate, currency2,
+    const sendBuylistMail = async (
         number, pName, spec, unit_price,
         nowNeed, nextNeed, stock, in_transit, req_amount,
-        total_price_default_currency, total_price_other_currency, moq
+        total_price_default_currency, total_price_default_currency_name,
+        total_price_other_currency, moq
     ) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
@@ -201,9 +201,6 @@ export default function useMonthlyPRSearch() {
             let response = await axios.post('/api/month/sendPRMail', {
                 DB: getDB.data,
                 User: user.data,
-                Currency1: JSON.stringify(currency1),
-                Rate: JSON.stringify(rate),
-                Currency2: JSON.stringify(currency2),
                 PN: JSON.stringify(number),
                 pName: JSON.stringify(pName),
                 Spec: JSON.stringify(spec),
@@ -214,6 +211,7 @@ export default function useMonthlyPRSearch() {
                 in_Transit: JSON.stringify(in_transit),
                 ReqAmount: JSON.stringify(req_amount),
                 total_price1: JSON.stringify(total_price_default_currency),
+                currency_name: JSON.stringify(total_price_default_currency_name),
                 total_price2: JSON.stringify(total_price_other_currency),
                 MOQ: JSON.stringify(moq)
             });
@@ -226,7 +224,47 @@ export default function useMonthlyPRSearch() {
             console.log(e); // test
             return e;
         } // try catch
-    } // sendBuylist
+    } // sendBuylistMail
+
+    const submitBuylist = async (
+        number, pName, spec, unit_price,
+        nowNeed, nextNeed, stock, in_transit, req_amount,
+        total_price_default_currency, total_price_default_currency_name,
+        total_price_other_currency, moq, nonMPS_PN_Array
+    ) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        let user = await axios.post('/getCurrentUser');
+        // console.log(user); // test
+        try {
+            let response = await axios.post('/api/month/submit_buylist', {
+                DB: getDB.data,
+                User: user.data,
+                PN: JSON.stringify(number),
+                pName: JSON.stringify(pName),
+                Spec: JSON.stringify(spec),
+                Unit_price: JSON.stringify(unit_price),
+                nowNeed: JSON.stringify(nowNeed),
+                nextNeed: JSON.stringify(nextNeed),
+                Stock: JSON.stringify(stock),
+                in_Transit: JSON.stringify(in_transit),
+                ReqAmount: JSON.stringify(req_amount),
+                total_price1: JSON.stringify(total_price_default_currency),
+                currency_name: JSON.stringify(total_price_default_currency_name),
+                total_price2: JSON.stringify(total_price_other_currency),
+                MOQ: JSON.stringify(moq),
+                nonMPS_PN_Array: JSON.stringify(nonMPS_PN_Array)
+            });
+
+            console.log(response.data); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // submitBuylist
 
     return {
         mats,
@@ -239,6 +277,7 @@ export default function useMonthlyPRSearch() {
         uploadNonMonthlyToDB,
         getCurrency,
         getMats_Buylist,
-        sendBuylist,
+        sendBuylistMail,
+        submitBuylist,
     } // return
 } // useConsumptiveMaterials

@@ -36,6 +36,7 @@ Route::post('/submit_nonmonthlypr', 'api\MonthlyPRController@storeNonMonthlyPR')
 Route::post('/generate_buylist', 'api\MonthlyPRController@showBuylist');
 Route::post('/sendPRMail', 'api\MonthlyPRController@sendPRMail');
 Route::post('/getCurrency', 'api\MonthlyPRController@showCurrency');
+Route::post('/submit_buylist', 'api\MonthlyPRController@storeBuylist');
 
 
 

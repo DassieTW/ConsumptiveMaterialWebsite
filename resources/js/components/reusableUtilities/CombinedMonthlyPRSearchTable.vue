@@ -4,41 +4,6 @@
             <h3>{{ $t("monthlyPRpageLang.PR") }}</h3>
         </div>
         <div class="card-body">
-            <div id="seaechForm" class="row m-0 p-0 justify-content-center align-items-center">
-                <label class="col col-auto form-label">{{ $t("monthlyPRpageLang.rate") }}</label>
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="input-group w-75">
-                    <label class="input-group-text">1</label>
-                    <input class="input-group-text col col-2 text-center" v-model="Currency" id="currency1" name="currency1"
-                        disabled>
-                    <label class="input-group-text">to</label>
-                    <input class="form-control form-control-lg text-center"
-                        :class="{ 'is-invalid': isInvalid_currencyValue }" type="number" id="rate_to" name="rate_to"
-                        step="0.000001" oninput="if(value.length>8)value=value.slice(0,8)" min="0" v-model="inputValue">
-                    <select class="col col-2 form-select form-select-lg text-center"
-                        :class="{ 'is-invalid': isInvalid_currencySelect }" v-model="selectedValue2" id="currency2"
-                        name="currency2">
-                        <option style="display: none" disabled selected value="">
-                            {{ $t("monthlyPRpageLang.entermoney") }}</option>
-                        <option>RMB</option>
-                        <option>USD</option>
-                        <option>JPY</option>
-                        <option>TWD</option>
-                        <option>VND</option>
-                        <option>IDR</option>
-                    </select>
-                    <span v-if="isInvalid" class="invalid-feedback d-block text-center" role="alert">
-                        <strong>{{ validation_err_msg }}</strong>
-                    </span>
-                </div>
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="col col-auto">
-                    <a href="http://eip.tw.pegatroncorp.com/ExchangeRate" target="_blank">{{
-                        $t('monthlyPRpageLang.exchangeratesearch') }}</a>
-                </div>
-            </div>
-
-            <div class="w-100" style="height: 5ch"></div><!-- </div>breaks cols to a new line-->
             <div class="row justify-content-between">
                 <div class="row col col-auto">
                     <div class="col col-auto">
@@ -110,14 +75,11 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, Currency, getMats_Buylist, getMats_nonMonthly, sendBuylist, getCurrency } = useMonthlyPRSearch(); // axios get the mats data
+        const { mats, Currency, getMats_Buylist, getMats_nonMonthly, sendBuylistMail, submitBuylist, getCurrency } = useMonthlyPRSearch(); // axios get the mats data
         onBeforeMount(getCurrency);
 
-        const selectedValue2 = ref('');
-        const inputValue = ref(null);
+        const selectedValue2 = ref('USD');
         let isInvalid = ref(true); // validation
-        let isInvalid_currencyValue = ref(true); // validation
-        let isInvalid_currencySelect = ref(true); // validation
 
         let isInvalid_DB = ref(false); // add to DB validation
         let validation_err_msg = ref(app.appContext.config.globalProperties.$t("validation.required"));
@@ -127,6 +89,7 @@ export default defineComponent({
         const MPSData = ref(null);
         const nonMPSData = ref(null);
         const combinedData = ref(null);
+        let nonMPS_PN_Array = [];
 
         const searchTerm = ref(""); // Search text
 
@@ -200,13 +163,14 @@ export default defineComponent({
                 tempObj.品名 = data[i].品名;
                 tempObj.規格 = data[i].規格;
                 tempObj.單價 = data[i].單價;
+                tempObj.幣別1 = data[i].幣別;
                 tempObj.當月需求 = parseFloat(data[i].當月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                 tempObj.下月需求 = parseFloat(data[i].下月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                 tempObj.現有庫存 = parseInt(data[i].現有庫存).toLocaleString("en-US");
                 tempObj.在途量 = parseInt(data[i].在途量).toLocaleString("en-US");
                 tempObj.本次請購數量 = parseInt(data[i].本次請購數量).toLocaleString("en-US");
                 tempObj.請購金額 = parseFloat(data[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-                tempObj.幣別 = data[i].幣別;
+                tempObj.幣別2 = data[i].幣別;
                 tempObj.匯率 = parseFloat(data[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                 tempObj.MOQ = data[i].MOQ;
                 rows.push(tempObj);
@@ -221,13 +185,15 @@ export default defineComponent({
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName"),
                     app.appContext.config.globalProperties.$t("inboundpageLang.format"),
                     app.appContext.config.globalProperties.$t("basicInfoLang.price"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowneed"),
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextneed"),
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowstock"),
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"),
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(" + Currency.value + ")",
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(" + selectedValue2.value + " " + inputValue.value + ")",
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(USD)",
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
                 ]],
                 { origin: "A1" });
@@ -299,30 +265,61 @@ export default defineComponent({
 
             // console.log(req_amount); // test
             let start = Date.now();
-            let result = await sendBuylist(
-                Currency.value, inputValue.value, selectedValue2.value,
+            let result = await sendBuylistMail(
                 number, pName, spec, unit_price,
                 nowNeed, nextNeed, stock, in_transit, req_amount,
-                total_price_default_currency, total_price_other_currency, moq);
+                total_price_default_currency, total_price_default_currency_name, total_price_other_currency, moq
+            );
 
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
 
+            // ------- test --------
+            // result = await submitBuylist(
+            //     number, pName, spec, unit_price,
+            //     nowNeed, nextNeed, stock, in_transit, req_amount,
+            //     total_price_default_currency, total_price_default_currency_name,
+            //     total_price_other_currency, moq, nonMPS_PN_Array
+            // );
+            // ------- ---- --------
+
             if (result === "success") {
-                uploadToDBReady.value = false;
-                notyf.open({
-                    type: "success",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + data.length + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
+                result = await submitBuylist(
+                    number, pName, spec, unit_price,
+                    nowNeed, nextNeed, stock, in_transit, req_amount,
+                    total_price_default_currency, total_price_default_currency_name,
+                    total_price_other_currency, moq, nonMPS_PN_Array
+                );
+
+                if (result === "success") {
+                    uploadToDBReady.value = false;
+                    notyf.open({
+                        type: "success",
+                        message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + data.length + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom",
+                        },
+                    });
+                } // if
+                else {
+                    notyf.open({
+                        type: "error",
+                        message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom",
+                        },
+                    });
+                } // else
             } // if
             else {
                 notyf.open({
@@ -340,23 +337,13 @@ export default defineComponent({
 
         } // onSendClick
 
-        watch([Currency, selectedValue2, inputValue], async () => {
+        watch(Currency, async () => {
             await triggerModal();
             data.splice(0);
+            // console.log(Currency.value); // test
+            nonMPS_PN_Array = [];
             isInvalid.value = false;
-            isInvalid_currencySelect.value = false;
-            isInvalid_currencyValue.value = false;
-            if (selectedValue2.value == "" || selectedValue2.value === null) {
-                isInvalid.value = true;
-                isInvalid_currencySelect.value = true;
-                validation_err_msg.value = app.appContext.config.globalProperties.$t("validation.required");
-            } // if
-
-            if (inputValue.value === 0 || inputValue.value === null) {
-                isInvalid.value = true;
-                isInvalid_currencyValue.value = true;
-                validation_err_msg.value = app.appContext.config.globalProperties.$t("validation.required");
-            } // if
+            let exchange_table = Currency.value.rates;
 
             // if all is good, proceed on generating the CombinedPRTable
             if (isInvalid.value === false) {
@@ -393,11 +380,14 @@ export default defineComponent({
                     singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求);
                     singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
                     singleEntry.幣別 = MPSData.value[i].幣別.toString().trim().toUpperCase();
-                    singleEntry.匯率 = parseFloat((singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5));
+                    if (singleEntry.幣別 == "RMB") {
+                        singleEntry.匯率 = parseFloat((singleEntry.請購金額 * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                    } // if
+                    else {
+                        singleEntry.匯率 = parseFloat((singleEntry.請購金額 * (exchange_table['USD'] / exchange_table[singleEntry.幣別])).toFixed(5));
+                    } // else
                     singleEntry.MOQ = parseInt(MPSData.value[i].MOQ.toString().trim());
-
                     singleEntry.id = i;
-
                     tempAll.push(singleEntry);
                     // data.push(singleEntry); // test
                     // console.log(singleEntry); // test
@@ -430,12 +420,18 @@ export default defineComponent({
 
                     singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
                     singleEntry.幣別 = nonMPSData.value[i].幣別.toString().trim().toUpperCase();
-                    singleEntry.匯率 = parseFloat((singleEntry.請購金額 * parseFloat(inputValue.value)).toFixed(5));
+                    if (singleEntry.幣別 == "RMB") {
+                        singleEntry.匯率 = parseFloat((singleEntry.請購金額 * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                    } // if
+                    else {
+                        singleEntry.匯率 = parseFloat((singleEntry.請購金額 * (exchange_table['USD'] / exchange_table[singleEntry.幣別])).toFixed(5));
+                    } // else
                     singleEntry.MOQ = parseInt(nonMPSData.value[i].MOQ.toString().trim());
 
                     singleEntry.id = i + MPSData.value.length;
 
                     tempAll.push(singleEntry);
+                    nonMPS_PN_Array.push(singleEntry.料號);
                     singleEntry = {};
                 } // for
 
@@ -495,7 +491,12 @@ export default defineComponent({
                         accumulator[currentValue.料號].本次請購數量 = 0;
                     } // if
                     accumulator[currentValue.料號].請購金額 = parseFloat((accumulator[currentValue.料號].本次請購數量 * currentValue.單價).toFixed(5));
-                    accumulator[currentValue.料號].匯率 = parseFloat((accumulator[currentValue.料號].請購金額 * parseFloat(inputValue.value)).toFixed(5));
+                    if (currentValue.幣別 == "RMB") {
+                        accumulator[currentValue.料號].匯率 = parseFloat((accumulator[currentValue.料號].請購金額 * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                    } // if
+                    else {
+                        accumulator[currentValue.料號].匯率 = parseFloat((accumulator[currentValue.料號].請購金額 * (exchange_table['USD'] / exchange_table[currentValue.幣別])).toFixed(5));
+                    } // else
                     // console.log(accumulator); // test
                     return accumulator;
                 }, {}));
@@ -506,14 +507,6 @@ export default defineComponent({
                 for (let j = 0; j < final_result.length; j++) {
                     data.push(final_result[j]);
                 } // for
-
-                document.getElementsByClassName("vtl-thead-column")[9].innerHTML =
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") +
-                    "(" + Currency.value + ")";
-
-                document.getElementsByClassName("vtl-thead-column")[10].innerHTML =
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") +
-                    "(" + selectedValue2.value + " <small>" + inputValue.value + "</small>)";
             } // if
 
             if (data.length > 0) {
@@ -618,7 +611,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.單價 +
+                            row.單價 + " <small>" + row.幣別 + "</small>" +
                             "</div>"
                         );
                     },
@@ -741,9 +734,9 @@ export default defineComponent({
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.buyprice"
-                    ) + "(" + Currency.value + ")",
+                    ),
                     field: "請購金額",
-                    width: "13ch",
+                    width: "11ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
@@ -757,29 +750,7 @@ export default defineComponent({
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseFloat(row.請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.money"
-                    ),
-                    field: "幣別",
-                    width: "7ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="money' +
-                            row.id +
-                            '" name="money' +
-                            i +
-                            '" value="' +
-                            row.幣別 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.幣別.toString().trim().toUpperCase() +
+                            " <small>" + row.幣別 + "</small>" +
                             "</div>"
                         );
                     },
@@ -787,7 +758,7 @@ export default defineComponent({
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.buyprice"
-                    ) + "(" + selectedValue2.value + " " + inputValue.value + ")",
+                    ) + "(USD)",
                     field: "匯率",
                     width: "13ch",
                     sortable: true,
@@ -803,6 +774,7 @@ export default defineComponent({
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseFloat(row.匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+                            " " + "<small>USD</small>" +
                             "</div>"
                         );
                     },
@@ -898,12 +870,8 @@ export default defineComponent({
         };
 
         return {
-            Currency,
-            inputValue,
             selectedValue2,
             isInvalid,
-            isInvalid_currencyValue,
-            isInvalid_currencySelect,
             isInvalid_DB,
             validation_err_msg,
             uploadToDBReady,

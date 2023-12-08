@@ -126,6 +126,84 @@ class MonthlyPRController extends Controller
         } // try catch
     } // storeNonMonthlyPR
 
+    public function storeBuylist(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
+        $request_user = $request->input('User');
+        $PN = json_decode($request->input('PN'));
+        $pName = json_decode($request->input('pName'));
+        $Spec = json_decode($request->input('Spec'));
+        $Unit_price = json_decode($request->input('Unit_price'));
+        $nowNeed = json_decode($request->input('nowNeed'));
+        $nextNeed = json_decode($request->input('nextNeed'));
+        $Stock = json_decode($request->input('Stock'));
+        $in_Transit = json_decode($request->input('in_Transit'));
+        $ReqAmount = json_decode($request->input('ReqAmount'));
+        $total_price1 = json_decode($request->input('total_price1'));
+        $currency_name = json_decode($request->input('currency_name'));
+        $total_price2 = json_decode($request->input('total_price2'));
+        $MOQ = json_decode($request->input('MOQ'));
+        $nonMPS_PN_Array = json_decode($request->input('nonMPS_PN_Array'));
+
+        $count = count(json_decode($request->input('PN')));
+        $now = Carbon::now();
+        $SXB_serial_number = date("Y_m_d_H_i_s");
+        $record = 0;
+        // dd($total_price2); // test
+        try {
+            $res_arr_values = array();
+            for ($i = 0; $i < $count; $i++) {
+                if (floatval(str_replace(',', '', $ReqAmount[$i])) > 0.0) {
+                    $temp = array(
+                        'SRM單號' => "未簽核",
+                        'SXB單號' => $SXB_serial_number,
+                        "料號" => $PN[$i],
+                        "品名" => $pName[$i],
+                        "規格" => $Spec[$i],
+                        "單價" => floatval(str_replace(',', '', $Unit_price[$i])),
+                        "幣別" => $currency_name[$i],
+                        "現有庫存" => floatval(str_replace(',', '', $Stock[$i])),
+                        "在途數量" => floatval(str_replace(',', '', $in_Transit[$i])),
+                        "當月需求" => floatval(str_replace(',', '', $nowNeed[$i])),
+                        "下月需求" => floatval(str_replace(',', '', $nextNeed[$i])),
+                        "本次請購數量" => floatval(str_replace(',', '', $ReqAmount[$i])),
+                        "請購金額" => floatval(str_replace(',', '', $total_price1[$i])),
+                        "匯率" => floatval(str_replace(',', '', $total_price2[$i])),
+                        "MOQ" => intval(str_replace(',', '', $MOQ[$i])),
+                        "請購時間" => $now,
+                    );
+
+                    $res_arr_values[] = $temp;
+                } // if
+            } // for
+
+            \DB::beginTransaction();
+
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 50, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('請購單')->insert(
+                    $whole_load[$i]
+                );
+
+                $record = $record + $temp_record;
+            } // for
+
+            $result2 = \DB::table('非月請購')
+                ->whereIn('料號', $nonMPS_PN_Array)
+                ->update(['SXB單號' => $SXB_serial_number]);
+
+            \DB::commit();
+            return \Response::json(['record' => $record] /* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+        } // try catch
+    } // storeBuylist
+
     /**
      * Display the specified resource.
      *
@@ -202,7 +280,6 @@ class MonthlyPRController extends Controller
         $sxbend = strtotime(json_decode($request->input('sxbend')));
         $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $sxbend));
 
-        // dd($send); // test
         $datas = [];
         $datas = \DB::table('consumptive_material')
             ->join('請購單', function ($join) {
@@ -254,22 +331,17 @@ class MonthlyPRController extends Controller
         return \Response::json(['data' => $results, "dbName" => $dbName]/* Status code here default is 200 ok*/);
     } // showMPS
 
-    public function showCurrency(Request $request) // get default 幣別
+    public function showCurrency(Request $request) // get all exchange rate
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
 
-        // get the most common 幣別 on consumptive_material table
-        $results =  \DB::table('consumptive_material')
-            ->select('幣別')
-            ->groupBy('幣別')
-            ->orderByRaw('COUNT(*) DESC')
-            ->limit(1)
-            ->get();
+        // get all exchange rate
+        $results = \File::get(public_path('exchange_rate.json'));
 
-        return \Response::json(['data' => $results, "dbName" => $dbName]/* Status code here default is 200 ok*/);
-    } // showMPS
+        return \Response::json(['data' => json_encode($results), "dbName" => $dbName]/* Status code here default is 200 ok*/);
+    } // showCurrency
 
     public function showBuylist(Request $request) // get 月請購 請購單
     {
@@ -397,15 +469,11 @@ class MonthlyPRController extends Controller
         $dbName = \DB::connection()->getDatabaseName(); // test
 
         $spreadsheet = new Spreadsheet();
-        // $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
         // $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
         $spreadsheet->getDefaultStyle()->getFont()->setName('Microsoft JhengHei');
         $worksheet = $spreadsheet->getActiveSheet();
 
         $request_user = $request->input('User');
-        $Currency1 = json_decode($request->input('Currency1'));
-        $Rate = json_decode($request->input('Rate'));
-        $Currency2 = json_decode($request->input('Currency2'));
         $PN = json_decode($request->input('PN'));
         $pName = json_decode($request->input('pName'));
         $Spec = json_decode($request->input('Spec'));
@@ -416,9 +484,10 @@ class MonthlyPRController extends Controller
         $in_Transit = json_decode($request->input('in_Transit'));
         $ReqAmount = json_decode($request->input('ReqAmount'));
         $total_price1 = json_decode($request->input('total_price1'));
+        $currency_name = json_decode($request->input('currency_name'));
         $total_price2 = json_decode($request->input('total_price2'));
         $MOQ = json_decode($request->input('MOQ'));
-        // dd($ReqAmount[0]); // test
+        // dd($request_user); // test
         // $stringValueBinder = new StringValueBinder();
         // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
         // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
@@ -435,8 +504,8 @@ class MonthlyPRController extends Controller
         $worksheet->setCellValue("H2", "庫存");
         $worksheet->setCellValue("I2", "廠商未交貨");
         $worksheet->setCellValue("J2", "實際請購數量");
-        $worksheet->setCellValue("K2", "總價(" . $Currency1 . ")");
-        $worksheet->setCellValue("L2", "總價(" . $Currency2 . " " . $Rate . ")");
+        $worksheet->setCellValue("K2", "總價");
+        $worksheet->setCellValue("L2", "總價(USD)");
         $worksheet->setCellValue("M2", "MOQ");
         $worksheet->mergeCells("A1:M1"); // for the SUM row
         $title = explode(" Consumables management", $dbName)[0] . "廠 ";
@@ -451,20 +520,19 @@ class MonthlyPRController extends Controller
         //填寫內容
         for ($j = 0; $j < count($PN); $j++) {
             if ($ReqAmount[$j] !== "0" || $ReqAmount[$j] != 0) {
-                $worksheet->setCellValueByColumnAndRow(1, $i, $i - 2);
-                $worksheet->setCellValueByColumnAndRow(2, $i, $PN[$j]);
-                $worksheet->setCellValueByColumnAndRow(3, $i, $pName[$j]);
-                $worksheet->setCellValueByColumnAndRow(4, $i, $Spec[$j]);
-                $worksheet->setCellValueByColumnAndRow(5, $i, strval($Unit_price[$j]));
-                $worksheet->setCellValueByColumnAndRow(6, $i, strval($nowNeed[$j]));
-                $worksheet->setCellValueByColumnAndRow(7, $i, strval($nextNeed[$j]));
-                $worksheet->setCellValueByColumnAndRow(8, $i, strval($Stock[$j]));
-                $worksheet->setCellValueByColumnAndRow(9, $i, strval($in_Transit[$j]));
-                $worksheet->setCellValueByColumnAndRow(10, $i, strval($ReqAmount[$j]));
-                $worksheet->setCellValueByColumnAndRow(11, $i, strval($total_price1[$j]));
-                $worksheet->setCellValueByColumnAndRow(12, $i, strval($total_price2[$j]));
-                // $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . $Rate);
-                $worksheet->setCellValueByColumnAndRow(13, $i, strval($MOQ[$j]));
+                $worksheet->setCellValueByColumnAndRow(1, $i, $i - 2); // A
+                $worksheet->setCellValueByColumnAndRow(2, $i, $PN[$j]); // B
+                $worksheet->setCellValueByColumnAndRow(3, $i, $pName[$j]); // C
+                $worksheet->setCellValueByColumnAndRow(4, $i, $Spec[$j]); // D
+                $worksheet->setCellValueByColumnAndRow(5, $i, strval($Unit_price[$j]) . " " . strtoupper($currency_name[$j])); // E
+                $worksheet->setCellValueByColumnAndRow(6, $i, strval($nowNeed[$j])); // F
+                $worksheet->setCellValueByColumnAndRow(7, $i, strval($nextNeed[$j])); // G
+                $worksheet->setCellValueByColumnAndRow(8, $i, strval($Stock[$j])); // H
+                $worksheet->setCellValueByColumnAndRow(9, $i, strval($in_Transit[$j])); // I
+                $worksheet->setCellValueByColumnAndRow(10, $i, strval($ReqAmount[$j])); // J
+                $worksheet->setCellValueByColumnAndRow(11, $i, strval($total_price1[$j]) . " " . strtoupper($currency_name[$j])); // K
+                $worksheet->setCellValueByColumnAndRow(12, $i, strval($total_price2[$j])); // L
+                $worksheet->setCellValueByColumnAndRow(13, $i, strval($MOQ[$j])); // M
 
                 $i++;
             } else {
@@ -478,16 +546,18 @@ class MonthlyPRController extends Controller
             ->setARGB('c4d79b');
         $worksheet->getStyle('A2' . ':' . 'M' . $i)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        $worksheet->setCellValue(("K" . $i), ("=SUM(K3" . ":" . "K" . ($i - 1) . ")"));
-        $worksheet->setCellValue(("L" . $i), ("=K" . $i) . "*" . $Rate);
+        // $worksheet->setCellValue(("K" . $i), ("=SUM(K3" . ":" . "K" . ($i - 1) . ")"));
+        $worksheet->setCellValue(("L" . $i), ("=SUM(L3" . ":" . "L" . ($i - 1) . ")"));
 
-        $worksheet->setCellValue(("B" . $i + 2), "核准:");
-        $worksheet->setCellValue(("E" . $i + 2), "審核:");
-        $worksheet->setCellValue(("K" . $i + 2), "製表:");
+        $worksheet->setCellValue(("A" . $i + 2), "核准:");
+        $worksheet->setCellValue(("D" . $i + 2), "審核:");
+        $worksheet->getStyle("D" . $i + 2)->getAlignment()->setHorizontal('center');
+        $worksheet->setCellValue(("K" . $i + 2), "製表: " . $request_user['姓名'] . " " . date('Y-m-d'));
 
         $worksheet->getStyle('A2:M2')->getAlignment()->setHorizontal('center');
         $worksheet->getStyle('A3:A' . ($i + 1))->getAlignment()->setHorizontal('center');
-        $worksheet->getStyle('E3:L' . ($i + 1))->getAlignment()->setHorizontal('right');
+        $worksheet->getStyle('E3:M' . ($i + 1))->getAlignment()->setHorizontal('right');
+
         foreach ($worksheet->getColumnIterator() as $column) {
             $worksheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         } // foreach
@@ -499,9 +569,6 @@ class MonthlyPRController extends Controller
         $writer->save(public_path() . "/excel/" . $filename);
 
         $data = array(
-            'Currency1' => $Currency1,
-            'Rate' => $Rate,
-            'Currency2' => $Currency2,
             'PN' => $PN,
             'pName' => $pName,
             'Spec' => $Spec,
@@ -512,6 +579,7 @@ class MonthlyPRController extends Controller
             'in_Transit' => $in_Transit,
             'ReqAmount' => $ReqAmount,
             'total_price1' => $total_price1,
+            'currency_name' => $currency_name,
             'total_price2' => $total_price2,
             'MOQ' => $MOQ
         );
@@ -527,8 +595,6 @@ class MonthlyPRController extends Controller
         );
 
         \File::delete(public_path() . '/excel/' . $filename);
-
-        //
     } // sendconsumemail
 
     /**
