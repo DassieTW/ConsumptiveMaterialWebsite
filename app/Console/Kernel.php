@@ -32,18 +32,19 @@ class Kernel extends ConsoleKernel
         //     $out = new \Symfony\Component\Console\Output\ConsoleOutput();
         //     $out->writeln("Hello from Terminal");
         // })->everyMinute();
+        $schedule->command('exchange:rate')->dailyAt('04:00')->timezone('Asia/Taipei');
         $schedule->command('call:safestock')->daily()->timezone('Asia/Taipei');
         $schedule->command('call:sluggish')->daily()->timezone('Asia/Taipei');
         $schedule->command('barcodeimg:clear')->daily()->timezone('Asia/Taipei');
-        $schedule->command('logs:clear')->quarterly('03:00')->timezone('Asia/Taipei'); // At 03:00 in every 3 month.
-        $schedule->command('log:clear')->quarterly('03:00')->timezone('Asia/Taipei'); // At 03:00 in every 3 month.
+        $schedule->command('logs:clear')->quarterly()->timezone('Asia/Taipei'); // At 03:00 in every 3 month.
+        $schedule->command('log:clear')->quarterly()->timezone('Asia/Taipei'); // At 03:00 in every 3 month.
         $schedule->command('telescope:prune --hours=48')->daily(); // Prune the laravel telescope records created over 48 hours ago
 
         // Clean up dated users
-        $schedule->command('olduser:clear')->quarterly('02:00')->timezone('Asia/Taipei');
+        $schedule->command('olduser:clear')->quarterly()->timezone('Asia/Taipei');
 
         // Clean up dated inventory
-        $schedule->command('inventory:cleanup')->quarterly('01:00')->timezone('Asia/Taipei');
+        $schedule->command('inventory:cleanup')->quarterly()->timezone('Asia/Taipei');
     } // schedule
 
     /**
