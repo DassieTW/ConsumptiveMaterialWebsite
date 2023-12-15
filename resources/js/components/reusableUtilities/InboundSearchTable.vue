@@ -53,10 +53,11 @@ export default defineComponent({
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
             .getAttribute("lang");
+        
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        let checkedRows;
+        let checkedRows = [];
         const DeleteRowsClick = async () => {
             $("body").loadingModal({
                 text: "Loading...",
@@ -74,19 +75,18 @@ export default defineComponent({
             };
 
             if (checkedRows !== undefined && checkedRows.length > 0) {
-                checkedRows.forEach(rowNum => {
-                    rows_to_be_deleted.list.push(document.getElementById("inboundlist" + rowNum).value);
-                    rows_to_be_deleted.isn.push(document.getElementById("number" + rowNum).value);
-                    rows_to_be_deleted.amount.push(document.getElementById("inboundnum" + rowNum).value);
-                    rows_to_be_deleted.position.push(document.getElementById("position" + rowNum).value);
-                    rows_to_be_deleted.inpeople.push(document.getElementById("inboundpeople" + rowNum).value);
-                    rows_to_be_deleted.inreason.push(document.getElementById("inboundreason" + rowNum).value);
-                    rows_to_be_deleted.intime.push(document.getElementsByName("inboundtime" + rowNum)[0].getAttribute("id"));
+                // console.log(checkedRows[0]); // test
+                checkedRows.forEach(row => {
+                    rows_to_be_deleted.list.push(row.入庫單號);
+                    rows_to_be_deleted.isn.push(row.料號);
+                    rows_to_be_deleted.amount.push(row.入庫數量);
+                    rows_to_be_deleted.position.push(row.儲位);
+                    rows_to_be_deleted.inpeople.push(row.入庫人員);
+                    rows_to_be_deleted.inreason.push(row.入庫原因);
+                    rows_to_be_deleted.intime.push(row.入庫時間);
                 });
 
-                // console.log(rows_to_be_deleted); // test
                 let result = await deleteRows(rows_to_be_deleted);
-
                 if (result === "success") {
                     notyf.open({
                         type: "success",
@@ -101,10 +101,10 @@ export default defineComponent({
                     });
 
                     rows_to_be_deleted.intime.forEach(element => {
-                        let indexOfObject = data.findIndex(object => {
-                            return parseInt(object.id) === parseInt(element.replace('inboundtime', ''));
-                        });
 
+                        let indexOfObject = checkedRows.findIndex(object => {
+                            return object.入庫時間 === element.replace('inboundtime', '');
+                        });
                         if (indexOfObject != -1) {
                             data.splice(indexOfObject, 1);
                         } // if
@@ -146,13 +146,6 @@ export default defineComponent({
                             if (indexOfObject != -1) {
                                 data.splice(indexOfObject, 1);
                             } // if
-
-                            let unclickRowNum = parseInt(document.getElementById(element[3]).getAttribute("name").replace('inboundtime', ''));
-                            if (document.getElementsByClassName("vtl-tbody-checkbox")[unclickRowNum].checked) {
-                                document.getElementsByClassName("vtl-tbody-checkbox")[unclickRowNum].click();
-                            } // if
-
-                            checkedRows.splice(unclickRowNum, 1);
                         });
                     } // if 
                     else if (result.response.status === 421) {
@@ -471,7 +464,7 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            // console.log(rowsKey);
+            console.log(rowsKey); // test
             checkedRows = rowsKey;
         };
 

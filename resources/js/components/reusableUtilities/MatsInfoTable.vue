@@ -133,19 +133,16 @@ export default defineComponent({
             } // if
 
             for (let i = 0; i < checkedRows.length; i++) {
-                let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
-                isn.push($($(selectedRow).find("input")[1]).val());
+                isn.push(checkedRows[i].料號);
             } // for
 
+            // console.log(isn); // test
             await triggerModal();
             let result = await deletePN(isn);
             if (result === "success") {
                 for (let i = 0; i < checkedRows.length; i++) {
-                    let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
-                    let deleteID = $($(selectedRow).find("input")[1]).attr("id").replace('number', '');
-
                     let indexOfObject = data.findIndex(object => {
-                        return parseInt(object.id) === parseInt(deleteID);
+                        return parseInt(object.id) === parseInt(checkedRows[i].id);
                     });
 
                     if (indexOfObject != -1) {
@@ -491,7 +488,7 @@ export default defineComponent({
                             '<input style="width: 10ch;" type="number" step="0.00001" id="price' +
                             row.id +
                             '"' +
-                            ' class="form-control text-center p-0 m-0" name="price' +
+                            ' class="form-control text-center align-self-center p-0 m-0" name="price' +
                             i +
                             '"' +
                             ' value="' +

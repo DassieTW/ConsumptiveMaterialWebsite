@@ -105,19 +105,15 @@ export default defineComponent({
             } // if
 
             for (let i = 0; i < checkedRows.length; i++) {
-                let deleteID = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
-                isn.push($($(deleteID).find("input")[1]).val());
+                isn.push(checkedRows[i].料號);
             } // for
 
             await triggerModal();
             let result = await deleteNonMPS(isn);
             if (result === "success") {
                 for (let i = 0; i < checkedRows.length; i++) {
-                    let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
-                    let deleteID = $($(selectedRow).find("input")[1]).attr("id").replace('isn', '');
-
                     let indexOfObject = data.findIndex(object => {
-                        return parseInt(object.id) === parseInt(deleteID);
+                        return parseInt(object.id) === parseInt(checkedRows[i].料號);
                     });
 
                     if (indexOfObject != -1) {
@@ -300,7 +296,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            parseFloat(row.當月需求) +
+                            parseInt(row.當月需求).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
                     },
@@ -323,7 +319,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            parseFloat(row.下月需求) +
+                            parseInt(row.下月需求).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
                     },

@@ -38,16 +38,16 @@
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                 <strong>{{ validation_err_msg }}</strong>
             </span>
-            <table-lite id="searchTable" :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
-                :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+            <table-lite id="searchTable" :is-fixed-first-column="true" :is-static-mode="true"
+                :hasCheckbox="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
+                @return-checked-rows="updateCheckedRows" @row-clicked="rowClicked"></table-lite>
         </div>
     </div>
 </template>
 
 <script>
-import { defineComponent, defineExpose, reactive, ref, computed } from "vue";
+import { defineComponent, reactive, ref, computed } from "vue";
 import {
     getCurrentInstance,
     onBeforeMount,
@@ -73,7 +73,7 @@ export default defineComponent({
         const { queryResult, validateISN } = useCommonlyUsedFunctions();
         const triggerSearchUpdate = async () => {
             await getMats_MPS();
-            
+
             return new Promise((resolve, reject) => {
                 resolve("success");
             });
@@ -85,7 +85,6 @@ export default defineComponent({
         let checkedRows = [];
 
         const deleteRow = async () => {
-            // console.log(document.getElementsByClassName("vtl-tbody-tr")[checkedRows[0]].children[1].firstChild); // test
             let ninetyisn = [];
             let isn = [];
 
@@ -106,20 +105,16 @@ export default defineComponent({
             } // if
 
             for (let i = 0; i < checkedRows.length; i++) {
-                let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
-                ninetyisn.push($($(selectedRow).find("input")[1]).val());
-                isn.push($($(selectedRow).find("input")[2]).val());
+                ninetyisn.push(checkedRows[i].料號90);
+                isn.push(checkedRows[i].料號);
             } // for
 
             await triggerModal();
             let result = await deleteMPS(ninetyisn, isn);
             if (result === "success") {
                 for (let i = 0; i < checkedRows.length; i++) {
-                    let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
-                    let deleteID = $($(selectedRow).find("input")[1]).attr("id").replace('ninetyisn', '');
-
                     let indexOfObject = data.findIndex(object => {
-                        return parseInt(object.id) === parseInt(deleteID);
+                        return parseInt(object.id) === parseInt(checkedRows[i].id);
                     });
 
                     if (indexOfObject != -1) {
@@ -259,7 +254,7 @@ export default defineComponent({
                             row.料號90 +
                             '">' +
                             '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
+                            ' style="overflow-x: auto; width: 100%; height: 100%;">' +
                             row.料號90 +
                             "</div>"
                         );
@@ -282,7 +277,7 @@ export default defineComponent({
                             row.料號 +
                             '">' +
                             '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
+                            ' style="overflow-x: auto; width: 100%; height: 100%;">' +
                             row.料號 +
                             "</div>"
                         );
@@ -305,7 +300,7 @@ export default defineComponent({
                             row.本月MPS +
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseInt(row.本月MPS).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
@@ -328,7 +323,7 @@ export default defineComponent({
                             row.本月生產天數 +
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseInt(row.本月生產天數) +
                             "</div>"
                         );
@@ -351,7 +346,7 @@ export default defineComponent({
                             row.下月MPS +
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseInt(row.下月MPS).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
@@ -374,7 +369,7 @@ export default defineComponent({
                             row.下月生產天數 +
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseInt(row.下月生產天數) +
                             "</div>"
                         );
@@ -397,7 +392,7 @@ export default defineComponent({
                             row.填寫時間 +
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.填寫時間 +
                             "</div>"
                         );
@@ -465,9 +460,19 @@ export default defineComponent({
             ],
         });
 
+        /**
+        * Row checked event
+        */
         const updateCheckedRows = (rowsKey) => {
-            // console.log(rowsKey); // test
+            console.log(rowsKey); // test
             checkedRows = rowsKey;
+        };
+
+        /**
+         * Row clicked event
+         */
+        const rowClicked = (row) => {
+            // console.log("Row clicked!", row);
         };
 
         return {
@@ -477,6 +482,7 @@ export default defineComponent({
             searchTerm,
             table,
             updateCheckedRows,
+            rowClicked,
             deleteRow,
             OutputExcelClick,
             triggerSearchUpdate

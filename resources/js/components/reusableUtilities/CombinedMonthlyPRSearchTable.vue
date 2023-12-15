@@ -125,11 +125,8 @@ export default defineComponent({
             } // if
 
             for (let i = 0; i < checkedRows.length; i++) {
-                let selectedRow = $("#searchTable").find(".vtl-tbody-tr")[parseInt(checkedRows[i])];
-                let deleteID = $($(selectedRow).find("input")[1]).attr("id").replace('isn', '');
-
                 let indexOfObject = data.findIndex(object => {
-                    return parseInt(object.id) === parseInt(deleteID);
+                    return parseInt(object.id) === parseInt(checkedRows[i].id);
                 });
 
                 if (indexOfObject != -1) {
@@ -377,7 +374,9 @@ export default defineComponent({
                         singleEntry.在途量 = Math.round(parseFloat(MPSData.value[i].in_transit));
                     } // if else
 
+                    // Don't care, will be calculated below
                     singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求);
+                    
                     singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
                     singleEntry.幣別 = MPSData.value[i].幣別.toString().trim().toUpperCase();
                     if (singleEntry.幣別 == "RMB") {
@@ -413,10 +412,8 @@ export default defineComponent({
                         singleEntry.在途量 = Math.round(parseFloat(nonMPSData.value[i].in_transit));
                     } // if else
 
-                    singleEntry.本次請購數量 = Math.ceil(nonMPSData.value[i].請購數量);
-                    if (singleEntry.本次請購數量 <= 0) {
-                        singleEntry.本次請購數量 = 0;
-                    } // if
+                    // Don't care, will be calculated below
+                    singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求);
 
                     singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
                     singleEntry.幣別 = nonMPSData.value[i].幣別.toString().trim().toUpperCase();
@@ -442,6 +439,7 @@ export default defineComponent({
                     if (!accumulator[currentValue.料號]) { // if the current 料號 is fisrt met, then we create a index for it
                         accumulator[currentValue.料號] =
                         {
+                            id: currentValue.id,
                             料號: currentValue.料號,
                             品名: currentValue.品名,
                             規格: currentValue.規格,
@@ -464,11 +462,14 @@ export default defineComponent({
                     return accumulator;
                 }, {}));
 
+                // console.log(sum_result); // test
+
                 // Calculate result rows
                 let final_result = Object.values(sum_result.reduce((accumulator, currentValue) => {
                     if (!accumulator[currentValue.料號]) { // if the current 料號 is fisrt met, then we create a index for it
                         accumulator[currentValue.料號] =
                         {
+                            id: currentValue.id,
                             料號: currentValue.料號,
                             品名: currentValue.品名,
                             規格: currentValue.規格,

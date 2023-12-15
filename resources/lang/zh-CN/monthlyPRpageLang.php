@@ -157,4 +157,5 @@ return [
     'to_update_unit_price' => '更新单价',
     'repeated_isn' => '有重复的料号',
     'shallow_delete' => '此处删除仅代表不会送签，完全删除请至 汇入(非)月请购',
+    'nonmonthly_pr_already_sxb' => '以下料号已经送出请购单签核中：',
 ];

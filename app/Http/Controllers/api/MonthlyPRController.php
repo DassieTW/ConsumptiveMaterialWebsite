@@ -90,6 +90,16 @@ class MonthlyPRController extends Controller
         $now = Carbon::now();
         $record = 0;
         try {
+
+            $PR_already_sent = \DB::table('非月請購')
+                ->whereIn('料號', json_decode($request->input('number')))
+                ->whereNotNull('SXB單號')
+                ->get();
+
+            if (count($PR_already_sent) > 0) {
+                return \Response::json(['PR_ALREADY' => json_encode($PR_already_sent)], 420 /* Status code here default is 200 ok*/);
+            } // if
+
             $res_arr_values = array();
             for ($i = 0; $i < $count; $i++) {
                 $temp = array(
@@ -150,7 +160,7 @@ class MonthlyPRController extends Controller
 
         $count = count(json_decode($request->input('PN')));
         $now = Carbon::now();
-        $SXB_serial_number = date("Y_m_d_H_i_s");
+        $SXB_serial_number = date("YmdHis");
         $record = 0;
         // dd($total_price2); // test
         try {

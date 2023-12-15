@@ -10,10 +10,11 @@
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
-        :messages="table.messages" :columns="table.columns" :columns1="table.columns1" :rows="table.rows"
-        :rows1="table.rows1" :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+    <table-lite :is-static-mode="true" :hasCheckbox="false" :messages="table.messages" :columns="table.columns"
+        :rows="table.rows" :grouping-key="table.groupingKey" :has-group-toggle="table.hasGroupToggle"
+        :grouping-display="table.groupingDisplay" :total="table.totalRecordCount" :page-options="table.pageOptions"
+        :sortable="table.sortable" @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"
+        :is-fixed-first-column="true">
     </table-lite>
 </template>
 
@@ -48,31 +49,42 @@ export default defineComponent({
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
         watch(mats, () => {
-            console.log(JSON.parse(mats.value)); // test
+            // console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
             //console.log(allRowsObj.datas.length);
             for (let i = 0; i < allRowsObj.datas.length; i++) {
                 allRowsObj.datas[i].本次請購數量 = parseInt(
                     allRowsObj.datas[i].本次請購數量
                 );
+
+                allRowsObj.datas[i].id = i + 1;
                 data.push(allRowsObj.datas[i]);
             } // for
 
+            // console.log(data); // test
             document.getElementById("QueryFlag").click();
         }); // watch for data change
 
         // Table config
         const table = reactive({
             isLoading: false,
+            groupingKey: "SXB單號",
+            hasGroupToggle: false,
+            groupingDisplay: function (key) {
+                return (
+                    '<span>' +
+                    key +
+                    "</span>"
+                );
+            },
             columns: [
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.sxb"
                     ),
                     field: "SXB單號",
-                    width: "10ch",
+                    width: "14ch",
                     sortable: true,
-                    isKey: true,
                     display: function (row, i) {
                         return (
                             '<input type="hidden" id="sxb' +
@@ -84,7 +96,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.SXB單號 +
+                            // row.SXB單號 +
                             "</div>"
                         );
                     },
@@ -282,14 +294,30 @@ export default defineComponent({
             ],
         });
 
+        /**
+        * Row clicked event
+        */
+        const rowClicked = (row) => {
+            console.log("Row clicked!", row);
+        };
+
         const updateCheckedRows = (rowsKey) => {
             console.log(rowsKey);
-            // only check one
         };
+
+        /**
+        * Row toggled event
+        */
+        const toggled = (rows, isCollapsed) => {
+            console.log("Row toggled", rows, isCollapsed)
+        } // toggled
+
         return {
             searchTerm,
             table,
             updateCheckedRows,
+            rowClicked,
+            toggled,
         };
     }, // setup
 });

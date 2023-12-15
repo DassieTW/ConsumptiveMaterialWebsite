@@ -225,29 +225,6 @@ export default defineComponent({
                         );
                     },
                 },
-                // {
-                //     label: app.appContext.config.globalProperties.$t(
-                //         "basicInfoLang.gradea"
-                //     ),
-                //     field: "A級資材",
-                //     width: "10ch",
-                //     sortable: true,
-                //     display: function (row, i) {
-                //         return (
-                //             '<input type="hidden" id="gradea' +
-                //             i +
-                //             '" name="gradea' +
-                //             i +
-                //             '" value="' +
-                //             row.A級資材 +
-                //             '">' +
-                //             '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                //             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                //             row.A級資材 +
-                //             "</div>"
-                //         );
-                //     },
-                // },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "inboundpageLang.loc"

@@ -123,11 +123,8 @@ export default defineComponent({
         const deleteRow = () => {
             // console.log(checkedRows); // test
             for (let i = 0; i < checkedRows.length; i++) {
-                let deleteID = document.getElementsByClassName("vtl-tbody-tr")[checkedRows[i]].children[1].firstChild.firstChild.getAttribute("id");
-                deleteID = deleteID.replace('ninetyisn', '');
-
                 let indexOfObject = data.findIndex(object => {
-                    return parseInt(object.excel_row_num) === parseInt(deleteID);
+                    return parseInt(object.excel_row_num) === parseInt(checkedRows[i].excel_row_num);
                 });
 
                 if (indexOfObject != -1) {

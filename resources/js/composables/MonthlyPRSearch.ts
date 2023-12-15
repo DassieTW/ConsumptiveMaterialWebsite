@@ -144,7 +144,7 @@ export default function useMonthlyPRSearch() {
                 resolve("success");
             });
         } catch (e) {
-            console.log(e); // test
+            // console.log(e); // test
             return e;
         } // try catch
     } // uploadNonMonthlyToDB

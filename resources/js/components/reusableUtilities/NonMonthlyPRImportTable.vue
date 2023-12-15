@@ -64,7 +64,7 @@
             </div>
             <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
-                <strong>{{ validation_err_msg }}</strong>
+                <strong style="white-space: pre-wrap;">{{ validation_err_msg }}</strong>
             </span>
             <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
@@ -123,11 +123,8 @@ export default defineComponent({
         const deleteRow = () => {
             // console.log(checkedRows); // test
             for (let i = 0; i < checkedRows.length; i++) {
-                let deleteID = document.getElementsByClassName("vtl-tbody-tr")[checkedRows[i]].children[1].firstChild.firstChild.getAttribute("id");
-                deleteID = deleteID.replace('isn', '');
-
                 let indexOfObject = data.findIndex(object => {
-                    return parseInt(object.excel_row_num) === parseInt(deleteID);
+                    return parseInt(object.excel_row_num) === parseInt(checkedRows[i].excel_row_num);
                 });
 
                 if (indexOfObject != -1) {
@@ -142,7 +139,6 @@ export default defineComponent({
             } // if
 
             checkedRows = [];
-            // console.log(data); // test
         } // deleteRow
 
         const findDuplicates = (arr) => {
@@ -345,9 +341,9 @@ export default defineComponent({
             let desc = [];
             for (let i = 0; i < data.length; i++) {
                 number.push(data[i].料號);
-                thisMonthDemand.push(data[i].當月需求);
-                nextMonthDemand.push(data[i].下月需求);
-                amount.push(data[i].請購數量);
+                thisMonthDemand.push(parseInt(data[i].當月需求));
+                nextMonthDemand.push(parseInt(data[i].下月需求));
+                amount.push(parseInt(data[i].請購數量));
                 desc.push(data[i].說明);
             } // for
 
@@ -374,6 +370,26 @@ export default defineComponent({
                 });
             } // if
             else {
+                // console.log(result.response.data); // test
+                if (result.response.status == 420) {
+                    isInvalid_DB.value = true;
+                    let PR_ALREADY = JSON.parse(result.response.data.PR_ALREADY);
+                    // console.log(PR_ALREADY); // test
+                    let row_sep = 1; // just here to make the output prettier
+                    validation_err_msg.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.nonmonthly_pr_already_sxb") + "\n";
+                    for (let i = 0; i < PR_ALREADY.length; i++) {
+                        if (row_sep === 4) {
+                            validation_err_msg.value = validation_err_msg.value + PR_ALREADY[i].料號 + "、\n";
+                            row_sep = 0;
+                        } else {
+                            validation_err_msg.value = validation_err_msg.value + PR_ALREADY[i].料號 + "、";
+                        } // if else
+
+                        row_sep++;
+                    } // for
+                    validation_err_msg.value = validation_err_msg.value.slice(0, -1); // Remove the last character "、"
+                } // if
+
                 notyf.open({
                     type: "error",
                     message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
@@ -403,7 +419,7 @@ export default defineComponent({
             let allRowsObj = JSON.parse(queryResult.value);
             let singleEntry = {};
 
-            console.log(input_data); // test
+            // console.log(input_data); // test
             for (let i = 1; i < input_data.length; i++) {
                 try {
                     singleEntry.料號 = input_data[i][0].toString().trim();

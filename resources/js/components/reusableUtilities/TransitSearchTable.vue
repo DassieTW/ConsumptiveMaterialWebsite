@@ -220,7 +220,6 @@ export default defineComponent({
 
         const updateCheckedRows = (rowsKey) => {
             console.log(rowsKey);
-            // only check one
         };
         return {
             searchTerm,

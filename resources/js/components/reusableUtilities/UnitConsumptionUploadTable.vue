@@ -360,7 +360,7 @@ export default defineComponent({
 
 
         const triggerModal = async () => {
-            console.log("Loading Modal Triggered!"); // test
+            // console.log("Loading Modal Triggered!"); // test
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
@@ -374,11 +374,8 @@ export default defineComponent({
         const deleteRow = () => {
             // console.log(checkedRows); // test
             for (let i = 0; i < checkedRows.length; i++) {
-                let deleteID = document.getElementsByClassName("vtl-tbody-tr")[checkedRows[i]].children[3].firstChild.firstChild.getAttribute("id");
-                deleteID = deleteID.replace('unitConsumption', '');
-
                 let indexOfObject = data.findIndex(object => {
-                    return parseInt(object.id) === parseInt(deleteID);
+                    return parseInt(object.id) === parseInt(checkedRows[i].id);
                 });
 
                 if (indexOfObject != -1) {
@@ -393,7 +390,6 @@ export default defineComponent({
             } // if
 
             checkedRows = [];
-            // console.log(data); // test
         } // deleteRow
 
         const onSendToDBClick = async () => {

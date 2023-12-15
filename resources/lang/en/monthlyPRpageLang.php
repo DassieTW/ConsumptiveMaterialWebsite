@@ -163,4 +163,5 @@ return [
     'to_update_unit_price' => 'to Update Unit Price.',
     'repeated_isn' => 'Repeated PN',
     'shallow_delete' => 'To delete completely, please go to Import (Non)Monthly PR.',
+    'nonmonthly_pr_already_sxb' => 'The following materials have been filed for approval：',
 ];
