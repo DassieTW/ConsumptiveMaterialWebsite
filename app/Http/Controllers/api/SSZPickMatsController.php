@@ -23,10 +23,13 @@ class SSZPickMatsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeDataFromMIS(Request $request)
     {
-        //
-    }
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
+        \DB::purge(env("DB_CONNECTION"));
+        $path = public_path('temp_test_mis.json');
+        file_put_contents($path, $request + "//-----------------------//");
+    } // storeDataFromMIS
 
     /**
      * Display the specified resource.

@@ -13,7 +13,7 @@
             </div>
           </div>
           <table
-            class="vtl-table vtl-table-hover vtl-table-bordered align-items-center align-middle text-center justify-content-center"
+            class="vtl-table vtl-table-bordered table table-hover align-items-center align-middle text-center justify-content-center"
             ref="localTable" :style="'max-height: ' + maxHeight + 'px;'">
             <thead class="vtl-thead">
               <tr class="vtl-thead-tr m-0 p-0">
@@ -44,10 +44,9 @@
             <template v-if="rows.length > 0">
               <tbody v-if="isStaticMode" class="vtl-tbody"
                 :set="(templateRows = groupingKey == '' ? [localRows] : localRows)">
-                <template v-for="(rows, groupingIndex) in templateRows" :key="groupingIndex">
-                  <tr v-if="groupingKey != ''" class="vtl-tbody-tr vtl-group-tr m-0 p-0">
-                    <td :colspan="hasCheckbox ? 2 : 1"
-                      class="vtl-tbody-td vtl-group-td m-0 p-0">
+                <template v-for="(rows, groupingIndex) in templateRows">
+                  <tr :key="groupingIndex" v-if="groupingKey != ''" class="vtl-tbody-tr vtl-group-tr m-0 p-0">
+                    <td :colspan="hasCheckbox ? 2 : 1" class="vtl-tbody-td vtl-group-td m-0 p-0">
                       <div class="flex">
                         <div v-if="hasGroupToggle" class="animation">
                           <a :ref="(el) => (toggleButtonRefs[groupingIndex] = el)" class="cursor-pointer"
@@ -65,15 +64,13 @@
                     groupingRowsRefs[groupingIndex][i] = el;
                   }" :name="'vtl-group-' + groupingIndex" class="vtl-tbody-tr m-0 p-0"
                     :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses"
-                    @mouseenter="addHoverClassToTr" @mouseleave="removeHoverClassFromTr"
                     @click="$emit('row-clicked', row)">
                     <td v-if="hasCheckbox" class="vtl-tbody-td vtl-checkbox-td m-0 p-0" @click="clickChild($event)">
                       <input type="checkbox" class="vtl-tbody-checkbox" :id="'checkbox' + i" @click="checked(row, $event)"
                         :ref="(el) => { rowCheckbox.push(el); }" :value="row[setting.keyColumn]" />
                     </td>
                     <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td px-1 py-0"
-                      :class="['vtl-tbody-td' + j].concat(col.columnClasses)" :style="col.columnStyles"
-                      @mouseover="addVerticalHighlight(j)" @mouseleave="removeVerticalHighlight(j)">
+                      :class="['vtl-tbody-td' + j].concat(col.columnClasses)" :style="col.columnStyles">
                       <div v-if="col.display" v-html="col.display(row, i)"></div>
                       <div v-else-if="col.hasInput" style="width: max-content; margin: 0 auto;"
                         @change="$emit('row-input', row, i)" v-html="col.hasInput(row, i)">
@@ -89,8 +86,8 @@
                 </template>
               </tbody>
               <tbody v-else :set="(templateRows = groupingKey == '' ? [rows] : groupingRows)">
-                <template v-for="(rows, groupingIndex) in templateRows" :key="groupingIndex">
-                  <tr v-if="groupingKey != ''" class="vtl-tbody-tr vtl-group-tr m-0 p-0">
+                <template v-for="(rows, groupingIndex) in templateRows">
+                  <tr v-if="groupingKey != ''" class="vtl-tbody-tr vtl-group-tr m-0 p-0" :key="groupingIndex">
                     <td :colspan="hasCheckbox ? columns.length + 1 : columns.length"
                       class="vtl-tbody-td vtl-group-td m-0 p-0">
                       <div class="flex">
@@ -113,8 +110,7 @@
                     groupingRowsRefs[groupingIndex][i] = el;
                   }
                     " :name="'vtl-group-' + groupingIndex" :key="row[setting.keyColumn] ? row[setting.keyColumn] : i"
-                    class="vtl-tbody-tr m-0 p-0" :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
-                      " @mouseenter="addHoverClassToTr" @mouseleave="removeHoverClassFromTr"
+                    class="vtl-tbody-tr m-0 p-0" :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses"
                     @click="$emit('row-clicked', row)">
                     <td v-if="hasCheckbox" class="vtl-tbody-td vtl-checkbox-td m-0 p-0" @click="clickChild($event)">
                       <input type="checkbox" class="vtl-tbody-checkbox" :id="'checkbox' + i"
@@ -122,8 +118,7 @@
                         @click="checked(row, $event)" />
                     </td>
                     <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td px-1 py-0"
-                      :class="['vtl-tbody-td' + j].concat(col.columnClasses)" :style="col.columnStyles"
-                      @mouseover="addVerticalHighlight(j)" @mouseleave="removeVerticalHighlight(j)">
+                      :class="['vtl-tbody-td' + j].concat(col.columnClasses)" :style="col.columnStyles">
                       <div v-if="col.display" v-html="col.display(row, i)"></div>
                       <div v-else-if="col.hasInput" style="width: max-content; margin: 0 auto;"
                         @change="$emit('row-input', row, i)" v-html="col.hasInput(row, i)">
@@ -468,11 +463,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    // 選擇行是否高亮（Vertical highlight switch）
-    isVerticalHighlight: {
-      type: Boolean,
-      default: false,
-    },
   },
   setup(props, { emit, slots }) {
     let localTable = ref(null);
@@ -556,7 +546,6 @@ export default defineComponent({
       order: props.sortable.order,
       sort: props.sortable.sort,
       pageOptions: props.pageOptions,
-      isVerticalHighlight: props.isVerticalHighlight,
     });
 
     // 已選擇中的資料 (Checked rows)
@@ -943,54 +932,6 @@ export default defineComponent({
     };
 
     /**
-     * Add hover class to tr
-     *
-     * @param {MouseEvent} mouseEvent
-     */
-    const addHoverClassToTr = (mouseEvent) => {
-      mouseEvent.target.classList.add("hover");
-    };
-
-    /**
-     * Remove hover class from tr
-     *
-     * @param {MouseEvent} mouseEvent
-     */
-    const removeHoverClassFromTr = (mouseEvent) => {
-      mouseEvent.target.classList.remove("hover");
-    };
-
-    /**
-     * Add hover class to td
-     * 
-     * @param {Number} index 
-     */
-    const addVerticalHighlight = (index) => {
-      if (!setting.isVerticalHighlight) {
-        return;
-      }
-      let elements = localTable.value.querySelectorAll(".vtl-tbody-td" + index);
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].classList.add("hover");
-      }
-    };
-
-    /**
-     * Remove hover class from td
-     *
-     * @param {Number} index 
-     */
-    const removeVerticalHighlight = (index) => {
-      if (!setting.isVerticalHighlight) {
-        return;
-      }
-      let elements = localTable.value.querySelectorAll(".vtl-tbody-td" + index);
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].classList.remove("hover");
-      }
-    };
-
-    /**
      * 組件掛載後事件 (Mounted Event)
      */
     onMounted(() => {
@@ -1019,10 +960,6 @@ export default defineComponent({
       groupingRowsRefs,
       groupingRows,
       toggleGroup,
-      addHoverClassToTr,
-      removeHoverClassFromTr,
-      addVerticalHighlight,
-      removeVerticalHighlight,
     };
   },
 });
@@ -1167,11 +1104,6 @@ tr {
   vertical-align: top;
   border-top: 1px solid #dee2e6;
   vertical-align: middle;
-}
-
-.vtl-table-hover tbody tr:hover {
-  color: #212529;
-  background-color: rgba(0, 0, 0, 0.075);
 }
 
 .vtl-table-responsive {
@@ -1359,11 +1291,6 @@ tr {
   background-color: white;
 }
 
-.fixed-first-column tr.hover td:first-child,
-.fixed-first-second-column tr.hover td:nth-child(2) {
-  background-color: #ececec;
-}
-
 .flex {
   display: flex;
 }
@@ -1387,10 +1314,6 @@ tr {
 
 .ml-2 {
   margin-left: 0.5rem;
-}
-
-.vtl-tbody-td.hover {
-  background-color: #ececec;
 }
 
 td {

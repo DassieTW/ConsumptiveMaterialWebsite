@@ -42,11 +42,9 @@ class GetExchangeRate extends Command
         try {
             $this->warn("Now Fetching Exchange Rate...");
             $path = public_path('exchange_rate.json');
-            $fp = fopen($path, 'w');
             file_put_contents($path, "");
             $response = \Http::get('http://api.exchangeratesapi.io/v1/latest?access_key=' . env('Rate_API_Key'));
-            fwrite($fp, $response);
-            fclose($fp);
+            file_put_contents($path, $response);
         } catch (Exception $e) {
             $this->error("Command execution failed with error : " . $e->getMessage());
         } // try - catch

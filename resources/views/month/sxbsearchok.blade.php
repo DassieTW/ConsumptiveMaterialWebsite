@@ -3,23 +3,6 @@
 @endsection
 
 @section('js')
-    <!--for this page's sepcified js -->
-    <script>
-        $(document).ready(function() {
-            var title = [];
-            var titlecol = [];
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-
-            $("#QueryFlag").on("click", function(e) {
-                // console.log("clicked!"); // test
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-            });
-        });
-    </script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -29,7 +12,6 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
-        <button type="hidden" id="QueryFlag" name="QueryFlag" value="Posting" style="display: none;"></button>
         <div class="card">
             <div class="card-header">
                 <h3>{!! __('monthlyPRpageLang.SXB_search') !!}</h3>
