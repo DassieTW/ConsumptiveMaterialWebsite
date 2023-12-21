@@ -37,6 +37,9 @@ Route::post('/generate_buylist', 'api\MonthlyPRController@showBuylist');
 Route::post('/sendPRMail', 'api\MonthlyPRController@sendPRMail');
 Route::post('/getCurrency', 'api\MonthlyPRController@showCurrency');
 Route::post('/submit_buylist', 'api\MonthlyPRController@storeBuylist');
+Route::post('/approveSXB', 'api\MonthlyPRController@approveSXB');
+Route::post('/rejectSXB', 'api\MonthlyPRController@rejectSXB');
+Route::post('/getTransit', 'api\MonthlyPRController@showInTransit');
 
 
 

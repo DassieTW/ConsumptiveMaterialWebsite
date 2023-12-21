@@ -22,6 +22,6 @@ class InboundPolicy
             return true;
         } else {
             return false;
-        } // if else 
-    }
+        } // if else
+    } // viewInbound
 }

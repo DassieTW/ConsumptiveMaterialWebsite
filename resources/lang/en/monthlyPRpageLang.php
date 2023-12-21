@@ -166,4 +166,5 @@ return [
     'nonmonthly_pr_already_sxb' => 'The following materials have been filed for approval：',
     'review_cancel' => 'Reject',
     'review_complete' => 'Approve',
+    'status' => 'Status',
 ];

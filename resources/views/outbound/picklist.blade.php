@@ -5,10 +5,10 @@
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/outbound/picklist.js?v=') . env('APP_VERSION') }}"></script>
     <script>
         var locale = '{{ config('app.locale') }}';
     </script>
+    <script src="{{ asset('js/outbound/picklist.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -102,10 +102,9 @@
                                                     @foreach ($test as $k => $a)
                                                         @if ($a > 0)
                                                             <option
-                                                                value="{!! __('outboundpageLang.loc') !!}:{{ $k }}
-                                                                {!! __('outboundpageLang.nowstock') !!}:{{ $a }}">
+                                                                value="{{ $k . '_' . $a }}">
                                                                 {!! __('outboundpageLang.loc') !!}:{{ $k }}
-                                                                {!! __('outboundpageLang.nowstock') !!}:{{ $a }}</option>
+                                                                {{ '(' }}{!! __('outboundpageLang.nowstock') !!}:{{ $a .')' }}</option>
                                                         @endif
                                                     @endforeach
                                                 </div>

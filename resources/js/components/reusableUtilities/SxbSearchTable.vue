@@ -21,6 +21,17 @@
                     style="border-radius: 20px;" :id="'sxb' + row.id" :name="'sxb' + key">More</button>
             </div>
         </template>
+        <template v-slot:狀態="{ row, key }">
+            <div class="col col-auto align-items-center m-0 p-0">
+                <a v-if="row.狀態 === '未簽核'" @click="openSXBDetails(row.SXB單號)" data-bs-toggle="modal"
+                    data-bs-target="#detailTable" class="m-0 p-0" style="color: #dca120;">{{ row.狀態 }}</a>
+                <a v-else-if="row.狀態 === '已退單'" @click="openSXBDetails(row.SXB單號)" data-bs-toggle="modal"
+                    data-bs-target="#detailTable" class="m-0 p-0" style="color: #808080;">{{ row.狀態 }}</a>
+                <a v-else class="m-0 p-0" @click="openSXBDetails(row.SXB單號)" data-bs-toggle="modal"
+                    data-bs-target="#detailTable" style="color: #2bb91b;">{{ row.狀態
+                    }}</a>
+            </div>
+        </template>
     </table-lite>
 
     <!-- Modal -->
@@ -47,14 +58,15 @@
                     <!-- </div>breaks cols to a new line-->
                     <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false" :messages="table2.messages"
                         :columns="table2.columns" :rows="table2.rows" :total="table2.totalRecordCount"
-                        :page-options="table2.pageOptions" :sortable="table2.sortable" :is-fixed-first-column="false" @row-clicked="rowClicked">
+                        :page-options="table2.pageOptions" :sortable="table2.sortable" :is-fixed-first-column="false"
+                        @row-clicked="rowClicked">
                     </table-lite>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;">
+                <div v-if="showFooter" class="modal-footer justify-content-between">
+                    <button @click="sxb_reject" type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;">
                         {{ $t('monthlyPRpageLang.review_cancel') }}
                     </button>
-                    <button type="button" class="btn btn-lg btn-success" style="border-radius: 5px;">
+                    <button @click="sxb_approve" type="button" class="btn btn-lg btn-success" style="border-radius: 5px;">
                         {{ $t('monthlyPRpageLang.review_complete') }}
                     </button>
                 </div>
@@ -77,13 +89,14 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, getMats } = useSxbSearch(); // axios get the mats data
+        const { mats, inTransit, getMats, SXB_Reject, SXB_Approve, getTransit } = useSxbSearch(); // axios get the mats data
 
         onBeforeMount(getMats);
 
         const searchTerm = ref(""); // Search text
         const searchTerm2 = ref(""); // Search text for modal table
         const modalTitle = ref("");
+        let showFooter = ref(false);
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
@@ -116,8 +129,113 @@ export default defineComponent({
                 } // if
             } // for
 
-            // console.log(data2); // test
+            if (data2[0].狀態 === '未簽核') {
+                showFooter.value = true;
+            } // if
+            else {
+                showFooter.value = false;
+            } // else
         } // openSXBDetails
+
+        const sxb_reject = async () => {
+            await triggerModal();
+            let result = await SXB_Reject(data2[0].SXB單號);
+            if (result === "success") {
+                showFooter.value = false;
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                await getMats();
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // sxb_reject
+
+        const sxb_approve = async () => {
+            await triggerModal();
+            let temp_isn = [];
+            for (let i = 0; i < data2.length; i++) {
+                temp_isn.push(data2[i].料號);
+            } // for
+
+            await getTransit(temp_isn); // get existing in-transit data
+            let existing = JSON.parse(inTransit.value).data;
+            // console.log(existing); // test
+
+            let isn = [];
+            let amount = [];
+            for (let i = 0; i < data2.length; i++) {
+                isn.push(data2[i].料號);
+
+                let indexOfObject = existing.findIndex(object => {
+                    return (object.料號 === data2[i].料號);
+                });
+
+                if (indexOfObject === -1) {
+                    amount.push(parseInt(data2[i].本次請購數量));
+                } // if
+                else {
+                    amount.push(parseInt(data2[i].本次請購數量) + parseInt(existing[indexOfObject].請購數量));
+                } // else
+            } // for
+
+            // console.log(amount, isn); // test
+
+            let result = await SXB_Approve(data2[0].SXB單號, isn, amount);
+            if (result === "success") {
+                showFooter.value = false;
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                await getMats();
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // sxb_approve
 
         let AllRecords = [];
         watch(mats, async () => {
@@ -133,6 +251,7 @@ export default defineComponent({
                     allRowsObj.datas[i].本次請購數量
                 );
 
+                allRowsObj.datas[i].狀態 = allRowsObj.datas[i].SRM單號;
                 allRowsObj.datas[i].id = i + 1;
                 AllRecords.push(allRowsObj.datas[i]);
                 let indexOfObject = data.findIndex(object => {
@@ -160,6 +279,14 @@ export default defineComponent({
                     ),
                     field: "SXB單號",
                     width: "14ch",
+                    sortable: true,
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.status"
+                    ),
+                    field: "狀態",
+                    width: "6ch",
                     sortable: true,
                 },
                 {
@@ -437,7 +564,7 @@ export default defineComponent({
         * Row clicked event
         */
         const rowClicked = (row) => {
-            console.log("Row clicked!", row);
+            // console.log("Row clicked!", row);
         };
 
         return {
@@ -446,8 +573,11 @@ export default defineComponent({
             table,
             table2,
             modalTitle,
+            showFooter,
             rowClicked,
             openSXBDetails,
+            sxb_approve,
+            sxb_reject,
         };
     }, // setup
 });

@@ -391,6 +391,19 @@ class MonthlyPRController extends Controller
         return \Response::json(['data' => $datas, "dbName" => $dbName]/* Status code here default is 200 ok*/);
     } // showBuylist
 
+    public function showInTransit(Request $request) // get 在途量
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
+        $isn_array = json_decode($request->input('isn'));
+        $results = \DB::table('在途量')
+            ->whereIn('料號', $isn_array)
+            ->get();
+
+        return \Response::json(['data' => $results, "dbName" => $dbName]/* Status code here default is 200 ok*/);
+    } // showMPS
     /**
      * Update the specified resource in storage.
      *
@@ -664,4 +677,78 @@ class MonthlyPRController extends Controller
             return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
         } //catch
     } // destroyNonMPS
-}
+
+    public function rejectSXB(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $database = \DB::connection()->getDatabaseName(); // test
+
+        $sxb = json_decode($request->input('sxb'));
+        try {
+            \DB::beginTransaction();
+
+            \DB::table('非月請購')
+                ->where('SXB單號', $sxb)
+                ->update(['SXB單號' => null]);
+
+            \DB::table('請購單')
+                ->where('SXB單號', $sxb)
+                ->update(['SRM單號' => '已退單']); // 未簽核/已退單/已完成
+            \DB::commit();
+            return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+        } // catch
+    } // rejectSXB
+
+    public function approveSXB(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $database = \DB::connection()->getDatabaseName(); // test
+        $record = 0;
+        $sxb = json_decode($request->input('sxb'));
+        $isn = json_decode($request->input('isn'));
+        $amount = json_decode($request->input('amount'));
+
+        try {
+            $res_arr_values = array();
+            for ($i = 0; $i < count($isn); $i++) {
+                $temp = array(
+                    "料號" => $isn[$i],
+                    '請購數量' => $amount[$i],
+                );
+
+                $res_arr_values[] = $temp;
+            } //for
+
+            \DB::beginTransaction();
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 200, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('在途量')->upsert(
+                    $whole_load[$i],
+                    ['料號'],
+                    ['請購數量']
+                );
+
+                $record = $record + $temp_record;
+            } // for
+
+            \DB::table('非月請購')
+                ->where('SXB單號', $sxb)
+                ->delete();
+
+            \DB::table('請購單')
+                ->where('SXB單號', $sxb)
+                ->update(['SRM單號' => '已完成']); // 未簽核/已退單/已完成
+            \DB::commit();
+            return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+        } // catch
+    } // approveSXB
+} // MonthlyPRController

@@ -160,4 +160,5 @@ return [
     'nonmonthly_pr_already_sxb' => '以下料號已經送出請購單簽核中：',
     'review_cancel' => '退單',
     'review_complete' => '簽核完成',
+    'status' => '狀態',
 ];

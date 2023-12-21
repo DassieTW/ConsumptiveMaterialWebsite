@@ -9,6 +9,7 @@ import {
 
 export default function useSxbSearch() {
     const mats = ref("");
+    const inTransit = ref("");
     const errors = ref("");
     const router = useRouter();
 
@@ -50,8 +51,75 @@ export default function useSxbSearch() {
         } // try catch
     } // get mats
 
+    const SXB_Reject = async (sxb_number) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/month/rejectSXB', {
+                DB: getDB.data,
+                sxb: JSON.stringify(sxb_number),
+            });
+
+            console.log(response.data); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // SXB_Reject
+
+    const SXB_Approve = async (sxb_number, isn, amount) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/month/approveSXB', {
+                DB: getDB.data,
+                sxb: JSON.stringify(sxb_number),
+                isn: JSON.stringify(isn),
+                amount: JSON.stringify(amount),
+            });
+
+            console.log(response.data); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // SXB_Approve
+
+    const getTransit = async (isn) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/month/getTransit', {
+                DB: getDB.data,
+                isn: JSON.stringify(isn),
+            });
+
+            // console.log(response.data); // test
+            inTransit.value = JSON.stringify(response.data);
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // getTransit
+
     return {
         mats,
-        getMats
+        inTransit,
+        getMats,
+        SXB_Reject,
+        SXB_Approve,
+        getTransit
     } // return
 } // useConsumptiveMaterials
