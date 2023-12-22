@@ -795,6 +795,7 @@ class ComposerStaticInit3a337aa382200259a249a8921ee7c950
         'App\\Console\\Commands\\CleanUpInventory' => __DIR__ . '/../..' . '/app/Console/Commands/CleanUpInventory.php',
         'App\\Console\\Commands\\CleanupBarcodeImg' => __DIR__ . '/../..' . '/app/Console/Commands/CleanupBarcodeImg.php',
         'App\\Console\\Commands\\FlushSessions' => __DIR__ . '/../..' . '/app/Console/Commands/FlushSessions.php',
+        'App\\Console\\Commands\\GetExchangeRate' => __DIR__ . '/../..' . '/app/Console/Commands/GetExchangeRate.php',
         'App\\Console\\Commands\\MigrateAllDB' => __DIR__ . '/../..' . '/app/Console/Commands/MigrateAllDB.php',
         'App\\Console\\Commands\\MigrateAllServerDB' => __DIR__ . '/../..' . '/app/Console/Commands/MigrateAllServerDB.php',
         'App\\Console\\Commands\\SendSafeStockMail' => __DIR__ . '/../..' . '/app/Console/Commands/SendSafeStockMail.php',

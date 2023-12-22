@@ -10,6 +10,7 @@ return array(
     'App\\Console\\Commands\\CleanUpInventory' => $baseDir . '/app/Console/Commands/CleanUpInventory.php',
     'App\\Console\\Commands\\CleanupBarcodeImg' => $baseDir . '/app/Console/Commands/CleanupBarcodeImg.php',
     'App\\Console\\Commands\\FlushSessions' => $baseDir . '/app/Console/Commands/FlushSessions.php',
+    'App\\Console\\Commands\\GetExchangeRate' => $baseDir . '/app/Console/Commands/GetExchangeRate.php',
     'App\\Console\\Commands\\MigrateAllDB' => $baseDir . '/app/Console/Commands/MigrateAllDB.php',
     'App\\Console\\Commands\\MigrateAllServerDB' => $baseDir . '/app/Console/Commands/MigrateAllServerDB.php',
     'App\\Console\\Commands\\SendSafeStockMail' => $baseDir . '/app/Console/Commands/SendSafeStockMail.php',

@@ -39,5 +39,6 @@ class 請購單 extends Model
         '需求占比',
         '請購時間',
         'SXB單號',
+        '規格'
     ];
 }
