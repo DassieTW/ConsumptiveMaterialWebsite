@@ -210,6 +210,7 @@ class MonthlyPRController extends Controller
             return \Response::json(['record' => $record] /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             \DB::rollback();
+            dd($e);
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
         } // try catch
     } // storeBuylist
