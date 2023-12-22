@@ -260,7 +260,6 @@ export default defineComponent({
                 moq.push(data[i].MOQ);
             } // for
 
-            // console.log(req_amount); // test
             let start = Date.now();
             let result = await sendBuylistMail(
                 number, pName, spec, unit_price,

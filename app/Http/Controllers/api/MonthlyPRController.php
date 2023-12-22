@@ -540,6 +540,8 @@ class MonthlyPRController extends Controller
         $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $worksheet->getStyle("A1")->getFont()->setSize(16);
         $worksheet->getStyle("A1")->getFont()->setBold(true);
+        $total_USD = 0;
+
         //填寫內容
         for ($j = 0; $j < count($PN); $j++) {
             if ($ReqAmount[$j] !== "0" || $ReqAmount[$j] != 0) {
@@ -557,6 +559,8 @@ class MonthlyPRController extends Controller
                 $worksheet->setCellValueByColumnAndRow(12, $i, strval($total_price2[$j])); // L
                 $worksheet->setCellValueByColumnAndRow(13, $i, strval($MOQ[$j])); // M
 
+                $total_USD = $total_USD + floatval(str_replace(",", "", strval($total_price2[$j])));
+
                 $i++;
             } else {
                 continue;
@@ -569,8 +573,8 @@ class MonthlyPRController extends Controller
             ->setARGB('c4d79b');
         $worksheet->getStyle('A2' . ':' . 'M' . $i)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        // $worksheet->setCellValue(("K" . $i), ("=SUM(K3" . ":" . "K" . ($i - 1) . ")"));
-        $worksheet->setCellValue(("L" . $i), ("=SUM(L3" . ":" . "L" . ($i - 1) . ")"));
+        // $worksheet->setCellValue(("K" . $i), ("=SUM(K3:K" . ($i - 1) . ")"));
+        $worksheet->setCellValue(("L" . $i), $total_USD);
 
         $worksheet->setCellValue(("A" . $i + 2), "核准:");
         $worksheet->setCellValue(("D" . $i + 2), "審核:");
