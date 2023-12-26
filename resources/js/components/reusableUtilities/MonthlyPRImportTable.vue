@@ -109,7 +109,7 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, uploadMonthlyToDB } = useMonthlyPRSearch();
+        const { mats, uc, uploadMonthlyToDB, validate_UnitConsume } = useMonthlyPRSearch();
         const { queryResult, validateISN } = useCommonlyUsedFunctions();
 
         let isInvalid = ref(false); // validation
@@ -181,9 +181,11 @@ export default defineComponent({
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
                             let tempArr = Array();
+                            let tempArr90 = Array();
                             for (let i = 1; i < input_data.length; i++) {
                                 if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].toString().trim() != "" && input_data[i][0].toString().trim() != null) {
                                     tempArr.push(input_data[i][1].toString().trim());
+                                    tempArr90.push(input_data[i][0].toString().trim());
                                 } // if
                                 else {
                                     input_data.splice(i, 1); // remove the empty row
@@ -191,9 +193,10 @@ export default defineComponent({
                                 } // else
                             } // for
 
-                            // console.log(tempArr); // test
+                            // console.log(tempArr90); // test
                             await triggerModal();
                             await validateISN(tempArr);
+                            await validate_UnitConsume(tempArr, tempArr90);
                         } // else
                     };
 
@@ -243,7 +246,7 @@ export default defineComponent({
 
         const onSendToDBClick = async () => {
             await triggerModal();
-            console.log("The modal should be triggered by now."); // test
+            // console.log("The modal should be triggered by now."); // test
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
@@ -283,6 +286,42 @@ export default defineComponent({
                     " " + data[rowsCount].excel_row_num + " " +
                     "(" + data[rowsCount].料號 + ") " +
                     app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn");
+
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                return;
+            } // if
+
+            // ----------------------------------------------
+            // validate if all the 單耗 exist
+            for (let j = 0; j < data.length && hasError == false; j++) {
+                if (data[j].單耗 === "" || data[j].單耗 === null || data[j].單耗.toLowerCase() === "null" ||
+                    data[j].狀態 !== "已完成") {
+                    hasError = true;
+                    rowsCount = j;
+                } // if
+            } // for
+
+            if (hasError) {
+                isInvalid_DB.value = true;
+                validation_err_msg.value =
+                    "Excel " +
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.row") +
+                    " " + data[rowsCount].excel_row_num + ": " + data[rowsCount].料號90 +
+                    "(" + data[rowsCount].料號 + ") " +
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nounitconsumption");
 
                 notyf.open({
                     type: "error",
@@ -376,6 +415,25 @@ export default defineComponent({
                 });
             } // if
             else {
+                if (result.response.status == 420) {
+                    isInvalid_DB.value = true;
+                    let PR_ALREADY = JSON.parse(result.response.data.PR_ALREADY);
+                    // console.log(PR_ALREADY); // test
+                    let row_sep = 1; // just here to make the output prettier
+                    validation_err_msg.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.nonmonthly_pr_already_sxb") + "\n";
+                    for (let i = 0; i < PR_ALREADY.length; i++) {
+                        if (row_sep === 2) {
+                            validation_err_msg.value = validation_err_msg.value + PR_ALREADY[i].料號90 + '(' + PR_ALREADY[i].料號 + ')' + "、\n";
+                            row_sep = 0;
+                        } else {
+                            validation_err_msg.value = validation_err_msg.value + PR_ALREADY[i].料號90 + '(' + PR_ALREADY[i].料號 + ')' + "、";
+                        } // if else
+
+                        row_sep++;
+                    } // for
+                    validation_err_msg.value = validation_err_msg.value.slice(0, -1); // Remove the last character "、"
+                } // if
+
                 notyf.open({
                     type: "error",
                     message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
@@ -390,7 +448,7 @@ export default defineComponent({
             } // else
         } // onSendToDBClick
 
-        watch(queryResult, async () => {
+        watch(uc, async () => {
             await triggerModal();
             if (queryResult.value == "") {
                 $("body").loadingModal("hide");
@@ -399,7 +457,9 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(queryResult.value);
-            // console.log(allRowsObj.data); // test
+            let allRowsObj_UC = JSON.parse(uc.value);
+
+            // console.log(allRowsObj_UC); // test
             let singleEntry = {};
 
             for (let i = 1; i < input_data.length; i++) {
@@ -477,6 +537,20 @@ export default defineComponent({
                     singleEntry.月請購 = "";
                 } // else
 
+                // check if Unit Consumption Exist and Approved
+                indexOfObject = allRowsObj_UC.data.findIndex(object => {
+                    return (object.料號 === singleEntry.料號 && object.料號90 === singleEntry.料號90);
+                });
+
+                if (indexOfObject != -1) { // if an existing record is found
+                    singleEntry.單耗 = allRowsObj_UC.data[indexOfObject].單耗;
+                    singleEntry.狀態 = allRowsObj_UC.data[indexOfObject].狀態;
+                } // if
+                else {
+                    singleEntry.單耗 = null;
+                    singleEntry.狀態 = null;
+                } // else
+
                 data.push(singleEntry);
                 singleEntry = {};
             } // for
@@ -485,7 +559,7 @@ export default defineComponent({
                 $("#togglebtn").click();
             } // if
 
-            // console.log(data); // test
+            console.log(data); // test
             uploadToDBReady.value = true;
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
@@ -507,19 +581,36 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="ninetyisn' +
-                            row.excel_row_num +
-                            '" name="ninetyisn' +
-                            i +
-                            '" value="' +
-                            row.料號90 +
-                            '">' +
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.料號90 +
-                            "</div>"
-                        );
+                        if (row.單耗 === null) { // if isn not exist in consumptive_material table
+                            return (
+                                '<input type="hidden" id="ninetyisn' +
+                                row.excel_row_num +
+                                '" name="ninetyisn' +
+                                i +
+                                '" value="' +
+                                row.料號90 +
+                                '">' +
+                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.料號90 +
+                                "</div>"
+                            );
+                        } // if
+                        else {
+                            return (
+                                '<input type="hidden" id="ninetyisn' +
+                                row.excel_row_num +
+                                '" name="ninetyisn' +
+                                i +
+                                '" value="' +
+                                row.料號90 +
+                                '">' +
+                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.料號90 +
+                                "</div>"
+                            );
+                        } // else
                     },
                 },
                 {
@@ -530,7 +621,7 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
+                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null" || row.單耗 === null) { // if isn not exist in consumptive_material table
                             return (
                                 '<input type="hidden" id="isn' +
                                 row.excel_row_num +

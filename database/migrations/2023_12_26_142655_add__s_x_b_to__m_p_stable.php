@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Add規格To請購單table extends Migration
+class AddSXBToMPStable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class Add規格To請購單table extends Migration
      */
     public function up()
     {
-        Schema::table('請購單', function (Blueprint $table) {
-            $table->string('規格', 100)->nullable(true);
+        Schema::table('MPS', function (Blueprint $table) {
+            $table->string('SXB單號', 45)->nullable(true);
         });
     }
 
@@ -25,8 +25,8 @@ class Add規格To請購單table extends Migration
      */
     public function down()
     {
-        Schema::table('請購單', function (Blueprint $table) {
-            $table->dropColumn('規格');
+        Schema::table('MPS', function (Blueprint $table) {
+            $table->string('SXB單號', 45)->nullable(true);
         });
     }
 }

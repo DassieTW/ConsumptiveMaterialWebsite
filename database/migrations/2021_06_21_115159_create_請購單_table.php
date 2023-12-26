@@ -18,6 +18,7 @@ class Create請購單Table extends Migration
             $table->string('客戶', 45);
             $table->string('料號', 12);
             $table->string('品名', 100);
+            $table->string('規格', 100);
             $table->integer('MOQ');
             $table->double('下月需求');
             $table->double('當月需求');

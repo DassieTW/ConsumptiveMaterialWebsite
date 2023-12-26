@@ -9,9 +9,32 @@ import {
 
 export default function useMonthlyPRSearch() {
     const mats = ref("");
+    const uc = ref("");
     const errors = ref("");
     const Currency = ref("");
     const router = useRouter();
+
+    const validate_UnitConsume = async (isnArr, isnArr90) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        // console.log(inputArray); // test
+        try {
+            let response = await axios.post('/api/month/validateUC', {
+                DB: getDB.data,
+                number: JSON.stringify(isnArr),
+                number90: JSON.stringify(isnArr90)
+            });
+
+            uc.value = JSON.stringify(response.data);
+            // console.log(JSON.stringify(response.data)); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // validate_UnitConsume
 
     const getMats_MPS = async () => {
         errors.value = "";
@@ -230,7 +253,7 @@ export default function useMonthlyPRSearch() {
         number, pName, spec, unit_price,
         nowNeed, nextNeed, stock, in_transit, req_amount,
         total_price_default_currency, total_price_default_currency_name,
-        total_price_other_currency, moq, nonMPS_PN_Array
+        total_price_other_currency, moq, nonMPS_PN_Array, MPS_90PN_Array, MPS_PN_Array
     ) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
@@ -253,7 +276,9 @@ export default function useMonthlyPRSearch() {
                 currency_name: JSON.stringify(total_price_default_currency_name),
                 total_price2: JSON.stringify(total_price_other_currency),
                 MOQ: JSON.stringify(moq),
-                nonMPS_PN_Array: JSON.stringify(nonMPS_PN_Array)
+                nonMPS_PN_Array: JSON.stringify(nonMPS_PN_Array),
+                MPS_PN_Array: JSON.stringify(MPS_PN_Array),
+                MPS_90PN_Array: JSON.stringify(MPS_90PN_Array)
             });
 
             console.log(response.data); // test
@@ -268,7 +293,9 @@ export default function useMonthlyPRSearch() {
 
     return {
         mats,
+        uc,
         Currency,
+        validate_UnitConsume,
         getMats_MPS,
         deleteMPS,
         getMats_nonMonthly,

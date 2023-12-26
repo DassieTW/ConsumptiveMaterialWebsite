@@ -90,6 +90,8 @@ export default defineComponent({
         const nonMPSData = ref(null);
         const combinedData = ref(null);
         let nonMPS_PN_Array = [];
+        let MPS_PN_Array = [];
+        let MPS_90PN_Array = [];
 
         const searchTerm = ref(""); // Search text
 
@@ -277,7 +279,7 @@ export default defineComponent({
             //     number, pName, spec, unit_price,
             //     nowNeed, nextNeed, stock, in_transit, req_amount,
             //     total_price_default_currency, total_price_default_currency_name,
-            //     total_price_other_currency, moq, nonMPS_PN_Array
+            //     total_price_other_currency, moq, nonMPS_PN_Array, MPS_90PN_Array, MPS_PN_Array
             // );
             // ------- ---- --------
 
@@ -286,7 +288,7 @@ export default defineComponent({
                     number, pName, spec, unit_price,
                     nowNeed, nextNeed, stock, in_transit, req_amount,
                     total_price_default_currency, total_price_default_currency_name,
-                    total_price_other_currency, moq, nonMPS_PN_Array
+                    total_price_other_currency, moq, nonMPS_PN_Array, MPS_90PN_Array, MPS_PN_Array
                 );
 
                 if (result === "success") {
@@ -338,6 +340,8 @@ export default defineComponent({
             data.splice(0);
             // console.log(Currency.value); // test
             nonMPS_PN_Array = [];
+            MPS_PN_Array = [];
+            MPS_90PN_Array = [];
             isInvalid.value = false;
             let exchange_table = Currency.value.rates;
 
@@ -375,7 +379,7 @@ export default defineComponent({
 
                     // Don't care, will be calculated below
                     singleEntry.本次請購數量 = Math.ceil(singleEntry.當月需求 + singleEntry.下月需求);
-                    
+
                     singleEntry.請購金額 = parseFloat((singleEntry.本次請購數量 * singleEntry.單價).toFixed(5));
                     singleEntry.幣別 = MPSData.value[i].幣別.toString().trim().toUpperCase();
                     if (singleEntry.幣別 == "RMB") {
@@ -387,6 +391,8 @@ export default defineComponent({
                     singleEntry.MOQ = parseInt(MPSData.value[i].MOQ.toString().trim());
                     singleEntry.id = i;
                     tempAll.push(singleEntry);
+                    MPS_PN_Array.push(singleEntry.料號);
+                    MPS_90PN_Array.push(MPSData.value[i].料號90);
                     // data.push(singleEntry); // test
                     // console.log(singleEntry); // test
                     singleEntry = {};

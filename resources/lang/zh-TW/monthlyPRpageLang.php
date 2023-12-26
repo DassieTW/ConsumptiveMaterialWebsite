@@ -120,6 +120,7 @@ return [
     'noclient' => '客戶別不存在',
     'nomachine' => '機種不存在',
     'noproduction' => '製程不存在',
+    'nounitconsumption' => '單耗不存在或未畫押',
     'surepeople' => '確認人員工號',
     'surepeopleemail' => '確認人員信箱',
     'nocheck' => '請勾選欲提交項目',

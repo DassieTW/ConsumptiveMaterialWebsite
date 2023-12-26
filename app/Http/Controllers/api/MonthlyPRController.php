@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Exception;
 use Sentry\Util\JSON;
 use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -27,6 +28,35 @@ class MonthlyPRController extends Controller
         //
     }
 
+    public function checkIfUnitConsumptionExist(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+        $number = json_decode($request->input('number'));
+        $number90 = json_decode($request->input('number90'));
+        $data_length = count($number90);
+        $query = \DB::table('月請購_單耗');
+        for ($i = 0; $i < $data_length; $i++) {
+            $single_isn =  $number[$i];
+            $single_isn90 = $number90[$i];
+            $query->orWhere(
+                function ($semiquery) use ($single_isn, $single_isn90) {
+                    $semiquery->where('料號', '=', $single_isn)
+                        ->where('料號90', '=', $single_isn90);
+                } // function
+            );
+        } //for
+
+        try {
+            $result = $query->get(['料號', '料號90', '單耗', '狀態']);
+            return \Response::json(['data' => $result], 200 /* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            dd($e);
+            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+        } // try - catch
+    } // checkIfUnitConsumptionExist
+
     /**
      * Store a newly created resource in storage.
      *
@@ -40,8 +70,29 @@ class MonthlyPRController extends Controller
         $dbName = \DB::connection()->getDatabaseName(); // test
         $now = Carbon::now();
         $record = 0;
-        $data_length = count(json_decode($request->input('number')));
+        $number = json_decode($request->input('number'));
+        $number90 = json_decode($request->input('number90'));
+        $data_length = count($number90);
+        $query = \DB::table('MPS');
+        for ($i = 0; $i < $data_length; $i++) {
+            $single_isn =  $number[$i];
+            $single_isn90 = $number90[$i];
+            $query->orWhere(
+                function ($semiquery) use ($single_isn, $single_isn90) {
+                    $semiquery->where('料號', '=', $single_isn)
+                        ->where('料號90', '=', $single_isn90)
+                        ->whereNotNull('SXB單號');
+                } // function
+            );
+        } //for
+
         try {
+            $PR_already_sent = $query->get();
+
+            if (count($PR_already_sent) > 0) {
+                return \Response::json(['PR_ALREADY' => json_encode($PR_already_sent)], 420 /* Status code here default is 200 ok*/);
+            } // if
+
             $res_arr_values = array();
             for ($i = 0; $i < $data_length; $i++) {
                 $temp = array(
@@ -157,6 +208,21 @@ class MonthlyPRController extends Controller
         $total_price2 = json_decode($request->input('total_price2'));
         $MOQ = json_decode($request->input('MOQ'));
         $nonMPS_PN_Array = json_decode($request->input('nonMPS_PN_Array'));
+        $MPS_90PN_Array = json_decode($request->input('MPS_90PN_Array'));
+        $MPS_PN_Array = json_decode($request->input('MPS_PN_Array'));
+
+        $query = \DB::table('MPS');
+        for ($i = 0; $i < count($MPS_90PN_Array); $i++) {
+            $single_isn =  $MPS_PN_Array[$i];
+            $single_isn90 = $MPS_90PN_Array[$i];
+            $query->orWhere(
+                function ($semiquery) use ($single_isn, $single_isn90) {
+                    $semiquery->where('料號', '=', $single_isn)
+                        ->where('料號90', '=', $single_isn90)
+                        ->whereNull('SXB單號');
+                } // function
+            );
+        } //for
 
         $count = count(json_decode($request->input('PN')));
         $now = Carbon::now();
@@ -206,6 +272,8 @@ class MonthlyPRController extends Controller
                 ->whereIn('料號', $nonMPS_PN_Array)
                 ->update(['SXB單號' => $SXB_serial_number]);
 
+            $result_MPS = $query->update(['SXB單號' => $SXB_serial_number]);
+            // dd($result_MPS); // test
             \DB::commit();
             return \Response::json(['record' => $record] /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
@@ -337,6 +405,7 @@ class MonthlyPRController extends Controller
         $dbName = \DB::connection()->getDatabaseName(); // test
 
         $results = \DB::table('MPS')
+            ->whereNull('SXB單號')
             ->get();
 
         return \Response::json(['data' => $results, "dbName" => $dbName]/* Status code here default is 200 ok*/);
@@ -381,14 +450,17 @@ class MonthlyPRController extends Controller
         // ->where('月請購_單耗.狀態', '=', "已完成")
         // ->get();
         // dd($temp); // test
+        // ---------------------- test ----------------------
 
         $datas = $temp
             ->leftJoinSub($currentStockByPN, 'sum_stock', '月請購_單耗.料號', '=', 'sum_stock.料號')
             ->leftJoinSub($inTransit, 'shipping', '月請購_單耗.料號', '=', 'shipping.料號')
             ->select('月請購_單耗.*', 'MPS.*', 'consumptive_material.*', 'sum_stock.total_stock', 'shipping.in_transit')
             ->where('月請購_單耗.狀態', '=', "已完成")
+            ->whereNull('MPS.SXB單號')
             ->get();
 
+        // dd($datas); // test
         return \Response::json(['data' => $datas, "dbName" => $dbName]/* Status code here default is 200 ok*/);
     } // showBuylist
 
@@ -575,7 +647,7 @@ class MonthlyPRController extends Controller
         $worksheet->getStyle('A2' . ':' . 'M' . $i)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
         // $worksheet->setCellValue(("K" . $i), ("=SUM(K3:K" . ($i - 1) . ")"));
-        $worksheet->setCellValue(("L" . $i), $total_USD);
+        $worksheet->setCellValue(("L" . $i), strval(number_format($total_USD, 2)));
 
         $worksheet->setCellValue(("A" . $i + 2), "核准:");
         $worksheet->setCellValue(("D" . $i + 2), "審核:");
@@ -658,6 +730,7 @@ class MonthlyPRController extends Controller
             return \Response::json(['deleted_rows_count' => $result]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             \DB::rollback();
+            dd($e);
             return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
         } //catch
     } // destroyMPS
@@ -694,6 +767,10 @@ class MonthlyPRController extends Controller
             \DB::beginTransaction();
 
             \DB::table('非月請購')
+                ->where('SXB單號', $sxb)
+                ->update(['SXB單號' => null]);
+
+            \DB::table('MPS')
                 ->where('SXB單號', $sxb)
                 ->update(['SXB單號' => null]);
 
@@ -743,6 +820,10 @@ class MonthlyPRController extends Controller
             } // for
 
             \DB::table('非月請購')
+                ->where('SXB單號', $sxb)
+                ->delete();
+
+            \DB::table('MPS')
                 ->where('SXB單號', $sxb)
                 ->delete();
 
