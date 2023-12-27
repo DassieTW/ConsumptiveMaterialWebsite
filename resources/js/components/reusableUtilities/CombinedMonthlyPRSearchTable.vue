@@ -198,7 +198,7 @@ export default defineComponent({
                 { origin: "A1" });
 
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.stock"));
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.PR"));
             XLSX.writeFile(workbook,
                 app.appContext.config.globalProperties.$t(
                     "monthlyPRpageLang.PR"

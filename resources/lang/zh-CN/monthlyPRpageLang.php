@@ -36,7 +36,7 @@ return [
     'unit' => '单位',
     'buyamount1' => '请购数量',
     'sxb' => 'SXB单号',
-    'entersxb' => '请输入SXB单号',
+    'entersxb' => '请输入单号',
     'applydate' => '申请日期',
     'srm' => 'SRM单号',
     'buyamount' => '本次请购数量',

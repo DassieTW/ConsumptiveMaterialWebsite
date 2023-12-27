@@ -187,7 +187,7 @@ export default defineComponent({
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.stock"));
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("templateWords.monthly"));
             XLSX.writeFile(workbook,
                 app.appContext.config.globalProperties.$t(
                     "templateWords.monthly"

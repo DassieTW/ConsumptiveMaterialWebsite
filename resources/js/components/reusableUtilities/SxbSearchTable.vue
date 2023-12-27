@@ -1,11 +1,19 @@
 <template>
-    <div class="row" style="text-align: left">
-        <div class="col col-auto">
-            <label for="sxbInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+    <div class="row justify-content-between">
+        <div class="row col col-auto">
+            <div class="col col-auto">
+                <label for="sxbInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            </div>
+            <div class="col col-auto p-0 m-0">
+                <input id="sxbInput" class="text-center form-control form-control-lg"
+                    v-bind:placeholder="$t('monthlyPRpageLang.entersxb')" v-model="searchTerm" />
+            </div>
         </div>
-        <div class="col col-3 p-0 m-0">
-            <input id="sxbInput" class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('monthlyPRpageLang.entersxb')" v-model="searchTerm" />
+        <div class="col col-auto">
+            <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick('All')">
+                <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
+            </button>
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
@@ -45,13 +53,21 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row" style="text-align: left">
-                        <div class="col col-auto">
-                            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+                    <div class="row justify-content-between">
+                        <div class="row col col-auto">
+                            <div class="col col-auto">
+                                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+                            </div>
+                            <div class="col col-auto p-0 m-0">
+                                <input id="pnInput" class="text-center form-control form-control-lg"
+                                    v-bind:placeholder="$t('monthlyPRpageLang.enter90isn')" v-model="searchTerm2" />
+                            </div>
                         </div>
-                        <div class="col col-3 p-0 m-0">
-                            <input id="pnInput" class="text-center form-control form-control-lg"
-                                v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm2" />
+                        <div class="col col-auto">
+                            <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick(modalTitle)">
+                                <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="w-100" style="height: 1ch"></div>
@@ -83,6 +99,7 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
+import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useSxbSearch from "../../composables/SxbSearch.ts";
 export default defineComponent({
@@ -97,6 +114,8 @@ export default defineComponent({
         const searchTerm2 = ref(""); // Search text for modal table
         const modalTitle = ref("");
         let showFooter = ref(false);
+        let AllRecords = [];
+
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
@@ -118,6 +137,66 @@ export default defineComponent({
                 resolve();
             });
         } // triggerModal
+
+        const OutputExcelClick = async (output_range) => {
+            await triggerModal();
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            if (output_range === 'All') {
+                let rows = Array();
+                for (let i = 0; i < AllRecords.length; i++) {
+                    let tempObj = new Object;
+                    tempObj.單號 = AllRecords[i].SXB單號;
+                    tempObj.料號 = AllRecords[i].料號;
+                    tempObj.品名 = AllRecords[i].品名;
+                    tempObj.MOQ = AllRecords[i].MOQ;
+                    tempObj.本次請購數量 = AllRecords[i].本次請購數量;
+                    tempObj.總價 = parseFloat(AllRecords[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + AllRecords[i].幣別;
+                    tempObj.請購時間 = AllRecords[i].請購時間;
+
+                    rows.push(tempObj);
+                } // for
+
+                const worksheet = XLSX.utils.json_to_sheet(rows);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'ALL');
+                XLSX.writeFile(workbook,
+                    app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.SXB_search"
+                    ) + "(ALL)_" + today + ".xlsx", { compression: true });
+            } else {
+                let rows = Array();
+                for (let i = 0; i < data2.length; i++) {
+                    let tempObj = new Object;
+                    tempObj.單號 = data2[i].SXB單號;
+                    tempObj.料號 = data2[i].料號;
+                    tempObj.品名 = data2[i].品名;
+                    tempObj.MOQ = data2[i].MOQ;
+                    tempObj.本次請購數量 = data2[i].本次請購數量;
+                    tempObj.總價 = parseFloat(data2[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + data2[i].幣別;
+                    tempObj.請購時間 = data2[i].請購時間;
+
+                    rows.push(tempObj);
+                } // for
+
+                const worksheet = XLSX.utils.json_to_sheet(rows);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, data2[0].SXB單號);
+                XLSX.writeFile(workbook,
+                    app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.SXB_search"
+                    ) + "(" + data2[0].SXB單號 + ")_" + today + ".xlsx", { compression: true });
+            } // if else
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
 
         const openSXBDetails = (SXB) => {
             // console.log("clicked!"); // test
@@ -237,7 +316,6 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // sxb_approve
 
-        let AllRecords = [];
         watch(mats, async () => {
             await triggerModal();
 
@@ -276,7 +354,7 @@ export default defineComponent({
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.sxb"
-                    ),
+                    ).replace('SXB', '').replace(' ', ''),
                     field: "SXB單號",
                     width: "14ch",
                     sortable: true,
@@ -578,6 +656,7 @@ export default defineComponent({
             openSXBDetails,
             sxb_approve,
             sxb_reject,
+            OutputExcelClick,
         };
     }, // setup
 });
