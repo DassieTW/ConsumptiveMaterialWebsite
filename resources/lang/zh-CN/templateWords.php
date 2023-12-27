@@ -44,7 +44,7 @@ return [
     'standUpdate' => '站位人力(查询与修改)',
     'importNonMonthlyData' => '汇入非月请购资料',
     'importMonthlyData' => '汇入月请购资料',
-    'on_the_way_search' => '在途数量(查询)',
+    'on_the_way_search' => '在途数量',
 
     //date picker lang
     'all_history_records' => '所有纪录',

@@ -262,7 +262,7 @@ export default defineComponent({
             await getTransit(temp_isn); // get existing in-transit data
             let existing = JSON.parse(inTransit.value).data;
             // console.log(existing); // test
-
+            // return ; // test
             let isn = [];
             let amount = [];
             for (let i = 0; i < data2.length; i++) {

@@ -165,10 +165,11 @@ export default defineComponent({
                     reader.onload = async (e) => {
                         /* Parse data */
                         const bstr = e.target.result;
-                        const wb = XLSX.read(bstr, { type: 'binary' });
+                        const wb = XLSX.read(bstr, { type: 'binary', WTF: true });
                         /* Get first worksheet */
                         const wsname = wb.SheetNames[0];
                         const ws = wb.Sheets[wsname];
+                        // console.log(ws); // test
                         /* Convert array of arrays */
                         input_data = XLSX.utils.sheet_to_json(ws, { header: 1 });
                         // console.log(input_data); // data[row#][col#]  test
@@ -188,11 +189,17 @@ export default defineComponent({
                                     input_data.splice(i, 1); // remove the empty row
                                     i = i - 1;
                                 } // else
+
+                                if (input_data[i][3] === null || input_data[i][3] === undefined) {
+                                    input_data[i][3] = input_data[i][1] + input_data[i][2];
+                                } // if
                             } // for
 
                             // console.log(tempArr); // test
                             await triggerModal();
                             await validateISN(tempArr);
+                            console.log(input_data); // test
+
                         } // else
                     };
 
@@ -423,7 +430,7 @@ export default defineComponent({
             for (let i = 1; i < input_data.length; i++) {
                 try {
                     singleEntry.料號 = input_data[i][0].toString().trim();
-
+                    // console.log(input_data); //test
                     if (input_data[i][1] == undefined || input_data[i][1].toString().trim() == "") {
                         isInvalid.value = true;
                         validation_err_msg.value =

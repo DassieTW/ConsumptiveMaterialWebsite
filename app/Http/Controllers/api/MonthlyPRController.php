@@ -321,31 +321,29 @@ class MonthlyPRController extends Controller
         return \Response::json(['data' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showNonMonthly
 
-    public function showTransit(Request $request) // get 在途量
+    public function showInTransit(Request $request) // get 在途量
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
 
         $transitisn = json_decode($request->input('transitisn'));
-        // $transitsend = json_decode($request->input('transitsend'));
 
         //dd($transitsend);
         // dd($send);
         $datas = [];
 
-        $test = \DB::table('在途量')->select('料號', \DB::raw('SUM(請購數量) as 請購數量'))
-            ->groupBy('料號');
+        $test = \DB::table('在途量');
 
         $datas = \DB::table('consumptive_material')
             ->joinSub($test, '在途量', function ($join) {
                 $join->on('在途量.料號', '=', 'consumptive_material.料號');
-            })->where('consumptive_material.料號', 'like', $transitisn . '%')
+            })
             ->where('請購數量', '>', 0)->get();
 
         //dd($datas);
-        return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
-    } // showTransit
+        return \Response::json(['data' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
+    } // showInTransit
 
     public function showSXB(Request $request) // get SXB
     {
@@ -464,19 +462,7 @@ class MonthlyPRController extends Controller
         return \Response::json(['data' => $datas, "dbName" => $dbName]/* Status code here default is 200 ok*/);
     } // showBuylist
 
-    public function showInTransit(Request $request) // get 在途量
-    {
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
-        \DB::purge(env("DB_CONNECTION"));
-        $dbName = \DB::connection()->getDatabaseName(); // test
 
-        $isn_array = json_decode($request->input('isn'));
-        $results = \DB::table('在途量')
-            ->whereIn('料號', $isn_array)
-            ->get();
-
-        return \Response::json(['data' => $results, "dbName" => $dbName]/* Status code here default is 200 ok*/);
-    } // showMPS
     /**
      * Update the specified resource in storage.
      *

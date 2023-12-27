@@ -16,8 +16,6 @@ use App\Models\在途量;
 */
 
 // get the info
-Route::post('transit', 'api\MonthlyPRController@showTransit');
-
 Route::post('/sxb', 'api\MonthlyPRController@showSXB');
 
 Route::post('/notmonth', 'api\MonthlyPRController@showNonMonthly');

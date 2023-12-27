@@ -100,7 +100,7 @@ export default function useSxbSearch() {
         try {
             let response = await axios.post('/api/month/getTransit', {
                 DB: getDB.data,
-                isn: JSON.stringify(isn),
+                transitisn: JSON.stringify(isn),
             });
 
             // console.log(response.data); // test

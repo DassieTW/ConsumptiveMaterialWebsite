@@ -16,17 +16,9 @@ export default function useTransitSearch() {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
         // let transitclient = sessionStorage.getItem("transitclient");
-        let transitisn = sessionStorage.getItem("transitisn");
-        let transitsend = sessionStorage.getItem("transitsend");
-        // let gettest = await axios.post('/basic/materialsearch');
-        // console.log(gettest); // test
-
         try {
-            let response = await axios.post('/api/month/transit', {
+            let response = await axios.post('/api/month/getTransit', {
                 DB: getDB.data,
-                // transitclient: transitclient,
-                transitisn: transitisn,
-                transitsend: transitsend,
             });
 
             mats.value = JSON.stringify(response.data);

@@ -1251,12 +1251,11 @@ tr {
   border-right: 1px solid #454d55;
   left: 0;
   top: 0;
-  width: 103%;
+  width: 102%;
   height: 102%;
 }
 
-.fixed-first-column tr td:first-child::before,
-.fixed-first-column tr td:nth-child(2)::before {
+.fixed-first-column tr td:first-child::before {
   content: "";
   position: absolute;
   border-right: 1px solid #dee2e6;

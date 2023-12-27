@@ -1,19 +1,35 @@
 <template>
-    <div class="row" style="text-align: left">
-        <div class="col col-auto">
-            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+    <div class="row justify-content-between">
+        <div class="row col col-auto">
+            <div class="col col-auto">
+                <label for="sxbInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            </div>
+            <div class="col col-auto p-0 m-0">
+                <input id="sxbInput" class="text-center form-control form-control-lg"
+                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn')" v-model="searchTerm" />
+            </div>
         </div>
-        <div class="col col-3 p-0 m-0">
-            <input id="pnInput" class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+        <div class="col col-auto">
+            <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick('All')">
+                <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
+            </button>
         </div>
     </div>
-    <div class="w-100" style="height: 1ch"></div>
-    <!-- </div>breaks cols to a new line-->
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
+    <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
+    <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="false" :isStaticMode="true" :isSlotMode="true"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-        :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
-        @return-checked-rows="updateCheckedRows"></table-lite>
+        :page-options="table.pageOptions" :sortable="table.sortable" @return-checked-rows="updateCheckedRows"
+        @row-input="rowUserInput">
+        <template v-slot:SXB單號="{ row, key }">
+            <div class="col col-auto align-items-center m-0 p-0">
+                <span class="m-0 p-0" style="width: 14ch;">{{ row.SXB單號 }}</span>
+                <button @click="openSXBDetails(row.SXB單號)" type="button" data-bs-toggle="modal"
+                    data-bs-target="#detailTable" class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0"
+                    style="border-radius: 20px;" :id="'sxb' + row.id" :name="'sxb' + key">More</button>
+            </div>
+        </template>
+    </table-lite>
 </template>
 
 <script>
@@ -24,17 +40,14 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
+import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useTransitSearch from "../../composables/TransitSearch.ts";
+import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
 export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, getMats } = useTransitSearch(); // axios get the mats data
-
-        onBeforeMount(getMats);
-
-        const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
@@ -42,22 +55,165 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        // pour the data in
-        const data = reactive([]);
-        // const senders = reactive([]); // access the value by senders[0], senders[1] ...
+        const { mats, getMats } = useTransitSearch(); // axios get the mats data
+        const { queryResult, validateISN } = useCommonlyUsedFunctions();
 
-        watch(mats, () => {
-            console.log(JSON.parse(mats.value)); // test
-            let allRowsObj = JSON.parse(mats.value);
-            //console.log(allRowsObj.datas.length);
-            for (let i = 0; i < allRowsObj.datas.length; i++) {
-                allRowsObj.datas[i].請購數量 = parseInt(
-                    allRowsObj.datas[i].請購數量
-                );
-                data.push(allRowsObj.datas[i]);
+        onBeforeMount(getMats);
+
+        const triggerSearchUpdate = async () => {
+            await getMats_nonMonthly();
+
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } // triggerSearchUpdate
+
+        let isInvalid_DB = ref(false); // add to DB validation
+        let validation_err_msg = ref("");
+        const file = ref();
+        let checkedRows = [];
+
+        const deleteRow = async () => {
+            let isn = [];
+
+            if (checkedRows.length == 0) {
+                notyf.open({
+                    type: "warning",
+                    message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                return;
+            } // if
+
+            for (let i = 0; i < checkedRows.length; i++) {
+                isn.push(checkedRows[i].料號);
             } // for
 
-            document.getElementById("QueryFlag").click();
+            await triggerModal();
+            let result = await deleteNonMPS(isn);
+            if (result === "success") {
+                for (let i = 0; i < checkedRows.length; i++) {
+                    let indexOfObject = data.findIndex(object => {
+                        return parseInt(object.id) === parseInt(checkedRows[i].料號);
+                    });
+
+                    if (indexOfObject != -1) {
+                        data.splice(indexOfObject, 1);
+                    } // if
+                } // for
+
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                document.querySelectorAll('.vtl-tbody-checkbox').forEach(el => el.checked = false);
+
+                if (document.querySelector(".vtl-thead-checkbox").checked) {
+                    document.querySelector(".vtl-thead-checkbox").click();
+                } // if
+                checkedRows = [];
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // deleteRow
+
+        const OutputExcelClick = () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = Array();
+            for (let i = 0; i < data.length; i++) {
+                let tempObj = new Object;
+                tempObj.料號 = data[i].料號;
+                tempObj.請購數量 = data[i].請購數量;
+                tempObj.說明 = data[i].說明;
+                rows.push(tempObj);
+            } // for
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("templateWords.nonmonthly"));
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "templateWords.nonmonthly"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
+
+        const searchTerm = ref(""); // Search text
+
+        // pour the data in
+        const data = reactive([]);
+
+        const triggerModal = async () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        } // triggerModal
+
+        watch(mats, async () => {
+            await triggerModal();
+            data.splice(0);
+            if (mats.value == "") {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                return;
+            } // if
+
+            let allRowsObj = JSON.parse(mats.value);
+            // console.log(allRowsObj.data); // test
+            for (let i = 0; i < allRowsObj.data.length; i++) {
+                allRowsObj.data[i].id = i;
+                data.push(allRowsObj.data[i]);
+            } // for
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
         }); // watch for data change
 
         // Table config
@@ -73,14 +229,14 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="number' +
-                            i +
-                            '" name="number' +
-                            i +
+                            '<input type="hidden" id="isn' +
+                            row.id +
+                            '" name="isn' +
+                            row.id +
                             '" value="' +
                             row.料號 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.料號 +
                             "</div>"
@@ -112,29 +268,6 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.unit"
-                    ),
-                    field: "單位",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="position' +
-                            i +
-                            '" name="position' +
-                            i +
-                            '" value="' +
-                            row.單位 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.單位 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.buyamount1"
                     ),
                     field: "請購數量",
@@ -151,7 +284,55 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.請購數量 +
+                            parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) + " <small>" + row.單位 + "</small>" +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.transit_reviser"
+                    ),
+                    field: "修改人員",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.修改人員 === null || row.修改人員 === undefined) row.修改人員 = "";
+                        return (
+                            '<input type="hidden" id="reviser' +
+                            i +
+                            '" name="reviser' +
+                            i +
+                            '" value="' +
+                            row.修改人員 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.修改人員 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.description"
+                    ),
+                    field: "說明",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.說明 === null || row.說明 === undefined) row.說明 = "";
+                        return (
+                            '<input type="hidden" id="remark' +
+                            i +
+                            '" name="remark' +
+                            i +
+                            '" value="' +
+                            row.說明 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.說明 +
                             "</div>"
                         );
                     },
@@ -219,12 +400,18 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            console.log(rowsKey);
+            // console.log(rowsKey); // test
+            checkedRows = rowsKey;
         };
+
         return {
+            flip: ref(false),
+            isInvalid_DB,
+            validation_err_msg,
             searchTerm,
             table,
             updateCheckedRows,
+            OutputExcelClick,
         };
     }, // setup
 });
