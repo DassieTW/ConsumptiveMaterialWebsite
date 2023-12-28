@@ -543,6 +543,56 @@ class MonthlyPRController extends Controller
 
     } // update_UnitConsumption
 
+    //更新在途量
+    public function update_InTransit(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $database = \DB::connection()->getDatabaseName(); // test
+
+        $isn = json_decode($request->input('isn'));
+        $qty = json_decode($request->input('qty'));
+        $descr = json_decode($request->input('descr'));
+        $username = $request->input('username');
+        $record = 0;
+        
+        try {
+            $res_arr_values = array();
+            for ($i = 0; $i < count($isn); $i++) {
+                $temp = array(
+                    "料號" => $isn[$i],
+                    '請購數量' => floatval($qty[$i]),
+                    '說明' => strval($descr[$i]),
+                    '最後更新時間' => Carbon::now(),
+                    '修改人員' => $username
+                );
+
+                $res_arr_values[] = $temp;
+            } //for
+
+            \DB::beginTransaction();
+
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 200, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('在途量')->upsert(
+                    $whole_load[$i],
+                    ['料號'],
+                    ['請購數量', '說明', '最後更新時間', '修改人員']
+                );
+
+                $record = $record + $temp_record;
+            } // for
+
+            \DB::commit();
+
+            return \Response::json(['record' => $record]/* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+        } //try - catch
+    } // update_InTransit
+
     //寄出請購單
     public static function sendPRMail(Request $request)
     {

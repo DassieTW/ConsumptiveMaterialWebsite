@@ -41,7 +41,7 @@ return [
     'noclient' => 'Client does not exist',
     'total' => 'Total',
     'record' => 'Record',
-    'updatetime' => 'Last update time',
+    'updatetime' => 'Updated On',
     'pick' => 'Pick Material',
     'picklist' => 'Pick Material List',
     'pickrecord' => 'Pick Material Record',

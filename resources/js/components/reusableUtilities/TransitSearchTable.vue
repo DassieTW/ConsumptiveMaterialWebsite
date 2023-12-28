@@ -19,17 +19,64 @@
     <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
     <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="false" :isStaticMode="true" :isSlotMode="true"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-        :page-options="table.pageOptions" :sortable="table.sortable" @return-checked-rows="updateCheckedRows"
-        @row-input="rowUserInput">
-        <template v-slot:SXB單號="{ row, key }">
+        :page-options="table.pageOptions" :sortable="table.sortable" @return-checked-rows="updateCheckedRows">
+        <template v-slot:請購數量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
-                <span class="m-0 p-0" style="width: 14ch;">{{ row.SXB單號 }}</span>
-                <button @click="openSXBDetails(row.SXB單號)" type="button" data-bs-toggle="modal"
-                    data-bs-target="#detailTable" class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0"
-                    style="border-radius: 20px;" :id="'sxb' + row.id" :name="'sxb' + key">More</button>
+                <span class="m-0 p-0" style="width: 12ch;">
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位 }}</small>
+                </span>
+                <button @click="openQtyDetails(row)" type="button" data-bs-toggle="modal" data-bs-target="#detailTable"
+                    class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0" style="border-radius: 20px;"
+                    :id="'sxb' + row.id" :name="'sxb' + key">Edit</button>
             </div>
         </template>
     </table-lite>
+
+    <!-- Modal -->
+    <div class="modal fade" id="detailTable" tabindex="-1" aria-labelledby="detailTable" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <h1 class="col col-auto modal-title m-0 p-0 fs-4">
+                        {{ modalTitle }}
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="inputQty" class="form-label">{{ $t("monthlyPRpageLang.on_the_way_search") }}</label>
+                            <div class="input-group">
+                                <input v-model="inputQty" type="number" :class="{ 'is-invalid': isInvalid }"
+                                    class="form-control" id="inputQty" :placeholder="originalQty" min="0">
+                                <div class="input-group-text">{{ unit }}</div>
+                            </div>
+                            <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
+                                <strong>{{ validation_err_msg }}</strong>
+                            </span>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="inputDescr" class="form-label">{{ $t("monthlyPRpageLang.description") }}</label>
+                            <input v-model="inputDescr" type="text" :class="{ 'is-invalid': isInvalid2 }"
+                                class="form-control" id="inputDescr">
+                            <span v-if="isInvalid2" class="invalid-feedback d-block" role="alert">
+                                <strong>{{ validation_err_msg2 }}</strong>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        {{ $t('templateWords.cancel') }}
+                    </button>
+                    <button @click="sxb_approve" type="button" class="btn btn-lg btn-success" style="border-radius: 5px;">
+                        {{ $t('checkInvLang.edit') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -55,60 +102,115 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, getMats } = useTransitSearch(); // axios get the mats data
-        const { queryResult, validateISN } = useCommonlyUsedFunctions();
+        const { mats, getMats, updateInTransit } = useTransitSearch(); // axios get the mats data
 
         onBeforeMount(getMats);
 
-        const triggerSearchUpdate = async () => {
-            await getMats_nonMonthly();
-
-            return new Promise((resolve, reject) => {
-                resolve("success");
-            });
-        } // triggerSearchUpdate
-
-        let isInvalid_DB = ref(false); // add to DB validation
+        let isInvalid = ref(false); // edit to DB validation for Qty
+        let isInvalid2 = ref(false); // edit to DB validation for descr
         let validation_err_msg = ref("");
+        let validation_err_msg2 = ref("");
+        const modalTitle = ref("");
+        const originalQty = ref("");
+        const unit = ref("");
+        const inputQty = ref("");
+        const inputDescr = ref("");
         const file = ref();
         let checkedRows = [];
+        const searchTerm = ref(""); // Search text
 
-        const deleteRow = async () => {
-            let isn = [];
+        // pour the data in
+        const data = reactive([]);
 
-            if (checkedRows.length == 0) {
-                notyf.open({
-                    type: "warning",
-                    message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
+        const triggerModal = async () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
 
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        } // triggerModal
+
+        const OutputExcelClick = async () => {
+            await triggerModal();
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = Array();
+            for (let i = 0; i < data.length; i++) {
+                let tempObj = new Object;
+                tempObj.料號 = data[i].料號;
+                tempObj.在途數量 = data[i].請購數量;
+                tempObj.說明 = data[i].說明;
+                tempObj.修改人員 = data[i].修改人員;
+                tempObj.最後更新時間 = data[i].最後更新時間;
+
+                rows.push(tempObj);
+            } // for
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.on_the_way_search"));
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "monthlyPRpageLang.on_the_way_search"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
+
+        const openQtyDetails = (row) => {
+            // console.log("clicked!"); // test
+            modalTitle.value = row.料號;
+            unit.value = row.單位;
+            originalQty.value = parseInt(row.請購數量).toLocaleString('en', { useGrouping: true });
+        } // openSXBDetails
+
+        const sxb_approve = async () => {
+            isInvalid.value = false;
+            isInvalid2.value = false;
+            if (inputQty.value.toString().trim() === "" || inputQty.value === null || inputQty.value === undefined) {
+                validation_err_msg.value =
+                    app.appContext.config.globalProperties.$t(
+                        "validation.required"
+                    );
+
+                isInvalid.value = true;
+            } // if
+
+            if (inputDescr.value.trim() === "" || inputDescr.value === null || inputDescr.value === undefined) {
+                validation_err_msg2.value =
+                    app.appContext.config.globalProperties.$t(
+                        "validation.required"
+                    );
+
+                isInvalid2.value = true;
+            } // if
+
+            // console.log(inputQty.value); // test
+            // console.log(inputDescr.value); // test
+
+            if (isInvalid.value === true || isInvalid2.value === true) {
                 return;
             } // if
 
-            for (let i = 0; i < checkedRows.length; i++) {
-                isn.push(checkedRows[i].料號);
-            } // for
-
             await triggerModal();
-            let result = await deleteNonMPS(isn);
+
+            let isnArr = [modalTitle.value];
+            let qtyArr = [inputQty.value];
+            let descrArr = [inputDescr.value];
+            let result = await updateInTransit(isnArr, qtyArr, descrArr);
+            await getMats();
+
             if (result === "success") {
-                for (let i = 0; i < checkedRows.length; i++) {
-                    let indexOfObject = data.findIndex(object => {
-                        return parseInt(object.id) === parseInt(checkedRows[i].料號);
-                    });
-
-                    if (indexOfObject != -1) {
-                        data.splice(indexOfObject, 1);
-                    } // if
-                } // for
-
                 notyf.open({
                     type: "success",
                     message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
@@ -120,13 +222,6 @@ export default defineComponent({
                         y: "bottom",
                     },
                 });
-
-                document.querySelectorAll('.vtl-tbody-checkbox').forEach(el => el.checked = false);
-
-                if (document.querySelector(".vtl-thead-checkbox").checked) {
-                    document.querySelector(".vtl-thead-checkbox").click();
-                } // if
-                checkedRows = [];
             } // if
             else {
                 notyf.open({
@@ -144,57 +239,7 @@ export default defineComponent({
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
-        } // deleteRow
-
-        const OutputExcelClick = () => {
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-
-            // get today's date for filename
-            let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            let yyyy = today.getFullYear();
-            today = yyyy + "_" + mm + '_' + dd;
-
-            let rows = Array();
-            for (let i = 0; i < data.length; i++) {
-                let tempObj = new Object;
-                tempObj.料號 = data[i].料號;
-                tempObj.請購數量 = data[i].請購數量;
-                tempObj.說明 = data[i].說明;
-                rows.push(tempObj);
-            } // for
-
-            const worksheet = XLSX.utils.json_to_sheet(rows);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("templateWords.nonmonthly"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "templateWords.nonmonthly"
-                ) + "_" + today + ".xlsx", { compression: true });
-
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
-        } // OutputExcelClick
-
-        const searchTerm = ref(""); // Search text
-
-        // pour the data in
-        const data = reactive([]);
-
-        const triggerModal = async () => {
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
-            });
-
-            return new Promise((resolve, reject) => {
-                resolve();
-            });
-        } // triggerModal
+        } // sxb_approve
 
         watch(mats, async () => {
             await triggerModal();
@@ -273,21 +318,6 @@ export default defineComponent({
                     field: "請購數量",
                     width: "12ch",
                     sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="buyamount' +
-                            i +
-                            '" name="buyamount' +
-                            i +
-                            '" value="' +
-                            row.請購數量 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) + " <small>" + row.單位 + "</small>" +
-                            "</div>"
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
@@ -297,7 +327,7 @@ export default defineComponent({
                     width: "10ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.修改人員 === null || row.修改人員 === undefined) row.修改人員 = "";
+                        if (row.修改人員 === null || row.修改人員 === undefined) row.修改人員 = "N/A";
                         return (
                             '<input type="hidden" id="reviser' +
                             i +
@@ -321,7 +351,7 @@ export default defineComponent({
                     width: "10ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.說明 === null || row.說明 === undefined) row.說明 = "";
+                        if (row.說明 === null || row.說明 === undefined) row.說明 = "N/A";
                         return (
                             '<input type="hidden" id="remark' +
                             i +
@@ -333,6 +363,30 @@ export default defineComponent({
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.說明 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.updatetime"
+                    ),
+                    field: "最後更新時間",
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.最後更新時間 === null || row.最後更新時間 === undefined) row.最後更新時間 = "N/A";
+                        return (
+                            '<input type="hidden" id="updatetime' +
+                            i +
+                            '" name="updatetime' +
+                            i +
+                            '" value="' +
+                            row.最後更新時間 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            row.最後更新時間 +
                             "</div>"
                         );
                     },
@@ -405,13 +459,21 @@ export default defineComponent({
         };
 
         return {
-            flip: ref(false),
-            isInvalid_DB,
+            isInvalid,
+            isInvalid2,
             validation_err_msg,
+            validation_err_msg2,
             searchTerm,
+            modalTitle,
+            unit,
+            originalQty,
+            inputQty,
+            inputDescr,
             table,
             updateCheckedRows,
             OutputExcelClick,
+            openQtyDetails,
+            sxb_approve,
         };
     }, // setup
 });

@@ -39,7 +39,5 @@ Route::post('/submit_buylist', 'api\MonthlyPRController@storeBuylist');
 Route::post('/approveSXB', 'api\MonthlyPRController@approveSXB');
 Route::post('/rejectSXB', 'api\MonthlyPRController@rejectSXB');
 Route::post('/getTransit', 'api\MonthlyPRController@showInTransit');
-
-
-
+Route::post('/updateTransit', 'api\MonthlyPRController@update_InTransit');
 

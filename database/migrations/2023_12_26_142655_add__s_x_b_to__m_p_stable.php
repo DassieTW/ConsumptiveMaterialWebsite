@@ -26,7 +26,7 @@ class AddSXBToMPStable extends Migration
     public function down()
     {
         Schema::table('MPS', function (Blueprint $table) {
-            $table->string('SXB單號', 45)->nullable(true);
+            $table->dropColumn('SXB單號');
         });
     }
 }

@@ -22,19 +22,43 @@ export default function useTransitSearch() {
             });
 
             mats.value = JSON.stringify(response.data);
-            // console.log( JSON.parse(mats.value)); // test
+            // console.log(JSON.stringify(response.data)); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
         } catch (e) {
             console.log(e); // test
-            for (const key in e.response.data.errors) {
-                errors.value += e.response.data.errors[key][0] + '  ';
-            } // for each errors
-
-            console.log(errors.value); // test
+            return e;
         } // try catch
     } // get mats
 
+    const updateInTransit = async (isn, qty, descr) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        let username = await axios.post('/getCurrentUsername');
+        
+        try {
+            let response = await axios.post('/api/month/updateTransit', {
+                DB: getDB.data,
+                username: username.data,
+                isn: JSON.stringify(isn),
+                qty: JSON.stringify(qty),
+                descr: JSON.stringify(descr)
+            });
+
+            console.log(response.data); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // updateInTransit
+
     return {
         mats,
-        getMats
+        getMats,
+        updateInTransit
     } // return
 } // useConsumptiveMaterials

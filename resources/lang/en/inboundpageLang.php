@@ -57,7 +57,7 @@ return [
     'enteramount' => 'Please Enter Qty',
     'transferamount' => 'Transfer Qty',
     'check' => 'Check',
-    'updatetime' => 'Last update time',
+    'updatetime' => 'Updated On',
     'transiterror' => 'The receipt quantity cannot be greater than the in transit quantity',
     'delete' => 'Delete',
     'inlist' => 'Inbound list no.',
