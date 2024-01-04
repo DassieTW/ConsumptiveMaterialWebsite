@@ -230,7 +230,7 @@ Route::get('/day', function () {
             'consumptive_material.規格',
         )
         ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格',)
-        ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
+        ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>90')
         ->havingRaw('sum(inventory.現有庫存) > ?', [0])
         ->get();
 

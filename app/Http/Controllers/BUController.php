@@ -79,7 +79,7 @@ class BUController extends Controller
                     )
                     ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
                     ->havingRaw('sum(inventory.現有庫存) > ?', [0])
-                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')   // online setting
+                    ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>90')   // online setting
                     ->get();
             } // if
         } // for each
@@ -726,7 +726,7 @@ class BUController extends Controller
                         )
                         ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'consumptive_material.單位')
                         ->havingRaw('sum(inventory.現有庫存) > ?', [0])
-                        ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>30')
+                        ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>90')
                         ->where('inventory.料號', '=', $number)
                         ->get();
                 } // if

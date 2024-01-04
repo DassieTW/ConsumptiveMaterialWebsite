@@ -198,7 +198,7 @@ export default defineComponent({
                             // console.log(tempArr); // test
                             await triggerModal();
                             await validateISN(tempArr);
-                            console.log(input_data); // test
+                            // console.log(input_data); // test
 
                         } // else
                     };
@@ -426,7 +426,6 @@ export default defineComponent({
             let allRowsObj = JSON.parse(queryResult.value);
             let singleEntry = {};
 
-            // console.log(input_data); // test
             for (let i = 1; i < input_data.length; i++) {
                 try {
                     singleEntry.料號 = input_data[i][0].toString().trim();
@@ -470,7 +469,13 @@ export default defineComponent({
                     } // if
                     singleEntry.請購數量 = parseInt(input_data[i][3].toString().replace(/,/g, ''), 10);
                     // -------------------------------------------------------------------------------
-                    singleEntry.說明 = input_data[i][4].toString().trim();
+                    // console.log(input_data[i][4]); // test
+                    if (input_data[i][4] === undefined || input_data[i][4] === null) {
+                        singleEntry.說明 = "";
+                    } else {
+                        singleEntry.說明 = input_data[i][4].toString().trim();
+                    } // if else
+                    // -------------------------------------------------------------------------------
                     singleEntry.excel_row_num = i + 1;
                     if (data.length == 0) {
                         singleEntry.id = 0;
