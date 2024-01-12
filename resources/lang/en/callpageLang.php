@@ -12,10 +12,11 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'page_name' => 'Alarm system',
+    'page_name' => 'Alarm System',
     'safealert' => 'Safety Stock Alert',
     'dayalert' => 'Passive Day Alert',
-    'callsys' => 'Alarm system',
+    'diffalert' => 'Demand vs Received',
+    'callsys' => 'Alarm System',
     'client' => 'Client',
     'isn' => 'PN',
     'pName' => 'Descr.',

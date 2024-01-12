@@ -15,6 +15,7 @@ return [
     'page_name' => '报警系统',
     'safealert' => '安全库存警报',
     'dayalert' => '呆滞天数警报',
+    'diffalert' => '需求vs领用差异',
     'callsys' => '报警系统',
     'client' => '客户别',
     'isn' => '料号',

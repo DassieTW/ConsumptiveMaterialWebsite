@@ -624,6 +624,11 @@
                                                         </a>
                                                     </li>
 
+                                                    <li class="sidebar-item {{ isActiveRoute(['call/diff']) }}">
+                                                        <a class="sidebar-link" href="{{ route('call.diff') }}">
+                                                            {!! __('callpageLang.diffalert') !!}
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </li>
                                         @endcan

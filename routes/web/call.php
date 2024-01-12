@@ -247,3 +247,7 @@ Route::post('/daysubmit', [CallController::class, 'daysubmit'])->name('call.days
 Route::post('/saferemark', [CallController::class, 'saferemark'])->name('call.saferemark')->middleware('can:viewAlarm,App\Models\Inventory');
 //呆滯天數備註
 Route::post('/dayremark', [CallController::class, 'dayremark'])->name('call.dayremark')->middleware('can:viewAlarm,App\Models\Inventory');
+
+Route::get('/diff', function () {
+    return view("call.diff");
+})->name('call.diff')->middleware('can:viewAlarm,App\Models\Inventory');
