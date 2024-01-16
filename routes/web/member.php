@@ -112,7 +112,7 @@ Route::get('/username', function () {
     if (\Auth::user()->priority == 0) {
         return view('member.searchusernameok')->with(['data' => Login::cursor(), 'db_list' => config('database_list.databases')]);
     } else {
-        return view('member.searchusernameok')->with(['data' => Login::cursor()->where('priority', '>', 1)]);
+        return view('member.searchusernameok')->with(['data' => Login::cursor()->where('priority', '>', 0)]);
     } // if else
 })->name('member.username')->middleware('can:searchAndUpdateUser,App\Models\Login');
 

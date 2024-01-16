@@ -69,9 +69,15 @@
                                         name="username{{ $loop->index }}"
                                         value="{{ $data->username }}">{{ $data->username }}</td>
                                 <td>
-                                    <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch">
-                                        <option selected>{{ $data->priority }}</option>
-                                    </select>
+                                    @if ($data->priority <= 1)
+                                        <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch;" disabled>
+                                            <option selected>{{ $data->priority }}</option>
+                                        </select>
+                                    @else
+                                        <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch;">
+                                            <option selected>{{ $data->priority }}</option>
+                                        </select>
+                                    @endif
                                 </td>
                                 <td>{{ $data->姓名 }}</td>
                                 <td>{{ $data->部門 }}</td>
@@ -131,7 +137,8 @@
                             <div class="modal-body row justify-content-center">
                                 <span class="col col-auto">Are You Sure ?</span>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                <button id="imsure" class="col col-auto btn btn-outline-danger" data-bs-dismiss="modal">YES</button>
+                                <button id="imsure" class="col col-auto btn btn-outline-danger"
+                                    data-bs-dismiss="modal">YES</button>
                             </div>
                         </div>
                     </div>
