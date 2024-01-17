@@ -400,30 +400,38 @@ export default defineComponent({
             let singleEntry = {};
 
             for (let i = 1; i < input_data.length; i++) {
-                singleEntry.料號 = input_data[i][0].toString().trim();
-                singleEntry.品名 = input_data[i][1].toString().trim();
-                singleEntry.規格 = input_data[i][2].toString().trim();
-                singleEntry.單價 = parseFloat(input_data[i][3]);
-                singleEntry.幣別 = input_data[i][4].toString().trim();
-                singleEntry.單位 = input_data[i][5].toString().trim();
-                singleEntry.MPQ = parseInt(input_data[i][6]);
-                singleEntry.MOQ = parseInt(input_data[i][7]);
-                singleEntry.LT = parseFloat(input_data[i][8]);
-                singleEntry.月請購 = input_data[i][9].toString().trim();
-                singleEntry.A級資材 = input_data[i][10].toString().trim();
-                singleEntry.發料部門 = input_data[i][11].toString().trim();
-                singleEntry.安全庫存 = parseInt(input_data[i][12]);
+                if (input_data[i][0] !== undefined && input_data[i][1] !== undefined &&
+                    input_data[i][2] !== undefined && input_data[i][3] !== undefined &&
+                    input_data[i][4] !== undefined && input_data[i][5] !== undefined &&
+                    input_data[i][6] !== undefined && input_data[i][7] !== undefined &&
+                    input_data[i][8] !== undefined && input_data[i][9] !== undefined &&
+                    input_data[i][10] !== undefined && input_data[i][11] !== undefined) {
 
-                if (dispatchers.includes(singleEntry.發料部門)) {
-                    singleEntry.dispatcherError = false;
-                } else {
-                    singleEntry.dispatcherError = true;
-                } // if else
+                    singleEntry.料號 = input_data[i][0].toString().trim();
+                    singleEntry.品名 = input_data[i][1].toString().trim();
+                    singleEntry.規格 = input_data[i][2].toString().trim();
+                    singleEntry.單價 = parseFloat(input_data[i][3]);
+                    singleEntry.幣別 = input_data[i][4].toString().trim();
+                    singleEntry.單位 = input_data[i][5].toString().trim();
+                    singleEntry.MPQ = parseInt(input_data[i][6]);
+                    singleEntry.MOQ = parseInt(input_data[i][7]);
+                    singleEntry.LT = parseFloat(input_data[i][8]);
+                    singleEntry.月請購 = input_data[i][9].toString().trim();
+                    singleEntry.A級資材 = input_data[i][10].toString().trim();
+                    singleEntry.發料部門 = input_data[i][11].toString().trim();
+                    singleEntry.安全庫存 = parseInt(input_data[i][12]);
 
-                singleEntry.id = i + 1;
+                    if (dispatchers.includes(singleEntry.發料部門)) {
+                        singleEntry.dispatcherError = false;
+                    } else {
+                        singleEntry.dispatcherError = true;
+                    } // if else
 
-                data.push(singleEntry);
-                singleEntry = {};
+                    singleEntry.id = i + 1;
+
+                    data.push(singleEntry);
+                    singleEntry = {};
+                } // if
             } // for
 
             // console.log(data); // test
