@@ -37,7 +37,7 @@
                 <h3>{!! __('callpageLang.diffalert') !!}</h3>
             </div>
             <div class="card-body">
-                <demand-recieve-diff-table></demand-recieve-diff-table>
+                {{-- <demand-recieve-diff-table></demand-recieve-diff-table> --}}
             </div>
         </div>
     </div>

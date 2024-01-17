@@ -69,8 +69,9 @@
                                         name="username{{ $loop->index }}"
                                         value="{{ $data->username }}">{{ $data->username }}</td>
                                 <td>
-                                    @if ($data->priority <= 1)
-                                        <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch;" disabled>
+                                    @if ($data->priority <= 1 && !isset($db_list))
+                                        <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch;"
+                                            disabled>
                                             <option selected>{{ $data->priority }}</option>
                                         </select>
                                     @else
