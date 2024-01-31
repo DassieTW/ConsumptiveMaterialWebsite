@@ -36,21 +36,36 @@ class MonthlyPRController extends Controller
         $number = json_decode($request->input('number'));
         $number90 = json_decode($request->input('number90'));
         $data_length = count($number90);
-        $query = \DB::table('月請購_單耗');
-        for ($i = 0; $i < $data_length; $i++) {
-            $single_isn =  $number[$i];
-            $single_isn90 = $number90[$i];
-            $query->orWhere(
-                function ($semiquery) use ($single_isn, $single_isn90) {
-                    $semiquery->where('料號', '=', $single_isn)
-                        ->where('料號90', '=', $single_isn90);
-                } // function
-            );
-        } //for
-
+        $mergedResult = "";
+        // chunk the parameter array first so it doesnt exceed the MSSQL parameters hard limit
+        $whole_load_of_number = array_chunk($number, 100, false);
+        $whole_load_of_number90 = array_chunk($number90, 100, false);
         try {
-            $result = $query->get(['料號', '料號90', '單耗', '狀態']);
-            return \Response::json(['data' => $result], 200 /* Status code here default is 200 ok*/);
+            for ($i = 0; $i < count($whole_load_of_number); $i++) {
+                // loop thru each chunk
+                $query = \DB::table('月請購_單耗');
+                for ($j = 0; $j < count($whole_load_of_number[$i]); $j++) {
+                    $single_isn =  $whole_load_of_number[$i][$j];
+                    $single_isn90 = $whole_load_of_number90[$i][$j];
+                    $query->orWhere(
+                        function ($semiquery) use ($single_isn, $single_isn90) {
+                            $semiquery->where('料號', '=', $single_isn)
+                                ->where('料號90', '=', $single_isn90);
+                        } // function
+                    );
+                } // for
+
+                $result = $query->get(['料號', '料號90', '單耗', '狀態']);
+                if ($mergedResult === "") {
+                    $mergedResult = $result;
+                } // if
+                else {
+                    $mergedResult = $result->merge($mergedResult);
+                } // else
+            } //for
+
+            // dd($mergedResult); // test
+            return \Response::json(['data' => $mergedResult->all()], 200 /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             dd($e);
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
@@ -555,7 +570,7 @@ class MonthlyPRController extends Controller
         $descr = json_decode($request->input('descr'));
         $username = $request->input('username');
         $record = 0;
-        
+
         try {
             $res_arr_values = array();
             for ($i = 0; $i < count($isn); $i++) {
