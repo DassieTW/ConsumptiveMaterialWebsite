@@ -42,6 +42,11 @@ class GetExchangeRate extends Command
         try {
             $this->warn("Now Fetching Exchange Rate...");
             $path = public_path('exchange_rate.json');
+            if (!file_exists($path)) {
+                $newFile = fopen( public_path() . "/exchange_rate.json", "w");
+                fclose($newFile);
+            } // if
+
             file_put_contents($path, "");
             $response = \Http::get('http://api.exchangeratesapi.io/v1/latest?access_key=' . env('Rate_API_Key'));
             file_put_contents($path, $response);
