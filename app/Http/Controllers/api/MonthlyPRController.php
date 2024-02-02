@@ -88,21 +88,38 @@ class MonthlyPRController extends Controller
         $number = json_decode($request->input('number'));
         $number90 = json_decode($request->input('number90'));
         $data_length = count($number90);
-        $query = \DB::table('MPS');
-        for ($i = 0; $i < $data_length; $i++) {
-            $single_isn =  $number[$i];
-            $single_isn90 = $number90[$i];
-            $query->orWhere(
-                function ($semiquery) use ($single_isn, $single_isn90) {
-                    $semiquery->where('料號', '=', $single_isn)
-                        ->where('料號90', '=', $single_isn90)
-                        ->whereNotNull('SXB單號');
-                } // function
-            );
-        } //for
+
+        // chunk the parameter array first so it doesnt exceed the MSSQL parameters hard limit
+        $whole_load_of_number = array_chunk($number, 100, false);
+        $whole_load_of_number90 = array_chunk($number90, 100, false);
+        $mergedResult = "";
 
         try {
-            $PR_already_sent = $query->get();
+            for ($i = 0; $i < count($whole_load_of_number); $i++) {
+                // loop thru each chunk
+                $query = \DB::table('MPS');
+                for ($j = 0; $j < count($whole_load_of_number[$i]); $j++) {
+                    $single_isn =  $whole_load_of_number[$i][$j];
+                    $single_isn90 = $whole_load_of_number90[$i][$j];
+                    $query->orWhere(
+                        function ($semiquery) use ($single_isn, $single_isn90) {
+                            $semiquery->where('料號', '=', $single_isn)
+                                ->where('料號90', '=', $single_isn90)
+                                ->whereNotNull('SXB單號');
+                        } // function
+                    );
+                } // for
+
+                $result = $query->get();
+                if ($mergedResult === "") {
+                    $mergedResult = $result;
+                } // if
+                else {
+                    $mergedResult = $result->merge($mergedResult);
+                } // else
+            } //for
+
+            $PR_already_sent = $mergedResult;
 
             if (count($PR_already_sent) > 0) {
                 return \Response::json(['PR_ALREADY' => json_encode($PR_already_sent)], 420 /* Status code here default is 200 ok*/);
@@ -126,7 +143,7 @@ class MonthlyPRController extends Controller
             \DB::beginTransaction();
 
             // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
-            $whole_load = array_chunk($res_arr_values, 200, true);
+            $whole_load = array_chunk($res_arr_values, 100, true);
             for ($i = 0; $i < count($whole_load); $i++) {
                 $temp_record = \DB::table('MPS')->upsert(
                     $whole_load[$i],
@@ -226,25 +243,46 @@ class MonthlyPRController extends Controller
         $MPS_90PN_Array = json_decode($request->input('MPS_90PN_Array'));
         $MPS_PN_Array = json_decode($request->input('MPS_PN_Array'));
 
-        $query = \DB::table('MPS');
-        for ($i = 0; $i < count($MPS_90PN_Array); $i++) {
-            $single_isn =  $MPS_PN_Array[$i];
-            $single_isn90 = $MPS_90PN_Array[$i];
-            $query->orWhere(
-                function ($semiquery) use ($single_isn, $single_isn90) {
-                    $semiquery->where('料號', '=', $single_isn)
-                        ->where('料號90', '=', $single_isn90)
-                        ->whereNull('SXB單號');
-                } // function
-            );
-        } //for
-
         $count = count(json_decode($request->input('PN')));
         $now = Carbon::now();
         $SXB_serial_number = date("YmdHis");
         $record = 0;
-        // dd($total_price2); // test
+        $mergedResult = "";
+
+        // chunk the parameter array first so it doesnt exceed the MSSQL parameters hard limit
+        $whole_load_of_number = array_chunk($MPS_PN_Array, 100, false);
+        $whole_load_of_number90 = array_chunk($MPS_90PN_Array, 100, false);
+
         try {
+
+            \DB::beginTransaction();
+            // ---------------------------------------------------------------------
+            // update MPS table
+            for ($i = 0; $i < count($whole_load_of_number); $i++) {
+                // loop thru each chunk
+                $query = \DB::table('MPS');
+                for ($j = 0; $j < count($whole_load_of_number[$i]); $j++) {
+                    $single_isn =  $whole_load_of_number[$i][$j];
+                    $single_isn90 = $whole_load_of_number90[$i][$j];
+                    $query->orWhere(
+                        function ($semiquery) use ($single_isn, $single_isn90) {
+                            $semiquery->where('料號', '=', $single_isn)
+                                ->where('料號90', '=', $single_isn90)
+                                ->whereNull('SXB單號');
+                        } // function
+                    );
+                } // for
+
+                $result_MPS = $query->update(['SXB單號' => $SXB_serial_number]);
+                // dd($result_MPS); // test
+            } //for
+            // ---------------------------------------------------------------------
+            // update 非月請購 table
+            $result2 = \DB::table('非月請購')
+                ->whereIn('料號', $nonMPS_PN_Array)
+                ->update(['SXB單號' => $SXB_serial_number]);
+            // ---------------------------------------------------------------------
+            // insert 請購單 table
             $res_arr_values = array();
             for ($i = 0; $i < $count; $i++) {
                 if (floatval(str_replace(',', '', $ReqAmount[$i])) > 0.0) {
@@ -271,8 +309,6 @@ class MonthlyPRController extends Controller
                 } // if
             } // for
 
-            \DB::beginTransaction();
-
             // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
             $whole_load = array_chunk($res_arr_values, 50, true);
             for ($i = 0; $i < count($whole_load); $i++) {
@@ -282,13 +318,7 @@ class MonthlyPRController extends Controller
 
                 $record = $record + $temp_record;
             } // for
-
-            $result2 = \DB::table('非月請購')
-                ->whereIn('料號', $nonMPS_PN_Array)
-                ->update(['SXB單號' => $SXB_serial_number]);
-
-            $result_MPS = $query->update(['SXB單號' => $SXB_serial_number]);
-            // dd($result_MPS); // test
+            // ---------------------------------------------------------------------
             \DB::commit();
             return \Response::json(['record' => $record] /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
