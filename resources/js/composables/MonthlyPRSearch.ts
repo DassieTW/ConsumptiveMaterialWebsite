@@ -180,8 +180,13 @@ export default function useMonthlyPRSearch() {
                 DB: getDB.data,
             });
 
-            Currency.value = JSON.parse(JSON.parse(response.data.data));
-            // console.log(response.data); // test
+            if (response.data.data === "\"\"") { // no currency line found in file
+                Currency.value = "Not Found";
+            } // if
+            else {
+                Currency.value = JSON.parse(JSON.parse(response.data.data));
+            } // else
+
             return new Promise((resolve, reject) => {
                 resolve("success");
             });

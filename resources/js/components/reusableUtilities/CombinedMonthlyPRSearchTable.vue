@@ -246,22 +246,27 @@ export default defineComponent({
             let total_price_other_currency = [];
             let moq = [];
 
-            for (let i = 0; i < data.length; i++) {
-                number.push(data[i].料號);
-                pName.push(data[i].品名);
-                spec.push(data[i].規格);
-                unit_price.push(data[i].單價);
-                nowNeed.push(parseFloat(data[i].當月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-                nextNeed.push(parseFloat(data[i].下月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-                stock.push(parseInt(data[i].現有庫存).toLocaleString("en-US"));
-                in_transit.push(parseInt(data[i].在途量).toLocaleString("en-US"));
-                req_amount.push(parseInt(data[i].本次請購數量).toLocaleString("en-US"));
-                total_price_default_currency.push(parseFloat(data[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-                total_price_default_currency_name.push(data[i].幣別);
-                total_price_other_currency.push(parseFloat(data[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-                moq.push(data[i].MOQ);
+            let tempData = data;
+            tempData.sort((a, b) => b.匯率 - a.匯率);
+            // console.log(tempData); // test
+            for (let i = 0; i < tempData.length; i++) {
+                number.push(tempData[i].料號);
+                pName.push(tempData[i].品名);
+                spec.push(tempData[i].規格);
+                unit_price.push(tempData[i].單價);
+                nowNeed.push(parseFloat(tempData[i].當月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                nextNeed.push(parseFloat(tempData[i].下月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                stock.push(parseInt(tempData[i].現有庫存).toLocaleString("en-US"));
+                in_transit.push(parseInt(tempData[i].在途量).toLocaleString("en-US"));
+                req_amount.push(parseInt(tempData[i].本次請購數量).toLocaleString("en-US"));
+                total_price_default_currency.push(parseFloat(tempData[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                total_price_default_currency_name.push(tempData[i].幣別);
+                total_price_other_currency.push(parseFloat(tempData[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                moq.push(tempData[i].MOQ);
             } // for
 
+            // console.log(total_price_other_currency); // test
+            // return;
             let start = Date.now();
             let result = await sendBuylistMail(
                 number, pName, spec, unit_price,
@@ -339,6 +344,21 @@ export default defineComponent({
             await triggerModal();
             data.splice(0);
             // console.log(Currency.value); // test
+            if (Currency.value === "Not Found") {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.exchangerate_notfound"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+            } // if
             nonMPS_PN_Array = [];
             MPS_PN_Array = [];
             MPS_90PN_Array = [];

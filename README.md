@@ -26,6 +26,10 @@ composer dump-autoload <br />
 php artisan storage:link <br />
 php artisan key:generate <br />
 
+php artisan lang:js --quiet <br />
+php artisan lang:js resources/js/vue-translations.js --no-lib --quiet <br />
+php artisan exchange:rate <br />
+
 # Migrate a single file (table)
 php artisan migrate --path=/database/migrations/2022_12_21_165804_create_bulletins_table.php <br />
 

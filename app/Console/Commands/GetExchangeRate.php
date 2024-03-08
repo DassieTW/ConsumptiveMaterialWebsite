@@ -40,7 +40,7 @@ class GetExchangeRate extends Command
     {
         // $databaseArray = config('database_list.databases');
         try {
-            $this->warn("Now Fetching Exchange Rate...");
+            $this->warn("Fetching Exchange Rate...");
             $path = public_path('exchange_rate.json');
             if (!file_exists($path)) {
                 $newFile = fopen( public_path() . "/exchange_rate.json", "w");

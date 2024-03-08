@@ -64,7 +64,7 @@ return [
     'submit' => 'Submit',
     'success' => 'Successfully',
     'entermoney' => 'Select a CUR',
-    'exchangeratesearch' => 'Exchange Rate Ref.',
+    'exchangerate_notfound' => 'EXR Not Found',
     'generatePR' => 'Generate PR',
     'plz_write' => 'Please fill in the field',
     'machine' => 'Models',

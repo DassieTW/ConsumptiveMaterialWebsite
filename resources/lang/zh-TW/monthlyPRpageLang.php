@@ -64,7 +64,7 @@ return [
     'submit' => '提交',
     'success' => '成功',
     'entermoney' => '請選擇幣別',
-    'exchangeratesearch' => '匯率查詢',
+    'exchangerate_notfound' => '匯率查詢錯誤',
     'generatePR' => '產生請購單',
     'plz_write' => '請填寫',
     'machine' => '機種',

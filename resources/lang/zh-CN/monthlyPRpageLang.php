@@ -64,7 +64,7 @@ return [
     'submit' => '提交',
     'success' => '成功',
     'entermoney' => '请选择币别',
-    'exchangeratesearch' => '汇率查询',
+    'exchangerate_notfound' => '汇率查询错误',
     'generatePR' => '产生请购单',
     'plz_write' => '请填写',
     'machine' => '机种',
