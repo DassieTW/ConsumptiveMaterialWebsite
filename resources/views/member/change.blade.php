@@ -1,8 +1,27 @@
 @extends('layouts.adminTemplate')
 @section('css')
     <style>
-        input {
+        td,
+        th {
             text-align: center;
+            vertical-align: middle;
+        }
+
+        #siteListPicker::-webkit-scrollbar-track {
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            border-radius: 4px;
+            background-color: #F5F5F5;
+        }
+
+        #siteListPicker::-webkit-scrollbar {
+            width: 4px;
+            -webkit-appearance: none;
+        }
+
+        #siteListPicker::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+            background-color: rgba(0, 0, 0, 0.3);
         }
     </style>
 @endsection
@@ -21,95 +40,66 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="card w-75">
+        <div class="card w-100">
             <div class="card-header">
-                <h3>{!! __('loginPageLang.changePass') !!}</h3>
+                <h3>{!! __('loginPageLang.priority_details') !!}</h3>
             </div>
             <div class="row justify-content-center">
                 <div class="card-body">
-                    <form id="changepassword" class="needs-validation text-center" method="post" novalidate>
-                        @csrf
-                        <div class="row justify-content-center mb-3">
-
-                            <?php
-                            $username = Session::get('username');
-                            echo __('templateWords.nowuser') . ' ' . $username;
-                            ?>
-                            <hr />
-
-                            <label class="col col-auto form-label p-0 m-0">{!! __('loginPageLang.oldpass') !!}</label>
-                            <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                            <div class="col-lg-6  col-md-12 col-sm-12">
-                                <div class="input-group" id="show_hide_password">
-                                    <input class="form-control form-control-lg" type="password" id="password"
-                                        name="password" placeholder="{!! __('loginPageLang.enteroldpass') !!}" required />
-                                    <div class="input-group-text" id="eye-button"
-                                        style="color: darkblue; border-radius: 5px;">
-                                        <a href="#">
-                                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                                                <path id="eye-slash-fill"
-                                                    d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z" />
-                                                <path id="eye-slash-fill2"
-                                                    d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                            <label class="col col-auto form-label p-0 m-0">{!! __('loginPageLang.newpass') !!}</label>
-                            <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                            <div class="col-lg-6  col-md-12 col-sm-12">
-                                <div class="input-group" id="show_hide_password1">
-                                    <input class="form-control form-control-lg" type="password" id="newpassword"
-                                        name="newpassword" placeholder="{!! __('loginPageLang.enternewpass') !!}" required />
-                                    <div class="input-group-text" id="eye-button1"
-                                        style="color: darkblue; border-radius: 5px;">
-                                        <a href="#">
-                                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                                                <path id="eye-slash-fill3"
-                                                    d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z" />
-                                                <path id="eye-slash-fill4"
-                                                    d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                            <label class="col col-auto form-label p-0 m-0">{!! __('loginPageLang.surepassword') !!}</label>
-                            <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                            <div class="col-lg-6  col-md-12 col-sm-12">
-                                <div class="input-group" id="show_hide_password2">
-                                    <input class="form-control form-control-lg" type="password" id="surepassword"
-                                        name="surepassword" placeholder="{!! __('loginPageLang.enterpassword') !!}" required />
-                                    <div class="input-group-text" id="eye-button2"
-                                        style="color: darkblue; border-radius: 5px;">
-                                        <a href="#">
-                                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                                                <path id="eye-slash-fill5"
-                                                    d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z" />
-                                                <path id="eye-slash-fill6"
-                                                    d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                            <div class="row w-100 justify-content-center">
-                                <div class="col col-auto">
-                                    <input type="submit" class="btn btn-lg btn-primary" value="{!! __('loginPageLang.change') !!}">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered" id="test">
+                            <tr>
+                                <th class="w-25">{!! __('loginPageLang.priority') !!}</th>
+                                <th colspan="2">{!! __('loginPageLang.functionality') !!}</th>
+                            </tr>
+                            {{-- 基礎資料 --}}
+                            <tr>
+                                <td rowspan="7">1</td>
+                                <td rowspan="3" class="table-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-info-circle align-middle me-2" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                        <path
+                                            d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                    </svg>
+                                    <span class="align-middle">{!! __('templateWords.basicInfo') !!}</span>
+                                </td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.basicInfo') !!}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="table-success"><span>{!! __('basicInfoLang.matsInfo') !!}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="table-success"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
+                            </tr>
+                            {{-- ----------------------------------------------------------------------------------------- --}}
+                            <tr class="table-secondary">
+                                <td colspan="2"></td>
+                            </tr>
+                            {{-- ----------------------------------------------------------------------------------------- --}}
+                            {{-- 條碼 --}}
+                            <tr>
+                                <td rowspan="3" class="table-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-upc align-middle me-2" viewBox="0 0 16 16">
+                                        <path
+                                            d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                    </svg>
+                                    <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
+                                </td>
+                                <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                            </tr>
+                            <tr class="table-secondary">
+                                <td colspan="3"></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
