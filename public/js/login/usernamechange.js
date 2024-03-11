@@ -55,7 +55,7 @@ $(function () {
         var priority = this.value;
         $.ajax({
             type: "POST",
-            url: "usernamechangeordel",
+            url: "usernamechange",
             data: {
                 username: username,
                 priority: priority,
@@ -106,7 +106,7 @@ $(function () {
         // console.log($(this).attr("id")); // test
         const dblist = $(this).attr("value").split("_");
         $(".dbCheckbox").prop("checked", false);
-        
+
         dblist.forEach((db) => {
             $("[id='" + db + "']").prop("checked", true);
         });
@@ -124,6 +124,57 @@ $(function () {
 
     $("#ImSure").on("click", function (e) {
         e.preventDefault();
+        // console.log($("#siteListPicker .modal-title").attr("id")); // test
+        let jobID = $("#siteListPicker .modal-title").attr("id");
+        // return; // test
+        $.ajax({
+            type: "POST",
+            url: "username_del",
+            data: {
+                username: jobID,
+            },
+            beforeSend: function () {
+                // // console.log('sup, loading modal triggered in CallPhpSpreadSheetToGetData !'); // test
+                $("body").loadingModal({
+                    text: "Loading...",
+                    animation: "circle",
+                });
+            },
+            complete: function () {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+            },
+            success: function (data) {
+                notyf.open({
+                    type: "success",
+                    message: Lang.get("loginPageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                // console.log($(':input[value="' + jobID + '"]').parents('tr.isnRows')); // test
+                $(':input[value="' + jobID + '"]').parents('tr.isnRows').remove();
+            },
+            error: function (err) {
+                console.log(err);
+                notyf.open({
+                    type: "error",
+                    message: "Error",
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            },
+        });
     });
 
     $("#ListConfirm").on("click", function () {

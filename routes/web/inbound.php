@@ -2,24 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InboundController;
-use App\Models\Login;
 use App\Models\人員信息;
 use App\Models\客戶別;
-use App\Models\機種;
-use App\Models\製程;
-use App\Models\線別;
-use App\Models\領用原因;
-use App\Models\退回原因;
 use App\Models\入庫原因;
 use App\Models\發料部門;
-use App\Models\Outbound;
-use App\Models\出庫退料;
 use App\Models\儲位;
-use App\Models\在途量;
-use App\Models\Inventory;
-use App\Models\不良品Inventory;
-use App\Models\Inbound;
-use App\Models\ConsumptiveMaterial;
 
 /*
 |--------------------------------------------------------------------------

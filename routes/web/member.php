@@ -116,8 +116,11 @@ Route::get('/username', function () {
     } // if else
 })->name('member.username')->middleware('can:searchAndUpdateUser,App\Models\Login');
 
-//用戶信息刪除或修改
-Route::post('/usernamechangeordel', [Auth\LoginController::class, 'usernamechangeordel'])->name('member.usernamechangeordel')->middleware('can:searchAndUpdateUser,App\Models\Login');
+//用戶信息修改
+Route::post('/usernamechange', [Auth\LoginController::class, 'usernamechange'])->name('member.usernamechange')->middleware('can:searchAndUpdateUser,App\Models\Login');
+//用戶信息刪除
+Route::post('/username_del', [Auth\LoginController::class, 'usernameDel'])->name('member.usernamedel')->middleware('can:canAddSitesToUser,App\Models\Login');
+
 
 //人員信息查詢頁面
 Route::get('/numbersearch', function () {
@@ -128,4 +131,4 @@ Route::get('/numbersearch', function () {
 Route::post('/numberchangeordel', [Auth\LoginController::class, 'numberchangeordel'])->name('member.numberchangeordel')->middleware('can:searchAndUpdatePeople,App\Models\Login');
 
 // IT等級使用者更改可登入DB清單
-Route::post('/update_available_dblist', [Auth\LoginController::class, 'update_available_dblist'])->name('member.usernamechangeordel')->middleware('can:canAddSitesToUser,App\Models\Login');
+Route::post('/update_available_dblist', [Auth\LoginController::class, 'update_available_dblist'])->middleware('can:canAddSitesToUser,App\Models\Login');

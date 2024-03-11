@@ -17,6 +17,7 @@ use App\Providers\RouteServiceProvider;
 use DateTime;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use League\CommonMark\Cursor;
+use Sentry\Util\JSON;
 
 class LoginController extends Controller
 {
@@ -457,7 +458,7 @@ class LoginController extends Controller
 
 
     //用戶信息更新
-    public function usernamechangeordel(Request $request)
+    public function usernamechange(Request $request)
     {
         if (Session::has('username')) {
 
@@ -472,8 +473,36 @@ class LoginController extends Controller
             return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
-        }
-    }
+        } // if else
+    } // usernamechange()
+
+    //用戶信息刪除
+    public function usernameDel(Request $request)
+    {
+        //將此工號從每個DB都刪除 下次此人登入時應該要從選擇廠別重新開始
+        $username = $request->input('username');
+        $databaseArray = config('database_list.databases');
+        try {
+            $currentDB = \Config::get('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
+            // dd($currentDB); // test
+            foreach ($databaseArray as $site) {
+                \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
+                \DB::purge(env("DB_CONNECTION"));
+                \DB::table('login')
+                    ->where('username', '=', $username)
+                    ->delete();
+            } // foreach
+
+            // reset back to login db, just in case
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $currentDB);
+            \DB::purge(env("DB_CONNECTION"));
+            return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            echo 'Caught exception: ',  $e, "\n";
+            dd($e); // test
+            return \Response::json(['message' => json_encode($e)], 420);
+        } // try catch
+    } // usernameDel()
 
     //用戶信息查詢
     public function searchusername(Request $request)

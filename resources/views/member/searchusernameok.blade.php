@@ -138,7 +138,7 @@
                             <div class="modal-body row justify-content-center">
                                 <span class="col col-auto">Are You Sure ?</span>
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                <button id="imsure" class="col col-auto btn btn-outline-danger"
+                                <button id="ImSure" class="col col-auto btn btn-outline-danger"
                                     data-bs-dismiss="modal">YES</button>
                             </div>
                         </div>
