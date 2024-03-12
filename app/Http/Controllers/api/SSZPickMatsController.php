@@ -28,7 +28,7 @@ class SSZPickMatsController extends Controller
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
         \DB::purge(env("DB_CONNECTION"));
         $path = public_path('temp_test_mis.json');
-        file_put_contents($path, $request + "//-----------------------//");
+        file_put_contents($path, json_encode($request) . "//-----------------------//");
         return \Response::json(['message' => 'test successful']/* Status code here default is 200 ok*/);
     } // storeDataFromMIS
 

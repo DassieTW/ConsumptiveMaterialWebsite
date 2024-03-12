@@ -91,7 +91,8 @@ return [
     'change_site_permission_reset' => '切換廠區將重置權限<br/>若有需要請聯絡該廠主管或系統管理員提升權限',
 
     // 權限說明
-    'priority_details' => '權限說明',
+    'permission_details' => '權限說明',
     'functionality' => '功能',
+    'current_permission' => '目前權限',
 
 ];
