@@ -208,7 +208,7 @@
                                             </li>
                                         @endcan
 
-                                        <li class="sidebar-item {{ isActiveRoute(['barcode/', 'barcode.index']) }}">
+                                        {{-- <li class="sidebar-item {{ isActiveRoute(['barcode/', 'barcode.index']) }}">
                                             <a data-bs-target="#barcodePages" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -234,7 +234,7 @@
                                                         {!! __('templateWords.locBarcode') !!}</a>
                                                 </li>
                                             </ul>
-                                        </li>
+                                        </li> --}}
 
                                         @can('viewInbound', App\Models\Inbound::class)
                                             <li class="sidebar-item {{ isActiveRoute(['inbound/', 'inbound.index']) }}">
@@ -687,13 +687,11 @@
                                             </a>
                                             <ul id="auth" class="sidebar-dropdown list-unstyled collapse "
                                                 data-bs-parent="#sidebar">
-                                                <li class="sidebar-item {{ isActiveRoute(['member/change']) }}">
+                                                {{-- <li class="sidebar-item {{ isActiveRoute(['member/change']) }}">
                                                     <a class="sidebar-link" href="{{ route('member.change') }}">
                                                         {!! __('templateWords.changePass') !!}
-                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
-                                                        --}}
                                                     </a>
-                                                </li>
+                                                </li> --}}
                                                 @can('searchAndUpdateUser', App\Models\Login::class)
                                                     <li class="sidebar-item {{ isActiveRoute(['member/username']) }}">
                                                         <a class="sidebar-link" href="{{ route('member.username') }}">

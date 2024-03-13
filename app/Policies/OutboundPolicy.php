@@ -25,7 +25,7 @@ class OutboundPolicy
         } // if else
     }
 
-    public function outboundReturn(Login $user)  // 權限1234都能看到O庫 退料
+    public function outboundReturn(Login $user)  // 權限1234都能看到 退料
     {
         if (intval($user->priority) <= 4) {
             return true;
@@ -34,7 +34,7 @@ class OutboundPolicy
         } // if else
     }
 
-    public function outboundReturnRecord(Login $user)  // 權限1234都能看到O庫 退料紀錄表
+    public function outboundReturnRecord(Login $user)  // 權限1234都能看到 退料紀錄表
     {
         if (intval($user->priority) <= 4) {
             return true;
@@ -43,7 +43,7 @@ class OutboundPolicy
         } // if else
     }
 
-    public function outboundReturnSerialNum(Login $user)  // 權限1234都能看到O庫 退料單
+    public function outboundReturnSerialNum(Login $user)  // 權限1234都能看到 退料單
     {
         if (intval($user->priority) <= 4) {
             return true;
@@ -52,7 +52,7 @@ class OutboundPolicy
         } // if else
     }
 
-    public function outboundPickup(Login $user)  // 權限1234都能看到O庫 領料
+    public function outboundPickup(Login $user)  // 權限1234都能看到 領料
     {
         if (intval($user->priority) <= 4) {
             return true;
@@ -61,7 +61,7 @@ class OutboundPolicy
         } // if else
     }
 
-    public function outboundPickupRecord(Login $user)  // 權限123 能看到O庫 領料紀錄表
+    public function outboundPickupRecord(Login $user)  // 權限123 能看到 領料紀錄表
     {
         if (intval($user->priority) < 4) {
             return true;
@@ -70,7 +70,7 @@ class OutboundPolicy
         } // if else
     }
 
-    public function outboundPickupSerialNum(Login $user)  // 權限123 能看到O庫 領料單
+    public function outboundPickupSerialNum(Login $user)  // 權限123 能看到 領料單
     {
         if (intval($user->priority) < 4) {
             return true;

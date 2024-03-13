@@ -94,5 +94,4 @@ return [
     'permission_details' => '權限說明',
     'functionality' => '功能',
     'current_permission' => '目前權限',
-
 ];

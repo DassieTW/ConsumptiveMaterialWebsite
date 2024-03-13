@@ -89,4 +89,9 @@ return [
     'site_error' => '请选择厂区',
     'permission_notice' => '初始权限设为最低<br/>若有需要请联络主管或系统管理员提升权限',
     'change_site_permission_reset' => '切换厂区将重置权限<br/>若有需要请联络该厂主管或系统管理员提升权限',
+
+    // 權限說明
+    "permission_details" => "权限说明",
+    "functionality" => "功能",
+    "current_permission" => "当前权限",
 ];

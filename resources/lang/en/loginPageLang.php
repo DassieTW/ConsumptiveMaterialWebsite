@@ -89,4 +89,9 @@ return [
     'site_error' => 'Please select your site.',
     'permission_notice' => 'Your permission will be restricted.<br/>Contact your manager for more permissions.',
     'change_site_permission_reset' => 'Your permission will be reset.<br/>Contact the site manager for more permissions.',
+
+    // 權限說明
+    'permission_details' => 'Permission Details',
+    'functionality' => 'Functionality',
+    'current_permission' => 'Current Permission',
 ];

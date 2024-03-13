@@ -87,7 +87,7 @@ class LoginPolicy         // 所有用戶管理相關權限
 
     public function searchAndUpdatePeople(Login $user)
     {
-        // 權限123才能用戶訊息 查詢/刪除
+        // 權限123才能人員訊息 查詢/刪除
         if (intval($user->priority) < 4) {
             return true;
         } else {
