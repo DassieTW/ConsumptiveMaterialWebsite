@@ -248,7 +248,7 @@ class InboundController extends Controller
                             ->update(['請購數量' => $buy - $amount]);
                     } //else
                 } // for
-            }
+            } // for
             DB::commit();
             return \Response::json(['message' => $opentime, 'record' => $count]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {

@@ -3,7 +3,6 @@
 @endsection
 
 @section('js')
-    <!--for this page's sepcified js -->
     <script>
         function ScientificNotaionToFixed(x) {
             // toFixed
@@ -23,6 +22,7 @@
             } // if-else
         } // to prevent scientific notaion
     </script>
+    <script type="text/javascript" href="{{ asset('/admin/js/app.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -32,12 +32,20 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
+        <div class="card flex-fill w-100">
+            <div class="card-header">
+                <h3>X Month</h3>
+            </div>
+            <div class="card-body">
+                <chartjsvue-line-chart></chartjsvue-line-chart>
+            </div>
+        </div>
         <div class="card">
             <div class="card-header">
                 <h3>{!! __('callpageLang.diffalert') !!}</h3>
             </div>
             <div class="card-body">
-                {{-- <demand-recieve-diff-table></demand-recieve-diff-table> --}}
+                <demand-recieve-diff-table></demand-recieve-diff-table>
             </div>
         </div>
     </div>

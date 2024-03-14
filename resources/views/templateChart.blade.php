@@ -145,7 +145,6 @@
 
 <script src="admin/js/app.js"></script>
 <script>
-
     document.addEventListener("DOMContentLoaded", function() {
         // Line chart
         new Chart(document.getElementById("chartjs-line"), {

@@ -87,7 +87,7 @@ return [
     'newSSO_msg' => '此公司帳號從未登入過耗材管理系統<br/>請先填寫以下內容完成初始設定',
     'submit' => '提交',
     'site_error' => '請選擇廠區',
-    'permission_notice' => '初始權限設為最低<br/>若有需要請聯絡主管或系統管理員提升權限',
+    'permission_notice' => '初始權限設為最低(4)<br/>若有需要請聯絡主管或系統管理員提升權限',
     'change_site_permission_reset' => '切換廠區將重置權限<br/>若有需要請聯絡該廠主管或系統管理員提升權限',
 
     // 權限說明

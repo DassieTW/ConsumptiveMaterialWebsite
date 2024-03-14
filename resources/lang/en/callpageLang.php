@@ -15,7 +15,7 @@ return [
     'page_name' => 'Alarm System',
     'safealert' => 'Safety Stock Alert',
     'dayalert' => 'Passive Day Alert',
-    'diffalert' => 'Demand vs Received',
+    'diffalert' => 'Purchase Req. vs. Acquired',
     'callsys' => 'Alarm System',
     'client' => 'Client',
     'isn' => 'PN',
@@ -37,4 +37,6 @@ return [
     'nowstock' => 'Available Stock',
     'saveremark' => 'Save Remark',
     'success' => 'Success',
+    "req_vs_real_percent" => "PR vs. Acq %",
+    "req_vs_real" => "PR vs. Acq Qty",
 ];

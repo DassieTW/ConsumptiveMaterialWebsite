@@ -19,9 +19,6 @@ import "./modules/sidebar";
 import "./modules/theme";
 import "./modules/feather";
 
-// Charts
-import "./modules/chartjs";
-
 // Forms
 import "./modules/flatpickr";
 
@@ -64,6 +61,7 @@ import OboundBackrecordTable from "./components/reusableUtilities/OboundBackreco
 import OboundStockTable from "./components/reusableUtilities/OboundStockTable.vue";
 import NewsTable from "./components/reusableUtilities/NewsTable.vue";
 import DemandRecieveDiffTable from "./components/reusableUtilities/DemandRecieveDiffTable.vue";
+import ChartJSLine from "./components/reusableUtilities/ChartJSLine.vue";
 
 const app = createApp({
   components: {
@@ -89,6 +87,7 @@ const app = createApp({
     "obound-stock-table": OboundStockTable,
     "news-table": NewsTable,
     "demand-recieve-diff-table": DemandRecieveDiffTable,
+    "chartjsvue-line-chart": ChartJSLine,
   },
 });
 

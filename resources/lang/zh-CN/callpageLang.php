@@ -37,4 +37,6 @@ return [
     'nowstock' => '现有库存',
     'saveremark' => '保存备注',
     'success' => '成功',
+    "req_vs_real_percent" => "需求与领用差异",
+    "req_vs_real" => "需求与领用差异量",
 ];

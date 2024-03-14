@@ -53,7 +53,7 @@ return [
     'begindate' => 'starting date',
     'enddate' => 'ending date',
     'search' => 'Search',
-    'realpickamount' => 'Actual Qty',
+    'realpickamount' => 'Acq Qty',
     'diffreason' => 'Reason of Diff',
     'pickpeople' => 'Picker',
     'pickpeoplenum' => 'Picker\'s ID',
@@ -113,5 +113,5 @@ return [
     'rfidinputbackpeople' => 'Click here and tap the Rejecter\'s ID card',
     'rfidinputsendpeople' => 'Click here and tap the Dispatcher\'s ID card',
     'rfidinputpickpeople' => 'Click here and tap the Picker\'s ID card',
-    'realpickzero' => 'Actual Qty is 0',
+    'realpickzero' => 'Acquired Qty is 0',
 ];

@@ -67,7 +67,7 @@
                     :id="'sxb' + row.id" :name="'sxb' + key">Edit</button>
             </div>
         </template>
-        <template v-slot:X月實際領用數量="{ row, key }">
+        <template v-slot:實際領用數量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
                     {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位 }}</small>
@@ -388,75 +388,27 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.transit_reviser"
+                        "outboundpageLang.realpickamount"
                     ),
-                    field: "修改人員",
+                    field: "實際領用數量",
                     width: "10ch",
                     sortable: true,
-                    display: function (row, i) {
-                        if (row.修改人員 === null || row.修改人員 === undefined) row.修改人員 = "N/A";
-                        return (
-                            '<input type="hidden" id="reviser' +
-                            i +
-                            '" name="reviser' +
-                            i +
-                            '" value="' +
-                            row.修改人員 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.修改人員 +
-                            "</div>"
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.description"
+                        "callpageLang.req_vs_real"
                     ),
-                    field: "說明",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.說明 === null || row.說明 === undefined) row.說明 = "N/A";
-                        return (
-                            '<input type="hidden" id="remark' +
-                            i +
-                            '" name="remark' +
-                            i +
-                            '" value="' +
-                            row.說明 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.說明 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.updatetime"
-                    ),
-                    field: "最後更新時間",
+                    field: "需求與領用差異量",
                     width: "13ch",
                     sortable: true,
-                    display: function (row, i) {
-                        if (row.最後更新時間 === null || row.最後更新時間 === undefined) row.最後更新時間 = "N/A";
-                        return (
-                            '<input type="hidden" id="updatetime' +
-                            i +
-                            '" name="updatetime' +
-                            i +
-                            '" value="' +
-                            row.最後更新時間 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.最後更新時間 +
-                            "</div>"
-                        );
-                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "callpageLang.req_vs_real_percent"
+                    ),
+                    field: "需求與領用差異",
+                    width: "13ch",
+                    sortable: true,
                 },
             ],
             rows: computed(() => {
