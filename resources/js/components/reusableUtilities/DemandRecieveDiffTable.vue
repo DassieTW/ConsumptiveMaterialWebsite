@@ -2,11 +2,11 @@
     <div class="row justify-content-between">
         <div class="row col col-auto">
             <div class="col col-auto">
-                <label for="sxbInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
             </div>
             <div class="col col-auto p-0 m-0">
-                <input id="sxbInput" class="text-center form-control form-control-lg"
-                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn')" v-model="searchTerm" />
+                <input id="pnInput" class="text-center form-control form-control-lg"
+                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
             </div>
         </div>
         <div class="col col-auto">
@@ -17,137 +17,62 @@
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-    <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="false" :isStaticMode="true" :isSlotMode="true"
-        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-        :page-options="table.pageOptions" :sortable="table.sortable" @return-checked-rows="updateCheckedRows">
+    <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="false" :isStaticMode="true"
+        :isSlotMode="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+        :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+        @return-checked-rows="updateCheckedRows">
         <template v-slot:料號="{ row, key }">
-            <div v-if="row.月請購 === '否'">
-                <input type="hidden" :name="'isn' + row.id" class="form-control text-center p-0 m-0" style="width: 8ch;"
-                    :id="'safe' + row.id" :value="row.料號" />
-                <div class="scrollableWithoutScrollbar text-nowrap"
-                    style="overflow-x: auto; width: 100%; background-color: indianred;">
-                    {{ row.料號 }}
-                </div>
-            </div>
-            <div v-else>
-                <input type="hidden" :name="'isn' + row.id" class="form-control text-center p-0 m-0" style="width: 8ch;"
-                    :id="'safe' + row.id" :value="row.料號" />
-                <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
-                    {{ row.料號 }}
-                </div>
-            </div>
-        </template>
-        <template v-slot:品名="{ row, key }">
-            <div class="col col-auto align-items-center m-0 p-0">
-                <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位 }}</small>
-                </span>
-                <button @click="openQtyDetails(row)" type="button" data-bs-toggle="modal" data-bs-target="#detailTable"
-                    class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0" style="border-radius: 20px;"
-                    :id="'sxb' + row.id" :name="'sxb' + key">Edit</button>
+            <input type="hidden" :name="'isn' + row.id" class="form-control text-center p-0 m-0" style="width: 8ch;"
+                :id="'safe' + row.id" :value="row.料號" />
+            <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
+                {{ row.料號 }}
             </div>
         </template>
         <template v-slot:規格="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位 }}</small>
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
+                        }}</small>
                 </span>
-                <button @click="openQtyDetails(row)" type="button" data-bs-toggle="modal" data-bs-target="#detailTable"
-                    class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0" style="border-radius: 20px;"
-                    :id="'sxb' + row.id" :name="'sxb' + key">Edit</button>
             </div>
         </template>
-        <template v-slot:X月需求數量="{ row, key }">
+        <template v-slot:需求數量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位 }}</small>
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
+                        }}</small>
                 </span>
-                <button @click="openQtyDetails(row)" type="button" data-bs-toggle="modal" data-bs-target="#detailTable"
-                    class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0" style="border-radius: 20px;"
-                    :id="'sxb' + row.id" :name="'sxb' + key">Edit</button>
             </div>
         </template>
         <template v-slot:實際領用數量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位 }}</small>
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
+                        }}</small>
                 </span>
-                <button @click="openQtyDetails(row)" type="button" data-bs-toggle="modal" data-bs-target="#detailTable"
-                    class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0" style="border-radius: 20px;"
-                    :id="'sxb' + row.id" :name="'sxb' + key">Edit</button>
             </div>
         </template>
         <template v-slot:需求與領用差異量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位 }}</small>
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
+                        }}</small>
                 </span>
-                <button @click="openQtyDetails(row)" type="button" data-bs-toggle="modal" data-bs-target="#detailTable"
-                    class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0" style="border-radius: 20px;"
-                    :id="'sxb' + row.id" :name="'sxb' + key">Edit</button>
             </div>
         </template>
         <template v-slot:需求與領用差異="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位 }}</small>
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
+                        }}</small>
                 </span>
-                <button @click="openQtyDetails(row)" type="button" data-bs-toggle="modal" data-bs-target="#detailTable"
-                    class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0" style="border-radius: 20px;"
-                    :id="'sxb' + row.id" :name="'sxb' + key">Edit</button>
             </div>
         </template>
     </table-lite>
-
-    <!-- Modal -->
-    <div class="modal fade" id="detailTable" tabindex="-1" aria-labelledby="detailTable" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header justify-content-center">
-                    <h1 class="col col-auto modal-title m-0 p-0 fs-4">
-                        {{ modalTitle }}
-                    </h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label for="inputQty" class="form-label">{{ $t("monthlyPRpageLang.on_the_way_search") }}</label>
-                            <div class="input-group">
-                                <input v-model="inputQty" type="number" :class="{ 'is-invalid': isInvalid }"
-                                    class="form-control" id="inputQty" :placeholder="originalQty" min="0">
-                                <div class="input-group-text">{{ unit }}</div>
-                            </div>
-                            <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
-                                <strong>{{ validation_err_msg }}</strong>
-                            </span>
-                        </div>
-                        <div class="col-md-8">
-                            <label for="inputDescr" class="form-label">{{ $t("monthlyPRpageLang.description") }}</label>
-                            <input v-model="inputDescr" type="text" :class="{ 'is-invalid': isInvalid2 }"
-                                class="form-control" id="inputDescr">
-                            <span v-if="isInvalid2" class="invalid-feedback d-block" role="alert">
-                                <strong>{{ validation_err_msg2 }}</strong>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;" data-bs-dismiss="modal"
-                        aria-label="Close">
-                        {{ $t('templateWords.cancel') }}
-                    </button>
-                    <button @click="sxb_approve" type="button" class="btn btn-lg btn-success" style="border-radius: 5px;">
-                        {{ $t('checkInvLang.edit') }}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script>
-import { defineComponent, reactive, ref, computed } from "vue";
+import { defineComponent, reactive, ref, computed, defineModel } from "vue";
 import {
     getCurrentInstance,
     onBeforeMount,
@@ -161,7 +86,19 @@ import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts
 export default defineComponent({
     name: "App",
     components: { TableLite },
-    setup() {
+    props: ['modelValue'],
+    emits: ['update:modelValue'],
+    computed: {
+        searchTerm: {
+            get() {
+                return this.modelValue
+            },
+            set(value) {
+                this.$emit('update:modelValue', value)
+            }
+        }
+    },
+    setup(props) {
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
@@ -169,22 +106,9 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, getMats, updateInTransit } = useTransitSearch(); // axios get the mats data
+        const { mats, getMats } = useTransitSearch(); // axios get the mats data
 
         onBeforeMount(getMats);
-
-        let isInvalid = ref(false); // edit to DB validation for Qty
-        let isInvalid2 = ref(false); // edit to DB validation for descr
-        let validation_err_msg = ref("");
-        let validation_err_msg2 = ref("");
-        const modalTitle = ref("");
-        const originalQty = ref("");
-        const unit = ref("");
-        const inputQty = ref("");
-        const inputDescr = ref("");
-        const file = ref();
-        let checkedRows = [];
-        const searchTerm = ref(""); // Search text
 
         // pour the data in
         const data = reactive([]);
@@ -233,80 +157,6 @@ export default defineComponent({
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         } // OutputExcelClick
-
-        const openQtyDetails = (row) => {
-            // console.log("clicked!"); // test
-            modalTitle.value = row.料號;
-            unit.value = row.單位;
-            originalQty.value = parseInt(row.請購數量).toLocaleString('en', { useGrouping: true });
-        } // openSXBDetails
-
-        const sxb_approve = async () => {
-            isInvalid.value = false;
-            isInvalid2.value = false;
-            if (inputQty.value.toString().trim() === "" || inputQty.value === null || inputQty.value === undefined) {
-                validation_err_msg.value =
-                    app.appContext.config.globalProperties.$t(
-                        "validation.required"
-                    );
-
-                isInvalid.value = true;
-            } // if
-
-            if (inputDescr.value.trim() === "" || inputDescr.value === null || inputDescr.value === undefined) {
-                validation_err_msg2.value =
-                    app.appContext.config.globalProperties.$t(
-                        "validation.required"
-                    );
-
-                isInvalid2.value = true;
-            } // if
-
-            // console.log(inputQty.value); // test
-            // console.log(inputDescr.value); // test
-
-            if (isInvalid.value === true || isInvalid2.value === true) {
-                return;
-            } // if
-
-            await triggerModal();
-
-            let isnArr = [modalTitle.value];
-            let qtyArr = [inputQty.value];
-            let descrArr = [inputDescr.value];
-            let result = await updateInTransit(isnArr, qtyArr, descrArr);
-            await getMats();
-
-            if (result === "success") {
-                notyf.open({
-                    type: "success",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-            } // if
-            else {
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-            } // else
-
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
-        } // sxb_approve
 
         watch(mats, async () => {
             await triggerModal();
@@ -412,11 +262,17 @@ export default defineComponent({
                 },
             ],
             rows: computed(() => {
-                return data.filter((x) =>
-                    x.料號
-                        .toLowerCase()
-                        .includes(searchTerm.value.toLowerCase())
-                );
+                if (props.modelValue !== undefined) {
+                    return data.filter((x) =>
+                        x.料號
+                            .toLowerCase()
+                            .includes(props.modelValue.toLowerCase()) ||
+                        x.品名
+                            .includes(props.modelValue)
+                    );
+                } else {
+                    return data;
+                } // if else
             }),
             totalRecordCount: computed(() => {
                 return table.rows.length;
@@ -478,21 +334,10 @@ export default defineComponent({
         };
 
         return {
-            isInvalid,
-            isInvalid2,
-            validation_err_msg,
-            validation_err_msg2,
-            searchTerm,
-            modalTitle,
-            unit,
-            originalQty,
-            inputQty,
-            inputDescr,
+            props,
             table,
             updateCheckedRows,
             OutputExcelClick,
-            openQtyDetails,
-            sxb_approve,
         };
     }, // setup
 });

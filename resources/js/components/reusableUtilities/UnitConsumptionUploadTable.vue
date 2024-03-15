@@ -7,8 +7,9 @@
             <div id="consume" class="row justify-content-center align-items-center">
                 <div class="col-auto">
                     <label class="col col-auto form-label">{{ $t('monthlyPRpageLang.isn') }}</label>
-                    <input class="form-control form-control-lg" :class="{ 'is-invalid': is_isn_input_Invalid }" type="text"
-                        v-model="isn_input" id="isn_input" name="isn_input" :placeholder="$t('monthlyPRpageLang.enterisn')">
+                    <input class="form-control form-control-lg" :class="{ 'is-invalid': is_isn_input_Invalid }"
+                        type="text" v-model="isn_input" id="isn_input" name="isn_input"
+                        :placeholder="$t('monthlyPRpageLang.enterisn')">
                     <span v-if="is_isn_input_Invalid" class="invalid-feedback d-block" role="alert">
                         <strong>{{ $t('monthlyPRpageLang.noisn') }}</strong>
                     </span>
@@ -59,7 +60,8 @@
                 </div>
                 <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="row justify-content-center">
-                    <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary" @click="onUploadClick">
+                    <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
+                        @click="onUploadClick">
                         {{ $t('monthlyPRpageLang.upload1') }}
                     </button>
                 </div>
@@ -78,7 +80,7 @@
                     </div>
                     <div class="col col-6 p-0 m-0">
                         <input id="pnInput" class="text-center form-control form-control-lg"
-                            v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+                            v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
                     </div>
                 </div>
                 <div class="col col-auto">
@@ -115,8 +117,8 @@
                     </div>
                 </div>
                 <div class="col col-auto">
-                    <button v-if="uploadToDBReady" name="upload" class="col col-auto fs-3 text-center btn btn-lg btn-info"
-                        @click="onSendToDBClick">
+                    <button v-if="uploadToDBReady" name="upload"
+                        class="col col-auto fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
                         <i class="bi bi-envelope-check-fill"></i>
                         {{ $t('monthlyPRpageLang.submit') }}
                     </button>
@@ -897,7 +899,9 @@ export default defineComponent({
                 return data.filter((x) =>
                     x.料號
                         .toLowerCase()
-                        .includes(searchTerm.value.toLowerCase())
+                        .includes(searchTerm.value.toLowerCase()) ||
+                    x.品名
+                        .includes(searchTerm.value)
                 );
             }),
             totalRecordCount: computed(() => {

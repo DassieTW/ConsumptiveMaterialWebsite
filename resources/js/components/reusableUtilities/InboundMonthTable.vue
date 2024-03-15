@@ -6,7 +6,7 @@
             </div>
             <div class="col col-6 p-0 m-0">
                 <input id="pnInput" class="text-center form-control form-control-lg"
-                    v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
             </div>
         </div>
         <div class="col col-auto">
@@ -367,7 +367,9 @@ export default defineComponent({
                 return data.filter((x) =>
                     x.料號
                         .toLowerCase()
-                        .includes(searchTerm.value.toLowerCase())
+                        .includes(searchTerm.value.toLowerCase()) ||
+                    x.品名
+                        .includes(searchTerm.value)
                 );
             }),
             totalRecordCount: computed(() => {

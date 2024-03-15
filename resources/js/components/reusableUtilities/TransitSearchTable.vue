@@ -6,7 +6,7 @@
             </div>
             <div class="col col-auto p-0 m-0">
                 <input id="sxbInput" class="text-center form-control form-control-lg"
-                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn')" v-model="searchTerm" />
+                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
             </div>
         </div>
         <div class="col col-auto">
@@ -17,13 +17,15 @@
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-    <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="false" :isStaticMode="true" :isSlotMode="true"
-        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-        :page-options="table.pageOptions" :sortable="table.sortable" @return-checked-rows="updateCheckedRows">
+    <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="false" :isStaticMode="true"
+        :isSlotMode="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+        :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+        @return-checked-rows="updateCheckedRows">
         <template v-slot:請購數量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位 }}</small>
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
+                        }}</small>
                 </span>
                 <button @click="openQtyDetails(row)" type="button" data-bs-toggle="modal" data-bs-target="#detailTable"
                     class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0" style="border-radius: 20px;"
@@ -45,7 +47,8 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label for="inputQty" class="form-label">{{ $t("monthlyPRpageLang.on_the_way_search") }}</label>
+                            <label for="inputQty" class="form-label">{{ $t("monthlyPRpageLang.on_the_way_search")
+                                }}</label>
                             <div class="input-group">
                                 <input v-model="inputQty" type="number" :class="{ 'is-invalid': isInvalid }"
                                     class="form-control" id="inputQty" :placeholder="originalQty" min="0">
@@ -66,11 +69,12 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;" data-bs-dismiss="modal"
-                        aria-label="Close">
+                    <button type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;"
+                        data-bs-dismiss="modal" aria-label="Close">
                         {{ $t('templateWords.cancel') }}
                     </button>
-                    <button @click="sxb_approve" type="button" class="btn btn-lg btn-success" style="border-radius: 5px;">
+                    <button @click="sxb_approve" type="button" class="btn btn-lg btn-success"
+                        style="border-radius: 5px;">
                         {{ $t('checkInvLang.edit') }}
                     </button>
                 </div>
@@ -396,7 +400,9 @@ export default defineComponent({
                 return data.filter((x) =>
                     x.料號
                         .toLowerCase()
-                        .includes(searchTerm.value.toLowerCase())
+                        .includes(searchTerm.value.toLowerCase()) ||
+                    x.品名
+                        .includes(searchTerm.value)
                 );
             }),
             totalRecordCount: computed(() => {

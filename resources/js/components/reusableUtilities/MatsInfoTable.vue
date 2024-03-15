@@ -6,11 +6,12 @@
             </div>
             <div class="col col-6 p-0 m-0">
                 <input id="pnInput" class="text-center form-control form-control-lg"
-                    v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
             </div>
         </div>
         <div class="col col-auto">
-            <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger" @click="deleteRow">
+            <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
+                @click="deleteRow">
                 <i class="bi bi-trash3-fill fs-4"></i>
             </button>
             &nbsp;
@@ -23,21 +24,24 @@
     <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
         <strong>{{ validation_err_msg }}</strong>
     </span>
-    <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="true"
-        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-        :page-options="table.pageOptions" :sortable="table.sortable" @do-search="doSearch"
-        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows" @row-input="rowUserInput">
+    <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
+        :hasCheckbox="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+        :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+        @do-search="doSearch" @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"
+        @row-input="rowUserInput">
         <template v-slot:月請購="{ row, key }">
             <div v-if="row.月請購 === '是'">
-                <select @change="(event) => { (row.月請購 = event.target.value); rowUserInput(row, key); }" style="width: 7ch;"
-                    class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + row.id" :name="'month' + key">
+                <select @change="(event) => { (row.月請購 = event.target.value); rowUserInput(row, key); }"
+                    style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + row.id"
+                    :name="'month' + key">
                     <option value="是" selected>{{ $t("basicInfoLang.yes") }}</option>
                     <option value="否">{{ $t("basicInfoLang.no") }}</option>
                 </select>
             </div>
             <div v-else>
-                <select @change="(event) => { (row.月請購 = event.target.value); rowUserInput(row, key); }" style="width: 7ch;"
-                    class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + row.id" :name="'month' + key">
+                <select @change="(event) => { (row.月請購 = event.target.value); rowUserInput(row, key); }"
+                    style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + row.id"
+                    :name="'month' + key">
                     <option value="是">{{ $t("basicInfoLang.yes") }}</option>
                     <option value="否" selected>{{ $t("basicInfoLang.no") }}</option>
                 </select>
@@ -720,7 +724,9 @@ export default defineComponent({
                 return data.filter((x) =>
                     x.料號
                         .toLowerCase()
-                        .includes(searchTerm.value.toLowerCase())
+                        .includes(searchTerm.value.toLowerCase()) ||
+                    x.品名
+                        .includes(searchTerm.value)
                 );
             }),
             totalRecordCount: computed(() => {

@@ -30,7 +30,8 @@
                 </div>
                 <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="row justify-content-center">
-                    <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary" @click="onUploadClick">
+                    <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
+                        @click="onUploadClick">
                         {{ $t('monthlyPRpageLang.upload1') }}
                     </button>
                 </div>
@@ -52,7 +53,7 @@
                     </div>
                     <div class="col col-auto p-0 m-0">
                         <input id="pnInput1" class="text-center form-control form-control-lg"
-                            v-bind:placeholder="$t('monthlyPRpageLang.enterisn')" v-model="searchTerm" />
+                            v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
                     </div>
                 </div>
                 <div class="col col-auto">
@@ -703,7 +704,9 @@ export default defineComponent({
                 return data.filter((x) =>
                     x.料號
                         .toLowerCase()
-                        .includes(searchTerm.value.toLowerCase())
+                        .includes(searchTerm.value.toLowerCase()) ||
+                    x.品名
+                        .includes(searchTerm.value)
                 );
             }),
             totalRecordCount: computed(() => {

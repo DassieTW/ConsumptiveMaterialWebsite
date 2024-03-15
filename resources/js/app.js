@@ -60,8 +60,7 @@ import OboundPickrecordTable from "./components/reusableUtilities/OboundPickreco
 import OboundBackrecordTable from "./components/reusableUtilities/OboundBackrecordTable.vue";
 import OboundStockTable from "./components/reusableUtilities/OboundStockTable.vue";
 import NewsTable from "./components/reusableUtilities/NewsTable.vue";
-import DemandRecieveDiffTable from "./components/reusableUtilities/DemandRecieveDiffTable.vue";
-import ChartJSLine from "./components/reusableUtilities/ChartJSLine.vue";
+import DemandRecieveDiffPage from './components/reusableUtilities/DemandRecieveDiffPage.vue';
 
 const app = createApp({
   components: {
@@ -86,8 +85,7 @@ const app = createApp({
     "obound-backrecord-table": OboundBackrecordTable,
     "obound-stock-table": OboundStockTable,
     "news-table": NewsTable,
-    "demand-recieve-diff-table": DemandRecieveDiffTable,
-    "chartjsvue-line-chart": ChartJSLine,
+    "demand-recieve-diff-page": DemandRecieveDiffPage,
   },
 });
 

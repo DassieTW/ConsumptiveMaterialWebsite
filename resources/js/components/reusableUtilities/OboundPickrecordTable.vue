@@ -5,7 +5,7 @@
         </div>
         <div class="col col-3 p-0 m-0">
             <input id="pnInput" class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('basicInfoLang.enterisn')" v-model="searchTerm" />
+                v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
@@ -527,7 +527,11 @@ export default defineComponent({
             ],
             rows: computed(() => {
                 return data.filter((x) =>
-                    x.料號.toLowerCase().includes(searchTerm.value.toLowerCase())
+                    x.料號
+                        .toLowerCase()
+                        .includes(searchTerm.value.toLowerCase()) ||
+                    x.品名
+                        .includes(searchTerm.value)
                 );
             }),
             totalRecordCount: computed(() => {

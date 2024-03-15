@@ -56,11 +56,12 @@
                     <div class="row justify-content-between">
                         <div class="row col col-auto">
                             <div class="col col-auto">
-                                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+                                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }}
+                                    :</label>
                             </div>
                             <div class="col col-auto p-0 m-0">
                                 <input id="pnInput" class="text-center form-control form-control-lg"
-                                    v-bind:placeholder="$t('monthlyPRpageLang.enter90isn')" v-model="searchTerm2" />
+                                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm2" />
                             </div>
                         </div>
                         <div class="col col-auto">
@@ -72,17 +73,18 @@
                     </div>
                     <div class="w-100" style="height: 1ch"></div>
                     <!-- </div>breaks cols to a new line-->
-                    <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false" :messages="table2.messages"
-                        :columns="table2.columns" :rows="table2.rows" :total="table2.totalRecordCount"
-                        :page-options="table2.pageOptions" :sortable="table2.sortable" :is-fixed-first-column="false"
-                        @row-clicked="rowClicked">
+                    <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false"
+                        :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
+                        :total="table2.totalRecordCount" :page-options="table2.pageOptions" :sortable="table2.sortable"
+                        :is-fixed-first-column="false" @row-clicked="rowClicked">
                     </table-lite>
                 </div>
                 <div v-if="showFooter" class="modal-footer justify-content-between">
                     <button @click="sxb_reject" type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;">
                         {{ $t('monthlyPRpageLang.review_cancel') }}
                     </button>
-                    <button @click="sxb_approve" type="button" class="btn btn-lg btn-success" style="border-radius: 5px;">
+                    <button @click="sxb_approve" type="button" class="btn btn-lg btn-success"
+                        style="border-radius: 5px;">
                         {{ $t('monthlyPRpageLang.review_complete') }}
                     </button>
                 </div>
@@ -581,7 +583,9 @@ export default defineComponent({
                 return data2.filter((x) =>
                     x.料號
                         .toLowerCase()
-                        .includes(searchTerm2.value.toLowerCase())
+                        .includes(searchTerm.value.toLowerCase()) ||
+                    x.品名
+                        .includes(searchTerm.value)
                 );
             }),
             totalRecordCount: computed(() => {
