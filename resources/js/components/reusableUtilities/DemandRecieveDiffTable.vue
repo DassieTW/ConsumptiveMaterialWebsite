@@ -17,26 +17,16 @@
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-    <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="false" :isStaticMode="true"
+    <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="true" :isStaticMode="true"
         :isSlotMode="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
         @return-checked-rows="updateCheckedRows">
         <template v-slot:料號="{ row, key }">
-            <input type="hidden" :name="'isn' + row.id" class="form-control text-center p-0 m-0" style="width: 8ch;"
-                :id="'safe' + row.id" :value="row.料號" />
             <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
                 {{ row.料號 }}
             </div>
         </template>
-        <template v-slot:規格="{ row, key }">
-            <div class="col col-auto align-items-center m-0 p-0">
-                <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
-                        }}</small>
-                </span>
-            </div>
-        </template>
-        <template v-slot:需求數量="{ row, key }">
+        <template v-slot:請購數量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
                     {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
@@ -61,11 +51,8 @@
             </div>
         </template>
         <template v-slot:需求與領用差異="{ row, key }">
-            <div class="col col-auto align-items-center m-0 p-0">
-                <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
-                        }}</small>
-                </span>
+            <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
+                {{ row.料號 }}
             </div>
         </template>
     </table-lite>
@@ -79,6 +66,7 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
+import { searchTerm, data, table } from '../../composables/DiffTableStore.js';
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useTransitSearch from "../../composables/TransitSearch.ts";
@@ -86,19 +74,7 @@ import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts
 export default defineComponent({
     name: "App",
     components: { TableLite },
-    props: ['modelValue'],
-    emits: ['update:modelValue'],
-    computed: {
-        searchTerm: {
-            get() {
-                return this.modelValue
-            },
-            set(value) {
-                this.$emit('update:modelValue', value)
-            }
-        }
-    },
-    setup(props) {
+    setup() {
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
@@ -110,8 +86,7 @@ export default defineComponent({
 
         onBeforeMount(getMats);
 
-        // pour the data in
-        const data = reactive([]);
+        let checkedRows = [];
 
         const triggerModal = async () => {
             $("body").loadingModal({
@@ -178,164 +153,14 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         }); // watch for data change
 
-        // Table config
-        const table = reactive({
-            isLoading: false,
-            columns: [
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.isn"
-                    ),
-                    field: "料號",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="isn' +
-                            row.id +
-                            '" name="isn' +
-                            row.id +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.料號 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.pName"
-                    ),
-                    field: "品名",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="name' +
-                            i +
-                            '" name="name' +
-                            i +
-                            '" value="' +
-                            row.品名 +
-                            '">' +
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.品名 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.buyamount1"
-                    ),
-                    field: "請購數量",
-                    width: "12ch",
-                    sortable: true,
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.realpickamount"
-                    ),
-                    field: "實際領用數量",
-                    width: "10ch",
-                    sortable: true,
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "callpageLang.req_vs_real"
-                    ),
-                    field: "需求與領用差異量",
-                    width: "13ch",
-                    sortable: true,
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "callpageLang.req_vs_real_percent"
-                    ),
-                    field: "需求與領用差異",
-                    width: "13ch",
-                    sortable: true,
-                },
-            ],
-            rows: computed(() => {
-                if (props.modelValue !== undefined) {
-                    return data.filter((x) =>
-                        x.料號
-                            .toLowerCase()
-                            .includes(props.modelValue.toLowerCase()) ||
-                        x.品名
-                            .includes(props.modelValue)
-                    );
-                } else {
-                    return data;
-                } // if else
-            }),
-            totalRecordCount: computed(() => {
-                return table.rows.length;
-            }),
-            sortable: {
-                order: "id",
-                sort: "asc",
-            },
-            messages: {
-                pagingInfo:
-                    app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.now_showing"
-                    ) +
-                    " {0} ~ {1} " +
-                    app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.record"
-                    ) +
-                    ", " +
-                    app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.total"
-                    ) +
-                    " {2} " +
-                    app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.record"
-                    ),
-                pageSizeChangeLabel: app.appContext.config.globalProperties.$t(
-                    "basicInfoLang.records_per_page"
-                ),
-                gotoPageLabel: app.appContext.config.globalProperties.$t(
-                    "basicInfoLang.go_to_page"
-                ),
-                noDateAvailable: app.appContext.config.globalProperties.$t(
-                    "basicInfoLang.search_with_no_data_returned"
-                ),
-            },
-            pageOptions: [
-                {
-                    value: 10,
-                    text: 10,
-                },
-                {
-                    value: 20,
-                    text: 20,
-                },
-                {
-                    value: 40,
-                    text: 40,
-                },
-                {
-                    value: 60,
-                    text: 60,
-                },
-            ],
-        });
-
         const updateCheckedRows = (rowsKey) => {
-            // console.log(rowsKey); // test
             checkedRows = rowsKey;
+            // console.log(checkedRows); // test
         };
 
         return {
-            props,
             table,
+            searchTerm,
             updateCheckedRows,
             OutputExcelClick,
         };

@@ -1,32 +1,11 @@
 <template>
-    <div class="card-header">
-        <div class="row w-100 justify-content-center">
-            <div class="col col-auto">
-                <input class="text-center form-control form-control-lg"
-                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
-            </div>
-        </div>
-    </div>
     <div class="card-body">
-        <Line :data="data" :options="options" />
+        <Chart ref="chartRef" type="line" :data="data" :options="options" @click="onClick" />
     </div>
 </template>
 
 <script>
-import {
-    Chart as ChartJS,
-    Title,
-    Tooltip,
-    Legend,
-    PointElement,
-    BarElement,
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    Colors,
-    Filler
-} from 'chart.js';
-import { Line } from 'vue-chartjs';
+import { searchTerm, data, table } from '../../composables/DiffTableStore.js'
 import * as XLSX from 'xlsx';
 import { defineComponent, reactive, ref, computed } from "vue";
 import {
@@ -35,30 +14,32 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
+import {
+    Chart as ChartJS,
+    Title,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    InteractionItem,
+    LineElement,
+    PointElement,
+    Filler
+} from 'chart.js';
+import {
+    Chart,
+    getDatasetAtEvent,
+    getElementAtEvent,
+    getElementsAtEvent
+} from 'vue-chartjs';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Colors, Filler)
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Filler, Title, Tooltip, Legend);
 
 export default {
     name: 'App',
-    components: { Line },
-    props: ['modelValue'],
-    emits: ['update:modelValue'],
-    computed: {
-        searchTerm: {
-            get() {
-                return this.modelValue
-            },
-            set(value) {
-                this.$emit('update:modelValue', value)
-            }
-        }
-    },
-    // setup(props) {
-    //     return {
-    //         props,
-    //     }
-    // },
-    data() {
+    components: { Chart },
+    setup() {
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
@@ -66,7 +47,53 @@ export default {
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
+        const datasetAtEvent = (dataset) => {
+            if (!dataset.length) return
+
+            const datasetIndex = dataset[0].datasetIndex
+
+            console.log('dataset', data.datasets[datasetIndex].label)
+        } // datasetAtEvent
+
+        const elementAtEvent = (element) => {
+            if (!element.length) return
+
+            const { datasetIndex, index } = element[0]
+
+            console.log(
+                'element',
+                data.labels[index],
+                data.datasets[datasetIndex].data[index]
+            )
+        } // elementAtEvent
+
+        const elementsAtEvent = (elements) => {
+            if (!elements.length) return
+
+            console.log('elements', elements)
+        } // elementsAtEvent
+
+        const chartRef = ref(null);
+
+        const onClick = (event) => {
+            const {
+                value: { chart }
+            } = chartRef
+
+            if (!chart) {
+                return
+            }
+
+            console.log(chart); // test
+            console.log(JSON.stringify(getElementAtEvent(chart, event))); // test 
+            datasetAtEvent(getDatasetAtEvent(chart, event));
+            elementAtEvent(getElementAtEvent(chart, event));
+            elementsAtEvent(getElementsAtEvent(chart, event));
+        } // onClick
+
         return {
+            chartRef,
+            onClick,
             data: {
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [
@@ -100,8 +127,9 @@ export default {
                     intersect: false,
                 },
                 responsive: true,
-                maintainAspectRatio: false
-            }
+                maintainAspectRatio: false,
+            },
+            searchTerm, // test
         }
     }
 }
