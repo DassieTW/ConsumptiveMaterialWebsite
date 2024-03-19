@@ -10,7 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../admin/img/icons/icon-48x48.png" />
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
-
+    {{-- local lang for js --}}
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
+    
     <!-- Styles -->
     <style>
         /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */

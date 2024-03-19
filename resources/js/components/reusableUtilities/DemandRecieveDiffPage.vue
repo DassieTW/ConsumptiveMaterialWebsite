@@ -3,9 +3,6 @@
         <ChartJSLine></ChartJSLine>
     </div>
     <div class="card w-100">
-        <div class="card-header">
-            <h3>{{ $t("callpageLang.diffalert") }}</h3>
-        </div>
         <div class="card-body">
             <DemandRecieveDiffTable></DemandRecieveDiffTable>
         </div>

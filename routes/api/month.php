@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\在途量;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +12,6 @@ use App\Models\在途量;
 |
 |
 */
-
 // get the info
 Route::post('/sxb', 'api\MonthlyPRController@showSXB');
 

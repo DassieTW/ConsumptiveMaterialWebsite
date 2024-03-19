@@ -66,10 +66,10 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import { searchTerm, data, table } from '../../composables/DiffTableStore.js';
+import { yearTag, monthTag, checkedRows, searchTerm, data, table } from '../../composables/DiffTableStore.js';
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
-import useTransitSearch from "../../composables/TransitSearch.ts";
+import useDiffSearch from "../../composables/DiffSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
 export default defineComponent({
     name: "App",
@@ -82,11 +82,9 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, getMats } = useTransitSearch(); // axios get the mats data
+        const { mats, getMats } = useDiffSearch(); // axios get the mats data
 
         onBeforeMount(getMats);
-
-        let checkedRows = [];
 
         const triggerModal = async () => {
             $("body").loadingModal({
@@ -154,8 +152,9 @@ export default defineComponent({
         }); // watch for data change
 
         const updateCheckedRows = (rowsKey) => {
-            checkedRows = rowsKey;
-            // console.log(checkedRows); // test
+            checkedRows.length = 0;
+            checkedRows.push(...rowsKey);
+            console.log(checkedRows); // test
         };
 
         return {

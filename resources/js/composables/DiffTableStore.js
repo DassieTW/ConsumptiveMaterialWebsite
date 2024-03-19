@@ -1,5 +1,9 @@
 import { ref, Ref, reactive, computed } from "vue";
 
+export const yearTag = ref("");
+export const monthTag = ref("");
+export const checkedRows = reactive([]);
+
 export const searchTerm = ref(""); // Search text
 export const data = reactive([]);
 export const table = reactive({

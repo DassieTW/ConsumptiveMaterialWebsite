@@ -17,6 +17,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
+    {{-- local lang for js --}}
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
 </head>
 
 <body>

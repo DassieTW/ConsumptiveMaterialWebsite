@@ -26,6 +26,8 @@
             window.history.replaceState(null, null, window.location.href);
         } // if
     </script>
+    {{-- local lang for js --}}
+    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
@@ -183,7 +185,6 @@
         </div>
     </main>
 
-    <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('js/popupNotice.js?v=') . env('APP_VERSION') }}"></script>
     <script src="{{ asset('/js/login/login.js?v=') . env('APP_VERSION') }}"></script>
 </body>

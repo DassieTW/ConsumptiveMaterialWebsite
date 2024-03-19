@@ -92,7 +92,6 @@
                                     <tr id="data{{ $loop->index }}" class="isnRows">
                                         <td>{!! __('callpageLang.ismonth') !!}</td>
                                         <td>{{ $data->料號 }}</td>
-                                        <input type="hidden" id="client{{ $loop->index }}" value="{{ $data->客戶別 }}">
                                         <input type="hidden" id="number{{ $loop->index }}" value="{{ $data->料號 }}">
                                         <td>{{ $data->品名 }}</td>
                                         <td>{{ $data->規格 }}</td>

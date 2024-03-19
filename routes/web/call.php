@@ -19,50 +19,41 @@ Route::get('/', [CallController::class, 'index'])->name('call.index')->middlewar
 //安全庫存警報頁面
 Route::get('/safe', function () {
 
-    $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號 '))->groupBy('客戶別', '料號');
+    $inventorys = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存, 料號'))->groupBy('料號');
     $datas = DB::table('月請購_單耗')
         ->join('MPS', function ($join) {
-            $join->on('MPS.客戶別', '=', '月請購_單耗.客戶別')
-                ->on('MPS.機種', '=', '月請購_單耗.機種')
-                ->on('MPS.製程', '=', '月請購_單耗.製程');
+            $join->on('MPS.料號90', '=', '月請購_單耗.料號90');
         })
         ->join('consumptive_material', function ($join) {
             $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
         })
         ->leftJoinSub($inventorys, 'suminventory', function ($join) {
-            $join->on('月請購_單耗.客戶別', '=', 'suminventory.客戶別');
             $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
         })
-
         ->select(
-            '月請購_單耗.客戶別',
             'consumptive_material.料號',
             'consumptive_material.品名',
             'consumptive_material.規格',
             'consumptive_material.LT',
             'consumptive_material.月請購',
             'consumptive_material.安全庫存',
-            // 'consumptive_material.耗材歸屬',
             '月請購_單耗.單耗',
             'MPS.下月MPS',
             'MPS.下月生產天數',
             'inventory現有庫存',
         )->groupBy(
-            '月請購_單耗.客戶別',
             'consumptive_material.料號',
             'consumptive_material.品名',
             'consumptive_material.規格',
             'consumptive_material.LT',
             'consumptive_material.月請購',
             'consumptive_material.安全庫存',
-            // 'consumptive_material.耗材歸屬',
             '月請購_單耗.單耗',
             'MPS.下月MPS',
             'MPS.下月生產天數',
             'inventory現有庫存',
         )
         ->where('consumptive_material.月請購', '=', "是")
-        // ->where('consumptive_material.耗材歸屬', '=', "單耗")
         ->where('月請購_單耗.狀態', '=', "已完成")
         ->get()->toArray();
 
@@ -76,7 +67,7 @@ Route::get('/safe', function () {
     for ($a = 0; $a < $count; $a++) {
         for ($i = $a; $i + 1 < $count; $i++) {
             if ((isset($datas[$a])) && (isset($datas[$i + 1]))) {
-                if ($datas[$a]->客戶別 === $datas[$i + 1]->客戶別 && $datas[$a]->料號 === $datas[$i + 1]->料號) {
+                if ($datas[$a]->料號 === $datas[$i + 1]->料號) {
                     $datas[$a]->安全庫存 += $datas[$i + 1]->安全庫存;
                     unset($datas[$i + 1]);
                     $datas = array_values($datas);
@@ -92,7 +83,7 @@ Route::get('/safe', function () {
     }
     $datas = array_values($datas);
 
-    $inventorys1 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 客戶別 , 料號'))->groupBy('客戶別', '料號');
+    $inventorys1 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 , 料號'))->groupBy('料號');
     $datas1 = DB::table('月請購_站位')
         ->join('MPS', function ($join) {
             $join->on('MPS.客戶別', '=', '月請購_站位.客戶別')
@@ -103,12 +94,10 @@ Route::get('/safe', function () {
             $join->on('consumptive_material.料號', '=', '月請購_站位.料號');
         })
         ->leftJoinSub($inventorys1, 'suminventory', function ($join) {
-            $join->on('月請購_站位.客戶別', '=', 'suminventory.客戶別');
             $join->on('月請購_站位.料號', '=', 'suminventory.料號');
         })
 
         ->select(
-            '月請購_站位.客戶別',
             'consumptive_material.料號',
             'consumptive_material.品名',
             'consumptive_material.規格',
@@ -116,7 +105,6 @@ Route::get('/safe', function () {
             'consumptive_material.月請購',
             'consumptive_material.MPQ',
             'consumptive_material.安全庫存',
-            // 'consumptive_material.耗材歸屬',
             '月請購_站位.下月站位人數',
             '月請購_站位.下月開線數',
             '月請購_站位.下月開班數',
@@ -124,7 +112,6 @@ Route::get('/safe', function () {
             '月請購_站位.下月每日更換頻率',
             'inventory現有庫存',
         )->groupBy(
-            '月請購_站位.客戶別',
             'consumptive_material.料號',
             'consumptive_material.品名',
             'consumptive_material.規格',
@@ -132,7 +119,6 @@ Route::get('/safe', function () {
             'consumptive_material.月請購',
             'consumptive_material.MPQ',
             'consumptive_material.安全庫存',
-            // 'consumptive_material.耗材歸屬',
             '月請購_站位.下月站位人數',
             '月請購_站位.下月開線數',
             '月請購_站位.下月開班數',
@@ -155,7 +141,7 @@ Route::get('/safe', function () {
     for ($a = 0; $a < $count1; $a++) {
         for ($i = $a; $i + 1 < $count1; $i++) {
             if ((isset($datas1[$a])) && (isset($datas1[$i + 1]))) {
-                if ($datas1[$a]->客戶別 === $datas1[$i + 1]->客戶別 && $datas1[$a]->料號 === $datas1[$i + 1]->料號) {
+                if ($datas1[$a]->料號 === $datas1[$i + 1]->料號) {
                     $datas1[$a]->安全庫存 += $datas1[$i + 1]->安全庫存;
                     unset($datas1[$i + 1]);
                     $datas1 = array_values($datas1);
@@ -171,13 +157,12 @@ Route::get('/safe', function () {
     }
     $datas1 = array_values($datas1);
 
-    $inventorys2 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存 ,客戶別  ,料號'))->groupBy('客戶別', '料號');
+    $inventorys2 = DB::table('inventory')->select(DB::raw('sum(現有庫存) as inventory現有庫存,料號'))->groupBy('料號');
     $datas2 = DB::table('consumptive_material')
         ->leftJoinSub($inventorys2, 'suminventory', function ($join) {
             $join->on('consumptive_material.料號', '=', 'suminventory.料號');
         })
         ->select(
-            '客戶別',
             'consumptive_material.料號',
             'consumptive_material.品名',
             'consumptive_material.規格',
@@ -185,7 +170,6 @@ Route::get('/safe', function () {
             'consumptive_material.月請購',
             'inventory現有庫存',
         )->groupBy(
-            '客戶別',
             'consumptive_material.料號',
             'consumptive_material.品名',
             'consumptive_material.規格',
@@ -222,14 +206,13 @@ Route::post('/safesubmit', [CallController::class, 'safesubmit'])->name('call.sa
 Route::get('/day', function () {
     $datas = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
         ->select(
-            'inventory.客戶別',
             'inventory.料號',
             DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
             DB::raw('sum(inventory.現有庫存) as inventory現有庫存'),
             'consumptive_material.品名',
             'consumptive_material.規格',
         )
-        ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格',)
+        ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格',)
         ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>90')
         ->havingRaw('sum(inventory.現有庫存) > ?', [0])
         ->get();

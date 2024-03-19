@@ -1,11 +1,14 @@
 <template>
+    <div class="card-header">
+        <h3>{{ $t("callpageLang.diffalert") }}</h3>
+    </div>
     <div class="card-body">
-        <Chart ref="chartRef" type="line" :data="data" :options="options" @click="onClick" />
+        <Chart ref="chartRef" type="line" :data="chartData" :options="options" @click="onClick" />
     </div>
 </template>
 
 <script>
-import { searchTerm, data, table } from '../../composables/DiffTableStore.js'
+import { yearTag, monthTag, checkedRows, data, table } from '../../composables/DiffTableStore.js';
 import * as XLSX from 'xlsx';
 import { defineComponent, reactive, ref, computed } from "vue";
 import {
@@ -52,7 +55,7 @@ export default {
 
             const datasetIndex = dataset[0].datasetIndex
 
-            console.log('dataset', data.datasets[datasetIndex].label)
+            console.log('dataset', chartData.datasets[datasetIndex].label)
         } // datasetAtEvent
 
         const elementAtEvent = (element) => {
@@ -62,8 +65,8 @@ export default {
 
             console.log(
                 'element',
-                data.labels[index],
-                data.datasets[datasetIndex].data[index]
+                chartData.labels[index],
+                chartData.datasets[datasetIndex].data[index]
             )
         } // elementAtEvent
 
@@ -82,54 +85,55 @@ export default {
 
             if (!chart) {
                 return
-            }
+            } // if
 
-            console.log(chart); // test
-            console.log(JSON.stringify(getElementAtEvent(chart, event))); // test 
-            datasetAtEvent(getDatasetAtEvent(chart, event));
+            // datasetAtEvent(getDatasetAtEvent(chart, event));
             elementAtEvent(getElementAtEvent(chart, event));
-            elementsAtEvent(getElementsAtEvent(chart, event));
+            // elementsAtEvent(getElementsAtEvent(chart, event));
         } // onClick
+
+        const chartData = {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [
+                {
+                    label: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount1") + "(USD)",
+                    borderColor: 'rgb(9, 116, 230)',
+                    backgroundColor: 'rgba(9, 116, 230, 0.5)',
+                    pointStyle: 'rect',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount") + "(USD)",
+                    borderColor: 'rgb(245, 44, 44)',
+                    backgroundColor: 'rgba(245, 44, 44, 0.5)',
+                    pointStyle: 'rect',
+                    fill: '-1',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+                },
+                // {
+                //     type: 'bar',
+                //     label: 'Bar',
+                //     backgroundColor: '#ff9991',
+                //     data: [10, 20, 30, 40, 90, 100, 50, 1, 40, 90, 100, 5]
+                // },
+            ],
+        };
+        const options = {
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            // radius: 10,
+            hoverRadius: 10,
+        };
 
         return {
             chartRef,
             onClick,
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                datasets: [
-                    {
-                        label: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount1") + "(USD)",
-                        borderColor: 'rgb(9, 116, 230)',
-                        backgroundColor: 'rgba(9, 116, 230, 0.5)',
-                        pointStyle: 'rect',
-                        // fill: '1',
-                        data: [19, 67, 88, 21, 90, 90, 78, 5, 50, 60, 10, 90],
-                    },
-                    {
-                        label: app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount") + "(USD)",
-                        borderColor: 'rgb(245, 44, 44)',
-                        backgroundColor: 'rgba(245, 44, 44, 0.5)',
-                        pointStyle: 'rect',
-                        fill: '-1',
-                        data: [50, 60, 10, 40, 90, 100, 78, 5, 50, 60, 10, 90],
-                    },
-                    // {
-                    //     type: 'bar',
-                    //     label: 'Bar',
-                    //     backgroundColor: '#ff9991',
-                    //     data: [10, 20, 30, 40, 90, 100, 50, 1, 40, 90, 100, 5]
-                    // },
-                ],
-            },
-            options: {
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                responsive: true,
-                maintainAspectRatio: false,
-            },
-            searchTerm, // test
+            chartData,
+            options,
         }
     }
 }
