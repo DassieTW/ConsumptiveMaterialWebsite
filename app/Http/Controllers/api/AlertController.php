@@ -73,7 +73,7 @@ class AlertController extends Controller
             dd($e);
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
         } // try - catch
-    } // checkIfUnitConsumptionExist
+    } // showYearlyDiff
 
     /**
      * Store a newly created resource in storage.

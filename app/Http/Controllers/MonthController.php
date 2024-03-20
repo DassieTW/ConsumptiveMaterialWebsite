@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Login;
-use App\Models\客戶別;
-use App\Models\機種;
-use App\Models\製程;
 use App\Models\線別;
 use App\Models\領用原因;
 use App\Models\退回原因;
@@ -75,9 +72,6 @@ class MonthController extends Controller
             }) //->wherenull('月請購_站位.deleted_at')
             ->where('consumptive_material.料號', 'like', $number . '%')
             ->where('consumptive_material.發料部門', 'like', $send . '%')
-            ->where('月請購_站位.客戶別', 'like', $client . '%')
-            ->where('月請購_站位.機種', 'like', $machine . '%')
-            ->where('月請購_站位.製程', 'like', $production . '%')
             ->get();
         $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
 
@@ -574,7 +568,6 @@ class MonthController extends Controller
                 $machine = $Alldata[3][$i];
                 $production = $Alldata[4][$i];
                 $number = $Alldata[0][$i];
-
                 $check = $Alldata[15][$i];
                 if ($check) {
                     月請購_站位::where('客戶別', $client)

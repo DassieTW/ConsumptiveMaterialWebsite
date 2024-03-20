@@ -3,27 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Login;
-use App\Models\客戶別;
-use App\Models\機種;
-use App\Models\製程;
-use App\Models\線別;
-use App\Models\領用原因;
-use App\Models\退回原因;
-use App\Models\入庫原因;
-use App\Models\Outbound;
-use App\Models\出庫退料;
-use App\Models\儲位;
-use App\Models\在途量;
 use App\Models\Inventory;
-use App\Models\不良品Inventory;
-use App\Models\Inbound;
-use App\Models\ConsumptiveMaterial;
-use App\Models\請購單;
-use App\Models\月請購_單耗;
-use App\Models\月請購_站位;
-use App\Models\非月請購;
-use App\Models\MPS;
 use DB;
 use Session;
 use Route;
@@ -178,7 +158,6 @@ class CallController extends Controller
 
         $datas = Inventory::join('consumptive_material', 'consumptive_material.料號', "=", 'inventory.料號')
             ->select(
-                'inventory.客戶別',
                 'inventory.料號',
                 DB::raw('max(inventory.最後更新時間) as inventory最後更新時間'),
                 DB::raw('sum(inventory.現有庫存) as inventory現有庫存'),
@@ -188,9 +167,8 @@ class CallController extends Controller
             )
             ->leftjoin('sluggish報警備註', function ($join) {
                 $join->on('sluggish報警備註.料號', '=', 'inventory.料號');
-                $join->on('sluggish報警備註.客戶別', '=', 'inventory.客戶別');
             })
-            ->groupBy('inventory.客戶別', 'inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'sluggish報警備註.備註')
+            ->groupBy('inventory.料號', 'consumptive_material.品名', 'consumptive_material.規格', 'sluggish報警備註.備註')
             ->havingRaw('DATEDIFF(dd,max(inventory.最後更新時間),getdate())>90')
             ->havingRaw('sum(inventory.現有庫存) > ?', [0])
             ->where('consumptive_material.發料部門', 'like', $send . '%')

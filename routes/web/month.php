@@ -42,7 +42,7 @@ Route::get('/', function () {
 
 //匯入非月請購資料頁面
 Route::get('/importnotmonth', function () {
-    return view('month.importnotmonth')->with(['client' => 客戶別::cursor()]);
+    return view('month.importnotmonth');
 })->name('month.importnotmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //匯入月請購資料頁面

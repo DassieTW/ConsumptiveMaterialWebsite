@@ -173,7 +173,6 @@ class InventoryCheckService
                 ->where('單號', '=', $serialNum)
                 ->where('料號', '=', $isn)
                 ->where('儲位', '=', $loc)
-                ->where('客戶別', '=', $client)
                 ->update(['盤點' => $checkUpdate, 'updated_at' => $datetime, 'updated_by' => \Auth::user()->username]);
 
             DB::commit();
@@ -193,7 +192,7 @@ class InventoryCheckService
     {
         DB::beginTransaction();
         $results = DB::table('inventory')
-            ->select('料號', '現有庫存', '儲位', '客戶別')
+            ->select('料號', '現有庫存', '儲位')
             ->get();
 
         $datetimeOfSerial = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
@@ -212,7 +211,6 @@ class InventoryCheckService
                         '料號' => $result->料號,
                         '現有庫存' => $result->現有庫存,
                         '儲位' => $result->儲位,
-                        '客戶別' => $result->客戶別,
                         'created_at' => $datetime,
                         'updated_at' => $datetime,
                     ]);

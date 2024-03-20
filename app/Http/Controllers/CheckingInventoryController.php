@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Checking_inventory;
-use App\Models\客戶別;
 use App\Models\發料部門;
 use App\Models\製程;
 use App\Models\領用原因;

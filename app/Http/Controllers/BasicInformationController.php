@@ -48,27 +48,6 @@ class BasicInformationController extends Controller
             $table = "廠別";
             $errnew = "factorynew";
         }
-        //client
-        else if ($request->input('dataname') === "client") {
-            $choose = "App\Models\客戶別";
-            $chooseindex = '客戶';
-            $table = "客戶別";
-            $errnew = "clientnew";
-        }
-        //machine
-        else if ($request->input('dataname') === "machine") {
-            $choose = "App\Models\機種";
-            $chooseindex = '機種';
-            $table = "機種";
-            $errnew = "machinenew";
-        }
-        //production
-        else if ($request->input('dataname') === "production") {
-            $choose = "App\Models\製程";
-            $chooseindex = '制程';
-            $table = "製程";
-            $errnew = "productionnew";
-        }
         //line
         else if ($request->input('dataname') === "line") {
             $choose = "App\Models\線別";
@@ -201,7 +180,7 @@ class BasicInformationController extends Controller
 
 
         if (
-            $choose !== "廠別" && $choose !== "客戶別" && $choose !== "機種"  && $choose !== "製程" && $choose !== "線別" && $choose !== "領用部門"
+            $choose !== "廠別" && $choose !== "線別" && $choose !== "領用部門"
             && $choose !== "領用原因" && $choose !== "入庫原因" && $choose !== "儲位" && $choose !== "發料部門" && $choose !== "O庫" && $choose !== "退回原因"
         ) {
             $mess = trans('basicInfoLang.uploaderror');
@@ -226,19 +205,13 @@ class BasicInformationController extends Controller
         $check = array();
         $test  = [];
 
-        if ($choose == '客戶別') {
-            $chooseindex = '客戶';
-            // $table = "App\Models\客戶別";
-        } else if ($choose == '儲位') {
+        if ($choose == '儲位') {
             $chooseindex = '儲存位置';
             // $table = "App\Models\儲位";
-        } else if ($choose == '製程') {
-            $chooseindex = '制程';
-            // $table = "App\Models\製程";
         } else {
             $chooseindex = $choose;
             // $table = "App\Models" . "\\" . $choose;
-        }
+        } // if else
 
         DB::beginTransaction();
         try {
