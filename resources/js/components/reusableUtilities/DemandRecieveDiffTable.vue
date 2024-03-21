@@ -133,7 +133,7 @@ export default defineComponent({
 
         watch(mats, async () => {
             await triggerModal();
-            data.splice(0);
+            data.splice(0); // clean up possible old records
             if (mats.value == "") {
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
@@ -141,7 +141,8 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(mats.value);
-            // console.log(allRowsObj.data); // test
+            console.log(allRowsObj); // test
+            return; // test
             for (let i = 0; i < allRowsObj.data.length; i++) {
                 allRowsObj.data[i].id = i;
                 data.push(allRowsObj.data[i]);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use DB;
 use Exception;
 use Sentry\Util\JSON;
 use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
@@ -26,49 +27,27 @@ class AlertController extends Controller
     public function index()
     {
         //
-    }
+    } // index
 
     public function showYearlyDiff(Request $request)
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
-        
+
         $yearTag = $request->input('Year');
-        dd($yearTag); // test
-        $number = json_decode($request->input('number'));
-        $number90 = json_decode($request->input('number90'));
-        $data_length = count($number90);
-        $mergedResult = "";
-        // chunk the parameter array first so it doesnt exceed the MSSQL parameters hard limit
-        $whole_load_of_number = array_chunk($number, 100, false);
-        $whole_load_of_number90 = array_chunk($number90, 100, false);
         try {
-            for ($i = 0; $i < count($whole_load_of_number); $i++) {
-                // loop thru each chunk
-                $query = \DB::table('月請購_單耗');
-                for ($j = 0; $j < count($whole_load_of_number[$i]); $j++) {
-                    $single_isn =  $whole_load_of_number[$i][$j];
-                    $single_isn90 = $whole_load_of_number90[$i][$j];
-                    $query->orWhere(
-                        function ($semiquery) use ($single_isn, $single_isn90) {
-                            $semiquery->where('料號', '=', $single_isn)
-                                ->where('料號90', '=', $single_isn90);
-                        } // function
-                    );
-                } // for
+            $result_buylist = DB::table('請購單')
+                ->where('SRM單號', '=', '已完成')
+                ->whereYear('請購時間', $yearTag)
+                ->get();
 
-                $result = $query->get(['料號', '料號90', '單耗', '狀態']);
-                if ($mergedResult === "") {
-                    $mergedResult = $result;
-                } // if
-                else {
-                    $mergedResult = $result->merge($mergedResult);
-                } // else
-            } //for
+            $result_inbound = DB::table('inbound')
+                ->whereYear('入庫時間', $yearTag)
+                ->get();
 
-            // dd($mergedResult); // test
-            return \Response::json(['data' => $mergedResult->all()], 200 /* Status code here default is 200 ok*/);
+            // dd($result_inbound); // test
+            return \Response::json(['buylist' => $result_buylist, 'inbound' => $result_inbound], 200 /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             dd($e);
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
@@ -81,7 +60,7 @@ class AlertController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
+
 
     /**
      * Display the specified resource.
@@ -246,5 +225,4 @@ class AlertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    
 } // AlertController
