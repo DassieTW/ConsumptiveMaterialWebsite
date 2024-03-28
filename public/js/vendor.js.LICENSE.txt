@@ -28,9 +28,16 @@
  */
 
 /*!
- * Chart.js v2.9.4
+ * @kurkle/color v0.3.2
+ * https://github.com/kurkle/color#readme
+ * (c) 2023 Jukka Kurkela
+ * Released under the MIT License
+ */
+
+/*!
+ * Chart.js v4.4.2
  * https://www.chartjs.org
- * (c) 2020 Chart.js Contributors
+ * (c) 2024 Chart.js Contributors
  * Released under the MIT License
  */
 
@@ -58,6 +65,8 @@
  *
  * Date: 2022-08-26T17:52Z
  */
+
+/*! #__NO_SIDE_EFFECTS__ */
 
 /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -592,6 +601,18 @@ PERFORMANCE OF THIS SOFTWARE.
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
 
+/**
+* @vue/runtime-core v3.4.21
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
+* @license MIT
+**/
+
+/**
+* @vue/shared v3.4.21
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
+* @license MIT
+**/
+
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
  * @version 1.16.1
@@ -616,7 +637,3 @@ PERFORMANCE OF THIS SOFTWARE.
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-//! moment.js
-
-//! moment.js locale configuration
