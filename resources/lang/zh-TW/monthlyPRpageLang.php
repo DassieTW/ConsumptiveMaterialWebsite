@@ -164,4 +164,5 @@ return [
     'review_cancel' => '退單',
     'review_complete' => '簽核完成',
     'status' => '狀態',
+    'months' => '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月',
 ];

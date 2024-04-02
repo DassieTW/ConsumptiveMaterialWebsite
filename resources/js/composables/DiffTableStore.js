@@ -1,6 +1,6 @@
 import { ref, Ref, reactive, computed } from "vue";
-
-export const yearTag = ref("");
+let d = new Date();
+export const yearTag = ref(d.getFullYear());
 export const monthTag = ref("");
 export const checkedRows = reactive([]);
 

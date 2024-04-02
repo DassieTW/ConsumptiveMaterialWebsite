@@ -170,4 +170,5 @@ return [
     'review_cancel' => 'Reject',
     'review_complete' => 'Approve',
     'status' => 'Status',
+    'months' => 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec',
 ];

@@ -142,6 +142,8 @@ export default defineComponent({
 
             let allRowsObj = JSON.parse(mats.value);
             console.log(allRowsObj); // test
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
             return; // test
             for (let i = 0; i < allRowsObj.data.length; i++) {
                 allRowsObj.data[i].id = i;

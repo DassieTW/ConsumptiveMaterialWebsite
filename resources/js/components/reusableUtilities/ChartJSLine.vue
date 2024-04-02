@@ -1,9 +1,15 @@
 <template>
-    <div class="card-header">
-        <h3>{{ $t("callpageLang.diffalert") }}</h3>
+    <div class="card-header row align-items-center">
+        <div class="col col-2">
+            <input class="text-center m-0 p-0 form-control form-control-lg" type="number" min="1996"
+                v-model="yearTag" />
+        </div>
+        <h3 class="col col-auto align-middle m-0 p-0">
+            {{ $t("callpageLang.diffalert") }}
+        </h3>
     </div>
     <div class="card-body">
-        <Chart ref="chartRef" type="line" :data="chartData" :options="options" @click="onClick" />
+        <Line ref="chartRef" :data="chartData" :options="options" @click="onClick" />
     </div>
 </template>
 
@@ -32,6 +38,7 @@ import {
 } from 'chart.js';
 import {
     Chart,
+    Line,
     getDatasetAtEvent,
     getElementAtEvent,
     getElementsAtEvent
@@ -41,7 +48,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointEleme
 
 export default {
     name: 'App',
-    components: { Chart },
+    components: { Line },
     setup() {
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
@@ -55,7 +62,7 @@ export default {
 
             const datasetIndex = dataset[0].datasetIndex
 
-            console.log('dataset', chartData.datasets[datasetIndex].label)
+            console.log('dataset', chartData.value.datasets[datasetIndex].label)
         } // datasetAtEvent
 
         const elementAtEvent = (element) => {
@@ -65,9 +72,9 @@ export default {
 
             console.log(
                 'element',
-                chartData.labels[index],
-                chartData.datasets[datasetIndex].data[index]
-            )
+                chartData.value.labels[index],
+                chartData.value.datasets[datasetIndex].data[index]
+            );
         } // elementAtEvent
 
         const elementsAtEvent = (elements) => {
@@ -92,15 +99,33 @@ export default {
             // elementsAtEvent(getElementsAtEvent(chart, event));
         } // onClick
 
-        const chartData = {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        const datasetBuyQty = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        const datasetRealQty = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        const date = new Date();
+        const currentMonth = date.getMonth();
+        const currentYear = date.getFullYear();
+        const monthList = ref(app.appContext.config.globalProperties.$t("monthlyPRpageLang.months").split('_'))
+        monthList.value.splice(currentMonth + 1, 12);
+        watch(yearTag, async () => {
+            if (parseInt(yearTag.value) == currentYear) {
+                let tempRef = app.appContext.config.globalProperties.$t("monthlyPRpageLang.months").split('_');
+                tempRef.splice(currentMonth + 1, 12);
+                monthList.value = tempRef;
+            } else {
+                monthList.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.months").split('_');
+            } // if else
+            // datasetBuyQty.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        }); // watch for data change
+
+        const chartData = computed(() => ({
+            labels: monthList.value,
             datasets: [
                 {
                     label: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount1") + "(USD)",
                     borderColor: 'rgb(9, 116, 230)',
                     backgroundColor: 'rgba(9, 116, 230, 0.5)',
                     pointStyle: 'rect',
-                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+                    data: datasetBuyQty.value,
                 },
                 {
                     label: app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount") + "(USD)",
@@ -108,7 +133,7 @@ export default {
                     backgroundColor: 'rgba(245, 44, 44, 0.5)',
                     pointStyle: 'rect',
                     fill: '-1',
-                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+                    data: datasetRealQty.value,
                 },
                 // {
                 //     type: 'bar',
@@ -117,7 +142,7 @@ export default {
                 //     data: [10, 20, 30, 40, 90, 100, 50, 1, 40, 90, 100, 5]
                 // },
             ],
-        };
+        }));
         const options = {
             interaction: {
                 mode: 'index',
@@ -134,7 +159,21 @@ export default {
             onClick,
             chartData,
             options,
+            yearTag
         }
     }
 }
 </script>
+<style scoped>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+</style>
