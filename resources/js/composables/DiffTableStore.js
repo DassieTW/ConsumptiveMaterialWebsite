@@ -1,8 +1,8 @@
 import { ref, Ref, reactive, computed } from "vue";
 let d = new Date();
-export const yearTag = ref(d.getFullYear());
-export const monthTag = ref("");
-export const checkedRows = reactive([]);
+export const yearTag = ref(d.getFullYear()); // default to current year
+export const monthTag = ref(d.getMonth()); // default to current month
+export const checkedRows = reactive([]); // store the checked rows on the table
 
 export const searchTerm = ref(""); // Search text
 export const data = reactive([]);
@@ -54,13 +54,6 @@ export const table = reactive({
             sortable: true,
         },
     ],
-    rows: computed(() => {
-        return data.filter(
-            (x) =>
-                x.料號.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-                x.品名.includes(searchTerm.value)
-        );
-    }),
     totalRecordCount: computed(() => {
         return table.rows.length;
     }),

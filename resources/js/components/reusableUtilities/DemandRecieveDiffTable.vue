@@ -145,6 +145,11 @@ export default defineComponent({
             } // if
         }); // watch year change
 
+        watch(monthTag, async () => {
+            // Jan is 0 in monthTag
+            console.log(monthTag.value); // test
+        }); // watch year change
+
         var all_data_sorted = {};
         watch(mats, async () => {
             await triggerModal();
@@ -160,11 +165,18 @@ export default defineComponent({
             console.log(allRowsObj); // test
 
             for (let i = 0; i < allRowsObj.buylist.length; i++) {
+                let singleEntry = {};
+                singleEntry.料號 = allRowsObj.buylist[i].料號;
+                singleEntry.料號 = allRowsObj.buylist[i].品名;
+                singleEntry.料號 = allRowsObj.buylist[i].請購數量;
+                singleEntry.料號 = allRowsObj.buylist[i].實際領用數量;
+                singleEntry.料號 = allRowsObj.buylist[i].需求與領用差異量;
+                singleEntry.料號 = allRowsObj.buylist[i].需求與領用差異;
                 data.push(allRowsObj.buylist[i]);
             } // for
 
             for (let i = 0; i < allRowsObj.inbound.length; i++) {
-                data.push(allRowsObj.inbound[i]);
+                // data.push(allRowsObj.inbound[i]);
             } // for
 
             $("body").loadingModal("hide");
@@ -176,6 +188,14 @@ export default defineComponent({
             checkedRows.push(...rowsKey);
             console.log(checkedRows); // test
         };
+
+        table.rows = computed(() => {
+            return data.filter(
+                (x) =>
+                    x.料號.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+                    x.品名.includes(searchTerm.value)
+            );
+        })
 
         return {
             table,

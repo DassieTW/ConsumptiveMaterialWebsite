@@ -70,11 +70,15 @@ export default {
 
             const { datasetIndex, index } = element[0]
 
-            console.log(
-                'element',
-                chartData.value.labels[index],
-                chartData.value.datasets[datasetIndex].data[index]
-            );
+            // console.log(
+            //     'element',
+            //     datasetIndex,
+            //     index,
+            //     chartData.value.labels[index],
+            //     chartData.value.datasets[datasetIndex].data[index]
+            // );
+
+            monthTag.value = index;
         } // elementAtEvent
 
         const elementsAtEvent = (elements) => {
