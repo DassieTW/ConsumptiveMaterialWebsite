@@ -131,8 +131,24 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // OutputExcelClick
 
+        watch(yearTag, async () => {
+            if (yearTag.value.toString().length == 4 && parseInt(yearTag.value) >= 1996) {
+                await triggerModal();
+
+                await getMats(yearTag.value);
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+            } // if
+            else {
+                // not a reachable year, do nothing
+            } // if
+        }); // watch year change
+
+        var all_data_sorted = {};
         watch(mats, async () => {
             await triggerModal();
+            all_data_sorted = {}; // clean up possible old records
             data.splice(0); // clean up possible old records
             if (mats.value == "") {
                 $("body").loadingModal("hide");
@@ -142,12 +158,13 @@ export default defineComponent({
 
             let allRowsObj = JSON.parse(mats.value);
             console.log(allRowsObj); // test
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
-            return; // test
-            for (let i = 0; i < allRowsObj.data.length; i++) {
-                allRowsObj.data[i].id = i;
-                data.push(allRowsObj.data[i]);
+
+            for (let i = 0; i < allRowsObj.buylist.length; i++) {
+                data.push(allRowsObj.buylist[i]);
+            } // for
+
+            for (let i = 0; i < allRowsObj.inbound.length; i++) {
+                data.push(allRowsObj.inbound[i]);
             } // for
 
             $("body").loadingModal("hide");
