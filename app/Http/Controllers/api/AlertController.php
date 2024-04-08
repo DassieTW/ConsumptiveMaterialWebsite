@@ -37,6 +37,12 @@ class AlertController extends Controller
 
         $yearTag = $request->input('Year');
         try {
+            $result_buylist_LastYearLastMonth = DB::table('請購單')
+                ->where('SRM單號', '=', '已完成')
+                ->whereYear('請購時間', $yearTag - 1)
+                ->whereMonth('請購時間', ">", 10)
+                ->get();
+
             $result_buylist = DB::table('請購單')
                 ->where('SRM單號', '=', '已完成')
                 ->whereYear('請購時間', $yearTag)
@@ -47,7 +53,7 @@ class AlertController extends Controller
                 ->get();
 
             // dd($result_inbound); // test
-            return \Response::json(['buylist' => $result_buylist, 'inbound' => $result_inbound], 200 /* Status code here default is 200 ok*/);
+            return \Response::json(['buylist_lastyear' => $result_buylist_LastYearLastMonth, 'buylist' => $result_buylist, 'inbound' => $result_inbound], 200 /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             dd($e);
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);

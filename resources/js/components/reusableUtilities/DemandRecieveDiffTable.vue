@@ -29,24 +29,24 @@
         <template v-slot:請購數量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
-                        }}</small>
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;
+                    <small>{{ row.單位 }}</small>
                 </span>
             </div>
         </template>
         <template v-slot:實際領用數量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
-                        }}</small>
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;
+                    <small>{{ row.單位 }}</small>
                 </span>
             </div>
         </template>
         <template v-slot:需求與領用差異量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;<small>{{ row.單位
-                        }}</small>
+                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;
+                    <small>{{ row.單位 }}</small>
                 </span>
             </div>
         </template>
@@ -103,7 +103,7 @@ export default defineComponent({
             // get today's date for filename
             let today = new Date();
             let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
             let yyyy = today.getFullYear();
             today = yyyy + "_" + mm + '_' + dd;
 
@@ -111,20 +111,21 @@ export default defineComponent({
             for (let i = 0; i < data.length; i++) {
                 let tempObj = new Object;
                 tempObj.料號 = data[i].料號;
-                tempObj.在途數量 = data[i].請購數量;
-                tempObj.說明 = data[i].說明;
-                tempObj.修改人員 = data[i].修改人員;
-                tempObj.最後更新時間 = data[i].最後更新時間;
+                tempObj.品名 = data[i].品名;
+                tempObj.請購數量 = data[i].請購數量;
+                tempObj.實際領用數量 = data[i].實際領用數量;
+                tempObj.需求與領用差異量 = data[i].需求與領用差異量;
+                tempObj.需求與領用差異 = data[i].需求與領用差異;
 
                 rows.push(tempObj);
             } // for
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.on_the_way_search"));
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"));
             XLSX.writeFile(workbook,
                 app.appContext.config.globalProperties.$t(
-                    "monthlyPRpageLang.on_the_way_search"
+                    "callpageLang.req_vs_real_percent"
                 ) + "_" + today + ".xlsx", { compression: true });
 
             $("body").loadingModal("hide");
@@ -150,10 +151,16 @@ export default defineComponent({
             console.log(monthTag.value); // test
         }); // watch year change
 
-        var all_data_sorted = {};
+        var all_data_sorted = {
+            buylist: [],
+            inbound: []
+        };
         watch(mats, async () => {
             await triggerModal();
-            all_data_sorted = {}; // clean up possible old records
+            all_data_sorted = {
+                buylist: [],
+                inbound: []
+            }; // clean up possible old records
             data.splice(0); // clean up possible old records
             if (mats.value == "") {
                 $("body").loadingModal("hide");
@@ -162,22 +169,78 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(mats.value);
+            allRowsObj.buylist = allRowsObj.buylist_lastyear.concat(allRowsObj.buylist);
+            delete allRowsObj["buylist_lastyear"]; // remove unused entry
             console.log(allRowsObj); // test
 
-            for (let i = 0; i < allRowsObj.buylist.length; i++) {
-                let singleEntry = {};
-                singleEntry.料號 = allRowsObj.buylist[i].料號;
-                singleEntry.料號 = allRowsObj.buylist[i].品名;
-                singleEntry.料號 = allRowsObj.buylist[i].請購數量;
-                singleEntry.料號 = allRowsObj.buylist[i].實際領用數量;
-                singleEntry.料號 = allRowsObj.buylist[i].需求與領用差異量;
-                singleEntry.料號 = allRowsObj.buylist[i].需求與領用差異;
-                data.push(allRowsObj.buylist[i]);
+            // sort the yearly buylist
+            for (let i = 0; i < 12; i++) {
+                let newArray;
+                if (i == 0) { // if its Jan, we need to count in Dec from last year as well
+                    newArray = allRowsObj.buylist.filter(function (el) {
+                        let sql_Date_To_JS_Date = new Date(el.請購時間.replace(' ', 'T'))
+                        return sql_Date_To_JS_Date.getMonth() == i;
+                    });
+                } // if
+                else {
+                    newArray = allRowsObj.buylist.filter(function (el) {
+
+                        let sql_Date_To_JS_Date = new Date(el.請購時間.replace(' ', 'T'))
+                        return sql_Date_To_JS_Date.getMonth() == i;
+                    });
+                } // else
+
+                // sum the entries with the same 料號
+                let sum_result = Object.values(newArray.reduce((acc, curr) => {
+                    let item = acc[curr.料號];
+
+                    if (item) {
+                        item.入庫數量 = parseInt(item.入庫數量) + parseInt(curr.入庫數量);
+                    } else {
+                        curr.入庫數量 = parseInt(curr.入庫數量);
+                        acc[curr.料號] = curr;
+                    } // if else
+
+                    return acc;
+                }, {}));
+
+                all_data_sorted.inbound[i] = sum_result;
             } // for
 
-            for (let i = 0; i < allRowsObj.inbound.length; i++) {
-                // data.push(allRowsObj.inbound[i]);
+            // sort the yearly inbound
+            for (let i = 0; i < 12; i++) {
+                let newArray = allRowsObj.inbound.filter(function (el) {
+                    let sql_Date_To_JS_Date = new Date(el.入庫時間.replace(' ', 'T'))
+                    return sql_Date_To_JS_Date.getMonth() == i;
+                });
+
+                // sum the entries with the same 料號
+                let sum_result = Object.values(newArray.reduce((acc, curr) => {
+                    let item = acc[curr.料號];
+
+                    if (item) {
+                        item.入庫數量 = parseInt(item.入庫數量) + parseInt(curr.入庫數量);
+                    } else {
+                        curr.入庫數量 = parseInt(curr.入庫數量);
+                        acc[curr.料號] = curr;
+                    } // if else
+
+                    return acc;
+                }, {}));
+
+                all_data_sorted.inbound[i] = sum_result;
             } // for
+
+            console.log(all_data_sorted); // test
+
+            let singleEntry = {};
+            // singleEntry.料號 = allRowsObj.buylist[i].料號;
+            // singleEntry.料號 = allRowsObj.buylist[i].品名;
+            // singleEntry.料號 = allRowsObj.buylist[i].請購數量;
+            // singleEntry.料號 = allRowsObj.buylist[i].實際領用數量;
+            // singleEntry.料號 = allRowsObj.buylist[i].需求與領用差異量;
+            // singleEntry.料號 = allRowsObj.buylist[i].需求與領用差異;
+            // data.push(allRowsObj.buylist[i]);
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
