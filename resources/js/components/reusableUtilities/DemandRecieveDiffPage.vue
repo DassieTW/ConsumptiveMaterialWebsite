@@ -3,9 +3,7 @@
         <ChartJSLine></ChartJSLine>
     </div>
     <div class="card w-100">
-        <div class="card-body">
-            <DemandRecieveDiffTable></DemandRecieveDiffTable>
-        </div>
+        <DemandRecieveDiffTable></DemandRecieveDiffTable>
     </div>
 </template>
 
@@ -37,7 +35,7 @@ export default defineComponent({
         //     console.log(checkedRows.value); // test
         // });
         return {
-            
+
         };
     }, // setup
 });

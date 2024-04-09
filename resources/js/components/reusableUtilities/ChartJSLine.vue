@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { yearTag, monthTag, checkedRows, data, table } from '../../composables/DiffTableStore.js';
+import { yearTag, monthTag, checkedRows, data, table, datasetBuyUSD, datasetRealUSD } from '../../composables/DiffTableStore.js';
 import * as XLSX from 'xlsx';
 import { defineComponent, reactive, ref, computed } from "vue";
 import {
@@ -103,12 +103,10 @@ export default {
             // elementsAtEvent(getElementsAtEvent(chart, event));
         } // onClick
 
-        const datasetBuyQty = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-        const datasetRealQty = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         const date = new Date();
         const currentMonth = date.getMonth();
         const currentYear = date.getFullYear();
-        const monthList = ref(app.appContext.config.globalProperties.$t("monthlyPRpageLang.months").split('_'))
+        const monthList = ref(app.appContext.config.globalProperties.$t("monthlyPRpageLang.months").split('_'));
         monthList.value.splice(currentMonth + 1, 12);
         watch(yearTag, async () => {
             if (parseInt(yearTag.value) == currentYear) {
@@ -118,7 +116,6 @@ export default {
             } else {
                 monthList.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.months").split('_');
             } // if else
-            // datasetBuyQty.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         }); // watch for data change
 
         const chartData = computed(() => ({
@@ -129,7 +126,7 @@ export default {
                     borderColor: 'rgb(9, 116, 230)',
                     backgroundColor: 'rgba(9, 116, 230, 0.5)',
                     pointStyle: 'rect',
-                    data: datasetBuyQty.value,
+                    data: datasetBuyUSD.value,
                 },
                 {
                     label: app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount") + "(USD)",
@@ -137,7 +134,7 @@ export default {
                     backgroundColor: 'rgba(245, 44, 44, 0.5)',
                     pointStyle: 'rect',
                     fill: '-1',
-                    data: datasetRealQty.value,
+                    data: datasetRealUSD.value,
                 },
                 // {
                 //     type: 'bar',

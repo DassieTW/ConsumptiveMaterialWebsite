@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Date;
 use DB;
 use Exception;
 use Sentry\Util\JSON;
@@ -34,13 +35,13 @@ class AlertController extends Controller
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
-
+        // dd($dbName); // test
         $yearTag = $request->input('Year');
         try {
             $result_buylist_LastYearLastMonth = DB::table('請購單')
                 ->where('SRM單號', '=', '已完成')
                 ->whereYear('請購時間', $yearTag - 1)
-                ->whereMonth('請購時間', ">", 10)
+                ->where('請購時間', '>=', date(strval($yearTag - 1) . "-11-01"))
                 ->get();
 
             $result_buylist = DB::table('請購單')
@@ -49,7 +50,24 @@ class AlertController extends Controller
                 ->get();
 
             $result_inbound = DB::table('inbound')
-                ->whereYear('入庫時間', $yearTag)
+                ->leftjoin('consumptive_material', function ($join) {
+                    $join->on('consumptive_material.料號', '=', 'inbound.料號');
+                })
+                ->select(
+                    'consumptive_material.料號',
+                    'consumptive_material.品名',
+                    'consumptive_material.單價',
+                    'consumptive_material.幣別',
+                    'consumptive_material.單位',
+                    'inbound.儲位',
+                    'inbound.入庫原因',
+                    'inbound.入庫數量',
+                    'inbound.入庫單號',
+                    'inbound.入庫人員',
+                    'inbound.入庫時間',
+                    'inbound.備註',
+                )
+                ->whereYear('inbound.入庫時間', $yearTag)
                 ->get();
 
             // dd($result_inbound); // test

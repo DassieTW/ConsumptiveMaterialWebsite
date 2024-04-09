@@ -4,6 +4,8 @@ export const yearTag = ref(d.getFullYear()); // default to current year
 export const monthTag = ref(d.getMonth()); // default to current month
 export const checkedRows = reactive([]); // store the checked rows on the table
 
+export const datasetBuyUSD = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+export const datasetRealUSD = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 export const searchTerm = ref(""); // Search text
 export const data = reactive([]);
 export const table = reactive({

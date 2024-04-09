@@ -1,61 +1,68 @@
 <template>
-    <div class="row justify-content-between">
-        <div class="row col col-auto">
-            <div class="col col-auto">
-                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
-            </div>
-            <div class="col col-auto p-0 m-0">
-                <input id="pnInput" class="text-center form-control form-control-lg"
-                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
-            </div>
-        </div>
-        <div class="col col-auto">
-            <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
-                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick('All')">
-                <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
-            </button>
-        </div>
+    <div class="card-header row align-items-center">
+        <h3 class="col col-auto align-middle m-0 p-0">
+            {{ yearTag + "-" + monthStr + " " + $t("callpageLang.diffalert") }}
+        </h3>
     </div>
-    <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-    <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="true" :isStaticMode="true"
-        :isSlotMode="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
-        :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-        @return-checked-rows="updateCheckedRows">
-        <template v-slot:料號="{ row, key }">
-            <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
-                {{ row.料號 }}
+    <div class="card-body">
+        <div class="row justify-content-between">
+            <div class="row col col-auto">
+                <div class="col col-auto">
+                    <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+                </div>
+                <div class="col col-auto p-0 m-0">
+                    <input id="pnInput" class="text-center form-control form-control-lg"
+                        v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
+                </div>
             </div>
-        </template>
-        <template v-slot:請購數量="{ row, key }">
-            <div class="col col-auto align-items-center m-0 p-0">
-                <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;
-                    <small>{{ row.單位 }}</small>
-                </span>
+            <div class="col col-auto">
+                <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                    :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick('All')">
+                    <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
+                </button>
             </div>
-        </template>
-        <template v-slot:實際領用數量="{ row, key }">
-            <div class="col col-auto align-items-center m-0 p-0">
-                <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;
-                    <small>{{ row.單位 }}</small>
-                </span>
-            </div>
-        </template>
-        <template v-slot:需求與領用差異量="{ row, key }">
-            <div class="col col-auto align-items-center m-0 p-0">
-                <span class="m-0 p-0" style="width: 12ch;">
-                    {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}&nbsp;
-                    <small>{{ row.單位 }}</small>
-                </span>
-            </div>
-        </template>
-        <template v-slot:需求與領用差異="{ row, key }">
-            <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
-                {{ row.料號 }}
-            </div>
-        </template>
-    </table-lite>
+        </div>
+        <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
+        <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="true" :isStaticMode="true"
+            :isSlotMode="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+            :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+            @return-checked-rows="updateCheckedRows">
+            <template v-slot:料號="{ row, key }">
+                <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
+                    {{ row.料號 }}
+                </div>
+            </template>
+            <template v-slot:請購數量="{ row, key }">
+                <div class="col col-auto align-items-center m-0 p-0">
+                    <span class="m-0 p-0" style="width: 12ch;">
+                        {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}
+                        <small>{{ row.單位 }}</small>
+                    </span>
+                </div>
+            </template>
+            <template v-slot:實際領用數量="{ row, key }">
+                <div class="col col-auto align-items-center m-0 p-0">
+                    <span class="m-0 p-0" style="width: 12ch;">
+                        {{ parseInt(row.實際領用數量).toLocaleString('en', { useGrouping: true }) }}
+                        <small>{{ row.單位 }}</small>
+                    </span>
+                </div>
+            </template>
+            <template v-slot:需求與領用差異量="{ row, key }">
+                <div class="col col-auto align-items-center m-0 p-0">
+                    <span class="m-0 p-0" style="width: 12ch;">
+                        {{ parseInt(row.需求與領用差異量).toLocaleString('en', { useGrouping: true }) }}
+                        <small>{{ row.單位 }}</small>
+                    </span>
+                </div>
+            </template>
+            <template v-slot:需求與領用差異="{ row, key }">
+                <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
+                    {{ row.需求與領用差異 }}%
+                </div>
+            </template>
+        </table-lite>
+    </div>
 </template>
 
 <script>
@@ -66,7 +73,7 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import { yearTag, monthTag, checkedRows, searchTerm, data, table } from '../../composables/DiffTableStore.js';
+import { yearTag, monthTag, checkedRows, searchTerm, data, table, datasetBuyUSD, datasetRealUSD } from '../../composables/DiffTableStore.js';
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useDiffSearch from "../../composables/DiffSearch.ts";
@@ -86,6 +93,8 @@ export default defineComponent({
 
         onBeforeMount(getMats);
 
+        const monthList = ref(app.appContext.config.globalProperties.$t("monthlyPRpageLang.months").split('_'));
+        const monthStr = ref(monthList.value[monthTag.value]);
         const triggerModal = async () => {
             $("body").loadingModal({
                 text: "Loading...",
@@ -148,16 +157,18 @@ export default defineComponent({
 
         watch(monthTag, async () => {
             // Jan is 0 in monthTag
-            console.log(monthTag.value); // test
+            monthStr.value = monthList.value[monthTag.value];
         }); // watch year change
 
         var all_data_sorted = {
+            buylist_lastyear: [],
             buylist: [],
             inbound: []
         };
         watch(mats, async () => {
             await triggerModal();
             all_data_sorted = {
+                buylist_lastyear: [],
                 buylist: [],
                 inbound: []
             }; // clean up possible old records
@@ -169,42 +180,57 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(mats.value);
-            allRowsObj.buylist = allRowsObj.buylist_lastyear.concat(allRowsObj.buylist);
-            delete allRowsObj["buylist_lastyear"]; // remove unused entry
             console.log(allRowsObj); // test
 
-            // sort the yearly buylist
+            // sort the last year's last few months' buylist
             for (let i = 0; i < 12; i++) {
-                let newArray;
-                if (i == 0) { // if its Jan, we need to count in Dec from last year as well
-                    newArray = allRowsObj.buylist.filter(function (el) {
-                        let sql_Date_To_JS_Date = new Date(el.請購時間.replace(' ', 'T'))
-                        return sql_Date_To_JS_Date.getMonth() == i;
-                    });
-                } // if
-                else {
-                    newArray = allRowsObj.buylist.filter(function (el) {
+                let newArray = allRowsObj.buylist_lastyear.filter(function (el) {
+                    let sql_Date_To_JS_Date = new Date(el.請購時間.replace(' ', 'T'))
+                    return sql_Date_To_JS_Date.getMonth() == i;
+                });
 
-                        let sql_Date_To_JS_Date = new Date(el.請購時間.replace(' ', 'T'))
-                        return sql_Date_To_JS_Date.getMonth() == i;
-                    });
-                } // else
-
-                // sum the entries with the same 料號
+                // sum the entries with the same 料號                
                 let sum_result = Object.values(newArray.reduce((acc, curr) => {
                     let item = acc[curr.料號];
-
                     if (item) {
-                        item.入庫數量 = parseInt(item.入庫數量) + parseInt(curr.入庫數量);
+                        item.本次請購數量 += parseInt(curr.本次請購數量);
+                        item.匯率 += parseFloat(curr.匯率);
                     } else {
-                        curr.入庫數量 = parseInt(curr.入庫數量);
+                        curr.匯率 = parseFloat(curr.匯率);
+                        curr.本次請購數量 = parseInt(curr.本次請購數量);
                         acc[curr.料號] = curr;
                     } // if else
 
                     return acc;
                 }, {}));
 
-                all_data_sorted.inbound[i] = sum_result;
+                all_data_sorted.buylist_lastyear[i] = sum_result;
+            } // for
+
+            // sort the yearly buylist
+            for (let i = 0; i < 12; i++) {
+                let newArray = allRowsObj.buylist.filter(function (el) {
+                    let sql_Date_To_JS_Date = new Date(el.請購時間.replace(' ', 'T'))
+                    return sql_Date_To_JS_Date.getMonth() == i;
+                });
+
+                // sum the entries with the same 料號
+                let sum_result = Object.values(newArray.reduce((acc, curr) => {
+                    let item = acc[curr.料號];
+
+                    if (item) {
+                        item.匯率 = parseFloat(item.匯率) + parseFloat(curr.匯率);
+                        item.本次請購數量 = parseInt(item.本次請購數量) + parseInt(curr.本次請購數量);
+                    } else {
+                        curr.匯率 = parseFloat(curr.匯率);
+                        curr.本次請購數量 = parseInt(curr.本次請購數量);
+                        acc[curr.料號] = curr;
+                    } // if else
+
+                    return acc;
+                }, {}));
+
+                all_data_sorted.buylist[i] = sum_result;
             } // for
 
             // sort the yearly inbound
@@ -231,17 +257,51 @@ export default defineComponent({
                 all_data_sorted.inbound[i] = sum_result;
             } // for
 
-            console.log(all_data_sorted); // test
+            // console.log(all_data_sorted); // test
+            for (let i = 0; i < all_data_sorted.inbound[monthTag.value].length; i++) {
+                let singleEntry = {};
+                let tempArry = all_data_sorted.inbound[monthTag.value];
+                singleEntry.料號 = tempArry[i].料號;
+                singleEntry.品名 = tempArry[i].品名;
 
-            let singleEntry = {};
-            // singleEntry.料號 = allRowsObj.buylist[i].料號;
-            // singleEntry.料號 = allRowsObj.buylist[i].品名;
-            // singleEntry.料號 = allRowsObj.buylist[i].請購數量;
-            // singleEntry.料號 = allRowsObj.buylist[i].實際領用數量;
-            // singleEntry.料號 = allRowsObj.buylist[i].需求與領用差異量;
-            // singleEntry.料號 = allRowsObj.buylist[i].需求與領用差異;
-            // data.push(allRowsObj.buylist[i]);
+                for (let j = 1; j < 3; j++) {
+                    let prevBuylistMonth = monthTag.value - j;
+                    if (prevBuylistMonth == -1) {
+                        let obj = all_data_sorted.buylist_lastyear[11].find(o => o.料號 === singleEntry.料號);
+                        // console.log(obj); // test
+                        if (obj) {
+                            singleEntry.請購數量 = obj.本次請購數量;
+                            break;
+                        } // if
+                    } else if (prevBuylistMonth == -2) {
+                        let obj = all_data_sorted.buylist_lastyear[10].find(o => o.料號 === singleEntry.料號);
+                        // console.log(obj); // test
+                        if (obj) {
+                            singleEntry.請購數量 = obj.本次請購數量;
+                            break;
+                        } // if
+                    } else {
+                        let obj = all_data_sorted.buylist[prevBuylistMonth].find(o => o.料號 === singleEntry.料號);
+                        // console.log(obj); // test
+                        if (obj) {
+                            singleEntry.請購數量 = obj.本次請購數量;
+                            break;
+                        } // if
+                    } // if else
+                } // for
 
+                if (singleEntry.請購數量 == undefined) { // if no prev buylist records are found
+                    singleEntry.請購數量 = 0;
+                } // if
+
+                singleEntry.單位 = tempArry[i].單位;
+                singleEntry.實際領用數量 = tempArry[i].入庫數量;
+                singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
+                singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                data.push(singleEntry);
+            } // for mothly data
+
+            datasetBuyUSD.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
@@ -265,6 +325,8 @@ export default defineComponent({
             searchTerm,
             updateCheckedRows,
             OutputExcelClick,
+            yearTag,
+            monthStr
         };
     }, // setup
 });
