@@ -1,7 +1,7 @@
 <template>
     <div class="card-header row align-items-center">
         <div class="col col-2">
-            <input class="text-center m-0 p-0 form-control form-control-lg" type="number" min="1996"
+            <input id="yearInput" class="text-center m-0 p-0 form-control form-control-lg" type="number" min="1996"
                 v-model="yearTag" />
         </div>
         <h3 class="col col-auto align-middle m-0 p-0">

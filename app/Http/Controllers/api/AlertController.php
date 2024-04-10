@@ -39,12 +39,54 @@ class AlertController extends Controller
         $yearTag = $request->input('Year');
         try {
             $result_buylist_LastYearLastMonth = DB::table('請購單')
+                ->leftjoin('consumptive_material', function ($join) {
+                    $join->on('consumptive_material.料號', '=', '請購單.料號');
+                })
+                ->select(
+                    'consumptive_material.料號',
+                    'consumptive_material.品名',
+                    'consumptive_material.單位',
+                    '請購單.MOQ',
+                    '請購單.SRM單號',
+                    '請購單.當月需求',
+                    '請購單.下月需求',
+                    '請購單.匯率',
+                    '請購單.單價',
+                    '請購單.在途數量',
+                    '請購單.幣別',
+                    '請購單.本次請購數量',
+                    '請購單.現有庫存',
+                    '請購單.規格',
+                    '請購單.請購時間',
+                    '請購單.請購金額',
+                )
                 ->where('SRM單號', '=', '已完成')
                 ->whereYear('請購時間', $yearTag - 1)
                 ->where('請購時間', '>=', date(strval($yearTag - 1) . "-11-01"))
                 ->get();
 
             $result_buylist = DB::table('請購單')
+                ->leftjoin('consumptive_material', function ($join) {
+                    $join->on('consumptive_material.料號', '=', '請購單.料號');
+                })
+                ->select(
+                    'consumptive_material.料號',
+                    'consumptive_material.品名',
+                    'consumptive_material.單位',
+                    '請購單.MOQ',
+                    '請購單.SRM單號',
+                    '請購單.當月需求',
+                    '請購單.下月需求',
+                    '請購單.匯率',
+                    '請購單.單價',
+                    '請購單.在途數量',
+                    '請購單.幣別',
+                    '請購單.本次請購數量',
+                    '請購單.現有庫存',
+                    '請購單.規格',
+                    '請購單.請購時間',
+                    '請購單.請購金額',
+                )
                 ->where('SRM單號', '=', '已完成')
                 ->whereYear('請購時間', $yearTag)
                 ->get();

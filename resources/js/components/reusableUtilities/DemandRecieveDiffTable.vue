@@ -141,6 +141,182 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // OutputExcelClick
 
+        const SortCurrentMonthTable = async () => {
+            // 無法確定此廠這個月的入庫是來自固定前一個月的請購or固定提前(早兩個月)的請購 
+            // 回頭一個月一個月找時 若有料號match 表示整批的請購月份也是現在的月份 
+            // 將找到matching請購月份紀錄下來 loop完inbound list後
+            // 會在loop buylist時只取用此請購月份的資料 (作為有請購但沒有(尚未?)入庫的料)
+            let matchingBuylistMonth = -99;
+            // find the matching buylist month
+            for (let i = 0; i < all_data_sorted.inbound[monthTag.value].length; i++) {
+                let tempArry = all_data_sorted.inbound[monthTag.value];
+
+                for (let j = 1; j < 3; j++) {
+                    let prevBuylistMonth = monthTag.value - j;
+                    if (prevBuylistMonth == -1) { // 去年12月請購
+                        let obj = all_data_sorted.buylist_lastyear[11].find(o => o.料號 === tempArry[i].料號);
+                        // console.log(obj); // test
+                        if (obj) {
+                            if (prevBuylistMonth > matchingBuylistMonth) {
+                                matchingBuylistMonth = prevBuylistMonth;
+                            } // if
+                            break;
+                        } // if
+                    } else if (prevBuylistMonth == -2) { // 去年11月請購
+                        let obj = all_data_sorted.buylist_lastyear[10].find(o => o.料號 === tempArry[i].料號);
+                        // console.log(obj); // test
+                        if (obj) {
+                            if (prevBuylistMonth > matchingBuylistMonth) {
+                                matchingBuylistMonth = prevBuylistMonth;
+                            } // if
+                            break;
+                        } // if
+                    } else { // 今年內請購
+                        let obj = all_data_sorted.buylist[prevBuylistMonth].find(o => o.料號 === tempArry[i].料號);
+                        // console.log(obj); // test
+                        if (obj) {
+                            if (prevBuylistMonth > matchingBuylistMonth) {
+                                matchingBuylistMonth = prevBuylistMonth;
+                            } // if
+                            break;
+                        } // if
+                    } // if else
+                } // for
+            } // for
+
+            // loop thru inbound list and push to table
+            for (let i = 0; i < all_data_sorted.inbound[monthTag.value].length; i++) {
+                let singleEntry = {};
+                let tempArry = all_data_sorted.inbound[monthTag.value];
+                singleEntry.料號 = tempArry[i].料號;
+                singleEntry.品名 = tempArry[i].品名;
+
+                if (matchingBuylistMonth == -99) { // if the whole batch is newly inbound without any buy records
+                    singleEntry.請購數量 = 0;
+                } else if (matchingBuylistMonth == -1) { // if the batch's buy record is from last year Dec
+                    let obj = all_data_sorted.buylist_lastyear[11].find(o => o.料號 === singleEntry.料號);
+                    // console.log(obj); // test
+                    if (obj) {
+                        singleEntry.請購數量 = obj.本次請購數量;
+                    } // if
+                } else if (matchingBuylistMonth == -2) { // if the batch's buy record is from last year Nov
+                    let obj = all_data_sorted.buylist_lastyear[10].find(o => o.料號 === singleEntry.料號);
+                    // console.log(obj); // test
+                    if (obj) {
+                        singleEntry.請購數量 = obj.本次請購數量;
+                    } // if
+                } else { // if the batch's buy record is within this year
+                    let obj = all_data_sorted.buylist[matchingBuylistMonth].find(o => o.料號 === singleEntry.料號);
+                    // console.log(obj); // test
+                    if (obj) {
+                        singleEntry.請購數量 = obj.本次請購數量;
+                    } // if
+                } // if else
+
+                singleEntry.單位 = tempArry[i].單位;
+                singleEntry.實際領用數量 = tempArry[i].入庫數量;
+                singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
+                singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                data.push(singleEntry);
+            } // for
+
+            // fish out entries that are within buylist but not within inbound
+            if (matchingBuylistMonth == -99) {
+                // if the whole batch are all newly inbound without any corresponding buy records 
+                // OR if there's no inbound records
+                // 目前作法：直接抓上個月的請購資料
+                let prevBuylistMonth = monthTag.value - 1;
+                if (prevBuylistMonth == -1) { // 去年12月請購
+                    for (let i = 0; i < all_data_sorted.buylist_lastyear[11].length; i++) {
+                        let tempMonthRecord = all_data_sorted.buylist_lastyear[11];
+                        let singleEntry = {};
+                        singleEntry.料號 = tempMonthRecord[i].料號;
+                        singleEntry.品名 = tempMonthRecord[i].品名;
+                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.單位 = tempMonthRecord[i].單位;
+                        singleEntry.實際領用數量 = 0;
+                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
+                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        data.push(singleEntry);
+                    } // for
+                } else if (prevBuylistMonth == -2) { // 去年11月請購
+                    for (let i = 0; i < all_data_sorted.buylist_lastyear[10].length; i++) {
+                        let tempMonthRecord = all_data_sorted.buylist_lastyear[10];
+                        let singleEntry = {};
+                        singleEntry.料號 = tempMonthRecord[i].料號;
+                        singleEntry.品名 = tempMonthRecord[i].品名;
+                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.單位 = tempMonthRecord[i].單位;
+                        singleEntry.實際領用數量 = 0;
+                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
+                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        data.push(singleEntry);
+                    } // for
+                } else { // 今年內請購
+                    for (let i = 0; i < all_data_sorted.buylist[prevBuylistMonth].length; i++) {
+                        let tempMonthRecord = all_data_sorted.buylist[prevBuylistMonth];
+                        let singleEntry = {};
+                        singleEntry.料號 = tempMonthRecord[i].料號;
+                        singleEntry.品名 = tempMonthRecord[i].品名;
+                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.單位 = tempMonthRecord[i].單位;
+                        singleEntry.實際領用數量 = 0;
+                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
+                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        data.push(singleEntry);
+                    } // for
+                } // if else
+            } else if (matchingBuylistMonth == -1) { // if the batch's buy record is from last year Dec
+                for (let i = 0; i < all_data_sorted.buylist_lastyear[11].length; i++) {
+                    let tempMonthRecord = all_data_sorted.buylist_lastyear[11];
+                    let obj = data.find(o => o.料號 === tempMonthRecord[i].料號);
+                    if (!obj) {
+                        let singleEntry = {};
+                        singleEntry.料號 = tempMonthRecord[i].料號;
+                        singleEntry.品名 = tempMonthRecord[i].品名;
+                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.單位 = tempMonthRecord[i].單位;
+                        singleEntry.實際領用數量 = 0;
+                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
+                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        data.push(singleEntry);
+                    } // if
+                } // for
+            } else if (matchingBuylistMonth == -2) { // if the batch's buy record is from last year Nov
+                for (let i = 0; i < all_data_sorted.buylist_lastyear[10].length; i++) {
+                    let tempMonthRecord = all_data_sorted.buylist_lastyear[10];
+                    let obj = data.find(o => o.料號 === tempMonthRecord[i].料號);
+                    if (!obj) {
+                        let singleEntry = {};
+                        singleEntry.料號 = tempMonthRecord[i].料號;
+                        singleEntry.品名 = tempMonthRecord[i].品名;
+                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.單位 = tempMonthRecord[i].單位;
+                        singleEntry.實際領用數量 = 0;
+                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
+                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        data.push(singleEntry);
+                    } // if
+                } // for
+            } else { // if the batch's buy record is within this year
+                for (let i = 0; i < all_data_sorted.buylist[matchingBuylistMonth].length; i++) {
+                    let tempMonthRecord = all_data_sorted.buylist[matchingBuylistMonth];
+                    let obj = data.find(o => o.料號 === tempMonthRecord[i].料號);
+                    if (!obj) {
+                        let singleEntry = {};
+                        singleEntry.料號 = tempMonthRecord[i].料號;
+                        singleEntry.品名 = tempMonthRecord[i].品名;
+                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.單位 = tempMonthRecord[i].單位;
+                        singleEntry.實際領用數量 = 0;
+                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
+                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        data.push(singleEntry);
+                    } // if
+                } // for
+            } // if else
+        }; // SortCurrentMonthTable
+
         watch(yearTag, async () => {
             if (yearTag.value.toString().length == 4 && parseInt(yearTag.value) >= 1996) {
                 await triggerModal();
@@ -150,15 +326,21 @@ export default defineComponent({
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
             } // if
-            else {
-                // not a reachable year, do nothing
-            } // if
         }); // watch year change
 
         watch(monthTag, async () => {
             // Jan is 0 in monthTag
+            await triggerModal();
+
             monthStr.value = monthList.value[monthTag.value];
-        }); // watch year change
+
+            data.splice(0); // clean up possible old records
+
+            await SortCurrentMonthTable();
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        }); // watch month change
 
         var all_data_sorted = {
             buylist_lastyear: [],
@@ -257,49 +439,7 @@ export default defineComponent({
                 all_data_sorted.inbound[i] = sum_result;
             } // for
 
-            // console.log(all_data_sorted); // test
-            for (let i = 0; i < all_data_sorted.inbound[monthTag.value].length; i++) {
-                let singleEntry = {};
-                let tempArry = all_data_sorted.inbound[monthTag.value];
-                singleEntry.料號 = tempArry[i].料號;
-                singleEntry.品名 = tempArry[i].品名;
-
-                for (let j = 1; j < 3; j++) {
-                    let prevBuylistMonth = monthTag.value - j;
-                    if (prevBuylistMonth == -1) {
-                        let obj = all_data_sorted.buylist_lastyear[11].find(o => o.料號 === singleEntry.料號);
-                        // console.log(obj); // test
-                        if (obj) {
-                            singleEntry.請購數量 = obj.本次請購數量;
-                            break;
-                        } // if
-                    } else if (prevBuylistMonth == -2) {
-                        let obj = all_data_sorted.buylist_lastyear[10].find(o => o.料號 === singleEntry.料號);
-                        // console.log(obj); // test
-                        if (obj) {
-                            singleEntry.請購數量 = obj.本次請購數量;
-                            break;
-                        } // if
-                    } else {
-                        let obj = all_data_sorted.buylist[prevBuylistMonth].find(o => o.料號 === singleEntry.料號);
-                        // console.log(obj); // test
-                        if (obj) {
-                            singleEntry.請購數量 = obj.本次請購數量;
-                            break;
-                        } // if
-                    } // if else
-                } // for
-
-                if (singleEntry.請購數量 == undefined) { // if no prev buylist records are found
-                    singleEntry.請購數量 = 0;
-                } // if
-
-                singleEntry.單位 = tempArry[i].單位;
-                singleEntry.實際領用數量 = tempArry[i].入庫數量;
-                singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
-                singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
-                data.push(singleEntry);
-            } // for mothly data
+            await SortCurrentMonthTable();
 
             datasetBuyUSD.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // test
             $("body").loadingModal("hide");
