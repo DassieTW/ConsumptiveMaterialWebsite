@@ -317,6 +317,10 @@ export default defineComponent({
             } // if else
         }; // SortCurrentMonthTable
 
+        const CalChartDatasets = async () => {
+            datasetBuyUSD.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // test
+        }; // CalChartDatasets
+
         watch(yearTag, async () => {
             if (yearTag.value.toString().length == 4 && parseInt(yearTag.value) >= 1996) {
                 await triggerModal();
@@ -440,8 +444,8 @@ export default defineComponent({
             } // for
 
             await SortCurrentMonthTable();
+            await CalChartDatasets();
 
-            datasetBuyUSD.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
