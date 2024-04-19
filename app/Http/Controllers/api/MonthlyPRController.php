@@ -437,7 +437,13 @@ class MonthlyPRController extends Controller
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
 
-        $people = \DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
+        $people = \DB::table('login')
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->where('priority', "=", 1)
+            ->whereNotNull('email')
+            ->get();
         return \Response::json(['data' => $people, "dbName" => $dbName]/* Status code here default is 200 ok*/);
     } // showCheckersEmail
 
@@ -519,7 +525,12 @@ class MonthlyPRController extends Controller
     //send consume mail
     public static function sendconsumemail($email, $username, $database)
     {
-        $dename = \DB::table('login')->where('username', $username)->value('姓名');
+        $dename = \DB::table('login')
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->where('username', $username)
+            ->value('姓名');
         $data = array('email' => urlencode($email), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         \Mail::send('mail/consumecheck', $data, function ($message) use ($email) {

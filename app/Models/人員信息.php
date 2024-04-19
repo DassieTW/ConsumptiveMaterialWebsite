@@ -25,5 +25,7 @@ class 人員信息 extends Model
         '工號',
         '姓名',
         '部門',
+        'email',
+        '主管工號'
     ];
 }

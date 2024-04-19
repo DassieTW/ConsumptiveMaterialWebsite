@@ -132,38 +132,6 @@ class LoginController extends Controller
         } // else
     } // login
 
-    protected function attemptSSOLogin(Request $request)
-    {
-        $credentials = [
-            'username' => $request->work_id,
-        ];
-
-        // dd($request->site) ; // test
-        // return \Auth::attempt($credentials);
-
-        // update the info from SSO POST
-        $affected = DB::table('login')
-            ->where('username', '=', $request->work_id)
-            ->update([
-                '姓名' => $request->user_name,
-                '部門' => $request->dept_name,
-                'email' => $request->office_mail
-            ]);
-
-        // login without hashed password
-        $user = Login::where([
-            'username' => $request->work_id,
-        ])->first();
-
-        if ($user) {
-            \Auth::login($user);
-            return true;
-        } // if
-        else {
-            return false;
-        } // else
-    } // attemptSSOLogin
-
     protected function attemptRecentlyLoginDBForMultiSiteUsers(Request $request)
     {
         $databaseArray = config('database_list.databases');
@@ -208,12 +176,6 @@ class LoginController extends Controller
         $databaseArray = config('database_list.databases');
         // dd($databaseArray); //test
 
-        // Session::put('work_id', "LA2000836"); // test
-        // Session::put('user_name', "Vincent"); // test
-        // Session::put('dept_name', "Test Dept"); // test
-        // Session::put('office_mail', "Mail@test"); // test
-        // return redirect()->route('member.New_OA_Login'); // test
-
         try {
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
@@ -224,6 +186,18 @@ class LoginController extends Controller
                 Session::put('user_name', $request->user_name);
                 Session::put('dept_name', $request->dept_name);
                 Session::put('office_mail', $request->office_mail);
+
+                Session::put('m_name', $request->m_name);
+                Session::put('m_office_mail', $request->m_office_mail);
+                Session::put('m_dept_name', $request->m_dept_name);
+                Session::put('m_work_id', $request->m_work_id);
+                Session::put('m_priority', $request->m_priority);
+
+                Session::put('m2_name', $request->m2_name);
+                Session::put('m2_office_mail', $request->m2_office_mail);
+                Session::put('m2_dept_name', $request->m2_dept_name);
+                Session::put('m2_work_id', $request->m2_work_id);
+                Session::put('m2_priority', $request->m2_priority);
                 return redirect()->route('member.New_OA_Login');
             } // if
 
@@ -235,7 +209,36 @@ class LoginController extends Controller
 
             $affected = DB::table('login')
                 ->where('username', '=', $request->work_id)
-                ->update(['last_login_time' => $datetime]);
+                ->update([
+                    'last_login_time' => $datetime
+                ]);
+
+            DB::table('人員信息')->upsert([
+                [
+                    '工號' => $request->work_id,
+                    '姓名' => $request->user_name,
+                    '部門' => $request->dept_name,
+                    'email' => $request->office_mail,
+                    '主管工號' => $request->m_work_id
+                ],
+                [
+                    '工號' => $request->m_work_id,
+                    '姓名' => $request->m_name,
+                    '部門' => $request->m_dept_name,
+                    'email' => $request->m_office_mail,
+                    '主管工號' => $request->m2_work_id
+                ]
+            ], ['工號'], ['姓名', '部門', 'email', '主管工號']);
+
+            DB::table('人員信息')->upsert([
+                [
+                    '工號' => $request->m2_work_id,
+                    '姓名' => $request->m2_name,
+                    '部門' => $request->m2_dept_name,
+                    'email' => $request->m2_office_mail,
+                ]
+            ], ['工號'], ['姓名', '部門', 'email']);
+
 
             DB::commit();
 
@@ -285,10 +288,7 @@ class LoginController extends Controller
                 [
                     'password' => $previousUser->password,
                     'priority' => $previousUser->priority,
-                    '姓名' => $previousUser->姓名,
-                    '部門' => $previousUser->部門,
                     'avatarChoice' => $previousUser->avatarChoice,
-                    'email' => $previousUser->email,
                     'last_login_time' => $datetime,
                     'update_priority_time' => $datetime,
                     'available_dblist' => $previousUser->available_dblist,
@@ -364,16 +364,37 @@ class LoginController extends Controller
         DB::table('login')
             ->insert([
                 'username' => $job_id, 'password' => "123456", 'priority' => 4,
-                '姓名' => $name, '部門' => $department, 'avatarChoice' => $profilePic,
-                'email' => $email, 'last_login_time' => $datetime, 'available_dblist' =>  str_replace(" Consumables management", "", $site)
+                'avatarChoice' => $profilePic,
+                'last_login_time' => $datetime, 'available_dblist' =>  str_replace(" Consumables management", "", $site)
             ]);
 
-        DB::table('人員信息')
-            ->insert([
-                '工號' => $job_id,
-                '姓名' => $name,
-                '部門' => $department
-            ]);
+        // insert self & manager data
+        DB::table('人員信息')->upsert([
+            [
+                '工號' => $request->work_id,
+                '姓名' => $request->user_name,
+                '部門' => $request->dept_name,
+                'email' => $request->office_mail,
+                '主管工號' => $request->m_work_id
+            ],
+            [
+                '工號' => $request->m_work_id,
+                '姓名' => $request->m_name,
+                '部門' => $request->m_dept_name,
+                'email' => $request->m_office_mail,
+                '主管工號' => $request->m2_work_id
+            ]
+        ], ['工號'], ['姓名', '部門', 'email', '主管工號']);
+
+        // insert manager's manager data
+        DB::table('人員信息')->upsert([
+            [
+                '工號' => $request->m2_work_id,
+                '姓名' => $request->m2_name,
+                '部門' => $request->m2_dept_name,
+                'email' => $request->m2_office_mail,
+            ]
+        ], ['工號'], ['姓名', '部門', 'email']);
 
         $user = Login::where([
             'username' => $job_id,
@@ -435,14 +456,14 @@ class LoginController extends Controller
             } // if
             else {
                 if ($request->input('newMail') === null || $request->input('newMail') === "") { // delete the old email
-                    DB::table('login')
-                        ->where('username', \Auth::user()->username)
+                    DB::table('人員信息')
+                        ->where('工號', \Auth::user()->username)
                         // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
                         ->update(['email' => NULL]);
                 } // if
                 else {
-                    DB::table('login')
-                        ->where('username', \Auth::user()->username)
+                    DB::table('人員信息')
+                        ->where('工號', \Auth::user()->username)
                         // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
                         ->update(['email' => $request->input('newMail')]);
                 } // else

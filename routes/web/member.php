@@ -83,8 +83,10 @@ Route::post('/login', [Auth\LoginController::class, 'login'])->name('member.logi
 
 //change password, Matches The "/member/change" URL
 Route::get('/change', function () {
-    $email = \DB::table('login')->select('email')
-        ->where('username', '=', \Auth::user()->username)->get();
+    $email = \DB::table('人員信息')
+        ->select('email')
+        ->where('工號', '=', \Auth::user()->username)
+        ->get();
     return view('member.change', ['oldMail' => $email]);
 });
 

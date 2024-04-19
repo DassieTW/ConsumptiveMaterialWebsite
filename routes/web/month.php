@@ -109,7 +109,13 @@ Route::get('/consumeadd', function () {
 
 //站位人力(新增)頁面
 Route::get('/standadd', function () {
-    $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
+    $people = DB::table('login')
+        ->join('人員信息', function ($join) {
+            $join->on('人員信息.工號', '=', 'login.username');
+        })
+        ->where('priority', "=", 1)
+        ->whereNotNull('email')
+        ->get();
     return view('month.standadd')->with(['client' => 客戶別::cursor()])
         ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with([
             'people' => $people
@@ -152,7 +158,13 @@ Route::post('/standchangeordelete', [MonthController::class, 'standchangeordelet
 
 //新增站位上傳
 Route::get('/uploadstand', function () {
-    $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
+    $people = DB::table('login')
+        ->join('人員信息', function ($join) {
+            $join->on('人員信息.工號', '=', 'login.username');
+        })
+        ->where('priority', "=", 1)
+        ->whereNotNull('email')
+        ->get();
     return view('month.standadd')->with(['client' => 客戶別::cursor()])
         ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['people' => $people]);
 })->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');

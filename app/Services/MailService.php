@@ -55,7 +55,6 @@ class MailService
                     'consumptive_material.LT',
                     'consumptive_material.月請購',
                     'consumptive_material.安全庫存',
-                    // 'consumptive_material.耗材歸屬',
                     '月請購_單耗.單耗',
                     'MPS.下月MPS',
                     'MPS.下月生產天數',
@@ -79,7 +78,6 @@ class MailService
                 // ->where('consumptive_material.耗材歸屬', '=', "單耗")
                 ->where('月請購_單耗.狀態', '=', "已完成")
                 ->get()->toArray();
-
 
 
             foreach ($datas as $data) {
@@ -210,16 +208,23 @@ class MailService
 
             if ($num > 0) {
                 Mail::send('mail/safestock', [], function ($message) use ($now, $database) {
-                    $emails = DB::table('login')->select('email')->whereNotNull('email')->where('priority', '<', 4)->get()->toArray();
+                    $emails = DB::table('login')
+                        ->join('人員信息', function ($join) {
+                            $join->on('人員信息.工號', '=', 'login.username');
+                        })
+                        ->select('email')
+                        ->whereNotNull('email')
+                        ->where('priority', '<', 4)
+                        ->get()->toArray();
 
                     foreach ($emails as $email) {
-
                         if (!empty($email->email) && filter_var($email->email, FILTER_VALIDATE_EMAIL)) {
                             // valid emailaddress
                             //dd($email);
                             $message->to($email->email)->subject('Safe Stock');
-                        }
-                    }
+                        } // if
+                    } // foreach
+
                     $message->bcc('Vincent6_Yeh@pegatroncorp.com');
 
                     $message->attach(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
@@ -301,7 +306,6 @@ class MailService
                 $data->inventory最後更新時間 = $stayday;
             } // for each
 
-
             $spreadsheet = new Spreadsheet();
             $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(15);
             $worksheet = $spreadsheet->getActiveSheet();
@@ -340,15 +344,21 @@ class MailService
 
             if ($num > 0) {
                 Mail::send('mail/sluggishstock', [], function ($message) use ($now, $database) {
-                    $emails = DB::table('login')->select('email')->whereNotNull('email')->where('priority', '<', 4)->get()->toArray();
+                    $emails = DB::table('login')
+                        ->join('人員信息', function ($join) {
+                            $join->on('人員信息.工號', '=', 'login.username');
+                        })
+                        ->select('email')
+                        ->whereNotNull('email')
+                        ->where('priority', '<', 4)
+                        ->get()->toArray();
 
                     foreach ($emails as $email) {
-
                         if (!empty($email->email) && filter_var($email->email, FILTER_VALIDATE_EMAIL)) {
                             // valid emailaddress
                             $message->to($email->email)->subject('Passive Day');
-                        }
-                    }
+                        } // if
+                    } // foreach
 
                     $message->bcc('Vincent6_Yeh@pegatroncorp.com');
 

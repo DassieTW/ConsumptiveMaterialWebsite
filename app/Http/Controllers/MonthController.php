@@ -22,6 +22,7 @@ use App\Models\月請購_單耗;
 use App\Models\月請購_站位;
 use App\Models\非月請購;
 use App\Models\MPS;
+use App\Models\人員信息;
 use DB;
 use Session;
 use Route;
@@ -53,9 +54,15 @@ class MonthController extends Controller
             ->where('consumptive_material.發料部門', 'like', $send . '%')
             ->where('月請購_單耗.料號90', 'like', $number90 . '%')
             ->get();
-        $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
+        $people = DB::table('login')->where('priority', "=", 1)
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->whereNotNull('email')
+            ->get();
+
         return view('month.consumesearchok')->with(['data' => $datas, 'people' => $people]);
-    }
+    } // consumesearch
 
     //站位人力(查詢)
     public function standsearch(Request $request)
@@ -73,7 +80,12 @@ class MonthController extends Controller
             ->where('consumptive_material.料號', 'like', $number . '%')
             ->where('consumptive_material.發料部門', 'like', $send . '%')
             ->get();
-        $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
+        $people = DB::table('login')->where('priority', "=", 1)
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->whereNotNull('email')
+            ->get();
 
         return view('month.standsearchok')->with(['data' => $datas, 'people' => $people]);
     }
@@ -152,7 +164,6 @@ class MonthController extends Controller
         $nextclass = $Alldata[16];
         $nextdayneed = $Alldata[17];
         $nextchange = $Alldata[18];
-        // $jobnumber = $request->input('jobnumber');
         $email = $request->input('email');
         $sessemail = $email;
         $name = \Auth::user()->username;
@@ -216,7 +227,6 @@ class MonthController extends Controller
         $record = 0;
         $check = array();
         $database = $request->session()->get('database');
-        // $jobnumber = $request->input('jobnumber');
         $email = $request->input('email');
         $sessemail = $email;
         $name = \Auth::user()->username;
@@ -403,7 +413,12 @@ class MonthController extends Controller
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path, 1, $testAgainstFormats);
 
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
-        $people = DB::table('login')->where('priority', "=", 1)->whereNotNull('email')->get();
+        $people = DB::table('login')->where('priority', "=", 1)
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->whereNotNull('email')
+            ->get();
         unset($sheetData[0]);
         return view('month.uploadstand')->with(['data' => $sheetData])->with(['people' => $people]);
     }
@@ -424,14 +439,48 @@ class MonthController extends Controller
             \DB::purge(env("DB_CONNECTION"));
 
             // update the info from SSO POST
-            $affected = DB::table('login')
-                ->where('username', '=', $request->work_id)
-                ->update([
-                    '姓名' => $request->user_name,
-                    '部門' => $request->dept_name,
-                    'email' => $request->office_mail,
+            $user = Login::upsert([
+                [
+                    'username' => $request->work_id,
+                    'password' => '123456',
+                    'priority' => 69,
                     'last_login_time' => $datetime
-                ]);
+                ],
+            ], ['username'], ['last_login_time']);
+
+            $people = 人員信息::upsert(
+                [
+                    [
+                        '工號' => $request->work_id,
+                        '姓名' => $request->user_name,
+                        '部門' => $request->dept_name,
+                        'email' => $request->office_mail,
+                        '主管工號' => $request->m_work_id
+                    ],
+                    [
+                        '工號' => $request->m_work_id,
+                        '姓名' => $request->m_name,
+                        '部門' => $request->m_dept_name,
+                        'email' => $request->m_office_mail,
+                        '主管工號' => $request->m2_work_id
+                    ]
+                ],
+                ['工號'],
+                ['姓名', '部門', 'email', '主管工號']
+            );
+
+            $people_m2 = 人員信息::upsert(
+                [
+                    [
+                        '工號' => $request->m2_work_id,
+                        '姓名' => $request->m2_name,
+                        '部門' => $request->m2_dept_name,
+                        'email' => $request->m2_office_mail,
+                    ]
+                ],
+                ['工號'],
+                ['姓名', '部門', 'email']
+            );
 
             DB::table('月請購_單耗')
                 ->where('狀態', '=', "待畫押")
@@ -440,15 +489,7 @@ class MonthController extends Controller
                     '畫押信箱' => $request->office_mail
                 ]);
 
-            if ($affected < 1) { // if the 畫押人員 is not in DB yet
-                DB::table('login')
-                    ->insert([
-                        'username' => $request->work_id, 'password' => "123456", 'priority' => 69,
-                        '姓名' => $request->user_name, '部門' => $request->dept_name, 'avatarChoice' => 3,
-                        'email' => $request->office_mail, 'last_login_time' => $datetime
-                    ]);
-            } // if
-            $name = DB::table('login')->where('username', $username)->value('姓名');
+            $name = DB::table('人員信息')->where('工號', $username)->value('姓名');
 
             return view('month.testconsume')->with(['data' => \App\Models\月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $request->office_mail)])
                 ->with(['email' => $request->office_mail])->with(['username' => $name])->with(['database' => $database]);
@@ -516,14 +557,48 @@ class MonthController extends Controller
             \DB::purge(env("DB_CONNECTION"));
 
             // update the info from SSO POST
-            $affected = DB::table('login')
-                ->where('username', '=', $request->work_id)
-                ->update([
-                    '姓名' => $request->user_name,
-                    '部門' => $request->dept_name,
-                    'email' => $request->office_mail,
+            $user = Login::upsert([
+                [
+                    'username' => $request->work_id,
+                    'password' => '123456',
+                    'priority' => 69,
                     'last_login_time' => $datetime
-                ]);
+                ],
+            ], ['username'], ['last_login_time']);
+
+            $people = 人員信息::upsert(
+                [
+                    [
+                        '工號' => $request->work_id,
+                        '姓名' => $request->user_name,
+                        '部門' => $request->dept_name,
+                        'email' => $request->office_mail,
+                        '主管工號' => $request->m_work_id
+                    ],
+                    [
+                        '工號' => $request->m_work_id,
+                        '姓名' => $request->m_name,
+                        '部門' => $request->m_dept_name,
+                        'email' => $request->m_office_mail,
+                        '主管工號' => $request->m2_work_id
+                    ]
+                ],
+                ['工號'],
+                ['姓名', '部門', 'email', '主管工號']
+            );
+
+            $people_m2 = 人員信息::upsert(
+                [
+                    [
+                        '工號' => $request->m2_work_id,
+                        '姓名' => $request->m2_name,
+                        '部門' => $request->m2_dept_name,
+                        'email' => $request->m2_office_mail,
+                    ]
+                ],
+                ['工號'],
+                ['姓名', '部門', 'email']
+            );
 
             DB::table('月請購_站位')
                 ->where('狀態', '=', "待畫押")
@@ -532,15 +607,7 @@ class MonthController extends Controller
                     '畫押信箱' => $request->office_mail
                 ]);
 
-            if ($affected < 1) { // if the 畫押人員 is not in DB yet
-                DB::table('login')
-                    ->insert([
-                        'username' => $request->work_id, 'password' => "123456", 'priority' => 69,
-                        '姓名' => $request->user_name, '部門' => $request->dept_name, 'avatarChoice' => 3,
-                        'email' => $request->office_mail, 'last_login_time' => $datetime
-                    ]);
-            } // if
-            $name = DB::table('login')->where('username', $username)->value('姓名');
+            $name = DB::table('人員信息')->where('工號', $username)->value('姓名');
 
             return view('month.teststand')->with(['data' => \App\Models\月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $request->office_mail)])
                 ->with(['email' => $request->office_mail])->with(['username' => $name])->with(['database' => $database]);
@@ -801,12 +868,16 @@ class MonthController extends Controller
     //send consume mail
     public static function sendconsumemail($email, $sessemail, $username, $database)
     {
-        $dename = DB::table('login')->where('username', $username)->value('姓名');
+        $dename = DB::table('login')
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->where('username', $username)
+            ->value('姓名');
         $data = array('email' => urlencode($sessemail), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
-
-            $message->to($email, 'Tutorials Point')->subject('請確認單耗資料');
+            $message->to($email, 'Test Default')->subject('請確認單耗資料');
             $message->bcc('vincent6_yeh@pegatroncorp.com');
             // $message->attach(public_path() . '/download/LineExample.xlsx');
             $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
@@ -816,16 +887,21 @@ class MonthController extends Controller
     //send stand mail
     public static function sendstandmail($email, $sessemail, $name, $database)
     {
-        $dename = DB::table('login')->where('username', $name)->value('姓名');
+        $dename = DB::table('login')
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->where('username', $name)
+            ->value('姓名');
         $data = array('email' => urlencode($sessemail), 'username' => urlencode($name), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         Mail::send('mail/standcheck', $data,  function ($message) use ($email) {
-            $message->to($email, 'Tutorials Point')->subject('請確認站位資料');
+            $message->to($email, 'Default Test')->subject('請確認站位資料');
             $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-            $message->bcc('Tony_Tseng@pegatroncorp.com');
+            // $message->bcc('Tony_Tseng@pegatroncorp.com');
             $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
         });
-    }
+    } // sendstandmail
 
     //send check consume mail
     public static function sendcheckconsume($alldata, $count, $sender)
@@ -833,22 +909,25 @@ class MonthController extends Controller
         $data = array('datas' => $alldata, 'count' => $count);
 
         Mail::send('mail/markconsume', $data, function ($message) use ($sender) {
-            // $email = 't22923200@gmail.com';
-            $email = DB::table('login')->where('姓名', $sender)->value('email');
+            $email = DB::table('login')
+                ->join('人員信息', function ($join) {
+                    $join->on('人員信息.工號', '=', 'login.username');
+                })
+                ->where('姓名', $sender)
+                ->value('email');
             if ($email !== null) {
                 // dd($email);
-                $message->to($email, 'Tutorials Point')->subject('RE:請確認單耗資料');
+                $message->to($email, 'Test Default')->subject('RE:請確認單耗資料');
                 $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-                $message->bcc('Tony_Tseng@pegatroncorp.com');
+                // $message->bcc('Tony_Tseng@pegatroncorp.com');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
             } else {
-                $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
+                // $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
                 $message->to('Vincent6_Yeh@pegatroncorp.com')->subject('無信箱');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-            }
+            } // if else
         });
-    }
-
+    } // sendcheckconsume
 
     //send check stand mail
     public static function sendcheckstand($alldata, $count, $sender)
@@ -856,19 +935,22 @@ class MonthController extends Controller
         $data = array('datas' => $alldata, 'count' => $count);
 
         Mail::send('mail/markstand', $data, function ($message) use ($sender) {
-            // $email = 't22923200@gmail.com';
-            $email = DB::table('login')->where('姓名', $sender)->value('email');
+            $email = DB::table('login')
+                ->join('人員信息', function ($join) {
+                    $join->on('人員信息.工號', '=', 'login.username');
+                })
+                ->where('姓名', $sender)
+                ->value('email');
             if ($email !== null) {
-
-                $message->to($email, 'Tutorials Point')->subject('RE:請確認站位資料');
+                $message->to($email, 'Test Default')->subject('RE:請確認站位資料');
                 $message->bcc('Vincent6_Yeh@pegatroncorp.com');
-                $message->bcc('Tony_Tseng@pegatroncorp.com');
+                // $message->bcc('Tony_Tseng@pegatroncorp.com');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
             } else {
-                $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
+                // $message->to('Tony_Tseng@pegatroncorp.com')->subject('無信箱');
                 $message->to('Vincent6_Yeh@pegatroncorp.com')->subject('無信箱');
                 $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
             }
         });
-    }
+    } // sendcheckstand
 }
