@@ -49,10 +49,12 @@ class LoginController extends Controller
         // return \Auth::attempt($credentials);
 
         // login without hashed password
-        $user = Login::where([
-            'username' => $request->username,
-            'password' => $request->password,
-        ])->first();
+        $user = DB::table('login')
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->where('username', "=", $request->username)
+            ->first();
 
         if ($user) {
             \Auth::login($user);
@@ -283,7 +285,7 @@ class LoginController extends Controller
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $DBName);
             \DB::purge(env("DB_CONNECTION"));
 
-            $user = Login::updateOrCreate(
+            $updatedUser = Login::updateOrCreate(
                 ['username' => $previousUser->username],
                 [
                     'password' => $previousUser->password,
@@ -295,6 +297,13 @@ class LoginController extends Controller
                     'preferred_lang' => $previousUser->preferred_lang,
                 ]
             );
+
+            $user = DB::table('login')
+                ->join('人員信息', function ($join) {
+                    $join->on('人員信息.工號', '=', 'login.username');
+                })
+                ->where('username', "=", $previousUser->username)
+                ->first();
 
             \Auth::login($user);
             $request->session()->regenerate();
@@ -396,9 +405,12 @@ class LoginController extends Controller
             ]
         ], ['工號'], ['姓名', '部門', 'email']);
 
-        $user = Login::where([
-            'username' => $job_id,
-        ])->first();
+        $user = DB::table('login')
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->where('username', "=", $job_id)
+            ->first();
         \Auth::login($user);
 
         $request->session()->regenerate();
@@ -537,7 +549,7 @@ class LoginController extends Controller
 
         return view("member.searchusernameok")
             ->with(['data' => $datas]);
-    }
+    } // searchusername
 
     //logout
     public function logout(Request $request)

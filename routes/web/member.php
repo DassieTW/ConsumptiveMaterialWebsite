@@ -112,9 +112,11 @@ Route::post('/logout', [Auth\LoginController::class, 'logout'])->name('member.lo
 //用戶信息查詢頁面
 Route::get('/username', function () {
     if (\Auth::user()->priority == 0) {
-        return view('member.searchusernameok')->with(['data' => Login::cursor(), 'db_list' => config('database_list.databases')]);
+        $generator = DB::cursor('SELECT * from [login] JOIN [人員信息] ON [人員信息].[工號] = [login].[username]');
+        return view('member.searchusernameok')->with(['data' => $generator, 'db_list' => config('database_list.databases')]);
     } else {
-        return view('member.searchusernameok')->with(['data' => Login::cursor()->where('priority', '>', 0)]);
+        $generator = DB::cursor('SELECT * from [login] JOIN [人員信息] ON [人員信息].[工號] = [login].[username] WHERE [login].[priority] > 0');
+        return view('member.searchusernameok')->with(['data' => $generator]);
     } // if else
 })->name('member.username')->middleware('can:searchAndUpdateUser,App\Models\Login');
 

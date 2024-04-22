@@ -43,12 +43,16 @@ Route::get('/', function (Request $request) {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $decrypted_site);
         \DB::purge(env("DB_CONNECTION"));
         $decrypted_id = \Crypt::decrypt(request()->S);
-        $user = Login::where([
-            'username' => $decrypted_id,
-        ])->firstOr(function ($site, $id) use ($decrypted_site, $decrypted_id) {
-            // returns the first result matching the query or, if no results are found, execute the given closure
-            dd($site . "_" . $id);
-        });
+
+        $user = DB::table('login')
+            ->join('人員信息', function ($join) {
+                $join->on('人員信息.工號', '=', 'login.username');
+            })
+            ->where('username', "=", $decrypted_id)
+            ->firstOr(function ($site, $id) use ($decrypted_site, $decrypted_id) {
+                // returns the first result matching the query or, if no results are found, execute the given closure
+                dd($site . "_" . $id);
+            });
 
         // -------------------------------------------------------------------------
         // update the db_list for user that exist before the db_list function is added

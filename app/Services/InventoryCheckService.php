@@ -234,6 +234,9 @@ class InventoryCheckService
 
         try {
             $results = DB::table('login')
+                ->join('人員信息', function ($join) {
+                    $join->on('人員信息.工號', '=', 'login.username');
+                })
                 ->select('username', '姓名')
                 ->get();
 

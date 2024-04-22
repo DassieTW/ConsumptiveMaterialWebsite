@@ -190,7 +190,11 @@ Route::get('/testconsume', function () {
             $database = Crypt::decryptString(request()->d);
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
-            $name = DB::table('login')->where('username', $username)->value('姓名');
+            $name = DB::table('login')
+                ->join('人員信息', function ($join) {
+                    $join->on('人員信息.工號', '=', 'login.username');
+                })
+                ->where('username', $username)->value('姓名');
             return view('month.testconsume')->with(['data' => 月請購_單耗::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
                 ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
         } else {
@@ -224,7 +228,11 @@ Route::get('/teststand', function () {
             $database = Crypt::decryptString(request()->d);
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
             \DB::purge(env("DB_CONNECTION"));
-            $name = DB::table('login')->where('username', $username)->value('姓名');
+            $name = DB::table('login')
+                ->join('人員信息', function ($join) {
+                    $join->on('人員信息.工號', '=', 'login.username');
+                })
+                ->where('username', $username)->value('姓名');
             return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
                 ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
         } else {

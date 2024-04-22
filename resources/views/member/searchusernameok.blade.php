@@ -69,16 +69,31 @@
                                         name="username{{ $loop->index }}"
                                         value="{{ $data->username }}">{{ $data->username }}</td>
                                 <td>
-                                    @if ($data->priority <= 1 && !isset($db_list))
-                                        <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch;"
-                                            disabled>
-                                            <option selected>{{ $data->priority }}</option>
-                                        </select>
+                                    @can('updatePriority', App\Models\Login::class)
+                                        @if ($data->priority <= 1 && !isset($db_list))
+                                            <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch;"
+                                                disabled>
+                                                <option selected>{{ $data->priority }}</option>
+                                            </select>
+                                        @else
+                                            <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch;">
+                                                @if ($data->priority == 0)
+                                                    <option selected>0</option>
+                                                @else
+                                                    
+                                                @endif
+                                                @for ($j = 1; $j <= 4; $j++)
+                                                    @if ($data->priority == $j)
+                                                        <option selected>{{ $j }}</option>
+                                                    @else
+                                                        <option>{{ $j }}</option>
+                                                    @endif
+                                                @endfor
+                                            </select>
+                                        @endif
                                     @else
-                                        <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch;">
-                                            <option selected>{{ $data->priority }}</option>
-                                        </select>
-                                    @endif
+                                        {{ $data->priority }}
+                                    @endcan
                                 </td>
                                 <td>{{ $data->姓名 }}</td>
                                 <td>{{ $data->部門 }}</td>

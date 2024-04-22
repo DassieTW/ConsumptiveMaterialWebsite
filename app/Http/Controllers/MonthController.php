@@ -54,10 +54,11 @@ class MonthController extends Controller
             ->where('consumptive_material.發料部門', 'like', $send . '%')
             ->where('月請購_單耗.料號90', 'like', $number90 . '%')
             ->get();
-        $people = DB::table('login')->where('priority', "=", 1)
+        $people = DB::table('login')
             ->join('人員信息', function ($join) {
                 $join->on('人員信息.工號', '=', 'login.username');
             })
+            ->where('priority', "=", 1)
             ->whereNotNull('email')
             ->get();
 
@@ -80,10 +81,11 @@ class MonthController extends Controller
             ->where('consumptive_material.料號', 'like', $number . '%')
             ->where('consumptive_material.發料部門', 'like', $send . '%')
             ->get();
-        $people = DB::table('login')->where('priority', "=", 1)
+        $people = DB::table('login')
             ->join('人員信息', function ($join) {
                 $join->on('人員信息.工號', '=', 'login.username');
             })
+            ->where('priority', "=", 1)
             ->whereNotNull('email')
             ->get();
 
@@ -413,10 +415,11 @@ class MonthController extends Controller
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path, 1, $testAgainstFormats);
 
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
-        $people = DB::table('login')->where('priority', "=", 1)
+        $people = DB::table('login')
             ->join('人員信息', function ($join) {
                 $join->on('人員信息.工號', '=', 'login.username');
             })
+            ->where('priority', "=", 1)
             ->whereNotNull('email')
             ->get();
         unset($sheetData[0]);
