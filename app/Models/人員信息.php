@@ -28,4 +28,9 @@ class 人員信息 extends Model
         'email',
         '主管工號'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(Login::class, 'username');
+    } // user
 }

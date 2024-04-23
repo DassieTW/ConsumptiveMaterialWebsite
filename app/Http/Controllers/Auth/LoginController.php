@@ -49,12 +49,9 @@ class LoginController extends Controller
         // return \Auth::attempt($credentials);
 
         // login without hashed password
-        $user = DB::table('login')
-            ->join('人員信息', function ($join) {
-                $join->on('人員信息.工號', '=', 'login.username');
-            })
-            ->where('username', "=", $request->username)
-            ->first();
+        $user = Login::where([
+            'username' => $request->username
+        ])->first();
 
         if ($user) {
             \Auth::login($user);
@@ -93,7 +90,7 @@ class LoginController extends Controller
             $usernameAuthed = \Auth::user()->username;
             $prior = \Auth::user()->priority;
             $avatarChoice = \Auth::user()->avatarChoice;
-            $department = \Auth::user()->部門;
+            $department = \Auth::user()->detail_info->部門;
 
             Session::put('username', $usernameAuthed);
             Session::put('priority', $prior);
@@ -285,7 +282,7 @@ class LoginController extends Controller
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $DBName);
             \DB::purge(env("DB_CONNECTION"));
 
-            $updatedUser = Login::updateOrCreate(
+            $user = Login::updateOrCreate(
                 ['username' => $previousUser->username],
                 [
                     'password' => $previousUser->password,
@@ -298,13 +295,6 @@ class LoginController extends Controller
                 ]
             );
 
-            $user = DB::table('login')
-                ->join('人員信息', function ($join) {
-                    $join->on('人員信息.工號', '=', 'login.username');
-                })
-                ->where('username', "=", $previousUser->username)
-                ->first();
-
             \Auth::login($user);
             $request->session()->regenerate();
             $usernameAuthed = \Auth::user()->username;
@@ -313,7 +303,7 @@ class LoginController extends Controller
             Session::put('username', $usernameAuthed);
             Session::put('priority', $prior);
             Session::put('avatarChoice', $avatarChoice);
-            Session::put('department', \Auth::user()->部門);
+            Session::put('department', \Auth::user()->detail_info->部門);
             Session::put('locale', $previousUser->preferred_lang);
             \App::setLocale($previousUser->preferred_lang);
             session(['database' => $DBName]);
@@ -405,12 +395,10 @@ class LoginController extends Controller
             ]
         ], ['工號'], ['姓名', '部門', 'email']);
 
-        $user = DB::table('login')
-            ->join('人員信息', function ($join) {
-                $join->on('人員信息.工號', '=', 'login.username');
-            })
-            ->where('username', "=", $job_id)
-            ->first();
+        $user = Login::where([
+            'username' => $job_id
+        ])->first();
+        
         \Auth::login($user);
 
         $request->session()->regenerate();
@@ -420,7 +408,7 @@ class LoginController extends Controller
         Session::put('username', $usernameAuthed);
         Session::put('priority', $prior);
         Session::put('avatarChoice', $avatarChoice);
-        Session::put('department', \Auth::user()->部門);
+        Session::put('department', \Auth::user()->detail_info->部門);
         $this->authenticated($request, \Auth::user()); // set the login db
 
         return \Response::json(['message' => 'success insert']/* Status code here default is 200 ok*/);

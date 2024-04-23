@@ -1164,8 +1164,8 @@
                             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                                 data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static">
                                 <img src="../admin/img/avatars/avatarBot{{ \Auth::user()->avatarChoice }}.png"
-                                    class="avatar img-fluid rounded mx-auto" alt="{{ \Auth::user()->姓名 }}" /> <span
-                                    class="text-dark">{{ \Auth::user()->姓名 }}</span>
+                                    class="avatar img-fluid rounded mx-auto" alt="{{ \Auth::user()->detail_info->姓名 }}" /> <span
+                                    class="text-dark">{{ \Auth::user()->detail_info->姓名 }}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end align-items-center" id="UserDropDown"
                                 style="border-radius: 10px; max-height: 48ch; overflow-y: auto;">

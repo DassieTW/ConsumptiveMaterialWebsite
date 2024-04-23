@@ -45,4 +45,9 @@ class Login extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function detail_info()
+    {
+        return $this->hasOne(人員信息::class, '工號');
+    } // detail_info
 }

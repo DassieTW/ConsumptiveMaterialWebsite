@@ -23,8 +23,8 @@ class SentryUserContext
             \Sentry\configureScope(function (Scope $scope): void {
                 $scope->setUser([
                     'id'    => Auth::user()->username,
-                    // 'email' => Auth::user()->email,
-                    'name'  => Auth::user()->姓名,
+                    'email' => Auth::user()->detail_info->email,
+                    'name'  => Auth::user()->detail_info->姓名,
                 ]);
             });
         }

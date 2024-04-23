@@ -44,15 +44,12 @@ Route::get('/', function (Request $request) {
         \DB::purge(env("DB_CONNECTION"));
         $decrypted_id = \Crypt::decrypt(request()->S);
 
-        $user = DB::table('login')
-            ->join('人員信息', function ($join) {
-                $join->on('人員信息.工號', '=', 'login.username');
-            })
-            ->where('username', "=", $decrypted_id)
-            ->firstOr(function ($site, $id) use ($decrypted_site, $decrypted_id) {
-                // returns the first result matching the query or, if no results are found, execute the given closure
-                dd($site . "_" . $id);
-            });
+        $user = Login::where([
+            'username' => $decrypted_id,
+        ])->firstOr(function ($site, $id) use ($decrypted_site, $decrypted_id) {
+            // returns the first result matching the query or, if no results are found, execute the given closure
+            dd($site . "_" . $id);
+        });
 
         // -------------------------------------------------------------------------
         // update the db_list for user that exist before the db_list function is added
@@ -71,7 +68,7 @@ Route::get('/', function (Request $request) {
         Session::put('username', $usernameAuthed);
         Session::put('priority', $prior);
         Session::put('avatarChoice', $avatarChoice);
-        Session::put('department', \Auth::user()->部門);
+        Session::put('department', \Auth::user()->detail_info->部門);
         session(['database' => $decrypted_site]);
 
         if (\Auth::user()->preferred_lang == null) {
