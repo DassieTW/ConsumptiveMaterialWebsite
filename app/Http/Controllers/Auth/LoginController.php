@@ -289,9 +289,9 @@ class LoginController extends Controller
                 ])->first();
 
                 if ($user_m2 !== null) {
-                    $m2_name = $user_m->姓名;
-                    $m2_dept_name = $user_m->部門;
-                    $m2_office_mail = $user_m->email;
+                    $m2_name = $user_m2->姓名;
+                    $m2_dept_name = $user_m2->部門;
+                    $m2_office_mail = $user_m2->email;
                 } // if
             } // if
 
