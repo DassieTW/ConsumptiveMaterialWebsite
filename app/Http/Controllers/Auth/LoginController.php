@@ -177,7 +177,6 @@ class LoginController extends Controller
 
         try {
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
-
             $recentSite = $this->attemptRecentlyLoginDBForMultiSiteUsers($request);
             if ($recentSite == null) {
                 // if the OA account is new to us
@@ -238,7 +237,6 @@ class LoginController extends Controller
                 ]
             ], ['工號'], ['姓名', '部門', 'email']);
 
-
             DB::commit();
 
             $encrypt_id = \Crypt::encrypt($request->work_id);
@@ -269,6 +267,33 @@ class LoginController extends Controller
 
         if ($request->user()->can('canSwitchSites', Login::class) && $ifDBListContainsTargetSite) {
             $previousUser = \Auth::user();
+            $work_id = \Auth::user()->username;
+            $user_name = \Auth::user()->detail_info->姓名;
+            $dept_name = \Auth::user()->detail_info->部門;
+            $office_mail = \Auth::user()->detail_info->email;
+            $m_work_id = \Auth::user()->detail_info->主管工號;
+
+            $user_m = 人員信息::where([
+                '工號' => $m_work_id
+            ])->first();
+
+            if ($user_m !== null) {
+                $m_name = $user_m->姓名;
+                $m_dept_name = $user_m->部門;
+                $m_office_mail = $user_m->email;
+                $m2_work_id = $user_m->主管工號;
+
+                $user_m2 = 人員信息::where([
+                    '工號' => $m2_work_id
+                ])->first();
+
+                if ($user_m2 !== null) {
+                    $m2_name = $user_m->姓名;
+                    $m2_dept_name = $user_m->部門;
+                    $m2_office_mail = $user_m->email;
+                } // if
+            } // if
+
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
             \Auth::logout();
@@ -281,6 +306,41 @@ class LoginController extends Controller
 
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $DBName);
             \DB::purge(env("DB_CONNECTION"));
+
+            // insert self & manager data
+            DB::table('人員信息')->upsert([
+                [
+                    '工號' => $work_id,
+                    '姓名' => $user_name,
+                    '部門' => $dept_name,
+                    'email' => $office_mail,
+                    '主管工號' => $m_work_id
+                ],
+            ], ['工號'], ['姓名', '部門', 'email', '主管工號']);
+
+            if ($user_m) {
+                DB::table('人員信息')->upsert([
+                    [
+                        '工號' => $m_work_id,
+                        '姓名' => $m_name,
+                        '部門' => $m_dept_name,
+                        'email' => $m_office_mail,
+                        '主管工號' => $m2_work_id
+                    ],
+                ], ['工號'], ['姓名', '部門', 'email', '主管工號']);
+            } // if
+
+            // insert manager's manager data
+            if ($user_m2) {
+                DB::table('人員信息')->upsert([
+                    [
+                        '工號' => $m2_work_id,
+                        '姓名' => $m2_name,
+                        '部門' => $m2_dept_name,
+                        'email' => $m2_office_mail,
+                    ],
+                ], ['工號'], ['姓名', '部門', 'email']);
+            } // if
 
             $user = Login::updateOrCreate(
                 ['username' => $previousUser->username],
@@ -367,38 +427,55 @@ class LoginController extends Controller
                 'last_login_time' => $datetime, 'available_dblist' =>  str_replace(" Consumables management", "", $site)
             ]);
 
+        $work_id = Session::get('work_id');
+        $user_name = Session::get('user_name');
+        $dept_name = Session::get('dept_name');
+        $office_mail = Session::get('office_mail');
+
+        $m_name = Session::get('m_name');
+        $m_office_mail = Session::get('m_office_mail');
+        $m_dept_name = Session::get('m_dept_name');
+        $m_work_id = Session::get('m_work_id');
+        $m_priority = Session::get('m_priority');
+
+        $m2_name = Session::get('m2_name');
+        $m2_office_mail = Session::get('m2_office_mail');
+        $m2_dept_name = Session::get('m2_dept_name');
+        $m2_work_id = Session::get('m2_work_id');
+        $m2_priority = Session::get('m2_priority');
+
         // insert self & manager data
         DB::table('人員信息')->upsert([
             [
-                '工號' => $request->work_id,
-                '姓名' => $request->user_name,
-                '部門' => $request->dept_name,
-                'email' => $request->office_mail,
-                '主管工號' => $request->m_work_id
+                '工號' => $work_id,
+                '姓名' => $user_name,
+                '部門' => $dept_name,
+                'email' => $office_mail,
+                '主管工號' => $m_work_id
             ],
             [
-                '工號' => $request->m_work_id,
-                '姓名' => $request->m_name,
-                '部門' => $request->m_dept_name,
-                'email' => $request->m_office_mail,
-                '主管工號' => $request->m2_work_id
+                '工號' => $m_work_id,
+                '姓名' => $m_name,
+                '部門' => $m_dept_name,
+                'email' => $m_office_mail,
+                '主管工號' => $m2_work_id
             ]
         ], ['工號'], ['姓名', '部門', 'email', '主管工號']);
 
         // insert manager's manager data
         DB::table('人員信息')->upsert([
             [
-                '工號' => $request->m2_work_id,
-                '姓名' => $request->m2_name,
-                '部門' => $request->m2_dept_name,
-                'email' => $request->m2_office_mail,
+                '工號' => $m2_work_id,
+                '姓名' => $m2_name,
+                '部門' => $m2_dept_name,
+                'email' => $m2_office_mail,
             ]
         ], ['工號'], ['姓名', '部門', 'email']);
 
         $user = Login::where([
             'username' => $job_id
         ])->first();
-        
+
         \Auth::login($user);
 
         $request->session()->regenerate();
@@ -497,7 +574,7 @@ class LoginController extends Controller
         } // if else
     } // usernamechange()
 
-    //用戶信息刪除
+    //用戶信息刪除 權限0 才能刪除User
     public function usernameDel(Request $request)
     {
         //將此工號從每個DB都刪除 下次此人登入時應該要從選擇廠別重新開始
