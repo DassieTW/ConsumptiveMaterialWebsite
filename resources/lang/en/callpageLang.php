@@ -15,7 +15,7 @@ return [
     'page_name' => 'Alarm System',
     'safealert' => 'Safety Stock Alert',
     'dayalert' => 'Passive Day Alert',
-    'diffalert' => 'Purchase Req. vs. Acquired',
+    'diffalert' => 'PR. vs. Acquired',
     'callsys' => 'Alarm System',
     'client' => 'Client',
     'isn' => 'PN',

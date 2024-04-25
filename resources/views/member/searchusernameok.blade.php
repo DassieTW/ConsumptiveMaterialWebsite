@@ -77,18 +77,23 @@
                                             </select>
                                         @else
                                             <select class="form-select" id="priority{{ $loop->index }}" style="width: 10ch;">
-                                                @if ($data->priority == 0)
-                                                    <option selected>0</option>
+                                                @if (Auth::user()->priority == 0)
+                                                    @for ($j = 0; $j <= 4; $j++)
+                                                        @if ($data->priority == $j)
+                                                            <option selected>{{ $j }}</option>
+                                                        @else
+                                                            <option>{{ $j }}</option>
+                                                        @endif
+                                                    @endfor
                                                 @else
-                                                    
+                                                    @for ($j = 1; $j <= 4; $j++)
+                                                        @if ($data->priority == $j)
+                                                            <option selected>{{ $j }}</option>
+                                                        @else
+                                                            <option>{{ $j }}</option>
+                                                        @endif
+                                                    @endfor
                                                 @endif
-                                                @for ($j = 1; $j <= 4; $j++)
-                                                    @if ($data->priority == $j)
-                                                        <option selected>{{ $j }}</option>
-                                                    @else
-                                                        <option>{{ $j }}</option>
-                                                    @endif
-                                                @endfor
                                             </select>
                                         @endif
                                     @else

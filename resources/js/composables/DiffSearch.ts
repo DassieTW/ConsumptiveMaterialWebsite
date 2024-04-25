@@ -7,7 +7,7 @@ import {
     useRouter
 } from "vue-router";
 
-export default function useTransitSearch() {
+export default function useDiffSearch() {
     const mats = ref("");
     const errors = ref("");
     const router = useRouter();

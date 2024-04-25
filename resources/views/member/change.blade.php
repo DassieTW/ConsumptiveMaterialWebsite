@@ -63,7 +63,10 @@
                         <thead>
                             <tr>
                                 <th class="table-warning" colspan="8">
-                                    {{ __('loginPageLang.current_permission') . ' : ' . Auth::user()->priority }}</th>
+                                    <p class="text-danger fw-bolder m-0 p-0">
+                                        {{ __('loginPageLang.current_permission') . ' : ' . Auth::user()->priority }}
+                                    </p>
+                                </th>
                             </tr>
                             <tr>
                                 <th colspan="2">{!! __('loginPageLang.priority') . ' 4' !!}</th>
@@ -149,78 +152,78 @@
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <!-- <tr class="table-secondary">
-                                    <td colspan="2"></td>
-                                    <td colspan="2"></td>
-                                    <td colspan="2"></td>
-                                    <td colspan="2"></td>
-                                </tr>
-                                {{-- ----------------------------------------------------------------------------------------- --}}
-                                {{-- 條碼 --}}
-                                <tr>
-                                    {{-- 4 --}}
-                                    <td rowspan="3" class="table-warning">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
-                                            <path
-                                                d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
-                                        </svg>
-                                        <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
-                                    </td>
-                                    <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                        <td colspan="2"></td>
+                                        <td colspan="2"></td>
+                                        <td colspan="2"></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    {{-- ----------------------------------------------------------------------------------------- --}}
+                                    {{-- 條碼 --}}
+                                    <tr>
+                                        {{-- 4 --}}
+                                        <td rowspan="3" class="table-warning">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                            </svg>
+                                            <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
+                                        </td>
+                                        <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
 
-                                    {{-- 3 --}}
-                                    <td rowspan="3" class="table-warning">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
-                                            <path
-                                                d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
-                                        </svg>
-                                        <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
-                                    </td>
-                                    <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                        {{-- 3 --}}
+                                        <td rowspan="3" class="table-warning">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                            </svg>
+                                            <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
+                                        </td>
+                                        <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
 
-                                    {{-- 2 --}}
-                                    <td rowspan="3" class="table-warning">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
-                                            <path
-                                                d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
-                                        </svg>
-                                        <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
-                                    </td>
-                                    <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                        {{-- 2 --}}
+                                        <td rowspan="3" class="table-warning">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                            </svg>
+                                            <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
+                                        </td>
+                                        <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
 
-                                    {{-- 1 --}}
-                                    <td rowspan="3" class="table-warning">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
-                                            <path
-                                                d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
-                                        </svg>
-                                        <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
-                                    </td>
-                                    <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
-                                </tr>
-                                <tr>
-                                    {{-- 4 --}}
-                                    <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
-                                    {{-- 3 --}}
-                                    <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
-                                    {{-- 2 --}}
-                                    <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
-                                    {{-- 1 --}}
-                                    <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
-                                </tr>
-                                <tr>
-                                    {{-- 4 --}}
-                                    <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
-                                    {{-- 3 --}}
-                                    <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
-                                    {{-- 2 --}}
-                                    <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
-                                    {{-- 1 --}}
-                                    <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
-                                </tr> -->
+                                        {{-- 1 --}}
+                                        <td rowspan="3" class="table-warning">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                            </svg>
+                                            <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
+                                        </td>
+                                        <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                    </tr>
+                                    <tr>
+                                        {{-- 4 --}}
+                                        <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                        {{-- 3 --}}
+                                        <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                        {{-- 2 --}}
+                                        <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                        {{-- 1 --}}
+                                        <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                    </tr>
+                                    <tr>
+                                        {{-- 4 --}}
+                                        <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                        {{-- 3 --}}
+                                        <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                        {{-- 2 --}}
+                                        <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                        {{-- 1 --}}
+                                        <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                    </tr> -->
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
                                 <td colspan="2"></td>
