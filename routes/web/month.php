@@ -177,11 +177,12 @@ Route::get('/testconsume', function () {
         // redirect to MIS SSO page
         $userKey = urlencode(base64_encode(env('SSO_Key')));
         $sysType = urlencode(base64_encode(env('SSO_sysType')));
+        $SSO_URL = env('SSO_URL');
         $ReDirToUrl = env('APP_URL') . "/month/testconsume?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . request()->getSession()->get('locale');
         $ReDirToUrl = urlencode($ReDirToUrl);
         $FailTo = env('APP_URL') . "/month/testconsume?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . request()->getSession()->get('locale') . "&SSOfailed=true";
         $FailTo = urlencode($FailTo);
-        return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
+        return redirect($SSO_URL . '?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // if
     else {
         if (request()->filled('r')) {
@@ -215,11 +216,12 @@ Route::get('/teststand', function () {
         // redirect to MIS SSO page
         $userKey = urlencode(base64_encode(env('SSO_Key')));
         $sysType = urlencode(base64_encode(env('SSO_sysType')));
+        $SSO_URL = env('SSO_URL');
         $ReDirToUrl = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . request()->getSession()->get('locale');
         $ReDirToUrl = urlencode($ReDirToUrl);
         $FailTo = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . request()->getSession()->get('locale') . "&SSOfailed=true";
         $FailTo = urlencode($FailTo);
-        return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
+        return redirect($SSO_URL . '?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // if
     else {
         if (request()->filled('r')) {

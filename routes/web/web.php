@@ -85,9 +85,10 @@ Route::get('/', function (Request $request) {
         // if not, redirect to MIS SSO page
         $userKey = urlencode(base64_encode(env('SSO_Key')));
         $sysType = urlencode(base64_encode(env('SSO_sysType')));
+        $SSO_URL = env('SSO_URL');
         $ReDirToUrl = env('APP_URL') . "/member/sso";
         $FailTo = env('APP_URL') . "/569";
-        return redirect('https://ws.ecomp.pegatroncorp.com/SSO?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
+        return redirect($SSO_URL . '?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
     } // else if
     else {
         return view('welcome');
