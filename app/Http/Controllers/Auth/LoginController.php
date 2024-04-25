@@ -174,6 +174,7 @@ class LoginController extends Controller
     {
         $databaseArray = config('database_list.databases');
         // dd($databaseArray); //test
+        dd($request); // test
 
         try {
             $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
