@@ -123,19 +123,20 @@ export default defineComponent({
                 tempObj.品名 = data[i].品名;
                 tempObj.請購數量 = data[i].請購數量;
                 tempObj.實際領用數量 = data[i].實際領用數量;
+                tempObj.單位 = data[i].單位;
                 tempObj.需求與領用差異量 = data[i].需求與領用差異量;
-                tempObj.需求與領用差異 = data[i].需求與領用差異;
+                tempObj.需求與領用差異 = data[i].需求與領用差異 + "%";
 
                 rows.push(tempObj);
             } // for
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"));
+            XLSX.utils.book_append_sheet(workbook, worksheet, "PR vs Acq " + yearTag.value + "_" + (monthTag.value + 1));
             XLSX.writeFile(workbook,
                 app.appContext.config.globalProperties.$t(
                     "callpageLang.req_vs_real_percent"
-                ) + "_" + today + ".xlsx", { compression: true });
+                ) + ".xlsx", { compression: true });
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
@@ -147,6 +148,7 @@ export default defineComponent({
             // 將找到matching請購月份紀錄下來 loop完inbound list後
             // 會在loop buylist時只取用此請購月份的資料 (作為有請購但沒有(尚未?)入庫的料)
             let matchingBuylistMonth = -99;
+
             // find the matching buylist month
             for (let i = 0; i < all_data_sorted.inbound[monthTag.value].length; i++) {
                 let tempArry = all_data_sorted.inbound[monthTag.value];
@@ -217,6 +219,10 @@ export default defineComponent({
                 singleEntry.實際領用數量 = tempArry[i].入庫數量;
                 singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
                 singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                if (Number.isNaN(singleEntry.需求與領用差異)) {
+                    singleEntry.需求與領用差異 = 0;
+                } // if
+
                 data.push(singleEntry);
             } // for
 
@@ -237,6 +243,10 @@ export default defineComponent({
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
                         singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        if (Number.isNaN(singleEntry.需求與領用差異)) {
+                            singleEntry.需求與領用差異 = 0;
+                        } // if
+
                         data.push(singleEntry);
                     } // for
                 } else if (prevBuylistMonth == -2) { // 去年11月請購
@@ -250,6 +260,10 @@ export default defineComponent({
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
                         singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        if (Number.isNaN(singleEntry.需求與領用差異)) {
+                            singleEntry.需求與領用差異 = 0;
+                        } // if
+
                         data.push(singleEntry);
                     } // for
                 } else { // 今年內請購
@@ -263,6 +277,10 @@ export default defineComponent({
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
                         singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        if (Number.isNaN(singleEntry.需求與領用差異)) {
+                            singleEntry.需求與領用差異 = 0;
+                        } // if
+
                         data.push(singleEntry);
                     } // for
                 } // if else
@@ -279,6 +297,10 @@ export default defineComponent({
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
                         singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        if (Number.isNaN(singleEntry.需求與領用差異)) {
+                            singleEntry.需求與領用差異 = 0;
+                        } // if
+
                         data.push(singleEntry);
                     } // if
                 } // for
@@ -295,6 +317,10 @@ export default defineComponent({
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
                         singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        if (Number.isNaN(singleEntry.需求與領用差異)) {
+                            singleEntry.需求與領用差異 = 0;
+                        } // if
+
                         data.push(singleEntry);
                     } // if
                 } // for
@@ -311,6 +337,10 @@ export default defineComponent({
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
                         singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
+                        if (Number.isNaN(singleEntry.需求與領用差異)) {
+                            singleEntry.需求與領用差異 = 0;
+                        } // if
+
                         data.push(singleEntry);
                     } // if
                 } // for
@@ -319,11 +349,14 @@ export default defineComponent({
 
         const CalChartDatasets = async () => {
             datasetBuyUSD.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // test
+            datasetRealUSD.value = [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]; // test
         }; // CalChartDatasets
 
         watch(yearTag, async () => {
             if (yearTag.value.toString().length == 4 && parseInt(yearTag.value) >= 1996) {
                 await triggerModal();
+
+                data.splice(0); // clean up possible old records
 
                 await getMats(yearTag.value);
 
@@ -337,9 +370,6 @@ export default defineComponent({
             await triggerModal();
 
             monthStr.value = monthList.value[monthTag.value];
-
-            data.splice(0); // clean up possible old records
-
             await SortCurrentMonthTable();
 
             $("body").loadingModal("hide");
@@ -455,14 +485,6 @@ export default defineComponent({
             checkedRows.push(...rowsKey);
             console.log(checkedRows); // test
         };
-
-        table.rows = computed(() => {
-            return data.filter(
-                (x) =>
-                    x.料號.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-                    x.品名.includes(searchTerm.value)
-            );
-        })
 
         return {
             table,

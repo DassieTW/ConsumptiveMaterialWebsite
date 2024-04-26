@@ -56,6 +56,13 @@ export const table = reactive({
             sortable: true,
         },
     ],
+    rows: computed(() => {
+        return data.filter(
+            (x) => x.料號 != null &&
+                (x.料號.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+                x.品名.includes(searchTerm.value))
+        );
+    }),
     totalRecordCount: computed(() => {
         return table.rows.length;
     }),
