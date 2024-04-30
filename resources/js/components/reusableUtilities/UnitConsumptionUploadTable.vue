@@ -107,7 +107,7 @@
                 <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="col col-auto">
                     <div class="input-group">
-                        <select class="form-select form-select-lg col col-auto" v-model="selected_mail">
+                        <select class="form-select form-select-lg col col-auto text-center" v-model="selected_mail">
                             <option style="display: none;" disabled selected value="">
                                 {{ $t("monthlyPRpageLang.noemail") }}
                             </option>

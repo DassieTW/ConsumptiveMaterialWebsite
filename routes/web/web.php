@@ -36,6 +36,13 @@ use MeiliSearch\Client;
 // })->where("any", ".*");
 // --------------- the about code gets any url of our website and intended to pass it to Vue Router ----------
 
+// for old site url
+if (env('APP_URL') === 'https://psz-bu6pe-05v.psz.corp.pegatron') {
+    Route::get('{any?}', function () {
+        return view('site_moved');
+    })->where('any', '.*')->withoutMiddleware('auth');
+} // if
+
 Route::get('/', function (Request $request) {
     if ($request->filled('S')) {
         // the redirected session is seperated from SSO session, so we need to login manaully

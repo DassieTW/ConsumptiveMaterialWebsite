@@ -77,6 +77,7 @@ import { yearTag, monthTag, checkedRows, searchTerm, data, table, datasetBuyUSD,
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useDiffSearch from "../../composables/DiffSearch.ts";
+import useMonthlyPRSearch from "../../composables/MonthlyPRSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
 export default defineComponent({
     name: "App",
@@ -90,8 +91,10 @@ export default defineComponent({
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
         const { mats, getMats } = useDiffSearch(); // axios get the mats data
+        const { Currency, getCurrency } = useMonthlyPRSearch(); // axios get the currency
 
-        onBeforeMount(getMats);
+
+        onBeforeMount(getMats(), getCurrency());
 
         const monthList = ref(app.appContext.config.globalProperties.$t("monthlyPRpageLang.months").split('_'));
         const monthStr = ref(monthList.value[monthTag.value]);
@@ -142,7 +145,7 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // OutputExcelClick
 
-        const SortCurrentMonthTable = async () => {
+        const SortCurrentMonthTable = async (inputMonth, resultArray) => {
             // 無法確定此廠這個月的入庫是來自固定前一個月的請購or固定提前(早兩個月)的請購 
             // 回頭一個月一個月找時 若有料號match 表示整批的請購月份也是現在的月份 
             // 將找到matching請購月份紀錄下來 loop完inbound list後
@@ -150,11 +153,11 @@ export default defineComponent({
             let matchingBuylistMonth = -99;
 
             // find the matching buylist month
-            for (let i = 0; i < all_data_sorted.inbound[monthTag.value].length; i++) {
-                let tempArry = all_data_sorted.inbound[monthTag.value];
+            for (let i = 0; i < all_data_sorted.inbound[inputMonth].length; i++) {
+                let tempArry = all_data_sorted.inbound[inputMonth];
 
                 for (let j = 1; j < 3; j++) {
-                    let prevBuylistMonth = monthTag.value - j;
+                    let prevBuylistMonth = inputMonth - j;
                     if (prevBuylistMonth == -1) { // 去年12月請購
                         let obj = all_data_sorted.buylist_lastyear[11].find(o => o.料號 === tempArry[i].料號);
                         // console.log(obj); // test
@@ -187,9 +190,9 @@ export default defineComponent({
             } // for
 
             // loop thru inbound list and push to table
-            for (let i = 0; i < all_data_sorted.inbound[monthTag.value].length; i++) {
+            for (let i = 0; i < all_data_sorted.inbound[inputMonth].length; i++) {
                 let singleEntry = {};
-                let tempArry = all_data_sorted.inbound[monthTag.value];
+                let tempArry = all_data_sorted.inbound[inputMonth];
                 singleEntry.料號 = tempArry[i].料號;
                 singleEntry.品名 = tempArry[i].品名;
 
@@ -222,8 +225,10 @@ export default defineComponent({
                 if (Number.isNaN(singleEntry.需求與領用差異)) {
                     singleEntry.需求與領用差異 = 0;
                 } // if
+                singleEntry.單價 = tempArry[i].單價;
+                singleEntry.幣別 = tempArry[i].幣別;
 
-                data.push(singleEntry);
+                resultArray.push(singleEntry);
             } // for
 
             // fish out entries that are within buylist but not within inbound
@@ -231,7 +236,7 @@ export default defineComponent({
                 // if the whole batch are all newly inbound without any corresponding buy records 
                 // OR if there's no inbound records
                 // 目前作法：直接抓上個月的請購資料
-                let prevBuylistMonth = monthTag.value - 1;
+                let prevBuylistMonth = inputMonth - 1;
                 if (prevBuylistMonth == -1) { // 去年12月請購
                     for (let i = 0; i < all_data_sorted.buylist_lastyear[11].length; i++) {
                         let tempMonthRecord = all_data_sorted.buylist_lastyear[11];
@@ -246,8 +251,10 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
+                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.幣別 = tempMonthRecord[i].幣別;
 
-                        data.push(singleEntry);
+                        resultArray.push(singleEntry);
                     } // for
                 } else if (prevBuylistMonth == -2) { // 去年11月請購
                     for (let i = 0; i < all_data_sorted.buylist_lastyear[10].length; i++) {
@@ -263,8 +270,10 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
+                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.幣別 = tempMonthRecord[i].幣別;
 
-                        data.push(singleEntry);
+                        resultArray.push(singleEntry);
                     } // for
                 } else { // 今年內請購
                     for (let i = 0; i < all_data_sorted.buylist[prevBuylistMonth].length; i++) {
@@ -280,8 +289,10 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
+                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.幣別 = tempMonthRecord[i].幣別;
 
-                        data.push(singleEntry);
+                        resultArray.push(singleEntry);
                     } // for
                 } // if else
             } else if (matchingBuylistMonth == -1) { // if the batch's buy record is from last year Dec
@@ -300,8 +311,10 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
+                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.幣別 = tempMonthRecord[i].幣別;
 
-                        data.push(singleEntry);
+                        resultArray.push(singleEntry);
                     } // if
                 } // for
             } else if (matchingBuylistMonth == -2) { // if the batch's buy record is from last year Nov
@@ -320,8 +333,10 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
+                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.幣別 = tempMonthRecord[i].幣別;
 
-                        data.push(singleEntry);
+                        resultArray.push(singleEntry);
                     } // if
                 } // for
             } else { // if the batch's buy record is within this year
@@ -340,23 +355,42 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
+                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.幣別 = tempMonthRecord[i].幣別;
 
-                        data.push(singleEntry);
+                        resultArray.push(singleEntry);
                     } // if
                 } // for
             } // if else
         }; // SortCurrentMonthTable
 
         const CalChartDatasets = async () => {
+            tempBuyUSD = [];
+            tempRealUSD = [];
             datasetBuyUSD.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // test
             datasetRealUSD.value = [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]; // test
+            let monthlyTemp = [];
+            let exchange_table = Currency.value.rates;
+            console.log(exchange_table); // test
+            for (let i = 0; i < 12; i++) { // loop thru whole year
+                monthlyTemp.splice(0); // clean up old records
+                SortCurrentMonthTable(i, monthlyTemp); // get the sorted data by month
+                console.log(monthList.value[i]); // test
+                // if (singleEntry.幣別 == "RMB") {
+                //     singleEntry.匯率 = parseFloat((singleEntry.請購金額 * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                // } // if
+                // else {
+                //     singleEntry.匯率 = parseFloat((singleEntry.請購金額 * (exchange_table['USD'] / exchange_table[singleEntry.幣別])).toFixed(5));
+                // } // else
+                console.log(monthlyTemp[0]); // test
+            } // for
         }; // CalChartDatasets
 
         watch(yearTag, async () => {
             if (yearTag.value.toString().length == 4 && parseInt(yearTag.value) >= 1996) {
                 await triggerModal();
 
-                data.splice(0); // clean up possible old records
+                data.splice(0); // clean up old records
 
                 await getMats(yearTag.value);
 
@@ -369,8 +403,9 @@ export default defineComponent({
             // Jan is 0 in monthTag
             await triggerModal();
 
+            data.splice(0); // clean up possible old records
             monthStr.value = monthList.value[monthTag.value];
-            await SortCurrentMonthTable();
+            await SortCurrentMonthTable(monthTag.value, data);
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
@@ -473,7 +508,7 @@ export default defineComponent({
                 all_data_sorted.inbound[i] = sum_result;
             } // for
 
-            await SortCurrentMonthTable();
+            await SortCurrentMonthTable(monthTag.value, data);
             await CalChartDatasets();
 
             $("body").loadingModal("hide");
