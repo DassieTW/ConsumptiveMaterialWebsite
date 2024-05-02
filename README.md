@@ -11,6 +11,9 @@ so that all clients' broswer will download the latest files.
 yarn run clear:babel-cache <br />
 npx mix --production <br />
 
+# Current Services
+docker compose up -d nginx workspace redis mssql meilisearch hq_component_workspace
+
 ## Useful Laravel Commands (used in workspace container)
 
 php artisan optimize:clear <br />
