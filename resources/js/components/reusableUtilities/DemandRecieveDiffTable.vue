@@ -202,30 +202,35 @@ export default defineComponent({
                     let obj = all_data_sorted.buylist_lastyear[11].find(o => o.料號 === singleEntry.料號);
                     // console.log(obj); // test
                     if (obj) {
-                        singleEntry.請購數量 = obj.本次請購數量;
+                        singleEntry.請購數量 = parseFloat(obj.本次請購數量);
                     } // if
                 } else if (matchingBuylistMonth == -2) { // if the batch's buy record is from last year Nov
                     let obj = all_data_sorted.buylist_lastyear[10].find(o => o.料號 === singleEntry.料號);
                     // console.log(obj); // test
                     if (obj) {
-                        singleEntry.請購數量 = obj.本次請購數量;
+                        singleEntry.請購數量 = parseFloat(obj.本次請購數量);
                     } // if
                 } else { // if the batch's buy record is within this year
                     let obj = all_data_sorted.buylist[matchingBuylistMonth].find(o => o.料號 === singleEntry.料號);
-                    // console.log(obj); // test
                     if (obj) {
-                        singleEntry.請購數量 = obj.本次請購數量;
+                        singleEntry.請購數量 = parseFloat(obj.本次請購數量);
                     } // if
                 } // if else
 
+                if (Number.isNaN(singleEntry.請購數量)) {
+                    singleEntry.請購數量 = 0;
+                } // if
                 singleEntry.單位 = tempArry[i].單位;
-                singleEntry.實際領用數量 = tempArry[i].入庫數量;
+                singleEntry.實際領用數量 = parseInt(tempArry[i].入庫數量);
+                if (Number.isNaN(singleEntry.實際領用數量)) {
+                    singleEntry.實際領用數量 = 0;
+                } // if
                 singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
                 singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
                 if (Number.isNaN(singleEntry.需求與領用差異)) {
                     singleEntry.需求與領用差異 = 0;
                 } // if
-                singleEntry.單價 = tempArry[i].單價;
+                singleEntry.單價 = parseFloat(tempArry[i].單價);
                 singleEntry.幣別 = tempArry[i].幣別;
 
                 resultArray.push(singleEntry);
@@ -243,7 +248,10 @@ export default defineComponent({
                         let singleEntry = {};
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
+                        if (Number.isNaN(singleEntry.請購數量)) {
+                            singleEntry.請購數量 = 0;
+                        } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
@@ -251,7 +259,7 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
-                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
                         singleEntry.幣別 = tempMonthRecord[i].幣別;
 
                         resultArray.push(singleEntry);
@@ -262,7 +270,10 @@ export default defineComponent({
                         let singleEntry = {};
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
+                        if (Number.isNaN(singleEntry.請購數量)) {
+                            singleEntry.請購數量 = 0;
+                        } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
@@ -270,7 +281,7 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
-                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
                         singleEntry.幣別 = tempMonthRecord[i].幣別;
 
                         resultArray.push(singleEntry);
@@ -281,7 +292,10 @@ export default defineComponent({
                         let singleEntry = {};
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
+                        if (Number.isNaN(singleEntry.請購數量)) {
+                            singleEntry.請購數量 = 0;
+                        } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
@@ -289,7 +303,7 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
-                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
                         singleEntry.幣別 = tempMonthRecord[i].幣別;
 
                         resultArray.push(singleEntry);
@@ -303,7 +317,10 @@ export default defineComponent({
                         let singleEntry = {};
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
+                        if (Number.isNaN(singleEntry.請購數量)) {
+                            singleEntry.請購數量 = 0;
+                        } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
@@ -311,7 +328,7 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
-                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
                         singleEntry.幣別 = tempMonthRecord[i].幣別;
 
                         resultArray.push(singleEntry);
@@ -325,7 +342,10 @@ export default defineComponent({
                         let singleEntry = {};
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
+                        if (Number.isNaN(singleEntry.請購數量)) {
+                            singleEntry.請購數量 = 0;
+                        } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
@@ -333,7 +353,7 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
-                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
                         singleEntry.幣別 = tempMonthRecord[i].幣別;
 
                         resultArray.push(singleEntry);
@@ -347,7 +367,10 @@ export default defineComponent({
                         let singleEntry = {};
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = tempMonthRecord[i].本次請購數量;
+                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
+                        if (Number.isNaN(singleEntry.請購數量)) {
+                            singleEntry.請購數量 = 0;
+                        } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
                         singleEntry.實際領用數量 = 0;
                         singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
@@ -355,7 +378,7 @@ export default defineComponent({
                         if (Number.isNaN(singleEntry.需求與領用差異)) {
                             singleEntry.需求與領用差異 = 0;
                         } // if
-                        singleEntry.單價 = tempMonthRecord[i].單價;
+                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
                         singleEntry.幣別 = tempMonthRecord[i].幣別;
 
                         resultArray.push(singleEntry);
@@ -365,8 +388,8 @@ export default defineComponent({
         }; // SortCurrentMonthTable
 
         const CalChartDatasets = async () => {
-            tempBuyUSD = [];
-            tempRealUSD = [];
+            let tempBuyUSD = [];
+            let tempRealUSD = [];
             datasetBuyUSD.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // test
             datasetRealUSD.value = [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]; // test
             let monthlyTemp = [];
@@ -443,12 +466,12 @@ export default defineComponent({
                 // sum the entries with the same 料號                
                 let sum_result = Object.values(newArray.reduce((acc, curr) => {
                     let item = acc[curr.料號];
-                    if (item) {
-                        item.本次請購數量 += parseInt(curr.本次請購數量);
+                    if (item) { // 匯率 其實是美金金額 不是真的匯率了
+                        item.本次請購數量 += parseFloat(curr.本次請購數量);
                         item.匯率 += parseFloat(curr.匯率);
                     } else {
                         curr.匯率 = parseFloat(curr.匯率);
-                        curr.本次請購數量 = parseInt(curr.本次請購數量);
+                        curr.本次請購數量 = parseFloat(curr.本次請購數量);
                         acc[curr.料號] = curr;
                     } // if else
 
@@ -471,10 +494,10 @@ export default defineComponent({
 
                     if (item) {
                         item.匯率 = parseFloat(item.匯率) + parseFloat(curr.匯率);
-                        item.本次請購數量 = parseInt(item.本次請購數量) + parseInt(curr.本次請購數量);
+                        item.本次請購數量 = parseFloat(item.本次請購數量) + parseFloat(curr.本次請購數量);
                     } else {
                         curr.匯率 = parseFloat(curr.匯率);
-                        curr.本次請購數量 = parseInt(curr.本次請購數量);
+                        curr.本次請購數量 = parseFloat(curr.本次請購數量);
                         acc[curr.料號] = curr;
                     } // if else
 

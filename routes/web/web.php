@@ -37,7 +37,7 @@ use MeiliSearch\Client;
 // --------------- the about code gets any url of our website and intended to pass it to Vue Router ----------
 
 // for old site url
-if (env('APP_URL') === 'https://psz-bu6pe-05v.psz.corp.pegatron') {
+if (env('APP_URL') === 'https://psz-bu6pe-05v.psz.corp.pegatron' || env('APP_URL') === 'http://172.22.252.160') {
     Route::get('{any?}', function () {
         return view('site_moved');
     })->where('any', '.*')->withoutMiddleware('auth');
