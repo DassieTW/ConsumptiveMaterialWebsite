@@ -419,6 +419,7 @@ export default defineComponent({
             } // for
 
             console.log(tempRealUSD); // test
+            console.log(tempBuyUSD); // test
             datasetBuyUSD.value = tempBuyUSD;
             datasetRealUSD.value = tempRealUSD;
         }; // CalChartDatasets
