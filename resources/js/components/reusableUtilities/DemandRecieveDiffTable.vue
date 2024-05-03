@@ -94,7 +94,10 @@ export default defineComponent({
         const { Currency, getCurrency } = useMonthlyPRSearch(); // axios get the currency
 
 
-        onBeforeMount(getMats(), getCurrency());
+        onBeforeMount(async () => {
+            await getCurrency();
+            await getMats();
+        });
 
         const monthList = ref(app.appContext.config.globalProperties.$t("monthlyPRpageLang.months").split('_'));
         const monthStr = ref(monthList.value[monthTag.value]);
@@ -390,23 +393,34 @@ export default defineComponent({
         const CalChartDatasets = async () => {
             let tempBuyUSD = [];
             let tempRealUSD = [];
-            datasetBuyUSD.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // test
-            datasetRealUSD.value = [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]; // test
+
             let monthlyTemp = [];
             let exchange_table = Currency.value.rates;
-            console.log(exchange_table); // test
             for (let i = 0; i < 12; i++) { // loop thru whole year
                 monthlyTemp.splice(0); // clean up old records
                 SortCurrentMonthTable(i, monthlyTemp); // get the sorted data by month
-                console.log(monthList.value[i]); // test
-                // if (singleEntry.幣別 == "RMB") {
-                //     singleEntry.匯率 = parseFloat((singleEntry.請購金額 * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
-                // } // if
-                // else {
-                //     singleEntry.匯率 = parseFloat((singleEntry.請購金額 * (exchange_table['USD'] / exchange_table[singleEntry.幣別])).toFixed(5));
-                // } // else
-                console.log(monthlyTemp[0]); // test
+                let currentMonthBuyTotalPrice = 0;
+                let currentMonthRealTotalPrice = 0;
+                for (let j = 0; j < monthlyTemp.length; j++) {
+                    if (monthlyTemp[j].料號) { // for safety measure
+                        if (monthlyTemp[j].幣別 == "RMB") {
+                            currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                            currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                        } // if
+                        else {
+                            currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
+                            currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
+                        } // else
+                    } // if
+                } // for
+
+                tempBuyUSD.push(currentMonthBuyTotalPrice);
+                tempRealUSD.push(currentMonthRealTotalPrice);
             } // for
+
+            console.log(tempRealUSD); // test
+            datasetBuyUSD.value = tempBuyUSD;
+            datasetRealUSD.value = tempRealUSD;
         }; // CalChartDatasets
 
         watch(yearTag, async () => {

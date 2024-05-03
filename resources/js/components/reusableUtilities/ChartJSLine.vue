@@ -122,19 +122,19 @@ export default {
             labels: monthList.value,
             datasets: [
                 {
-                    label: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount1") + "(USD)",
+                    label: app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount") + "(USD)",
                     borderColor: 'rgb(9, 116, 230)',
                     backgroundColor: 'rgba(9, 116, 230, 0.5)',
                     pointStyle: 'rect',
-                    data: datasetBuyUSD.value,
+                    data: datasetRealUSD.value,
                 },
                 {
-                    label: app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount") + "(USD)",
+                    label: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount1") + "(USD)",
                     borderColor: 'rgb(245, 44, 44)',
                     backgroundColor: 'rgba(245, 44, 44, 0.5)',
                     pointStyle: 'rect',
                     fill: '-1',
-                    data: datasetRealUSD.value,
+                    data: datasetBuyUSD.value,
                 },
                 // {
                 //     type: 'bar',
