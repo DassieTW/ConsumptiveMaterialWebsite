@@ -15,7 +15,6 @@ export default function useTransitSearch() {
     const getMats = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        // let transitclient = sessionStorage.getItem("transitclient");
         try {
             let response = await axios.post('/api/month/getTransit', {
                 DB: getDB.data,

@@ -23,7 +23,6 @@ Route::post('/mats', function (Request $request) {
 
     $input = json_decode($request->input('LookInTargets'));
     $send = json_decode($request->input('LookInSend'));
-    // dd($send);
     $datas = [];
     // dd(json_decode($request->input('LookInTargets'))); // test
     if (json_decode($request->input('LookInType')) === "1") {

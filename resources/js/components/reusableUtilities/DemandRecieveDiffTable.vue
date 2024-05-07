@@ -396,6 +396,7 @@ export default defineComponent({
 
             let monthlyTemp = [];
             let exchange_table = Currency.value.rates;
+
             for (let i = 0; i < 12; i++) { // loop thru whole year
                 monthlyTemp.splice(0); // clean up old records
                 SortCurrentMonthTable(i, monthlyTemp); // get the sorted data by month
@@ -403,23 +404,48 @@ export default defineComponent({
                 let currentMonthRealTotalPrice = 0;
                 for (let j = 0; j < monthlyTemp.length; j++) {
                     if (monthlyTemp[j].料號) { // for safety measure
-                        if (monthlyTemp[j].幣別 == "RMB") {
-                            if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
-                                currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
-                            } // if
+                        if (checkedRows.length > 0) {
+                            if (checkedRows.find(o => o.料號 === monthlyTemp[j].料號)) {
+                                console.log(monthlyTemp[j].料號); // test
+                                if (monthlyTemp[j].幣別 == "RMB") {
+                                    if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
+                                        currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                                    } // if
 
-                            if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
-                                currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                                    if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
+                                        currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                                    } // if
+                                } // if
+                                else {
+                                    if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
+                                        currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
+                                    } // if
+                                    if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
+                                        currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
+                                    } // if
+                                } // else
                             } // if
                         } // if
                         else {
-                            if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
-                                currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
+                            if (monthlyTemp[j].幣別 == "RMB") {
+                                if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
+                                    currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                                } // if
+
+                                if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
+                                    currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
+                                } // if
                             } // if
-                            if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
-                                currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
-                            } // if
+                            else {
+                                if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
+                                    currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
+                                } // if
+                                if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
+                                    currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
+                                } // if
+                            } // else
                         } // else
+
                     } // if
                 } // for
 
@@ -432,6 +458,10 @@ export default defineComponent({
             datasetBuyUSD.value = tempBuyUSD;
             datasetRealUSD.value = tempRealUSD;
         }; // CalChartDatasets
+
+        watch(checkedRows, async () => {
+            await CalChartDatasets();
+        }); // watch checked rows
 
         watch(yearTag, async () => {
             if (yearTag.value.toString().length == 4 && parseInt(yearTag.value) >= 1996) {
@@ -478,7 +508,7 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(mats.value);
-            console.log(allRowsObj); // test
+            // console.log(allRowsObj); // test
 
             // sort the last year's last few months' buylist
             for (let i = 0; i < 12; i++) {
@@ -565,7 +595,7 @@ export default defineComponent({
         const updateCheckedRows = (rowsKey) => {
             checkedRows.length = 0;
             checkedRows.push(...rowsKey);
-            console.log(checkedRows); // test
+            // console.log(checkedRows); // test
         };
 
         return {
