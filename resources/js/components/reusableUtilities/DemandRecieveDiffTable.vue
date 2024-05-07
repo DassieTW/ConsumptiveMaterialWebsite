@@ -154,11 +154,10 @@ export default defineComponent({
             // 將找到matching請購月份紀錄下來 loop完inbound list後
             // 會在loop buylist時只取用此請購月份的資料 (作為有請購但沒有(尚未?)入庫的料)
             let matchingBuylistMonth = -99;
-
+            // console.log(all_data_sorted); // test
             // find the matching buylist month
             for (let i = 0; i < all_data_sorted.inbound[inputMonth].length; i++) {
                 let tempArry = all_data_sorted.inbound[inputMonth];
-
                 for (let j = 1; j < 3; j++) {
                     let prevBuylistMonth = inputMonth - j;
                     if (prevBuylistMonth == -1) { // 去年12月請購
@@ -181,7 +180,9 @@ export default defineComponent({
                         } // if
                     } else { // 今年內請購
                         let obj = all_data_sorted.buylist[prevBuylistMonth].find(o => o.料號 === tempArry[i].料號);
-                        // console.log(obj); // test
+                        // if (inputMonth == 3) {
+                        //     console.log(obj); // test
+                        // } // if
                         if (obj) {
                             if (prevBuylistMonth > matchingBuylistMonth) {
                                 matchingBuylistMonth = prevBuylistMonth;
@@ -192,6 +193,10 @@ export default defineComponent({
                 } // for
             } // for
 
+            if (inputMonth == 4) {
+                console.log("inputMonth", inputMonth); // test
+                console.log("matchingBuylistMonth", matchingBuylistMonth); // test
+            } // if
             // loop thru inbound list and push to table
             for (let i = 0; i < all_data_sorted.inbound[inputMonth].length; i++) {
                 let singleEntry = {};
@@ -206,23 +211,38 @@ export default defineComponent({
                     // console.log(obj); // test
                     if (obj) {
                         singleEntry.請購數量 = parseFloat(obj.本次請購數量);
+                        if (Number.isNaN(parseFloat(obj.本次請購數量))) {
+                            singleEntry.請購數量 = 0;
+                        } // if
                     } // if
+                    else {
+                        singleEntry.請購數量 = 0;
+                    } // else
                 } else if (matchingBuylistMonth == -2) { // if the batch's buy record is from last year Nov
                     let obj = all_data_sorted.buylist_lastyear[10].find(o => o.料號 === singleEntry.料號);
                     // console.log(obj); // test
                     if (obj) {
                         singleEntry.請購數量 = parseFloat(obj.本次請購數量);
+                        if (Number.isNaN(parseFloat(obj.本次請購數量))) {
+                            singleEntry.請購數量 = 0;
+                        } // if
                     } // if
+                    else {
+                        singleEntry.請購數量 = 0;
+                    } // else
                 } else { // if the batch's buy record is within this year
                     let obj = all_data_sorted.buylist[matchingBuylistMonth].find(o => o.料號 === singleEntry.料號);
                     if (obj) {
                         singleEntry.請購數量 = parseFloat(obj.本次請購數量);
+                        if (Number.isNaN(parseFloat(obj.本次請購數量))) {
+                            singleEntry.請購數量 = 0;
+                        } // if
                     } // if
+                    else {
+                        singleEntry.請購數量 = 0;
+                    } // else
                 } // if else
 
-                if (Number.isNaN(singleEntry.請購數量)) {
-                    singleEntry.請購數量 = 0;
-                } // if
                 singleEntry.單位 = tempArry[i].單位;
                 singleEntry.實際領用數量 = parseInt(tempArry[i].入庫數量);
                 if (Number.isNaN(singleEntry.實際領用數量)) {
@@ -252,7 +272,7 @@ export default defineComponent({
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
                         singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(singleEntry.請購數量)) {
+                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
                             singleEntry.請購數量 = 0;
                         } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
@@ -274,7 +294,7 @@ export default defineComponent({
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
                         singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(singleEntry.請購數量)) {
+                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
                             singleEntry.請購數量 = 0;
                         } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
@@ -296,7 +316,7 @@ export default defineComponent({
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
                         singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(singleEntry.請購數量)) {
+                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
                             singleEntry.請購數量 = 0;
                         } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
@@ -321,7 +341,7 @@ export default defineComponent({
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
                         singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(singleEntry.請購數量)) {
+                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
                             singleEntry.請購數量 = 0;
                         } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
@@ -346,7 +366,7 @@ export default defineComponent({
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
                         singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(singleEntry.請購數量)) {
+                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
                             singleEntry.請購數量 = 0;
                         } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
@@ -371,7 +391,7 @@ export default defineComponent({
                         singleEntry.料號 = tempMonthRecord[i].料號;
                         singleEntry.品名 = tempMonthRecord[i].品名;
                         singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(singleEntry.請購數量)) {
+                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
                             singleEntry.請購數量 = 0;
                         } // if
                         singleEntry.單位 = tempMonthRecord[i].單位;
@@ -396,17 +416,16 @@ export default defineComponent({
 
             let monthlyTemp = [];
             let exchange_table = Currency.value.rates;
-
             for (let i = 0; i < 12; i++) { // loop thru whole year
                 monthlyTemp.splice(0); // clean up old records
-                SortCurrentMonthTable(i, monthlyTemp); // get the sorted data by month
+                await SortCurrentMonthTable(i, monthlyTemp); // get the sorted data by month
                 let currentMonthBuyTotalPrice = 0;
                 let currentMonthRealTotalPrice = 0;
                 for (let j = 0; j < monthlyTemp.length; j++) {
                     if (monthlyTemp[j].料號) { // for safety measure
                         if (checkedRows.length > 0) {
-                            if (checkedRows.find(o => o.料號 === monthlyTemp[j].料號)) {
-                                console.log(monthlyTemp[j].料號); // test
+                            console.log(monthlyTemp[j].料號); // test
+                            if (checkedRows.find(o => o.料號 == monthlyTemp[j].料號) !== undefined) {
                                 if (monthlyTemp[j].幣別 == "RMB") {
                                     if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
                                         currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
@@ -508,7 +527,6 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(mats.value);
-            // console.log(allRowsObj); // test
 
             // sort the last year's last few months' buylist
             for (let i = 0; i < 12; i++) {
@@ -520,7 +538,7 @@ export default defineComponent({
                 // sum the entries with the same 料號                
                 let sum_result = Object.values(newArray.reduce((acc, curr) => {
                     let item = acc[curr.料號];
-                    if (item) { // 匯率 其實是美金金額 不是真的匯率了
+                    if (item) { // 匯率 其實是美金金額 不是真的匯率
                         item.本次請購數量 += parseFloat(curr.本次請購數量);
                         item.匯率 += parseFloat(curr.匯率);
                     } else {
@@ -585,6 +603,7 @@ export default defineComponent({
                 all_data_sorted.inbound[i] = sum_result;
             } // for
 
+            // console.log(all_data_sorted); // test
             await SortCurrentMonthTable(monthTag.value, data);
             await CalChartDatasets();
 
