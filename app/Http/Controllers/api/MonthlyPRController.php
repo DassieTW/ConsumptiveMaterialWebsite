@@ -761,6 +761,52 @@ class MonthlyPRController extends Controller
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Mpdf');
         $writer->save(public_path() . "/excel/" . $filename);
 
+        //WaterMark
+        // First, get the correct document size.
+        $mpdf = new \Mpdf\Mpdf([
+            'tempDir' => storage_path('app'),
+            'orientation' => 'P'
+        ]);
+
+        $pagecount = $mpdf->SetSourceFile(public_path() . "/excel/" . $filename);
+
+        $tplId = $mpdf->ImportPage(1);
+        $size = $mpdf->getTemplateSize($tplId);
+
+        // Open a new instance with specified width and height, read the file again
+        $mpdf = new \Mpdf\Mpdf([
+            'tempDir' => storage_path('app'),
+            'format' => [$size['width'], $size['height']]
+        ]);
+        $mpdf->SetSourceFile(public_path() . "/excel/" . $filename);
+
+        // Write into the instance and output it to the same file
+        for ($i = 1; $i <= $pagecount; $i++) {
+            /*
+            $tplId = $mpdf->ImportPage($i);
+            $mpdf->addPage();
+            $mpdf->UseTemplate($tplId);
+            $mpdf->SetWatermarkText('PEGA_BG6');
+            $mpdf->showWatermarkText = true;
+            */
+
+
+            $tplId = $mpdf->ImportPage($i);
+            $mpdf->addPage();
+            $mpdf->UseTemplate($tplId);
+
+            // Set watermark image
+            $mpdf->SetWatermarkImage('[watermark_image_path]');
+            $mpdf->showWatermarkImage = true;
+        }
+
+        // Output the modified PDF directly to the original file
+        $mpdf->Output(public_path() . "/excel/" . $filename, \Mpdf\Output\Destination::FILE);
+
+        // You may want to delete the temporary file created by mPDF
+        $mpdf->cleanup();
+
+
         $data = array(
             'PN' => $PN,
             'pName' => $pName,
