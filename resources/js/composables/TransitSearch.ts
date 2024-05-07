@@ -36,7 +36,7 @@ export default function useTransitSearch() {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
         let username = await axios.post('/getCurrentUsername');
-        
+        // console.log(username); // test
         try {
             let response = await axios.post('/api/month/updateTransit', {
                 DB: getDB.data,

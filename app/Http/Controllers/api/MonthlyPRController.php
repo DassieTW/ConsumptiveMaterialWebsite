@@ -662,6 +662,7 @@ class MonthlyPRController extends Controller
         $worksheet = $spreadsheet->getActiveSheet();
 
         $request_user = $request->input('User');
+        // dd($request_user); // test
         $PN = json_decode($request->input('PN'));
         $pName = json_decode($request->input('pName'));
         $Spec = json_decode($request->input('Spec'));
@@ -675,7 +676,7 @@ class MonthlyPRController extends Controller
         $currency_name = json_decode($request->input('currency_name'));
         $total_price2 = json_decode($request->input('total_price2'));
         $MOQ = json_decode($request->input('MOQ'));
-        // dd($request_user); // test
+        // dd($request_user['detail_info']['姓名']); // test
         // $stringValueBinder = new StringValueBinder();
         // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
         // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
@@ -744,7 +745,7 @@ class MonthlyPRController extends Controller
         $worksheet->setCellValue(("A" . $i + 2), "核准:");
         $worksheet->setCellValue(("D" . $i + 2), "審核:");
         $worksheet->getStyle("D" . $i + 2)->getAlignment()->setHorizontal('center');
-        $worksheet->setCellValue(("K" . $i + 2), "製表: " . $request_user['姓名'] . " " . date('Y-m-d'));
+        $worksheet->setCellValue(("K" . $i + 2), "製表: " . $request_user['detail_info']['姓名'] . " " . date('Y-m-d'));
 
         $worksheet->getStyle('A2:M2')->getAlignment()->setHorizontal('center');
         $worksheet->getStyle('A3:A' . ($i + 1))->getAlignment()->setHorizontal('center');
@@ -779,7 +780,7 @@ class MonthlyPRController extends Controller
             'mail/pr_review',
             $data,
             function ($message) use ($filename, $request_user) {
-                $message->to($request_user["email"])->subject('Consumables Management PR Review');
+                $message->to($request_user['detail_info']["email"])->subject('Consumables Management PR Review');
                 $message->bcc('Vincent6_Yeh@pegatroncorp.com');
                 $message->attach(public_path() . '/excel/' . $filename);
                 $message->from('CM_No-Reply@pegatroncorp.com', 'Consumables_Management_No-Reply');
