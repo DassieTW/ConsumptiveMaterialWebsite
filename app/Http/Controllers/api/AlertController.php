@@ -255,6 +255,15 @@ class AlertController extends Controller
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Mpdf');
         $writer->save(public_path() . "/excel/" . $filename);
 
+        //$mpdf = new \Mpdf\Mpdf();
+        //$mpdf->showWatermarkText = true; // 顯示浮水印文本
+        //$mpdf->SetWatermarkText(new \Mpdf\WatermarkText('PEGA_BG6'));
+        //$mpdf->watermarkTextAlpha = 0.1; //透明度
+        //$mpdf->watermarkFont = 'Arial';
+        //$mpdf->watermarkTextColor = [192, 192, 192]; // 灰色
+        //$mpdf->watermarkTextSize = 48;
+        //$mpdf->SetWatermarkPosition(0, 0); // 在左上角
+
         // Data for 內文 View
         $data = array(
             'PN' => $PN,
