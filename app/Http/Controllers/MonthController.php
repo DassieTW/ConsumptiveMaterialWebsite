@@ -877,7 +877,7 @@ class MonthController extends Controller
             })
             ->where('username', $username)
             ->value('姓名');
-        $data = array('email' => urlencode($sessemail), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
+        $data = array('app_url' => urlencode(env('APP_URL')), 'email' => urlencode($sessemail), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
             $message->to($email, 'Test Default')->subject('請確認單耗資料');
@@ -896,7 +896,7 @@ class MonthController extends Controller
             })
             ->where('username', $name)
             ->value('姓名');
-        $data = array('email' => urlencode($sessemail), 'username' => urlencode($name), 'database' => urlencode($database), 'name' => urlencode($dename));
+        $data = array('app_url' => urlencode(env('APP_URL')), 'email' => urlencode($sessemail), 'username' => urlencode($name), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         Mail::send('mail/standcheck', $data,  function ($message) use ($email) {
             $message->to($email, 'Default Test')->subject('請確認站位資料');

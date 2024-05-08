@@ -492,6 +492,15 @@ export default defineComponent({
             await triggerModal();
 
             data.splice(0); // clean up possible old records
+
+            // uncheck all checkboxes
+            document.querySelectorAll('.vtl-tbody-checkbox').forEach(el => el.checked = false);
+
+            if (document.querySelector(".vtl-thead-checkbox").checked) {
+                document.querySelector(".vtl-thead-checkbox").click();
+            } // if
+            checkedRows.splice(0);
+
             monthStr.value = monthList.value[monthTag.value];
             await SortCurrentMonthTable(monthTag.value, data);
 

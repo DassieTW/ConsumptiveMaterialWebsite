@@ -531,7 +531,7 @@ class MonthlyPRController extends Controller
             })
             ->where('username', $username)
             ->value('姓名');
-        $data = array('email' => urlencode($email), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
+        $data = array('app_url' => urlencode(env('APP_URL')), 'email' => urlencode($email), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
 
         \Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
             $message->to($email, 'Default Test')->subject('請確認單耗資料');

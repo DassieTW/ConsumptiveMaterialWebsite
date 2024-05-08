@@ -61,6 +61,7 @@ import OboundBackrecordTable from "./components/reusableUtilities/OboundBackreco
 import OboundStockTable from "./components/reusableUtilities/OboundStockTable.vue";
 import NewsTable from "./components/reusableUtilities/NewsTable.vue";
 import DemandRecieveDiffPage from './components/reusableUtilities/DemandRecieveDiffPage.vue';
+import UserTable from "./components/reusableUtilities/UserTable.vue";
 
 const app = createApp({
   components: {
@@ -86,6 +87,7 @@ const app = createApp({
     "obound-stock-table": OboundStockTable,
     "news-table": NewsTable,
     "demand-recieve-diff-page": DemandRecieveDiffPage,
+    "user-table": UserTable,
   },
 });
 

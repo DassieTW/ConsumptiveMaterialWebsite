@@ -41,7 +41,6 @@
         <div class="card-body">
             <form id="searchnumber" method="POST">
                 @csrf
-
                 <input type="submit" id="new" name="new" class="btn btn-lg btn-primary"
                     value="{!! __('loginPageLang.new') !!}">
                 &emsp13;
@@ -52,13 +51,13 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>{!! __('loginPageLang.check') !!}</th>
+                                <th></th>
                                 <th>{!! __('loginPageLang.jobnumber') !!}</th>
                                 <th>{!! __('loginPageLang.name') !!}</th>
                                 <th>{!! __('loginPageLang.dep') !!}</th>
                             </tr>
                             <tr>
-                                <td>{!! __('loginPageLang.new') !!}:</td>
+                                <td class="mx-0 px-0">{!! __('loginPageLang.new') !!}:</td>
                                 <td><input style="width:150px" type="text" id="newnumber" name="newnumber"
                                         class="form-control form-control-lg">
                                 </td>
