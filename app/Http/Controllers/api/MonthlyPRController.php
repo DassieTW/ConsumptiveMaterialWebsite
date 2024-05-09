@@ -765,7 +765,7 @@ class MonthlyPRController extends Controller
         // First, get the correct document size.
         $mpdf = new \Mpdf\Mpdf([
             'tempDir' => storage_path('app'),
-            'orientation' => 'P'
+            'orientation' => 'P' //直向
         ]);
 
         $pagecount = $mpdf->SetSourceFile(public_path() . "/excel/" . $filename);
@@ -776,26 +776,25 @@ class MonthlyPRController extends Controller
         // Open a new instance with specified width and height, read the file again
         $mpdf = new \Mpdf\Mpdf([
             'tempDir' => storage_path('app'),
-            'format' => [$size['width'], $size['height']]
+            'format' => [$size['width'], $size['height']] //PDF size
         ]);
         $mpdf->SetSourceFile(public_path() . "/excel/" . $filename);
 
         // Write into the instance and output it to the same file
         for ($i = 1; $i <= $pagecount; $i++) {
-            /*
-            $tplId = $mpdf->ImportPage($i);
-            $mpdf->addPage();
-            $mpdf->UseTemplate($tplId);
-            $mpdf->SetWatermarkText('PEGA_BG6');
-            $mpdf->showWatermarkText = true;
-            */
 
             $tplId = $mpdf->ImportPage($i);
             $mpdf->addPage();
             $mpdf->UseTemplate($tplId);
 
             // Set watermark image
-            $mpdf->SetWatermarkImage(public_path() . "/admin/img/PEGA_Logo.png", 0.1);
+            $mpdf->SetWatermarkImage(new \Mpdf\WatermarkImage(
+                public_path() . "/admin/img/PEGA_Logo.png", //image
+                \Mpdf\WatermarkImage::SIZE_DEFAULT,  //original size of image
+                \Mpdf\WatermarkImage::POSITION_CENTER_PAGE, //Centred on the whole page area
+                0.1,  //Alpha of the watermark(values 0-1)
+                true  //images behind page contents
+            ));
             $mpdf->showWatermarkImage = true;
         } // for
 
