@@ -790,22 +790,20 @@ class MonthlyPRController extends Controller
             $mpdf->showWatermarkText = true;
             */
 
-
             $tplId = $mpdf->ImportPage($i);
             $mpdf->addPage();
             $mpdf->UseTemplate($tplId);
 
             // Set watermark image
-            $mpdf->SetWatermarkImage('[watermark_image_path]');
+            $mpdf->SetWatermarkImage(public_path() . "/admin/img/PEGA_Logo.png", 0.1);
             $mpdf->showWatermarkImage = true;
-        }
+        } // for
 
         // Output the modified PDF directly to the original file
         $mpdf->Output(public_path() . "/excel/" . $filename, \Mpdf\Output\Destination::FILE);
 
         // You may want to delete the temporary file created by mPDF
         $mpdf->cleanup();
-
 
         $data = array(
             'PN' => $PN,
