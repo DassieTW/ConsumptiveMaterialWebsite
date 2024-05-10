@@ -17,6 +17,7 @@ return [
     'password' => '密碼',
     'site' => '廠區',
     'username_placeholder' => '請輸入帳號',
+    'username_search' => '搜尋帳號/姓名',
     'password_placeholder' => '請輸入密碼',
     'site_placeholder' => '請選擇廠區',
     'welcome' => '歡迎',

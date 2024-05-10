@@ -9,9 +9,15 @@ import {
 
 export default function useUserSearch() {
     const users = ref("");
+    const current_user = ref("");
     const errors = ref("");
     const staffs = ref("");
     const router = useRouter();
+
+    const getCurrentUser = async () => {
+        let user = await axios.post('/getCurrentUser');
+        current_user.value = user.data;
+    } // getCurrentUser
 
     const getUsers = async () => {
         errors.value = "";
@@ -59,7 +65,9 @@ export default function useUserSearch() {
     return {
         users,
         staffs,
+        current_user,
         getUsers,
-        getStaffs
+        getStaffs,
+        getCurrentUser
     } // return
 } // useConsumptiveMaterials

@@ -17,6 +17,7 @@ return [
     'password' => 'Password',
     'site' => 'Site',
     'username_placeholder' => 'Enter your username',
+    'username_search' => 'Search by Username/Name',
     'password_placeholder' => 'Enter your password',
     'site_placeholder' => 'Choose your site',
     'welcome' => 'Welcome',

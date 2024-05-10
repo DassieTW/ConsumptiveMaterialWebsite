@@ -17,6 +17,7 @@ return [
     'password' => '密码',
     'site' => '厂区',
     'username_placeholder' => '请输入帐号',
+    'username_search' => '搜寻帐号/姓名',
     'password_placeholder' => '请输入密码',
     'site_placeholder' => '请选择厂区',
     'welcome' => '欢迎',
