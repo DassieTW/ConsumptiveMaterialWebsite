@@ -1,6 +1,6 @@
 <template>
-    <div class="card-header row align-items-center">
-        <h3 class="col col-auto align-middle m-0 p-0">
+    <div class="card-header align-items-center">
+        <h3 class="col col-auto align-middle">
             {{ $t('templateWords.UserInfo') }}
         </h3>
     </div>
@@ -15,31 +15,78 @@
         <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
             :hasCheckbox="false" :messages="table.messages" :columns="table.columns" :rows="table.rows"
             :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-            @do-search="doSearch" @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"
-            @row-input="rowUserInput">
-            <template v-slot:權限="{ row, key }">
-                <div v-if="row.priority === 0" class="m-0 p-0">
-                    <select @change="(event) => { (row.權限 = event.target.value); rowUserInput(row, key); }"
-                        style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"
-                        :id="'month' + row.id" :name="'month' + key">
-                        <option value="是" selected>{{ $t("basicInfoLang.yes") }}</option>
-                        <option value="否">{{ $t("basicInfoLang.no") }}</option>
+            @do-search="doSearch" @is-finished="table.isLoading = false" @row-input="rowUserInput">
+            <template v-slot:priority="{ row, key }">
+                <div v-if="row.current_user_priority == 0" class="m-0 p-0">
+                    <select class="form-select text-center m-0 p-0" :id="row.username" style="width: 8ch;" @change="priorityChange(row.username, $event.target.value)">
+                        <option v-for="item in [0, 1, 2, 3, 4]" :value="item" :selected="row.priority == item">{{ item
+                            }}</option>
                     </select>
                 </div>
-                <div v-else class="m-0 p-0">
-
+                <div v-else-if="row.current_user_priority == 1" class="m-0 p-0">
+                    <select class="form-select text-center m-0 p-0" :id="row.username" style="width: 8ch;"
+                        :disabled="row.priority <= row.current_user_priority">
+                        <option v-for="item in [1, 2, 3, 4]" :value="item" :selected="row.priority == item">{{ item
+                            }}</option>
+                    </select>
+                </div>
+                <div v-else>
+                    {{ row.priority }}
                 </div>
             </template>
-
-            <template v-slot:安全庫存="{ row, key }">
-                <div v-if="row.月請購 === '否'">
-                    <input @change="rowUserInput(row, key)" :class="{ 'is-invalid': (row.安全庫存 === null) }"
-                        class="form-control text-center p-0 m-0" style="width: 8ch;" type="number" :id="'safe' + row.id"
-                        :name="'safe' + key" :value="row.安全庫存" />
-                </div>
-                <div v-else>{{ $t("basicInfoLang.differ_by_client") }}</div>
+            <template v-slot:available_dblist="{ row, key }">
+                <button :value="row.available_dblist" type="button" style="border-radius: 20px;"
+                    class="btn btn-outline-info dbInfo btn-sm m-0 px-3 py-0" data-bs-toggle="modal"
+                    data-bs-target="#siteListPicker" @click="InfoBtClicked(row.username, row.姓名)">Info</button>
             </template>
         </table-lite>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="siteListPicker" aria-hidden="true" aria-labelledby="siteListPicker" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Available Databases for {{ clickedUser }}</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <div v-for="db in db_list" class="form-check form-switch col-9">
+                            <input v-if="true" class="form-check-input dbCheckbox" type="checkbox" role="switch" checked
+                                v-bind:id="`${(db.replace('Consumables management', '')).trim()}`"
+                                :value="`${(db.replace('Consumables management', '')).trim()}`">
+                            <input v-else class="form-check-input dbCheckbox" type="checkbox" role="switch"
+                                v-bind:id="`${(db.replace('Consumables management', '')).trim()}`"
+                                :value="`${(db.replace('Consumables management', '')).trim()}`">
+                            <label class="form-check-label"
+                                :for="`${(db.replace('Consumables management', '')).trim()}`">
+                                {{ db }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="DeleteUser" class="btn btn-danger" data-bs-target="#AreYouSureModal"
+                        data-bs-toggle="modal">Delete
+                        This User</button>
+                    <button type="button" id="ListConfirm" class="btn btn-success">Save
+                        Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AreYouSureModal" aria-hidden="true" aria-labelledby="AreYouSureModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body row justify-content-center">
+                    <span class="col col-auto">Are You Sure ?</span>
+                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                    <button id="ImSure" class="col col-auto btn btn-outline-danger" data-bs-dismiss="modal">YES</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -58,12 +105,10 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser } = useUserSearch(); // axios get the mats data
-
-        let isInvalid_DB = ref(false); // add to DB validation
-        let validation_err_msg = ref("");
+        const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser, db_list, getDBList } = useUserSearch(); // axios get the mats data
 
         onBeforeMount(async () => {
+            await getDBList();
             await getCurrentUser();
             await getStaffs();
             await getUsers();
@@ -80,6 +125,15 @@ export default defineComponent({
         // pour the data in
         const data = reactive([]);
 
+        const clickedUser = ref("");
+        function InfoBtClicked(username, name) {
+            clickedUser.value = username + "(" + name + ")";
+        } // InfoBtClicked
+
+        function priorityChange(username, priority) {
+            console.log(username, priority); // test
+        } // priorityChange
+
         const triggerModal = async () => {
             $("body").loadingModal({
                 text: "Loading...",
@@ -91,20 +145,32 @@ export default defineComponent({
             });
         } // triggerModal
 
+        watch(current_user, async () => {
+            if (current_user.value.priority > 0) {
+                table.columns.splice(5, 2);
+            } // if
+        }); // watch for data change
+
         watch(users, async () => {
             await triggerModal();
-            // console.log(JSON.parse(mats.value)); // test
-            let allRowsObj = JSON.parse(mats.value);
-            // console.log(allRowsObj.datas.length);
-            for (let i = 0; i < allRowsObj.senders.length; i++) {
-                senders.push(allRowsObj.senders[i]);
-            } // for
+            let allRowsObj = JSON.parse(users.value);
+            // console.log(allRowsObj.datas); // test
 
-            for (let i = 0; i < allRowsObj.datas.length; i++) {
-                allRowsObj.datas[i].id = i;
-                data.push(allRowsObj.datas[i]);
-            } // for
+            if (current_user.value.priority > 0) {
+                for (let i = 0; i < allRowsObj.datas.length; i++) {
+                    if (allRowsObj.datas[i].priority != 0) {
+                        allRowsObj.datas[i].current_user_priority = current_user.value.priority;
+                        data.push(allRowsObj.datas[i]);
+                    } // if
+                } // for
+            } else {
+                for (let i = 0; i < allRowsObj.datas.length; i++) {
+                    allRowsObj.datas[i].current_user_priority = current_user.value.priority;
+                    data.push(allRowsObj.datas[i]);
+                } // for
+            } // if else
 
+            // console.log(data); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
@@ -117,15 +183,23 @@ export default defineComponent({
                     label: app.appContext.config.globalProperties.$t(
                         "loginPageLang.username"
                     ),
-                    field: "帳號",
-                    width: "11ch",
+                    field: "username",
+                    width: "10ch",
                     sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.username +
+                            "</div>"
+                        );
+                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "loginPageLang.priority"
                     ),
-                    field: "權限",
+                    field: "priority",
                     width: "10ch",
                     sortable: false,
                 },
@@ -134,37 +208,85 @@ export default defineComponent({
                         "loginPageLang.name"
                     ),
                     field: "姓名",
-                    width: "10ch",
-                    sortable: false,
+                    width: "12ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.姓名 +
+                            "</div>"
+                        );
+                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "loginPageLang.dep"
                     ),
                     field: "部門",
-                    width: "10ch",
-                    sortable: false,
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.部門 +
+                            "</div>"
+                        );
+                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "loginPageLang.mail"
                     ),
-                    field: "信箱",
-                    width: "10ch",
-                    sortable: false,
+                    field: "email",
+                    width: "12ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.email === null || row.email == "null") {
+                            return (
+                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                'N/A' +
+                                "</div>"
+                            );
+                        } // if
+                        else {
+                            return (
+                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.email +
+                                "</div>"
+                            );
+                        }
+                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "loginPageLang.database_list"
                     ),
-                    field: "可登入DB",
-                    width: "15ch",
+                    field: "available_dblist",
+                    width: "10ch",
                     sortable: false,
+                },
+                {
+                    label: "Latest Login",
+                    field: "last_login_time",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.last_login_time +
+                            "</div>"
+                        );
+                    }
                 },
             ],
             rows: computed(() => {
                 return data.filter((x) =>
-                    x.帳號
+                    x.username
                         .toLowerCase()
                         .includes(searchTerm.value.toLowerCase()) ||
                     x.姓名
@@ -229,13 +351,6 @@ export default defineComponent({
             // console.log(document.getElementById("unitConsumption" + rowNum).value);
             data[row.id].單價 = document.getElementById("price" + row.id).value;
             data[row.id].幣別 = document.getElementById("money" + row.id).value;
-            data[row.id].單位 = document.getElementById("unit" + row.id).value;
-            data[row.id].MPQ = document.getElementById("mpq" + row.id).value;
-            data[row.id].MOQ = document.getElementById("moq" + row.id).value;
-            data[row.id].LT = document.getElementById("lt" + row.id).value;
-            data[row.id].月請購 = document.getElementById("month" + row.id).value;
-            data[row.id].A級資材 = document.getElementById("gradea" + row.id).value;
-            data[row.id].發料部門 = document.getElementById("send" + row.id).value;
             if (document.getElementById("safe" + row.id) == null) {
                 data[row.id].安全庫存 = null;
             } else {
@@ -246,11 +361,39 @@ export default defineComponent({
         };
 
         return {
+            db_list,
             searchTerm,
             table,
             rowUserInput,
+            clickedUser,
+            InfoBtClicked,
+            current_user,
+            priorityChange
         };
     }, // setup
 });
 </script>
-<style scoped></style>
+<style scoped>
+td,
+th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#siteListPicker::-webkit-scrollbar-track {
+    -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+    border-radius: 4px;
+    background-color: #F5F5F5;
+}
+
+#siteListPicker::-webkit-scrollbar {
+    width: 4px;
+    -webkit-appearance: none;
+}
+
+#siteListPicker::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+</style>

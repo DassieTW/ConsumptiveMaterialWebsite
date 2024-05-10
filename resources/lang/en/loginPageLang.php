@@ -81,7 +81,7 @@ return [
     'yellowrepeat' => 'Yellow background means that the data already exist in the database',
     'data' => 'Data',
     'mail' => 'Email',
-    'database_list' => 'Available Databases',
+    'database_list' => 'Databases',
     'selectprofile_pic' => 'Please select Profile Pic',
 
     // OA SSO Login Page Lang

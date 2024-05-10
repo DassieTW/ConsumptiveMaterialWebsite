@@ -1,4 +1,5 @@
 import {
+    reactive,
     ref,
     Ref
 } from "vue";
@@ -12,12 +13,20 @@ export default function useUserSearch() {
     const current_user = ref("");
     const errors = ref("");
     const staffs = ref("");
+    const db_list = reactive([]);
     const router = useRouter();
 
     const getCurrentUser = async () => {
         let user = await axios.post('/getCurrentUser');
         current_user.value = user.data;
+        // console.log(current_user.value); // test
     } // getCurrentUser
+
+    const getDBList = async () => {
+        let dbs = await axios.post('/getDBList');
+        Object.assign(db_list, dbs.data.data);
+        db_list.shift(); // remove the default db
+    } // getDBList
 
     const getUsers = async () => {
         errors.value = "";
@@ -66,8 +75,10 @@ export default function useUserSearch() {
         users,
         staffs,
         current_user,
+        db_list,
         getUsers,
         getStaffs,
-        getCurrentUser
+        getCurrentUser,
+        getDBList
     } // return
 } // useConsumptiveMaterials

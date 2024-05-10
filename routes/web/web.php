@@ -206,6 +206,11 @@ Route::post('/getCurrentDB', function () {
     return DB::connection()->getDatabaseName();
 });
 
+Route::post('/getDBList', function (Request $request) {
+    $databaseArray = config('database_list.databases');
+    return \Response::json(['data' => $databaseArray], 200/* Status code here default is 200 ok*/);
+});
+
 Route::post('/getCurrentUsername', function (Request $request) {
     return $request->user()->username;
 });
