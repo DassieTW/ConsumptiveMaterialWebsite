@@ -40,11 +40,9 @@ Route::post('/getStaffs', function (Request $request) {
 });
 
 //用戶信息修改
-// Route::post('/usernamechange', [Auth\LoginController::class, 'usernamechange'])->name('member.usernamechange')->middleware('can:searchAndUpdateUser,App\Models\Login');
 Route::post('/usernamechange', 'api\LoginController@usernamechange');
 
 //用戶刪除
-// Route::post('/username_del', [Auth\LoginController::class, 'usernameDel'])->name('member.usernamedel')->middleware('can:canAddSitesToUser,App\Models\Login');
 Route::post('/username_del', 'api\LoginController@username_del');
 
 // IT等級使用者更改可登入DB清單

@@ -458,69 +458,6 @@ class LoginController extends Controller
         return \Response::json(['message' => 'success insert']/* Status code here default is 200 ok*/);
     } // register
 
-    //change password
-    public function change(Request $request)
-    {
-        $rules1 = [
-            'password' => ['required'],
-            'newpassword' => ['required'],
-            'surepassword' => ['required'],
-        ];
-
-        $rules2 = [
-            'newMail' => [],
-        ];
-
-        if (Session::has('username') && $request->has('password')) {
-            $this->validate($request, $rules1);
-            if ($request->input('newpassword') === $request->input('surepassword')) {
-                $username = Session::get('username');
-                $password = DB::table('login')->where('username', $username)->value('password');
-                // if (Hash::check($request->input('password'), $password)) {
-                if ($request->input('password') === $password) {
-                    DB::table('login')
-                        ->where('username', $username)
-                        // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
-                        ->update(['password' => $request->input('newpassword')]);
-                    $request->session()->flush();
-
-                    return \Response::json([]/* Status code here default is 200 ok*/);
-                } else {
-                    return \Response::json(['message' => 'passwords are not the same'], 420/* Status code here default is 200 ok*/);
-                } // else
-            } else {
-                return \Response::json(['message' => 'old password is wrong'], 421/* Status code here default is 200 ok*/);
-            } // else
-        } // if
-        else if (Session::has('username') && $request->has('newMail')) {
-            $this->validate($request, $rules2);
-            if ($request->input('oldMail') === $request->input('newMail')) {
-                // dont need to update Email
-                return \Response::json(['message' => 'Email is the same as old one'], 200/* Status code here default is 200 ok*/);
-            } // if
-            else {
-                if ($request->input('newMail') === null || $request->input('newMail') === "") { // delete the old email
-                    DB::table('人員信息')
-                        ->where('工號', \Auth::user()->username)
-                        // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
-                        ->update(['email' => NULL]);
-                } // if
-                else {
-                    DB::table('人員信息')
-                        ->where('工號', \Auth::user()->username)
-                        // ->update(['password' => Hash::make($request->input('newpassword')), 'updated_at' => Carbon::now()]);
-                        ->update(['email' => $request->input('newMail')]);
-                } // else
-
-                return \Response::json(['message' => 'Update successful'], 200/* Status code here default is 200 ok*/);
-            } // else
-            return \Response::json(['message' => 'weird error'], 421/* Status code here default is 200 ok*/);
-        } // else if
-        else {
-            return redirect(route('member.login'));
-        } // else
-    } // change password
-
     //logout
     public function logout(Request $request)
     {

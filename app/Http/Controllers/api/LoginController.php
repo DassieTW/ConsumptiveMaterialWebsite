@@ -50,20 +50,18 @@ class LoginController extends Controller
     //用戶權限更新
     public function usernamechange(Request $request)
     {
-        if (Session::has('username')) {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+        $username = $request->input('username');
+        $priority = $request->input('priority');
+        $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
 
-            $username = $request->input('username');
-            $priority = $request->input('priority');
-            $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+        DB::table('login')
+            ->where('username', $username)
+            ->update(['priority' => $priority, 'update_priority_time' => $datetime]);
 
-            DB::table('login')
-                ->where('username', $username)
-                ->update(['priority' => $priority, 'update_priority_time' => $datetime]);
-
-            return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
-        } else {
-            return redirect(route('member.login'));
-        } // if else
+        return \Response::json(['message' => 'success']/* Status code here default is 200 ok*/);
     } // usernamechange()
 
     //用戶信息刪除 權限0 才能刪除User

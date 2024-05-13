@@ -71,6 +71,27 @@ export default function useUserSearch() {
         } // try catch
     } // getStaffs
 
+    const setPriority = async (id, p_num) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/member/usernamechange', {
+                DB: getDB.data,
+                username: id,
+                priority: p_num,
+            });
+
+            // console.log(JSON.stringify(response.data)); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // setPriority
+
     return {
         users,
         staffs,
@@ -79,6 +100,7 @@ export default function useUserSearch() {
         getUsers,
         getStaffs,
         getCurrentUser,
-        getDBList
+        getDBList,
+        setPriority
     } // return
 } // useConsumptiveMaterials

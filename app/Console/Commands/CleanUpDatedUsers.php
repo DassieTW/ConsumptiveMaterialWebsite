@@ -47,7 +47,7 @@ class CleanUpDatedUsers extends Command
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
                 \DB::purge(env("DB_CONNECTION"));
                 \DB::table('login')
-                    ->whereDate('last_login_time', '<=', \Carbon\Carbon::now()->modify('-6 months')->toDateTimeString())
+                    ->whereDate('last_login_time', '<=', \Carbon\Carbon::now()->modify('-3 months')->toDateTimeString())
                     ->orWhereNull('last_login_time')
                     ->delete();
             } // foreach

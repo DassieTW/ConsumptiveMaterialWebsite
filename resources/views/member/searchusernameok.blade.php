@@ -4,7 +4,6 @@
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/login/usernamechange.js?v=') . env('APP_VERSION') }}"></script>
 @endsection
 @section('content')
     <div id="mountingPoint">

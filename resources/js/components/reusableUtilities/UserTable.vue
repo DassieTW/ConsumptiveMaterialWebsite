@@ -15,16 +15,18 @@
         <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
             :hasCheckbox="false" :messages="table.messages" :columns="table.columns" :rows="table.rows"
             :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-            @do-search="doSearch" @is-finished="table.isLoading = false" @row-input="rowUserInput">
+            @is-finished="table.isLoading = false" @row-input="rowUserInput">
             <template v-slot:priority="{ row, key }">
                 <div v-if="row.current_user_priority == 0" class="m-0 p-0">
-                    <select class="form-select text-center m-0 p-0" :id="row.username" style="width: 8ch;" @change="priorityChange(row.username, $event.target.value)">
+                    <select class="form-select text-center m-0 p-0" :id="row.username" style="width: 8ch;"
+                        @change="priorityChange(row.username, $event.target.value)">
                         <option v-for="item in [0, 1, 2, 3, 4]" :value="item" :selected="row.priority == item">{{ item
                             }}</option>
                     </select>
                 </div>
                 <div v-else-if="row.current_user_priority == 1" class="m-0 p-0">
                     <select class="form-select text-center m-0 p-0" :id="row.username" style="width: 8ch;"
+                        @change="priorityChange(row.username, $event.target.value)"
                         :disabled="row.priority <= row.current_user_priority">
                         <option v-for="item in [1, 2, 3, 4]" :value="item" :selected="row.priority == item">{{ item
                             }}</option>
@@ -37,7 +39,8 @@
             <template v-slot:available_dblist="{ row, key }">
                 <button :value="row.available_dblist" type="button" style="border-radius: 20px;"
                     class="btn btn-outline-info dbInfo btn-sm m-0 px-3 py-0" data-bs-toggle="modal"
-                    data-bs-target="#siteListPicker" @click="InfoBtClicked(row.username, row.姓名)">Info</button>
+                    data-bs-target="#siteListPicker"
+                    @click="InfoBtClicked(row.username, row.姓名, row.available_dblist)">Info</button>
             </template>
         </table-lite>
     </div>
@@ -53,10 +56,7 @@
                 <div class="modal-body">
                     <div class="row justify-content-center">
                         <div v-for="db in db_list" class="form-check form-switch col-9">
-                            <input v-if="true" class="form-check-input dbCheckbox" type="checkbox" role="switch" checked
-                                v-bind:id="`${(db.replace('Consumables management', '')).trim()}`"
-                                :value="`${(db.replace('Consumables management', '')).trim()}`">
-                            <input v-else class="form-check-input dbCheckbox" type="checkbox" role="switch"
+                            <input class="form-check-input dbCheckbox" type="checkbox" role="switch"
                                 v-bind:id="`${(db.replace('Consumables management', '')).trim()}`"
                                 :value="`${(db.replace('Consumables management', '')).trim()}`">
                             <label class="form-check-label"
@@ -105,7 +105,7 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser, db_list, getDBList } = useUserSearch(); // axios get the mats data
+        const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser, db_list, getDBList, setPriority } = useUserSearch(); // axios get the mats data
 
         onBeforeMount(async () => {
             await getDBList();
@@ -126,12 +126,49 @@ export default defineComponent({
         const data = reactive([]);
 
         const clickedUser = ref("");
-        function InfoBtClicked(username, name) {
+        function InfoBtClicked(username, name, available_dblist) {
             clickedUser.value = username + "(" + name + ")";
+            (db_list).forEach((database) => {
+                if (available_dblist.split("_").includes((database.replace('Consumables management', '')).trim())) {
+                    document.getElementById((database.replace('Consumables management', '')).trim()).checked = true;
+                } else {
+                    document.getElementById((database.replace('Consumables management', '')).trim()).checked = false;
+                } // if else
+            });
         } // InfoBtClicked
 
-        function priorityChange(username, priority) {
-            console.log(username, priority); // test
+        async function priorityChange(username, priority) {
+            await triggerModal();
+            let result = await setPriority(username, priority);
+            if (result === "success") {
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
         } // priorityChange
 
         const triggerModal = async () => {

@@ -13,11 +13,11 @@ return [
     |
     */
     'page_name' => 'User Mgmt.',
-    'username' => 'Username',
+    'username' => 'ID',
     'password' => 'Password',
     'site' => 'Site',
     'username_placeholder' => 'Enter your username',
-    'username_search' => 'Search by Username/Name',
+    'username_search' => 'Search by ID/Name',
     'password_placeholder' => 'Enter your password',
     'site_placeholder' => 'Choose your site',
     'welcome' => 'Welcome',

@@ -81,18 +81,6 @@ Route::get('/login', function () {
 
 Route::post('/login', [Auth\LoginController::class, 'login'])->name('member.login')->withoutMiddleware('auth');
 
-//change password, Matches The "/member/change" URL
-Route::get('/change', function () {
-    $email = \DB::table('人員信息')
-        ->select('email')
-        ->where('工號', '=', \Auth::user()->username)
-        ->get();
-    return view('member.change', ['oldMail' => $email]);
-});
-
-// change password
-Route::post('/change', [Auth\LoginController::class, 'change'])->name('member.change');
-
 Route::post('/register', [Auth\LoginController::class, 'register'])->name('member.register')->withoutMiddleware('auth');
 
 //logout
