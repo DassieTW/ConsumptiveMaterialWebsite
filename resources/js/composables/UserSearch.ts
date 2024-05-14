@@ -92,6 +92,47 @@ export default function useUserSearch() {
         } // try catch
     } // setPriority
 
+    const setDBList = async (id, db_list) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/member/update_available_dblist', {
+                DB: getDB.data,
+                username: id,
+                list: db_list,
+            });
+
+            // console.log(JSON.stringify(response.data)); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // setDBList
+
+    const delUser = async (id) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/member/username_del', {
+                DB: getDB.data,
+                username: id
+            });
+
+            // console.log(JSON.stringify(response.data)); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // delUser
+
     return {
         users,
         staffs,
@@ -101,6 +142,8 @@ export default function useUserSearch() {
         getStaffs,
         getCurrentUser,
         getDBList,
-        setPriority
+        setPriority,
+        setDBList,
+        delUser
     } // return
 } // useConsumptiveMaterials

@@ -43,7 +43,7 @@ class LoginController extends Controller
             } // try catch
         } // foreach
 
-        return \Response::json(['message' => "Updated !"], 200); // Status code here
+        return \Response::json(['message' => "success"], 200); // Status code here
 
     } // update_available_dblist
 
@@ -72,7 +72,6 @@ class LoginController extends Controller
         $databaseArray = config('database_list.databases');
         try {
             $currentDB = \Config::get('database.connections.' . env("DB_CONNECTION") . '.database', 'default');
-            // dd($currentDB); // test
             foreach ($databaseArray as $site) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
                 \DB::purge(env("DB_CONNECTION"));
@@ -92,6 +91,7 @@ class LoginController extends Controller
         } // try catch
     } // username_del()
 
+    // to do, not yet move to API (used by Vue)
     //人員信息刪除,新增
     public function numberchangeordel(Request $request)
     {

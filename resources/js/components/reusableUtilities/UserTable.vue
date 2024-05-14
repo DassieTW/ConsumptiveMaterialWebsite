@@ -15,7 +15,7 @@
         <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
             :hasCheckbox="false" :messages="table.messages" :columns="table.columns" :rows="table.rows"
             :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-            @is-finished="table.isLoading = false" @row-input="rowUserInput">
+            @is-finished="table.isLoading = false">
             <template v-slot:priority="{ row, key }">
                 <div v-if="row.current_user_priority == 0" class="m-0 p-0">
                     <select class="form-select text-center m-0 p-0" :id="row.username" style="width: 8ch;"
@@ -58,7 +58,7 @@
                         <div v-for="db in db_list" class="form-check form-switch col-9">
                             <input class="form-check-input dbCheckbox" type="checkbox" role="switch"
                                 v-bind:id="`${(db.replace('Consumables management', '')).trim()}`"
-                                :value="`${(db.replace('Consumables management', '')).trim()}`">
+                                :value="`${(db.replace('Consumables management', '')).trim()}`" v-model="checkedDBs" />
                             <label class="form-check-label"
                                 :for="`${(db.replace('Consumables management', '')).trim()}`">
                                 {{ db }}
@@ -70,8 +70,9 @@
                     <button type="button" id="DeleteUser" class="btn btn-danger" data-bs-target="#AreYouSureModal"
                         data-bs-toggle="modal">Delete
                         This User</button>
-                    <button type="button" id="ListConfirm" class="btn btn-success">Save
-                        Changes</button>
+                    <button type="button" id="ListConfirm" class="btn btn-success" @click="submitNewDBList()">
+                        Save Changes
+                    </button>
                 </div>
             </div>
         </div>
@@ -83,7 +84,8 @@
                 <div class="modal-body row justify-content-center">
                     <span class="col col-auto">Are You Sure ?</span>
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                    <button id="ImSure" class="col col-auto btn btn-outline-danger" data-bs-dismiss="modal">YES</button>
+                    <button id="ImSure" class="col col-auto btn btn-outline-danger" data-bs-dismiss="modal"
+                        @click="DeleteUser()">YES</button>
                 </div>
             </div>
         </div>
@@ -105,7 +107,7 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser, db_list, getDBList, setPriority } = useUserSearch(); // axios get the mats data
+        const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser, db_list, getDBList, setPriority, setDBList, delUser } = useUserSearch(); // axios get the mats data
 
         onBeforeMount(async () => {
             await getDBList();
@@ -113,6 +115,17 @@ export default defineComponent({
             await getStaffs();
             await getUsers();
         });
+
+        const triggerModal = async () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        } // triggerModal
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance
@@ -126,15 +139,10 @@ export default defineComponent({
         const data = reactive([]);
 
         const clickedUser = ref("");
+        const checkedDBs = ref([]);
         function InfoBtClicked(username, name, available_dblist) {
             clickedUser.value = username + "(" + name + ")";
-            (db_list).forEach((database) => {
-                if (available_dblist.split("_").includes((database.replace('Consumables management', '')).trim())) {
-                    document.getElementById((database.replace('Consumables management', '')).trim()).checked = true;
-                } else {
-                    document.getElementById((database.replace('Consumables management', '')).trim()).checked = false;
-                } // if else
-            });
+            checkedDBs.value = available_dblist.split("_");
         } // InfoBtClicked
 
         async function priorityChange(username, priority) {
@@ -171,16 +179,86 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // priorityChange
 
-        const triggerModal = async () => {
-            $("body").loadingModal({
-                text: "Loading...",
-                animation: "circle",
+        async function submitNewDBList() {
+            let dblist_str = "";
+            let username = (clickedUser.value).split("(")[0];
+            checkedDBs.value.forEach((db) => {
+                dblist_str = dblist_str + "_" + db;
             });
 
-            return new Promise((resolve, reject) => {
-                resolve();
-            });
-        } // triggerModal
+            if (checkedDBs.value.length > 0) {
+                dblist_str = dblist_str.slice(1);
+            } // if
+
+            await triggerModal();
+            let result = await setDBList(username, dblist_str);
+            if (result === "success") {
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // submitNewDBList
+
+        async function DeleteUser() {
+            let username = (clickedUser.value).split("(")[0];
+            await triggerModal();
+            let result = await delUser(username);
+            if (result === "success") {
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+
+            await getUsers();
+        } // DeleteUser
 
         watch(current_user, async () => {
             if (current_user.value.priority > 0) {
@@ -189,6 +267,7 @@ export default defineComponent({
         }); // watch for data change
 
         watch(users, async () => {
+            data.splice(0); // clean up previous data
             await triggerModal();
             let allRowsObj = JSON.parse(users.value);
             // console.log(allRowsObj.datas); // test
@@ -238,7 +317,7 @@ export default defineComponent({
                     ),
                     field: "priority",
                     width: "10ch",
-                    sortable: false,
+                    sortable: true,
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
@@ -384,28 +463,17 @@ export default defineComponent({
             ],
         });
 
-        const rowUserInput = (row, rowNum) => {
-            // console.log(document.getElementById("unitConsumption" + rowNum).value);
-            data[row.id].單價 = document.getElementById("price" + row.id).value;
-            data[row.id].幣別 = document.getElementById("money" + row.id).value;
-            if (document.getElementById("safe" + row.id) == null) {
-                data[row.id].安全庫存 = null;
-            } else {
-                data[row.id].安全庫存 = document.getElementById("safe" + row.id).value;
-            } // if else
-
-            // console.log(data); // test
-        };
-
         return {
             db_list,
             searchTerm,
             table,
-            rowUserInput,
             clickedUser,
             InfoBtClicked,
             current_user,
-            priorityChange
+            priorityChange,
+            checkedDBs,
+            submitNewDBList,
+            DeleteUser
         };
     }, // setup
 });
