@@ -89,7 +89,7 @@ Route::post('/logout', [Auth\LoginController::class, 'logout'])->name('member.lo
 
 //用戶信息查詢頁面
 Route::get('/username', function () {
-    return view('member.searchusernameok');
+    return view('member.searchusername');
 })->name('member.username')->middleware('can:searchAndUpdateUser,App\Models\Login');
 
 
