@@ -221,6 +221,7 @@ export default defineComponent({
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
+            await getUsers();
         } // submitNewDBList
 
         async function DeleteUser() {
