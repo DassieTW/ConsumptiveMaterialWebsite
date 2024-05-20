@@ -778,7 +778,26 @@ class MonthlyPRController extends Controller
             'tempDir' => storage_path('app'),
             'format' => [$size['width'], $size['height']] //PDF size
         ]);
+
         $mpdf->SetSourceFile(public_path() . "/excel/" . $filename);
+
+        $text_to_write = ($request_user['detail_info']['姓名'] . " " . explode(" Consumables management", $dbName)[0] . "廠");
+
+        // Create Image From Existing File
+        $png_image = imagecreatefrompng(public_path() . "/admin/img/PEGA_Logo.png");
+        imagesavealpha($png_image, true);
+        imagealphablending($png_image, false);
+        // Allocate A Color For The Text
+        $black = imagecolorallocate($png_image, 0, 0, 0);
+
+        // Set Path to Font File
+        $font_path = public_path() . "/fonts/MicrosoftJhengHeiBold.ttf";
+
+        // Print Text On Image
+        imagettftext($png_image, 40, 45, 400, 900, $black, $font_path, $text_to_write);
+
+        // Send Image to Browser
+        imagepng($png_image, public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png");
 
         // Write into the instance and output it to the same file
         for ($i = 1; $i <= $pagecount; $i++) {
@@ -789,12 +808,13 @@ class MonthlyPRController extends Controller
 
             // Set watermark image
             $mpdf->SetWatermarkImage(new \Mpdf\WatermarkImage(
-                public_path() . "/admin/img/PEGA_Logo.png", //image
+                public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png", //image
                 \Mpdf\WatermarkImage::SIZE_DEFAULT,  //original size of image
                 \Mpdf\WatermarkImage::POSITION_CENTER_PAGE, //Centred on the whole page area
                 0.1,  //Alpha of the watermark(values 0-1)
                 true  //images behind page contents
             ));
+
             $mpdf->showWatermarkImage = true;
         } // for
 
@@ -803,6 +823,9 @@ class MonthlyPRController extends Controller
 
         // You may want to delete the temporary file created by mPDF
         $mpdf->cleanup();
+        // Clear Memory
+        imagedestroy($png_image);
+        \File::delete(public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png");
 
         $data = array(
             'PN' => $PN,

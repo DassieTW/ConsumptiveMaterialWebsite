@@ -149,8 +149,8 @@ export default defineComponent({
         } // OutputExcelClick
 
         const SortCurrentMonthTable = async (inputMonth, resultArray) => {
-            // 無法確定此廠這個月的入庫是來自固定前一個月的請購or固定提前(早兩個月)的請購 
-            // 回頭一個月一個月找時 若有料號match 表示整批的請購月份也是現在的月份 
+            // 無法確定此廠這個月的入庫是來自固定前一個月的請購or固定提前(早兩個月)的請購
+            // 回頭一個月一個月找時 若有料號match 表示整批的請購月份也是現在的月份
             // 將找到matching請購月份紀錄下來 loop完inbound list後
             // 會在loop buylist時只取用此請購月份的資料 (作為有請購但沒有(尚未?)入庫的料)
             let matchingBuylistMonth = -99;
@@ -180,9 +180,6 @@ export default defineComponent({
                         } // if
                     } else { // 今年內請購
                         let obj = all_data_sorted.buylist[prevBuylistMonth].find(o => o.料號 === tempArry[i].料號);
-                        // if (inputMonth == 3) {
-                        //     console.log(obj); // test
-                        // } // if
                         if (obj) {
                             if (prevBuylistMonth > matchingBuylistMonth) {
                                 matchingBuylistMonth = prevBuylistMonth;
