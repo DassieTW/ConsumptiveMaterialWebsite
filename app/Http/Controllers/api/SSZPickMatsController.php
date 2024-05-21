@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Exception;
 
 class SSZPickMatsController extends Controller
 {
@@ -28,7 +29,21 @@ class SSZPickMatsController extends Controller
         \Log::channel('dbquerys')->info('---------------------------MIS--------------------------');
         \Log::channel('dbquerys')->info(json_encode($request->post()));
         \Log::channel('dbquerys')->info('---------------------------MIS--------------------------');
-        return \Response::json(['message' => 'test successful']/* Status code here default is 200 ok*/);
+        
+        try {
+            $path = public_path('MIS_API.json');
+            if (!file_exists($path)) {
+                $newFile = fopen(public_path() . "/MIS_API.json", "w");
+                fclose($newFile);
+            } // if
+
+            file_put_contents($path, "");
+            file_put_contents($path, json_encode($request->post()));
+        } catch (Exception $e) {
+            dd($e); // dump error
+        } // try - catch
+
+        return \Response::json(['message' => 'Data Has Been Received'], 000);
     } // storeDataFromMIS
 
     /**
