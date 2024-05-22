@@ -14,6 +14,7 @@ npm-debug.log
 yarn-error.log
 
 /public/exchange_rate.json
+/public/MIS_API.json
 
 # files that required by Vetur
 tsconfig.json

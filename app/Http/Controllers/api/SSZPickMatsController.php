@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use Date;
+use DateTime;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -37,8 +39,9 @@ class SSZPickMatsController extends Controller
                 fclose($newFile);
             } // if
 
+            $mytime = \Carbon\Carbon::now();
             file_put_contents($path, "");
-            file_put_contents($path, json_encode($request->post()));
+            file_put_contents($path, $mytime->toDateTimeString() . " " . json_encode($request->post()));
         } catch (Exception $e) {
             dd($e); // dump error
         } // try - catch
