@@ -29,7 +29,7 @@ class SSZPickMatsController extends Controller
         \Log::channel('dbquerys')->info('---------------------------MIS--------------------------');
         \Log::channel('dbquerys')->info(json_encode($request->post()));
         \Log::channel('dbquerys')->info('---------------------------MIS--------------------------');
-        
+
         try {
             $path = public_path('MIS_API.json');
             if (!file_exists($path)) {
@@ -43,7 +43,7 @@ class SSZPickMatsController extends Controller
             dd($e); // dump error
         } // try - catch
 
-        return \Response::json(['message' => 'Data Has Been Received'], 000);
+        return \Response::json(['message' => 'Data Has Been Received', 'Status' => '000'], 200);
     } // storeDataFromMIS
 
     /**
