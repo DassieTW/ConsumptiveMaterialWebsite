@@ -40,7 +40,9 @@ class SSZPickMatsController extends Controller
             } // if
 
             $mytime = \Carbon\Carbon::now();
-            file_put_contents($path, $mytime->toDateTimeString() . " " . json_encode($request->post()));
+            $str = '{"Time" : ' . json_encode($mytime->toDateTimeString()) . "}";
+            file_put_contents($path,  $str . PHP_EOL, FILE_APPEND | LOCK_EX);
+            file_put_contents($path, json_encode($request->post()) . PHP_EOL, FILE_APPEND | LOCK_EX);
         } catch (Exception $e) {
             dd($e); // dump error
         } // try - catch
