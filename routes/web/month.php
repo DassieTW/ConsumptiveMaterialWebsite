@@ -33,8 +33,6 @@ use App\Http\Controllers\MonthController;
 |
 */
 
-
-
 //月請購
 Route::get('/', function () {
     return view('month.index');
@@ -128,20 +126,16 @@ Route::post('/standnew', [MonthController::class, 'standnew'])->name('month.stan
 //提交站位人力
 Route::post('/standnewsubmit', [MonthController::class, 'standnewsubmit'])->name('month.standnewsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//料號單耗(查詢與修改)頁面
-Route::get('/consume', function () {
-    return view('month.consume')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);
-})->name('month.consume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //站位人力(查詢與修改)頁面
 Route::get('/stand', function () {
     return view('month.stand')->with(['client' => 客戶別::cursor()])
         ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);;
 })->name('month.stand')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//料號單耗(查詢)ok
-Route::get('/consumesearch', [MonthController::class, 'consumesearch'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
+//料號單耗(查詢)
+Route::get('/consume', function () {
+    return view('month.consumesearch');
+})->name('month.consume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::post('/consumesearch', [MonthController::class, 'consumesearch'])->name('month.consumesearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 

@@ -23,10 +23,6 @@ class MonthlyPRController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
 
     public function checkIfUnitConsumptionExist(Request $request)
     {
@@ -414,6 +410,22 @@ class MonthlyPRController extends Controller
 
         return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showSXB
+
+    //料號單耗(查詢)
+    public function showAllUnitConsumption(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // tests
+
+        $data = \DB::table('consumptive_material')
+            ->join('月請購_單耗', function ($join) {
+                $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
+            })
+            ->get();
+
+        return \Response::json(['data' => $data, "dbName" => $dbName]/* Status code here default is 200 ok*/);
+    } // showAllUnitConsumption
 
     //load rejected unit consumption
     public function showRejectedUnitConsumption(Request $request)

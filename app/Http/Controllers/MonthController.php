@@ -40,31 +40,6 @@ use PhpParser\Node\Expr\Cast\Array_;
 
 class MonthController extends Controller
 {
-    //料號單耗(查詢)
-    public function consumesearch(Request $request)
-    {
-        $number = $request->input('number');
-        $number90 = $request->input('number90');
-        $send = $request->input('send');
-        $datas = DB::table('consumptive_material')
-            ->join('月請購_單耗', function ($join) {
-                $join->on('月請購_單耗.料號', '=', 'consumptive_material.料號');
-            }) //->wherenull('月請購_單耗.deleted_at')
-            ->where('consumptive_material.料號', 'like', $number . '%')
-            ->where('consumptive_material.發料部門', 'like', $send . '%')
-            ->where('月請購_單耗.料號90', 'like', $number90 . '%')
-            ->get();
-        $people = DB::table('login')
-            ->join('人員信息', function ($join) {
-                $join->on('人員信息.工號', '=', 'login.username');
-            })
-            ->where('priority', "=", 1)
-            ->whereNotNull('email')
-            ->get();
-
-        return view('month.consumesearchok')->with(['data' => $datas, 'people' => $people]);
-    } // consumesearch
-
     //站位人力(查詢)
     public function standsearch(Request $request)
     {

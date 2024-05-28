@@ -17,6 +17,7 @@ Route::post('/sxb', 'api\MonthlyPRController@showSXB');
 
 Route::post('/notmonth', 'api\MonthlyPRController@showNonMonthly');
 
+Route::post('/allUC', 'api\MonthlyPRController@showAllUnitConsumption');
 Route::post('/rejectedUC', 'api\MonthlyPRController@showRejectedUnitConsumption');
 Route::post('/checkersMail', 'api\MonthlyPRController@showCheckersEmail');
 

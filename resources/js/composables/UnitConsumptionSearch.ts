@@ -13,6 +13,22 @@ export default function useUnitConsumptionSearch() {
     const errors = ref("");
     const router = useRouter();
 
+    const getAll = async () => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/month/allUC', {
+                DB: getDB.data,
+            });
+
+            mats.value = JSON.stringify(response.data);
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // getAll
+
     const getRejected = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
@@ -27,7 +43,7 @@ export default function useUnitConsumptionSearch() {
             console.log(e); // test
             return e;
         } // try catch
-    } // getMats
+    } // getRejected
 
     const getCheckersMails = async () => {
         errors.value = "";
@@ -78,8 +94,9 @@ export default function useUnitConsumptionSearch() {
     return {
         mats,
         mails,
+        getAll,
         getRejected,
         getCheckersMails,
-        uploadToDB
+        uploadToDB,
     } // return
 } // useInboundStockSearch
