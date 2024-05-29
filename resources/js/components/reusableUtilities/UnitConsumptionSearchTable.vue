@@ -11,7 +11,7 @@
                     </div>
                     <div class="col col-6 p-0 m-0">
                         <input id="pnInput" class="text-center form-control form-control-lg"
-                            v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
+                            v-bind:placeholder="$t('monthlyPRpageLang.enterisn_90pn_or_descr')" v-model="searchTerm" />
                     </div>
                 </div>
                 <div class="col col-auto">

@@ -129,6 +129,7 @@ return [
     'remark' => 'Remarks',
     'enterisn' => 'PN',
     'enterisn_or_descr' => 'PN/Descr.',
+    'enterisn_90pn_or_descr' => 'PN/90PN/Descr.',
     'entersrm' => 'SRM No.',
     'timepart' => 'Time period',
     'stand' => 'Station Manpower',

@@ -129,6 +129,7 @@ return [
     'remark' => '备注',
     'enterisn' => '料号',
     'enterisn_or_descr' => '料号/品名',
+    'enterisn_90pn_or_descr' => '料号/90料号/品名',
     'entersrm' => 'SRM单号',
     'timepart' => '时间段',
     'stand' => '站位',
