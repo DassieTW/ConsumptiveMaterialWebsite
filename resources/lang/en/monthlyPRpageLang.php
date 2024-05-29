@@ -170,6 +170,7 @@ return [
     'nonmonthly_pr_already_sxb' => 'The following materials have been filed for approval：',
     'review_cancel' => 'Reject',
     'review_complete' => 'Approve',
+    'review_pending' => 'Pending',
     'status' => 'Status',
     'months' => 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec',
 ];

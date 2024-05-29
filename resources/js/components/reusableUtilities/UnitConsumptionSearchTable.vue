@@ -25,11 +25,18 @@
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                 <strong>{{ validation_err_msg }}</strong>
             </span>
-            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
+            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :isSlotMode="true" :hasCheckbox="true"
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
-                :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"
-                @row-input="rowUserInput"></table-lite>
+                :rowClasses="table.rowClasses" :total="table.totalRecordCount" :page-options="table.pageOptions"
+                :sortable="table.sortable" @is-finished="table.isLoading = false"
+                @return-checked-rows="updateCheckedRows" @row-input="rowUserInput">
+                <template v-slot:單耗="{ row, key }">
+                    <input style="width:13ch;" type="number" :id="'unitConsumption' + row.id"
+                        :name="'unitConsumption' + row.id" :value="ScientificNotaionToFixed(row.單耗)" v-model="row.單耗"
+                        @input="CheckCurrentRow($event)" class="form-control text-center p-0 m-0" step="0.000001"
+                        min="0">
+                </template>
+            </table-lite>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
@@ -310,7 +317,7 @@ export default defineComponent({
                 singleEntry = {};
             } // for
 
-            // console.log(data); // test
+            console.log(data); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
@@ -329,11 +336,7 @@ export default defineComponent({
             } // if
         });
 
-        watch(data, () => {
-            document.getElementsByClassName("vtl-table")[0].scrollIntoView({ behavior: "smooth" });
-        });
-
-        function initialScientificNotaionToFixed(x) {
+        function ScientificNotaionToFixed(x) {
             // toFixed
             if (Math.abs(x) < 1.0) {
                 var e = parseInt(x.toString().split("e-")[1]);
@@ -353,6 +356,13 @@ export default defineComponent({
             return x;
         } // to prevent scientific notaion
 
+        function CheckCurrentRow(e) {
+            // console.log(e.target.closest('tr').firstChild.firstChild); // test
+            if (!e.target.closest('tr').firstChild.firstChild.checked) {
+                e.target.closest('tr').firstChild.firstChild.click();
+            } // if
+        } // CheckCurrentRow
+
         // Table config
         const table = reactive({
             isLoading: false,
@@ -365,49 +375,19 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號 +
-                                "</div>"
-                            );
-                        } else if (row.doubleCheck) {
-                            return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%; color: #e67300;">' +
-                                row.料號 +
-                                "</div>"
-                            );
-                        } else { // isn exist in database
-                            return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號 +
-                                "</div>"
-                            );
-                        } // if else
+                        return (
+                            '<input type="hidden" id="number' +
+                            i +
+                            '" name="number' +
+                            i +
+                            '" value="' +
+                            row.料號 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.料號 +
+                            "</div>"
+                        );
                     },
                 },
                 {
@@ -415,52 +395,22 @@ export default defineComponent({
                         "monthlyPRpageLang.90isn"
                     ),
                     field: "料號90",
-                    width: "14ch",
+                    width: "15ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="number90' +
-                                i +
-                                '" name="number90' +
-                                i +
-                                '" value="' +
-                                row.料號90 +
-                                '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號90 +
-                                "</div>"
-                            );
-                        } else if (row.doubleCheck) {
-                            return (
-                                '<input type="hidden" id="number90' +
-                                i +
-                                '" name="number90' +
-                                i +
-                                '" value="' +
-                                row.料號90 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%; color: #e67300;">' +
-                                row.料號90 +
-                                "</div>"
-                            );
-                        } else { // isn exist in database
-                            return (
-                                '<input type="hidden" id="number90' +
-                                i +
-                                '" name="number90' +
-                                i +
-                                '" value="' +
-                                row.料號90 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號90 +
-                                "</div>"
-                            );
-                        } // if else
+                        return (
+                            '<input type="hidden" id="number90' +
+                            i +
+                            '" name="number90' +
+                            i +
+                            '" value="' +
+                            row.料號90 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.料號90 +
+                            "</div>"
+                        );
                     },
                 },
                 {
@@ -468,62 +418,30 @@ export default defineComponent({
                         "monthlyPRpageLang.consume"
                     ),
                     field: "單耗",
-                    width: "13ch",
+                    width: "12ch",
                     sortable: true,
-                    hasInput: function (row, i) {
-                        return (
-                            '<input style="width:13ch;" type="number" ' +
-                            'oninput="ScientificNotaionToFixed(this)" ' +
-                            'id="unitConsumption' +
-                            row.id +
-                            '"' +
-                            ' name="unitConsumption' +
-                            row.id +
-                            '" value="' +
-                            initialScientificNotaionToFixed(row.單耗) +
-                            '"' +
-                            ' class="form-control text-center p-0 m-0" step="0.000001">'
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.pName"
                     ),
                     field: "品名",
-                    width: "14ch",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="name' +
-                                i +
-                                '" name="name' +
-                                i +
-                                '" value="' +
-                                row.品名 +
-                                '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn") +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="name' +
-                                i +
-                                '" name="name' +
-                                i +
-                                '" value="' +
-                                row.品名 +
-                                '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.品名 +
-                                "</div>"
-                            );
-                        } // else
+                        return (
+                            '<input type="hidden" id="name' +
+                            i +
+                            '" name="name' +
+                            i +
+                            '" value="' +
+                            row.品名 +
+                            '">' +
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.品名 +
+                            "</div>"
+                        );
                     },
                 },
                 {
@@ -534,99 +452,61 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="format' +
-                                i +
-                                '" name="format' +
-                                i +
-                                '" value="' +
-                                row.規格 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar text-danger"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn") +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="format' +
-                                i +
-                                '" name="format' +
-                                i +
-                                '" value="' +
-                                row.規格 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                row.規格 +
-                                "</div>"
-                            );
-                        } // else
+                        return (
+                            '<input type="hidden" id="format' +
+                            i +
+                            '" name="format' +
+                            i +
+                            '" value="' +
+                            row.規格 +
+                            '">' +
+                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important;">' +
+                            row.規格 +
+                            "</div>"
+                        );
                     },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.unit"
+                        "monthlyPRpageLang.surepeopleemail"
                     ),
-                    field: "單位",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="unit' +
-                                i +
-                                '" name="unit' +
-                                i +
-                                '" value="' +
-                                row.單位 +
-                                '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                "?" +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="unit' +
-                                i +
-                                '" name="unit' +
-                                i +
-                                '" value="' +
-                                row.單位 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                row.單位 +
-                                "</div>"
-                            );
-                        } // else
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.lt"
-                    ),
-                    field: "LT",
-                    width: "8ch",
+                    field: "畫押信箱",
+                    width: "13ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="lt' +
-                            i +
-                            '" name="lt' +
-                            i +
-                            '" value="' +
-                            Math.round(row.LT) +
-                            '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            Math.round(row.LT) +
+                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important;">' +
+                            row.畫押信箱 +
                             "</div>"
                         );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.remark"
+                    ),
+                    field: "狀態",
+                    width: "8ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.狀態 === "已完成") {
+                            return (
+                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_complete") +
+                                "</div>"
+                            );
+                        } // if
+                        else { // 待畫押, 待重畫
+                            return (
+                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_pending") +
+                                "</div>"
+                            );
+                        } // else
                     },
                 },
             ],
@@ -635,10 +515,21 @@ export default defineComponent({
                     x.料號
                         .toLowerCase()
                         .includes(searchTerm.value.toLowerCase()) ||
+                    x.料號90
+                        .toLowerCase()
+                        .includes(searchTerm.value.toLowerCase()) ||
                     x.品名
                         .includes(searchTerm.value)
                 );
             }),
+            rowClasses: function (x) {
+                if (x.狀態 === "已完成") {
+                    return ["table-success"];
+                } // if
+                else {
+                    return ["table-danger"];
+                } // else
+            },
             totalRecordCount: computed(() => {
                 return table.rows.length;
             }),
@@ -694,7 +585,7 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            // console.log(rowsKey); // test
+            console.log(rowsKey); // test
             checkedRows = rowsKey;
         };
 
@@ -717,6 +608,8 @@ export default defineComponent({
             rowUserInput,
             onSendToDBClick,
             deleteRow,
+            ScientificNotaionToFixed,
+            CheckCurrentRow
         };
     }, // setup
 });
