@@ -152,7 +152,7 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, mails, getRejected, getCheckersMails, uploadToDB } = useUnitConsumptionSearch();
+        const { mats, mails, recordCount, getRejected, getCheckersMails, uploadToDB } = useUnitConsumptionSearch();
         const { queryResult, manualResult, validateISN, validateISN_manual } = useCommonlyUsedFunctions();
 
         onBeforeMount(getCheckersMails);
@@ -248,8 +248,6 @@ export default defineComponent({
                 });
             } // if
             else {
-                // console.log(mats.value); // test
-
                 // remove all the old rejected data in table
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].doubleCheck) {
@@ -294,7 +292,6 @@ export default defineComponent({
 
         const onUploadClick = async () => {
             isInvalid_DB.value = false;
-            mats.value = "";
             await triggerModal();
             if (file.value) {
                 // console.log(file.value); // test
@@ -509,7 +506,7 @@ export default defineComponent({
                 uploadToDBReady.value = false;
                 notyf.open({
                     type: "success",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + JSON.parse(mats.value).record + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + JSON.parse(recordCount.value).record + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,

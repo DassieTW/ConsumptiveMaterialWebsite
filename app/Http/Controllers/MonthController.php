@@ -67,59 +67,6 @@ class MonthController extends Controller
         return view('month.standsearchok')->with(['data' => $datas, 'people' => $people]);
     }
 
-    //料號單耗(刪除或修改)
-    public function consumechangeordelete(Request $request)
-    {
-        $select = $request->input('select');
-        $count = $request->input('count');
-        $number = $request->input('number');
-        $number90 = $request->input('number90');
-        $amount = $request->input('amount');
-        $email = $request->input('email');
-        $sessemail = $email;
-        $name = \Auth::user()->username;
-        $database = $request->session()->get('database');
-        $database = $database;
-
-        //delete
-        if ($select === "刪除") {
-            for ($i = 0; $i < $count; $i++) {
-                DB::beginTransaction();
-                try {
-                    月請購_單耗::where('料號', $number[$i])
-                        ->where('料號90', $number90[$i])
-                        ->delete();
-                    DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                }
-            }
-            return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
-        }
-        //change
-        if ($select === "更新") {
-            for ($i = 0; $i < $count; $i++) {
-                DB::beginTransaction();
-                try {
-                    月請購_單耗::where('料號', $number[$i])
-                        ->where('料號90', $number90[$i])
-                        ->update([
-                            '狀態' => "待畫押", //'畫押工號' => $jobnumber,
-                            '畫押信箱' => $email, '單耗' => $amount[$i], '送單時間' => Carbon::now(), '送單人' => \Auth::user()->username,
-                        ]);
-                    DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                }
-            }
-            self::sendconsumemail($email, $sessemail, $name, $database);
-
-            return \Response::json(['message' => $count, 'status' => 201], /* Status code here default is 200 ok*/);
-        }
-    }
-
     //站位人力(刪除或修改)
     public function standchangeordelete(Request $request)
     {
@@ -330,49 +277,6 @@ class MonthController extends Controller
         } // try catch
         return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
     } // srmsubmit
-
-    //請購單-提交
-    public function buylistsubmit(Request $request)
-    {
-        $now = Carbon::now();
-        $count = $request->input('count');
-        $Alldata = json_decode($request->input('AllData'));
-        $record = 0;
-        $srm = $Alldata[0];
-        $client = $Alldata[1];
-        $number = $Alldata[2];
-        $name = $Alldata[3];
-        $format = $Alldata[4];
-        $price = $Alldata[5];
-        $money = $Alldata[6];
-        $nowneed = $Alldata[7];
-        $nextneed = $Alldata[8];
-        $stock = $Alldata[9];
-        $amount = $Alldata[10];
-        $buyamount = $Alldata[11];
-        $buymoney = $Alldata[12];
-        $rate = $Alldata[13];
-        $moq = $Alldata[14];
-        $check = $request->input('check');
-
-        DB::beginTransaction();
-        try {
-            for ($i = 0; $i < $count; $i++) {
-                if ($check[$i] !== '0') {
-                    DB::table('請購單')
-                        ->insert([
-                            'SRM單號' => $srm[$i], '客戶' => $client[$i], '料號' => $number[$i], '品名' => $name[$i], 'MOQ' => $moq[$i], '下月需求' => $nextneed[$i], '當月需求' => $nowneed[$i], '規格' => $format[$i], '單價' => $price[$i], '幣別' => $money[$i], '匯率' => $rate[$i], '在途數量' => $amount[$i], '現有庫存' => $stock[$i], '本次請購數量' => $buyamount[$i], '請購金額' => $buymoney[$i], '請購時間' => $now
-                        ]);
-                    $record++;
-                }
-            }
-            DB::commit();
-            return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-        }
-    }
 
     //站位上傳
     public function uploadstand(Request $request)
@@ -687,73 +591,6 @@ class MonthController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
-    }
-
-    //單耗查詢下載
-    public function consumedownload(Request $request)
-    {
-        $spreadsheet = new Spreadsheet();
-        $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
-
-        $worksheet = $spreadsheet->getActiveSheet();
-
-        $title = $request->input('title');
-        $count = $request->input('count');
-        $titlecount = $request->input('titlecount');
-        $Alldata = json_decode($request->input('AllData'));
-        // $stringValueBinder = new StringValueBinder();
-        // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
-        // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
-
-
-        //填寫表頭
-        for ($i = 0; $i < $titlecount; $i++) {
-            $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
-        }
-
-        // 下載
-        for ($i = 0; $i < $titlecount; $i++) {
-            for ($j = 0; $j < $count; $j++) {
-
-                $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
-            }
-        }
-
-        $now = Carbon::now()->format('YmdHis');
-
-        $filename = rawurlencode($request->input('titlename')) . $now . '.xlsx';
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
-        header('Cache-Control: max-age=0');
-
-        $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition: attachment;filename="' . $filename . '"', 'Cache-Control: max-age=0'];
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('php://output');
-        $callback = function () use ($writer) {
-            $file = fopen('php://output', 'r');
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
-    } // consumedownload
-
-    //send consume mail
-    public static function sendconsumemail($email, $sessemail, $username, $database)
-    {
-        $dename = DB::table('login')
-            ->join('人員信息', function ($join) {
-                $join->on('人員信息.工號', '=', 'login.username');
-            })
-            ->where('username', $username)
-            ->value('姓名');
-        $data = array('app_url' => urlencode(env('APP_URL')), 'email' => urlencode($sessemail), 'username' => urlencode($username), 'database' => urlencode($database), 'name' => urlencode($dename));
-
-        Mail::send('mail/consumecheck', $data, function ($message) use ($email) {
-            $message->to($email, 'Test Default')->subject('請確認單耗資料');
-            $message->bcc('vincent6_yeh@pegatroncorp.com');
-            // $message->attach(public_path() . '/download/LineExample.xlsx');
-            $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
-        });
     }
 
     //send stand mail

@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\style\Borders;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Models\月請購_單耗;
 use Mail;
 
 use function Swoole\Coroutine\Http\get;
@@ -874,6 +875,29 @@ class MonthlyPRController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function destroyUC(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $database = \DB::connection()->getDatabaseName(); // test
+
+        $number = json_decode($request->input('number'));
+        $number90 = json_decode($request->input('number90'));
+        \DB::beginTransaction();
+        for ($i = 0; $i < count($number); $i++) {
+            try {
+                月請購_單耗::where('料號', $number[$i])
+                    ->where('料號90', $number90[$i])
+                    ->delete();
+                \DB::commit();
+            } catch (\Exception $e) {
+                \DB::rollback();
+                return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
+            } // try catch
+        } // for
+        return \Response::json(['record' => count($number)]/* Status code here default is 200 ok*/);
+    } // destroyUC
+
     public function destroyMPS(Request $request)
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));

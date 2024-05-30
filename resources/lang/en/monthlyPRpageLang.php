@@ -80,7 +80,7 @@ return [
     'upload' => 'Batch Upload',
     'isnlength' => 'PN length is not 12',
     'noisn' => 'PN does not exist',
-    'format' => 'Specification',
+    'format' => 'Spec.',
     'lt' => 'LT',
     'consume' => 'Unit Cons.',
     'new' => 'New',

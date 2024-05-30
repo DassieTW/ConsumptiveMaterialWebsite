@@ -23,8 +23,8 @@ Route::post('/checkersMail', 'api\MonthlyPRController@showCheckersEmail');
 
 // send Unit Consumption to DB
 Route::post('/send_UC_to_DB', 'api\MonthlyPRController@update_UnitConsumption');
-
 Route::post('/validateUC', 'api\MonthlyPRController@checkIfUnitConsumptionExist');
+Route::post('/deleteUC', 'api\MonthlyPRController@destroyUC');
 Route::post('/mps', 'api\MonthlyPRController@showMPS');
 Route::post('/delete_mps', 'api\MonthlyPRController@destroyMPS');
 Route::post('/submit_monthlypr', 'api\MonthlyPRController@storeMonthlyPR');

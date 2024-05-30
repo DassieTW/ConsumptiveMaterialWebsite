@@ -19,6 +19,11 @@
                         @click="deleteRow">
                         <i class="bi bi-trash3-fill fs-4"></i>
                     </button>
+                    &nbsp;
+                    <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                        :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick">
+                        <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
+                    </button>
                 </div>
             </div>
             <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
@@ -32,9 +37,9 @@
                 @return-checked-rows="updateCheckedRows" @row-input="rowUserInput">
                 <template v-slot:單耗="{ row, key }">
                     <input style="width:13ch;" type="number" :id="'unitConsumption' + row.id"
-                        :name="'unitConsumption' + row.id" :value="ScientificNotaionToFixed(row.單耗)" v-model="row.單耗"
-                        @input="CheckCurrentRow($event)" class="form-control text-center p-0 m-0" step="0.000001"
-                        min="0">
+                        :name="'unitConsumption' + row.id" :value="ScientificNotaionToFixed(parseFloat(row.單耗))"
+                        v-model="row.單耗" @input="CheckCurrentRow($event)" class="form-control text-center p-0 m-0"
+                        step="0.000001" min="0">
                 </template>
             </table-lite>
 
@@ -77,7 +82,6 @@ import {
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useUnitConsumptionSearch from "../../composables/UnitConsumptionSearch.ts";
-import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
 export default defineComponent({
     name: "App",
     components: { TableLite },
@@ -90,10 +94,8 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, mails, getAll, getCheckersMails, uploadToDB } = useUnitConsumptionSearch();
-        const { queryResult, manualResult, validateISN, validateISN_manual } = useCommonlyUsedFunctions();
+        const { mats, mails, recordCount, getAll, getCheckersMails, uploadToDB, deleteUC } = useUnitConsumptionSearch();
 
-        onBeforeMount(getCheckersMails);
         onBeforeMount(async () => {
             await getCheckersMails();
             await getAll();
@@ -110,18 +112,46 @@ export default defineComponent({
         const selected_mail = ref(""); // Mail reciever name
         const data = reactive([]); // pour the data into table
 
-        const findDuplicates = (arr) => {
-            let sorted_arr = arr.slice().sort(); // You can define the comparing function here. 
-            // JS by default uses a crappy string compare.
-            // (we use slice to clone the array so the original array won't be modified)
-            let results = [];
-            for (let i = 0; i < sorted_arr.length - 1; i++) {
-                if (sorted_arr[i + 1] == sorted_arr[i]) {
-                    results.push(sorted_arr[i]);
+        const OutputExcelClick = async () => {
+            await triggerModal();
+            await getAll();
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = Array();
+            for (let i = 0; i < data.length; i++) {
+                let tempObj = new Object;
+                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn")] = data[i].料號;
+                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.90isn")] = data[i].料號90;
+                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName")] = data[i].品名;
+                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.format")] = data[i].規格;
+                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.consume")] = data[i].單耗;
+                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.email")] = data[i].畫押信箱;
+                if (data[i].狀態 === "已完成") {
+                    tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.status")] = app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_complete");
                 } // if
+                else { // 待畫押, 待重畫
+                    tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.status")] = app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_pending");
+                } // else
+
+                rows.push(tempObj);
             } // for
-            return results;
-        } // findDuplicates
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.consume"));
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "monthlyPRpageLang.consume"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
 
         const triggerModal = async () => {
             // console.log("Loading Modal Triggered!"); // test
@@ -135,25 +165,63 @@ export default defineComponent({
             });
         } // triggerModal
 
-        const deleteRow = () => {
-            // console.log(checkedRows); // test
+        const deleteRow = async () => {
+            await triggerModal();
+            let pnArray = [];
+            let pn90Array = [];
             for (let i = 0; i < checkedRows.length; i++) {
-                let indexOfObject = data.findIndex(object => {
-                    return parseInt(object.id) === parseInt(checkedRows[i].id);
-                });
-
-                if (indexOfObject != -1) {
-                    data.splice(indexOfObject, 1);
-                } // if
+                pnArray.push(checkedRows[i].料號);
+                pn90Array.push(checkedRows[i].料號90);
             } // for
 
-            document.querySelectorAll('.vtl-tbody-checkbox').forEach(el => el.checked = false);
+            let result = await deleteUC(pnArray, pn90Array);
+            if (result === "success") {
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + JSON.parse(recordCount.value).record + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.delete") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
 
-            if (document.querySelector(".vtl-thead-checkbox").checked) {
-                document.querySelector(".vtl-thead-checkbox").click();
+                for (let i = 0; i < checkedRows.length; i++) {
+                    let indexOfObject = data.findIndex(object => {
+                        return parseInt(object.id) === parseInt(checkedRows[i].id);
+                    });
+
+                    if (indexOfObject != -1) {
+                        data.splice(indexOfObject, 1);
+                    } // if
+                } // for
+
+                document.querySelectorAll('.vtl-tbody-checkbox').forEach(el => el.checked = false);
+
+                if (document.querySelector(".vtl-thead-checkbox").checked) {
+                    document.querySelector(".vtl-thead-checkbox").click();
+                } // if
+
+                checkedRows = [];
             } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
 
-            checkedRows = [];
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
         } // deleteRow
 
         const onSendToDBClick = async () => {
@@ -164,7 +232,7 @@ export default defineComponent({
             let rowsCount = 0;
             let hasError = false;
             // console.log(data.length); //test
-            if (data.length <= 0) {
+            if (checkedRows.length <= 0) {
                 notyf.open({
                     type: "warning",
                     message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
@@ -183,82 +251,18 @@ export default defineComponent({
             } // if
 
             // ----------------------------------------------
-            // validate if all the isn exist
-            for (let j = 0; j < data.length && hasError == false; j++) {
-                if (data[j].月請購 === "" || data[j].月請購 === null || data[j].月請購.toLowerCase() === "null") {
-                    hasError = true;
-                    rowsCount = j;
-                } // if
-            } // for
 
-            if (hasError) {
-                isInvalid_DB.value = true;
-                validation_err_msg.value =
-                    data[rowsCount].料號 + " " +
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn");
-
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // if
-
-            // ----------------------------------------------
-            // validate if there's duplicate values in table
-            let duplicatedArray = Array();
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].料號 != null && data[i].料號.trim() != "") {
-                    duplicatedArray.push(data[i].料號.toString().trim() + "_" + data[i].料號90.toString().trim());
-                } // if
-            } // for
-
-            let findDuplicatesResult = findDuplicates(duplicatedArray);
-            // console.log(findDuplicatesResult); // test
-            if (findDuplicatesResult.length > 0) {
-                isInvalid_DB.value = true;
-                validation_err_msg.value =
-                    app.appContext.config.globalProperties.$t("inboundpageLang.repeated_isn_90_pair") +
-                    " : " + findDuplicatesResult[0].split("_")[0] +
-                    " (" + findDuplicatesResult[0].split("_")[1] + ")";
-
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // if
-            // ----------------------------------------------
             // prepare the data arrays to be sent
             let pnArray = [];
             let pn90Array = [];
             let ucArray = [];
-            for (let j = 0; j < data.length; j++) {
-                pnArray.push(data[j].料號);
-                pn90Array.push(data[j].料號90);
-                ucArray.push(data[j].單耗);
+            for (let j = 0; j < checkedRows.length; j++) {
+                pnArray.push(checkedRows[j].料號);
+                pn90Array.push(checkedRows[j].料號90);
+                ucArray.push(checkedRows[j].單耗.toString());
             } // for
-            // console.log(ucArray); //test
+
+            // console.log(ucArray); // test
             // actually updating database now
             let start = Date.now();
             let result = await uploadToDB(pnArray, pn90Array, ucArray, selected_mail.value);
@@ -267,11 +271,12 @@ export default defineComponent({
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
 
+            await getAll();
+
             if (result === "success") {
-                uploadToDBReady.value = false;
                 notyf.open({
                     type: "success",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + JSON.parse(mats.value).record + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + JSON.parse(recordCount.value).record + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
@@ -299,6 +304,8 @@ export default defineComponent({
         watch(mats, async () => {
             await triggerModal();
             data.splice(0);
+            uploadToDBReady.value = false;
+            selected_mail.value = "";
             if (mats.value == "") {
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
@@ -317,7 +324,7 @@ export default defineComponent({
                 singleEntry = {};
             } // for
 
-            console.log(data); // test
+            // console.log(data); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         }); // watch for data change
@@ -585,7 +592,7 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            console.log(rowsKey); // test
+            // console.log(rowsKey); // test
             checkedRows = rowsKey;
         };
 
@@ -609,7 +616,8 @@ export default defineComponent({
             onSendToDBClick,
             deleteRow,
             ScientificNotaionToFixed,
-            CheckCurrentRow
+            CheckCurrentRow,
+            OutputExcelClick
         };
     }, // setup
 });

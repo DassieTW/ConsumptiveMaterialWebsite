@@ -67,9 +67,6 @@ Route::get('/buylistmake', function () {
 
 Route::post('/buylistmake', [MonthController::class, 'buylistmake'])->name('month.buylistmake')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-Route::post('/buylistsubmit', [MonthController::class, 'buylistsubmit'])->name('month.buylistsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-
 // 更新單價
 Route::get('/UpdateUnitPrice', function () {
     return view('month.UpdateUnitPrice');
@@ -136,8 +133,6 @@ Route::get('/stand', function () {
 Route::get('/consume', function () {
     return view('month.consumesearch');
 })->name('month.consume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/consumesearch', [MonthController::class, 'consumesearch'])->name('month.consumesearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //站位人力(查詢)ok
 Route::get('/standsearch', [MonthController::class, 'standsearch'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');

@@ -1169,7 +1169,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end align-items-center" id="UserDropDown"
                                 style="border-radius: 10px; max-height: 48ch; overflow-y: auto;">
-                                <a class="dropdown-item" href="{{ url('/member/change') }}">
+                                <a class="dropdown-item" href="#">
                                     <i class="p-0 mr-1" data-feather="user"></i>
                                     <span>Profile</span>
                                 </a>
