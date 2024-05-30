@@ -9,7 +9,7 @@ export const datasetRealUSD = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 export const searchTerm = ref(""); // Search text
 export const data = reactive([]);
 export const table = reactive({
-    isLoading: false,
+    isLoading: true,
     columns: [
         {
             label: Lang.get("monthlyPRpageLang.isn"),

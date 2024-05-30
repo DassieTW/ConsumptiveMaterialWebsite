@@ -61,7 +61,7 @@ export default defineComponent({
 
     // Table config
     const table = reactive({
-      isLoading: false,
+      isLoading: true,
       columns: [
         {
           label: app.appContext.config.globalProperties.$t(
