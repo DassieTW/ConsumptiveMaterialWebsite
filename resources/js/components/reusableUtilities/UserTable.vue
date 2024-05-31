@@ -290,6 +290,7 @@ export default defineComponent({
             // console.log(data); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
+            table.isLoading = false;
         }); // watch for data change
 
         // Table config

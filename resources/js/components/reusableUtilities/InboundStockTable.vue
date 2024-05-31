@@ -104,6 +104,8 @@ export default defineComponent({
                 data.push(allRowsObj.datas[i]);
             } // for
             // console.log(data); // test
+
+            table.isLoading = false;
         }); // watch for data change
 
         // Table config

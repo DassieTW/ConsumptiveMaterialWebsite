@@ -347,6 +347,7 @@ export default defineComponent({
             // console.log(AllRecords); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
+            table.isLoading = false;
         }); // watch for data change
 
         // Table config

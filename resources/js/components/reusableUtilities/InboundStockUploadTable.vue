@@ -478,6 +478,7 @@ export default defineComponent({
             uploadToDBReady.value = true;
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
+            table.isLoading = false;
         }); // watch for data change
 
         watch(data, () => {

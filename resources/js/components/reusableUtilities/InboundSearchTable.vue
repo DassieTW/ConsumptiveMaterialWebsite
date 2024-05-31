@@ -209,6 +209,8 @@ export default defineComponent({
                 allRowsObj.datas[i].id = i;
                 data.push(allRowsObj.datas[i]);
             } // for
+
+            table.isLoading = false;
         }); // watch for data change
 
         // Table config

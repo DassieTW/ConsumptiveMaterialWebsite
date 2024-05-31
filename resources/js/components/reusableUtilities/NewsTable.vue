@@ -45,6 +45,8 @@ export default defineComponent({
       document
         .getElementById("QueryFlag")
         .click();
+
+      table.isLoading = false;
     }); // watch for data change
 
     // Table config

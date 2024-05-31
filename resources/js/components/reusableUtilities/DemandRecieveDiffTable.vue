@@ -607,6 +607,7 @@ export default defineComponent({
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
+            table.isLoading = false;
         }); // watch for data change
 
         const updateCheckedRows = (rowsKey) => {

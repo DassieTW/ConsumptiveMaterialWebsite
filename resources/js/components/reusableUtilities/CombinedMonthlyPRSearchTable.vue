@@ -343,7 +343,6 @@ export default defineComponent({
         watch(Currency, async () => {
             await triggerModal();
             data.splice(0);
-            // console.log(Currency.value); // test
             if (Currency.value === "Not Found") {
                 notyf.open({
                     type: "error",
@@ -544,6 +543,7 @@ export default defineComponent({
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
+            table.isLoading = false;
         }); // watch for data change
 
         // Table config
