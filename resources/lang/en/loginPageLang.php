@@ -83,6 +83,7 @@ return [
     'mail' => 'Email',
     'database_list' => 'Databases',
     'selectprofile_pic' => 'Please select Profile Pic',
+    'latest_login_time' => 'Latest Login',
 
     // OA SSO Login Page Lang
     'newSSO_msg' => 'This OA account has not logged in before.<br/>Please complete the form for initial settings.',

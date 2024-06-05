@@ -32,12 +32,17 @@
         <template v-slot:狀態="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <a v-if="row.狀態 === '未簽核'" @click="openSXBDetails(row.SXB單號)" data-bs-toggle="modal"
-                    data-bs-target="#detailTable" class="m-0 p-0" style="color: #dca120;">{{ row.狀態 }}</a>
+                    data-bs-target="#detailTable" class="m-0 p-0" style="color: #dca120;">
+                    {{ $t("monthlyPRpageLang.review_pending") }}
+                </a>
                 <a v-else-if="row.狀態 === '已退單'" @click="openSXBDetails(row.SXB單號)" data-bs-toggle="modal"
-                    data-bs-target="#detailTable" class="m-0 p-0" style="color: #808080;">{{ row.狀態 }}</a>
+                    data-bs-target="#detailTable" class="m-0 p-0" style="color: #808080;">
+                    {{ $t("monthlyPRpageLang.review_cancel") }}
+                </a>
                 <a v-else class="m-0 p-0" @click="openSXBDetails(row.SXB單號)" data-bs-toggle="modal"
-                    data-bs-target="#detailTable" style="color: #2bb91b;">{{ row.狀態
-                    }}</a>
+                    data-bs-target="#detailTable" style="color: #2bb91b;">
+                    {{ $t("monthlyPRpageLang.review_complete") }}
+                </a>
             </div>
         </template>
     </table-lite>
@@ -61,7 +66,8 @@
                             </div>
                             <div class="col col-auto p-0 m-0">
                                 <input id="pnInput" class="text-center form-control form-control-lg"
-                                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm2" />
+                                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')"
+                                    v-model="searchTerm2" />
                             </div>
                         </div>
                         <div class="col col-auto">
@@ -584,9 +590,9 @@ export default defineComponent({
                 return data2.filter((x) =>
                     x.料號
                         .toLowerCase()
-                        .includes(searchTerm.value.toLowerCase()) ||
+                        .includes(searchTerm2.value.toLowerCase()) ||
                     x.品名
-                        .includes(searchTerm.value)
+                        .includes(searchTerm2.value)
                 );
             }),
             totalRecordCount: computed(() => {

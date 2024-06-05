@@ -12,7 +12,7 @@
     <h2><a
             href="{{ urldecode($app_url) }}/month/teststand?r={{ $email }}&u={{ $username }}&d={{ $database }}">{{ __('monthlyPRpageLang.clickmail') }}</a>
     </h2>
-    <img src="{{ $message->embed(public_path() . '/admin/img/mail/email.png') }}" />
+    {{-- <img src="{{ $message->embed(public_path() . '/admin/img/mail/email.png') }}" /> --}}
 
 </body>
 

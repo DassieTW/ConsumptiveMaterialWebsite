@@ -96,7 +96,7 @@
 
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-    <img src="{{ $message->embed(public_path() . '/admin/img/mail/email.png') }}" />
+    {{-- <img src="{{ $message->embed(public_path() . '/admin/img/mail/email.png') }}" /> --}}
 
 </body>
 

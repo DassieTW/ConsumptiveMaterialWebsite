@@ -855,6 +855,7 @@ class MonthlyPRController extends Controller
             'total_price2' => $total_price2,
             'MOQ' => $MOQ
         );
+        
         Mail::send(
             'mail/pr_review',
             $data,

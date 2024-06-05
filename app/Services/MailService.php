@@ -26,7 +26,7 @@ class MailService
     {
         $databases = config('database_list.databases');
         array_shift($databases); // remove the 'Consumables management' db from array
-        $AllISNClientsPairs = array("isn" => array());
+        $AllISNClientsPairs = array("isn" => array(), "client" => array());
 
         \Log::channel('dbquerys')->info('---------------------------Mail Service Alarm--------------------------');
         foreach ($databases as $database) {
@@ -43,7 +43,8 @@ class MailService
                     $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
                 })
                 ->leftjoin('safestock報警備註', function ($join) {
-                    $join->on('safestock報警備註.料號', '=', '月請購_單耗.料號');
+                    $join->on('safestock報警備註.料號', '=', '月請購_單耗.料號')
+                    ->on('safestock報警備註.客戶別', '=', '月請購_單耗.料號90');
                 })
                 ->leftJoinSub($inventorys, 'suminventory', function ($join) {
                     $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
@@ -56,6 +57,7 @@ class MailService
                     'consumptive_material.月請購',
                     'consumptive_material.安全庫存',
                     '月請購_單耗.單耗',
+                    '月請購_單耗.料號90',
                     'MPS.下月MPS',
                     'MPS.下月生產天數',
                     'inventory現有庫存',
@@ -67,15 +69,14 @@ class MailService
                     'consumptive_material.LT',
                     'consumptive_material.月請購',
                     'consumptive_material.安全庫存',
-                    // 'consumptive_material.耗材歸屬',
                     '月請購_單耗.單耗',
+                    '月請購_單耗.料號90',
                     'MPS.下月MPS',
                     'MPS.下月生產天數',
                     'inventory現有庫存',
                     'safestock報警備註.備註',
                 )
                 ->where('consumptive_material.月請購', '=', "是")
-                // ->where('consumptive_material.耗材歸屬', '=', "單耗")
                 ->where('月請購_單耗.狀態', '=', "已完成")
                 ->get()->toArray();
 
@@ -177,6 +178,7 @@ class MailService
                 $worksheet->setCellValueByColumnAndRow(7, $j + 2, $datas[$j]->備註);
 
                 array_push($AllISNClientsPairs["isn"], $datas[$j]->料號);
+                array_push($AllISNClientsPairs["client"], $datas[$j]->料號90);
             } // for
             //填寫內容
 
@@ -272,7 +274,7 @@ class MailService
         $databases = config('database_list.databases');
         array_shift($databases); // remove the 'Consumables management' db from array
         $now = strtotime(Carbon::now()->format('Ymd'));
-        $AllISNClientsPairsDay = array("isn" => array(), "client" => array());
+        $AllISNClientsPairsDay = array("isn" => array());
 
         foreach ($databases as $database) {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
@@ -381,7 +383,7 @@ class MailService
             $all_remarks_pairs_day = array();
 
             foreach ($all_remarks_day as $remark) {
-                array_push($all_remarks_pairs_day, [$remark->料號, $remark->客戶別]);
+                array_push($all_remarks_pairs_day, $remark->料號);
             } // foreach
 
             // Compare all values by a json_encode

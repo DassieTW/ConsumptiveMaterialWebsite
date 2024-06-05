@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Inventory;
+use App\Models\客戶別;
 use DB;
 use Session;
 use Route;
@@ -37,7 +38,9 @@ class CallController extends Controller
                 $join->on('consumptive_material.料號', '=', '月請購_單耗.料號');
             })
             ->leftjoin('safestock報警備註', function ($join) {
-                $join->on('safestock報警備註.料號', '=', '月請購_單耗.料號');
+                $join->on('safestock報警備註.料號', '=', '月請購_單耗.料號')
+                ->on('safestock報警備註.客戶別', '=', '月請購_單耗.料號90');
+
             })
             ->leftJoinSub($inventorys, 'suminventory', function ($join) {
                 $join->on('月請購_單耗.料號', '=', 'suminventory.料號');
@@ -49,7 +52,6 @@ class CallController extends Controller
                 'consumptive_material.LT',
                 'consumptive_material.月請購',
                 'consumptive_material.安全庫存',
-                // 'consumptive_material.耗材歸屬',
                 'consumptive_material.發料部門',
                 '月請購_單耗.單耗',
                 'MPS.下月MPS',
@@ -63,7 +65,6 @@ class CallController extends Controller
                 'consumptive_material.LT',
                 'consumptive_material.月請購',
                 'consumptive_material.安全庫存',
-                // 'consumptive_material.耗材歸屬',
                 'consumptive_material.發料部門',
                 '月請購_單耗.單耗',
                 'MPS.下月MPS',
@@ -207,6 +208,7 @@ class CallController extends Controller
                     $temp_record = \DB::table('safestock報警備註')->upsert(
                         $whole_load[$i],
                         ['料號'],
+                        ['客戶別'],
                         ['備註']
                     );
 

@@ -83,6 +83,7 @@ return [
     'mail' => '信箱',
     'database_list' => '可登入資料庫',
     'selectprofile_pic' => '請選擇頭像',
+    'latest_login_time' => '最後登入',
 
     // OA SSO Login Page Lang
     'newSSO_msg' => '此公司帳號從未登入過耗材管理系統<br/>請先填寫以下內容完成初始設定',

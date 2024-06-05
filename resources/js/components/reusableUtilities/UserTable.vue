@@ -388,7 +388,9 @@ export default defineComponent({
                     sortable: false,
                 },
                 {
-                    label: "Latest Login",
+                    label: app.appContext.config.globalProperties.$t(
+                        "loginPageLang.latest_login_time"
+                    ),
                     field: "last_login_time",
                     width: "10ch",
                     sortable: true,
