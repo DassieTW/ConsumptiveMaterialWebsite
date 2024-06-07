@@ -216,68 +216,6 @@ class MonthController extends Controller
         } //try - catch
     }
 
-    //SRM單(查詢)
-    public function srmsearch(Request $request)
-    {
-        $client = $request->input('client');
-        $number =  $request->input('number');
-        $srm = $request->input('srm');
-        $send = $request->input('send');
-
-        $datas = DB::table('consumptive_material')
-            ->join('請購單', function ($join) {
-                $join->on('請購單.料號', '=', 'consumptive_material.料號')
-                    ->whereNull('SXB單號');
-            })->where('consumptive_material.料號', 'like', $number . '%')
-            ->where('consumptive_material.發料部門', 'like', $send . '%')
-            ->where('請購單.客戶', 'like', $client . '%')
-            ->where('請購單.SRM單號', 'like', $srm . '%')
-            ->get();
-
-        return view('month.srmsearchok')->with(['data' => $datas]);
-    } // srmsearch
-
-    //SRM單提交
-    public function srmsubmit(Request $request)
-    {
-        $count = $request->input('count');
-        $client = $request->input("client");
-        $number = $request->input("number");
-        $amount = $request->input("sxbamount");
-        $srmnumber = $request->input("srmnumber");
-        $sxbnumber = $request->input("sxbnumber");
-        $now = Carbon::now();
-        $record = 0;
-        DB::beginTransaction();
-        try {
-            for ($i = 0; $i < $count; $i++) {
-                $test = DB::table('在途量')->where('料號', $number[$i])->where('客戶', $client[$i])->value('請購數量');
-                if ($test === null) {
-                    DB::table('在途量')
-                        ->insert(['客戶' => $client[$i], '料號' => $number[$i], '請購數量' => $amount[$i]]);
-                } else {
-                    DB::table('在途量')
-                        ->where('客戶', $client[$i])
-                        ->where('料號', $number[$i])
-                        ->update(['請購數量' => $test + $amount[$i]]);
-                }
-                DB::table('請購單')
-                    ->where('客戶', $client[$i])
-                    ->where('料號', $number[$i])
-                    ->where('SRM單號', $srmnumber[$i])
-                    ->update([
-                        'SXB單號' => $sxbnumber[$i], '本次請購數量' => $amount[$i], '請購時間' => $now
-                    ]);
-                $record++;
-                DB::commit();
-            }
-        } catch (\Exception $e) {
-            DB::rollback();
-            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-        } // try catch
-        return \Response::json(['message' => $record]/* Status code here default is 200 ok*/);
-    } // srmsubmit
-
     //站位上傳
     public function uploadstand(Request $request)
     {

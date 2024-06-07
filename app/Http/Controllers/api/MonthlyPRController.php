@@ -264,14 +264,12 @@ class MonthlyPRController extends Controller
                     $query->orWhere(
                         function ($semiquery) use ($single_isn, $single_isn90) {
                             $semiquery->where('料號', '=', $single_isn)
-                                ->where('料號90', '=', $single_isn90)
-                                ->whereNull('SXB單號');
+                                ->where('料號90', '=', $single_isn90);
                         } // function
                     );
                 } // for
 
                 $result_MPS = $query->update(['SXB單號' => $SXB_serial_number]);
-                // dd($result_MPS); // test
             } //for
             // ---------------------------------------------------------------------
             // update 非月請購 table

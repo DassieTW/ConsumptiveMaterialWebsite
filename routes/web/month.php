@@ -53,14 +53,6 @@ Route::get('/srm', function () {
     return view('month.srm')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
 })->name('month.srm')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//SRM單(查詢)
-Route::get('/srmsearch', [MonthController::class, 'srmsearch'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/srmsearch', [MonthController::class, 'srmsearch'])->name('month.srmsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//SRM單(提交)
-Route::post('/srmsubmit', [MonthController::class, 'srmsubmit'])->name('month.srmsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 Route::get('/buylistmake', function () {
     return view('month.buylist')->with(['client' => 客戶別::cursor(), 'send' => 發料部門::cursor()]);
 })->name('month.buylist')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
