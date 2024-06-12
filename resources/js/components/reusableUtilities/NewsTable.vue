@@ -185,8 +185,8 @@ export default defineComponent({
           text: 40,
         },
         {
-          value: 60,
-          text: 60,
+          value: 100,
+          text: 100,
         },
       ],
     });

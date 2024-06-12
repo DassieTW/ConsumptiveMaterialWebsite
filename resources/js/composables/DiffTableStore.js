@@ -81,7 +81,7 @@ export const table = reactive({
             Lang.get("basicInfoLang.record"),
         pageSizeChangeLabel: Lang.get("basicInfoLang.records_per_page"),
         gotoPageLabel: Lang.get("basicInfoLang.go_to_page"),
-        noDateAvailable: Lang.get("basicInfoLang.search_with_no_data_returned"),
+        noDataAvailable: Lang.get("basicInfoLang.search_with_no_data_returned"),
     },
     pageOptions: [
         {
@@ -97,8 +97,8 @@ export const table = reactive({
             text: 40,
         },
         {
-            value: 60,
-            text: 60,
+            value: 100,
+            text: 100,
         },
     ],
 });

@@ -519,7 +519,7 @@ export default defineComponent({
                 gotoPageLabel: app.appContext.config.globalProperties.$t(
                     "basicInfoLang.go_to_page"
                 ),
-                noDateAvailable: app.appContext.config.globalProperties.$t(
+                noDataAvailable: app.appContext.config.globalProperties.$t(
                     "basicInfoLang.search_with_no_data_returned"
                 ),
             },
@@ -537,8 +537,8 @@ export default defineComponent({
                     text: 40,
                 },
                 {
-                    value: 60,
-                    text: 60,
+                    value: 100,
+                    text: 100,
                 },
             ],
         });

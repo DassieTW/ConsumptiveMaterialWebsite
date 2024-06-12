@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Date;
 use DateTime;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Exception;
 
 class SSZPickMatsController extends Controller
@@ -32,17 +33,20 @@ class SSZPickMatsController extends Controller
         \Log::channel('dbquerys')->info(json_encode($request->post()));
         \Log::channel('dbquerys')->info('---------------------------MIS--------------------------');
 
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+        $datetime = Carbon::now();
         try {
-            $path = public_path('MIS_API.json');
-            if (!file_exists($path)) {
-                $newFile = fopen(public_path() . "/MIS_API.json", "w");
-                fclose($newFile);
-            } // if
-
-            $mytime = \Carbon\Carbon::now();
-            $str = '{"Time" : ' . json_encode($mytime->toDateTimeString()) . "}";
-            file_put_contents($path,  $str . PHP_EOL, FILE_APPEND | LOCK_EX);
-            file_put_contents($path, json_encode($request->post()) . PHP_EOL, FILE_APPEND | LOCK_EX);
+            \DB::beginTransaction();
+            $records = \DB::table('SSZNumber')->updateOrCreate(
+                ['id' => $request->input('FlowNumber')],
+                [
+                    'status' => $request->input('Status'),
+                    'received_time' => $datetime,
+                ]
+            );
+            \DB::commit();
         } catch (Exception $e) {
             dd($e); // dump error
         } // try - catch
