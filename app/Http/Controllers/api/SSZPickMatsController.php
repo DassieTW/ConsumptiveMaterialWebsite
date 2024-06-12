@@ -7,6 +7,7 @@ use Date;
 use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\SSZNumber;
 use Exception;
 
 class SSZPickMatsController extends Controller
@@ -39,7 +40,7 @@ class SSZPickMatsController extends Controller
         $datetime = Carbon::now();
         try {
             \DB::beginTransaction();
-            $records = \DB::table('SSZNumber')->updateOrCreate(
+            $records = SSZNumber::updateOrCreate(
                 ['id' => $request->input('FlowNumber')],
                 [
                     'status' => $request->input('Status'),
