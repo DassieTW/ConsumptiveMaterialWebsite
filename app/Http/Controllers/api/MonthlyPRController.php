@@ -792,27 +792,37 @@ class MonthlyPRController extends Controller
 
         $mpdf->SetSourceFile(public_path() . "/excel/" . $filename);
 
-        $text_to_write = ($request_user['detail_info']['姓名'] . " " . explode(" Consumables management", $dbName)[0] . "廠");
+        // Set Path to Font File
+        $font_path = public_path() . "/fonts/MicrosoftJhengHeiBold.ttf";
 
+        $text_to_write = ($request_user['detail_info']['姓名'] . " " . explode(" Consumables management", $dbName)[0] . "廠");
         // Create Image From Existing File
         $png_image = imagecreatefrompng(public_path() . "/admin/img/PEGA_Logo.png");
         imagesavealpha($png_image, true);
         imagealphablending($png_image, false);
+        // Get image dimensions
+        $width = imagesx($png_image);
+        $height = imagesy($png_image);
+        // Get center coordinates of image
+        $centerX = $width / 2;
+        $centerY = $height / 2;
+        // Get size of text
+        list($left, $bottom, $right,,, $top) = imageftbbox(120, 45, $font_path, $text_to_write);
+        // Determine offset of text
+        $left_offset = ($right - $left) / 2;
+        $top_offset = ($bottom - $top) / 2;
+        // Generate coordinates
+        $x = $centerX - $left_offset + 220;
+        $y = $centerY + $top_offset + 180;
         // Allocate A Color For The Text
         $black = imagecolorallocate($png_image, 0, 0, 0);
-
-        // Set Path to Font File
-        $font_path = public_path() . "/fonts/MicrosoftJhengHeiBold.ttf";
-
         // Print Text On Image
-        imagettftext($png_image, 40, 45, 400, 900, $black, $font_path, $text_to_write);
-
+        imagettftext($png_image, 120, 45, $x, $y, $black, $font_path, $text_to_write);
         // Send Image to Browser
         imagepng($png_image, public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png");
 
         // Write into the instance and output it to the same file
         for ($i = 1; $i <= $pagecount; $i++) {
-
             $tplId = $mpdf->ImportPage($i);
             $mpdf->addPage();
             $mpdf->UseTemplate($tplId);
@@ -853,7 +863,7 @@ class MonthlyPRController extends Controller
             'total_price2' => $total_price2,
             'MOQ' => $MOQ
         );
-        
+
         Mail::send(
             'mail/pr_review',
             $data,

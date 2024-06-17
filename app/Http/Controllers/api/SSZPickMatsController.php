@@ -30,9 +30,9 @@ class SSZPickMatsController extends Controller
      */
     public function storeDataFromMIS(Request $request)
     {
-        \Log::channel('dbquerys')->info('---------------------------MIS--------------------------');
+        \Log::channel('dbquerys')->info('----------------------------MIS---------------------------');
         \Log::channel('dbquerys')->info(json_encode($request->post()));
-        \Log::channel('dbquerys')->info('---------------------------MIS--------------------------');
+        \Log::channel('dbquerys')->info('--------------------------MIS END--------------------------');
 
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
         \DB::purge(env("DB_CONNECTION"));
