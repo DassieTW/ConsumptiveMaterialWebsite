@@ -13,6 +13,8 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\style\Borders;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\月請購_單耗;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
 use Mail;
 
 use function Swoole\Coroutine\Http\get;
@@ -818,8 +820,17 @@ class MonthlyPRController extends Controller
         $black = imagecolorallocate($png_image, 0, 0, 0);
         // Print Text On Image
         imagettftext($png_image, 120, 45, $x, $y, $black, $font_path, $text_to_write);
-        // Send Image to Browser
+
+        // Save Image
         imagepng($png_image, public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png");
+
+        // create new image instance
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read(public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png");
+        
+        // move the image to center it a bit since we added a text
+        $image->crop(3535, 3535, 60, 60, position: 'bottom-right');
+        $image->save(public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png");
 
         // Write into the instance and output it to the same file
         for ($i = 1; $i <= $pagecount; $i++) {
