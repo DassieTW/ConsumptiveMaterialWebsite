@@ -978,11 +978,11 @@ class MonthlyPRController extends Controller
 
             \DB::table('非月請購')
                 ->where('SXB單號', $sxb)
-                ->update(['SXB單號' => null]);
+                ->delete();
 
             \DB::table('MPS')
                 ->where('SXB單號', $sxb)
-                ->update(['SXB單號' => null]);
+                ->delete();
 
             \DB::table('請購單')
                 ->where('SXB單號', $sxb)
