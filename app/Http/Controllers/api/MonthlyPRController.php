@@ -244,7 +244,7 @@ class MonthlyPRController extends Controller
 
         $count = count(json_decode($request->input('PN')));
         $now = Carbon::now();
-        $SXB_serial_number = date("YmdHis") . "_" . $request_user;
+        $SXB_serial_number = date("YmdHis") . "_" . $request_user['username'];
         $record = 0;
         $mergedResult = "";
 
