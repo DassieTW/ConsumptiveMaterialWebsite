@@ -318,7 +318,7 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.buyamount1"
+                        "monthlyPRpageLang.transit"
                     ),
                     field: "請購數量",
                     width: "12ch",

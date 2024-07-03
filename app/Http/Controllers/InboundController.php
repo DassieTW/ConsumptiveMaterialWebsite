@@ -137,37 +137,6 @@ class InboundController extends Controller
                 if ((int)$amount === 0 && $inreason !== '調撥' &&  $inreason !== '退庫') {
                     return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
                 } else {
-
-                    // if ($month === '否') {
-                    //     $safe = DB::table('consumptive_material')->where('料號', $number)->value('安全庫存');
-                    // } else {
-                    //     if ($belong === '單耗') {
-                    //         $machine = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)->value('機種');
-                    //         $production = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)->value('製程');
-                    //         $consume = DB::table('月請購_單耗')->where('料號', $number)->where('客戶別', $client)->value('單耗');
-                    //         $nextmps = DB::table('MPS')->where('機種', $machine)->where('客戶別', $client)->where('製程', $production)->value('下月MPS');
-                    //         $nextday = DB::table('MPS')->where('機種', $machine)->where('客戶別', $client)->where('製程', $production)->value('下月生產天數');
-                    //         if ($nextday == 0) {
-                    //             $safe = 0;
-                    //         } else {
-                    //             $safe = $lt * $consume * $nextmps / $nextday;
-                    //         }
-                    //     } else {
-                    //         $machine = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('機種');
-                    //         $production = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('製程');
-                    //         $nextstand = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月站位人數');
-                    //         $nextline = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月開線數');
-                    //         $nextclass = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月開班數');
-                    //         $nextuse = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月每人每日需求量');
-                    //         $nextchange = DB::table('月請購_站位')->where('料號', $number)->where('客戶別', $client)->value('下月每日更換頻率');
-                    //         $mpq = DB::table('consumptive_material')->where('料號', $number)->value('MPQ');
-                    //         if ($mpq == 0) {
-                    //             $safe = 0;
-                    //         } else {
-                    //             $safe = $lt * $nextstand * $nextline * $nextclass * $nextuse * $nextchange / $mpq;
-                    //         }
-                    //     }
-
                     $amount = round($amount);
 
                     return \Response::json([
@@ -176,8 +145,8 @@ class InboundController extends Controller
                         'transit' => $amount, 'stock' => $stock, 'name' => $name,
                         'format' => $format, 'unit' => $unit, 'positions' => $positions, 'showstock' => $showstock,
                     ]/* Status code here default is 200 ok*/);
-                }
-            }
+                } // if else
+            } // if else
         }
 
         // } else {

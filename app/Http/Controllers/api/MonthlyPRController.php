@@ -244,7 +244,7 @@ class MonthlyPRController extends Controller
 
         $count = count(json_decode($request->input('PN')));
         $now = Carbon::now();
-        $SXB_serial_number = date("YmdHis");
+        $SXB_serial_number = date("YmdHis") . "_" . $request_user;
         $record = 0;
         $mergedResult = "";
 
@@ -253,7 +253,6 @@ class MonthlyPRController extends Controller
         $whole_load_of_number90 = array_chunk($MPS_90PN_Array, 100, false);
 
         try {
-
             \DB::beginTransaction();
             // ---------------------------------------------------------------------
             // update MPS table
@@ -284,8 +283,8 @@ class MonthlyPRController extends Controller
             for ($i = 0; $i < $count; $i++) {
                 if (floatval(str_replace(',', '', $ReqAmount[$i])) > 0.0) {
                     $temp = array(
-                        'SRM單號' => "未簽核",
-                        'SXB單號' => $SXB_serial_number,
+                        "SRM單號" => "未簽核",
+                        "SXB單號" => $SXB_serial_number,
                         "料號" => $PN[$i],
                         "品名" => $pName[$i],
                         "規格" => $Spec[$i],
@@ -689,10 +688,6 @@ class MonthlyPRController extends Controller
         $currency_name = json_decode($request->input('currency_name'));
         $total_price2 = json_decode($request->input('total_price2'));
         $MOQ = json_decode($request->input('MOQ'));
-        // dd($request_user['detail_info']['姓名']); // test
-        // $stringValueBinder = new StringValueBinder();
-        // $stringValueBinder->setNullConversion(false)->setFormulaConversion(false);
-        // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($stringValueBinder); // make it so it doesnt covert 儲位 to weird number format
 
         $i = 3;
         //填寫表頭

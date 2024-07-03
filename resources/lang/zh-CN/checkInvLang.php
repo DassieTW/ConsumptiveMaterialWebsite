@@ -42,6 +42,7 @@ return [
     'unchecked' => '个未盘',
     'update_success' => '更新成功',
     'update_failed' => '更新失败',
+    'sent_email_failed' => '寄信失败',
     'value_not_changed' => '盘点结果未改变，确定送出？',
 
     //create new table lang

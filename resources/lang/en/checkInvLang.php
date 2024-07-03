@@ -42,6 +42,7 @@ return [
     'unchecked' => 'not yet stocktaked !',
     'update_success' => 'Update Success!',
     'update_failed' => 'Update Failed.',
+    'sent_email_failed' => 'E-Mail Failed.',
     'value_not_changed' => 'The inventory result has not changed. Are you sure to send it?',
 
     //create new table lang

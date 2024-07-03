@@ -327,7 +327,7 @@ export default defineComponent({
             else {
                 notyf.open({
                     type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.sent_email_failed"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
@@ -338,6 +338,7 @@ export default defineComponent({
                 });
             } // else
 
+            await getCurrency();
         } // onSendClick
 
         watch(Currency, async () => {

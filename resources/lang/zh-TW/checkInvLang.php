@@ -42,6 +42,7 @@ return [
     'unchecked' => '筆未盤',
     'update_success' => '更新成功',
     'update_failed' => '更新失敗',
+    'sent_email_failed' => '寄信失敗',
     'value_not_changed' => '盤點結果未改變，確定送出？',
 
     //create new table lang
