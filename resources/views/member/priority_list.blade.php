@@ -62,7 +62,7 @@
                     <table class="table table-sm table-bordered" style="white-space:nowrap;">
                         <thead>
                             <tr>
-                                <th class="table-warning" colspan="8">
+                                <th class="table-success" colspan="8">
                                     <p class="text-danger fw-bolder m-0 p-0">
                                         {{ __('loginPageLang.current_permission') . ' : ' . Auth::user()->priority }}
                                     </p>
@@ -93,7 +93,7 @@
                                         class="text-decoration-line-through text-muted">{!! __('basicInfoLang.basicInfo') !!}</span></td>
 
                                 {{-- 3 --}}
-                                <td rowspan="3" class="table-warning">
+                                <td rowspan="3" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-info-circle align-middle" viewBox="0 0 16 16">
                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -102,10 +102,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.basicInfo') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('basicInfoLang.basicInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.basicInfo') !!}</span></td>
 
                                 {{-- 2 --}}
-                                <td rowspan="3" class="table-warning">
+                                <td rowspan="3" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-info-circle align-middle" viewBox="0 0 16 16">
                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -114,10 +114,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.basicInfo') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('basicInfoLang.basicInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.basicInfo') !!}</span></td>
 
                                 {{-- 1 --}}
-                                <td rowspan="3" class="table-warning">
+                                <td rowspan="3" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-info-circle align-middle" viewBox="0 0 16 16">
                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -126,29 +126,29 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.basicInfo') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('basicInfoLang.basicInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.basicInfo') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
                                 <td class="table-secondary"><span
                                         class="text-decoration-line-through text-muted">{!! __('basicInfoLang.matsInfo') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('basicInfoLang.matsInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.matsInfo') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('basicInfoLang.matsInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.matsInfo') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('basicInfoLang.matsInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.matsInfo') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
                                 <td class="table-secondary"><span
                                         class="text-decoration-line-through text-muted">{!! __('basicInfoLang.newMats') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
+                                <td class="table-success"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <!-- <tr class="table-secondary">
@@ -161,7 +161,7 @@
                                     {{-- 條碼 --}}
                                     <tr>
                                         {{-- 4 --}}
-                                        <td rowspan="3" class="table-warning">
+                                        <td rowspan="3" class="table-success">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
                                                 <path
@@ -169,10 +169,10 @@
                                             </svg>
                                             <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
                                         </td>
-                                        <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
 
                                         {{-- 3 --}}
-                                        <td rowspan="3" class="table-warning">
+                                        <td rowspan="3" class="table-success">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
                                                 <path
@@ -180,10 +180,10 @@
                                             </svg>
                                             <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
                                         </td>
-                                        <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
 
                                         {{-- 2 --}}
-                                        <td rowspan="3" class="table-warning">
+                                        <td rowspan="3" class="table-success">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
                                                 <path
@@ -191,10 +191,10 @@
                                             </svg>
                                             <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
                                         </td>
-                                        <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
 
                                         {{-- 1 --}}
-                                        <td rowspan="3" class="table-warning">
+                                        <td rowspan="3" class="table-success">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
                                                 <path
@@ -202,27 +202,27 @@
                                             </svg>
                                             <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
                                         </td>
-                                        <td class="table-warning"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
                                     </tr>
                                     <tr>
                                         {{-- 4 --}}
-                                        <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
                                         {{-- 3 --}}
-                                        <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
                                         {{-- 2 --}}
-                                        <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
                                         {{-- 1 --}}
-                                        <td class="table-warning"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
                                     </tr>
                                     <tr>
                                         {{-- 4 --}}
-                                        <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
                                         {{-- 3 --}}
-                                        <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
                                         {{-- 2 --}}
-                                        <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
                                         {{-- 1 --}}
-                                        <td class="table-warning"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                        <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
                                     </tr> -->
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
@@ -263,7 +263,7 @@
                                 </td>
 
                                 {{-- 2 --}}
-                                <td rowspan="5" class="table-warning">
+                                <td rowspan="5" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -271,10 +271,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.inbound') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('inboundpageLang.new') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.new') !!}</span></td>
 
                                 {{-- 1 --}}
-                                <td rowspan="5" class="table-warning">
+                                <td rowspan="5" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -282,7 +282,7 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.inbound') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('inboundpageLang.new') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.new') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -294,9 +294,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('inboundpageLang.search') !!}</span>
                                 </td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('inboundpageLang.search') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.search') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('inboundpageLang.search') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.search') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -308,9 +308,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('inboundpageLang.searchstock') !!}</span>
                                 </td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('inboundpageLang.searchstock') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.searchstock') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('inboundpageLang.searchstock') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.searchstock') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -322,9 +322,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('inboundpageLang.locationchange') !!}</span>
                                 </td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('inboundpageLang.locationchange') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.locationchange') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('inboundpageLang.locationchange') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.locationchange') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -336,9 +336,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('inboundpageLang.stockupload') !!}</span>
                                 </td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('inboundpageLang.stockupload') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.stockupload') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('inboundpageLang.stockupload') !!}</span></td>
+                                <td class="table-success"><span>{!! __('inboundpageLang.stockupload') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
@@ -351,7 +351,7 @@
                             {{-- 出庫 --}}
                             <tr>
                                 {{-- 4 --}}
-                                <td rowspan="6" class="table-warning">
+                                <td rowspan="6" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes align-middle" viewBox="0 0 16 16">
                                         <path
@@ -359,10 +359,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.outbound') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('outboundpageLang.pick') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.pick') !!}</span></td>
 
                                 {{-- 3 --}}
-                                <td rowspan="6" class="table-warning">
+                                <td rowspan="6" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes align-middle" viewBox="0 0 16 16">
                                         <path
@@ -370,10 +370,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.outbound') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('outboundpageLang.pick') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.pick') !!}</span></td>
 
                                 {{-- 2 --}}
-                                <td rowspan="6" class="table-warning">
+                                <td rowspan="6" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes align-middle" viewBox="0 0 16 16">
                                         <path
@@ -381,10 +381,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.outbound') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('outboundpageLang.pick') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.pick') !!}</span></td>
 
                                 {{-- 1 --}}
-                                <td rowspan="6" class="table-warning">
+                                <td rowspan="6" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes align-middle" viewBox="0 0 16 16">
                                         <path
@@ -392,7 +392,7 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.outbound') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('outboundpageLang.pick') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.pick') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -400,11 +400,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('outboundpageLang.picklist') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.picklist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.picklist') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.picklist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.picklist') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.picklist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.picklist') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -412,41 +412,41 @@
                                         class="text-decoration-line-through text-muted">{!! __('outboundpageLang.pickrecord') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.pickrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.pickrecord') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.pickrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.pickrecord') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.pickrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.pickrecord') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.back') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.back') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.back') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.back') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.back') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.back') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.back') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.back') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.backlist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.backlist') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.backlist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.backlist') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.backlist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.backlist') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.backlist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.backlist') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.backrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.backrecord') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.backrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.backrecord') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.backrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.backrecord') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('outboundpageLang.backrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('outboundpageLang.backrecord') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
@@ -473,7 +473,7 @@
                                 </td>
 
                                 {{-- 3 --}}
-                                <td rowspan="8" class="table-warning">
+                                <td rowspan="8" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-cart2 align-middle" viewBox="0 0 16 16">
                                         <path
@@ -481,10 +481,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.monthly') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('templateWords.isnConsumeAdd') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.isnConsumeAdd') !!}</span></td>
 
                                 {{-- 2 --}}
-                                <td rowspan="8" class="table-warning">
+                                <td rowspan="8" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-cart2 align-middle" viewBox="0 0 16 16">
                                         <path
@@ -492,10 +492,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.monthly') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('templateWords.isnConsumeAdd') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.isnConsumeAdd') !!}</span></td>
 
                                 {{-- 1 --}}
-                                <td rowspan="8" class="table-warning">
+                                <td rowspan="8" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-cart2 align-middle" viewBox="0 0 16 16">
                                         <path
@@ -503,7 +503,7 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.monthly') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('templateWords.isnConsumeAdd') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.isnConsumeAdd') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -511,11 +511,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.isnConsumeUpdate') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.isnConsumeUpdate') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.isnConsumeUpdate') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.isnConsumeUpdate') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.isnConsumeUpdate') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.isnConsumeUpdate') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.isnConsumeUpdate') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -523,11 +523,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.importMonthlyData') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.importMonthlyData') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.importMonthlyData') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.importMonthlyData') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.importMonthlyData') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.importMonthlyData') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.importMonthlyData') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -535,11 +535,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.importNonMonthlyData') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.importNonMonthlyData') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.importNonMonthlyData') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.importNonMonthlyData') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.importNonMonthlyData') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.importNonMonthlyData') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.importNonMonthlyData') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -547,11 +547,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span></td>
+                                <td class="table-success"><span>{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span></td>
+                                <td class="table-success"><span>{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span></td>
+                                <td class="table-success"><span>{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -559,11 +559,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('monthlyPRpageLang.PR') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('monthlyPRpageLang.PR') !!}</span></td>
+                                <td class="table-success"><span>{!! __('monthlyPRpageLang.PR') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('monthlyPRpageLang.PR') !!}</span></td>
+                                <td class="table-success"><span>{!! __('monthlyPRpageLang.PR') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('monthlyPRpageLang.PR') !!}</span></td>
+                                <td class="table-success"><span>{!! __('monthlyPRpageLang.PR') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -571,11 +571,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('monthlyPRpageLang.SXB_search') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('monthlyPRpageLang.SXB_search') !!}</span></td>
+                                <td class="table-success"><span>{!! __('monthlyPRpageLang.SXB_search') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('monthlyPRpageLang.SXB_search') !!}</span></td>
+                                <td class="table-success"><span>{!! __('monthlyPRpageLang.SXB_search') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('monthlyPRpageLang.SXB_search') !!}</span></td>
+                                <td class="table-success"><span>{!! __('monthlyPRpageLang.SXB_search') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -583,11 +583,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.on_the_way_search') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.on_the_way_search') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.on_the_way_search') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.on_the_way_search') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.on_the_way_search') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.on_the_way_search') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.on_the_way_search') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
@@ -600,7 +600,7 @@
                             {{-- O庫 --}}
                             <tr>
                                 {{-- 4 --}}
-                                <td rowspan="12" class="table-warning">
+                                <td rowspan="12" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
                                         <path
@@ -613,7 +613,7 @@
                                 </td>
 
                                 {{-- 3 --}}
-                                <td rowspan="12" class="table-warning">
+                                <td rowspan="12" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
                                         <path
@@ -621,10 +621,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.obound') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
 
                                 {{-- 2 --}}
-                                <td rowspan="12" class="table-warning">
+                                <td rowspan="12" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
                                         <path
@@ -632,10 +632,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.obound') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
 
                                 {{-- 1 --}}
-                                <td rowspan="12" class="table-warning">
+                                <td rowspan="12" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
                                         <path
@@ -643,7 +643,7 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.obound') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -651,11 +651,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('oboundpageLang.matsInfo') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -663,11 +663,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('oboundpageLang.inbound') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -675,21 +675,21 @@
                                         class="text-decoration-line-through text-muted">{!! __('oboundpageLang.inboundsearch') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -697,21 +697,21 @@
                                         class="text-decoration-line-through text-muted">{!! __('oboundpageLang.searchstock') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.pick') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.pick') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.pick') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.pick') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -719,11 +719,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('oboundpageLang.picklist') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -731,41 +731,41 @@
                                         class="text-decoration-line-through text-muted">{!! __('oboundpageLang.pickrecord') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.back') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.back') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.back') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.back') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
+                                <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
@@ -795,7 +795,7 @@
                                 </td>
 
                                 {{-- 3 --}}
-                                <td rowspan="3" class="table-warning">
+                                <td rowspan="3" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-exclamation-triangle align-middle"
                                         viewBox="0 0 16 16">
@@ -806,10 +806,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.callsys') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('callpageLang.safealert') !!}</span></td>
+                                <td class="table-success"><span>{!! __('callpageLang.safealert') !!}</span></td>
 
                                 {{-- 2 --}}
-                                <td rowspan="3" class="table-warning">
+                                <td rowspan="3" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-exclamation-triangle align-middle"
                                         viewBox="0 0 16 16">
@@ -820,10 +820,10 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.callsys') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('callpageLang.safealert') !!}</span></td>
+                                <td class="table-success"><span>{!! __('callpageLang.safealert') !!}</span></td>
 
                                 {{-- 1 --}}
-                                <td rowspan="3" class="table-warning">
+                                <td rowspan="3" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-exclamation-triangle align-middle"
                                         viewBox="0 0 16 16">
@@ -834,7 +834,7 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.callsys') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('callpageLang.safealert') !!}</span></td>
+                                <td class="table-success"><span>{!! __('callpageLang.safealert') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -842,11 +842,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('callpageLang.dayalert') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('callpageLang.dayalert') !!}</span></td>
+                                <td class="table-success"><span>{!! __('callpageLang.dayalert') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('callpageLang.dayalert') !!}</span></td>
+                                <td class="table-success"><span>{!! __('callpageLang.dayalert') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('callpageLang.dayalert') !!}</span></td>
+                                <td class="table-success"><span>{!! __('callpageLang.dayalert') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -854,11 +854,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('callpageLang.diffalert') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('callpageLang.diffalert') !!}</span></td>
+                                <td class="table-success"><span>{!! __('callpageLang.diffalert') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('callpageLang.diffalert') !!}</span></td>
+                                <td class="table-success"><span>{!! __('callpageLang.diffalert') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('callpageLang.diffalert') !!}</span></td>
+                                <td class="table-success"><span>{!! __('callpageLang.diffalert') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
@@ -885,7 +885,7 @@
                                 </td>
 
                                 {{-- 3 --}}
-                                <td rowspan="3" class="table-warning">
+                                <td rowspan="3" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-people align-middle" viewBox="0 0 16 16">
                                         <path
@@ -898,7 +898,7 @@
                                 </td>
 
                                 {{-- 2 --}}
-                                <td rowspan="3" class="table-warning">
+                                <td rowspan="3" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-people align-middle" viewBox="0 0 16 16">
                                         <path
@@ -911,7 +911,7 @@
                                 </td>
 
                                 {{-- 1 --}}
-                                <td rowspan="3" class="table-warning">
+                                <td rowspan="3" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-people align-middle" viewBox="0 0 16 16">
                                         <path
@@ -919,7 +919,7 @@
                                     </svg>
                                     <span class="align-middle">{!! __('templateWords.userManage') !!}</span>
                                 </td>
-                                <td class="table-warning"><span>{!! __('templateWords.UserInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.UserInfo') !!}</span></td>
                             </tr>
                             <tr>
                                 {{-- 4 --}}
@@ -927,11 +927,11 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.PInfo') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.PInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.PInfo') !!}</span></td>
                                 {{-- 2 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.PInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.PInfo') !!}</span></td>
                                 {{-- 1 --}}
-                                <td class="table-warning"><span>{!! __('templateWords.PInfo') !!}</span></td>
+                                <td class="table-success"><span>{!! __('templateWords.PInfo') !!}</span></td>
                             </tr>
                         </tbody>
                     </table>

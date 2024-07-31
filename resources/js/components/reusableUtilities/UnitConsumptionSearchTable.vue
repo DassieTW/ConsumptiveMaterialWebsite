@@ -154,7 +154,6 @@ export default defineComponent({
         } // OutputExcelClick
 
         const triggerModal = async () => {
-            // console.log("Loading Modal Triggered!"); // test
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",

@@ -711,6 +711,14 @@
                                                         </a>
                                                     </li>
                                                 @endcan
+                                                <li class="sidebar-item {{ isActiveRoute(['member/priority_list']) }}">
+                                                    <a class="sidebar-link"
+                                                        href="{{ route('member.priority_list') }}">
+                                                        {!! __('loginPageLang.permission_details') !!}
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
+                                                    --}}
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>
 

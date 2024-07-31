@@ -100,3 +100,8 @@ Route::get('/numbersearch', function () {
 
 //人員信息刪除或修改
 Route::post('/numberchangeordel', [Auth\LoginController::class, 'numberchangeordel'])->name('member.numberchangeordel')->middleware('can:searchAndUpdatePeople,App\Models\Login');
+
+// 表列權限頁面
+Route::get('/priority_list', function () {
+    return view('member.priority_list');
+})->name('member.priority_list')->middleware('auth');

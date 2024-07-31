@@ -1,44 +1,7 @@
 <template>
-    <div class="card" id="consumehead">
-        <div class="card-header">
-            <h3>{{ $t('monthlyPRpageLang.isnConsumeAdd') }}</h3>
-        </div>
-        <div class="card-body">
-            <div id="consume" class="row justify-content-center align-items-center">
-                <div class="col-auto">
-                    <label class="col col-auto form-label">{{ $t('monthlyPRpageLang.isn') }}</label>
-                    <input class="form-control form-control-lg" :class="{ 'is-invalid': is_isn_input_Invalid }"
-                        type="text" v-model="isn_input" id="isn_input" name="isn_input"
-                        :placeholder="$t('monthlyPRpageLang.enterisn')">
-                    <span v-if="is_isn_input_Invalid" class="invalid-feedback d-block" role="alert">
-                        <strong>{{ $t('monthlyPRpageLang.noisn') }}</strong>
-                    </span>
-                </div>
-                <div class="col-auto">
-                    <label class="col col-auto form-label">{{ $t('monthlyPRpageLang.90isn') }}</label>
-                    <input class="form-control form-control-lg" :class="{ 'is-invalid': is_90isn_input_Invalid }"
-                        v-model="isn90_input" type="text" id="90isn_input" name="90isn_input"
-                        :placeholder="$t('monthlyPRpageLang.enter90isn')">
-                    <span v-if="is_90isn_input_Invalid" class="invalid-feedback d-block" role="alert">
-                        <strong>{{ $t('monthlyPRpageLang.noisn') }}</strong>
-                    </span>
-                </div>
-            </div>
-            <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-            <div class="row justify-content-center">
-                <button type="submit" id="add" name="add" class="col col-auto btn btn-primary" @click="addManually">
-                    {{ $t('monthlyPRpageLang.add') }}
-                </button>
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <button class="col col-auto btn btn-lg btn-warning" @click="addRejectedToTable">
-                    {{ $t('monthlyPRpageLang.loadconsume') }}
-                </button>
-            </div>
-        </div>
-    </div>
     <div class="card">
         <div class="card-header">
-            <h3>{{ $t("monthlyPRpageLang.upload") }}</h3>
+            <h3>{{ $t('monthlyPRpageLang.isnConsumeAdd') }}</h3>
         </div>
         <div class="card-body">
             <div class="row justify-content-center mb-3">
@@ -69,9 +32,6 @@
         </div>
     </div>
     <div class="card">
-        <!-- <div class="card-header">
-            <h3>{{ $t('monthlyPRpageLang.stockupload') }}</h3>
-        </div> -->
         <div class="card-body">
             <div class="row justify-content-between">
                 <div class="row col col-auto">
@@ -84,7 +44,11 @@
                     </div>
                 </div>
                 <div class="col col-auto">
-                    <button type="submit" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
+                    <button class="col col-auto btn btn-lg btn-warning" @click="addRejectedToTable">
+                        <span class="fs-4">{{ $t('monthlyPRpageLang.loadconsume') }}</span>
+                    </button>
+                    &nbsp;
+                    <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
                         @click="deleteRow">
                         <i class="bi bi-trash3-fill fs-4"></i>
                     </button>
@@ -157,10 +121,6 @@ export default defineComponent({
 
         onBeforeMount(getCheckersMails);
 
-        let is_90isn_input_Invalid = ref(false); // 90 isn input validation
-        let is_isn_input_Invalid = ref(false); // isn input validation
-        let isn90_input = ref("");
-        let isn_input = ref("");
         let isInvalid = ref(false); // file input validation
         let isInvalid_DB = ref(false); // add to DB validation
         let validation_err_msg = ref("");
@@ -185,52 +145,6 @@ export default defineComponent({
             } // for
             return results;
         } // findDuplicates
-
-        const addManually = async () => {
-            is_isn_input_Invalid.value = false;
-            is_90isn_input_Invalid.value = false;
-            let allRowsObj;
-
-            if (isn_input.value == undefined || isn_input.value == null || isn_input.value == "") {
-                is_isn_input_Invalid.value = true;
-                return;
-            } // if
-            else {
-                await validateISN_manual([isn_input.value.trim()]);
-                // console.log(allRowsObj); // test
-                allRowsObj = JSON.parse(manualResult.value);
-                if (allRowsObj.data[0].月請購 === "" || allRowsObj.data[0].月請購 === null || allRowsObj.data[0].月請購.toLowerCase() === "null") {
-                    is_isn_input_Invalid.value = true;
-                    return;
-                } // if
-            } // else
-
-            if (isn90_input.value == undefined || isn90_input.value == null || isn90_input.value == "") {
-                is_90isn_input_Invalid.value = true;
-                return;
-            } // if
-            else {
-                allRowsObj.data[0].料號90 = isn90_input.value.trim();
-                if (data.length == 0) {
-                    allRowsObj.data[0].id = 0;
-                } else {
-                    allRowsObj.data[0].id = parseInt(data[data.length - 1].id) + 1;
-                } // if else
-                allRowsObj.data[0].doubleCheck = false;
-                allRowsObj.data[0].單耗 = 0;
-
-                // remove duplicate data from other input
-                let indexOfObject = data.findIndex(object => {
-                    return (object.料號90 === allRowsObj.data[0].料號90 && object.料號 === allRowsObj.data[0].料號);
-                });
-
-                if (indexOfObject != -1) { // if an existing record is found in table
-                    data.splice(indexOfObject, 1);
-                } // if
-
-                data.push(allRowsObj.data[0]);
-            } // else
-        } // addManually
 
         const addRejectedToTable = async () => {
             await getRejected();
@@ -359,7 +273,6 @@ export default defineComponent({
 
 
         const triggerModal = async () => {
-            // console.log("Loading Modal Triggered!"); // test
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
@@ -537,6 +450,7 @@ export default defineComponent({
             if (queryResult.value == "") {
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
+                table.isLoading = false;
                 return;
             } // if
 
@@ -584,6 +498,7 @@ export default defineComponent({
             for (let i = 0; i < allRowsObj.data.length; i++) {
                 all_mails.push(allRowsObj.data[i]);
             } // for
+            table.isLoading = false;
         });
 
         watch(selected_mail, () => {
@@ -969,10 +884,6 @@ export default defineComponent({
 
         return {
             exampleUrl,
-            isn90_input,
-            isn_input,
-            is_90isn_input_Invalid,
-            is_isn_input_Invalid,
             isInvalid,
             isInvalid_DB,
             validation_err_msg,
@@ -983,7 +894,6 @@ export default defineComponent({
             selected_mail,
             updateCheckedRows,
             rowUserInput,
-            addManually,
             addRejectedToTable,
             onUploadClick,
             onInputChange,

@@ -148,8 +148,6 @@ return [
     'loadconsume' => 'Load Rejected Records',
     'markstand' => 'If checked, the station manpower engineer had confirmed it.<br/>
                     If not, it means the record was rejected.',
-
-    'loadstand' => 'Load Rejected Records',
     'loadsuccess' => 'Loaded Successfully',
     'noload' => 'No Data Were Loaded',
     'clickmail' => 'Click Here',

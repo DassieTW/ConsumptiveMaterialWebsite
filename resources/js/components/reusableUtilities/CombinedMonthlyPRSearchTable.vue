@@ -286,6 +286,7 @@ export default defineComponent({
             //     total_price_default_currency, total_price_default_currency_name,
             //     total_price_other_currency, moq, nonMPS_PN_Array, MPS_90PN_Array, MPS_PN_Array
             // );
+            // result = "failed";
             // ------- ---- --------
 
             if (result === "success") {

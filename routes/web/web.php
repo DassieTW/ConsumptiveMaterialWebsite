@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\OwarehouseController;
-use App\Http\Controllers\ImportExcelController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\HomeController;
 use App\Models\Login;
@@ -131,11 +130,6 @@ Route::get('/vuetest', function () {
 Route::get('/phpinfo', function () {
     phpinfo();
 })->withoutMiddleware('auth');
-
-Route::get('/import_excel', [ImportExcelController::class, 'index']);
-
-Route::get('/import_excel/import', [ImportExcelController::class, 'index']);
-Route::post('/import_excel/import', [ImportExcelController::class, 'import']);
 
 // language changing routes
 Route::get('/lang/{type}', function (Request $request, $type) {
