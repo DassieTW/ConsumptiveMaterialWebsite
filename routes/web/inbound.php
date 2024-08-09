@@ -99,8 +99,3 @@ Route::post('/change', [InboundController::class, 'change'])->name('inbound.chan
 
 //入庫-儲位調撥提交
 Route::post('/changesubmit', [InboundController::class, 'changesubmit'])->name('inbound.changesubmit')->middleware('can:viewInbound,App\Models\Inbound');
-
-//新增料件上傳
-Route::get('/upload', function () {
-    return view('inbound.upload');
-})->name('inbound.upload')->middleware('can:viewInbound,App\Models\Inbound');

@@ -274,12 +274,6 @@
                                                             {!! __('inboundpageLang.locationchange') !!}
                                                         </a>
                                                     </li>
-                                                    <li class="sidebar-item {{ isActiveRoute(['inbound/upload']) }}">
-                                                        <a class="sidebar-link" href="{{ route('inbound.upload') }}">
-                                                            {!! __('inboundpageLang.stockupload') !!}
-                                                        </a>
-                                                    </li>
-
                                                 </ul>
                                             </li>
                                         @endcan

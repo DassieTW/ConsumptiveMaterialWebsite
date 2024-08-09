@@ -23,23 +23,8 @@
             <div class="card-body">
                 <form id="add" class="row gx-6 gy-1 align-items-center">
                     @csrf
-                    {{-- <div class="col-auto">
-                        <label class="col col-lg-12 form-label">{!! __('inboundpageLang.client') !!}</label>
-
-                        <select class="form-select form-select-lg" id="client" name="client">
-                            <option style="display: none" disabled selected value="">{!! __('inboundpageLang.enterclient') !!}</option>
-                            @foreach ($clients as $client)
-                                <option>{{ $client->客戶 }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback" id="clienterror" style="display:none; color:red;">
-                            {!! __('inboundpageLang.enterclient') !!}</div>
-                    </div> --}}
-
                     <div class="col-auto">
-
                         <label class="col col-lg-12 form-label">{!! __('inboundpageLang.inreason') !!}</label>
-
                         <select class="form-select form-select-lg " id="inreason" name="inreason">
                             <option style="display: none" disabled selected value="">{!! __('inboundpageLang.enterinreason') !!}</option>
                             @foreach ($inreasons as $inreason)
@@ -82,8 +67,6 @@
                         <input type="submit" onclick="buttonIndex=1;" id="addclient" name="addclient"
                             class="btn btn-lg btn-primary" value="{!! __('inboundpageLang.addclient') !!}"> --}}
                     </div>
-
-
                 </form>
             </div>
         </div>
@@ -96,7 +79,9 @@
                 @endforeach
             </select>
         </div>
-
+        <div class="row justify-content-center scrollableWithoutScrollbar">
+            <inbound-stock-upload-table></inbound-stock-upload-table>
+        </div>
         <div class="card w-100">
             <div class="card-body">
                 <form id="inboundaddform" style="display: none;">
@@ -120,7 +105,6 @@
                             </tbody>
                         </table>
                     </div>
-
 
                     {{-- check people --}}
                     <div style="display: none" id="showname">
@@ -147,10 +131,6 @@
                             @endforeach
                         </ul>
                     </div>
-
-                    {{-- rfid --}}
-                    {{-- <input class="form-control form-control-lg rfid" id="rfidinpeople" name="rfidinpeople" width="250"
-                style="width: 250px" placeholder="{!! __('inboundpageLang.rfidinpeople') !!}" type="password"> --}}
 
                     <div class="row w-100 justify-content-center">
                         <div class="col col-auto">

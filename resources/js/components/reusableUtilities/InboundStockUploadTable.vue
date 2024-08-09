@@ -213,7 +213,7 @@ export default defineComponent({
 
         const onSendToDBClick = async () => {
             await triggerModal();
-            console.log("The modal should be triggered by now."); // test
+            // console.log("The modal should be triggered by now."); // test
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
@@ -444,6 +444,7 @@ export default defineComponent({
                     input_data[i][1]
                 );
                 singleEntry.儲位 = input_data[i][2].toString().trim();
+                singleEntry.入庫原因 = input_data[i][3].toString().trim();
                 singleEntry.excel_row_num = i + 1;
 
                 if (data.length == 0) {
