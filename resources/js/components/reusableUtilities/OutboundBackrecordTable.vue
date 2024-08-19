@@ -180,29 +180,6 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.unit"
-                    ),
-                    field: "單位",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="unit' +
-                            i +
-                            '" name="unit' +
-                            i +
-                            '" value="' +
-                            row.單位 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.單位 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
                         "outboundpageLang.backamount"
                     ),
                     field: "預退數量",
@@ -219,7 +196,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.預退數量 +
+                            row.預退數量 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
                     },
@@ -242,7 +219,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.實際退回數量 +
+                            row.實際退回數量 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
                     },

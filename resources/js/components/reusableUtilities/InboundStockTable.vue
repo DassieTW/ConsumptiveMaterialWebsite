@@ -199,30 +199,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.現有庫存 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.unit"
-                    ),
-                    field: "單位",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="unit' +
-                            i +
-                            '" name="unit' +
-                            i +
-                            '" value="' +
-                            row.單位 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.單位 +
+                            row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
                     },
@@ -291,7 +268,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.安全庫存 +
+                            row.安全庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
                     },

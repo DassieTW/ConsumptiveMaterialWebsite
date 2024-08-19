@@ -197,30 +197,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.現有庫存 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.unit"
-                    ),
-                    field: "單位",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="unit' +
-                            i +
-                            '" name="unit' +
-                            i +
-                            '" value="' +
-                            row.單位 +
-                            '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.單位 +
+                            row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
                     },
@@ -243,7 +220,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap scrollableWithoutScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                            row.月使用量 +
+                            row.月使用量 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
                     },
@@ -317,29 +294,6 @@ export default defineComponent({
                         );
                     },
                 },
-                // {
-                //     label: app.appContext.config.globalProperties.$t(
-                //         "basicInfoLang.gradea"
-                //     ),
-                //     field: "A級資材",
-                //     width: "10ch",
-                //     sortable: true,
-                //     display: function (row, i) {
-                //         return (
-                //             '<input type="hidden" id="gradea' +
-                //             i +
-                //             '" name="grades' +
-                //             i +
-                //             '" value="' +
-                //             row.A級資材 +
-                //             '">' +
-                //             '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                //             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                //             row.A級資材 +
-                //             "</div>"
-                //         );
-                //     },
-                // },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.month"

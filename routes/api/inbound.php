@@ -60,11 +60,8 @@ Route::post('/searchstock', function (Request $request) {
     $inboundmonth = json_decode($request->input('inboundmonth'));
     $inboundnogood = json_decode($request->input('inboundnogood'));
 
-    //$datas = [];
-
     //不良品inventory
     if ($inboundnogood) {
-
         $test = DB::table('不良品inventory')
             ->select('料號', '儲位', '最後更新時間', DB::raw('SUM(現有庫存) as 現有庫存'))
             ->groupBy('料號', '儲位', '最後更新時間');
@@ -96,7 +93,6 @@ Route::post('/searchstock', function (Request $request) {
 
         //count 呆滯天數 and 安全庫存
         for ($i = 0; $i < count($datas); $i++) {
-
             $maxtime = date_create(date('Y-m-d', strtotime($datas[$i]->最後更新時間)));
             $nowtime = date_create(date('Y-m-d', strtotime(\Carbon\Carbon::now())));
             $interval = date_diff($maxtime, $nowtime);
@@ -108,13 +104,12 @@ Route::post('/searchstock', function (Request $request) {
             for ($j = 0; $j < count($datas1); $j++) {
                 if ($datas[$i]->料號 === $datas1[$j]->料號) {
                     $datas[$i]->安全庫存 = round($datas1[$j]->安全庫存, 3);
-                }
-            }
-        }
-    }
+                } // if
+            } // for
+        } // for
+    } // if
     //normal inventory
     else {
-
         $test = DB::table('inventory')
             ->select('料號', '儲位', '最後更新時間', DB::raw('SUM(現有庫存) as 現有庫存'))
             ->groupBy('料號', '儲位', '最後更新時間');
@@ -138,16 +133,13 @@ Route::post('/searchstock', function (Request $request) {
             })
             ->select('MPS.下月MPS', '月請購_單耗.*', DB::raw('(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存)'))
             ->where('月請購_單耗.狀態', '=', "已完成")
-            // ->where('consumptive_material.耗材歸屬', '=', "單耗")
             ->where('consumptive_material.月請購', '=', "是");
 
         $datas1 = $datas1->select('月請購_單耗.料號', DB::raw('SUM(MPS.下月MPS * 月請購_單耗.單耗 * 5 / 26) as 安全庫存'))
             ->groupBy('月請購_單耗.料號')->get();
 
-
         //count 呆滯天數 and 安全庫存
         for ($i = 0; $i < count($datas); $i++) {
-
             $maxtime = date_create(date('Y-m-d', strtotime($datas[$i]->最後更新時間)));
             $nowtime = date_create(date('Y-m-d', strtotime(\Carbon\Carbon::now())));
             $interval = date_diff($maxtime, $nowtime);
@@ -159,10 +151,10 @@ Route::post('/searchstock', function (Request $request) {
             for ($j = 0; $j < count($datas1); $j++) {
                 if ($datas[$i]->料號 === $datas1[$j]->料號) {
                     $datas[$i]->安全庫存 = round($datas1[$j]->安全庫存, 3);
-                }
-            }
-        }
-    }
+                } // if
+            } // for
+        } // for
+    } // else
     //庫存使用月數
     if ($inboundmonth) {
         $test = DB::table('inventory')
@@ -197,9 +189,9 @@ Route::post('/searchstock', function (Request $request) {
                 if ($datas[$i]->料號 === $datas1[$j]->料號) {
                     $datas[$i]->月使用量 = round($datas1[$j]->月使用量, 5);
                     $datas[$i]->庫存使用月數 = round($datas[$i]->現有庫存 / $datas1[$j]->月使用量, 5);
-                }
-            }
-        }
+                } // if
+            } // for
+        } // for
 
         //補月使用量
         for ($i = 0; $i < count($datas); $i++) {
@@ -207,9 +199,9 @@ Route::post('/searchstock', function (Request $request) {
             if (!(property_exists($datas[$i], "月使用量"))) {
                 $datas[$i]->月使用量 = 0;
                 $datas[$i]->庫存使用月數 = 0;
-            }
-        }
-    }
+            } // if
+        } // for
+    } // if
 
     return \Response::json(['datas' => $datas, "dbName" => $dbName, "month" => $inboundmonth], 200/* Status code here default is 200 ok*/);
 });

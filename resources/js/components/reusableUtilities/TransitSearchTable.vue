@@ -106,9 +106,9 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, getMats, updateInTransit } = useTransitSearch(); // axios get the mats data
+        const { mats_inTransit, getTransit, updateInTransit } = useTransitSearch(); // axios get the mats_inTransit data
 
-        onBeforeMount(getMats);
+        onBeforeMount(getTransit);
 
         let isInvalid = ref(false); // edit to DB validation for Qty
         let isInvalid2 = ref(false); // edit to DB validation for descr
@@ -212,7 +212,7 @@ export default defineComponent({
             let qtyArr = [inputQty.value];
             let descrArr = [inputDescr.value];
             let result = await updateInTransit(isnArr, qtyArr, descrArr);
-            await getMats();
+            await getTransit();
 
             if (result === "success") {
                 notyf.open({
@@ -245,16 +245,16 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // sxb_approve
 
-        watch(mats, async () => {
+        watch(mats_inTransit, async () => {
             await triggerModal();
             data.splice(0);
-            if (mats.value == "") {
+            if (mats_inTransit.value == "") {
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
                 return;
             } // if
 
-            let allRowsObj = JSON.parse(mats.value);
+            let allRowsObj = JSON.parse(mats_inTransit.value);
             // console.log(allRowsObj.data); // test
             for (let i = 0; i < allRowsObj.data.length; i++) {
                 allRowsObj.data[i].id = i;

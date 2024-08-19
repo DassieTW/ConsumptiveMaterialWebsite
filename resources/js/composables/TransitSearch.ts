@@ -8,11 +8,11 @@ import {
 } from "vue-router";
 
 export default function useTransitSearch() {
-    const mats = ref("");
+    const mats_inTransit = ref("");
     const errors = ref("");
     const router = useRouter();
 
-    const getMats = async () => {
+    const getTransit = async () => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
         try {
@@ -20,7 +20,7 @@ export default function useTransitSearch() {
                 DB: getDB.data,
             });
 
-            mats.value = JSON.stringify(response.data);
+            mats_inTransit.value = JSON.stringify(response.data);
             // console.log(JSON.stringify(response.data)); // test
             return new Promise((resolve, reject) => {
                 resolve("success");
@@ -29,7 +29,7 @@ export default function useTransitSearch() {
             console.log(e); // test
             return e;
         } // try catch
-    } // get mats
+    } // get mats_inTransit
 
     const updateInTransit = async (isn, qty, descr) => {
         errors.value = "";
@@ -56,8 +56,8 @@ export default function useTransitSearch() {
     } // updateInTransit
 
     return {
-        mats,
-        getMats,
+        mats_inTransit,
+        getTransit,
         updateInTransit
     } // return
 } // useConsumptiveMaterials

@@ -14,31 +14,11 @@
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
         :page-options="table.pageOptions" :sortable="table.sortable" @do-search="doSearch"
         @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
-        <template v-slot:月請購="{ row, key }">
-            <div v-if="row.月請購 == '是'">
-                <select @change="(event) => (row.月請購 = event.target.value)" style="width: 7ch"
-                    class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + key" :name="'month' + key">
-                    <option value="是" selected>
-                        {{ $t("basicInfoLang.yes") }}
-                    </option>
-                    <option value="否">{{ $t("basicInfoLang.no") }}</option>
-                </select>
-            </div>
-            <div v-else>
-                <select @change="(event) => (row.月請購 = event.target.value)" style="width: 7ch"
-                    class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + key" :name="'month' + key">
-                    <option value="是">{{ $t("basicInfoLang.yes") }}</option>
-                    <option value="否" selected>
-                        {{ $t("basicInfoLang.no") }}
-                    </option>
-                </select>
-            </div>
-        </template>
-
         <template v-slot:安全庫存="{ row, key }">
             <div v-if="row.月請購 == '否'">
                 <input class="form-control text-center p-0 m-0" style="width: 8ch" type="number" :id="'safe' + key"
                     :name="'safe' + key" :value="row.安全庫存" min="0" />
+                    &nbsp;<small> {{ row.單位 }}</small>
             </div>
             <div v-else>{{ $t("basicInfoLang.differ_by_client") }}</div>
         </template>
@@ -328,126 +308,6 @@ export default defineComponent({
                             ' value="' +
                             parseFloat(row.單價) +
                             '">'
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.money"
-                    ),
-                    field: "幣別",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        let currencyDict = [
-                            "RMB",
-                            "USD",
-                            "JPY",
-                            "TWD",
-                            "VND",
-                            "IDR",
-                        ];
-                        let returnStr = "";
-                        returnStr +=
-                            '<select style="width: 8ch;" class="form-select form-select-lg p-0 m-0" id="money' +
-                            i +
-                            '" name="money' +
-                            i +
-                            '">';
-                        currencyDict.forEach((element) => {
-                            if (row.幣別 === element) {
-                                returnStr +=
-                                    "<option selected>" + element + "</option>";
-                            } // if
-                            else {
-                                returnStr += "<option>" + element + "</option>";
-                            } // else
-                        }); // for each in sender array
-                        returnStr += "</select>";
-                        return returnStr;
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.unit"
-                    ),
-                    field: "單位",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input style="width:5ch;" type="text" id="unit' +
-                            i +
-                            '"' +
-                            ' name="unit' +
-                            i +
-                            '" value="' +
-                            row.單位 +
-                            '"' +
-                            ' class="form-control text-center p-0 m-0">'
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.mpq"
-                    ),
-                    field: "MPQ",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input style="width:8ch;" type="number" id="mpq' +
-                            i +
-                            '"' +
-                            ' name="mpq' +
-                            i +
-                            '" value="' +
-                            row.MPQ +
-                            '"' +
-                            ' class="form-control text-center p-0 m-0" min="0">'
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.moq"
-                    ),
-                    field: "MOQ",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input style="width:8ch;" type="number" id="moq' +
-                            i +
-                            '"' +
-                            ' name="moq' +
-                            i +
-                            '" value="' +
-                            row.MOQ +
-                            '"' +
-                            ' class="form-control text-center p-0 m-0" min="0">'
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.lt"
-                    ),
-                    field: "LT",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input style="width:8ch;" type="number" id="lt' +
-                            i +
-                            '"' +
-                            ' name="lt' +
-                            i +
-                            '" value="' +
-                            Math.round(row.LT) +
-                            '"' +
-                            ' class="form-control text-center p-0 m-0" min="0">'
                         );
                     },
                 },

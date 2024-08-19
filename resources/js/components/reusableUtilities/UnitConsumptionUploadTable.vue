@@ -48,8 +48,7 @@
                         <span class="fs-4">{{ $t('monthlyPRpageLang.loadconsume') }}</span>
                     </button>
                     &nbsp;
-                    <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
-                        @click="deleteRow">
+                    <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger" @click="deleteRow">
                         <i class="bi bi-trash3-fill fs-4"></i>
                     </button>
                 </div>
@@ -650,7 +649,7 @@ export default defineComponent({
                     sortable: true,
                     hasInput: function (row, i) {
                         return (
-                            '<input style="width:13ch;" type="number" ' +
+                            '<input style="width:10ch; display:inline;" type="number" ' +
                             'oninput="ScientificNotaionToFixed(this)" ' +
                             'id="unitConsumption' +
                             row.id +
@@ -660,7 +659,8 @@ export default defineComponent({
                             '" value="' +
                             initialScientificNotaionToFixed(row.單耗) +
                             '"' +
-                            ' class="form-control text-center p-0 m-0" step="0.000001">'
+                            ' class="form-control text-center p-0 m-0" step="0.000001">' + 
+                            '&nbsp;<small>' + row.單位 + '</small>'
                         );
                     },
                 },
@@ -739,46 +739,6 @@ export default defineComponent({
                                 '<div class="text-nowrap scrollableWithoutScrollbar"' +
                                 ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                                 row.規格 +
-                                "</div>"
-                            );
-                        } // else
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.unit"
-                    ),
-                    field: "單位",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="unit' +
-                                i +
-                                '" name="unit' +
-                                i +
-                                '" value="' +
-                                row.單位 +
-                                '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                "?" +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="unit' +
-                                i +
-                                '" name="unit' +
-                                i +
-                                '" value="' +
-                                row.單位 +
-                                '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
-                                row.單位 +
                                 "</div>"
                             );
                         } // else

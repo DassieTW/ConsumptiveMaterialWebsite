@@ -32,8 +32,8 @@
                             <form id="form1" method="POST">
                                 @csrf
                                 <div class="row w-100 justify-content-center mb-3">
-                                    <label class="col col-auto form-label">{!! __('inboundpageLang.isn') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <label class="col col-auto form-label m-0 p-0">{!! __('inboundpageLang.isn') !!}</label>
+                                    <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                                     <div class="col-lg-6  col-md-12 col-sm-12">
                                         <input class="form-control form-control-lg @error('number') is-invalid @enderror"
                                             type="text" id="number" name="number"
@@ -47,8 +47,8 @@
                                     </div>
 
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                                    <label class="col col-auto form-label">{!! __('inboundpageLang.loc') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <label class="col col-auto form-label m-0 p-0">{!! __('inboundpageLang.loc') !!}</label>
+                                    <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                                     <div class="col-lg-6  col-md-12 col-sm-12">
                                         <select class="form-select form-select-lg" id="position" name="position">
                                             <option style="display: none" disabled selected>{!! __('inboundpageLang.enterloc') !!}
@@ -61,8 +61,8 @@
 
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                                    <label class="col col-auto form-label">{!! __('inboundpageLang.senddep') !!}</label>
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <label class="col col-auto form-label m-0 p-0">{!! __('inboundpageLang.senddep') !!}</label>
+                                    <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                                     <div class="col-lg-6  col-md-12 col-sm-12">
                                         <select class="form-select form-select-lg" id="send" name="send">
                                             <option style="display: none" disabled selected>{!! __('inboundpageLang.entersenddep') !!}</option>
