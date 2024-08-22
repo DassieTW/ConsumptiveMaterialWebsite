@@ -486,7 +486,7 @@ export default defineComponent({
                             row.料號 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.料號 +
                             "</div>"
                         );
@@ -555,7 +555,7 @@ export default defineComponent({
                             row.本次請購數量 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.本次請購數量).toLocaleString("en-US") +
                             "</div>"
                         );
@@ -578,7 +578,7 @@ export default defineComponent({
                             row.請購金額 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseFloat(row.請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
                             " <small>" + row.幣別 + "</small>" +
                             "</div>"

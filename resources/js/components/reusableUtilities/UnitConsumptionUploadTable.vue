@@ -659,7 +659,7 @@ export default defineComponent({
                             '" value="' +
                             initialScientificNotaionToFixed(row.單耗) +
                             '"' +
-                            ' class="form-control text-center p-0 m-0" step="0.000001">' + 
+                            ' class="form-control text-center p-0 m-0" step="0.000001">' +
                             '&nbsp;<small>' + row.單位 + '</small>'
                         );
                     },
@@ -722,7 +722,7 @@ export default defineComponent({
                                 row.規格 +
                                 '">' +
                                 '<div class="text-nowrap CustomScrollbar text-danger"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                                ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn") +
                                 "</div>"
                             );
@@ -737,7 +737,7 @@ export default defineComponent({
                                 row.規格 +
                                 '">' +
                                 '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                                ' style="overflow-x: auto; width: 100%;">' +
                                 row.規格 +
                                 "</div>"
                             );

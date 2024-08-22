@@ -98,7 +98,7 @@ export default defineComponent({
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
             .getAttribute("lang");
-        
+
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
@@ -701,7 +701,7 @@ export default defineComponent({
                                 row.規格 +
                                 '">' +
                                 '<div class="text-nowrap CustomScrollbar text-danger"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                                ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("inboundpageLang.noisn") +
                                 "</div>"
                             );
@@ -716,7 +716,7 @@ export default defineComponent({
                                 row.規格 +
                                 '">' +
                                 '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                                ' style="overflow-x: auto; width: 100%;">' +
                                 row.規格 +
                                 "</div>"
                             );
@@ -740,7 +740,7 @@ export default defineComponent({
                             row.現有庫存 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
@@ -763,7 +763,7 @@ export default defineComponent({
                             row.在途量 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.在途量 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
@@ -786,8 +786,8 @@ export default defineComponent({
                                 '" value="' +
                                 row.入庫量 +
                                 '">' +
-                                '<div class="text-nowrap text-danger CustomScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                                '<div class="text-nowrap CustomScrollbar text-danger"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
                                 row.入庫量 + '&nbsp;<small>' + row.單位 + '</small>' +
                                 "</div>"
                             );
@@ -801,7 +801,7 @@ export default defineComponent({
                                 row.入庫量 +
                                 '">' +
                                 '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                                ' style="overflow-x: auto; width: 100%;">' +
                                 row.入庫量 + '&nbsp;<small>' + row.單位 + '</small>' +
                                 "</div>"
                             );
@@ -825,7 +825,7 @@ export default defineComponent({
                             row.入庫原因 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.入庫原因 +
                             "</div>"
                         );
@@ -848,7 +848,7 @@ export default defineComponent({
                             row.原儲位 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.原儲位 +
                             "</div>"
                         );
@@ -872,7 +872,7 @@ export default defineComponent({
                                 row.新儲位 +
                                 '">' +
                                 '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                                ' style="overflow-x: auto; width: 100%;">' +
                                 row.新儲位 +
                                 "</div>"
                             );
@@ -886,8 +886,8 @@ export default defineComponent({
                                 '" value="' +
                                 row.新儲位 +
                                 '">' +
-                                '<div class="text-nowrap text-danger CustomScrollbar"' +
-                                ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                                '<div class="text-nowrap CustomScrollbar text-danger"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
                                 row.新儲位 + " (" + app.appContext.config.globalProperties.$t("inboundpageLang.noloc") +
                                 ")</div>"
                             );

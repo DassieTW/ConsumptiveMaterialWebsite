@@ -80,7 +80,7 @@ export default defineComponent({
               row.入庫單號 +
               '">' +
               '<div class="text-nowrap CustomScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              ' style="overflow-x: auto; width: 100%;">' +
               row.入庫單號 +
               "</div>"
             );
@@ -172,7 +172,7 @@ export default defineComponent({
               row.客戶別 +
               '">' +
               '<div class="text-nowrap CustomScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              ' style="overflow-x: auto; width: 100%;">' +
               row.客戶別 +
               "</div>"
             );
@@ -195,7 +195,7 @@ export default defineComponent({
               row.庫別 +
               '">' +
               '<div class="text-nowrap CustomScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              ' style="overflow-x: auto; width: 100%;">' +
               row.庫別 +
               "</div>"
             );
@@ -241,7 +241,7 @@ export default defineComponent({
               row.入庫人員 +
               '">' +
               '<div class="text-nowrap CustomScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              ' style="overflow-x: auto; width: 100%;">' +
               row.入庫人員 +
               "</div>"
             );
@@ -264,7 +264,7 @@ export default defineComponent({
               row.時間 +
               '">' +
               '<div class="text-nowrap CustomScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              ' style="overflow-x: auto; width: 100%;">' +
               row.時間 +
               "</div>"
             );
@@ -288,7 +288,7 @@ export default defineComponent({
               row.備註 +
               '">' +
               '<div class="text-nowrap CustomScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              ' style="overflow-x: auto; width: 100%;">' +
               row.備註 +
               "</div>"
             );
@@ -311,7 +311,7 @@ export default defineComponent({
               row.入庫原因 +
               '">' +
               '<div class="text-nowrap CustomScrollbar"' +
-              ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+              ' style="overflow-x: auto; width: 100%;">' +
               row.入庫原因 +
               "</div>"
             );

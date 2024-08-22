@@ -173,7 +173,7 @@ export default defineComponent({
                             row.規格 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.規格 +
                             "</div>"
                         );
@@ -196,7 +196,7 @@ export default defineComponent({
                             row.現有庫存 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
@@ -219,7 +219,7 @@ export default defineComponent({
                             row.月使用量 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.月使用量 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
@@ -242,7 +242,7 @@ export default defineComponent({
                             row.庫存使用月數 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.庫存使用月數 +
                             "</div>"
                         );
@@ -265,7 +265,7 @@ export default defineComponent({
                             row.單價 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.單價 +
                             "</div>"
                         );
@@ -288,7 +288,7 @@ export default defineComponent({
                             row.幣別 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.幣別 +
                             "</div>"
                         );
@@ -311,7 +311,7 @@ export default defineComponent({
                             row.月請購 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.月請購 +
                             "</div>"
                         );

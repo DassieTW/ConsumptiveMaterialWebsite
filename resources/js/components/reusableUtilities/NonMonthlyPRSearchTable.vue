@@ -294,7 +294,7 @@ export default defineComponent({
                             row.當月需求 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.當月需求).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
@@ -317,7 +317,7 @@ export default defineComponent({
                             row.下月需求 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.下月需求).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
@@ -340,7 +340,7 @@ export default defineComponent({
                             row.請購數量 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
@@ -364,7 +364,7 @@ export default defineComponent({
                             row.說明 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.說明 +
                             "</div>"
                         );

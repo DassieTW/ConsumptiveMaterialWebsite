@@ -568,7 +568,7 @@ export default defineComponent({
                             '" value="' +
                             row.料號 +
                             '">' +
-                            '<div class="CustomScrollbar text-nowrap"' +
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.料號 +
                             "</div>"
@@ -591,7 +591,7 @@ export default defineComponent({
                             '" value="' +
                             row.品名 +
                             '">' +
-                            '<div class="CustomScrollbar text-nowrap"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.品名 +
                             "</div>"
@@ -615,7 +615,7 @@ export default defineComponent({
                             row.規格 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.規格 +
                             "</div>"
                         );
@@ -638,7 +638,7 @@ export default defineComponent({
                             row.單價 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.單價 + " <small>" + row.幣別 + "</small>" +
                             "</div>"
                         );
@@ -661,7 +661,7 @@ export default defineComponent({
                             row.當月需求 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseFloat(row.當月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
                             "</div>"
                         );
@@ -684,7 +684,7 @@ export default defineComponent({
                             row.下月需求 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseFloat(row.下月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
                             "</div>"
                         );
@@ -707,7 +707,7 @@ export default defineComponent({
                             row.現有庫存 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.現有庫存).toLocaleString("en-US") +
                             "</div>"
                         );
@@ -730,7 +730,7 @@ export default defineComponent({
                             row.在途量 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.在途量).toLocaleString("en-US") +
                             "</div>"
                         );
@@ -753,7 +753,7 @@ export default defineComponent({
                             row.本次請購數量 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.本次請購數量).toLocaleString("en-US") +
                             "</div>"
                         );
@@ -776,7 +776,7 @@ export default defineComponent({
                             row.請購金額 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseFloat(row.請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
                             " <small>" + row.幣別 + "</small>" +
                             "</div>"
@@ -800,7 +800,7 @@ export default defineComponent({
                             row.匯率 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseFloat(row.匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
                             " " + "<small>USD</small>" +
                             "</div>"
@@ -823,7 +823,7 @@ export default defineComponent({
                             '" value="' +
                             row.MOQ +
                             '">' +
-                            '<div class="CustomScrollbar text-nowrap"' +
+                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.MOQ +
                             "</div>"

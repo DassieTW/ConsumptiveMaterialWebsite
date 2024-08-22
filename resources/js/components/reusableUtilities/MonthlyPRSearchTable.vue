@@ -38,10 +38,10 @@
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                 <strong>{{ validation_err_msg }}</strong>
             </span>
-            <table-lite id="searchTable" :is-fixed-first-column="true" :is-static-mode="true"
-                :hasCheckbox="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
-                :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @return-checked-rows="updateCheckedRows" @row-clicked="rowClicked"></table-lite>
+            <table-lite id="searchTable" :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
+                :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+                :page-options="table.pageOptions" :sortable="table.sortable" @return-checked-rows="updateCheckedRows"
+                @row-clicked="rowClicked"></table-lite>
         </div>
     </div>
 </template>
@@ -301,7 +301,7 @@ export default defineComponent({
                             row.本月MPS +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.本月MPS).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
@@ -324,7 +324,7 @@ export default defineComponent({
                             row.本月生產天數 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.本月生產天數) +
                             "</div>"
                         );
@@ -347,7 +347,7 @@ export default defineComponent({
                             row.下月MPS +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.下月MPS).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
                         );
@@ -370,7 +370,7 @@ export default defineComponent({
                             row.下月生產天數 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.下月生產天數) +
                             "</div>"
                         );
@@ -393,7 +393,7 @@ export default defineComponent({
                             row.填寫時間 +
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto !important; width: 100%; height: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
+                            ' style="overflow-x: auto; width: 100%;">' +
                             row.填寫時間 +
                             "</div>"
                         );
