@@ -53,7 +53,7 @@
                     <h3 class="modal-title">Available Databases for {{ clickedUser }}</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body CustomScrollbar">
                     <div class="row justify-content-center">
                         <div v-for="db in db_list" class="form-check form-switch col-9">
                             <input class="form-check-input dbCheckbox" type="checkbox" role="switch"
@@ -306,7 +306,7 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.username +
                             "</div>"
@@ -330,7 +330,7 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.姓名 +
                             "</div>"
@@ -346,7 +346,7 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.部門 +
                             "</div>"
@@ -363,7 +363,7 @@ export default defineComponent({
                     display: function (row, i) {
                         if (row.email === null || row.email == "null") {
                             return (
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 'N/A' +
                                 "</div>"
@@ -371,7 +371,7 @@ export default defineComponent({
                         } // if
                         else {
                             return (
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.email +
                                 "</div>"
@@ -396,7 +396,7 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.last_login_time +
                             "</div>"

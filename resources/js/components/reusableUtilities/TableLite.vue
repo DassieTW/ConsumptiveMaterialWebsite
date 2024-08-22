@@ -3,7 +3,7 @@
     <div class="vtl-card-title" v-if="title">{{ title }}</div>
     <div class="vtl-card-body">
       <div class="vtl-row">
-        <div class="col-sm-12 dataTables_wrapper scrollableWithoutScrollbar" :class="{
+        <div class="col-sm-12 dataTables_wrapper CustomScrollbar" :class="{
           'fixed-first-column': isFixedFirstColumn,
           'fixed-first-second-column': isFixedFirstColumn && hasCheckbox,
         }">

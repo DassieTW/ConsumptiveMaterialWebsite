@@ -5,7 +5,6 @@
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script src="{{ asset('js/inbound/add.js?v=') . env('APP_VERSION') }}"></script>
     <script>
         sessionStorage.setItem("inboundstockisn", null); // for later vue to post request
         sessionStorage.setItem("inboundstockloc", null); // for later vue to post request
@@ -22,7 +21,7 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
-        <div class="row justify-content-center scrollableWithoutScrollbar">
+        <div class="row justify-content-center CustomScrollbar">
             <inbound-stock-upload-table></inbound-stock-upload-table>
         </div>
     </div>

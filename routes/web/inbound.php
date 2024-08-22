@@ -32,38 +32,8 @@ Route::get('/inquire', function () {
 
 //入庫-新增
 Route::get('/add', function () {
-    return view('inbound.add')
-        ->with(['clients' => 客戶別::cursor()])
-        ->with(['inreasons' => 入庫原因::cursor()])
-        ->with(['positions' => 儲位::cursor()])
-        ->with(['peoples' => 人員信息::cursor()])
-        ->with(['checks' => 人員信息::cursor()]);
-})->middleware('can:viewInbound,App\Models\Inbound');
-
-Route::post('/add', [InboundController::class, 'add'])->name('inbound.add')->middleware('can:viewInbound,App\Models\Inbound');
-
-//入庫-新增添加
-Route::post('/addnew', [InboundController::class, 'addnew'])->name('inbound.addnew')->middleware('can:viewInbound,App\Models\Inbound');
-
-//入庫-新增添加(By客戶別)
-Route::get('/addclient', function () {
-    if (Session::has('addclient')) {
-        Session::forget('addclient');
-        $client = Session::get('client');
-        $inreason = Session::get('inreason');
-        $datas = DB::table("在途量")->where('請購數量', '>', 0)->where('客戶', $client)->get();
-        return view("inbound.addclient")->with(['data' => $datas])
-            ->with(['inreason' => $inreason])
-            ->with(['positions' => 儲位::cursor()])
-            ->with(['peoples' => 人員信息::cursor()])
-            ->with(['checks' => 人員信息::cursor()]);
-    } else {
-        return redirect(route('inbound.add'));
-    }
-})->middleware('can:viewInbound,App\Models\Inbound');
-
-//入庫-提交新增
-Route::post('/addnewsubmit', [InboundController::class, 'addnewsubmit'])->name('inbound.addnewsubmit')->middleware('can:viewInbound,App\Models\Inbound');
+    return view('inbound.add');
+})->name("inbound.add")->middleware('can:viewInbound,App\Models\Inbound');
 
 //入庫-庫存查詢頁面
 Route::get('/searchstock', function () {

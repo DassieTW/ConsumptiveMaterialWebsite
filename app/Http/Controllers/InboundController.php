@@ -104,59 +104,6 @@ class InboundController extends Controller
         return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
     }
 
-    //入庫-新增
-    public function addnew(Request $request)
-    {
-        $inreason = $request->input('inreason');
-        $number = $request->input('number');
-
-        //不等於12
-        if ($number !== ' ' && strlen($number) !== 12 || $number === null) {
-            return \Response::json(['message' => 'No Results Found!'], 420/* Status code here default is 200 ok*/);
-        } else {
-            $name = DB::table('consumptive_material')->where('料號', $number)->value('品名');
-            $format = DB::table('consumptive_material')->where('料號', $number)->value('規格');
-            $unit = DB::table('consumptive_material')->where('料號', $number)->value('單位');
-            $amount = DB::table('在途量')->where('料號', $number)->sum('請購數量');
-            $stock = DB::table('inventory')->where('料號', $number)->sum('現有庫存');
-            $positions = DB::table('inventory')->where('料號', $number)->where('現有庫存', '>', 0)->pluck('儲位');
-
-            $showstock  = '';
-            $nowstock = DB::table('inventory')->where('料號', $number)->where('現有庫存', '>', 0)->pluck('現有庫存')->toArray();
-            $nowloc = DB::table('inventory')->where('料號', $number)->where('現有庫存', '>', 0)->pluck('儲位')->toArray();
-            $test = array_combine($nowloc, $nowstock);
-            foreach ($test as $k => $a) {
-                $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\n";
-            }
-
-            //無料號
-            if ($name === null || $format === null) {
-                return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
-            } else {
-                //在途量為0
-                if ((int)$amount === 0 && $inreason !== '調撥' &&  $inreason !== '退庫') {
-                    return \Response::json(['message' => 'No Results Found!'], 422/* Status code here default is 200 ok*/);
-                } else {
-                    $amount = round($amount);
-
-                    return \Response::json([
-                        'type' => 'add',
-                        'number' => $number,  'inreason' => $inreason,
-                        'transit' => $amount, 'stock' => $stock, 'name' => $name,
-                        'format' => $format, 'unit' => $unit, 'positions' => $positions, 'showstock' => $showstock,
-                    ]/* Status code here default is 200 ok*/);
-                } // if else
-            } // if else
-        }
-
-        // } else {
-        //     Session::put('addclient', $request->input('client'));
-        //     Session::put('client', $request->input('client'));
-        //     Session::put('inreason', $request->input('inreason'));
-        //     return \Response::json(['type' => 'client']/* Status code here default is 200 ok*/);
-        // }
-    }
-
     //入庫-新增提交
     public function addnewsubmit(Request $request)
     {
@@ -225,4 +172,4 @@ class InboundController extends Controller
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
         }
     } // addnewsubmit
-}
+} // InboundController

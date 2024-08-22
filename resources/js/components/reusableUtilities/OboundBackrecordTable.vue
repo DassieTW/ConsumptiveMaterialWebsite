@@ -80,7 +80,7 @@ export default defineComponent({
                             '" value="' +
                             row.客戶別 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.客戶別 +
                             "</div>"
@@ -103,7 +103,7 @@ export default defineComponent({
                             '" value="' +
                             row.機種 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.機種 +
                             "</div>"
@@ -126,7 +126,7 @@ export default defineComponent({
                             '" value="' +
                             row.製程 +
                             '">' +
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.製程 +
                             "</div>"
@@ -149,7 +149,7 @@ export default defineComponent({
                             '" value="' +
                             row.退回原因 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.退回原因 +
                             "</div>"
@@ -172,7 +172,7 @@ export default defineComponent({
                             '" value="' +
                             row.線別 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.線別 +
                             "</div>"
@@ -195,7 +195,7 @@ export default defineComponent({
                             '" value="' +
                             row.料號 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.料號 +
                             "</div>"
@@ -218,7 +218,7 @@ export default defineComponent({
                             '" value="' +
                             row.品名 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.品名 +
                             "</div>"
@@ -241,7 +241,7 @@ export default defineComponent({
                             '" value="' +
                             row.規格 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.規格 +
                             "</div>"
@@ -264,7 +264,7 @@ export default defineComponent({
                             '" value="' +
                             row.預退數量 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.預退數量 +
                             "</div>"
@@ -287,7 +287,7 @@ export default defineComponent({
                             '" value="' +
                             row.實際退回數量 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.實際退回數量 +
                             "</div>"
@@ -311,7 +311,7 @@ export default defineComponent({
                             '" value="' +
                             row.備註 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.備註 +
                             "</div>"
@@ -335,7 +335,7 @@ export default defineComponent({
                             '" value="' +
                             row.實退差異原因 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.實退差異原因 +
                             "</div>"
@@ -358,7 +358,7 @@ export default defineComponent({
                             '" value="' +
                             row.庫別 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.庫別 +
                             "</div>"
@@ -381,7 +381,7 @@ export default defineComponent({
                             '" value="' +
                             row.收料人員 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.收料人員 +
                             "</div>"
@@ -404,7 +404,7 @@ export default defineComponent({
                             '" value="' +
                             row.收料人員工號 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.收料人員工號 +
                             "</div>"
@@ -427,7 +427,7 @@ export default defineComponent({
                             '" value="' +
                             row.退料人員 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.退料人員 +
                             "</div>"
@@ -450,7 +450,7 @@ export default defineComponent({
                             '" value="' +
                             row.退料人員工號 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.退料人員工號 +
                             "</div>"
@@ -473,7 +473,7 @@ export default defineComponent({
                             '" value="' +
                             row.退料單號 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.退料單號 +
                             "</div>"
@@ -496,7 +496,7 @@ export default defineComponent({
                             '" value="' +
                             row.開單時間 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.開單時間 +
                             "</div>"
@@ -519,7 +519,7 @@ export default defineComponent({
                             '" value="' +
                             row.入庫時間 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.入庫時間 +
                             "</div>"
@@ -542,7 +542,7 @@ export default defineComponent({
                             '" value="' +
                             row.功能狀況 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.功能狀況 +
                             "</div>"

@@ -551,7 +551,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號 +
                                 '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap text-danger CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
                                 "</div>"
@@ -565,7 +565,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%; color: #e67300;">' +
                                 row.料號 +
                                 "</div>"
@@ -579,7 +579,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
                                 "</div>"
@@ -604,7 +604,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號90 +
                                 '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap text-danger CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號90 +
                                 "</div>"
@@ -618,7 +618,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號90 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%; color: #e67300;">' +
                                 row.料號90 +
                                 "</div>"
@@ -632,7 +632,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號90 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號90 +
                                 "</div>"
@@ -681,7 +681,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.品名 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn") +
                                 "</div>"
@@ -696,7 +696,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.品名 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.品名 +
                                 "</div>"
@@ -721,7 +721,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.規格 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar text-danger"' +
+                                '<div class="text-nowrap CustomScrollbar text-danger"' +
                                 ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                                 app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn") +
                                 "</div>"
@@ -736,7 +736,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.規格 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                                 row.規格 +
                                 "</div>"
@@ -760,7 +760,7 @@ export default defineComponent({
                             '" value="' +
                             Math.round(row.LT) +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             Math.round(row.LT) +
                             "</div>"

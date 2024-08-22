@@ -44,7 +44,7 @@ Route::post('/search', function (Request $request) {
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
 
-//入庫-查詢刪除
+//入庫-查詢 刪除
 Route::post('/delete', 'api\InboundController@destroy');
 
 // 庫存查詢

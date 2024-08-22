@@ -28,7 +28,7 @@
             :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
             @return-checked-rows="updateCheckedRows">
             <template v-slot:料號="{ row, key }">
-                <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
+                <div class="CustomScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
                     {{ row.料號 }}
                 </div>
             </template>
@@ -57,7 +57,7 @@
                 </div>
             </template>
             <template v-slot:需求與領用差異="{ row, key }">
-                <div class="scrollableWithoutScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
+                <div class="CustomScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
                     {{ row.需求與領用差異 }}%
                 </div>
             </template>

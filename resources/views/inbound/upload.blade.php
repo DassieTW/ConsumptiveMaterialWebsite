@@ -13,7 +13,7 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
-        <div class="row justify-content-center scrollableWithoutScrollbar">
+        <div class="row justify-content-center CustomScrollbar">
             <inbound-stock-upload-table></inbound-stock-upload-table>
         </div>
     </div>

@@ -80,7 +80,7 @@ export default defineComponent({
               '" value="' +
               row.料號 +
               '">' +
-              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              '<div class="text-nowrap CustomScrollbar"' +
               ' style="overflow-x: auto; width: 100%;">' +
               row.料號 +
               "</div>"
@@ -103,7 +103,7 @@ export default defineComponent({
               '" value="' +
               row.品名 +
               '">' +
-              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              '<div class="text-nowrap CustomScrollbar"' +
               ' style="overflow-x: auto; width: 100%;">' +
               row.品名 +
               "</div>"
@@ -126,7 +126,7 @@ export default defineComponent({
               '" value="' +
               row.規格 +
               '">' +
-              '<div class="text-nowrap scrollableWithoutScrollbar"' +
+              '<div class="text-nowrap CustomScrollbar"' +
               ' style="overflow-x: auto; width: 100%;">' +
               row.規格 +
               "</div>"

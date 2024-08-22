@@ -390,7 +390,7 @@ export default defineComponent({
                             '" value="' +
                             row.料號 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.料號 +
                             "</div>"
@@ -413,7 +413,7 @@ export default defineComponent({
                             '" value="' +
                             row.料號90 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.料號90 +
                             "</div>"
@@ -444,7 +444,7 @@ export default defineComponent({
                             '" value="' +
                             row.品名 +
                             '">' +
-                            '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                            '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.品名 +
                             "</div>"
@@ -467,7 +467,7 @@ export default defineComponent({
                             '" value="' +
                             row.規格 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important;">' +
                             row.規格 +
                             "</div>"
@@ -483,7 +483,7 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important;">' +
                             row.畫押信箱 +
                             "</div>"
@@ -500,7 +500,7 @@ export default defineComponent({
                     display: function (row, i) {
                         if (row.狀態 === "已完成") {
                             return (
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_complete") +
                                 "</div>"
@@ -508,7 +508,7 @@ export default defineComponent({
                         } // if
                         else { // 待畫押, 待重畫
                             return (
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_pending") +
                                 "</div>"

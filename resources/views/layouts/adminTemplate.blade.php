@@ -27,38 +27,25 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset('/css/jquery.loadingModal.min.css?v=') . env('APP_VERSION') }}">
     <style>
-        #UserDropDown::-webkit-scrollbar-track {
-            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
-            border-radius: 4px;
-            background-color: #F5F5F5;
+        .CustomScrollbar::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
         }
 
-        #UserDropDown::-webkit-scrollbar {
-            width: 4px;
-            -webkit-appearance: none;
+        .CustomScrollbar::-webkit-scrollbar-thumb {
+            background: #ababab;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            /* make the border work */
+            background-clip: padding-box;
         }
 
-        #UserDropDown::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
-            background-color: rgba(0, 0, 0, 0.3);
+        .CustomScrollbar::-webkit-scrollbar-thumb:hover {
+            border: 0;
         }
 
-        .scrollableWithoutScrollbar::-webkit-scrollbar-track {
-            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
-            border-radius: 4px;
-            background-color: #F5F5F5;
-        }
-
-        .scrollableWithoutScrollbar::-webkit-scrollbar {
-            height: 4px;
-            -webkit-appearance: none;
-        }
-
-        .scrollableWithoutScrollbar::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-            -webkit-box-shadow: 0 0 1px hsla(0, 0%, 100%, .5);
-            background-color: rgba(0, 0, 0, 0.3);
+        .CustomScrollbar::-webkit-scrollbar-track {
+            background: transparent;
         }
     </style>
     @yield('css')
@@ -705,7 +692,8 @@
                                                         </a>
                                                     </li>
                                                 @endcan
-                                                <li class="sidebar-item {{ isActiveRoute(['member/priority_list']) }}">
+                                                <li
+                                                    class="sidebar-item {{ isActiveRoute(['member/priority_list']) }}">
                                                     <a class="sidebar-link"
                                                         href="{{ route('member.priority_list') }}">
                                                         {!! __('loginPageLang.permission_details') !!}
@@ -1166,10 +1154,11 @@
                             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                                 data-bs-toggle="dropdown" data-bs-auto-close="outside" data-bs-display="static">
                                 <img src="../admin/img/avatars/avatarBot{{ \Auth::user()->avatarChoice }}.png"
-                                    class="avatar img-fluid rounded mx-auto" alt="{{ \Auth::user()->detail_info->姓名 }}" /> <span
+                                    class="avatar img-fluid rounded mx-auto"
+                                    alt="{{ \Auth::user()->detail_info->姓名 }}" /> <span
                                     class="text-dark">{{ \Auth::user()->detail_info->姓名 }}</span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end align-items-center" id="UserDropDown"
+                            <div class="CustomScrollbar dropdown-menu dropdown-menu-end align-items-center"
                                 style="border-radius: 10px; max-height: 48ch; overflow-y: auto;">
                                 <a class="dropdown-item" href="#">
                                     <i class="p-0 mr-1" data-feather="user"></i>

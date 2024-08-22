@@ -543,7 +543,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
                                 "</div>"
@@ -558,7 +558,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
                                 "</div>"
@@ -583,7 +583,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.品名 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("inboundpageLang.row") +
                                 " " + row.excel_row_num +
@@ -599,7 +599,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.品名 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.品名 +
                                 "</div>"
@@ -623,7 +623,7 @@ export default defineComponent({
                             '" value="' +
                             row.當月需求 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseFloat(row.當月需求).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
@@ -646,7 +646,7 @@ export default defineComponent({
                             '" value="' +
                             row.下月需求 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseFloat(row.下月需求).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
@@ -669,7 +669,7 @@ export default defineComponent({
                             '" value="' +
                             row.請購數量 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) +
                             "</div>"
@@ -693,7 +693,7 @@ export default defineComponent({
                             '" value="' +
                             row.說明 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.說明 +
                             "</div>"

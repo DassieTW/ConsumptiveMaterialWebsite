@@ -24,7 +24,7 @@ export const table = reactive({
             sortable: true,
             display: function (row, i) {
                 return (
-                    '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                    '<div class="CustomScrollbar text-nowrap"' +
                     ' style="overflow-x: auto; width: 100%;">' +
                     row.品名 +
                     "</div>"

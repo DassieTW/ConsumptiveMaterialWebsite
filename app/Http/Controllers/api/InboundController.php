@@ -63,7 +63,7 @@ class InboundController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request) // 庫存上傳
+    public function update(Request $request) // 庫存新增 上傳
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
@@ -117,7 +117,7 @@ class InboundController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //刪除 入庫資訊
+    //刪除 入庫紀錄 並還原庫存
     public function destroy(Request $request)
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
@@ -182,4 +182,4 @@ class InboundController extends Controller
             return \Response::json(['success_list' => $success_list]/* Status code here default is 200 ok*/);
         } // else
     } // destroy
-}
+} // InboundController

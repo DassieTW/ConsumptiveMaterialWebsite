@@ -37,9 +37,6 @@
     </button>
 
     <div class="card collapse" id="importedtable">
-        <!-- <div class="card-header">
-            <h3>{{ $t('inboundpageLang.stockupload') }}</h3>
-        </div> -->
         <div class="card-body">
             <div class="row justify-content-between">
                 <div class="row col col-auto">
@@ -101,6 +98,7 @@ export default defineComponent({
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
             .getAttribute("lang");
+        
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
@@ -120,6 +118,7 @@ export default defineComponent({
         let checkedRows = [];
         const file = ref();
         let input_data;
+        let sumInboundQuantity = {};
 
         const findDuplicates = (arr) => {
             let sorted_arr = arr.slice().sort(); // You can define the comparing function here. 
@@ -152,15 +151,15 @@ export default defineComponent({
                         /* Convert array of arrays */
                         input_data = XLSX.utils.sheet_to_json(ws, { header: 1 });
                         // console.log(input_data); // data[row#][col#]  test
-                        if (input_data === undefined || input_data[0] === undefined || input_data[0][0] === undefined || input_data[0][1] === undefined || input_data[0][2] === undefined) {
+                        if (input_data === undefined || input_data[0] === undefined || input_data[0][0] === undefined || input_data[0][1] === undefined || input_data[0][2] === undefined || input_data[0][3] === undefined) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } // if
                         else {
                             let tempArr = Array();
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                                    tempArr.push(input_data[i][0].trim());
+                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].toString().trim() != "" && input_data[i][0].toString().trim() != null) {
+                                    tempArr.push(input_data[i][0].toString().trim());
                                 } // if
                                 else {
                                     input_data.splice(i, 1); // remove the empty row
@@ -255,9 +254,8 @@ export default defineComponent({
 
         const onSendToDBClick = async () => {
             await triggerModal();
-            // console.log("The modal should be triggered by now."); // test
             isInvalid_DB.value = false;
-            let rowsCount = 0;
+            let rowsCount = [];
             let hasError = false;
             // console.log(data.length); //test
             if (data.length <= 0) {
@@ -280,10 +278,10 @@ export default defineComponent({
 
             // ----------------------------------------------
             // validate if all the isn exist
-            for (let j = 0; j < data.length && hasError == false; j++) {
+            for (let j = 0; j < data.length; j++) {
                 if (data[j].月請購 === "" || data[j].月請購 === null || data[j].月請購.toLowerCase() === "null") {
                     hasError = true;
-                    rowsCount = j;
+                    rowsCount.push(j);
                 } // if
             } // for
 
@@ -292,8 +290,8 @@ export default defineComponent({
                 validation_err_msg.value =
                     "Excel " +
                     app.appContext.config.globalProperties.$t("inboundpageLang.row") +
-                    " " + data[rowsCount].excel_row_num + " " +
-                    "(" + data[rowsCount].料號 + ") " +
+                    " " + rowsCount.map(row => row + 1).join(", ") + " " +
+                    "(" + rowsCount.map(row => data[row].料號).join(", ") + ") " +
                     app.appContext.config.globalProperties.$t("inboundpageLang.noisn");
 
                 notyf.open({
@@ -315,10 +313,11 @@ export default defineComponent({
 
             // ----------------------------------------------
             // validate if all the loc exist
-            for (let j = 0; j < data.length && hasError == false; j++) {
-                if (!locsArray.includes(data[j].儲位)) {
+            rowsCount = [];
+            for (let j = 0; j < data.length; j++) {
+                if (!locsArray.includes(data[j].新儲位)) {
                     hasError = true;
-                    rowsCount = j;
+                    rowsCount.push(j);
                 } // if
             } // for
 
@@ -327,8 +326,8 @@ export default defineComponent({
                 validation_err_msg.value =
                     "Excel " +
                     app.appContext.config.globalProperties.$t("inboundpageLang.row") +
-                    " " + data[rowsCount].excel_row_num + " " +
-                    "(" + data[rowsCount].儲位 + ") " +
+                    " " + rowsCount.map(row => row + 1).join(", ") + " " +
+                    "(" + rowsCount.map(row => data[row].新儲位).join(", ") + ") " +
                     app.appContext.config.globalProperties.$t("inboundpageLang.noloc");
 
                 notyf.open({
@@ -352,9 +351,8 @@ export default defineComponent({
             // validate if there's duplicate values in excel
             let duplicatedArray = Array();
             for (let i = 0; i < data.length; i++) {
-                // console.log(data[i].料號.trim() + "_" + data[i].儲位.toString().trim()); // test
                 if (data[i].料號 != null && data[i].料號.trim() != "") {
-                    duplicatedArray.push(data[i].料號.toString().trim() + "_" + data[i].儲位.toString().trim());
+                    duplicatedArray.push(data[i].料號.toString().trim() + "_" + data[i].新儲位.toString().trim());
                 } // if
             } // for
 
@@ -364,8 +362,8 @@ export default defineComponent({
                 isInvalid_DB.value = true;
                 validation_err_msg.value =
                     app.appContext.config.globalProperties.$t("inboundpageLang.repeated_isn_loc_pair") +
-                    " : " + findDuplicatesResult[0].split("_")[0] +
-                    " (" + findDuplicatesResult[0].split("_")[1] + ")";
+                    " : " + findDuplicatesResult.map(entry => entry.split("_")[0] +
+                        " (" + entry.split("_")[1] + ")").join(", ");
 
                 notyf.open({
                     type: "error",
@@ -384,7 +382,44 @@ export default defineComponent({
                 return;
             } // if
             // ----------------------------------------------
+            // check if inbound quantity greater than the intransit quantity
+            rowsCount = [];
+            for (let i = 0; i < data.length; i++) {
+                const 料號 = data[i].料號;
+                const 在途量 = parseInt(data[i].在途量);
+                if (sumInboundQuantity[料號] > 在途量) {
+                    hasError = true;
+                    rowsCount.push(i);
+                } // if
+            } // for
 
+            if (hasError) {
+                isInvalid_DB.value = true;
+                validation_err_msg.value =
+                    "Excel " +
+                    app.appContext.config.globalProperties.$t("inboundpageLang.row") +
+                    " " + rowsCount.map(row => row + 1).join(", ") + " " +
+                    "(" + rowsCount.map(row => data[row].料號).join(", ") + ") " +
+                    app.appContext.config.globalProperties.$t("inboundpageLang.inboundnum") + " > " + app.appContext.config.globalProperties.$t("inboundpageLang.transit");
+
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                return;
+            } // if
+
+            // ----------------------------------------------
             // get existing stock for sum up
             let tempArr_isn = Array();
             let tempArr_loc = Array();
@@ -415,6 +450,7 @@ export default defineComponent({
             else {
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
+                console.log("Failed to get existing stock");
                 notyf.open({
                     type: "error",
                     message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
@@ -534,6 +570,18 @@ export default defineComponent({
                 singleEntry = {};
             } // for
 
+            sumInboundQuantity = {};
+            sumInboundQuantity = data.reduce((acc, item) => {
+                const 料號 = item.料號;
+                const 入庫量 = parseInt(item.入庫量);
+                if (acc[料號]) {
+                    acc[料號] += 入庫量;
+                } else {
+                    acc[料號] = 入庫量;
+                } // if else
+                return acc;
+            }, {});
+
             JSON.parse(locations.value).data.forEach(element => {
                 locsArray.push(element.儲存位置);
             });
@@ -573,7 +621,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號 +
                                 '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap text-danger CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
                                 "</div>"
@@ -587,7 +635,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
                                 "</div>"
@@ -612,10 +660,9 @@ export default defineComponent({
                                 '" value="' +
                                 row.品名 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
-                                app.appContext.config.globalProperties.$t("inboundpageLang.row") +
-                                " " + row.excel_row_num +
+                                app.appContext.config.globalProperties.$t("inboundpageLang.noisn") +
                                 "</div>"
                             );
                         } // if
@@ -628,7 +675,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.品名 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.品名 +
                                 "</div>"
@@ -653,7 +700,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.規格 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar text-danger"' +
+                                '<div class="text-nowrap CustomScrollbar text-danger"' +
                                 ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                                 app.appContext.config.globalProperties.$t("inboundpageLang.noisn") +
                                 "</div>"
@@ -668,7 +715,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.規格 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                                 row.規格 +
                                 "</div>"
@@ -692,7 +739,7 @@ export default defineComponent({
                             '" value="' +
                             row.現有庫存 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
@@ -715,7 +762,7 @@ export default defineComponent({
                             '" value="' +
                             row.在途量 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.在途量 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
@@ -730,7 +777,7 @@ export default defineComponent({
                     width: "10ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.入庫量 > row.在途量) {
+                        if (sumInboundQuantity[row.料號] > row.在途量) {
                             return (
                                 '<input type="hidden" id="inbound' +
                                 i +
@@ -739,7 +786,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.入庫量 +
                                 '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap text-danger CustomScrollbar"' +
                                 ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                                 row.入庫量 + '&nbsp;<small>' + row.單位 + '</small>' +
                                 "</div>"
@@ -753,7 +800,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.入庫量 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                                 row.入庫量 + '&nbsp;<small>' + row.單位 + '</small>' +
                                 "</div>"
@@ -777,7 +824,7 @@ export default defineComponent({
                             '" value="' +
                             row.入庫原因 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.入庫原因 +
                             "</div>"
@@ -800,7 +847,7 @@ export default defineComponent({
                             '" value="' +
                             row.原儲位 +
                             '">' +
-                            '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                             row.原儲位 +
                             "</div>"
@@ -824,7 +871,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.新儲位 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                                 row.新儲位 +
                                 "</div>"
@@ -839,7 +886,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.新儲位 +
                                 '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap text-danger CustomScrollbar"' +
                                 ' style="overflow-x: auto !important; width: 100%; -ms-overflow-style: none !important; scrollbar-width: none !important;">' +
                                 row.新儲位 + " (" + app.appContext.config.globalProperties.$t("inboundpageLang.noloc") +
                                 ")</div>"

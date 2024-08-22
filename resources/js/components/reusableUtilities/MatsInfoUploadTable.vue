@@ -469,7 +469,7 @@ export default defineComponent({
                                 '" name="number' +
                                 i +
                                 '" value="">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap text-danger CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 'Missing' +
                                 "</div>"
@@ -483,7 +483,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.料號 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
                                 "</div>"
@@ -508,7 +508,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.品名 +
                                 '">' +
-                                '<div class="text-nowrap text-danger scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap text-danger CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 "Missing" +
                                 "</div>"
@@ -522,7 +522,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.品名 +
                                 '">' +
-                                '<div class="text-nowrap scrollableWithoutScrollbar"' +
+                                '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.品名 +
                                 "</div>"
@@ -547,7 +547,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.規格 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 "Missing" +
                                 "</div>"
@@ -561,7 +561,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.規格 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.規格 +
                                 "</div>"
@@ -584,7 +584,7 @@ export default defineComponent({
                                 '" name="price' +
                                 i +
                                 '" value="">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 parseFloat(row.單價) +
                                 "</div>"
@@ -598,7 +598,7 @@ export default defineComponent({
                                 '" value="' +
                                 parseFloat(row.單價) +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 parseFloat(row.單價) +
                                 "</div>"
@@ -637,7 +637,7 @@ export default defineComponent({
                                     '" value="' +
                                     element +
                                     '">' +
-                                    '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                    '<div class="CustomScrollbar text-nowrap"' +
                                     ' style="overflow-x: auto; width: 100%;">' +
                                     element +
                                     "</div>";
@@ -648,7 +648,7 @@ export default defineComponent({
                         if (!currencyExist) {
                             returnStr +=
                                 '" value="">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.幣別 +
                                 "</div>";
@@ -672,7 +672,7 @@ export default defineComponent({
                                 '" name="unit' +
                                 i +
                                 '" value="">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 "Missing" +
                                 "</div>"
@@ -686,7 +686,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.單位 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.單位 +
                                 "</div>"
@@ -709,7 +709,7 @@ export default defineComponent({
                                 '" name="mpq' +
                                 i +
                                 '" value="">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.MPQ +
                                 "</div>"
@@ -723,7 +723,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.MPQ +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.MPQ +
                                 "</div>"
@@ -746,7 +746,7 @@ export default defineComponent({
                                 '" name="moq' +
                                 i +
                                 '" value="">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.MOQ +
                                 "</div>"
@@ -760,7 +760,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.MOQ +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.MOQ +
                                 "</div>"
@@ -783,7 +783,7 @@ export default defineComponent({
                                 '" name="lt' +
                                 i +
                                 '" value="">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.LT +
                                 "</div>"
@@ -797,7 +797,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.LT +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.LT +
                                 "</div>"
@@ -820,7 +820,7 @@ export default defineComponent({
                                 '" name="monthly' +
                                 i +
                                 '" value="是">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
                                 "</div>"
@@ -833,7 +833,7 @@ export default defineComponent({
                                 '" name="monthly' +
                                 i +
                                 '" value="否">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("basicInfoLang.no") +
                                 "</div>"
@@ -856,7 +856,7 @@ export default defineComponent({
                                 '" name="gradea' +
                                 i +
                                 '" value="是">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("basicInfoLang.yes") +
                                 "</div>"
@@ -869,7 +869,7 @@ export default defineComponent({
                                 '" name="gradea' +
                                 i +
                                 '" value="否">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("basicInfoLang.no") +
                                 "</div>"
@@ -893,7 +893,7 @@ export default defineComponent({
                                     '" name="send' +
                                     i +
                                     '" value="">' +
-                                    '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                    '<div class="CustomScrollbar text-nowrap text-danger"' +
                                     ' style="overflow-x: auto; width: 100%;">' +
                                     "Missing" +
                                     "</div>"
@@ -905,7 +905,7 @@ export default defineComponent({
                                     '" name="send' +
                                     i +
                                     '" value="">' +
-                                    '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                    '<div class="CustomScrollbar text-nowrap text-danger"' +
                                     ' style="overflow-x: auto; width: 100%;">' +
                                     row.發料部門 +
                                     "</div>"
@@ -920,7 +920,7 @@ export default defineComponent({
                                 '" value="' +
                                 row.發料部門 +
                                 '">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.發料部門 +
                                 "</div>"
@@ -943,7 +943,7 @@ export default defineComponent({
                                 '" name="safe' +
                                 i +
                                 '" value="">' +
-                                '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("basicInfoLang.differ_by_client") +
                                 "</div>"
@@ -956,7 +956,7 @@ export default defineComponent({
                                     '" name="safe' +
                                     i +
                                     '" value="">' +
-                                    '<div class="scrollableWithoutScrollbar text-nowrap text-danger"' +
+                                    '<div class="CustomScrollbar text-nowrap text-danger"' +
                                     ' style="overflow-x: auto; width: 100%;">' +
                                     row.安全庫存 +
                                     "</div>"
@@ -970,7 +970,7 @@ export default defineComponent({
                                     '" value="' +
                                     row.安全庫存 +
                                     '">' +
-                                    '<div class="scrollableWithoutScrollbar text-nowrap"' +
+                                    '<div class="CustomScrollbar text-nowrap"' +
                                     ' style="overflow-x: auto; width: 100%;">' +
                                     row.安全庫存 +
                                     "</div>"

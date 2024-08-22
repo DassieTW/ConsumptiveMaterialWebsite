@@ -13,7 +13,7 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
-        <div class="row justify-content-center scrollableWithoutScrollbar">
+        <div class="row justify-content-center CustomScrollbar">
             <mats-info-upload-table></mats-info-upload-table>
         </div>
     </div>
