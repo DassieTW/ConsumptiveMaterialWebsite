@@ -23,7 +23,6 @@
         :sortable="table.sortable" :is-fixed-first-column="false">
         <template v-slot:SXB單號="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
-                <span class="m-0 p-0" style="width: 14ch;">{{ row.SXB單號 }}</span>
                 <button @click="openSXBDetails(row.SXB單號)" type="button" data-bs-toggle="modal"
                     data-bs-target="#detailTable" class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0"
                     style="border-radius: 20px;" :id="'sxb' + row.id" :name="'sxb' + key">More</button>
@@ -362,22 +361,6 @@ export default defineComponent({
             columns: [
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.sxb"
-                    ).replace('SXB', '').replace(' ', ''),
-                    field: "SXB單號",
-                    width: "14ch",
-                    sortable: true,
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.status"
-                    ),
-                    field: "狀態",
-                    width: "6ch",
-                    sortable: true,
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.buytime"
                     ),
                     field: "請購時間",
@@ -401,6 +384,22 @@ export default defineComponent({
 
                         return returnStr;
                     },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.status"
+                    ),
+                    field: "狀態",
+                    width: "6ch",
+                    sortable: true,
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.info"
+                    ),
+                    field: "SXB單號",
+                    width: "4ch",
+                    sortable: false,
                 },
             ],
             rows: computed(() => {

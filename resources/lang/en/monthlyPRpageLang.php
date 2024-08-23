@@ -35,7 +35,7 @@ return [
     'pName' => 'Descr.',
     'unit' => 'Unit',
     'buyamount1' => 'Req Qty',
-    'sxb' => 'SXB No.',
+    'info' => 'Info.',
     'entersxb' => 'No.',
     'applydate' => 'Date',
     'srm' => 'SRM number',

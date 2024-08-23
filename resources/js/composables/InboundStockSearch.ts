@@ -65,18 +65,22 @@ export default function useInboundStockSearch() {
         } // try catch
     } // getExistingStock
 
-    const uploadToDB = async (inputArray) => {
+    const uploadToDB = async (newStock, inboundCount, newInTransit) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
-        // console.log(inputArray); // test
+        let username = await axios.post('/getCurrentUsername');
+        let serialNum = username.data + '_' + Date.now();
         try {
             let response = await axios.post('/api/inbound/uploadToDB', {
                 DB: getDB.data,
-                isnArray: JSON.stringify(inputArray)
+                User: username.data,
+                newStock: JSON.stringify(newStock),
+                inboundCount: JSON.stringify(inboundCount),
+                newInTransit: JSON.stringify(newInTransit),
+                serialNum: JSON.stringify(serialNum),
             });
 
-            mats.value = JSON.stringify(response.data);
-            console.log(JSON.stringify(response.data)); // test
+            console.log(response.data); // test
             return new Promise((resolve, reject) => {
                 resolve("success");
             });
