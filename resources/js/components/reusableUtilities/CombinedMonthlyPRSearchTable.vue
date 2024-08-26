@@ -250,20 +250,61 @@ export default defineComponent({
             tempData.sort((a, b) => b.匯率 - a.匯率);
             // console.log(tempData); // test
             for (let i = 0; i < tempData.length; i++) {
-                number.push(tempData[i].料號);
-                pName.push(tempData[i].品名);
-                spec.push(tempData[i].規格);
-                unit_price.push(tempData[i].單價);
-                nowNeed.push(parseFloat(tempData[i].當月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-                nextNeed.push(parseFloat(tempData[i].下月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-                stock.push(parseInt(tempData[i].現有庫存).toLocaleString("en-US"));
-                in_transit.push(parseInt(tempData[i].在途量).toLocaleString("en-US"));
-                req_amount.push(parseInt(tempData[i].本次請購數量).toLocaleString("en-US"));
-                total_price_default_currency.push(parseFloat(tempData[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-                total_price_default_currency_name.push(tempData[i].幣別);
-                total_price_other_currency.push(parseFloat(tempData[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-                moq.push(tempData[i].MOQ);
+                if (parseInt(tempData[i].本次請購數量) > 0) { // send only the one that has value
+                    number.push(tempData[i].料號);
+                    pName.push(tempData[i].品名);
+                    spec.push(tempData[i].規格);
+                    unit_price.push(tempData[i].單價);
+                    nowNeed.push(parseFloat(tempData[i].當月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                    nextNeed.push(parseFloat(tempData[i].下月需求).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                    stock.push(parseInt(tempData[i].現有庫存).toLocaleString("en-US"));
+                    in_transit.push(parseInt(tempData[i].在途量).toLocaleString("en-US"));
+                    req_amount.push(parseInt(tempData[i].本次請購數量).toLocaleString("en-US"));
+                    total_price_default_currency.push(parseFloat(tempData[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                    total_price_default_currency_name.push(tempData[i].幣別);
+                    total_price_other_currency.push(parseFloat(tempData[i].匯率).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                    moq.push(tempData[i].MOQ);
+                } // if
+                else {
+                    hasError = true;
+                } // else
             } // for
+
+            if (number.length <= 0) {
+                isInvalid_DB.value = true;
+                validation_err_msg.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.no_req_amount_to_submit");
+
+                notyf.open({
+                    type: "warning",
+                    message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                return;
+            } // if
+            else if (hasError) {
+                isInvalid_DB.value = true;
+                validation_err_msg.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.some_data_has_no_amount");
+                notyf.open({
+                    type: "warning",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.some_data_has_no_amount"),
+                    duration: 5000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else if
 
             // console.log(total_price_other_currency); // test
             // return;
@@ -279,7 +320,7 @@ export default defineComponent({
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
 
-            // ------- test --------
+            // ------- quick test --------
             // result = await submitBuylist(
             //     number, pName, spec, unit_price,
             //     nowNeed, nextNeed, stock, in_transit, req_amount,
@@ -378,7 +419,6 @@ export default defineComponent({
 
                 let singleEntry = {};
                 let tempAll = [];
-                // push temp
                 for (let i = 0; i < MPSData.value.length; i++) {
                     singleEntry.料號 = MPSData.value[i].料號.toString().trim();
                     singleEntry.品名 = MPSData.value[i].品名.toString().trim();

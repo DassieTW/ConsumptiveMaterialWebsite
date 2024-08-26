@@ -161,6 +161,8 @@ return [
     'enter90isn' => 'Search 90PN',
     '90isnlength' => '90PN length incorrect',
     'exportspan' => 'Only the records with Buying Qty > 0 will be exported',
+    'no_req_amount_to_submit' => 'All Buying Qty is 0, nothing to submit',
+    'some_data_has_no_amount' => 'Only the records with Buying Qty > 0 will be submitted',
     'please_utilize' => 'Please Utilize',
     'to_update_unit_price' => 'to Update Unit Price.',
     'repeated_isn' => 'Repeated PN',

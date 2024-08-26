@@ -116,7 +116,7 @@ class MonthlyPRController extends Controller
                 else {
                     $mergedResult = $result->merge($mergedResult);
                 } // else
-            } //for
+            } // for
 
             $PR_already_sent = $mergedResult;
 
@@ -674,7 +674,6 @@ class MonthlyPRController extends Controller
         $worksheet = $spreadsheet->getActiveSheet();
 
         $request_user = $request->input('User');
-        // dd($request_user); // test
         $PN = json_decode($request->input('PN'));
         $pName = json_decode($request->input('pName'));
         $Spec = json_decode($request->input('Spec'));
