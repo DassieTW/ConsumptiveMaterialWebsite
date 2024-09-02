@@ -50,9 +50,15 @@ class Event
     }
 
     /**
+     * Defers the execution of the given callback.
+     *
+     * This function works similarly to statement "setTimeout(callback, 0)" in JavaScript.
+     *
+     * @param callable $callback The callback to be executed.
+     * @return true This method always returns true.
      * @alias This method has an alias function \swoole_event_defer().
      * @see \swoole_event_defer()
-     * @return true
+     * @see \Swoole\Timer::after() Add a timer that only runs once after the specified number of milliseconds.
      */
     public static function defer(callable $callback)
     {
@@ -82,6 +88,10 @@ class Event
     {
     }
 
+    /**
+     * @deprecated 4.6.0 Use method \Swoole\Coroutine\run() instead.
+     * @see \Swoole\Coroutine\run()
+     */
     public static function rshutdown(): void
     {
     }

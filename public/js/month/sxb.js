@@ -28,10 +28,9 @@ $(function () {
     if (isn === "") isn = null;
     if (sxb === "") sxb = null;
 
-    sessionStorage.setItem("sxbclient", JSON.stringify(client)); // for later vue to post request
+    // sessionStorage.setItem("sxbclient", JSON.stringify(client)); // for later vue to post request
     sessionStorage.setItem("sxbisn", JSON.stringify(isn)); // for later vue to post request
     sessionStorage.setItem("sxbsend", JSON.stringify(send)); // for later vue to post request
-    sessionStorage.setItem("sxbsxb", JSON.stringify(sxb)); // for later vue to post request
     sessionStorage.setItem("sxbbegin", JSON.stringify(begin)); // for later vue to post request
     sessionStorage.setItem("sxbend", JSON.stringify(end)); // for later vue to post request
 

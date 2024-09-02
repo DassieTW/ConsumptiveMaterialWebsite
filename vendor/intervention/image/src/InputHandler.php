@@ -15,6 +15,7 @@ use Intervention\Image\Decoders\Base64ImageDecoder;
 use Intervention\Image\Decoders\BinaryImageDecoder;
 use Intervention\Image\Decoders\ColorObjectDecoder;
 use Intervention\Image\Decoders\DataUriImageDecoder;
+use Intervention\Image\Decoders\EncodedImageObjectDecoder;
 use Intervention\Image\Decoders\FilePathImageDecoder;
 use Intervention\Image\Decoders\FilePointerImageDecoder;
 use Intervention\Image\Decoders\ImageObjectDecoder;
@@ -53,6 +54,7 @@ class InputHandler implements InputHandlerInterface
         BinaryImageDecoder::class,
         DataUriImageDecoder::class,
         Base64ImageDecoder::class,
+        EncodedImageObjectDecoder::class,
     ];
 
     /**
@@ -95,17 +97,19 @@ class InputHandler implements InputHandlerInterface
     public function handle($input): ImageInterface|ColorInterface
     {
         foreach ($this->decoders as $decoder) {
-            // resolve driver specialized decoder
-            $decoder = $this->resolve($decoder);
-
             try {
-                return $decoder->decode($input);
-            } catch (DecoderException $e) {
+                // decode with driver specialized decoder
+                return $this->resolve($decoder)->decode($input);
+            } catch (DecoderException | NotSupportedException $e) {
                 // try next decoder
             }
         }
 
-        throw new DecoderException(isset($e) ? $e->getMessage() : '');
+        if (isset($e)) {
+            throw new ($e::class)($e->getMessage());
+        }
+
+        throw new DecoderException('Unable to decode input.');
     }
 
     /**

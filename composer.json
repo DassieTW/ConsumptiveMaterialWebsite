@@ -13,7 +13,7 @@
         "doctrine/dbal": "^3.2",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.9",
         "hedii/artisan-log-cleaner": "^4.1",
         "hhxsv5/laravel-s": "~3.7.0",
         "http-interop/http-factory-guzzle": "^1.2",

@@ -94,4 +94,6 @@ return [
     'upload1' => '上傳',
     'noinpeople' => '入庫人員之工號不存在，請先到用戶管理-人員信息維護',
     'rfidinpeople' => '請點這裡感應入庫人員識別證',
+    'no_basic' => '料號資料不存在',
+    'no_basic_are_highlighted' => '紅字料號表示其料件訊息未維護',
 ];

@@ -104,7 +104,7 @@ export default defineComponent({
                             '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.現有庫存 +
+                            row.現有庫存 + " <small>" + row.單位 + "</small>" +
                             "</div>"
                         );
                     },

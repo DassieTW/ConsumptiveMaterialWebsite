@@ -21,8 +21,10 @@
             </button>
         </div>
     </div>
-    <div class="w-100" style="height: 1ch"></div>
-    <!-- </div>breaks cols to a new line-->
+    <div class="w-100" style="height: 1ch"></div> <!-- </div>breaks cols to a new line-->
+    <span class="invalid-feedback d-block" role="alert">
+        <strong>{{ $t("inboundpageLang.no_basic_are_highlighted") }}</strong>
+    </span>
     <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true" :isLoading="table.isLoading"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
         :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
@@ -53,7 +55,7 @@ export default defineComponent({
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
             .getAttribute("lang");
-        
+
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
@@ -202,9 +204,8 @@ export default defineComponent({
         const data = reactive([]);
 
         watch(mats, () => {
-            // console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
-            //console.log(allRowsObj.datas.length);
+            // console.log(allRowsObj.datas); // test
             for (let i = 0; i < allRowsObj.datas.length; i++) {
                 allRowsObj.datas[i].id = i;
                 data.push(allRowsObj.datas[i]);
@@ -249,19 +250,35 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="number' +
-                            i +
-                            '" name="number' +
-                            i +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.料號 +
-                            "</div>"
-                        );
+                        if (row.單位 === null) {
+                            return (
+                                '<input type="hidden" id="number' +
+                                i +
+                                '" name="number' +
+                                i +
+                                '" value="' +
+                                row.料號 +
+                                '">' +
+                                '<div class="text-danger text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.料號 +
+                                "</div>"
+                            );
+                        } else {
+                            return (
+                                '<input type="hidden" id="number' +
+                                i +
+                                '" name="number' +
+                                i +
+                                '" value="' +
+                                row.料號 +
+                                '">' +
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.料號 +
+                                "</div>"
+                            );
+                        } // if else
                     },
                 },
                 {
@@ -272,19 +289,36 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="inboundnum' +
-                            i +
-                            '" name="inboundnum' +
-                            i +
-                            '" value="' +
-                            row.入庫數量 +
-                            '">' +
-                            '<div class="CustomScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.入庫數量 +
-                            "</div>"
-                        );
+                        if (row.單位 === null) {
+                            return (
+                                '<input type="hidden" id="inboundnum' +
+                                i +
+                                '" name="inboundnum' +
+                                i +
+                                '" value="' +
+                                row.入庫數量 +
+                                '">' +
+                                '<div class="CustomScrollbar text-nowrap"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.入庫數量 + ' <small class="text-danger">' +
+                                app.appContext.config.globalProperties.$t("inboundpageLang.no_basic") + "</small>" +
+                                "</div>"
+                            );
+                        } else {
+                            return (
+                                '<input type="hidden" id="inboundnum' +
+                                i +
+                                '" name="inboundnum' +
+                                i +
+                                '" value="' +
+                                row.入庫數量 +
+                                '">' +
+                                '<div class="CustomScrollbar text-nowrap"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.入庫數量 + " <small>" + row.單位 + "</small>" +
+                                "</div>"
+                            );
+                        } // if else
                     },
                 },
                 {

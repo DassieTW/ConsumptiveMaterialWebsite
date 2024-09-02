@@ -7,23 +7,39 @@ namespace Swoole\Coroutine;
 use Swoole\Client;
 
 /**
+ * A coroutine-friendly socket class used to represent a socket connection.
+ *
+ * When runtime hook flag SWOOLE_HOOK_SOCKETS is enabled, this class is used to represent a \Socket object (i.e., it's a
+ * child class of built-in PHP class \Socket).
+ *
  * @not-serializable Objects of this class cannot be serialized.
  * @alias This class has an alias of "\Co\Socket" when directive "swoole.use_shortname" is not explicitly turned off.
  * @see \Co\Socket
+ * @see \Socket
  */
 class Socket
 {
-    public $fd = -1;
+    public int $fd = -1;
 
-    public $domain = 0;
+    public int $domain = 0;
 
-    public $type = 0;
+    public int $type = 0;
 
-    public $protocol = 0;
+    public int $protocol = 0;
 
-    public $errCode = 0;
+    public int $errCode = 0;
 
-    public $errMsg = '';
+    public string $errMsg = '';
+
+    /**
+     * @since 5.1.0
+     */
+    public $__ext_sockets_nonblock = false;
+
+    /**
+     * @since 5.1.0
+     */
+    public $__ext_sockets_timeout = 0;
 
     public function __construct(int $domain, int $type, int $protocol = 0)
     {
@@ -46,9 +62,26 @@ class Socket
     }
 
     /**
+     * Check liveness of the socket.
+     *
+     * @return bool Returns true if the socket is still alive, false otherwise.
      * @since 4.5.0
      */
     public function checkLiveness(): bool
+    {
+    }
+
+    /**
+     * Get the coroutine ID that the socket is bound to of the specified event type.
+     *
+     * @param int $event Type of the event that the socket is performing inside the coroutine. It can be one of the following values:
+     *                   - SWOOLE_EVENT_READ
+     *                   - SWOOLE_EVENT_WRITE
+     *                   - SWOOLE_EVENT_READ | SWOOLE_EVENT_WRITE.
+     * @return int Returns the coroutine ID that the socket is bound to of the specified event type. Returns 0 if no matching coroutine is found.
+     * @since 5.0.2
+     */
+    public function getBoundCid(int $event): int
     {
     }
 
@@ -59,19 +92,39 @@ class Socket
     {
     }
 
+    /**
+     * @see \Swoole\Coroutine\Socket::recvAll()
+     * @see \Swoole\Coroutine\Socket::recvLine()
+     * @see \Swoole\Coroutine\Socket::recvWithBuffer()
+     */
     public function recv(int $length = 65536, float $timeout = 0): string|false
     {
     }
 
+    /**
+     * @see \Swoole\Coroutine\Socket::recv()
+     * @see \Swoole\Coroutine\Socket::recvLine()
+     * @see \Swoole\Coroutine\Socket::recvWithBuffer()
+     */
     public function recvAll(int $length = 65536, float $timeout = 0): string|false
     {
     }
 
-    public function recvLine(int $length = 65535, float $timeout = 0): string|false
+    /**
+     * @see \Swoole\Coroutine\Socket::recv()
+     * @see \Swoole\Coroutine\Socket::recvAll()
+     * @see \Swoole\Coroutine\Socket::recvWithBuffer()
+     */
+    public function recvLine(int $length = 65536, float $timeout = 0): string|false
     {
     }
 
-    public function recvWithBuffer(int $length = 65535, float $timeout = 0): string|false
+    /**
+     * @see \Swoole\Coroutine\Socket::recv()
+     * @see \Swoole\Coroutine\Socket::recvAll()
+     * @see \Swoole\Coroutine\Socket::recvLine()
+     */
+    public function recvWithBuffer(int $length = 65536, float $timeout = 0): string|false
     {
     }
 
@@ -181,6 +234,9 @@ class Socket
     }
 
     /**
+     * Check if the socket is closed.
+     *
+     * @return bool Returns true if the socket is closed, false otherwise.
      * @since 4.8.3
      */
     public function isClosed(): bool

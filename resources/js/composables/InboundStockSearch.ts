@@ -80,7 +80,7 @@ export default function useInboundStockSearch() {
                 serialNum: JSON.stringify(serialNum),
             });
 
-            console.log(response.data); // test
+            // console.log(response.data); // test
             return new Promise((resolve, reject) => {
                 resolve("success");
             });

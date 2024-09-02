@@ -8,6 +8,7 @@ use Doctrine\DBAL\Driver\API\PostgreSQL;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
+use Doctrine\DBAL\Platforms\PostgreSQL120Platform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\PostgreSQLSchemaManager;
@@ -24,7 +25,7 @@ use function version_compare;
 abstract class AbstractPostgreSQLDriver implements VersionAwarePlatformDriver
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function createDatabasePlatformForVersion($version)
     {
@@ -39,6 +40,10 @@ abstract class AbstractPostgreSQLDriver implements VersionAwarePlatformDriver
         $minorVersion = $versionParts['minor'] ?? 0;
         $patchVersion = $versionParts['patch'] ?? 0;
         $version      = $majorVersion . '.' . $minorVersion . '.' . $patchVersion;
+
+        if (version_compare($version, '12.0', '>=')) {
+            return new PostgreSQL120Platform();
+        }
 
         if (version_compare($version, '10.0', '>=')) {
             return new PostgreSQL100Platform();
@@ -55,7 +60,7 @@ abstract class AbstractPostgreSQLDriver implements VersionAwarePlatformDriver
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getDatabasePlatform()
     {
@@ -63,7 +68,7 @@ abstract class AbstractPostgreSQLDriver implements VersionAwarePlatformDriver
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @deprecated Use {@link PostgreSQLPlatform::createSchemaManager()} instead.
      */

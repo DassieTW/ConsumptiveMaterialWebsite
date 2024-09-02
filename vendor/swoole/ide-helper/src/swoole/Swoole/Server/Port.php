@@ -9,7 +9,7 @@ namespace Swoole\Server;
  */
 class Port
 {
-    public $host;
+    public string $host;
 
     public $port = 0;
 
@@ -21,7 +21,7 @@ class Port
 
     public $setting;
 
-    public $connections;
+    public Iterator $connections;
 
     /**
      * @var callable
@@ -61,7 +61,7 @@ class Port
     /**
      * @var callable
      */
-    private $onHandShake;
+    private $onHandshake;
 
     /**
      * @var callable
@@ -79,6 +79,12 @@ class Port
      */
     private $onDisconnect;
 
+    /**
+     * @var callable
+     * @since 5.0.3
+     */
+    private $onBeforeHandshakeResponse;
+
     public function set(array $settings): void
     {
     }
@@ -91,6 +97,13 @@ class Port
     {
     }
 
+    /**
+     * Get the socket handle bound to the port.
+     *
+     * This method is available only when Swoole is installed with option "--enable-sockets" included.
+     *
+     * @return \Socket|false Returns a Socket object on success; otherwise FALSE.
+     */
     public function getSocket(): \Socket|false
     {
     }

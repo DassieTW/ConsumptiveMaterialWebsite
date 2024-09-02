@@ -11,6 +11,16 @@ use Swoole\Server\Port;
 /**
  * The Swoole Server class.
  *
+ * There are five types of processes in Swoole server:
+ *   - Master process.
+ *   - Manager process. Optional.
+ *   - Event worker processes. All requests (HTTP, WebSocket, TCP, UDP, etc.) are handled by this type of processes. It supports
+ *     coroutine by default.
+ *   - Task worker processes. Optional. This type of processes was introduced to handle blocking I/O operations in PHP. Ideally, it
+ *     should always work synchronously, although it also supports coroutine and allows asynchronous processing (since Swoole 4.2.12).
+ *     The number of task worker processes is set by option \Swoole\Constant::OPTION_TASK_WORKER_NUM before starting the server.
+ *   - User processes. Optional. These are self-defined processes attached to the server through method \Swoole\Server::addProcess().
+ *
  * History Changes:
  * 1. Following alias methods have been removed from Swoole 5.0.0. Please use the original methods instead.
  *    * \Swoole\Server::after()      => \Swoole\Timer::after().
@@ -27,23 +37,77 @@ class Server
 
     public Iterator $connections;
 
-    public $host = '';
-
-    public $port = 0;
-
-    public $type = 0;
+    /**
+     * IP address of the network socket, or path of the UNIX domain socket bound to the primary port.
+     *
+     * If the $sock_type parameter is set to SWOOLE_SOCK_UNIX_STREAM or SWOOLE_SOCK_UNIX_DGRAM in the constructor when
+     * creating a Server object, the $host parameter must be set to the path of the UNIX domain socket. Otherwise,
+     * the $host parameter must be set to the IP address of the network socket.
+     *
+     * When setting to the IP address of the network socket, it can be either an IPv4 or IPv6 address:
+     * - For IPv4,
+     *     - use 127.0.0.1 to listen on the local loopback interface.
+     *     - use 0.0.0.0 to listen on all network interfaces.
+     * - For IPv6,
+     *     - use ::1 to listen on the local loopback interface.
+     *     - use :: to listen on all network interfaces.
+     */
+    public string $host = '';
 
     /**
+     * The primary port of the server. It's the port number actually assigned when creating a Server object.
+     */
+    public int $port = 0;
+
+    /**
+     * Type of the socket bound to the primary port.
+     *
+     * It can be one of the following values:
+     *   - SWOOLE_SOCK_TCP
+     *   - SWOOLE_SOCK_UDP
+     *   - SWOOLE_SOCK_TCP6
+     *   - SWOOLE_SOCK_UDP6
+     *   - SWOOLE_SOCK_UNIX_STREAM
+     *   - SWOOLE_SOCK_UNIX_DGRAM
+     * In addition to specifying a socket type, it may include the bitwise OR of SWOOLE_SSL to enable SSL encryption for
+     * network sockets (SWOOLE_SOCK_TCP, SWOOLE_SOCK_UDP, SWOOLE_SOCK_TCP6, and SWOOLE_SOCK_UDP6).
+     * Thus, the value of $type could be in the format of either of the following:
+     *   - SWOOLE_SOCK_TCP
+     *   - SWOOLE_SOCK_TCP | SWOOLE_SSL
+     *
+     * If SWOOLE_SSL is included, the server must have the following options set properly before starting:
+     *   - \Swoole\Constant::OPTION_SSL_CERT_FILE
+     *   - \Swoole\Constant::OPTION_SSL_KEY_FILE
+     *
+     * @see SWOOLE_SOCK_TCP
+     * @see SWOOLE_SOCK_UDP
+     * @see SWOOLE_SOCK_TCP6
+     * @see SWOOLE_SOCK_UDP6
+     * @see SWOOLE_SOCK_UNIX_STREAM
+     * @see SWOOLE_SOCK_UNIX_DGRAM
+     * @see SWOOLE_SSL
+     */
+    public int $type = 0;
+
+    /**
+     * If SSL is enabled or not on the primary port.
+     *
      * @since 5.0.0
      */
-    public $ssl = false;
+    public bool $ssl = false;
 
     public $mode = 0;
 
     public $ports;
 
+    /**
+     * Process ID of the master process.
+     */
     public $master_pid = 0;
 
+    /**
+     * Process ID of the manager process.
+     */
     public $manager_pid = 0;
 
     public $worker_id = -1;
@@ -133,8 +197,13 @@ class Server
     private $onPipeMessage;
 
     /**
-     * @param int $mode Either SWOOLE_BASE or SWOOLE_PROCESS. Starting from Swoole 5.0.0, default server mode has been
+     * Constructor of the Swoole Server class.
+     *
+     * @param string $host IP address of the network socket, or path of the UNIX domain socket bound to the primary port. For details, please check property \Swoole\Server::$host.
+     * @param int $port The primary port of the server. This parameter is ignored if $sock_type is SWOOLE_SOCK_UNIX_STREAM or SWOOLE_SOCK_UNIX_DGRAM.
+     * @param int $mode Must be either SWOOLE_BASE or SWOOLE_PROCESS. Starting from Swoole 5.0.0, default server mode has been
      *                  changed from SWOOLE_PROCESS to SWOOLE_BASE.
+     * @param int $sock_type Type of the socket. For details, please check property \Swoole\Server::$type.
      */
     public function __construct(string $host = '0.0.0.0', int $port = 0, int $mode = SWOOLE_BASE, int $sock_type = SWOOLE_SOCK_TCP)
     {
@@ -187,6 +256,10 @@ class Server
     }
 
     /**
+     * Check if a connection exists.
+     *
+     * @param int $fd The connection file descriptor.
+     * @return bool Returns true if the connection exists, or false if the connection does not exist or has been closed.
      * @alias This method has an alias of \Swoole\Server::exist().
      * @see \Swoole\Server::exist()
      */
@@ -195,6 +268,10 @@ class Server
     }
 
     /**
+     * Check if a connection exists.
+     *
+     * @param int $fd The connection file descriptor.
+     * @return bool Returns true if the connection exists, or false if the connection does not exist or has been closed.
      * @alias Alias of method \Swoole\Server::exists().
      * @see \Swoole\Server::exists()
      */
@@ -221,6 +298,7 @@ class Server
      * @alias Although this method and method \Swoole\Server::resume() are used for different purposes, they are
      *        implemented exactly the same in Swoole.
      * @see \Swoole\Server::resume()
+     * @see https://github.com/deminy/swoole-by-examples/blob/master/examples/servers/ddos-protection.php Example of DDoS protection using this method
      */
     public function confirm(int $fd): bool
     {
@@ -229,6 +307,8 @@ class Server
     /**
      * Pause receiving client-side data.
      *
+     * @param int $fd File descriptor of the connection.
+     * @return bool Returns true on success, or false on failure.
      * @see \Swoole\Server::resume()
      */
     public function pause(int $fd): bool
@@ -238,6 +318,8 @@ class Server
     /**
      * Resume receiving client-side data.
      *
+     * @param int $fd File descriptor of the connection.
+     * @return bool Returns true on success, or false on failure.
      * @see \Swoole\Server::pause()
      */
     public function resume(int $fd): bool
@@ -373,6 +455,19 @@ class Server
     {
     }
 
+    /**
+     * Shutdown the server.
+     *
+     * This method has the same effect as the following command line commands:
+     *   - kill -SIGTERM $master_pid
+     *   - kill -15      $master_pid
+     * The above commands send TERM signals to the master process of the Swoole server. $master_pid is the process ID of
+     * the master process.
+     *
+     * This method can be called from worker processes.
+     *
+     * @return bool TRUE on success, FALSE on failure.
+     */
     public function shutdown(): bool
     {
     }
@@ -484,11 +579,10 @@ class Server
      * Run a customized command in a specified process of Swoole.
      *
      * @param bool $json_encode If the callback function of the command returns a JSON encoded string back, it can be decoded automatically by setting this parameter to TRUE.
-     * @return mixed|false
      * @see \Swoole\Server::addCommand()
      * @since 4.8.0
      */
-    public function command(string $name, int $process_id, int $process_type, mixed $data, bool $json_decode = true): string|false
+    public function command(string $name, int $process_id, int $process_type, mixed $data, bool $json_decode = true): string|array|false
     {
     }
 
@@ -524,6 +618,14 @@ class Server
     {
     }
 
+    /**
+     * Get the socket handle bound to the given port of the server.
+     *
+     * This method is available only when Swoole is installed with option "--enable-sockets" included.
+     *
+     * @param int $port Port number. Use the default port number (specified in the constructor) if not passed in or passed in as 0.
+     * @return \Socket|false Returns a Socket object on success; otherwise FALSE.
+     */
     public function getSocket(int $port = 0): \Socket|false
     {
     }

@@ -244,7 +244,7 @@ class MonthlyPRController extends Controller
 
         $count = count(json_decode($request->input('PN')));
         $now = Carbon::now();
-        $SXB_serial_number = date("YmdHis") . "_" . $request_user['username'];
+        $SXB_serial_number = date("YmdHis");
         $record = 0;
         $mergedResult = "";
 
@@ -285,6 +285,7 @@ class MonthlyPRController extends Controller
                     $temp = array(
                         "SRM單號" => "未簽核",
                         "SXB單號" => $SXB_serial_number,
+                        "開單人員" => $request_user['username'],
                         "料號" => $PN[$i],
                         "品名" => $pName[$i],
                         "規格" => $Spec[$i],
@@ -396,6 +397,8 @@ class MonthlyPRController extends Controller
         $sxbsend = json_decode($request->input('sxbsend'));
         $sxbbegin = date(json_decode($request->input('sxbbegin')));
         $sxbend = strtotime(json_decode($request->input('sxbend')));
+        // dump($request->input('sxbend')); // test
+        // return;
         $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $sxbend));
 
         $datas = [];

@@ -31,6 +31,13 @@ class MySQL
     public $errno = 0;
 
     /**
+     * The socket object used by this MySQL client.
+     *
+     * @since 5.0.2
+     */
+    private ?Socket $socket;
+
+    /**
      * @return mixed
      */
     public function getDefer()
@@ -48,7 +55,7 @@ class MySQL
     /**
      * @return mixed
      */
-    public function connect(array $server_config = null)
+    public function connect(?array $server_config = null)
     {
     }
 
@@ -123,11 +130,14 @@ class MySQL
     }
 
     /**
-     * @param mixed $string
-     * @param mixed|null $flags
-     * @return mixed
+     * Escape a string for use in a query.
+     *
+     * This method is available only when Swoole is installed with option "--enable-mysqlnd" included.
+     *
+     * @param string $string The string to be escaped.
+     * @return string|false Returns the escaped string, or FALSE on error.
      */
-    public function escape($string, $flags = null)
+    public function escape(string $string): string|false
     {
     }
 

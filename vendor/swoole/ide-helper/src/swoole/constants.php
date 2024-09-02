@@ -5,11 +5,11 @@ declare(strict_types=1);
 /*
  * Swoole version information.
  */
-define('SWOOLE_VERSION', '5.0.1');
-define('SWOOLE_VERSION_ID', 50001);
+define('SWOOLE_VERSION', '5.1.3');
+define('SWOOLE_VERSION_ID', 50103);
 define('SWOOLE_MAJOR_VERSION', 5);
-define('SWOOLE_MINOR_VERSION', 0);
-define('SWOOLE_RELEASE_VERSION', 1);
+define('SWOOLE_MINOR_VERSION', 1);
+define('SWOOLE_RELEASE_VERSION', 3);
 define('SWOOLE_EXTRA_VERSION', '');
 
 /*
@@ -95,6 +95,7 @@ define('SWOOLE_ERROR_QUEUE_FULL', 506);
 define('SWOOLE_ERROR_OPERATION_NOT_SUPPORT', 507);
 define('SWOOLE_ERROR_PROTOCOL_ERROR', 508);
 define('SWOOLE_ERROR_WRONG_OPERATION', 509);
+define('SWOOLE_ERROR_PHP_RUNTIME_NOTICE', 510); // @since 5.1.0
 define('SWOOLE_ERROR_FILE_NOT_EXIST', 700);
 define('SWOOLE_ERROR_FILE_TOO_LARGE', 701);
 define('SWOOLE_ERROR_FILE_EMPTY', 702);
@@ -151,6 +152,8 @@ define('SWOOLE_ERROR_HTTP_PROXY_HANDSHAKE_ERROR', 7101);
 define('SWOOLE_ERROR_HTTP_INVALID_PROTOCOL', 7102);
 define('SWOOLE_ERROR_HTTP_PROXY_HANDSHAKE_FAILED', 7103);
 define('SWOOLE_ERROR_HTTP_PROXY_BAD_RESPONSE', 7104);
+define('SWOOLE_ERROR_HTTP_CONFLICT_HEADER', 7105); // @since v5.0.3
+define('SWOOLE_ERROR_HTTP_CONTEXT_UNAVAILABLE', 7106); // @since v5.1.2
 define('SWOOLE_ERROR_WEBSOCKET_BAD_CLIENT', 8501);
 define('SWOOLE_ERROR_WEBSOCKET_BAD_OPCODE', 8502);
 define('SWOOLE_ERROR_WEBSOCKET_UNCONNECTED', 8503);
@@ -193,6 +196,12 @@ define('SWOOLE_ERROR_CO_CANNOT_CANCEL', 10015);
 define('SWOOLE_ERROR_CO_NOT_EXISTS', 10016);
 define('SWOOLE_ERROR_CO_CANCELED', 10017);
 define('SWOOLE_ERROR_CO_TIMEDOUT', 10018);
+/*
+ * Failed to close the socket since the socket is currently held by other coroutine(s).
+ *
+ * @since 5.0.2
+ */
+define('SWOOLE_ERROR_CO_SOCKET_CLOSE_WAIT', 10019);
 
 // Trace log types (server related).
 define('SWOOLE_TRACE_SERVER', 2); // 2^1
@@ -227,6 +236,16 @@ define('SWOOLE_TRACE_CO_HTTP_SERVER', 134217728); // 2^27
 define('SWOOLE_TRACE_TABLE', 268435456); // 2^28
 define('SWOOLE_TRACE_CO_CURL', 536870912); // 2^29
 define('SWOOLE_TRACE_CARES', 1073741824); // 2^30
+/*
+ * Constant SWOOLE_TRACE_ZLIB is added in Swoole 4.8.13 and 5.0.2.
+ *
+ * @since 4.8.13 and 5.0.2
+ */
+define('SWOOLE_TRACE_ZLIB', 2147483648); // 2^31
+define('SWOOLE_TRACE_CO_PGSQL', 4294967296); // 2^32; @since 5.1.0
+define('SWOOLE_TRACE_CO_ODBC', 8589934592); // 2^33; @since 5.1.0
+define('SWOOLE_TRACE_CO_ORACLE', 17179869184); // 2^34; @since 5.1.0
+define('SWOOLE_TRACE_CO_SQLITE', 34359738368); // 2^35; @since 5.1.2
 define('SWOOLE_TRACE_ALL', 9223372036854775807); // 2^63 - 1
 
 // Log levels.
@@ -271,13 +290,13 @@ define('SWOOLE_IOV_MAX', 1024);
  * @see \Swoole\Lock
  */
 #ifdef HAVE_RWLOCK
-define('SWOOLE_RWLOCK', 1);
+define('SWOOLE_RWLOCK', 1); # Supported only if read-write lock is included in the POSIX thread (pthread) libraries.
 #endif
-define('SWOOLE_FILELOCK', 2);
+define('SWOOLE_FILELOCK', 2); // No longer supported. Please use mutex lock (\Swoole\Lock::MUTEX) instead.
 define('SWOOLE_MUTEX', 3);
-define('SWOOLE_SEM', 4);
+define('SWOOLE_SEM', 4); // No longer supported. Please use mutex lock (\Swoole\Lock::MUTEX) instead.
 #ifdef HAVE_SPINLOCK
-define('SWOOLE_SPINLOCK', 5);
+define('SWOOLE_SPINLOCK', 5); # Supported only if the Spin Locks option is provided in the POSIX thread (pthread) libraries.
 #endif
 
 /*
@@ -342,8 +361,22 @@ define('PRIO_PROCESS', 0);
 define('PRIO_PGRP', 1);
 define('PRIO_USER', 2);
 
+define('SWOOLE_MSGQUEUE_ORIENT', 1); // @since v5.0.3
+define('SWOOLE_MSGQUEUE_BALANCE', 2); // @since v5.0.3
+
+/*
+ * Coroutine-related constants.
+ */
+/*
+ * Maximum number of coroutines that can be created by default.
+ *
+ * The number can be overridden by explicitly setting one of the following two runtime options:
+ *   - \Swoole\Constant::OPTION_MAX_CORO_NUM
+ *   - \Swoole\Constant::OPTION_MAX_COROUTINE
+ */
 define('SWOOLE_DEFAULT_MAX_CORO_NUM', 100000);
-define('SWOOLE_CORO_MAX_NUM_LIMIT', 9223372036854775807);
+define('SWOOLE_CORO_MAX_NUM_LIMIT', PHP_INT_MAX); // Not used anywhere.
+// States of a coroutine. There are four states: SWOOLE_CORO_INIT, SWOOLE_CORO_WAITING, SWOOLE_CORO_RUNNING, and SWOOLE_CORO_END.
 define('SWOOLE_CORO_INIT', 0);
 define('SWOOLE_CORO_WAITING', 1);
 define('SWOOLE_CORO_RUNNING', 2);
@@ -371,25 +404,159 @@ define('SWOOLE_CHANNEL_TIMEOUT', -1);
 define('SWOOLE_CHANNEL_CLOSED', -2);
 define('SWOOLE_CHANNEL_CANCELED', -3);
 
-define('SWOOLE_HOOK_TCP', 2);
-define('SWOOLE_HOOK_UDP', 4);
-define('SWOOLE_HOOK_UNIX', 8);
-define('SWOOLE_HOOK_UDG', 16);
-define('SWOOLE_HOOK_SSL', 32);
-define('SWOOLE_HOOK_TLS', 64);
-define('SWOOLE_HOOK_STREAM_FUNCTION', 128);
-define('SWOOLE_HOOK_STREAM_SELECT', 128);
-define('SWOOLE_HOOK_FILE', 256);
-define('SWOOLE_HOOK_STDIO', 32768);
-define('SWOOLE_HOOK_SLEEP', 512);
-define('SWOOLE_HOOK_PROC', 1024);
-define('SWOOLE_HOOK_CURL', 2048);
-define('SWOOLE_HOOK_NATIVE_CURL', 4096);
-define('SWOOLE_HOOK_BLOCKING_FUNCTION', 8192);
-define('SWOOLE_HOOK_SOCKETS', 16384);
-define('SWOOLE_HOOK_ALL', 2147481599);
+/*
+ * Runtime hook flags.
+ */
+define('SWOOLE_HOOK_TCP', 2); // 2^1
+define('SWOOLE_HOOK_UDP', 4); // 2^2
+define('SWOOLE_HOOK_UNIX', 8); // 2^3
+define('SWOOLE_HOOK_UDG', 16); // 2^4
+define('SWOOLE_HOOK_SSL', 32); // 2^5
+define('SWOOLE_HOOK_TLS', 64); // 2^6
+/*
+ * Runtime hook flag SWOOLE_HOOK_STREAM_FUNCTION makes the following PHP functions coroutine-friendly:
+ *   - stream_select()
+ *   - stream_socket_pair()
+ */
+define('SWOOLE_HOOK_STREAM_FUNCTION', 128);  // 2^7
+// Runtime hook flag SWOOLE_HOOK_STREAM_SELECT is deprecated in Swoole 4.4.0. It's kept for backward compatibility only.
+define('SWOOLE_HOOK_STREAM_SELECT', SWOOLE_HOOK_STREAM_FUNCTION);
+define('SWOOLE_HOOK_FILE', 256); // 2^8
+/*
+ * Runtime hook flag SWOOLE_HOOK_SLEEP makes the following PHP functions coroutine-friendly:
+ *   - sleep()
+ *   - usleep()
+ *   - time_nanosleep()
+ *   - time_sleep_until()
+ */
+define('SWOOLE_HOOK_SLEEP', 512); // 2^9
+/*
+ * Runtime hook flag SWOOLE_HOOK_PROC makes the following PHP functions coroutine-friendly:
+ *   - proc_open()
+ *   - proc_close()
+ *   - proc_get_status()
+ *   - proc_terminate()
+ */
+define('SWOOLE_HOOK_PROC', 1024); // 2^10
+/*
+ * Runtime hook flag SWOOLE_HOOK_CURL makes the following PHP functions coroutine-friendly by replacing them internally
+ * with functions from Swoole Library:
+ *   - curl_init(): replaced with function swoole_curl_init().
+ *   - curl_setopt(): replaced with function swoole_curl_setopt().
+ *   - curl_setopt_array(): replaced with function swoole_curl_setopt_array().
+ *   - curl_exec(): replaced with function swoole_curl_exec().
+ *   - curl_getinfo(): replaced with function swoole_curl_getinfo().
+ *   - curl_errno(): replaced with function swoole_curl_errno().
+ *   - curl_error(): replaced with function swoole_curl_error().
+ *   - curl_reset(): replaced with function swoole_curl_reset().
+ *   - curl_close(): replaced with function swoole_curl_close().
+ *   - curl_multi_getcontent(): replaced with function swoole_curl_multi_getcontent().
+ *
+ * It's not recommended to use this flag since it doesn't fully support all the features of the original PHP cURL
+ * extension. Please use flag SWOOLE_HOOK_NATIVE_CURL instead.
+ */
+define('SWOOLE_HOOK_CURL', 2048); // 2^11
+/*
+ * Runtime hook flag SWOOLE_HOOK_NATIVE_CURL makes the following PHP functions coroutine-friendly:
+ *   - curl_close()
+ *   - curl_copy_handle()
+ *   - curl_errno()
+ *   - curl_error()
+ *   - curl_exec()
+ *   - curl_getinfo()
+ *   - curl_init()
+ *   - curl_setopt()
+ *   - curl_setopt_array()
+ *   - curl_reset()
+ *   - curl_pause()
+ *   - curl_escape()
+ *   - curl_unescape()
+ *   - curl_multi_init()
+ *   - curl_multi_add_handle()
+ *   - curl_multi_exec()
+ *   - curl_multi_errno()
+ *   - curl_multi_select()
+ *   - curl_multi_setopt()
+ *   - curl_multi_getcontent()
+ *   - curl_multi_info_read()
+ *   - curl_multi_remove_handle()
+ *   - curl_multi_close()
+ *
+ * Runtime hook flag SWOOLE_HOOK_NATIVE_CURL can be enabled only when Swoole is installed with option "--enable-swoole-curl"
+ * included. It's recommended to use this flag instead of flag SWOOLE_HOOK_CURL.
+ */
+define('SWOOLE_HOOK_NATIVE_CURL', 4096); // 2^12
+/*
+ * Runtime hook flag SWOOLE_HOOK_BLOCKING_FUNCTION makes the following PHP functions coroutine-friendly by replacing them internally:
+ *   - gethostbyname(): replaced with method Swoole\Coroutine::gethostbyname() internally.
+ *   - exec(): replaced with function swoole_exec() from Swoole Library internally.
+ *   - shell_exec(): replaced with function swoole_shell_exec() from Swoole Library internally.
+ */
+define('SWOOLE_HOOK_BLOCKING_FUNCTION', 8192); // 2^13
+/*
+ * Runtime hook flag SWOOLE_HOOK_BLOCKING_FUNCTION makes the following PHP functions coroutine-friendly by replacing them
+ * internally with functions from Swoole Library:
+ *   - socket_create(): replaced with function swoole_socket_create().
+ *   - socket_create_listen(): replaced with function swoole_socket_create_listen().
+ *   - socket_create_pair(): replaced with function swoole_socket_create_pair().
+ *   - socket_connect(): replaced with function swoole_socket_connect().
+ *   - socket_write(): replaced with function swoole_socket_write().
+ *   - socket_read(): replaced with function swoole_socket_read().
+ *   - socket_send(): replaced with function swoole_socket_send().
+ *   - socket_recv(): replaced with function swoole_socket_recv().
+ *   - socket_sendto(): replaced with function swoole_socket_sendto().
+ *   - socket_recvfrom(): replaced with function swoole_socket_recvfrom().
+ *   - socket_bind(): replaced with function swoole_socket_bind().
+ *   - socket_listen(): replaced with function swoole_socket_listen().
+ *   - socket_accept(): replaced with function swoole_socket_accept().
+ *   - socket_getpeername(): replaced with function swoole_socket_getpeername().
+ *   - socket_getsockname(): replaced with function swoole_socket_getsockname().
+ *   - socket_getopt(): replaced with function swoole_socket_getopt().
+ *   - socket_get_option(): replaced with function swoole_socket_get_option().
+ *   - socket_setopt(): replaced with function swoole_socket_setopt().
+ *   - socket_set_option(): replaced with function swoole_socket_set_option().
+ *   - socket_set_block(): replaced with function swoole_socket_set_block().
+ *   - socket_set_nonblock(): replaced with function swoole_socket_set_nonblock().
+ *   - socket_shutdown(): replaced with function swoole_socket_shutdown().
+ *   - socket_close(): replaced with function swoole_socket_close().
+ *   - socket_clear_error(): replaced with function swoole_socket_clear_error().
+ *   - socket_last_error(): replaced with function swoole_socket_last_error().
+ *   - socket_import_stream(): replaced with function swoole_socket_import_stream().
+ *
+ * When enabled, it also makes class \Swoole\Coroutine\Socket a child class of built-in PHP class \Socket.
+ *
+ * @see \Swoole\Coroutine\Socket
+ * @see \Socket
+ */
+define('SWOOLE_HOOK_SOCKETS', 16384); // 2^14
+define('SWOOLE_HOOK_STDIO', 32768); // 2^15
+define('SWOOLE_HOOK_PDO_PGSQL', 65536); // 2^16; @since 5.1.0
+/*
+ * There are two different hook flags for PHP's cURL functions:
+ *   - SWOOLE_HOOK_CURL: Implemented by replacing PHP's cURL functions internally with swoole_curl_*() functions from Swoole Library.
+ *   - SWOOLE_HOOK_NATIVE_CURL (recommended): Implemented using libcurl (the curl library).
+ *
+ * Only one of the two runtime hook flags can be enabled at a time. SWOOLE_HOOK_NATIVE_CURL can be enabled only when
+ * Swoole is installed with option "--enable-swoole-curl" included.
+ * When Swoole is installed with option "--enable-swoole-curl" included, SWOOLE_HOOK_ALL also enables SWOOLE_HOOK_NATIVE_CURL;
+ * otherwise, it enables SWOOLE_HOOK_CURL.
+ *
+ * Class Swoole\Coroutine\Curl\Exception is defined only when option "--enable-swoole-curl" is included during installation.
+ */
+if (class_exists(Swoole\Coroutine\Curl\Exception::class)) { // When Swoole is installed with option "--enable-swoole-curl" included.
+    define('SWOOLE_HOOK_ALL', 0x7FFFFFFF ^ SWOOLE_HOOK_CURL);
+} else {
+    define('SWOOLE_HOOK_ALL', 0x7FFFFFFF ^ SWOOLE_HOOK_NATIVE_CURL);
+}
 
-define('SOCKET_ECANCELED', 125); // TODO:
+/*
+ * An asynchronous socket operation was canceled before it completed. The value varies among different systems.
+ *
+ * A typical use case of this constant can be found in class Swoole\Coroutine\Server.
+ *
+ * @see Swoole\Coroutine\Server::start()
+ */
+define('SOCKET_ECANCELED', 125);
 
 /*
  * Constants in this section are used in Swoole servers.
@@ -397,13 +564,14 @@ define('SOCKET_ECANCELED', 125); // TODO:
 // Server modes. For details, please check documentation on property \Swoole\Server::$mode.
 define('SWOOLE_BASE', 1);
 define('SWOOLE_PROCESS', 2);
-// Command types in Swoole server.
-define('SWOOLE_SERVER_COMMAND_MASTER', 2);
-define('SWOOLE_SERVER_COMMAND_MANAGER', 32);
-define('SWOOLE_SERVER_COMMAND_REACTOR_THREAD', 4);
-define('SWOOLE_SERVER_COMMAND_EVENT_WORKER', 8);
-define('SWOOLE_SERVER_COMMAND_WORKER', 8);
-define('SWOOLE_SERVER_COMMAND_TASK_WORKER', 16);
+// Types of processes in Swoole server that handle commands.
+define('SWOOLE_SERVER_COMMAND_MASTER', 2); // 2^1
+define('SWOOLE_SERVER_COMMAND_REACTOR_THREAD', 4); // 2^2
+define('SWOOLE_SERVER_COMMAND_EVENT_WORKER', 8); // 2^3
+define('SWOOLE_SERVER_COMMAND_WORKER', SWOOLE_SERVER_COMMAND_EVENT_WORKER); // 2^3
+define('SWOOLE_SERVER_COMMAND_TASK_WORKER', 16); // 2^4
+define('SWOOLE_SERVER_COMMAND_MANAGER', 32); // 2^5
+// Dispatch modes in Swoole server. They define how the server dispatches requests to worker processes.
 define('SWOOLE_DISPATCH_ROUND', 1);
 define('SWOOLE_DISPATCH_FDMOD', 2);
 define('SWOOLE_DISPATCH_IDLE_WORKER', 3);
@@ -414,17 +582,19 @@ define('SWOOLE_DISPATCH_STREAM', 7);
 define('SWOOLE_DISPATCH_CO_CONN_LB', 8);
 define('SWOOLE_DISPATCH_CO_REQ_LB', 9);
 define('SWOOLE_DISPATCH_CONCURRENT_LB', 10);
+// Results when dispatching a request to a worker process in Swoole server.
 define('SWOOLE_DISPATCH_RESULT_DISCARD_PACKET', -1);
 define('SWOOLE_DISPATCH_RESULT_CLOSE_CONNECTION', -2);
 define('SWOOLE_DISPATCH_RESULT_USERFUNC_FALLBACK', -3);
-define('SWOOLE_TASK_TMPFILE', 1);
-define('SWOOLE_TASK_SERIALIZE', 2);
-define('SWOOLE_TASK_NONBLOCK', 4);
-define('SWOOLE_TASK_CALLBACK', 8);
-define('SWOOLE_TASK_WAITALL', 16);
-define('SWOOLE_TASK_COROUTINE', 32);
-define('SWOOLE_TASK_PEEK', 64);
-define('SWOOLE_TASK_NOREPLY', 128);
+// Task flags.
+define('SWOOLE_TASK_TMPFILE', 1); // 2^0
+define('SWOOLE_TASK_SERIALIZE', 2); // 2^1
+define('SWOOLE_TASK_NONBLOCK', 4); // 2^2
+define('SWOOLE_TASK_CALLBACK', 8); // 2^3
+define('SWOOLE_TASK_WAITALL', 16); // 2^4
+define('SWOOLE_TASK_COROUTINE', 32); // 2^5
+define('SWOOLE_TASK_PEEK', 64); // 2^6
+define('SWOOLE_TASK_NOREPLY', 128); // 2^7
 // Statuses of worker processes in Swoole server.
 define('SWOOLE_WORKER_BUSY', 1);
 define('SWOOLE_WORKER_IDLE', 2);
@@ -526,6 +696,9 @@ define('SWOOLE_WEBSOCKET_CLOSE_POLICY_ERROR', 1008);
 define('SWOOLE_WEBSOCKET_CLOSE_MESSAGE_TOO_BIG', 1009);
 define('SWOOLE_WEBSOCKET_CLOSE_EXTENSION_MISSING', 1010);
 define('SWOOLE_WEBSOCKET_CLOSE_SERVER_ERROR', 1011);
+define('SWOOLE_WEBSOCKET_CLOSE_CLOSE_SERVICE_RESTART', 1012); // @since v5.1.2
+define('SWOOLE_WEBSOCKET_CLOSE_TRY_AGAIN_LATER', 1013); // @since v5.1.2
+define('SWOOLE_WEBSOCKET_CLOSE_BAD_GATEWAY', 1014); // @since v5.1.2
 define('SWOOLE_WEBSOCKET_CLOSE_TLS', 1015);
 // Next twelve constants are kept for backward compatibility.
 define('WEBSOCKET_CLOSE_NORMAL', SWOOLE_WEBSOCKET_CLOSE_NORMAL);
@@ -539,6 +712,9 @@ define('WEBSOCKET_CLOSE_POLICY_ERROR', SWOOLE_WEBSOCKET_CLOSE_POLICY_ERROR);
 define('WEBSOCKET_CLOSE_MESSAGE_TOO_BIG', SWOOLE_WEBSOCKET_CLOSE_MESSAGE_TOO_BIG);
 define('WEBSOCKET_CLOSE_EXTENSION_MISSING', SWOOLE_WEBSOCKET_CLOSE_EXTENSION_MISSING);
 define('WEBSOCKET_CLOSE_SERVER_ERROR', SWOOLE_WEBSOCKET_CLOSE_SERVER_ERROR);
+define('WEBSOCKET_CLOSE_CLOSE_SERVICE_RESTART', SWOOLE_WEBSOCKET_CLOSE_CLOSE_SERVICE_RESTART); // @since v5.1.2
+define('WEBSOCKET_CLOSE_TRY_AGAIN_LATER', SWOOLE_WEBSOCKET_CLOSE_TRY_AGAIN_LATER); // @since v5.1.2
+define('WEBSOCKET_CLOSE_BAD_GATEWAY', SWOOLE_WEBSOCKET_CLOSE_BAD_GATEWAY); // @since v5.1.2
 define('WEBSOCKET_CLOSE_TLS', SWOOLE_WEBSOCKET_CLOSE_TLS);
 
 /*

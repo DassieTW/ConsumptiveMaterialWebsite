@@ -8,7 +8,7 @@ import {
 } from "vue-router";
 
 export default function useSxbSearch() {
-    const mats = ref("");
+    const mats_SXB = ref("");
     const inTransit = ref("");
     const errors = ref("");
     const router = useRouter();
@@ -19,13 +19,8 @@ export default function useSxbSearch() {
         // let sxbclient = sessionStorage.getItem("sxbclient");
         let sxbisn = sessionStorage.getItem("sxbisn");
         let sxbsend = sessionStorage.getItem("sxbsend");
-        let sxbsxb = sessionStorage.getItem("sxbsend");
-        let sxbcheck = sessionStorage.getItem("sxbcheck");
         let sxbbegin = sessionStorage.getItem("sxbbegin");
         let sxbend = sessionStorage.getItem("sxbend");
-
-        // let gettest = await axios.post('/basic/materialsearch');
-        // console.log(gettest); // test
 
         try {
             let response = await axios.post('/api/month/sxb', {
@@ -33,14 +28,12 @@ export default function useSxbSearch() {
                 // sxbclient: sxbclient,
                 sxbisn: sxbisn,
                 sxbsend: sxbsend,
-                sxbsxb: sxbsxb,
-                sxbcheck: sxbcheck,
                 sxbbegin: sxbbegin,
                 sxbend: sxbend,
             });
 
-            mats.value = JSON.stringify(response.data);
-            //console.log(JSON.parse(mats.value)); // test
+            mats_SXB.value = JSON.stringify(response.data);
+            //console.log(JSON.parse(mats_SXB.value)); // test
         } catch (e) {
             console.log(e); // test
             for (const key in e.response.data.errors) {
@@ -49,7 +42,7 @@ export default function useSxbSearch() {
 
             console.log(errors.value); // test
         } // try catch
-    } // get mats
+    } // get mats_SXB
 
     const SXB_Reject = async (sxb_number) => {
         errors.value = "";
@@ -115,7 +108,7 @@ export default function useSxbSearch() {
     } // getTransit
 
     return {
-        mats,
+        mats_SXB,
         inTransit,
         getMats,
         SXB_Reject,

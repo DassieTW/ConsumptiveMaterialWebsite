@@ -32,16 +32,16 @@
         <template v-slot:月請購="{ row, key }">
             <div v-if="row.月請購 === '是'">
                 <select @change="(event) => { (row.月請購 = event.target.value); rowUserInput(row, key); }"
-                    style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + row.id"
-                    :name="'month' + key">
+                    style="width: 7ch;" class="col col-auto form-select form-select-lg ps-2 p-0 m-0"
+                    :id="'month' + row.id" :name="'month' + key">
                     <option value="是" selected>{{ $t("basicInfoLang.yes") }}</option>
                     <option value="否">{{ $t("basicInfoLang.no") }}</option>
                 </select>
             </div>
             <div v-else>
                 <select @change="(event) => { (row.月請購 = event.target.value); rowUserInput(row, key); }"
-                    style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0" :id="'month' + row.id"
-                    :name="'month' + key">
+                    style="width: 7ch;" class="col col-auto form-select form-select-lg ps-2 p-0 m-0"
+                    :id="'month' + row.id" :name="'month' + key">
                     <option value="是">{{ $t("basicInfoLang.yes") }}</option>
                     <option value="否" selected>{{ $t("basicInfoLang.no") }}</option>
                 </select>
@@ -386,7 +386,7 @@ export default defineComponent({
                 });
             } // else
         } // onSendToDBClick
-
+        
         watch(mats, async () => {
             await triggerModal();
             // console.log(JSON.parse(mats.value)); // test
@@ -482,34 +482,13 @@ export default defineComponent({
                     },
                 },
                 {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.price"
-                    ),
-                    field: "單價",
-                    width: "13ch",
-                    sortable: true,
+                    label: app.appContext.config.globalProperties.$t("basicInfoLang.price") +
+                        " & " + app.appContext.config.globalProperties.$t("basicInfoLang.money"),
+                    field: "單價_幣別",
+                    width: "19ch",
+                    sortable: false,
                     hasInput: function (row, i) {
-                        return (
-                            '<input style="width: 10ch;" type="number" step="0.00001" id="price' +
-                            row.id +
-                            '"' +
-                            ' class="form-control text-center align-self-center p-0 m-0" name="price' +
-                            i +
-                            '"' +
-                            ' value="' +
-                            parseFloat(row.單價) +
-                            '">'
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.money"
-                    ),
-                    field: "幣別",
-                    width: "10ch",
-                    sortable: true,
-                    hasInput: function (row, i) {
+                        let returnStr = "";
                         let currencyDict = [
                             "RMB",
                             "USD",
@@ -518,13 +497,26 @@ export default defineComponent({
                             "VND",
                             "IDR",
                         ];
-                        let returnStr = "";
+
                         returnStr +=
-                            '<select style="width: 8ch;" class="form-select form-select-lg p-0 m-0" id="money' +
+                            '<div class="row">' +
+                            '<input style="width: 7ch;" type="number" step="0.00001" id="price' +
+                            row.id +
+                            '"' +
+                            ' class="col form-control text-center align-self-center p-0 m-0" name="price' +
+                            i +
+                            '"' +
+                            ' value="' +
+                            parseFloat(row.單價) +
+                            '">';
+
+                        returnStr +=
+                            '<select style="width: 8ch;" class="col form-select form-select-lg ps-2 p-0 m-0" id="money' +
                             row.id +
                             '" name="money' +
                             i +
                             '">';
+
                         currencyDict.forEach((element) => {
                             if (row.幣別 === element) {
                                 returnStr +=
@@ -534,7 +526,7 @@ export default defineComponent({
                                 returnStr += '<option ' + 'value="' + element + '">' + element + "</option>";
                             } // else
                         }); // for each in sender array
-                        returnStr += "</select>";
+                        returnStr += "</select></div>";
                         return returnStr;
                     },
                 },
@@ -564,11 +556,12 @@ export default defineComponent({
                         "basicInfoLang.mpq"
                     ),
                     field: "MPQ",
-                    width: "8ch",
+                    width: "9ch",
                     sortable: true,
                     hasInput: function (row, i) {
                         return (
-                            '<input style="width:8ch;" type="number" id="mpq' +
+                            '<div class="row">' +
+                            '<input style="width:5ch;" type="number" id="mpq' +
                             row.id +
                             '"' +
                             ' name="mpq' +
@@ -576,7 +569,10 @@ export default defineComponent({
                             '" value="' +
                             row.MPQ +
                             '"' +
-                            ' class="form-control text-center p-0 m-0" min="0">'
+                            ' class="form-control text-center col p-0 m-0" min="0">' +
+                            '<div class="col input-group-text overflow-scroll py-0 px-1 m-0" style="width: 4ch;">' +
+                            "<small>" + row.單位 + "</small>" +
+                            '</div></div>'
                         );
                     },
                 },
@@ -585,11 +581,12 @@ export default defineComponent({
                         "basicInfoLang.moq"
                     ),
                     field: "MOQ",
-                    width: "8ch",
+                    width: "9ch",
                     sortable: true,
                     hasInput: function (row, i) {
                         return (
-                            '<input style="width:8ch;" type="number" id="moq' +
+                            '<div class="row">' +
+                            '<input style="width:5ch;" type="number" id="moq' +
                             row.id +
                             '"' +
                             ' name="moq' +
@@ -597,7 +594,10 @@ export default defineComponent({
                             '" value="' +
                             row.MOQ +
                             '"' +
-                            ' class="form-control text-center p-0 m-0" min="0">'
+                            ' class="form-control text-center col p-0 m-0" min="0">' +
+                            '<div class="col input-group-text overflow-scroll py-0 px-1 m-0" style="width: 4ch;">' +
+                            "<small>" + row.單位 + "</small>" +
+                            '</div></div>'
                         );
                     },
                 },
@@ -642,7 +642,7 @@ export default defineComponent({
                         // console.log(row); // test
                         if (row.A級資材 === "是") {
                             returnStr =
-                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg ps-2 p-0 m-0"' +
                                 ' id="gradea' +
                                 row.id +
                                 '" name="gradea' +
@@ -662,7 +662,7 @@ export default defineComponent({
                         } // if
                         else {
                             returnStr =
-                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg p-0 m-0"' +
+                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg ps-2 p-0 m-0"' +
                                 ' id="gradea' +
                                 row.id +
                                 '" name="gradea' +
@@ -694,7 +694,7 @@ export default defineComponent({
                     hasInput: function (row, i) {
                         let returnStr = "";
                         returnStr +=
-                            '<select style="width: 10ch;" class="form-select form-select-lg p-0 m-0" id="send' +
+                            '<select style="width: 10ch;" class="form-select form-select-lg ps-2 p-0 m-0" id="send' +
                             row.id +
                             '" name="send' +
                             i +

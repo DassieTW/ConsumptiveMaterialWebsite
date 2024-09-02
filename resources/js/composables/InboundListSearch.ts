@@ -18,8 +18,6 @@ export default function useInboundListSearch() {
         let inboundcheck = sessionStorage.getItem("inboundcheck");
         let inboundbegin = sessionStorage.getItem("inboundbegin");
         let inboundend = sessionStorage.getItem("inboundend");
-        // let gettest = await axios.post('/basic/materialsearch');
-        // console.log(gettest); // test
 
         try {
             let response = await axios.post('/api/inbound/search', {

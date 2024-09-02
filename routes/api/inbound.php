@@ -32,15 +32,18 @@ Route::post('/search', function (Request $request) {
     //$datas = [];
     // dd(json_decode($request->input('LookInTargets'))); // test
 
-    $datas = DB::table('inbound')
+    $test = DB::table('inbound')
         ->where('料號', 'like', $inboundisn . '%')
-        ->where('入庫單號', 'like', $inboundlist . '%')
-        ->get();
-    //$datas = $datas->where('客戶別', "Fendi");
-    //dd($datas);
+        ->where('入庫單號', 'like', $inboundlist . '%');
+
+    $datas = DB::table('consumptive_material')
+        ->rightJoinSub($test, 'inbound', function ($join) {
+            $join->on('consumptive_material.料號', '=', 'inbound.料號');
+        })->get();
+
     if ($inboundcheck) {
         $datas = $datas->whereBetween('入庫時間', [$inboundbegin, $end])->values();
-    }
+    } // if
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
 

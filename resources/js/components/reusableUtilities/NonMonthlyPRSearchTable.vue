@@ -296,7 +296,7 @@ export default defineComponent({
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.當月需求).toLocaleString('en', { useGrouping: true }) +
-                            "</div>"
+                            " <small>" + row.單位 + "</small>" + "</div>"
                         );
                     },
                 },
@@ -319,7 +319,7 @@ export default defineComponent({
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.下月需求).toLocaleString('en', { useGrouping: true }) +
-                            "</div>"
+                            " <small>" + row.單位 + "</small>" + "</div>"
                         );
                     },
                 },
@@ -342,7 +342,7 @@ export default defineComponent({
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) +
-                            "</div>"
+                            " <small>" + row.單位 + "</small>" + "</div>"
                         );
                     },
                 },

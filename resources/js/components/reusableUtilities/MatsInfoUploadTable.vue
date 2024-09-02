@@ -711,7 +711,7 @@ export default defineComponent({
                                 '" value="">' +
                                 '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
-                                row.MPQ +
+                                row.MPQ + " <small>" + row.單位 + "</small>" +
                                 "</div>"
                             );
                         } else {
@@ -725,7 +725,7 @@ export default defineComponent({
                                 '">' +
                                 '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
-                                row.MPQ +
+                                row.MPQ + " <small>" + row.單位 + "</small>" +
                                 "</div>"
                             );
                         } // if else
@@ -748,7 +748,7 @@ export default defineComponent({
                                 '" value="">' +
                                 '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
-                                row.MOQ +
+                                row.MOQ + " <small>" + row.單位 + "</small>" +
                                 "</div>"
                             );
                         } else {
@@ -762,7 +762,7 @@ export default defineComponent({
                                 '">' +
                                 '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
-                                row.MOQ +
+                                row.MOQ + " <small>" + row.單位 + "</small>" +
                                 "</div>"
                             );
                         } // if else

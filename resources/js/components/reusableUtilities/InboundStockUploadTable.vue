@@ -564,7 +564,15 @@ export default defineComponent({
                 } // for
 
                 // convert InTransit to a two-dimensional array and deduct the sumInboundQuantity from it
-                newInTransit = JSON.parse(mats_inTransit.value).data.map(a => [a.料號, Math.abs(parseInt(a.請購數量)) - sumInboundQuantity[a.料號]]);
+                newInTransit = JSON.parse(mats_inTransit.value).data.flatMap((obj) => {
+                    let value = parseInt(obj.請購數量) - sumInboundQuantity[obj.料號];
+                    value = value < 0 ? 0 : value;
+                    if (tempArr_isn.includes(obj.料號)) {
+                        return [[obj.料號, value]];
+                    } else {
+                        return [];
+                    } // if else
+                });
             } // if
             else {
                 $("body").loadingModal("hide");
@@ -602,7 +610,7 @@ export default defineComponent({
                 uploadToDBReady.value = false;
                 notyf.open({
                     type: "success",
-                    message: app.appContext.config.globalProperties.$t("inboundpageLang.total") + " " + JSON.parse(mats.value).record + " " + app.appContext.config.globalProperties.$t("inboundpageLang.record") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.change") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.success"),
+                    message: app.appContext.config.globalProperties.$t("inboundpageLang.change") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.success"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
@@ -614,6 +622,8 @@ export default defineComponent({
 
                 data.splice(0); // clean up the data
                 queryResult.value = "";
+                await getTransit();
+                await getLocs();
             } // if
             else {
                 notyf.open({
@@ -1179,7 +1189,7 @@ export default defineComponent({
                             '">' +
                             '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.MOQ +
+                            row.MOQ + " <small>" + row.單位 + "</small>" +
                             "</div>"
                         );
                     },
@@ -1203,7 +1213,7 @@ export default defineComponent({
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.本次請購數量).toLocaleString("en-US") +
-                            "</div>"
+                            " <small>" + row.單位 + "</small>" + "</div>"
                         );
                     },
                 },

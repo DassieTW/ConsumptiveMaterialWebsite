@@ -113,7 +113,7 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, inTransit, getMats, SXB_Reject, SXB_Approve, getTransit } = useSxbSearch(); // axios get the mats data
+        const { mats_SXB, inTransit, getMats, SXB_Reject, SXB_Approve, getTransit } = useSxbSearch(); // axios get the mats_SXB data
 
         onBeforeMount(getMats);
 
@@ -323,11 +323,11 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // sxb_approve
 
-        watch(mats, async () => {
+        watch(mats_SXB, async () => {
             await triggerModal();
 
-            // console.log(JSON.parse(mats.value)); // test
-            let allRowsObj = JSON.parse(mats.value);
+            // console.log(JSON.parse(mats_SXB.value)); // test
+            let allRowsObj = JSON.parse(mats_SXB.value);
             data.splice(0);
             AllRecords = [];
             // console.log(allRowsObj.datas); // test
@@ -532,7 +532,7 @@ export default defineComponent({
                             '">' +
                             '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.MOQ +
+                            row.MOQ + " <small>" + row.單位 + "</small>" +
                             "</div>"
                         );
                     },
@@ -556,7 +556,7 @@ export default defineComponent({
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             parseInt(row.本次請購數量).toLocaleString("en-US") +
-                            "</div>"
+                            " <small>" + row.單位 + "</small>" + "</div>"
                         );
                     },
                 },

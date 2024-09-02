@@ -13,6 +13,9 @@ use Intervention\Image\Modifiers\DrawBezierModifier as ModifiersDrawBezierModifi
 class DrawBezierModifier extends ModifiersDrawBezierModifier implements SpecializedInterface
 {
     /**
+     * {@inheritdoc}
+     *
+     * @see ModifierInterface::apply()
      * @throws RuntimeException
      * @throws GeometryException
      */
@@ -35,6 +38,7 @@ class DrawBezierModifier extends ModifiersDrawBezierModifier implements Speciali
                     $this->backgroundColor()
                 );
 
+                imagesetthickness($frame->native(), 0);
                 imagefilledpolygon(
                     $frame->native(),
                     $polygon,

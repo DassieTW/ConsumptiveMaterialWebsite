@@ -11,6 +11,10 @@ namespace Swoole\Coroutine;
 class System
 {
     /**
+     * Get the IPv4/IPv6 address corresponding to a given Internet host name.
+     *
+     * Please check documentation of method \Swoole\Coroutine::gethostbyname() for more details.
+     *
      * @alias This method is an alias of method \Swoole\Coroutine::gethostbyname().
      * @see \Swoole\Coroutine::gethostbyname()
      */
@@ -19,7 +23,12 @@ class System
     }
 
     /**
-     * @alias This method is an alias of method \Swoole\Coroutine::dnsLookup().
+     * Lookup the IPv4/IPv6 address corresponding to a given Internet host name.
+     *
+     * Please check documentation of method \Swoole\Coroutine::dnsLookup() for more details.
+     *
+     * @alias This method is an alias of function \swoole_async_dns_lookup_coro().
+     * @see \swoole_async_dns_lookup_coro()
      * @see \Swoole\Coroutine::dnsLookup()
      */
     public static function dnsLookup(string $domain_name, float $timeout = 60, int $type = AF_INET): string|false
@@ -46,7 +55,7 @@ class System
      * @alias This method has an alias of \Swoole\Coroutine::getaddrinfo().
      * @see \Swoole\Coroutine::getaddrinfo()
      */
-    public static function getaddrinfo(string $domain, int $family = AF_INET, int $socktype = SOCK_STREAM, int $protocol = STREAM_IPPROTO_TCP, ?string $service = null, float $timeout = -1): bool|array
+    public static function getaddrinfo(string $domain, int $family = AF_INET, int $socktype = SOCK_STREAM, int $protocol = STREAM_IPPROTO_TCP, ?string $service = null, float $timeout = -1): array|false
     {
     }
 

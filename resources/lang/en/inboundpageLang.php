@@ -92,6 +92,8 @@ return [
     'enterinlist' => 'Please enter the Inbound list No.',
     'timepart' => 'Time period',
     'upload1' => 'Upload',
-    'noinpeople' => 'The ID of the inbound people does not exist, please go to User Management-Maintenance of New Person Information',
-    'rfidinpeople' => 'Please click here to to tap the Inbound person\'s ID card',
+    'noinpeople' => 'The ID does not exist, please go to User Mgmt. -> Modify Staff Info.',
+    'rfidinpeople' => 'Please click here to tap ID card',
+    'no_basic' => 'PN data not exist',
+    'no_basic_are_highlighted' => 'PN in red indicates that the material info. is not maintained',
 ];

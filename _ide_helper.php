@@ -1239,7 +1239,7 @@
          * Call the given Closure / class@method and inject its dependencies.
          *
          * @param callable|string $callback
-         * @param \Illuminate\Container\array<string,  mixed>  $parameters
+         * @param array<string, mixed> $parameters
          * @param string|null $defaultMethod
          * @return mixed 
          * @throws \InvalidArgumentException
@@ -15979,7 +15979,7 @@
                     /**
          * 
          *
-         * @see \Maatwebsite\Excel\Mixins\DownloadCollection::downloadExcel()
+         * @see \Maatwebsite\Excel\Mixins\DownloadCollectionMixin::downloadExcel()
          * @param string $fileName
          * @param string|null $writerType
          * @param mixed $withHeadings
@@ -15993,7 +15993,7 @@
                     /**
          * 
          *
-         * @see \Maatwebsite\Excel\Mixins\StoreCollection::storeExcel()
+         * @see \Maatwebsite\Excel\Mixins\StoreCollectionMixin::storeExcel()
          * @param string $filePath
          * @param string|null $disk
          * @param string|null $writerType
@@ -16035,9 +16035,10 @@
                     /**
          * 
          *
+         * @param string|null $disk Fallback for usage with named properties
          * @param object $export
          * @param string $filePath
-         * @param string|null $disk
+         * @param string|null $diskName
          * @param string $writerType
          * @param mixed $diskOptions
          * @return bool 
@@ -16045,10 +16046,10 @@
          * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
          * @static 
          */ 
-        public static function store($export, $filePath, $diskName = null, $writerType = null, $diskOptions = [])
+        public static function store($export, $filePath, $diskName = null, $writerType = null, $diskOptions = [], $disk = null)
         {
                         /** @var \Maatwebsite\Excel\Excel $instance */
-                        return $instance->store($export, $filePath, $diskName, $writerType, $diskOptions);
+                        return $instance->store($export, $filePath, $diskName, $writerType, $diskOptions, $disk);
         }
                     /**
          * 
@@ -16138,6 +16139,52 @@
         {
                         /** @var \Maatwebsite\Excel\Excel $instance */
                         return $instance->queueImport($import, $filePath, $disk, $readerType);
+        }
+                    /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param object|callable $macro
+         * @return void 
+         * @static 
+         */ 
+        public static function macro($name, $macro)
+        {
+                        \Maatwebsite\Excel\Excel::macro($name, $macro);
+        }
+                    /**
+         * Mix another object into the class.
+         *
+         * @param object $mixin
+         * @param bool $replace
+         * @return void 
+         * @throws \ReflectionException
+         * @static 
+         */ 
+        public static function mixin($mixin, $replace = true)
+        {
+                        \Maatwebsite\Excel\Excel::mixin($mixin, $replace);
+        }
+                    /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasMacro($name)
+        {
+                        return \Maatwebsite\Excel\Excel::hasMacro($name);
+        }
+                    /**
+         * Flush the existing macros.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function flushMacros()
+        {
+                        \Maatwebsite\Excel\Excel::flushMacros();
         }
                     /**
          * 
@@ -16825,6 +16872,17 @@
                         return $instance->captureLastError($hint);
         }
                     /**
+         * {@inheritdoc}
+         *
+         * @param int|float|null $duration
+         * @static 
+         */ 
+        public static function captureCheckIn($slug, $status, $duration = null, $monitorConfig = null, $checkInId = null)
+        {
+                        /** @var \Sentry\State\Hub $instance */
+                        return $instance->captureCheckIn($slug, $status, $duration, $monitorConfig, $checkInId);
+        }
+                    /**
          * Records a new breadcrumb which will be attached to future events. They
          * will be added to subsequent events to provide more context on user's
          * actions prior to an error or crash.
@@ -16867,9 +16925,9 @@
          * which point the transaction with all its finished child spans will be sent to
          * Sentry.
          *
-         * @param \Sentry\State\array<string,  mixed> $customSamplingContext Additional context that will be passed to the {@see SamplingContext}
+         * @param array<string, mixed> $customSamplingContext Additional context that will be passed to the {@see SamplingContext}
          * @param \Sentry\Tracing\TransactionContext $context Properties of the new transaction
-         * @param \Sentry\State\array<string,  mixed> $customSamplingContext Additional context that will be passed to the {@see SamplingContext}
+         * @param array<string, mixed> $customSamplingContext Additional context that will be passed to the {@see SamplingContext}
          * @static 
          */ 
         public static function startTransaction($context, $customSamplingContext = [])
@@ -18467,6 +18525,64 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Eloquent\Builder $instance */
                                 return $instance->unless($value, $callback, $default);
+            }
+             
+                /**
+             * 
+             *
+             * @see \Maatwebsite\Excel\Mixins\DownloadQueryMacro::__invoke()
+             * @param string $fileName
+             * @param string|null $writerType
+             * @param mixed $withHeadings
+             * @static 
+             */ 
+            public static function downloadExcel($fileName, $writerType = null, $withHeadings = false)
+            {
+                                return \Illuminate\Database\Eloquent\Builder::downloadExcel($fileName, $writerType, $withHeadings);
+            }
+             
+                /**
+             * 
+             *
+             * @see \Maatwebsite\Excel\Mixins\StoreQueryMacro::__invoke()
+             * @param string $filePath
+             * @param string|null $disk
+             * @param string|null $writerType
+             * @param mixed $withHeadings
+             * @static 
+             */ 
+            public static function storeExcel($filePath, $disk = null, $writerType = null, $withHeadings = false)
+            {
+                                return \Illuminate\Database\Eloquent\Builder::storeExcel($filePath, $disk, $writerType, $withHeadings);
+            }
+             
+                /**
+             * 
+             *
+             * @see \Maatwebsite\Excel\Mixins\ImportMacro::__invoke()
+             * @param string $filename
+             * @param string|null $disk
+             * @param string|null $readerType
+             * @static 
+             */ 
+            public static function import($filename, $disk = null, $readerType = null)
+            {
+                                return \Illuminate\Database\Eloquent\Builder::import($filename, $disk, $readerType);
+            }
+             
+                /**
+             * 
+             *
+             * @see \Maatwebsite\Excel\Mixins\ImportAsMacro::__invoke()
+             * @param string $filename
+             * @param callable $mapping
+             * @param string|null $disk
+             * @param string|null $readerType
+             * @static 
+             */ 
+            public static function importAs($filename, $mapping, $disk = null, $readerType = null)
+            {
+                                return \Illuminate\Database\Eloquent\Builder::importAs($filename, $mapping, $disk, $readerType);
             }
              
                 /**
