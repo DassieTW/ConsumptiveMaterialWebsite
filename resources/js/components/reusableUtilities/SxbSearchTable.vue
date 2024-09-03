@@ -401,6 +401,23 @@ export default defineComponent({
                     width: "4ch",
                     sortable: false,
                 },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.pr_sender"
+                    ),
+                    field: "開單人員",
+                    width: "8ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.開單人員 === null || row.開單人員 === undefined) row.開單人員 = "N/A";
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.開單人員 +
+                            "</div>"
+                        );
+                    },
+                },
             ],
             rows: computed(() => {
                 return data.filter((x) =>

@@ -68,9 +68,11 @@
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header justify-content-center">
-                    <h1 class="col col-auto modal-title m-0 p-0 fs-4">
-                        {{ modalTitle }}
-                    </h1>
+                    <div class="col col-10">
+                        <span class="text-danger"><b>{{ modalTitle1 }}</b></span>
+                        <div class="w-100" style="height: 0ch"></div><!-- </div>breaks cols to a new line-->
+                        <span class="text-danger"><b>{{ modalTitle2 }}</b></span>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -96,12 +98,13 @@
                     </table-lite>
                 </div>
                 <div v-if="showFooter" class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;">
-                        {{ $t('monthlyPRpageLang.review_cancel') }}
+                    <button type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;"
+                        data-bs-dismiss="modal" aria-label="Close">
+                        {{ $t('templateWords.cancel') }}
                     </button>
                     <button @click="onSendClick" type="button" class="btn btn-lg btn-success"
                         style="border-radius: 5px;">
-                        {{ $t('monthlyPRpageLang.review_complete') }}
+                        {{ $t('monthlyPRpageLang.confirm_pr') }}
                     </button>
                 </div>
             </div>
@@ -155,8 +158,9 @@ export default defineComponent({
 
         const searchTerm = ref(""); // Search text
         const searchTerm2 = ref(""); // Search text for modal table
-        const modalTitle = ref("");
-        let showFooter = ref(false);
+        const modalTitle1 = ref("");
+        const modalTitle2 = ref("");
+        let showFooter = ref(true);
 
 
         // pour the data in
@@ -658,6 +662,8 @@ export default defineComponent({
                 // console.log(JSON.parse(mats_SXB.value).datas); // test
                 needConfirm.value = allPN.some(r => SXB_PN.includes(r));
                 if (needConfirm.value) {
+                    modalTitle1.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.duplicate_pr_warning1");
+                    modalTitle2.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.duplicate_pr_warning2");
                     data2.splice(0);
                     Object.assign(data2, JSON.parse(mats_SXB.value).datas.flatMap((obj) => {
                         if (obj.SRM單號 !== "已退單") {
@@ -682,7 +688,7 @@ export default defineComponent({
                     }));
                 } // if
 
-                if(data2.length <= 0) {
+                if (data2.length <= 0) {
                     needConfirm.value = false;
                 } // if
 
@@ -1049,7 +1055,7 @@ export default defineComponent({
         const table2 = reactive({
             isLoading: true,
             columns: [
-            {
+                {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.buytime"
                     ),
@@ -1064,7 +1070,7 @@ export default defineComponent({
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.請購時間 +
                             "</div>";
-                        
+
                         return returnStr;
                     },
                 },
@@ -1137,10 +1143,10 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.transit_reviser"
+                        "monthlyPRpageLang.pr_sender"
                     ),
                     field: "開單人員",
-                    width: "10ch",
+                    width: "8ch",
                     sortable: true,
                     display: function (row, i) {
                         if (row.開單人員 === null || row.開單人員 === undefined) row.開單人員 = "N/A";
@@ -1232,7 +1238,8 @@ export default defineComponent({
             searchTerm2,
             table,
             table2,
-            modalTitle,
+            modalTitle1,
+            modalTitle2,
             showFooter,
             updateCheckedRows,
             deleteRow,
