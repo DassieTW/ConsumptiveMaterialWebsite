@@ -15,6 +15,9 @@
             </div>
         </div>
         <div class="card">
+            <div class="card-header">
+                <h3>{!! __('oboundpageLang.searchstock') !!}</h3>
+            </div>
             <div class="card-body">
                 @if (Session::get('month'))
                     <input type="hidden" id="titlename" name="titlename" value="庫存使用月數">

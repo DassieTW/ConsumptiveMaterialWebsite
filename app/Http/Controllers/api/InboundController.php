@@ -47,19 +47,22 @@ class InboundController extends Controller
         $query = \DB::table('inventory');
         if (count($inputArray_loc) === 0) {
             for ($i = 0; $i < count($inputArray_isn); $i++) {
-                $query->orWhere('料號', '=', $inputArray_isn[$i]);
+                $query->orWhere('inventory.料號', '=', $inputArray_isn[$i]);
             } // for
         } // if
         else {
             for ($i = 0; $i < count($inputArray_isn); $i++) {
                 $query->orWhere([
-                    ['料號', '=', $inputArray_isn[$i]],
-                    ['儲位', '=', $inputArray_loc[$i]]
+                    ['inventory.料號', '=', $inputArray_isn[$i]],
+                    ['inventory.儲位', '=', $inputArray_loc[$i]]
                 ]);
             } // for
         } // else
 
-        $allResult = $query->get();
+        $allResult = $query
+            ->leftjoin('consumptive_material', function ($join) {
+                $join->on('consumptive_material.料號', '=', 'inventory.料號');
+            })->get();
 
         return \Response::json(['data' => $allResult, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showStocks
@@ -86,7 +89,7 @@ class InboundController extends Controller
         $serialNum = json_decode($request->input('serialNum'));
         try {
             $res_arr_values = array();
-            for ($i = 1; $i < count($newStock); $i++) {
+            for ($i = 0; $i < count($newStock); $i++) {
                 $isn = $newStock[$i][0];
                 $amount = $newStock[$i][1];
                 $loc = $newStock[$i][2];
@@ -102,7 +105,7 @@ class InboundController extends Controller
             } //for
 
             $res_arr_values2 = array();
-            for ($i = 1; $i < count($inboundRecords); $i++) {
+            for ($i = 0; $i < count($inboundRecords); $i++) {
                 $isn = $inboundRecords[$i][0];
                 $amount = $inboundRecords[$i][1];
                 $loc = $inboundRecords[$i][2];

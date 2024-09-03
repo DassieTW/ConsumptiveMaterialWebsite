@@ -107,7 +107,7 @@
                         </div>
                         <div class="col col-auto">
                             <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
-                                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick(modalTitle)">
+                                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick()">
                                 <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
                             </button>
                         </div>
@@ -117,7 +117,7 @@
                     <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false"
                         :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
                         :total="table2.totalRecordCount" :page-options="table2.pageOptions" :sortable="table2.sortable"
-                        :is-fixed-first-column="false" @row-clicked="rowClicked">
+                        :is-fixed-first-column="false">
                     </table-lite>
                 </div>
                 <div v-if="showFooter" class="modal-footer justify-content-between">
@@ -228,7 +228,7 @@ export default defineComponent({
 
         const onUploadClick = async () => {
             isInvalid_DB.value = false;
-            mats.value = "";
+            queryResult.value = "";
             await triggerModal();
             if (file.value) {
                 // console.log(file.value); // test
@@ -314,24 +314,65 @@ export default defineComponent({
             });
         } // triggerModal
 
-        const openLocDetails = (SXB) => {
+        const openLocDetails = (PN) => {
             // console.log("clicked!"); // test
-            modalTitle.value = SXB;
+            modalTitle.value = PN;
             data2.splice(0);
-            for (let i = 0; i < AllRecords.length; i++) {
-                if (AllRecords[i].SXB單號 === SXB) {
-                    data2.push(AllRecords[i]);
+            // console.log(JSON.parse(mats.value).data); // test
+            Object.assign(data2, JSON.parse(mats.value).data.flatMap((obj) => {
+                if (obj.料號 === PN) {
+                    return [obj];
                 } // if
-            } // for
-
-            if (data2[0].狀態 === '未簽核') {
-                showFooter.value = true;
-            } // if
-            else {
-                showFooter.value = false;
-            } // else
+                else {
+                    return [];
+                } // else
+            }));
         } // openLocDetails
 
+        const OutputExcelClick = async () => {
+            await triggerModal();
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = data2.map((obj) => {
+                return {
+                    "料號": obj.料號,
+                    "品名": obj.品名,
+                    "規格": obj.規格,
+                    "現有庫存": obj.現有庫存,
+                    "儲位": obj.儲位,
+                };
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowstock"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
+                ]],
+                { origin: "A1" });
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.PR"));
+            XLSX.writeFile(workbook,
+                modalTitle.value + "_" + app.appContext.config.globalProperties.$t(
+                    "inboundpageLang.nowstock"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
+        
         const deleteRow = () => {
             if (checkedRows.length == 0) {
                 notyf.open({
@@ -372,6 +413,9 @@ export default defineComponent({
             isInvalid_DB.value = false;
             let rowsCount = [];
             let hasError = false;
+            let inbound_data = data.map((obj) => {
+                return [obj.料號, obj.入庫量, obj.新儲位, obj.入庫原因];
+            });
             // console.log(data.length); //test
             if (data.length <= 0) {
                 notyf.open({
@@ -536,26 +580,28 @@ export default defineComponent({
 
             // ----------------------------------------------
             // get existing stock for sum up
-            let tempArr_isn = Array();
-            let tempArr_loc = Array();
-            for (let i = 1; i < input_data.length; i++) {
-                if (input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                    tempArr_isn.push(input_data[i][0].trim());
-                    tempArr_loc.push(input_data[i][2].trim());
-                } // if
-            } // for
+            let tempArr_isn = data.map((obj) => {
+                return obj.料號;
+            });
+
+            let tempArr_loc = data.map((obj) => {
+                return obj.新儲位;
+            });
+
+            // console.log(tempArr_loc); // test
 
             let start = Date.now();
-            let newStock = deepCopy(input_data);
+            let newStock = data.map((obj) => {
+                return [obj.料號, obj.入庫量, obj.新儲位, obj.入庫原因];
+            });
+            // console.log(newStock); // test
             let newInTransit;
             let result = await getExistingStock(tempArr_isn, tempArr_loc); // get the existing stock
             if (result === "success") {
-                for (let i = 1; i < newStock.length; i++) {
-                    tempArr_isn.push();
-                    tempArr_loc.push(newStock[i][2].trim());
+                for (let i = 0; i < newStock.length; i++) {
                     let foundObj = JSON.parse(mats.value).data.find(
                         (o) => {
-                            return (o.料號 === newStock[i][0].trim() && o.儲位 === input_data[i][2].trim());
+                            return (o.料號 === newStock[i][0].trim() && o.儲位 === newStock[i][2].trim());
                         });
 
                     if (foundObj !== undefined) {
@@ -595,12 +641,11 @@ export default defineComponent({
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             // console.log(newStock); // test
-            // console.log(input_data); // test
             // console.log(newInTransit); // test
 
             // actually updating database now
             start = Date.now();
-            result = await uploadToDB(newStock, input_data, newInTransit);
+            result = await uploadToDB(newStock, inbound_data, newInTransit);
             timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");
@@ -1125,22 +1170,13 @@ export default defineComponent({
             columns: [
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.isn"
+                        "inboundpageLang.isn"
                     ),
                     field: "料號",
                     width: "14ch",
                     sortable: true,
-                    isKey: true,
                     display: function (row, i) {
-                        // console.log(row);
                         return (
-                            '<input type="hidden" id="number' +
-                            row.id +
-                            '" name="number' +
-                            i +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.料號 +
@@ -1150,93 +1186,64 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.pName"
+                        "inboundpageLang.pName"
                     ),
                     field: "品名",
-                    width: "13ch",
+                    width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="name' +
-                            i +
-                            '" name="name' +
-                            i +
-                            '" value="' +
-                            row.品名 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.品名 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.moq"
-                    ),
-                    field: "MOQ",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="moq' +
-                            row.id +
-                            '" name="moq' +
-                            i +
-                            '" value="' +
-                            row.MOQ +
-                            '">' +
                             '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.MOQ + " <small>" + row.單位 + "</small>" +
+                            row.品名 +
                             "</div>"
                         );
                     },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.buyamount"
+                        "inboundpageLang.format"
                     ),
-                    field: "本次請購數量",
+                    field: "規格",
+                    width: "14ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.規格 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.stock"
+                    ),
+                    field: "庫存",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.loc"
+                    ),
+                    field: "儲位",
                     width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="buyamount' +
-                            row.id +
-                            '" name="buyamount' +
-                            i +
-                            '" value="' +
-                            row.本次請購數量 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            parseInt(row.本次請購數量).toLocaleString("en-US") +
-                            " <small>" + row.單位 + "</small>" + "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.buyprice"
-                    ),
-                    field: "請購金額",
-                    width: "11ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="buyprice' +
-                            row.id +
-                            '" name="buyprice' +
-                            i +
-                            '" value="' +
-                            row.請購金額 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            parseFloat(row.請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
-                            " <small>" + row.幣別 + "</small>" +
+                            row.儲位 +
                             "</div>"
                         );
                     },
@@ -1329,6 +1336,7 @@ export default defineComponent({
             onSendToDBClick,
             updateCheckedRows,
             deleteRow,
+            OutputExcelClick,
         };
     }, // setup
 });

@@ -121,13 +121,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="isn' +
-                            i +
-                            '" name="isn' +
-                            i +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.料號 +
@@ -144,13 +137,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="name' +
-                            i +
-                            '" name="name' +
-                            i +
-                            '" value="' +
-                            row.品名 +
-                            '">' +
                             '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.品名 +
@@ -167,13 +153,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="format' +
-                            i +
-                            '" name="format' +
-                            i +
-                            '" value="' +
-                            row.規格 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.規格 +
@@ -190,13 +169,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="stock' +
-                            i +
-                            '" name="stock' +
-                            i +
-                            '" value="' +
-                            row.現有庫存 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
@@ -213,13 +185,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="loc' +
-                            i +
-                            '" name="loc' +
-                            i +
-                            '" value="' +
-                            row.儲位 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.儲位 +
@@ -236,13 +201,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="month' +
-                            i +
-                            '" name="month' +
-                            i +
-                            '" value="' +
-                            row.月請購 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.月請購 +
@@ -259,13 +217,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="safe' +
-                            i +
-                            '" name="safe' +
-                            i +
-                            '" value="' +
-                            row.安全庫存 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.安全庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
@@ -282,39 +233,9 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="price' +
-                            i +
-                            '" name="price' +
-                            i +
-                            '" value="' +
-                            row.單價 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.單價 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.money"
-                    ),
-                    field: "幣別",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="money' +
-                            i +
-                            '" name="money' +
-                            i +
-                            '" value="' +
-                            row.幣別 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.幣別 +
+                            row.單價 + '&nbsp;<small>' + row.幣別 + '</small>' +
                             "</div>"
                         );
                     },
