@@ -69,7 +69,7 @@ export default function useInboundStockSearch() {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
         let username = await axios.post('/getCurrentUsername');
-        let serialNum = username.data + '_' + Date.now();
+        let serialNum = Date.now();
         try {
             let response = await axios.post('/api/inbound/uploadToDB', {
                 DB: getDB.data,
