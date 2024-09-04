@@ -768,6 +768,7 @@ class MonthlyPRController extends Controller
         $now = Carbon::now()->format('Ymd');
         $filename = $title . \Lang::get("monthlyPRpageLang.page_name") . "_" . $now . '.pdf';
 
+        // Save as PDF
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Mpdf');
         $writer->save(public_path() . "/excel/" . $filename);
 
@@ -777,9 +778,7 @@ class MonthlyPRController extends Controller
             'tempDir' => storage_path('app'),
             'orientation' => 'P' //直向
         ]);
-
         $pagecount = $mpdf->SetSourceFile(public_path() . "/excel/" . $filename);
-
         $tplId = $mpdf->ImportPage(1);
         $size = $mpdf->getTemplateSize($tplId);
 
@@ -793,28 +792,35 @@ class MonthlyPRController extends Controller
 
         // Set Path to Font File
         $font_path = public_path() . "/fonts/MicrosoftJhengHeiBold.ttf";
-
         $text_to_write = ($request_user['detail_info']['姓名'] . " " . explode(" Consumables management", $dbName)[0] . "廠");
+
         // Create Image From Existing File
         $png_image = imagecreatefrompng(public_path() . "/admin/img/PEGA_Logo.png");
         imagesavealpha($png_image, true);
         imagealphablending($png_image, false);
+
         // Get image dimensions
         $width = imagesx($png_image);
         $height = imagesy($png_image);
+
         // Get center coordinates of image
         $centerX = $width / 2;
         $centerY = $height / 2;
+
         // Get size of text
         list($left, $bottom, $right,,, $top) = imageftbbox(120, 45, $font_path, $text_to_write);
+
         // Determine offset of text
         $left_offset = ($right - $left) / 2;
         $top_offset = ($bottom - $top) / 2;
+
         // Generate coordinates
         $x = $centerX - $left_offset + 220;
         $y = $centerY + $top_offset + 180;
+
         // Allocate A Color For The Text
         $black = imagecolorallocate($png_image, 0, 0, 0);
+
         // Print Text On Image
         imagettftext($png_image, 120, 45, $x, $y, $black, $font_path, $text_to_write);
 
@@ -824,7 +830,7 @@ class MonthlyPRController extends Controller
         // create new image instance
         $manager = new ImageManager(new Driver());
         $image = $manager->read(public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png");
-        
+
         // move the image to center it a bit since we added a text
         $image->crop(3535, 3535, 60, 60, position: 'bottom-right');
         $image->save(public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png");
@@ -855,7 +861,6 @@ class MonthlyPRController extends Controller
         // Clear Memory
         imagedestroy($png_image);
         \File::delete(public_path() . "/excel/" . $request_user['username'] . "_PEGA_Logo.png");
-
         $data = array(
             'PN' => $PN,
             'pName' => $pName,

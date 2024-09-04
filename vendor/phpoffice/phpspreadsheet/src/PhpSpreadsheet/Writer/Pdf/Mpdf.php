@@ -42,6 +42,13 @@ class Mpdf extends Pdf
         //  Create PDF
         $config = ['tempDir' => $this->tempDir . '/mpdf'];
         $pdf = $this->createExternalWriterInstance($config);
+        
+        // Vincent trying to support Chinese Characters
+        $pdf->useAdobeCJK = true;
+        $pdf->autoScriptToLang = true;
+        $pdf->autoLangToFont = true;
+        // end of Vincent trying to support Chinese Characters
+
         $ortmp = $orientation;
         $pdf->_setPageSize($paperSize, $ortmp);
         $pdf->DefOrientation = $orientation;
