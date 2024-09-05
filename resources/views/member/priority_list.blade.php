@@ -235,7 +235,7 @@
                             {{-- 入庫 --}}
                             <tr>
                                 {{-- 4 --}}
-                                <td rowspan="5" class="table-secondary">
+                                <td rowspan="4" class="table-secondary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -249,7 +249,7 @@
                                 </td>
 
                                 {{-- 3 --}}
-                                <td rowspan="5" class="table-secondary">
+                                <td rowspan="4" class="table-secondary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -263,7 +263,7 @@
                                 </td>
 
                                 {{-- 2 --}}
-                                <td rowspan="5" class="table-success">
+                                <td rowspan="4" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -274,7 +274,7 @@
                                 <td class="table-success"><span>{!! __('inboundpageLang.new') !!}</span></td>
 
                                 {{-- 1 --}}
-                                <td rowspan="5" class="table-success">
+                                <td rowspan="4" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -325,20 +325,6 @@
                                 <td class="table-success"><span>{!! __('inboundpageLang.locationchange') !!}</span></td>
                                 {{-- 1 --}}
                                 <td class="table-success"><span>{!! __('inboundpageLang.locationchange') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('inboundpageLang.stockupload') !!}</span>
-                                </td>
-                                {{-- 3 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('inboundpageLang.stockupload') !!}</span>
-                                </td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('inboundpageLang.stockupload') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('inboundpageLang.stockupload') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
