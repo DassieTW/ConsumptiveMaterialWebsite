@@ -16,7 +16,6 @@ use App\Models\月請購_單耗;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Mail;
-
 use function Swoole\Coroutine\Http\get;
 
 class MonthlyPRController extends Controller

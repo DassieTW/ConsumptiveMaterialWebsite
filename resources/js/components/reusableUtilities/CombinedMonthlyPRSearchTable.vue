@@ -79,11 +79,11 @@
                     <div class="row justify-content-between">
                         <div class="row col col-auto">
                             <div class="col col-auto">
-                                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }}
+                                <label for="pnInput2" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }}
                                     :</label>
                             </div>
                             <div class="col col-auto p-0 m-0">
-                                <input id="pnInput" class="text-center form-control form-control-lg"
+                                <input id="pnInput2" class="text-center form-control form-control-lg"
                                     v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')"
                                     v-model="searchTerm2" />
                             </div>
