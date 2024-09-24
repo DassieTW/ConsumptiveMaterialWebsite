@@ -69,7 +69,6 @@ final class Versions
   'league/commonmark' => '1.6.7@2b8185c13bc9578367a5bf901881d1c1b5bbd09b',
   'league/flysystem' => '1.1.9@094defdb4a7001845300334e7c1ee2335925ef99',
   'league/mime-type-detection' => '1.9.0@aa70e813a6ad3d1558fc927863d47309b4c23e69',
-  'maatwebsite/excel' => '3.1.36@eb31f30d72c51c3fb11644b636945accbe50404f',
   'maennchen/zipstream-php' => '2.1.0@c4c5803cc1f93df3d2448478ef79394a5981cc58',
   'mariuzzo/laravel-js-localization' => 'v1.9.0@12531672e995296e280378251efb37f3d1285693',
   'markbaker/complex' => '3.0.1@ab8bc271e404909db09ff2d5ffa1e538085c0f22',

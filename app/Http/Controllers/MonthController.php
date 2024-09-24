@@ -502,14 +502,14 @@ class MonthController extends Controller
 
         //填寫表頭
         for ($i = 0; $i < 23; $i++) {
-            $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+            $worksheet->setCellValue([$i + 1, 1], $title[$i]);
         }
 
         // 下載
         for ($i = 0; $i < 23; $i++) {
             for ($j = 0; $j < $count; $j++) {
 
-                $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
+                $worksheet->setCellValue([$i + 1, $j + 2], $Alldata[$i][$j]);
             }
         }
 

@@ -78,7 +78,9 @@ class OboundController extends Controller
                 }
             }
             return \Response::json([
-                'number' => $number, 'name' => $name, 'format' => $format
+                'number' => $number,
+                'name' => $name,
+                'format' => $format
             ]/* Status code here default is 200 ok*/);
         } else {
             return redirect(route('member.login'));
@@ -133,7 +135,9 @@ class OboundController extends Controller
                     if ($test === null) {
                         DB::table('O庫_material')
                             ->insert([
-                                '料號' => $number, '品名' => $name, '規格' => $format
+                                '料號' => $number,
+                                '品名' => $name,
+                                '規格' => $format
                             ]);
                         $record++;
                         array_push($check, $row[$i]);
@@ -203,8 +207,11 @@ class OboundController extends Controller
                     return \Response::json(['message' => 'No Results Found!'], 421/* Status code here default is 200 ok*/);
                 } else {
                     return \Response::json([
-                        'number' => $number, 'client' => $client, 'inreason' => $inreason,
-                        'name' => $name, 'format' => $format,
+                        'number' => $number,
+                        'client' => $client,
+                        'inreason' => $inreason,
+                        'name' => $name,
+                        'format' => $format,
                     ]/* Status code here default is 200 ok*/);
                 }
             }
@@ -255,8 +262,17 @@ class OboundController extends Controller
                     if ($stock !== null) {
                         DB::table('O庫inbound')
                             ->insert([
-                                '入庫單號' => $opentime, '料號' => $number, '品名' => $name, '規格' => $format, '數量' => $amount, '庫別' => $bound,
-                                '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '時間' => $now, '備註' => $mark
+                                '入庫單號' => $opentime,
+                                '料號' => $number,
+                                '品名' => $name,
+                                '規格' => $format,
+                                '數量' => $amount,
+                                '庫別' => $bound,
+                                '入庫人員' => $inpeople,
+                                '客戶別' => $client,
+                                '入庫原因' => $inreason,
+                                '時間' => $now,
+                                '備註' => $mark
                             ]);
 
                         DB::table('O庫inventory')
@@ -268,14 +284,28 @@ class OboundController extends Controller
                     else {
                         DB::table('O庫inbound')
                             ->insert([
-                                '入庫單號' => $opentime, '料號' => $number, '品名' => $name, '規格' => $format, '數量' => $amount, '庫別' => $bound,
-                                '入庫人員' => $inpeople, '客戶別' => $client, '入庫原因' => $inreason, '時間' => $now, '備註' => $mark
+                                '入庫單號' => $opentime,
+                                '料號' => $number,
+                                '品名' => $name,
+                                '規格' => $format,
+                                '數量' => $amount,
+                                '庫別' => $bound,
+                                '入庫人員' => $inpeople,
+                                '客戶別' => $client,
+                                '入庫原因' => $inreason,
+                                '時間' => $now,
+                                '備註' => $mark
                             ]);
 
                         DB::table('O庫inventory')
                             ->insert([
-                                '料號' => $number, '現有庫存' => $amount, '庫別' => $bound, '客戶別' => $client,
-                                '最後更新時間' => $now, '品名' => $name, '規格' => $format
+                                '料號' => $number,
+                                '現有庫存' => $amount,
+                                '庫別' => $bound,
+                                '客戶別' => $client,
+                                '最後更新時間' => $now,
+                                '品名' => $name,
+                                '規格' => $format
                             ]);
                     } //else
                 } // for
@@ -453,8 +483,13 @@ class OboundController extends Controller
                     if ($stock === null) {
                         DB::table('O庫inventory')
                             ->insert([
-                                '料號' => $Alldata[1][$i], '現有庫存' => $Alldata[4][$i], '庫別' => $Alldata[5][$i],
-                                '客戶別' => $Alldata[0][$i], '最後更新時間' => $now, '品名' => $Alldata[2][$i], '規格' => $Alldata[3][$i]
+                                '料號' => $Alldata[1][$i],
+                                '現有庫存' => $Alldata[4][$i],
+                                '庫別' => $Alldata[5][$i],
+                                '客戶別' => $Alldata[0][$i],
+                                '最後更新時間' => $now,
+                                '品名' => $Alldata[2][$i],
+                                '規格' => $Alldata[3][$i]
                             ]);
                     } else {
                         DB::table('O庫inventory')
@@ -645,18 +680,38 @@ class OboundController extends Controller
                                 ->where('預領數量', $advance)
                                 ->whereNUll('發料人員')
                                 ->update([
-                                    '實際領用數量' => $amount, '實領差異原因' => $reason, '庫別' => $bound,
-                                    '領料人員' => $pickname, '領料人員工號' => $pickpeople, '發料人員' => $sendname, '發料人員工號' => $sendpeople,
+                                    '實際領用數量' => $amount,
+                                    '實領差異原因' => $reason,
+                                    '庫別' => $bound,
+                                    '領料人員' => $pickname,
+                                    '領料人員工號' => $pickpeople,
+                                    '發料人員' => $sendname,
+                                    '發料人員工號' => $sendpeople,
                                     '出庫時間' => $now
                                 ]);
                         } else {
                             DB::table('O庫outbound')
                                 ->insert([
-                                    '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
-                                    '料號' => $number, '品名' => $name, '規格' => $format, '預領數量' => $advance,
-                                    '實際領用數量' => $amount, '實領差異原因' => $reason, '備註' => $remark, '領料單號' => $list,
-                                    '開單時間' => $opentime,  '庫別' => $bound, '領料人員' => $pickname, '領料人員工號' => $pickpeople,
-                                    '發料人員' => $sendname, '發料人員工號' => $sendpeople, '出庫時間' => $now
+                                    '客戶別' => $client,
+                                    '機種' => $machine,
+                                    '製程' => $production,
+                                    '領用原因' => $usereason,
+                                    '線別' => $line,
+                                    '料號' => $number,
+                                    '品名' => $name,
+                                    '規格' => $format,
+                                    '預領數量' => $advance,
+                                    '實際領用數量' => $amount,
+                                    '實領差異原因' => $reason,
+                                    '備註' => $remark,
+                                    '領料單號' => $list,
+                                    '開單時間' => $opentime,
+                                    '庫別' => $bound,
+                                    '領料人員' => $pickname,
+                                    '領料人員工號' => $pickpeople,
+                                    '發料人員' => $sendname,
+                                    '發料人員工號' => $sendpeople,
+                                    '出庫時間' => $now
                                 ]);
                         }
 
@@ -731,18 +786,40 @@ class OboundController extends Controller
                             ->where('預退數量', $advance)
                             ->whereNUll('收料人員')
                             ->update([
-                                '實際退回數量' => $amount, '實退差異原因' => $reason, '庫別' => $bound,
-                                '收料人員' => $pickname, '收料人員工號' => $pickpeople, '退料人員' => $backname, '退料人員工號' => $backpeople,
-                                '入庫時間' => $now, '功能狀況' => $status
+                                '實際退回數量' => $amount,
+                                '實退差異原因' => $reason,
+                                '庫別' => $bound,
+                                '收料人員' => $pickname,
+                                '收料人員工號' => $pickpeople,
+                                '退料人員' => $backname,
+                                '退料人員工號' => $backpeople,
+                                '入庫時間' => $now,
+                                '功能狀況' => $status
                             ]);
                     } else {
                         DB::table('O庫出庫退料')
                             ->insert([
-                                '客戶別' => $client, '機種' => $machine, '製程' => $production, '退回原因' => $backreason, '線別' => $line,
-                                '料號' => $number, '品名' => $name, '規格' => $format, '預退數量' => $advance,
-                                '實際退回數量' => $amount, '實退差異原因' => $reason, '備註' => $remark, '退料單號' => $list,
-                                '開單時間' => $opentime,  '庫別' => $bound, '收料人員' => $pickname, '收料人員工號' => $pickpeople,
-                                '退料人員' => $backname, '退料人員工號' => $backpeople, '入庫時間' => $now, '功能狀況' => $status,
+                                '客戶別' => $client,
+                                '機種' => $machine,
+                                '製程' => $production,
+                                '退回原因' => $backreason,
+                                '線別' => $line,
+                                '料號' => $number,
+                                '品名' => $name,
+                                '規格' => $format,
+                                '預退數量' => $advance,
+                                '實際退回數量' => $amount,
+                                '實退差異原因' => $reason,
+                                '備註' => $remark,
+                                '退料單號' => $list,
+                                '開單時間' => $opentime,
+                                '庫別' => $bound,
+                                '收料人員' => $pickname,
+                                '收料人員工號' => $pickpeople,
+                                '退料人員' => $backname,
+                                '退料人員工號' => $backpeople,
+                                '入庫時間' => $now,
+                                '功能狀況' => $status,
                             ]);
                     }
 
@@ -798,9 +875,15 @@ class OboundController extends Controller
                 if ($name !== null && $format !== null) {
                     if ($stock > 0) {
                         return \Response::json([
-                            'number' => $number, 'client' => $client, 'machine' => $machine,
-                            'production' => $production, 'line' => $line, 'usereason' => $usereason, 'name' => $name,
-                            'format' => $format, 'showstock' => $showstock,
+                            'number' => $number,
+                            'client' => $client,
+                            'machine' => $machine,
+                            'production' => $production,
+                            'line' => $line,
+                            'usereason' => $usereason,
+                            'name' => $name,
+                            'format' => $format,
+                            'showstock' => $showstock,
                         ]/* Status code here default is 200 ok*/);
                     }
                     //沒有庫存
@@ -838,8 +921,13 @@ class OboundController extends Controller
                 if ($name !== null && $format !== null) {
 
                     return \Response::json([
-                        'number' => $number, 'client' => $client, 'machine' => $machine,
-                        'production' => $production, 'line' => $line, 'backreason' => $backreason, 'name' => $name,
+                        'number' => $number,
+                        'client' => $client,
+                        'machine' => $machine,
+                        'production' => $production,
+                        'line' => $line,
+                        'backreason' => $backreason,
+                        'name' => $name,
                         'format' => $format,
                     ]/* Status code here default is 200 ok*/);
                 }
@@ -896,9 +984,19 @@ class OboundController extends Controller
                     if ($remark === null) $remark = '';
                     DB::table('O庫outbound')
                         ->insert([
-                            '客戶別' => $client, '機種' => $machine, '製程' => $production, '領用原因' => $usereason, '線別' => $line,
-                            '料號' => $number, '品名' => $name, '規格' => $format, '預領數量' => $amount,
-                            '實際領用數量' => $amount, '備註' => $remark, '領料單號' => $opentime, '開單時間' => Carbon::now()
+                            '客戶別' => $client,
+                            '機種' => $machine,
+                            '製程' => $production,
+                            '領用原因' => $usereason,
+                            '線別' => $line,
+                            '料號' => $number,
+                            '品名' => $name,
+                            '規格' => $format,
+                            '預領數量' => $amount,
+                            '實際領用數量' => $amount,
+                            '備註' => $remark,
+                            '領料單號' => $opentime,
+                            '開單時間' => Carbon::now()
                         ]);
                 } //for
                 DB::commit();
@@ -952,9 +1050,19 @@ class OboundController extends Controller
                     if ($remark === null) $remark = '';
                     DB::table('O庫出庫退料')
                         ->insert([
-                            '客戶別' => $client, '機種' => $machine, '製程' => $production, '退回原因' => $backreason, '線別' => $line,
-                            '料號' => $number, '品名' => $name, '規格' => $format, '預退數量' => $amount,
-                            '實際退回數量' => $amount, '備註' => $remark, '退料單號' => $opentime, '開單時間' => Carbon::now()
+                            '客戶別' => $client,
+                            '機種' => $machine,
+                            '製程' => $production,
+                            '退回原因' => $backreason,
+                            '線別' => $line,
+                            '料號' => $number,
+                            '品名' => $name,
+                            '規格' => $format,
+                            '預退數量' => $amount,
+                            '實際退回數量' => $amount,
+                            '備註' => $remark,
+                            '退料單號' => $opentime,
+                            '開單時間' => Carbon::now()
                         ]);
                 } // for
                 DB::commit();
@@ -1079,14 +1187,14 @@ class OboundController extends Controller
 
         //填寫表頭
         for ($i = 0; $i < $titlecount; $i++) {
-            $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
+            $worksheet->setCellValue([$i + 1, 1], $request->input('title')[$i]);
         }
 
         //填寫內容
         for ($i = 0; $i < $titlecount; $i++) {
             $string = $request->input('titlecol')[$i];
             for ($j = 0; $j < $count; $j++) {
-                $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$j]->$string);
+                $worksheet->setCellValue([$i + 1, $j + 2], $Alldata[$j]->$string);
             }
         }
 

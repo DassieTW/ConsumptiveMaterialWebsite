@@ -159,23 +159,23 @@ class MailService
             $count2 = count($datas);
 
             //填寫表頭
-            $worksheet->setCellValueByColumnAndRow(1, 1, \Lang::get('callpageLang.month'));
-            $worksheet->setCellValueByColumnAndRow(2, 1, \Lang::get('callpageLang.isn'));
-            $worksheet->setCellValueByColumnAndRow(3, 1, \Lang::get('callpageLang.pName'));
-            $worksheet->setCellValueByColumnAndRow(4, 1, \Lang::get('callpageLang.format'));
-            $worksheet->setCellValueByColumnAndRow(5, 1, \Lang::get('callpageLang.stock'));
-            $worksheet->setCellValueByColumnAndRow(6, 1, \Lang::get('callpageLang.safe'));
-            $worksheet->setCellValueByColumnAndRow(7, 1, \Lang::get('callpageLang.mark'));
+            $worksheet->setCellValue([1, 1], \Lang::get('callpageLang.month'));
+            $worksheet->setCellValue([2, 1], \Lang::get('callpageLang.isn'));
+            $worksheet->setCellValue([3, 1], \Lang::get('callpageLang.pName'));
+            $worksheet->setCellValue([4, 1], \Lang::get('callpageLang.format'));
+            $worksheet->setCellValue([5, 1], \Lang::get('callpageLang.stock'));
+            $worksheet->setCellValue([6, 1], \Lang::get('callpageLang.safe'));
+            $worksheet->setCellValue([7, 1], \Lang::get('callpageLang.mark'));
 
             //填寫內容
             for ($j = 0; $j < count($datas); $j++) {
-                $worksheet->setCellValueByColumnAndRow(1, $j + 2, $ismonth);
-                $worksheet->setCellValueByColumnAndRow(2, $j + 2, $datas[$j]->料號);
-                $worksheet->setCellValueByColumnAndRow(3, $j + 2, $datas[$j]->品名);
-                $worksheet->setCellValueByColumnAndRow(4, $j + 2, $datas[$j]->規格);
-                $worksheet->setCellValueByColumnAndRow(5, $j + 2, $datas[$j]->inventory現有庫存);
-                $worksheet->setCellValueByColumnAndRow(6, $j + 2, $datas[$j]->安全庫存);
-                $worksheet->setCellValueByColumnAndRow(7, $j + 2, $datas[$j]->備註);
+                $worksheet->setCellValue([1, $j + 2], $ismonth);
+                $worksheet->setCellValue([2, $j + 2], $datas[$j]->料號);
+                $worksheet->setCellValue([3, $j + 2], $datas[$j]->品名);
+                $worksheet->setCellValue([4, $j + 2], $datas[$j]->規格);
+                $worksheet->setCellValue([5, $j + 2], $datas[$j]->inventory現有庫存);
+                $worksheet->setCellValue([6, $j + 2], $datas[$j]->安全庫存);
+                $worksheet->setCellValue([7, $j + 2], $datas[$j]->備註);
 
                 array_push($AllISNClientsPairs["isn"], $datas[$j]->料號);
                 array_push($AllISNClientsPairs["client"], $datas[$j]->料號90);
@@ -184,13 +184,13 @@ class MailService
 
             //填寫內容
             for ($i = $count2, $j = 0; $j < count($datas2); $i++, $j++) {
-                $worksheet->setCellValueByColumnAndRow(1, $i + 2, $notmonth);
-                $worksheet->setCellValueByColumnAndRow(2, $i + 2, $datas2[$j]->料號);
-                $worksheet->setCellValueByColumnAndRow(3, $i + 2, $datas2[$j]->品名);
-                $worksheet->setCellValueByColumnAndRow(4, $i + 2, $datas2[$j]->規格);
-                $worksheet->setCellValueByColumnAndRow(5, $i + 2, $datas2[$j]->inventory現有庫存);
-                $worksheet->setCellValueByColumnAndRow(6, $i + 2, $datas2[$j]->安全庫存);
-                $worksheet->setCellValueByColumnAndRow(7, $i + 2, $datas2[$j]->備註);
+                $worksheet->setCellValue([1, $i + 2], $notmonth);
+                $worksheet->setCellValue([2, $i + 2], $datas2[$j]->料號);
+                $worksheet->setCellValue([3, $i + 2], $datas2[$j]->品名);
+                $worksheet->setCellValue([4, $i + 2], $datas2[$j]->規格);
+                $worksheet->setCellValue([5, $i + 2], $datas2[$j]->inventory現有庫存);
+                $worksheet->setCellValue([6, $i + 2], $datas2[$j]->安全庫存);
+                $worksheet->setCellValue([7, $i + 2], $datas2[$j]->備註);
 
                 array_push($AllISNClientsPairs["isn"], $datas2[$j]->料號);
                 array_push($AllISNClientsPairs["client"], "非月請購");
@@ -313,21 +313,21 @@ class MailService
             $worksheet = $spreadsheet->getActiveSheet();
 
             //填寫表頭
-            $worksheet->setCellValueByColumnAndRow(1, 1, \Lang::get('callpageLang.isn'));
-            $worksheet->setCellValueByColumnAndRow(2, 1, \Lang::get('callpageLang.pName'));
-            $worksheet->setCellValueByColumnAndRow(3, 1, \Lang::get('callpageLang.format'));
-            $worksheet->setCellValueByColumnAndRow(4, 1, \Lang::get('callpageLang.stock'));
-            $worksheet->setCellValueByColumnAndRow(5, 1, \Lang::get('callpageLang.days'));
-            $worksheet->setCellValueByColumnAndRow(6, 1, \Lang::get('callpageLang.mark'));
+            $worksheet->setCellValue([1, 1], \Lang::get('callpageLang.isn'));
+            $worksheet->setCellValue([2, 1], \Lang::get('callpageLang.pName'));
+            $worksheet->setCellValue([3, 1], \Lang::get('callpageLang.format'));
+            $worksheet->setCellValue([4, 1], \Lang::get('callpageLang.stock'));
+            $worksheet->setCellValue([5, 1], \Lang::get('callpageLang.days'));
+            $worksheet->setCellValue([6, 1], \Lang::get('callpageLang.mark'));
 
             //填寫內容
             for ($j = 0; $j < count($datas); $j++) {
-                $worksheet->setCellValueByColumnAndRow(1, $j + 2, $datas[$j]->料號);
-                $worksheet->setCellValueByColumnAndRow(2, $j + 2, $datas[$j]->品名);
-                $worksheet->setCellValueByColumnAndRow(3, $j + 2, $datas[$j]->規格);
-                $worksheet->setCellValueByColumnAndRow(4, $j + 2, $datas[$j]->inventory現有庫存);
-                $worksheet->setCellValueByColumnAndRow(5, $j + 2, $datas[$j]->inventory最後更新時間);
-                $worksheet->setCellValueByColumnAndRow(6, $j + 2, $datas[$j]->備註);
+                $worksheet->setCellValue([1, $j + 2], $datas[$j]->料號);
+                $worksheet->setCellValue([2, $j + 2], $datas[$j]->品名);
+                $worksheet->setCellValue([3, $j + 2], $datas[$j]->規格);
+                $worksheet->setCellValue([4, $j + 2], $datas[$j]->inventory現有庫存);
+                $worksheet->setCellValue([5, $j + 2], $datas[$j]->inventory最後更新時間);
+                $worksheet->setCellValue([6, $j + 2], $datas[$j]->備註);
 
                 array_push($AllISNClientsPairsDay["isn"], $datas[$j]->料號);
             } // for

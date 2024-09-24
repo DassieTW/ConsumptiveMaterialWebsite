@@ -672,7 +672,7 @@ class MonthlyPRController extends Controller
 
         $spreadsheet = new Spreadsheet();
         // $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
-        $spreadsheet->getDefaultStyle()->getFont()->setName('Microsoft JhengHei');
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Sun-ExtA');
         $worksheet = $spreadsheet->getActiveSheet();
 
         $request_user = $request->input('User');
@@ -720,19 +720,19 @@ class MonthlyPRController extends Controller
         //填寫內容
         for ($j = 0; $j < count($PN); $j++) {
             if ($ReqAmount[$j] !== "0" || $ReqAmount[$j] != 0) {
-                $worksheet->setCellValueByColumnAndRow(1, $i, $i - 2); // A
-                $worksheet->setCellValueByColumnAndRow(2, $i, $PN[$j]); // B
-                $worksheet->setCellValueByColumnAndRow(3, $i, $pName[$j]); // C
-                $worksheet->setCellValueByColumnAndRow(4, $i, $Spec[$j]); // D
-                $worksheet->setCellValueByColumnAndRow(5, $i, strval($Unit_price[$j]) . " " . strtoupper($currency_name[$j])); // E
-                $worksheet->setCellValueByColumnAndRow(6, $i, strval($nowNeed[$j])); // F
-                $worksheet->setCellValueByColumnAndRow(7, $i, strval($nextNeed[$j])); // G
-                $worksheet->setCellValueByColumnAndRow(8, $i, strval($Stock[$j])); // H
-                $worksheet->setCellValueByColumnAndRow(9, $i, strval($in_Transit[$j])); // I
-                $worksheet->setCellValueByColumnAndRow(10, $i, strval($ReqAmount[$j])); // J
-                $worksheet->setCellValueByColumnAndRow(11, $i, strval($total_price1[$j]) . " " . strtoupper($currency_name[$j])); // K
-                $worksheet->setCellValueByColumnAndRow(12, $i, strval($total_price2[$j])); // L
-                $worksheet->setCellValueByColumnAndRow(13, $i, strval($MOQ[$j])); // M
+                $worksheet->setCellValue("A" . $i, $i - 2); // A
+                $worksheet->setCellValue("B" . $i, $PN[$j]); // B
+                $worksheet->setCellValue("C" . $i, $pName[$j]); // C
+                $worksheet->setCellValue("D" . $i, $Spec[$j]); // D
+                $worksheet->setCellValue("E" . $i, strval($Unit_price[$j]) . " " . strtoupper($currency_name[$j])); // E
+                $worksheet->setCellValue("F" . $i, strval($nowNeed[$j])); // F
+                $worksheet->setCellValue("G" . $i, strval($nextNeed[$j])); // G
+                $worksheet->setCellValue("H" . $i, strval($Stock[$j])); // H
+                $worksheet->setCellValue("I" . $i, strval($in_Transit[$j])); // I
+                $worksheet->setCellValue("J" . $i, strval($ReqAmount[$j])); // J
+                $worksheet->setCellValue("K" . $i, strval($total_price1[$j]) . " " . strtoupper($currency_name[$j])); // K
+                $worksheet->setCellValue("L" . $i, strval($total_price2[$j])); // L
+                $worksheet->setCellValue("M" . $i, strval($MOQ[$j])); // M
 
                 $total_USD = $total_USD + floatval(str_replace(",", "", strval($total_price2[$j])));
 
@@ -757,12 +757,18 @@ class MonthlyPRController extends Controller
         $worksheet->setCellValue(("K" . $i + 2), "製表: " . $request_user['detail_info']['姓名'] . " " . date('Y-m-d'));
 
         $worksheet->getStyle('A2:M2')->getAlignment()->setHorizontal('center');
-        $worksheet->getStyle('A3:A' . ($i + 1))->getAlignment()->setHorizontal('center');
+        $worksheet->getStyle('A3:D' . ($i + 1))->getAlignment()->setHorizontal('center');
         $worksheet->getStyle('E3:M' . ($i + 1))->getAlignment()->setHorizontal('right');
 
         foreach ($worksheet->getColumnIterator() as $column) {
             $worksheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         } // foreach
+
+        // Set margins if needed
+        $worksheet->getPageMargins()->setTop(0.3);
+        $worksheet->getPageMargins()->setRight(0.3);
+        $worksheet->getPageMargins()->setLeft(0.3);
+        $worksheet->getPageMargins()->setBottom(0.3);
 
         $now = Carbon::now()->format('Ymd');
         $filename = $title . \Lang::get("monthlyPRpageLang.page_name") . "_" . $now . '.pdf';

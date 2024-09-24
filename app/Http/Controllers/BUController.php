@@ -130,8 +130,17 @@ class BUController extends Controller
             try {
                 DB::table('調撥單')
                     ->insert([
-                        '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '庫存' => $oldstock,
-                        '調撥數量' => $amount, '撥出廠區' => $database, '接收廠區' => $receive, '調撥單號' => $opentime, '開單時間' => Carbon::now(), '狀態' => '待撥出'
+                        '料號' => $number,
+                        '品名' => $name,
+                        '規格' => $format,
+                        '單位' => $unit,
+                        '庫存' => $oldstock,
+                        '調撥數量' => $amount,
+                        '撥出廠區' => $database,
+                        '接收廠區' => $receive,
+                        '調撥單號' => $opentime,
+                        '開單時間' => Carbon::now(),
+                        '狀態' => '待撥出'
                     ]);
 
                 DB::commit();
@@ -326,7 +335,19 @@ class BUController extends Controller
                     if ($realamounts[$i] > 0) {
                         DB::table('撥出明細')
                             ->insert([
-                                '調撥單號' => $list, '客戶別' => $clients[$i], '撥出廠區' => $outfactory, '接收廠區' => $receivefac, '料號' => $number, '品名' => $name, '規格' => $format, '現有庫存' => $nowstocks[$i], '預計撥出數量' => $preamount, '實際撥出數量' => $realamounts[$i], '儲位' => $positions[$i], '調撥人' => $outpeople, '撥出時間' => $now
+                                '調撥單號' => $list,
+                                '客戶別' => $clients[$i],
+                                '撥出廠區' => $outfactory,
+                                '接收廠區' => $receivefac,
+                                '料號' => $number,
+                                '品名' => $name,
+                                '規格' => $format,
+                                '現有庫存' => $nowstocks[$i],
+                                '預計撥出數量' => $preamount,
+                                '實際撥出數量' => $realamounts[$i],
+                                '儲位' => $positions[$i],
+                                '調撥人' => $outpeople,
+                                '撥出時間' => $now
                             ]);
                     }
                     $total = $total + $realamounts[$i];
@@ -463,7 +484,18 @@ class BUController extends Controller
 
                     DB::table('接收明細')
                         ->insert([
-                            '調撥單號' => $list, '客戶別' => $client, '撥出廠區' => $outfactory, '接收廠區' => $receivefac, '料號' => $number, '品名' => $name, '規格' => $format, '實際接收數量' => $realpick, '實際撥出數量' => $realout, '儲位' => $position, '接收人' => $pickpeople, '接收時間' => $now
+                            '調撥單號' => $list,
+                            '客戶別' => $client,
+                            '撥出廠區' => $outfactory,
+                            '接收廠區' => $receivefac,
+                            '料號' => $number,
+                            '品名' => $name,
+                            '規格' => $format,
+                            '實際接收數量' => $realpick,
+                            '實際撥出數量' => $realout,
+                            '儲位' => $position,
+                            '接收人' => $pickpeople,
+                            '接收時間' => $now
                         ]);
 
                     DB::table('調撥單')
@@ -593,13 +625,13 @@ class BUController extends Controller
             try {
                 //填寫表頭
                 for ($i = 0; $i < 10; $i++) {
-                    $worksheet->setCellValueByColumnAndRow($i + 1, 1, $title[$i]);
+                    $worksheet->setCellValue([$i + 1, 1], $title[$i]);
                 }
 
                 for ($i = 0; $i < 8; $i++) {
                     for ($j = 0; $j < $count; $j++) {
 
-                        $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
+                        $worksheet->setCellValue([$i + 1, $j + 2], $Alldata[$i][$j]);
                     }
                 }
 
@@ -608,14 +640,14 @@ class BUController extends Controller
                         for ($j = 0; $j < count($Alldata[8][$i]); $j++) {
                             $test = $test . $Alldata[8][$i][$j];
                         }
-                        $worksheet->setCellValueByColumnAndRow(9, $i + 2, $test);
+                        $worksheet->setCellValue([9, $i + 2], $test);
                         $test = "";
                     }
                 }
 
                 for ($j = 0; $j < $count; $j++) {
 
-                    $worksheet->setCellValueByColumnAndRow(10, $j + 2, $Alldata[9][$j]);
+                    $worksheet->setCellValue([10, $j + 2], $Alldata[9][$j]);
                 }
 
                 // 下載
@@ -663,13 +695,13 @@ class BUController extends Controller
 
         //填寫表頭
         for ($i = 0; $i < $titlecount; $i++) {
-            $worksheet->setCellValueByColumnAndRow($i + 1, 1, $request->input('title')[$i]);
+            $worksheet->setCellValue([$i + 1, 1], $request->input('title')[$i]);
         }
 
         for ($i = 0; $i < $titlecount; $i++) {
             for ($j = 0; $j < $count; $j++) {
 
-                $worksheet->setCellValueByColumnAndRow($i + 1, $j + 2, $Alldata[$i][$j]);
+                $worksheet->setCellValue([$i + 1, $j + 2], $Alldata[$i][$j]);
             }
         }
 

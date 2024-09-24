@@ -28,7 +28,7 @@ class Tcpdf extends Pdf
      *
      * @return \TCPDF implementation
      */
-    protected function createExternalWriterInstance($orientation, $unit, $paperSize)
+    protected function createExternalWriterInstance(string $orientation, string $unit, $paperSize): \TCPDF
     {
         return new \TCPDF($orientation, $unit, $paperSize);
     }
@@ -66,7 +66,8 @@ class Tcpdf extends Pdf
         $pdf->AddPage();
 
         //  Set the appropriate font
-        $pdf->SetFont($this->getFont());
+        // $pdf->SetFont($this->getFont());
+        $pdf->SetFont('cid0cs', '', null, '', false);
         $pdf->writeHTML($this->generateHTMLAll());
 
         //  Document info

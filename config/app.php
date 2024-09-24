@@ -177,8 +177,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
 
-        Maatwebsite\Excel\ExcelServiceProvider::class,
-
         // For generating js version of localization files base on php files from "/resources/lang"
         Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class,
 
