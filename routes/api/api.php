@@ -36,3 +36,4 @@ Route::post('/validateISN', 'api\CommonlyUsedController@showISN');
 Route::post('/getLocs', 'api\CommonlyUsedController@showLocs');
 
 Route::post('/SSZ', 'api\SSZPickMatsController@storeDataFromMIS');
+Route::post('/SSZ_Test', 'api\SSZPickMatsController@storeDataFromMIS_Test');
