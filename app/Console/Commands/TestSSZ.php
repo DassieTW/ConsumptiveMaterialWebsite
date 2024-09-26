@@ -40,7 +40,7 @@ class MigrateAllServerDB extends Command
     {
         try {
             $this->info(
-                \DB::connection('sqlsrv_ssztest')->table('[SAPBPM].[dbo].[V_SSZ_RelQtyInfo]')
+                \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
                     ->where('FlowNumber', $this->argument('FlowNumber'))
                     ->get()
             );
