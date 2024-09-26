@@ -101,6 +101,36 @@ return [
             'trust_server_certificate' => true,
             //'isolation_level' => env('DB_ISOLATION_LEVEL', 'COMMITTED READ'),
         ],
+
+        'sqlsrv_ssz' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => '172.18.195.192',
+            'port' => '1433',
+            'database' => 'SAPBPM',
+            'username' => 'PEGA_BG6_IT_USER',
+            'password' => 'Consum@0815',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'trust_server_certificate' => true,
+            //'isolation_level' => env('DB_ISOLATION_LEVEL', 'COMMITTED READ'),
+        ],
+
+        'sqlsrv_ssztest' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => '172.18.201.95',
+            'port' => '1433',
+            'database' => 'SAPBPM',
+            'username' => 'PEGA_BG6_IT_USER',
+            'password' => 'Consum@0815',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'trust_server_certificate' => true,
+            //'isolation_level' => env('DB_ISOLATION_LEVEL', 'COMMITTED READ'),
+        ],
     ],
 
     /*

@@ -75,6 +75,10 @@ class SSZPickMatsController extends Controller
                 ]
             );
             \DB::commit();
+
+            $db = \DB::connection('sqlsrv_ssztest')->table('[SAPBPM].[dbo].[V_SSZ_RelQtyInfo]')
+                ->where('FlowNumber', $request->input('FlowNumber'))
+                ->get(); 
         } catch (Exception $e) {
             dd($e); // dump error
         } // try - catch
