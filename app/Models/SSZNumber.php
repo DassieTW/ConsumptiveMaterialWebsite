@@ -28,6 +28,6 @@ class SSZNumber extends Model
 
     public function info()
     {
-        return $this->hasOne(SSZInfo::class, 'id');
+        return $this->hasMany(SSZInfo::class, 'FlowNumber', 'id');
     } // info
 } // SSZNumber

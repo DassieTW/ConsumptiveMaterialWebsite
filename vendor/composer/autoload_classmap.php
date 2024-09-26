@@ -15,6 +15,7 @@ return array(
     'App\\Console\\Commands\\MigrateAllServerDB' => $baseDir . '/app/Console/Commands/MigrateAllServerDB.php',
     'App\\Console\\Commands\\SendSafeStockMail' => $baseDir . '/app/Console/Commands/SendSafeStockMail.php',
     'App\\Console\\Commands\\SluggishStock' => $baseDir . '/app/Console/Commands/SluggishStock.php',
+    'App\\Console\\Commands\\TestSSZ' => $baseDir . '/app/Console/Commands/TestSSZ.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',

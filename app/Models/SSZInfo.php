@@ -14,18 +14,28 @@ class SSZInfo extends Model
     public $timestamps = false;
     protected $table = "SSZInfo";
 
-    protected $primaryKey = 'id';
+    // protected $primaryKey = 'id';
 
-    protected $keyType = 'string';
+    // protected $keyType = 'string';
 
     public $incrementing = false;
 
     protected $fillable = [
-        'id',
+        'FlowNumber',
+        'Applicant',
+        'MatShort',
+        'relQty',
+        'MaterialType',
+        'Company',
+        'DeptManager1',
+        'CostDept',
+        'Spec',
+        'Keeper',
+        'SSZMemo',
     ];
 
     public function number_status()
     {
-        return $this->belongsTo(SSZNumber::class, 'id');
+        return $this->belongsTo(SSZNumber::class, 'id', 'id');
     } // number_status
 } // SSZInfo

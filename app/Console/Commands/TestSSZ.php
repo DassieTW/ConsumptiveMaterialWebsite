@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Exception;
 use Illuminate\Console\Command;
 
-class MigrateAllServerDB extends Command
+class TestSSZ extends Command
 {
     /**
      * The name and signature of the console command.

@@ -48,6 +48,28 @@ class SSZPickMatsController extends Controller
                 ]
             );
             \DB::commit();
+
+            $allRecords = \DB::connection('sqlsrv_ssz')->table('V_SSZ_RelQtyInfo')
+                ->where('FlowNumber', $request->input('FlowNumber'))
+                ->get();
+            $allRecords_associative_array = array();
+            foreach ($allRecords as $record) {
+                $allRecords_associative_array[] = json_decode($record, true);
+            } // foreach
+
+            \DB::beginTransaction();
+
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($allRecords_associative_array, 100, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('SSZInfo')->upsert(
+                    $whole_load[$i],
+                    ['FlowNumber', 'MatShort'],
+                    ['Applicant', 'relQty', 'MaterialType', 'Company', 'DeptManager1', 'CostDept', 'Spec', 'Keeper', 'SSZMemo']
+                );
+            } // for
+
+            \DB::commit();
         } catch (Exception $e) {
             dd($e); // dump error
         } // try - catch
@@ -57,9 +79,9 @@ class SSZPickMatsController extends Controller
 
     public function storeDataFromMIS_Test(Request $request)
     {
-        \Log::channel('dbquerys')->info('----------------------------MIS---------------------------');
+        \Log::channel('dbquerys')->info('----------------------------MIS TEST---------------------------');
         \Log::channel('dbquerys')->info(json_encode($request->post()));
-        \Log::channel('dbquerys')->info('--------------------------MIS END--------------------------');
+        \Log::channel('dbquerys')->info('--------------------------MIS TEST END--------------------------');
 
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "HQ TEST Consumables management");
         \DB::purge(env("DB_CONNECTION"));
@@ -76,9 +98,27 @@ class SSZPickMatsController extends Controller
             );
             \DB::commit();
 
-            $db = \DB::connection('sqlsrv_ssztest')->table('[SAPBPM].[dbo].[V_SSZ_RelQtyInfo]')
+            $allRecords = \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
                 ->where('FlowNumber', $request->input('FlowNumber'))
-                ->get(); 
+                ->get();
+            $allRecords_associative_array = array();
+            foreach ($allRecords as $record) {
+                $allRecords_associative_array[] = json_decode($record, true);
+            } // foreach
+
+            \DB::beginTransaction();
+
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($allRecords_associative_array, 100, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('SSZInfo')->upsert(
+                    $whole_load[$i],
+                    ['FlowNumber', 'MatShort'],
+                    ['Applicant', 'relQty', 'MaterialType', 'Company', 'DeptManager1', 'CostDept', 'Spec', 'Keeper', 'SSZMemo']
+                );
+            } // for
+
+            \DB::commit();
         } catch (Exception $e) {
             dd($e); // dump error
         } // try - catch

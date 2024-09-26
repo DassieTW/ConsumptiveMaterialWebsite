@@ -801,6 +801,7 @@ class ComposerStaticInit3a337aa382200259a249a8921ee7c950
         'App\\Console\\Commands\\MigrateAllServerDB' => __DIR__ . '/../..' . '/app/Console/Commands/MigrateAllServerDB.php',
         'App\\Console\\Commands\\SendSafeStockMail' => __DIR__ . '/../..' . '/app/Console/Commands/SendSafeStockMail.php',
         'App\\Console\\Commands\\SluggishStock' => __DIR__ . '/../..' . '/app/Console/Commands/SluggishStock.php',
+        'App\\Console\\Commands\\TestSSZ' => __DIR__ . '/../..' . '/app/Console/Commands/TestSSZ.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
