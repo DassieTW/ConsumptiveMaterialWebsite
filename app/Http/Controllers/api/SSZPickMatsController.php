@@ -54,7 +54,9 @@ class SSZPickMatsController extends Controller
                 ->get();
             $allRecords_associative_array = array();
             foreach ($allRecords as $record) {
-                $allRecords_associative_array[] = json_decode(json_encode($record), true);
+                $temp = json_decode(json_encode($record), true);
+                $temp['relQty'] = (int)$temp['relQty'];
+                $allRecords_associative_array[] = $temp;
             } // foreach
 
             \DB::beginTransaction();
@@ -103,7 +105,9 @@ class SSZPickMatsController extends Controller
                 ->get();
             $allRecords_associative_array = array();
             foreach ($allRecords as $record) {
-                $allRecords_associative_array[] = json_decode(json_encode($record), true);
+                $temp = json_decode(json_encode($record), true);
+                $temp['relQty'] = (int)$temp['relQty'];
+                $allRecords_associative_array[] = $temp;
             } // foreach
 
             \DB::beginTransaction();
