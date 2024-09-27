@@ -54,7 +54,9 @@ class TestSSZ extends Command
             $allRecords_associative_array = array();
             foreach ($allRecords as $record) {
                 // dd(gettype($record)); // test
-                $allRecords_associative_array[] = json_decode(json_encode($record), true);
+                $temp = json_decode(json_encode($record), true);
+                $temp['relQty'] = (int)$temp['relQty'];
+                $allRecords_associative_array[] = $temp;
             } // foreach
 
             \DB::beginTransaction();
