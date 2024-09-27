@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
+use Carbon\Carbon;
 
 class TestSSZ extends Command
 {
@@ -39,11 +40,35 @@ class TestSSZ extends Command
     public function handle()
     {
         try {
-            $this->info(
-                \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
-                    ->where('FlowNumber', $this->argument('FlowNumber'))
-                    ->get()
-            );
+            \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
+                ->where('FlowNumber', $this->argument('FlowNumber'))
+                ->get();
+
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "HQ TEST Consumables management");
+            \DB::purge(env("DB_CONNECTION"));
+            $dbName = \DB::connection()->getDatabaseName(); // test
+            $datetime = Carbon::now();
+            $allRecords = \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
+                ->where('FlowNumber', $this->argument('FlowNumber'))
+                ->get();
+            $allRecords_associative_array = array();
+            foreach ($allRecords as $record) {
+                $allRecords_associative_array[] = json_decode($record, true);
+            } // foreach
+
+            \DB::beginTransaction();
+
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($allRecords_associative_array, 100, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('SSZInfo')->upsert(
+                    $whole_load[$i],
+                    ['FlowNumber', 'MatShort'],
+                    ['Applicant', 'relQty', 'MaterialType', 'Company', 'DeptManager1', 'CostDept', 'Spec', 'Keeper', 'SSZMemo']
+                );
+            } // for
+
+            \DB::commit();
         } catch (Exception $e) {
             $this->error("Command execution failed with error : " . $e->getMessage());
         } // try - catch
