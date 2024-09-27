@@ -53,8 +53,8 @@ class TestSSZ extends Command
                 ->get();
             $allRecords_associative_array = array();
             foreach ($allRecords as $record) {
-                dd(gettype($record)); // test
-                $allRecords_associative_array[] = json_decode($record, true);
+                // dd(gettype($record)); // test
+                $allRecords_associative_array[] = json_decode(json_encode($record), true);
             } // foreach
 
             \DB::beginTransaction();
