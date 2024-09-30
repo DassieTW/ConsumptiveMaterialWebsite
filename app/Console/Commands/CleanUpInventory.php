@@ -47,7 +47,7 @@ class CleanUpInventory extends Command
                 \DB::purge(env("DB_CONNECTION"));
                 \DB::table('inventory')
                     ->whereDate('最後更新時間', '<=', \Carbon\Carbon::now()->modify('-3 months')->toDateTimeString())
-                    ->where('現有庫存', '=', 0)
+                    ->where('現有庫存', '<=', 0)
                     ->delete();
             } // foreach
 

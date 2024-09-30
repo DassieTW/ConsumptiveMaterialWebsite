@@ -47,7 +47,6 @@ class SSZPickMatsController extends Controller
                     'received_time' => $datetime,
                 ]
             );
-            \DB::commit();
 
             $allRecords = \DB::connection('sqlsrv_ssz')->table('V_SSZ_RelQtyInfo')
                 ->where('FlowNumber', $request->input('FlowNumber'))
@@ -69,8 +68,6 @@ class SSZPickMatsController extends Controller
                 $temp['relQty'] = (int)$record->relQty;
                 $allRecords_associative_array[] = $temp;
             } // foreach
-
-            \DB::beginTransaction();
 
             // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
             $whole_load = array_chunk($allRecords_associative_array, 100, true);
@@ -109,7 +106,6 @@ class SSZPickMatsController extends Controller
                     'received_time' => $datetime,
                 ]
             );
-            \DB::commit();
 
             $allRecords = \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
                 ->where('FlowNumber', $request->input('FlowNumber'))
@@ -131,8 +127,6 @@ class SSZPickMatsController extends Controller
                 $temp['relQty'] = (int)$record->relQty;
                 $allRecords_associative_array[] = $temp;
             } // foreach
-
-            \DB::beginTransaction();
 
             // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
             $whole_load = array_chunk($allRecords_associative_array, 100, true);
