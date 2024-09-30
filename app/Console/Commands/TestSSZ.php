@@ -50,8 +50,18 @@ class TestSSZ extends Command
             $allRecords_associative_array = array();
             foreach ($allRecords as $record) {
                 // dd(gettype($record)); // test
-                $temp = json_decode(json_encode($record), true);
-                $temp['relQty'] = (int)$temp['relQty'];
+                $temp = array();
+                $temp['FlowNumber'] = $record->FlowNumber;
+                $temp['MatShort'] = $record->MatShort;
+                $temp['Applicant'] = $record->Applicant;
+                $temp['MaterialType'] = $record->MaterialType;
+                $temp['Company'] = $record->Company;
+                $temp['DeptManager1'] = $record->DeptManager1;
+                $temp['CostDept'] = $record->CostDept;
+                $temp['Spec'] = $record->Spec;
+                $temp['Keeper'] = $record->Keeper;
+                $temp['SSZMemo'] = $record->SSZMemo;
+                $temp['relQty'] = (int)$record->relQty;
                 $allRecords_associative_array[] = $temp;
             } // foreach
 
