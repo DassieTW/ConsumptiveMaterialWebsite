@@ -40,15 +40,11 @@ class TestSSZ extends Command
     public function handle()
     {
         try {
-            \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
-                ->where('FlowNumber', $this->argument('FlowNumber'))
-                ->get();
-
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "HQ TEST Consumables management");
             \DB::purge(env("DB_CONNECTION"));
             $dbName = \DB::connection()->getDatabaseName(); // test
             $datetime = Carbon::now();
-            $allRecords = \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
+            $allRecords = \DB::connection('sqlsrv_ssz')->table('V_SSZ_RelQtyInfo')
                 ->where('FlowNumber', $this->argument('FlowNumber'))
                 ->get();
             $allRecords_associative_array = array();
