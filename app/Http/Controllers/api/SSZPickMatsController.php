@@ -32,7 +32,6 @@ class SSZPickMatsController extends Controller
     {
         \Log::channel('dbquerys')->info('----------------------------MIS---------------------------');
         \Log::channel('dbquerys')->info(json_encode($request->post()));
-        \Log::channel('dbquerys')->info('--------------------------MIS END--------------------------');
 
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
         \DB::purge(env("DB_CONNECTION"));
@@ -84,6 +83,7 @@ class SSZPickMatsController extends Controller
             dd($e); // dump error
         } // try - catch
 
+        \Log::channel('dbquerys')->info('--------------------------MIS END--------------------------');
         return \Response::json(['message' => 'Data Has Been Received', 'Status' => '000'], 200);
     } // storeDataFromMIS
 
@@ -91,7 +91,6 @@ class SSZPickMatsController extends Controller
     {
         \Log::channel('dbquerys')->info('----------------------------MIS TEST---------------------------');
         \Log::channel('dbquerys')->info(json_encode($request->post()));
-        \Log::channel('dbquerys')->info('--------------------------MIS TEST END--------------------------');
 
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "HQ TEST Consumables management");
         \DB::purge(env("DB_CONNECTION"));
@@ -143,6 +142,7 @@ class SSZPickMatsController extends Controller
             dd($e); // dump error
         } // try - catch
 
+        \Log::channel('dbquerys')->info('--------------------------MIS TEST END--------------------------');
         return \Response::json(['message' => 'Data Has Been Received', 'Status' => '000'], 200);
     } // storeDataFromMIS_Test
 
