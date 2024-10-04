@@ -59,7 +59,7 @@ class TestSSZ extends Command
                     'SSZMemo',
                     \DB::raw('SUM(relQty) as relQty')
                 )
-                ->groupBy('FlowNumber', 'MatShort')
+                ->groupBy('FlowNumber', 'MatShort', 'Applicant', 'MaterialType', 'Company', 'DeptManager1', 'CostDept', 'Spec', 'Keeper', 'SSZMemo')
                 ->get();
             $allRecords_associative_array = array();
             foreach ($allRecords as $record) {
