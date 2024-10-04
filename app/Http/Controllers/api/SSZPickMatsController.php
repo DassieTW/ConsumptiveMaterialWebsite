@@ -49,6 +49,20 @@ class SSZPickMatsController extends Controller
 
             $allRecords = \DB::connection('sqlsrv_ssz')->table('V_SSZ_RelQtyInfo')
                 ->where('FlowNumber', $request->input('FlowNumber'))
+                ->select(
+                    'FlowNumber',
+                    'MatShort',
+                    'Applicant',
+                    'MaterialType',
+                    'Company',
+                    'DeptManager1',
+                    'CostDept',
+                    'Spec',
+                    'Keeper',
+                    'SSZMemo',
+                    \DB::raw('SUM(relQty) as relQty')
+                )
+                ->groupBy('FlowNumber', 'MatShort')
                 ->get();
             $allRecords_associative_array = array();
             foreach ($allRecords as $record) {
@@ -108,6 +122,20 @@ class SSZPickMatsController extends Controller
 
             $allRecords = \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
                 ->where('FlowNumber', $request->input('FlowNumber'))
+                ->select(
+                    'FlowNumber',
+                    'MatShort',
+                    'Applicant',
+                    'MaterialType',
+                    'Company',
+                    'DeptManager1',
+                    'CostDept',
+                    'Spec',
+                    'Keeper',
+                    'SSZMemo',
+                    \DB::raw('SUM(relQty) as relQty')
+                )
+                ->groupBy('FlowNumber', 'MatShort')
                 ->get();
             $allRecords_associative_array = array();
             foreach ($allRecords as $record) {
