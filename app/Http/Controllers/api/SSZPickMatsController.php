@@ -30,7 +30,7 @@ class SSZPickMatsController extends Controller
      */
     public function storeDataFromMIS(Request $request)
     {
-        \Log::channel('dbquerys')->info('----------------------------MIS---------------------------');
+        \Log::channel('dbquerys')->info('----------------------------SSZ Number Sent from MIS---------------------------');
         \Log::channel('dbquerys')->info(json_encode($request->post()));
 
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
@@ -46,64 +46,18 @@ class SSZPickMatsController extends Controller
                     'received_time' => $datetime,
                 ]
             );
-
-            $allRecords = \DB::connection('sqlsrv_ssz')->table('V_SSZ_RelQtyInfo')
-                ->where('FlowNumber', $request->input('FlowNumber'))
-                ->select(
-                    'FlowNumber',
-                    'MatShort',
-                    'Applicant',
-                    'MaterialType',
-                    'Company',
-                    'DeptManager1',
-                    'CostDept',
-                    'Spec',
-                    'Keeper',
-                    'SSZMemo',
-                    \DB::raw('SUM(relQty) as relQty')
-                )
-                ->groupBy('FlowNumber', 'MatShort', 'Applicant', 'MaterialType', 'Company', 'DeptManager1', 'CostDept', 'Spec', 'Keeper', 'SSZMemo')
-                ->get();
-            $allRecords_associative_array = array();
-            foreach ($allRecords as $record) {
-                // dd(gettype($record)); // test
-                $temp = array();
-                $temp['FlowNumber'] = $record->FlowNumber;
-                $temp['MatShort'] = $record->MatShort;
-                $temp['Applicant'] = $record->Applicant;
-                $temp['MaterialType'] = $record->MaterialType;
-                $temp['Company'] = $record->Company;
-                $temp['DeptManager1'] = $record->DeptManager1;
-                $temp['CostDept'] = $record->CostDept;
-                $temp['Spec'] = $record->Spec;
-                $temp['Keeper'] = $record->Keeper;
-                $temp['SSZMemo'] = $record->SSZMemo;
-                $temp['relQty'] = (int)$record->relQty;
-                $allRecords_associative_array[] = $temp;
-            } // foreach
-
-            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
-            $whole_load = array_chunk($allRecords_associative_array, 100, true);
-            for ($i = 0; $i < count($whole_load); $i++) {
-                $temp_record = \DB::table('SSZInfo')->upsert(
-                    $whole_load[$i],
-                    ['FlowNumber', 'MatShort'],
-                    ['Applicant', 'relQty', 'MaterialType', 'Company', 'DeptManager1', 'CostDept', 'Spec', 'Keeper', 'SSZMemo']
-                );
-            } // for
-
             \DB::commit();
         } catch (Exception $e) {
             dd($e); // dump error
         } // try - catch
 
-        \Log::channel('dbquerys')->info('--------------------------MIS END--------------------------');
+        \Log::channel('dbquerys')->info('--------------------------SSZ Number Sent from MIS END--------------------------');
         return \Response::json(['message' => 'Data Has Been Received', 'Status' => '000'], 200);
     } // storeDataFromMIS
 
     public function storeDataFromMIS_Test(Request $request)
     {
-        \Log::channel('dbquerys')->info('----------------------------MIS TEST---------------------------');
+        \Log::channel('dbquerys')->info('----------------------------SSZ Number Sent from MIS TEST---------------------------');
         \Log::channel('dbquerys')->info(json_encode($request->post()));
 
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "HQ TEST Consumables management");
@@ -119,58 +73,12 @@ class SSZPickMatsController extends Controller
                     'received_time' => $datetime,
                 ]
             );
-
-            $allRecords = \DB::connection('sqlsrv_ssztest')->table('V_SSZ_RelQtyInfo')
-                ->where('FlowNumber', $request->input('FlowNumber'))
-                ->select(
-                    'FlowNumber',
-                    'MatShort',
-                    'Applicant',
-                    'MaterialType',
-                    'Company',
-                    'DeptManager1',
-                    'CostDept',
-                    'Spec',
-                    'Keeper',
-                    'SSZMemo',
-                    \DB::raw('SUM(relQty) as relQty')
-                )
-                ->groupBy('FlowNumber', 'MatShort', 'Applicant', 'MaterialType', 'Company', 'DeptManager1', 'CostDept', 'Spec', 'Keeper', 'SSZMemo')
-                ->get();
-            $allRecords_associative_array = array();
-            foreach ($allRecords as $record) {
-                // dd(gettype($record)); // test
-                $temp = array();
-                $temp['FlowNumber'] = $record->FlowNumber;
-                $temp['MatShort'] = $record->MatShort;
-                $temp['Applicant'] = $record->Applicant;
-                $temp['MaterialType'] = $record->MaterialType;
-                $temp['Company'] = $record->Company;
-                $temp['DeptManager1'] = $record->DeptManager1;
-                $temp['CostDept'] = $record->CostDept;
-                $temp['Spec'] = $record->Spec;
-                $temp['Keeper'] = $record->Keeper;
-                $temp['SSZMemo'] = $record->SSZMemo;
-                $temp['relQty'] = (int)$record->relQty;
-                $allRecords_associative_array[] = $temp;
-            } // foreach
-
-            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
-            $whole_load = array_chunk($allRecords_associative_array, 100, true);
-            for ($i = 0; $i < count($whole_load); $i++) {
-                $temp_record = \DB::table('SSZInfo')->upsert(
-                    $whole_load[$i],
-                    ['FlowNumber', 'MatShort'],
-                    ['Applicant', 'relQty', 'MaterialType', 'Company', 'DeptManager1', 'CostDept', 'Spec', 'Keeper', 'SSZMemo']
-                );
-            } // for
-
             \DB::commit();
         } catch (Exception $e) {
             dd($e); // dump error
         } // try - catch
 
-        \Log::channel('dbquerys')->info('--------------------------MIS TEST END--------------------------');
+        \Log::channel('dbquerys')->info('--------------------------SSZ Number Sent from MIS TEST END--------------------------');
         return \Response::json(['message' => 'Data Has Been Received', 'Status' => '000'], 200);
     } // storeDataFromMIS_Test
 

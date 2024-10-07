@@ -64,7 +64,6 @@ Route::post('/positionchange', [InboundController::class, 'positionchange'])->na
 
 //入庫-儲位調撥
 Route::get('/change', [InboundController::class, 'change'])->middleware('can:viewInbound,App\Models\Inbound');
-
 Route::post('/change', [InboundController::class, 'change'])->name('inbound.change')->middleware('can:viewInbound,App\Models\Inbound');
 
 //入庫-儲位調撥提交

@@ -53,7 +53,7 @@
                                         <option style="display: none" disabled selected>{!! __('inboundpageLang.enterloc') !!}
                                         </option>
                                         @foreach ($position as $position)
-                                            <option>{{ $position->儲存位置 }}</option>
+                                            <option>{{ trim($position->儲存位置) }}</option>
                                         @endforeach
                                     </select>
                                 </div>

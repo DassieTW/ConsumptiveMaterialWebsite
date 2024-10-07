@@ -35,5 +35,5 @@ Route::post('/news', function (Request $request) {
 Route::post('/validateISN', 'api\CommonlyUsedController@showISN');
 Route::post('/getLocs', 'api\CommonlyUsedController@showLocs');
 
-Route::post('/SSZ', 'api\SSZPickMatsController@storeDataFromMIS');
-Route::post('/SSZ_Test', 'api\SSZPickMatsController@storeDataFromMIS_Test');
+Route::post('/SSZ', 'api\SSZPickMatsController@storeDataFromMIS')->middleware('getSszInfoAfterNotification')->name('SSZ');
+Route::post('/SSZ_Test', 'api\SSZPickMatsController@storeDataFromMIS_Test')->middleware('getSszInfoAfterNotification')->name('SSZ_Test');
