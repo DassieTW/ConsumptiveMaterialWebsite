@@ -1330,7 +1330,6 @@ export default defineComponent({
             modalTitle,
             openLocDetails,
             showFooter,
-            updateCheckedRows,
             onUploadClick,
             onInputChange,
             onSendToDBClick,

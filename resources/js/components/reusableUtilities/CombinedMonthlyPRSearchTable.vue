@@ -33,31 +33,46 @@
                 <span v-else class="col col-auto text-danger m-0 p-0" role="alert">
                     <strong></strong>
                 </span>
-                <span class="col col-auto text-sm text-danger m-0 p-0">{{ $t('monthlyPRpageLang.shallow_delete')
-                    }}</span>
+                <span class="col col-auto text-sm text-danger m-0 p-0">
+                    {{ $t('monthlyPRpageLang.shallow_delete') }}
+                </span>
             </div>
             <table-lite id="searchTable" :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
 
-            <div class="row justify-content-center">
-                <div v-show="uploadToDBReady" class="col col-auto">
-                    <div v-if="needConfirm" class="col col-auto m-0 p-0">
-                        <button type="button" name="upload" data-bs-toggle="modal" data-bs-target="#sendPRConfirmTable"
-                            aria-controls="sendPRConfirmTable"
-                            class="col col-auto fs-3 text-center btn btn-lg btn-info">
-                            <i class="bi bi-envelope-check-fill"></i>
-                            {{ $t('monthlyPRpageLang.SendPRReview') }}
-                        </button>
-                    </div>
-                    <div v-else class="col col-auto m-0 p-0">
-                        <button @click="onSendClick" type="button" name="upload"
-                            class="col col-auto fs-3 text-center btn btn-lg btn-info">
-                            <i class="bi bi-envelope-check-fill"></i>
-                            {{ $t('monthlyPRpageLang.SendPRReview') }}
-                        </button>
-                    </div>
+            <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+            <div v-show="uploadToDBReady" class="row justify-content-center">
+                <div v-if="needConfirm2" class="col col-auto m-0 p-0">
+                    <button type="button" name="upload" data-bs-toggle="modal" data-bs-target="#sendPRConfirmTable"
+                        aria-controls="sendPRConfirmTable"
+                        class="col col-auto fs-3 text-center btn btn-lg btn-outline-info">
+                        <i class="bi bi-envelope-check"></i>
+                        {{ $t('monthlyPRpageLang.SendSelectedPRReview') }}
+                    </button>
+                </div>
+                <div v-else class="col col-auto m-0 p-0">
+                    <button @click="onSendClick(true, $event)" type="button" name="upload"
+                        class="col col-auto fs-3 text-center btn btn-lg btn-outline-info">
+                        <i class="bi bi-envelope-check"></i>
+                        {{ $t('monthlyPRpageLang.SendSelectedPRReview') }}
+                    </button>
+                </div>
+                <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
+                <div v-if="needConfirm" class="col col-auto m-0 p-0">
+                    <button type="button" name="upload" data-bs-toggle="modal" data-bs-target="#sendPRConfirmTable"
+                        aria-controls="sendPRConfirmTable" class="col col-auto fs-3 text-center btn btn-lg btn-info">
+                        <i class="bi bi-envelope-at-fill"></i>
+                        {{ $t('monthlyPRpageLang.SendPRReview') }}
+                    </button>
+                </div>
+                <div v-else class="col col-auto m-0 p-0">
+                    <button @click="onSendClick(false, $event)" type="button" name="upload"
+                        class="col col-auto fs-3 text-center btn btn-lg btn-info">
+                        <i class="bi bi-envelope-at-fill"></i>
+                        {{ $t('monthlyPRpageLang.SendPRReview') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -70,7 +85,7 @@
                 <div class="modal-header justify-content-center">
                     <div class="col col-10">
                         <span class="text-danger"><b>{{ modalTitle1 }}</b></span>
-                        <div class="w-100" style="height: 0ch"></div><!-- </div>breaks cols to a new line-->
+                        <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                         <span class="text-danger"><b>{{ modalTitle2 }}</b></span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -89,7 +104,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100" style="height: 1ch"></div>
+                    <div class="w-100" style="height: 1ch;"></div>
                     <!-- </div>breaks cols to a new line-->
                     <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false"
                         :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
@@ -102,7 +117,7 @@
                         data-bs-dismiss="modal" aria-label="Close">
                         {{ $t('templateWords.cancel') }}
                     </button>
-                    <button @click="onSendClick" type="button" class="btn btn-lg btn-success"
+                    <button @click="onSendClick(false, $event)" type="button" class="btn btn-lg btn-success"
                         style="border-radius: 5px;">
                         {{ $t('monthlyPRpageLang.confirm_pr') }}
                     </button>
@@ -148,6 +163,7 @@ export default defineComponent({
         let checkedRows = [];
         let uploadToDBReady = ref(false); // validation
         let needConfirm = ref(false); // try to prevent redundant PR on the same PN
+        let needConfirm2 = ref(false); // try to prevent redundant PR on the selected PN
 
         const MPSData = ref(null);
         const nonMPSData = ref(null);
@@ -277,27 +293,49 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // OutputExcelClick
 
-        const onSendClick = async () => {
+        const onSendClick = async (selectedOnly) => {
             await triggerModal();
-
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
 
-            if (data.length <= 0) {
-                notyf.open({
-                    type: "warning",
-                    message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-                return;
-            } // if
+            if (selectedOnly || needConfirm2.value) {
+                if (checkedRows.length <= 0) {
+                    notyf.open({
+                        type: "warning",
+                        message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom",
+                        },
+                    });
+
+                    $("body").loadingModal("hide");
+                    $("body").loadingModal("destroy");
+                    return;
+                } // if
+            } else {
+                if (data.length <= 0) {
+                    notyf.open({
+                        type: "warning",
+                        message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
+                        duration: 3000, //miliseconds, use 0 for infinite duration
+                        ripple: true,
+                        dismissible: true,
+                        position: {
+                            x: "right",
+                            y: "bottom",
+                        },
+                    });
+
+                    $("body").loadingModal("hide");
+                    $("body").loadingModal("destroy");
+                    return;
+                } // if
+            } // if else
 
             // ----------------------------------------------
             // actually updating database now
@@ -315,9 +353,14 @@ export default defineComponent({
             let total_price_other_currency = [];
             let moq = [];
 
-            let tempData = data;
+            let tempData;
+            if (selectedOnly || needConfirm2.value) {
+                tempData = checkedRows;
+            } else {
+                tempData = data;
+            } // else
+
             tempData.sort((a, b) => b.匯率 - a.匯率);
-            // console.log(tempData); // test
             for (let i = 0; i < tempData.length; i++) {
                 if (parseInt(tempData[i].本次請購數量) > 0) { // send only the one that has value
                     number.push(tempData[i].料號);
@@ -389,6 +432,23 @@ export default defineComponent({
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
 
+            if (selectedOnly || needConfirm2.value) {
+                let checkedPN = checkedRows.map(obj => obj.料號);
+                // Remove items from MPS_PN_Array if not in checkedPN
+                for (let i = MPS_PN_Array.length - 1; i >= 0; i--) {
+                    if (!checkedPN.includes(MPS_PN_Array[i])) {
+                        MPS_PN_Array.splice(i, 1);
+                        MPS_90PN_Array.splice(i, 1);
+                    } // if
+                } // for
+
+                // Remove items from nonMPS_PN_Array if not in checkedPN
+                for (let i = nonMPS_PN_Array.length - 1; i >= 0; i--) {
+                    if (!checkedPN.includes(nonMPS_PN_Array[i])) {
+                        nonMPS_PN_Array.splice(i, 1);
+                    } // if
+                } // for
+            } // if
             // ------- quick test --------
             // result = await submitBuylist(
             //     number, pName, spec, unit_price,
@@ -397,7 +457,7 @@ export default defineComponent({
             //     total_price_other_currency, moq, nonMPS_PN_Array, MPS_90PN_Array, MPS_PN_Array
             // );
             // result = "failed";
-            // ------- ---- --------
+            // ------- ---------- --------
 
             if (result === "success") {
                 result = await submitBuylist(
@@ -535,8 +595,6 @@ export default defineComponent({
                     tempAll.push(singleEntry);
                     MPS_PN_Array.push(singleEntry.料號);
                     MPS_90PN_Array.push(MPSData.value[i].料號90);
-                    // data.push(singleEntry); // test
-                    // console.log(singleEntry); // test
                     singleEntry = {};
                 } // for
 
@@ -1158,6 +1216,46 @@ export default defineComponent({
                         );
                     },
                 },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.status"
+                    ),
+                    field: "狀態",
+                    width: "6ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.狀態 === '未簽核') {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%; color: #dca120;">' +
+                                app.appContext.config.globalProperties.$t(
+                                    "monthlyPRpageLang.review_pending"
+                                ) +
+                                "</div>"
+                            );
+                        } // if
+                        else if (row.狀態 === '已退單') {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%; color: #808080;">' +
+                                app.appContext.config.globalProperties.$t(
+                                    "monthlyPRpageLang.review_cancel"
+                                ) +
+                                "</div>"
+                            );
+                        } // else if
+                        else {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%; color: #2bb91b;">' +
+                                app.appContext.config.globalProperties.$t(
+                                    "monthlyPRpageLang.review_complete"
+                                ) +
+                                "</div>"
+                            );
+                        } // else
+                    },
+                },
             ],
             rows: computed(() => {
                 return data2.filter((x) =>
@@ -1223,8 +1321,41 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            // console.log(rowsKey); // test
             checkedRows = rowsKey;
+            let SXB_PN = JSON.parse(mats_SXB.value).datas.map(obj => obj.料號);
+            let checkedPN = rowsKey.map(obj => obj.料號);
+            needConfirm2.value = checkedPN.some(r => SXB_PN.includes(r));
+            // console.log(checkedPN); // test
+            data2.splice(0);
+            if (needConfirm2.value) {
+                modalTitle1.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.duplicate_pr_warning1");
+                modalTitle2.value = app.appContext.config.globalProperties.$t("monthlyPRpageLang.duplicate_pr_warning2");
+                Object.assign(data2, JSON.parse(mats_SXB.value).datas.flatMap((obj) => {
+                    if (obj.SRM單號 !== "已退單") {
+                        let singleEntry = {};
+                        singleEntry.料號 = obj.料號;
+                        singleEntry.品名 = obj.品名;
+                        singleEntry.單位 = obj.單位;
+                        singleEntry.規格 = obj.規格;
+                        singleEntry.單號 = obj.SXB單號;
+                        singleEntry.狀態 = obj.SRM單號;
+                        singleEntry.請購金額 = parseFloat(obj.請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                        singleEntry.幣別 = obj.幣別.toString().trim().toUpperCase();
+                        singleEntry.請購量 = parseInt(obj.本次請購數量);
+                        singleEntry.請購時間 = obj.請購時間;
+                        singleEntry.開單人員 = obj.開單人員;
+                        singleEntry.現有庫存 = parseInt(obj.現有庫存);
+                        return singleEntry;
+                    } // if
+                    else {
+                        return [];
+                    } // else
+                }));
+            } // if
+
+            if (data2.length <= 0) {
+                needConfirm2.value = false;
+            } // if
         };
 
         return {
@@ -1234,6 +1365,7 @@ export default defineComponent({
             validation_err_msg,
             uploadToDBReady,
             needConfirm,
+            needConfirm2,
             searchTerm,
             searchTerm2,
             table,
