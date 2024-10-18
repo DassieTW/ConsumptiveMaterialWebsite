@@ -12,7 +12,7 @@
     <!-- </div>breaks cols to a new line-->
     <table-lite :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="true"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-        :page-options="table.pageOptions" :sortable="table.sortable" @do-search="doSearch"
+        :page-options="table.pageOptions" :sortable="table.sortable"
         @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
         <template v-slot:安全庫存="{ row, key }">
             <div v-if="row.月請購 == '否'">

@@ -27,7 +27,7 @@
     <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
         :hasCheckbox="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-        @do-search="doSearch" @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"
+        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"
         @row-input="rowUserInput">
         <template v-slot:月請購="{ row, key }">
             <div v-if="row.月請購 === '是'">

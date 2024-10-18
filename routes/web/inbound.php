@@ -54,17 +54,7 @@ Route::get('/searchstocksubmit1', function () {
     return view("inbound.searchstockok");
 })->middleware('can:viewInbound,App\Models\Inbound');
 
-//入庫-儲位調撥頁面
-Route::get('/positionchange', function () {
-    return view('inbound.positionchange')->with(['client' => 客戶別::cursor()])
-        ->with(['position' => 儲位::cursor()])->with(['send' => 發料部門::cursor()]);
-})->middleware('can:viewInbound,App\Models\Inbound');
-
-Route::post('/positionchange', [InboundController::class, 'positionchange'])->name('inbound.positionchange')->middleware('can:viewInbound,App\Models\Inbound');
-
-//入庫-儲位調撥
-Route::get('/change', [InboundController::class, 'change'])->middleware('can:viewInbound,App\Models\Inbound');
-Route::post('/change', [InboundController::class, 'change'])->name('inbound.change')->middleware('can:viewInbound,App\Models\Inbound');
-
-//入庫-儲位調撥提交
-Route::post('/changesubmit', [InboundController::class, 'changesubmit'])->name('inbound.changesubmit')->middleware('can:viewInbound,App\Models\Inbound');
+//入庫-儲位調撥畫面
+Route::get('/change', function() {
+    return view('inbound.change');
+})->name('inbound.change')->middleware('can:viewInbound,App\Models\Inbound');

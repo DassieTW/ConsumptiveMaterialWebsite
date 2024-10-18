@@ -211,3 +211,9 @@ Route::post('/searchstock', function (Request $request) {
 
 Route::post('/getExistingStock', 'api\InboundController@showStocks');
 Route::post('/uploadToDB', 'api\InboundController@update');
+
+//入庫-儲位調撥顯示資料
+Route::post('/change', 'api\InboundController@change');
+
+//入庫-儲位調撥提交
+Route::post('/changesubmit', 'api\InboundController@changesubmit');

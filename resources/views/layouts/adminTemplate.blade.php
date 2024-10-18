@@ -255,9 +255,9 @@
                                                         </a>
                                                     </li>
                                                     <li
-                                                        class="sidebar-item {{ isActiveRoute(['inbound/positionchange', 'inbound/change']) }}">
+                                                        class="sidebar-item {{ isActiveRoute(['inbound/change']) }}">
                                                         <a class="sidebar-link"
-                                                            href="{{ route('inbound.positionchange') }}">
+                                                            href="{{ route('inbound.change') }}">
                                                             {!! __('inboundpageLang.locationchange') !!}
                                                         </a>
                                                     </li>

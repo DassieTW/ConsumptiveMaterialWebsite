@@ -184,6 +184,52 @@ class InboundController extends Controller
         } //try - catch
     } // update
 
+    //入庫-儲位調撥提交
+    public function changesubmit(Request $request)
+    {
+        $number = $request->input('number');
+        $oldposition = $request->input('oldposition');
+        $amount = $request->input('amount');
+        $newposition = $request->input('newposition');
+        //$stock = $request->input('stock');
+        $now = Carbon::now();
+        $test = \DB::table('inventory')
+            ->where('料號', $number)
+            ->where('儲位', $newposition)
+            ->value('現有庫存');
+
+        \DB::beginTransaction();
+        try {
+
+            if ($test !== null) {
+                \DB::table('inventory')
+                    ->where('料號', $number)
+                    ->where('儲位', $newposition)
+                    ->update(['現有庫存' => $test + $amount, '最後更新時間' => $now]);
+            } else {
+                \DB::table('inventory')
+                    ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $newposition, '最後更新時間' => $now]);
+            }
+
+            $stock = \DB::table('inventory')
+                ->where('料號', $number)
+                ->where('儲位', $oldposition)
+                ->value('現有庫存');
+            \DB::table('inventory')
+                ->where('料號', $number)
+                ->where('儲位', $oldposition)
+                ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
+
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollback();
+            $mess = $e->getMessage();
+            return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
+        } // try catch
+
+        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
+    } // changesubmit
+
     /**
      * Remove the specified resource from storage.
      *

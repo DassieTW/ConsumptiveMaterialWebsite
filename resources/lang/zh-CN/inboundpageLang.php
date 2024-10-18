@@ -89,7 +89,7 @@ return [
     'noclient' => '客户不存在',
     'noloc' => '储位不存在',
     'enterisn' => '请输入料号',
-    'enterinlist' => '请输入入库单号',
+    'enterisn_or_loc' => '料号/储位',
     'timepart' => '时间段',
     'upload1' => '上传',
     'noinpeople' => '入库人员之工号不存在，请先到用户管理-人员讯息维护',
