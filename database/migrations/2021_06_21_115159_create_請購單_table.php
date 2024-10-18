@@ -22,7 +22,6 @@ class Create請購單Table extends Migration
             $table->integer('MOQ');
             $table->double('下月需求');
             $table->double('當月需求');
-            $table->double('安全庫存');
             $table->double('單價');
             $table->string('幣別', 45);
             $table->double('匯率');
