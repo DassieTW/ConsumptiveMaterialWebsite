@@ -33,23 +33,26 @@
             <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
                 :hasCheckbox="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"
-                @row-input="rowUserInput">
+                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
                 <template v-slot:調撥數量="{ row, key }">
-                    <input @change="rowUserInput(row, key)" :class="{ 'is-invalid': (row.調撥數量 > row.現有庫存) }"
-                        class="form-control text-center p-0 m-0" style="width: 8ch;" type="number" :id="'tqty' + row.id"
-                        :name="'tqty' + key" :value="row.調撥數量" />
+                    <div class="input-group m-0 p-0">
+                        <input v-model="row.調撥數量" @input="CheckCurrentRow($event);"
+                            :class="{ 'is-invalid': (parseInt(row.調撥數量) > parseInt(row.現有庫存)) }"
+                            class="form-control text-center p-0 m-0" style="width: 7ch;" type="number" min="0"
+                            :id="'tqty' + row.id" :name="'tqty' + key" />
+                        <span class="input-group-text text-center p-0 m-0">{{ row.單位 }}</span>
+                    </div>
                 </template>
 
                 <template v-slot:新儲位="{ row, key }">
-                    <select @change="(event) => { (row.新儲位 = event.target.value); rowUserInput(row, key); }"
-                        style="width: 11ch;" class="col col-auto form-select form-select-lg ps-2 p-0 m-0"
-                        :id="'newloc' + row.id" :name="'newloc' + key">
-                        <option selected id="noneSelected">
-                            &nbsp;
+                    <select v-model="row.新儲位" @input="CheckCurrentRow($event);" style="width: 11ch;"
+                        class="col col-auto form-select form-select-lg ps-2 p-0 m-0" :id="'newloc' + row.id"
+                        :name="'newloc' + key">
+                        <option id="noneSelected" value="" disabled selected>
+                            {{ $t('inboundpageLang.choose') }}
                         </option>
                         <template v-for="item in locsArray">
-                            <option :id="item" v-if="row.儲位 !== item">
+                            <option :id="item" v-if="row.儲位 !== item" :value="item">
                                 {{ item }}
                             </option>
                         </template>
@@ -75,10 +78,8 @@ import { defineComponent, reactive, ref, computed } from "vue";
 import {
     getCurrentInstance,
     onBeforeMount,
-    onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
@@ -122,10 +123,15 @@ export default defineComponent({
             });
         } // triggerModal
 
+        function CheckCurrentRow(e) {
+            // console.log(e.target.closest('tr').firstChild.firstChild); // test
+            if (!e.target.closest('tr').firstChild.firstChild.checked) {
+                e.target.closest('tr').firstChild.firstChild.click();
+            } // if
+        } // CheckCurrentRow
+
         const onSendToDBClick = async () => {
-            // console.log(selected_mail.value); // test
             await triggerModal();
-            // console.log("The modal should be triggered by now."); // test
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
@@ -152,29 +158,7 @@ export default defineComponent({
             // trim the white spaces and validate safestock if non-monthly
             for (let j = 0; j < data.length && hasError === false; j++) {
                 data[j].料號 = data[j].料號.toString().trim();
-                data[j].品名 = data[j].品名.toString().trim();
-                data[j].規格 = data[j].規格.toString().trim();
-                data[j].單價 = data[j].單價.toString().trim();
-                data[j].幣別 = data[j].幣別.toString().trim();
-                data[j].單位 = data[j].單位.toString().trim();
-                data[j].MPQ = data[j].MPQ.toString().trim();
-                data[j].MOQ = data[j].MOQ.toString().trim();
-                data[j].LT = data[j].LT.toString().trim();
-                data[j].A級資材 = data[j].A級資材.toString().trim();
-                data[j].月請購 = data[j].月請購.toString().trim();
-                data[j].發料部門 = data[j].發料部門.toString().trim();
-                if (data[j].月請購 === '否') {
-                    if (data[j].安全庫存 === null) {
-                        hasError = true;
-                        validation_err_msg.value =
-                            app.appContext.config.globalProperties.$t("basicInfoLang.entersafe") +
-                            " ( " + data[j].料號 + " ) ";
-                    } else {
-                        data[j].安全庫存 = data[j].安全庫存.toString().trim();
-                    } // if else
-                } else {
-                    data[j].安全庫存 = "null";
-                } // if else
+
             } // for
 
             if (hasError) {
@@ -407,6 +391,22 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.transferamount"
+                    ),
+                    field: "調撥數量",
+                    width: "10ch",
+                    sortable: true,
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.newloc"
+                    ),
+                    field: "新儲位",
+                    width: "13ch",
+                    sortable: false,
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
                         "inboundpageLang.updatetime"
                     ),
                     field: "最後更新時間",
@@ -428,22 +428,6 @@ export default defineComponent({
                             "</div>"
                         );
                     },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.transferamount"
-                    ),
-                    field: "調撥數量",
-                    width: "10ch",
-                    sortable: false,
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.newloc"
-                    ),
-                    field: "新儲位",
-                    width: "13ch",
-                    sortable: false,
                 },
             ],
             rows: computed(() => {
@@ -510,14 +494,8 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            // console.log(rowsKey); // test
+            console.log(rowsKey); // test
             checkedRows = rowsKey;
-        };
-
-        const rowUserInput = (row, rowNum) => {
-            data[row.id].新儲位 = document.getElementById("newloc" + row.id).value;
-            data[row.id].調撥數量 = document.getElementById("tqty" + row.id).value;
-            console.log(data); // test
         };
 
         return {
@@ -526,9 +504,9 @@ export default defineComponent({
             isInvalid_DB,
             validation_err_msg,
             updateCheckedRows,
-            rowUserInput,
             onSendToDBClick,
             locsArray,
+            CheckCurrentRow,
         };
     }, // setup
 });

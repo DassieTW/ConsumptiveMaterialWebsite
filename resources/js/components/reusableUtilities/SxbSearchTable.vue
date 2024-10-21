@@ -325,12 +325,10 @@ export default defineComponent({
 
         watch(mats_SXB, async () => {
             await triggerModal();
-
             // console.log(JSON.parse(mats_SXB.value)); // test
             let allRowsObj = JSON.parse(mats_SXB.value);
             data.splice(0);
             AllRecords = [];
-            // console.log(allRowsObj.datas); // test
             for (let i = 0; i < allRowsObj.datas.length; i++) {
                 allRowsObj.datas[i].本次請購數量 = parseInt(
                     allRowsObj.datas[i].本次請購數量
@@ -338,6 +336,7 @@ export default defineComponent({
 
                 allRowsObj.datas[i].狀態 = allRowsObj.datas[i].SRM單號;
                 allRowsObj.datas[i].id = i + 1;
+                if (allRowsObj.datas[i].開單人員 === null || allRowsObj.datas[i].開單人員 === undefined) allRowsObj.datas[i].開單人員 = "N/A";
                 AllRecords.push(allRowsObj.datas[i]);
                 let indexOfObject = data.findIndex(object => {
                     return (object.SXB單號 === allRowsObj.datas[i].SXB單號);
@@ -421,7 +420,8 @@ export default defineComponent({
             ],
             rows: computed(() => {
                 return data.filter((x) =>
-                    x.SXB單號
+                
+                    x.開單人員
                         .toLowerCase()
                         .includes(searchTerm.value.toLowerCase())
                 );

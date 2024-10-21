@@ -35,6 +35,7 @@ return [
     'enddate' => '结束日期',
     'loc' => '储位',
     'enterloc' => '请选择储位',
+    'choose' => '选择',
     'senddep' => '发料部门',
     'entersenddep' => '请选择发料部门',
     'stockmonth' => '库存使用月数',

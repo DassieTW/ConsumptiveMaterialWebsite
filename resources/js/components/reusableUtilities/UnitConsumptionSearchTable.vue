@@ -34,12 +34,15 @@
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :rowClasses="table.rowClasses" :total="table.totalRecordCount" :page-options="table.pageOptions"
                 :sortable="table.sortable" @is-finished="table.isLoading = false"
-                @return-checked-rows="updateCheckedRows" @row-input="rowUserInput">
+                @return-checked-rows="updateCheckedRows">
                 <template v-slot:單耗="{ row, key }">
-                    <input style="width:13ch;" type="number" :id="'unitConsumption' + row.id"
+                    <div class="input-group m-0 p-0">
+                        <input style="width:11ch;" type="number" :id="'unitConsumption' + row.id"
                         :name="'unitConsumption' + row.id" :value="ScientificNotaionToFixed(parseFloat(row.單耗))"
-                        v-model="row.單耗" @input="CheckCurrentRow($event)" class="form-control text-center p-0 m-0"
+                        v-model="row.單耗" @input="CheckCurrentRow($event);" class="form-control text-center p-0 m-0"
                         step="0.000001" min="0">
+                        <small class="input-group-text text-center p-0 m-0">{{ row.單位 }}</small>
+                    </div>
                 </template>
             </table-lite>
 
@@ -596,12 +599,6 @@ export default defineComponent({
             checkedRows = rowsKey;
         };
 
-        const rowUserInput = (row, rowNum) => {
-            // console.log(document.getElementById("unitConsumption" + rowNum).value);
-            data[row.id].單耗 = document.getElementById("unitConsumption" + row.id).value;
-            // console.log(data); // test
-        };
-
         return {
             isInvalid,
             isInvalid_DB,
@@ -612,7 +609,6 @@ export default defineComponent({
             all_mails,
             selected_mail,
             updateCheckedRows,
-            rowUserInput,
             onSendToDBClick,
             deleteRow,
             ScientificNotaionToFixed,

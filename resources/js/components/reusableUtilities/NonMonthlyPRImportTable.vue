@@ -769,12 +769,6 @@ export default defineComponent({
             checkedRows = rowsKey;
         };
 
-        const rowUserInput = (row, rowNum) => {
-            // console.log(document.getElementById("unitConsumption" + rowNum).value);
-            data[row.excel_row_num].單耗 = document.getElementById("unitConsumption" + row.excel_row_num).value;
-            // console.log(data); // test
-        };
-
         return {
             flip: ref(false),
             exampleUrl,
@@ -785,7 +779,6 @@ export default defineComponent({
             searchTerm,
             table,
             updateCheckedRows,
-            rowUserInput,
             onUploadClick,
             onInputChange,
             onSendToDBClick,

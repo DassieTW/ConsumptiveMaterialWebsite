@@ -57,11 +57,21 @@
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                 <strong>{{ validation_err_msg }}</strong>
             </span>
-            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
+            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :isSlotMode="true" :hasCheckbox="true"
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"
-                @row-input="rowUserInput"></table-lite>
+                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+
+                <template v-slot:單耗="{ row, key }">
+                    <div class="input-group m-0 p-0">
+                        <input style="width:11ch;" type="number" :id="'unitConsumption' + row.id"
+                            :name="'unitConsumption' + row.id" :value="ScientificNotaionToFixed(parseFloat(row.單耗))"
+                            v-model="row.單耗" class="form-control text-center p-0 m-0"
+                            step="0.000001" min="0">
+                        <small class="input-group-text text-center p-0 m-0">{{ row.單位 }}</small>
+                    </div>
+                </template>
+            </table-lite>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
@@ -270,6 +280,12 @@ export default defineComponent({
             file.value = event.target.files ? event.target.files[0] : null;
         } // onInputChange
 
+        function CheckCurrentRow(e) {
+            // console.log(e.target.closest('tr').firstChild.firstChild); // test
+            if (!e.target.closest('tr').firstChild.firstChild.checked) {
+                e.target.closest('tr').firstChild.firstChild.click();
+            } // if
+        } // CheckCurrentRow
 
         const triggerModal = async () => {
             $("body").loadingModal({
@@ -510,7 +526,7 @@ export default defineComponent({
             document.getElementsByClassName("vtl-table")[0].scrollIntoView({ behavior: "smooth" });
         });
 
-        function initialScientificNotaionToFixed(x) {
+        function ScientificNotaionToFixed(x) {
             // toFixed
             if (Math.abs(x) < 1.0) {
                 var e = parseInt(x.toString().split("e-")[1]);
@@ -645,24 +661,8 @@ export default defineComponent({
                         "monthlyPRpageLang.consume"
                     ),
                     field: "單耗",
-                    width: "13ch",
+                    width: "12ch",
                     sortable: true,
-                    hasInput: function (row, i) {
-                        return (
-                            '<input style="width:10ch; display:inline;" type="number" ' +
-                            'oninput="ScientificNotaionToFixed(this)" ' +
-                            'id="unitConsumption' +
-                            row.id +
-                            '"' +
-                            ' name="unitConsumption' +
-                            row.id +
-                            '" value="' +
-                            initialScientificNotaionToFixed(row.單耗) +
-                            '"' +
-                            ' class="form-control text-center p-0 m-0" step="0.000001">' +
-                            '&nbsp;<small>' + row.單位 + '</small>'
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
@@ -836,12 +836,6 @@ export default defineComponent({
             checkedRows = rowsKey;
         };
 
-        const rowUserInput = (row, rowNum) => {
-            // console.log(document.getElementById("unitConsumption" + rowNum).value);
-            data[row.id].單耗 = document.getElementById("unitConsumption" + row.id).value;
-            // console.log(data); // test
-        };
-
         return {
             exampleUrl,
             isInvalid,
@@ -853,11 +847,12 @@ export default defineComponent({
             all_mails,
             selected_mail,
             updateCheckedRows,
-            rowUserInput,
             addRejectedToTable,
             onUploadClick,
             onInputChange,
             onSendToDBClick,
+            CheckCurrentRow,
+            ScientificNotaionToFixed,
             deleteRow,
         };
     }, // setup

@@ -35,6 +35,7 @@ return [
     'enddate' => 'End date',
     'loc' => 'Location',
     'enterloc' => 'Please select Location',
+    'choose' => 'Select',
     'senddep' => 'Issuing department',
     'entersenddep' => 'Please select the Issuing department',
     'stockmonth' => 'In-Use Months',

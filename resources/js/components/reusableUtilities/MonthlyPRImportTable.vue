@@ -30,7 +30,8 @@
                 </div>
                 <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
                 <div class="row justify-content-center">
-                    <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary" @click="onUploadClick">
+                    <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
+                        @click="onUploadClick">
                         {{ $t('monthlyPRpageLang.upload1') }}
                     </button>
                 </div>
@@ -69,7 +70,8 @@
             <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
+                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+            </table-lite>
 
             <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="row justify-content-center">
@@ -813,12 +815,6 @@ export default defineComponent({
             checkedRows = rowsKey;
         };
 
-        const rowUserInput = (row, rowNum) => {
-            // console.log(document.getElementById("unitConsumption" + rowNum).value);
-            data[row.excel_row_num].單耗 = document.getElementById("unitConsumption" + row.excel_row_num).value;
-            // console.log(data); // test
-        };
-
         return {
             flip: ref(false),
             exampleUrl,
@@ -829,7 +825,6 @@ export default defineComponent({
             searchTerm,
             table,
             updateCheckedRows,
-            rowUserInput,
             onUploadClick,
             onInputChange,
             onSendToDBClick,
