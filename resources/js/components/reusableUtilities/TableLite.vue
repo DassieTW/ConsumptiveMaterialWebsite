@@ -72,9 +72,6 @@
                     <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td px-1 py-0"
                       :class="['vtl-tbody-td' + j].concat(col.columnClasses)" :style="col.columnStyles">
                       <div v-if="col.display" v-html="col.display(row, i)"></div>
-                      <!-- <div v-else-if="col.hasInput" style="width: max-content; margin: 0 auto;"
-                        @change="$emit('row-input', row, i)" v-html="col.hasInput(row, i)">
-                      </div> -->
                       <div v-else style="width: max-content; margin: 0 auto;">
                         <div v-if="setting.isSlotMode && slots[col.field]" style="width: max-content; margin: 0 auto;">
                           <slot :name="col.field" :row="row" :key="i"></slot>
@@ -120,9 +117,6 @@
                     <td v-for="(col, j) in columns" :key="j" class="vtl-tbody-td px-1 py-0"
                       :class="['vtl-tbody-td' + j].concat(col.columnClasses)" :style="col.columnStyles">
                       <div v-if="col.display" v-html="col.display(row, i)"></div>
-                      <!-- <div v-else-if="col.hasInput" style="width: max-content; margin: 0 auto;"
-                        @change="$emit('row-input', row, i)" v-html="col.hasInput(row, i)">
-                      </div> -->
                       <div v-else style="width: max-content; margin: 0 auto;">
                         <div v-if="setting.isSlotMode && slots[col.field]" style="width: max-content; margin: 0 auto;">
                           <slot :name="col.field" :row="row" :key="i"></slot>
@@ -309,7 +303,6 @@ export default defineComponent({
     "get-now-page",
     "row-clicked",
     "row-toggled",
-    // "row-input",
   ],
   props: {
     // 是否讀取中 (is data loading)

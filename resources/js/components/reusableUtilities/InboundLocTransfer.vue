@@ -35,12 +35,15 @@
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
                 <template v-slot:調撥數量="{ row, key }">
-                    <div class="input-group m-0 p-0">
+                    <div class="row">
                         <input v-model="row.調撥數量" @input="CheckCurrentRow($event);"
                             :class="{ 'is-invalid': (parseInt(row.調撥數量) > parseInt(row.現有庫存)) }"
-                            class="form-control text-center p-0 m-0" style="width: 7ch;" type="number" min="0"
-                            :id="'tqty' + row.id" :name="'tqty' + key" />
-                        <span class="input-group-text text-center p-0 m-0">{{ row.單位 }}</span>
+                            class="form-control text-center p-0 m-0 col col-auto"
+                            style="width: 7ch; border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;"
+                            type="number" min="0" :id="'tqty' + row.id" :name="'tqty' + key" />
+                        <span class="input-group-text text-center p-0 m-0 col col-auto"
+                            style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">{{
+                            row.單位 }}</span>
                     </div>
                 </template>
 

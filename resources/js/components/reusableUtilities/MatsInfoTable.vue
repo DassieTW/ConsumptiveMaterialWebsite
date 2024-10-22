@@ -27,34 +27,99 @@
     <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
         :hasCheckbox="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"
-        @row-input="rowUserInput">
-        <template v-slot:月請購="{ row, key }">
-            <div v-if="row.月請購 === '是'">
-                <select @change="(event) => { (row.月請購 = event.target.value); rowUserInput(row, key); }"
-                    style="width: 7ch;" class="col col-auto form-select form-select-lg ps-2 p-0 m-0"
-                    :id="'month' + row.id" :name="'month' + key">
-                    <option value="是" selected>{{ $t("basicInfoLang.yes") }}</option>
-                    <option value="否">{{ $t("basicInfoLang.no") }}</option>
-                </select>
-            </div>
-            <div v-else>
-                <select @change="(event) => { (row.月請購 = event.target.value); rowUserInput(row, key); }"
-                    style="width: 7ch;" class="col col-auto form-select form-select-lg ps-2 p-0 m-0"
-                    :id="'month' + row.id" :name="'month' + key">
-                    <option value="是">{{ $t("basicInfoLang.yes") }}</option>
-                    <option value="否" selected>{{ $t("basicInfoLang.no") }}</option>
+        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+        <template v-slot:單價_幣別="{ row, key }">
+            <!-- DON'T Use input-group here. It messes with the z-index -->
+            <div class="row">
+                <input v-model="row.單價" @input="CheckCurrentRow($event);"
+                    class="form-control text-center align-self-center p-0 m-0 col col-auto"
+                    style="width: 8ch; border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;"
+                    type="number" step="0.001" min="0" :id="'price' + row.id" :name="'price' + key" />
+                <select v-model="row.幣別" @input="CheckCurrentRow($event);"
+                    style="width: 8ch; border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;"
+                    class="form-select align-self-center ps-2 p-0 m-0 col col-auto" :id="'money' + row.id"
+                    :name="'money' + key">
+                    <template v-for="item in currencyDict">
+                        <option :selected="row.幣別 === item" :value="item">
+                            {{ item }}
+                        </option>
+                    </template>
                 </select>
             </div>
         </template>
-
+        <template v-slot:單位="{ row, key }">
+            <input v-model="row.單位" @input="CheckCurrentRow($event);"
+                class="form-control text-center align-self-center p-0 m-0" style="width: 5ch;" :id="'unit' + row.id"
+                :name="'unit' + key" :value="row.單位" />
+        </template>
+        <template v-slot:MPQ="{ row, key }">
+            <!-- DON'T Use input-group here. It messes with the z-index -->
+            <div class="row">
+                <input v-model="row.MPQ" @input="CheckCurrentRow($event);"
+                    class="form-control text-center p-0 m-0 col col-auto"
+                    style="width: 5ch; border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;"
+                    type="number" min="0" :id="'mpq' + row.id" :name="'mpq' + key" :value="row.MPQ" />
+                <small class="input-group-text text-center align-self-center p-0 m-0 col col-auto"
+                    style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">
+                    {{ row.單位 }}
+                </small>
+            </div>
+        </template>
+        <template v-slot:MOQ="{ row, key }">
+            <!-- DON'T Use input-group here. It messes with the z-index -->
+            <div class="row">
+                <input v-model="row.MPQ" @input="CheckCurrentRow($event);"
+                    class="form-control text-center p-0 m-0 col col-auto"
+                    style="width: 5ch; border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;"
+                    type="number" min="0" :id="'moq' + row.id" :name="'moq' + key" :value="row.MOQ" />
+                <small class="input-group-text text-center align-self-center p-0 m-0 col col-auto"
+                    style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">
+                    {{ row.單位 }}
+                </small>
+            </div>
+        </template>
+        <template v-slot:LT="{ row, key }">
+            <input v-model="row.LT" @input="CheckCurrentRow($event);" class="form-control text-center p-0 m-0"
+                style="width: 5ch;" type="number" min="0" :id="'lt' + row.id" :name="'lt' + key"
+                :value="Math.round(row.LT)" />
+        </template>
+        <template v-slot:月請購="{ row, key }">
+            <select v-model="row.月請購" @input="CheckCurrentRow($event);" style="width: 7ch;"
+                class="col col-auto form-select form-select-lg ps-2 p-0 m-0" :id="'month' + row.id"
+                :name="'month' + key">
+                <option value="是" :selected="row.月請購 === '是'">{{ $t("basicInfoLang.yes") }}</option>
+                <option value="否" :selected="row.月請購 === '否'">{{ $t("basicInfoLang.no") }}</option>
+            </select>
+        </template>
+        <template v-slot:A級資材="{ row, key }">
+            <select v-model="row.A級資材" @input="CheckCurrentRow($event);" style="width: 7ch;"
+                class="col col-auto form-select form-select-lg ps-2 p-0 m-0" :id="'gradea' + row.id"
+                :name="'gradea' + key">
+                <option value="是" :selected="row.A級資材 === '是'">{{ $t("basicInfoLang.yes") }}</option>
+                <option value="否" :selected="row.A級資材 === '否'">{{ $t("basicInfoLang.no") }}</option>
+            </select>
+        </template>
+        <template v-slot:發料部門="{ row, key }">
+            <select v-model="row.發料部門" @input="CheckCurrentRow($event);" style="width: 10ch;"
+                class="form-select form-select-lg ps-2 p-0 m-0" :id="'send' + row.id" :name="'send' + key">
+                <template v-for="item in senders">
+                    <option :selected="row.發料部門 === item" :value="item">
+                        {{ item }}
+                    </option>
+                </template>
+            </select>
+        </template>
         <template v-slot:安全庫存="{ row, key }">
             <div v-if="row.月請購 === '否'">
-                <input @change="rowUserInput(row, key)" :class="{ 'is-invalid': (row.安全庫存 === null) }"
-                    class="form-control text-center p-0 m-0" style="width: 8ch;" type="number" :id="'safe' + row.id"
-                    :name="'safe' + key" :value="row.安全庫存" />
+                <input v-model="row.安全庫存" :class="{ 'is-invalid': (row.安全庫存 === null) }"
+                    class="form-control text-center p-0 m-0" style="width: 8ch;" type="number" min="0"
+                    :id="'safe' + row.id" :name="'safe' + key" :value="row.安全庫存" />
             </div>
-            <div v-else>{{ $t("basicInfoLang.differ_by_client") }}</div>
+            <div v-else>
+                <input v-model="row.安全庫存" class="form-control text-center p-0 m-0" style="width: 0ch;"
+                    :id="'safe' + row.id" :name="'safe' + key" :value="null" hidden />
+                {{ $t("basicInfoLang.differ_by_client") }}
+            </div>
         </template>
     </table-lite>
     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
@@ -103,6 +168,14 @@ export default defineComponent({
         const data = reactive([]);
         const senders = reactive([]); // access the value by senders[0], senders[1] ...
         let checkedRows = [];
+        let currencyDict = ref([
+            "RMB",
+            "USD",
+            "JPY",
+            "TWD",
+            "VND",
+            "IDR",
+        ]);
 
         const findDuplicates = (arr) => {
             let sorted_arr = arr.slice().sort(); // You can define the comparing function here. 
@@ -116,6 +189,13 @@ export default defineComponent({
             } // for
             return results;
         } // findDuplicates
+
+        function CheckCurrentRow(e) {
+            // console.log(e.target.closest('tr').firstChild.firstChild); // test
+            if (!e.target.closest('tr').firstChild.firstChild.checked) {
+                e.target.closest('tr').firstChild.firstChild.click();
+            } // if
+        } // CheckCurrentRow
 
         const deleteRow = async () => {
             let isn = [];
@@ -140,7 +220,6 @@ export default defineComponent({
                 isn.push(checkedRows[i].料號);
             } // for
 
-            // console.log(isn); // test
             await triggerModal();
             let result = await deletePN(isn);
             if (result === "success") {
@@ -251,8 +330,8 @@ export default defineComponent({
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
-            // console.log(data.length); //test
-            if (data.length <= 0) {
+            // console.log(checkedRows.length); //test
+            if (checkedRows.length <= 0) {
                 notyf.open({
                     type: "warning",
                     message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
@@ -272,30 +351,30 @@ export default defineComponent({
 
             // ----------------------------------------------
             // trim the white spaces and validate safestock if non-monthly
-            for (let j = 0; j < data.length && hasError === false; j++) {
-                data[j].料號 = data[j].料號.toString().trim();
-                data[j].品名 = data[j].品名.toString().trim();
-                data[j].規格 = data[j].規格.toString().trim();
-                data[j].單價 = data[j].單價.toString().trim();
-                data[j].幣別 = data[j].幣別.toString().trim();
-                data[j].單位 = data[j].單位.toString().trim();
-                data[j].MPQ = data[j].MPQ.toString().trim();
-                data[j].MOQ = data[j].MOQ.toString().trim();
-                data[j].LT = data[j].LT.toString().trim();
-                data[j].A級資材 = data[j].A級資材.toString().trim();
-                data[j].月請購 = data[j].月請購.toString().trim();
-                data[j].發料部門 = data[j].發料部門.toString().trim();
-                if (data[j].月請購 === '否') {
-                    if (data[j].安全庫存 === null) {
+            for (let j = 0; j < checkedRows.length && hasError === false; j++) {
+                checkedRows[j].料號 = checkedRows[j].料號.toString().trim();
+                checkedRows[j].品名 = checkedRows[j].品名.toString().trim();
+                checkedRows[j].規格 = checkedRows[j].規格.toString().trim();
+                checkedRows[j].單價 = checkedRows[j].單價.toString().trim();
+                checkedRows[j].幣別 = checkedRows[j].幣別.toString().trim();
+                checkedRows[j].單位 = checkedRows[j].單位.toString().trim();
+                checkedRows[j].MPQ = checkedRows[j].MPQ.toString().trim();
+                checkedRows[j].MOQ = checkedRows[j].MOQ.toString().trim();
+                checkedRows[j].LT = checkedRows[j].LT.toString().trim();
+                checkedRows[j].A級資材 = checkedRows[j].A級資材.toString().trim();
+                checkedRows[j].月請購 = checkedRows[j].月請購.toString().trim();
+                checkedRows[j].發料部門 = checkedRows[j].發料部門.toString().trim();
+                if (checkedRows[j].月請購 === '否') {
+                    if (checkedRows[j].安全庫存 === null) {
                         hasError = true;
                         validation_err_msg.value =
                             app.appContext.config.globalProperties.$t("basicInfoLang.entersafe") +
-                            " ( " + data[j].料號 + " ) ";
+                            " ( " + checkedRows[j].料號 + " ) ";
                     } else {
-                        data[j].安全庫存 = data[j].安全庫存.toString().trim();
+                        checkedRows[j].安全庫存 = checkedRows[j].安全庫存.toString().trim();
                     } // if else
                 } else {
-                    data[j].安全庫存 = "null";
+                    checkedRows[j].安全庫存 = "null";
                 } // if else
             } // for
 
@@ -333,20 +412,20 @@ export default defineComponent({
             let monthlyArray = [];
             let dispatcherArray = [];
             let safestockArray = [];
-            for (let j = 0; j < data.length; j++) {
-                pnArray.push(data[j].料號);
-                nameArray.push(data[j].品名);
-                specArray.push(data[j].規格);
-                priceArray.push(data[j].單價);
-                currencyArray.push(data[j].幣別);
-                unitArray.push(data[j].單位);
-                mpqArray.push(data[j].MPQ);
-                moqArray.push(data[j].MOQ);
-                ltArray.push(data[j].LT);
-                gradeaArray.push(data[j].A級資材);
-                monthlyArray.push(data[j].月請購);
-                dispatcherArray.push(data[j].發料部門);
-                safestockArray.push(data[j].安全庫存);
+            for (let j = 0; j < checkedRows.length; j++) {
+                pnArray.push(checkedRows[j].料號);
+                nameArray.push(checkedRows[j].品名);
+                specArray.push(checkedRows[j].規格);
+                priceArray.push(checkedRows[j].單價);
+                currencyArray.push(checkedRows[j].幣別);
+                unitArray.push(checkedRows[j].單位);
+                mpqArray.push(checkedRows[j].MPQ);
+                moqArray.push(checkedRows[j].MOQ);
+                ltArray.push(checkedRows[j].LT);
+                gradeaArray.push(checkedRows[j].A級資材);
+                monthlyArray.push(checkedRows[j].月請購);
+                dispatcherArray.push(checkedRows[j].發料部門);
+                safestockArray.push(checkedRows[j].安全庫存);
             } // for
 
             // console.log(pnArray, nameArray, specArray, priceArray, currencyArray, unitArray, mpqArray, moqArray, ltArray, gradeaArray, monthlyArray, dispatcherArray, safestockArray); // test
@@ -386,7 +465,7 @@ export default defineComponent({
                 });
             } // else
         } // onSendToDBClick
-        
+
         watch(mats, async () => {
             await triggerModal();
             // console.log(JSON.parse(mats.value)); // test
@@ -398,6 +477,7 @@ export default defineComponent({
 
             for (let i = 0; i < allRowsObj.datas.length; i++) {
                 allRowsObj.datas[i].id = i;
+                allRowsObj.datas[i].單價 = parseFloat(allRowsObj.datas[i].單價);
                 data.push(allRowsObj.datas[i]);
             } // for
 
@@ -482,152 +562,49 @@ export default defineComponent({
                     },
                 },
                 {
-                    label: app.appContext.config.globalProperties.$t("basicInfoLang.price") +
-                        " & " + app.appContext.config.globalProperties.$t("basicInfoLang.money"),
+                    label: app.appContext.config.globalProperties.$t("basicInfoLang.price"),
                     field: "單價_幣別",
-                    width: "19ch",
+                    width: "16ch",
                     sortable: false,
-                    hasInput: function (row, i) {
-                        let returnStr = "";
-                        let currencyDict = [
-                            "RMB",
-                            "USD",
-                            "JPY",
-                            "TWD",
-                            "VND",
-                            "IDR",
-                        ];
-
-                        returnStr +=
-                            '<div class="row">' +
-                            '<input style="width: 7ch;" type="number" step="0.00001" id="price' +
-                            row.id +
-                            '"' +
-                            ' class="col form-control text-center align-self-center p-0 m-0" name="price' +
-                            i +
-                            '"' +
-                            ' value="' +
-                            parseFloat(row.單價) +
-                            '">';
-
-                        returnStr +=
-                            '<select style="width: 8ch;" class="col form-select form-select-lg ps-2 p-0 m-0" id="money' +
-                            row.id +
-                            '" name="money' +
-                            i +
-                            '">';
-
-                        currencyDict.forEach((element) => {
-                            if (row.幣別 === element) {
-                                returnStr +=
-                                    '<option ' + 'value="' + element + '" selected>' + element + '</option>';
-                            } // if
-                            else {
-                                returnStr += '<option ' + 'value="' + element + '">' + element + "</option>";
-                            } // else
-                        }); // for each in sender array
-                        returnStr += "</select></div>";
-                        return returnStr;
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.unit"
                     ),
                     field: "單位",
-                    width: "8ch",
+                    width: "6ch",
                     sortable: true,
-                    hasInput: function (row, i) {
-                        return (
-                            '<input style="width:5ch;" type="text" id="unit' +
-                            row.id +
-                            '"' +
-                            ' name="unit' +
-                            i +
-                            '" value="' +
-                            row.單位 +
-                            '"' +
-                            ' class="form-control text-center p-0 m-0">'
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.mpq"
                     ),
                     field: "MPQ",
-                    width: "9ch",
+                    width: "8ch",
                     sortable: true,
-                    hasInput: function (row, i) {
-                        return (
-                            '<div class="row">' +
-                            '<input style="width:5ch;" type="number" id="mpq' +
-                            row.id +
-                            '"' +
-                            ' name="mpq' +
-                            i +
-                            '" value="' +
-                            row.MPQ +
-                            '"' +
-                            ' class="form-control text-center col p-0 m-0" min="0">' +
-                            '<div class="col input-group-text overflow-scroll py-0 px-1 m-0" style="width: 4ch;">' +
-                            "<small>" + row.單位 + "</small>" +
-                            '</div></div>'
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.moq"
                     ),
                     field: "MOQ",
-                    width: "9ch",
+                    width: "8ch",
                     sortable: true,
-                    hasInput: function (row, i) {
-                        return (
-                            '<div class="row">' +
-                            '<input style="width:5ch;" type="number" id="moq' +
-                            row.id +
-                            '"' +
-                            ' name="moq' +
-                            i +
-                            '" value="' +
-                            row.MOQ +
-                            '"' +
-                            ' class="form-control text-center col p-0 m-0" min="0">' +
-                            '<div class="col input-group-text overflow-scroll py-0 px-1 m-0" style="width: 4ch;">' +
-                            "<small>" + row.單位 + "</small>" +
-                            '</div></div>'
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.lt"
                     ),
                     field: "LT",
-                    width: "8ch",
+                    width: "6ch",
                     sortable: true,
-                    hasInput: function (row, i) {
-                        return (
-                            '<input style="width:8ch;" type="number" id="lt' +
-                            row.id +
-                            '"' +
-                            ' name="lt' +
-                            i +
-                            '" value="' +
-                            Math.round(row.LT) +
-                            '"' +
-                            ' class="form-control text-center p-0 m-0" min="0">'
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "basicInfoLang.month"
                     ),
                     field: "月請購",
-                    width: "12ch",
+                    width: "9ch",
                     sortable: true,
                 },
                 {
@@ -637,52 +614,6 @@ export default defineComponent({
                     field: "A級資材",
                     width: "9ch",
                     sortable: true,
-                    hasInput: function (row, i) {
-                        let returnStr = "";
-                        // console.log(row); // test
-                        if (row.A級資材 === "是") {
-                            returnStr =
-                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg ps-2 p-0 m-0"' +
-                                ' id="gradea' +
-                                row.id +
-                                '" name="gradea' +
-                                i +
-                                '">' +
-                                '<option value="是" selected>' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.yes"
-                                ) +
-                                "</option>" +
-                                '<option value="否">' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.no"
-                                ) +
-                                "</option>" +
-                                "</select>";
-                        } // if
-                        else {
-                            returnStr =
-                                '<select style="width: 7ch;" class="col col-auto form-select form-select-lg ps-2 p-0 m-0"' +
-                                ' id="gradea' +
-                                row.id +
-                                '" name="gradea' +
-                                i +
-                                '">' +
-                                '<option value="是">' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.yes"
-                                ) +
-                                "</option>" +
-                                '<option value="否" selected>' +
-                                app.appContext.config.globalProperties.$t(
-                                    "basicInfoLang.no"
-                                ) +
-                                "</option>" +
-                                "</select>";
-                        } // else
-
-                        return returnStr;
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
@@ -691,26 +622,6 @@ export default defineComponent({
                     field: "發料部門",
                     width: "10ch",
                     sortable: true,
-                    hasInput: function (row, i) {
-                        let returnStr = "";
-                        returnStr +=
-                            '<select style="width: 10ch;" class="form-select form-select-lg ps-2 p-0 m-0" id="send' +
-                            row.id +
-                            '" name="send' +
-                            i +
-                            '">';
-                        senders.forEach((element) => {
-                            if (row.發料部門 === element) {
-                                returnStr +=
-                                    '<option ' + 'value="' + element + '" selected>' + element + '</option>';
-                            } // if
-                            else {
-                                returnStr += '<option ' + 'value="' + element + '">' + element + "</option>";
-                            } // else
-                        }); // for each in sender array
-                        returnStr += "</select>";
-                        return returnStr; // return
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
@@ -785,28 +696,8 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            // console.log(rowsKey); // test
             checkedRows = rowsKey;
-        };
-
-        const rowUserInput = (row, rowNum) => {
-            // console.log(document.getElementById("unitConsumption" + rowNum).value);
-            data[row.id].單價 = document.getElementById("price" + row.id).value;
-            data[row.id].幣別 = document.getElementById("money" + row.id).value;
-            data[row.id].單位 = document.getElementById("unit" + row.id).value;
-            data[row.id].MPQ = document.getElementById("mpq" + row.id).value;
-            data[row.id].MOQ = document.getElementById("moq" + row.id).value;
-            data[row.id].LT = document.getElementById("lt" + row.id).value;
-            data[row.id].月請購 = document.getElementById("month" + row.id).value;
-            data[row.id].A級資材 = document.getElementById("gradea" + row.id).value;
-            data[row.id].發料部門 = document.getElementById("send" + row.id).value;
-            if (document.getElementById("safe" + row.id) == null) {
-                data[row.id].安全庫存 = null;
-            } else {
-                data[row.id].安全庫存 = document.getElementById("safe" + row.id).value;
-            } // if else
-
-            // console.log(data); // test
+            console.log(rowsKey); // test
         };
 
         return {
@@ -815,10 +706,12 @@ export default defineComponent({
             isInvalid_DB,
             validation_err_msg,
             updateCheckedRows,
+            CheckCurrentRow,
             deleteRow,
             OutputExcelClick,
-            rowUserInput,
             onSendToDBClick,
+            currencyDict,
+            senders,
         };
     }, // setup
 });

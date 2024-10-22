@@ -63,12 +63,17 @@
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
 
                 <template v-slot:單耗="{ row, key }">
-                    <div class="input-group m-0 p-0">
-                        <input style="width:11ch;" type="number" :id="'unitConsumption' + row.id"
-                            :name="'unitConsumption' + row.id" :value="ScientificNotaionToFixed(parseFloat(row.單耗))"
-                            v-model="row.單耗" class="form-control text-center p-0 m-0"
-                            step="0.000001" min="0">
-                        <small class="input-group-text text-center p-0 m-0">{{ row.單位 }}</small>
+                    <!-- DON'T Use input-group here. It messes with the z-index -->
+                    <div class="row">
+                        <input
+                            style="width:10ch; border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;"
+                            type="number" :id="'unitConsumption' + row.id" :name="'unitConsumption' + row.id"
+                            :value="ScientificNotaionToFixed(parseFloat(row.單耗))" v-model="row.單耗"
+                            class="form-control text-center p-0 m-0 col col-auto" step="0.000001" min="0" />
+                        <small class="input-group-text text-center p-0 m-0 col col-auto"
+                            style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">
+                            {{ row.單位 }}
+                        </small>
                     </div>
                 </template>
             </table-lite>

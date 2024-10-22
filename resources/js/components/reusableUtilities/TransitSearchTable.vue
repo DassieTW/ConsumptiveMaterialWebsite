@@ -47,8 +47,9 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label for="inputQty" class="form-label">{{ $t("monthlyPRpageLang.on_the_way_search")
-                                }}</label>
+                            <label for="inputQty" class="form-label">
+                                {{ $t("monthlyPRpageLang.on_the_way_search") }}
+                            </label>
                             <div class="input-group">
                                 <input v-model="inputQty" type="number" :class="{ 'is-invalid': isInvalid }"
                                     class="form-control" id="inputQty" :placeholder="originalQty" min="0">
