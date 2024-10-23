@@ -91,7 +91,7 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, getMats } = useInboundStockSearch(); // axios get the mats data
+        const { mats, getMats, locTransfer } = useInboundStockSearch(); // axios get the mats data
         const { queryResult, locations, validateISN, getLocs } = useCommonlyUsedFunctions();
 
         let isInvalid_DB = ref(false); // add to DB validation
@@ -139,7 +139,7 @@ export default defineComponent({
             let rowsCount = 0;
             let hasError = false;
             // console.log(data.length); //test
-            if (data.length <= 0) {
+            if (checkedRows.length <= 0) {
                 notyf.open({
                     type: "warning",
                     message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
@@ -158,11 +158,6 @@ export default defineComponent({
             } // if
 
             // ----------------------------------------------
-            // trim the white spaces and validate safestock if non-monthly
-            for (let j = 0; j < data.length && hasError === false; j++) {
-                data[j].料號 = data[j].料號.toString().trim();
-
-            } // for
 
             if (hasError) {
                 isInvalid_DB.value = true;
@@ -198,27 +193,27 @@ export default defineComponent({
             let monthlyArray = [];
             let dispatcherArray = [];
             let safestockArray = [];
-            for (let j = 0; j < data.length; j++) {
-                pnArray.push(data[j].料號);
-                nameArray.push(data[j].品名);
-                specArray.push(data[j].規格);
-                priceArray.push(data[j].單價);
-                currencyArray.push(data[j].幣別);
-                unitArray.push(data[j].單位);
-                mpqArray.push(data[j].MPQ);
-                moqArray.push(data[j].MOQ);
-                ltArray.push(data[j].LT);
-                gradeaArray.push(data[j].A級資材);
-                monthlyArray.push(data[j].月請購);
-                dispatcherArray.push(data[j].發料部門);
-                safestockArray.push(data[j].安全庫存);
+            for (let j = 0; j < checkedRows.length; j++) {
+                pnArray.push(checkedRows[j].料號);
+                nameArray.push(checkedRows[j].品名);
+                specArray.push(checkedRows[j].規格);
+                priceArray.push(checkedRows[j].單價);
+                currencyArray.push(checkedRows[j].幣別);
+                unitArray.push(checkedRows[j].單位);
+                mpqArray.push(checkedRows[j].MPQ);
+                moqArray.push(checkedRows[j].MOQ);
+                ltArray.push(checkedRows[j].LT);
+                gradeaArray.push(checkedRows[j].A級資材);
+                monthlyArray.push(checkedRows[j].月請購);
+                dispatcherArray.push(checkedRows[j].發料部門);
+                safestockArray.push(checkedRows[j].安全庫存);
             } // for
 
             // console.log(pnArray, nameArray, specArray, priceArray, currencyArray, unitArray, mpqArray, moqArray, ltArray, gradeaArray, monthlyArray, dispatcherArray, safestockArray); // test
 
             // actually updating database now
             let start = Date.now();
-            let result = await uploadToDB(pnArray, nameArray, specArray, priceArray, unitArray, currencyArray, mpqArray, moqArray, ltArray, gradeaArray, monthlyArray, dispatcherArray, safestockArray);
+            let result = await locTransfer(pnArray, nameArray, specArray, priceArray, unitArray, currencyArray, mpqArray, moqArray, ltArray, gradeaArray, monthlyArray, dispatcherArray, safestockArray);
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");

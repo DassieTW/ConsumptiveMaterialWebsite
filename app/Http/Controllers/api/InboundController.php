@@ -184,41 +184,53 @@ class InboundController extends Controller
         } //try - catch
     } // update
 
-    //入庫-儲位調撥提交
-    public function changesubmit(Request $request)
+    //入庫-儲位調撥
+    public function locTransfer(Request $request)
     {
-        $number = $request->input('number');
-        $oldposition = $request->input('oldposition');
-        $amount = $request->input('amount');
-        $newposition = $request->input('newposition');
-        //$stock = $request->input('stock');
+        $user = $request->input('User');
+        $number = json_decode($request->input('number'));
+        $oldposition = json_decode($request->input('oldposition'));
+        $amount = json_decode($request->input('amount'));
+        $newposition = json_decode($request->input('newposition'));
+
+        $insufficient_pn = [];
         $now = Carbon::now();
-        $test = \DB::table('inventory')
-            ->where('料號', $number)
-            ->where('儲位', $newposition)
-            ->value('現有庫存');
 
-        \DB::beginTransaction();
         try {
+            \DB::beginTransaction();
+            // loop thru number array
+            for ($i = 0; $i < count($number); $i++) {
+                $oldLocStock = \DB::table('inventory')->where('料號', $number[$i])->where('儲位', $oldposition[$i])->sum('現有庫存');
+                $newLocStock = \DB::table('inventory')->where('料號', $number[$i])->where('儲位', $newposition[$i])->sum('現有庫存');
+                if ($newLocStock === null) $newLocStock = 0;
+                
+                if ($oldLocStock < $amount[$i]) {
+                    array_push($insufficient_pn, $number[$i]);
+                } // if
+                else {
+                    \DB::table('inventory')
+                        ->upsert(
+                            [
+                                ['料號' => $number[$i], '現有庫存' => $oldLocStock - $amount[$i], '儲位' => $oldposition[$i], '最後更新時間' => $now],
+                                ['料號' => $number[$i], '現有庫存' => $newLocStock + $amount[$i], '儲位' => $newposition[$i], '最後更新時間' => $now]
+                            ],
+                            ['料號', '儲位'],
+                            ['現有庫存', '最後更新時間']
+                        );
 
-            if ($test !== null) {
-                \DB::table('inventory')
-                    ->where('料號', $number)
-                    ->where('儲位', $newposition)
-                    ->update(['現有庫存' => $test + $amount, '最後更新時間' => $now]);
-            } else {
-                \DB::table('inventory')
-                    ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $newposition, '最後更新時間' => $now]);
-            }
-
-            $stock = \DB::table('inventory')
-                ->where('料號', $number)
-                ->where('儲位', $oldposition)
-                ->value('現有庫存');
-            \DB::table('inventory')
-                ->where('料號', $number)
-                ->where('儲位', $oldposition)
-                ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
+                    \DB::table('LocTransferRecord')
+                        ->insert([
+                            '料號' => $number[$i],
+                            '調動數量' => $amount[$i],
+                            '操作人' => $user['username'],
+                            '調出儲位' => $oldposition[$i],
+                            '原調出儲位庫存' => $oldLocStock,
+                            '接收儲位' => $newposition[$i],
+                            '原接收儲位庫存' => $newLocStock,
+                            '操作時間' => $now
+                        ]);
+                } // else
+            } // for
 
             \DB::commit();
         } catch (\Exception $e) {
@@ -227,8 +239,13 @@ class InboundController extends Controller
             return \Response::json(['message' => $mess], 420/* Status code here default is 200 ok*/);
         } // try catch
 
-        return \Response::json(['boolean' => 'true']/* Status code here default is 200 ok*/);
-    } // changesubmit
+        if (count($insufficient_pn) > 0) {
+            return \Response::json(['insufficient_pn' => $insufficient_pn], 422);
+        } // if
+        else {
+            return \Response::json(['message' => 'all success']/* Status code here default is 200 ok*/);
+        } // else
+    } // locTransfer
 
     /**
      * Remove the specified resource from storage.

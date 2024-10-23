@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/app.css?v=') . env('APP_VERSION') }}">
     {{-- local lang for js --}}
     <script src="{{ asset('/messages.js?v=') . env('APP_VERSION') }}"></script>
-    
+
     <!-- Styles -->
     <style>
         /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -506,22 +506,18 @@
                     <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
                         <div class="flex items-center">
                             <svg fill="currentColor" class="w-8 h-8 text-gray-600" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
                                 <path
-                                    d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
-                                <path
-                                    d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                                    d="M4.98 1a.5.5 0 0 0-.39.188L1.54 5H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0A.5.5 0 0 1 10 5h4.46l-3.05-3.812A.5.5 0 0 0 11.02 1H4.98zM3.81.563A1.5 1.5 0 0 1 4.98 0h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 10H1.883A1.5 1.5 0 0 1 .394 8.686l-.39-3.124a.5.5 0 0 1 .106-.374L3.81.563zM.125 11.17A.5.5 0 0 1 .5 11H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0 .5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 16H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .121-.393z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/checking') }}"
-                                    class="underline text-gray-900 dark:text-black">盤點管理</a>
+                                <a href="{{ url('/inbound/add') }}"
+                                    class="underline text-gray-900 dark:text-black">領料入庫</a>
                             </div>
                         </div>
                         <div class="ml-12">
                             <div class="mt-2 text-gray-600 dark:text-gray-800 text-md">
-                                清查與盤點耗材在各儲位之數量，
-                                <br>查詢盤點結果與紀錄。
+                                串接企總之SSZ領料單，
+                                <br>檢核實際領用數量與請購數量之差異。
                             </div>
                         </div>
                     </div>
@@ -560,7 +556,7 @@
                                     d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/home') }}"
+                                <a href="{{ url('/basic/materialsearch') }}"
                                     class="underline text-gray-900 dark:text-black">耗材管理</a>
                             </div>
                         </div>
@@ -583,16 +579,14 @@
                                 <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/member') }}"
+                                <a href="{{ url('/member/priority_list') }}"
                                     class="underline text-gray-900 dark:text-black">用戶管理</a>
                             </div>
                         </div>
-
                         <div class="ml-12">
                             <div class="mt-2 text-gray-600 dark:text-gray-800 text-md">
-                                包含人員信息新增/查詢/修改、
-                                <br>用戶訊息新增/查詢/修改/刪除、
-                                <br>以及密碼修改。
+                                包含未持有OA帳號之人員信息新增/修改、
+                                <br>有OA人員之資料查詢/權限調整/登入廠區調整等。
                             </div>
                         </div>
                     </div>

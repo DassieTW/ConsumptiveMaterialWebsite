@@ -44,3 +44,8 @@ https://ptwsiteservice01.pega.corp.pegatron/someKey
 ## In intra network, under this folder: 
 
 cp .env.server /home/it/PEGA_Projects/ConsumptiveMaterialWebsite/.env
+
+## Remember to update the keywords from time to time
+/resources/meilisearchWords/keywords.json
+# and then run the command below
+php artisan meilisearch:clear

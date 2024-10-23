@@ -195,7 +195,7 @@
                                             </li>
                                         @endcan
 
-                                        {{-- <li class="sidebar-item {{ isActiveRoute(['barcode/', 'barcode.index']) }}">
+                                        <li class="sidebar-item {{ isActiveRoute(['barcode/', 'barcode.index']) }}">
                                             <a data-bs-target="#barcodePages" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -221,7 +221,7 @@
                                                         {!! __('templateWords.locBarcode') !!}</a>
                                                 </li>
                                             </ul>
-                                        </li> --}}
+                                        </li>
 
                                         @can('viewInbound', App\Models\Inbound::class)
                                             <li class="sidebar-item {{ isActiveRoute(['inbound/', 'inbound.index']) }}">

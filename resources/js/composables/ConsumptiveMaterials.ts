@@ -15,6 +15,16 @@ export default function useConsumptiveMaterials() {
         let lookInType = sessionStorage.getItem("lookInType");
         let lookInSend = sessionStorage.getItem("lookInSend");
 
+        if (lookInTargets === null || lookInType === null) {
+            sessionStorage.setItem("lookInType", JSON.stringify("1"));
+            sessionStorage.setItem("lookInTargets", JSON.stringify(""));
+            sessionStorage.setItem("lookInSend", JSON.stringify(null));
+        } // if
+
+        lookInTargets = sessionStorage.getItem("lookInTargets");
+        lookInType = sessionStorage.getItem("lookInType");
+        lookInSend = sessionStorage.getItem("lookInSend");
+
         try {
             let response = await axios.post("/api/basic/mats", {
                 DB: getDB.data,

@@ -90,10 +90,36 @@ export default function useInboundStockSearch() {
         } // try catch
     }; // uploadToDB
 
+    const locTransfer = async (pnArray, ogLoc, newLoc, amount) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        let username = await axios.post('/getCurrentUsername');
+        let serialNum = Date.now();
+        try {
+            let response = await axios.post('/api/inbound/locTransfer', {
+                DB: getDB.data,
+                User: username.data,
+                number: JSON.stringify(pnArray),
+                oldposition: JSON.stringify(ogLoc),
+                amount: JSON.stringify(amount),
+                newposition: JSON.stringify(newLoc),
+            });
+
+            // console.log(response.data); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    }; // locTransfer
+
     return {
         mats,
         getMats,
         getExistingStock,
         uploadToDB,
+        locTransfer,
     } // return
 } // useInboundStockSearch
