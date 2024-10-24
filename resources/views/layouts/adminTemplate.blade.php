@@ -255,10 +255,17 @@
                                                         </a>
                                                     </li>
                                                     <li
-                                                        class="sidebar-item {{ isActiveRoute(['inbound/change']) }}">
+                                                        class="sidebar-item {{ isActiveRoute(['inbound.change']) }}">
                                                         <a class="sidebar-link"
                                                             href="{{ route('inbound.change') }}">
                                                             {!! __('inboundpageLang.locationchange') !!}
+                                                        </a>
+                                                    </li>
+                                                    <li
+                                                        class="sidebar-item {{ isActiveRoute(['inbound.change_record']) }}">
+                                                        <a class="sidebar-link"
+                                                            href="{{ route('inbound.change_record') }}">
+                                                            {!! __('inboundpageLang.LocationChangeRecord') !!}
                                                         </a>
                                                     </li>
                                                 </ul>

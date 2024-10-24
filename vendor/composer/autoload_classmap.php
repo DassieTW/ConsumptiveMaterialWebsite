@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Commands\\CleanUpDatedUsers' => $baseDir . '/app/Console/Commands/CleanUpDatedUsers.php',
     'App\\Console\\Commands\\CleanUpInventory' => $baseDir . '/app/Console/Commands/CleanUpInventory.php',
+    'App\\Console\\Commands\\CleanUpMeiliSearchIdexes' => $baseDir . '/app/Console/Commands/CleanUpMeiliSearchIdexes.php',
     'App\\Console\\Commands\\CleanupBarcodeImg' => $baseDir . '/app/Console/Commands/CleanupBarcodeImg.php',
     'App\\Console\\Commands\\FlushSessions' => $baseDir . '/app/Console/Commands/FlushSessions.php',
     'App\\Console\\Commands\\GetExchangeRate' => $baseDir . '/app/Console/Commands/GetExchangeRate.php',
@@ -32,7 +33,6 @@ return array(
     'App\\Http\\Controllers\\CheckingInventoryController' => $baseDir . '/app/Http/Controllers/CheckingInventoryController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
-    'App\\Http\\Controllers\\InboundController' => $baseDir . '/app/Http/Controllers/InboundController.php',
     'App\\Http\\Controllers\\MonthController' => $baseDir . '/app/Http/Controllers/MonthController.php',
     'App\\Http\\Controllers\\OboundController' => $baseDir . '/app/Http/Controllers/OboundController.php',
     'App\\Http\\Controllers\\OutboundController' => $baseDir . '/app/Http/Controllers/OutboundController.php',

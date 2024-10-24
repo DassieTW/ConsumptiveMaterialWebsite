@@ -794,6 +794,7 @@ class ComposerStaticInit3a337aa382200259a249a8921ee7c950
     public static $classMap = array (
         'App\\Console\\Commands\\CleanUpDatedUsers' => __DIR__ . '/../..' . '/app/Console/Commands/CleanUpDatedUsers.php',
         'App\\Console\\Commands\\CleanUpInventory' => __DIR__ . '/../..' . '/app/Console/Commands/CleanUpInventory.php',
+        'App\\Console\\Commands\\CleanUpMeiliSearchIdexes' => __DIR__ . '/../..' . '/app/Console/Commands/CleanUpMeiliSearchIdexes.php',
         'App\\Console\\Commands\\CleanupBarcodeImg' => __DIR__ . '/../..' . '/app/Console/Commands/CleanupBarcodeImg.php',
         'App\\Console\\Commands\\FlushSessions' => __DIR__ . '/../..' . '/app/Console/Commands/FlushSessions.php',
         'App\\Console\\Commands\\GetExchangeRate' => __DIR__ . '/../..' . '/app/Console/Commands/GetExchangeRate.php',
@@ -818,7 +819,6 @@ class ComposerStaticInit3a337aa382200259a249a8921ee7c950
         'App\\Http\\Controllers\\CheckingInventoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/CheckingInventoryController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
-        'App\\Http\\Controllers\\InboundController' => __DIR__ . '/../..' . '/app/Http/Controllers/InboundController.php',
         'App\\Http\\Controllers\\MonthController' => __DIR__ . '/../..' . '/app/Http/Controllers/MonthController.php',
         'App\\Http\\Controllers\\OboundController' => __DIR__ . '/../..' . '/app/Http/Controllers/OboundController.php',
         'App\\Http\\Controllers\\OutboundController' => __DIR__ . '/../..' . '/app/Http/Controllers/OutboundController.php',

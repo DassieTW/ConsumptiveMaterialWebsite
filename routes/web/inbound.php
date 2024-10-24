@@ -58,3 +58,8 @@ Route::get('/searchstocksubmit1', function () {
 Route::get('/change', function() {
     return view('inbound.change');
 })->name('inbound.change')->middleware('can:viewInbound,App\Models\Inbound');
+
+//入庫-儲位調撥紀錄畫面
+Route::get('/change_record', function() {
+    return view('inbound.changeRecord');
+})->name('inbound.change_record')->middleware('can:viewInbound,App\Models\Inbound');

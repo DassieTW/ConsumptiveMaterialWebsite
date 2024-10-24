@@ -19,7 +19,7 @@ class CleanUpInventory extends Command
      *
      * @var string
      */
-    protected $description = 'Delete rows with 0 inventory and updated time older than 3 months.';
+    protected $description = 'Delete rows with 0 (or less) inventory.';
 
     /**
      * Create a new command instance.

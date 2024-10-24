@@ -37,20 +37,20 @@
                 <template v-slot:調撥數量="{ row, key }">
                     <div class="row">
                         <input v-model="row.調撥數量" @input="CheckCurrentRow($event);"
-                            :class="{ 'is-invalid': (parseInt(row.調撥數量) > parseInt(row.現有庫存)) }"
+                            :class="{ 'is-invalid': ((parseInt(row.調撥數量) > parseInt(row.現有庫存)) || (parseInt(row.調撥數量) == 0 && row.新儲位 != '')) }"
                             class="form-control text-center p-0 m-0 col col-auto"
                             style="width: 7ch; border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;"
                             type="number" min="0" :id="'tqty' + row.id" :name="'tqty' + key" />
                         <span class="input-group-text text-center p-0 m-0 col col-auto"
                             style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">{{
-                            row.單位 }}</span>
+                                row.單位 }}</span>
                     </div>
                 </template>
 
                 <template v-slot:新儲位="{ row, key }">
                     <select v-model="row.新儲位" @input="CheckCurrentRow($event);" style="width: 11ch;"
                         class="col col-auto form-select form-select-lg ps-2 p-0 m-0" :id="'newloc' + row.id"
-                        :name="'newloc' + key">
+                        :class="{ 'is-invalid': (parseInt(row.調撥數量) > 0 && row.新儲位 == '') }" :name="'newloc' + key">
                         <option id="noneSelected" value="" disabled selected>
                             {{ $t('inboundpageLang.choose') }}
                         </option>
@@ -91,7 +91,7 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats, getMats, locTransfer } = useInboundStockSearch(); // axios get the mats data
+        const { mats, errors, getMats, locTransfer } = useInboundStockSearch(); // axios get the mats data
         const { queryResult, locations, validateISN, getLocs } = useCommonlyUsedFunctions();
 
         let isInvalid_DB = ref(false); // add to DB validation
@@ -127,7 +127,6 @@ export default defineComponent({
         } // triggerModal
 
         function CheckCurrentRow(e) {
-            // console.log(e.target.closest('tr').firstChild.firstChild); // test
             if (!e.target.closest('tr').firstChild.firstChild.checked) {
                 e.target.closest('tr').firstChild.firstChild.click();
             } // if
@@ -159,6 +158,55 @@ export default defineComponent({
 
             // ----------------------------------------------
 
+            // loop through the checked rows and validate the data
+            for (let i = 0; i < checkedRows.length; i++) {
+                let currentRow = checkedRows[i];
+                let currentRowPN = currentRow.料號;
+                let currentRowLoc = currentRow.儲位;
+                let currentRowNewLoc = currentRow.新儲位;
+                let currentRowQty = currentRow.調撥數量;
+
+                // check if the new location is empty
+                if (currentRowNewLoc === "") {
+                    hasError = true;
+                    isInvalid_DB.value = true;
+                    validation_err_msg.value = currentRowPN + " " + app.appContext.config.globalProperties.$t("inboundpageLang.newloc_empty");
+                    break;
+                } // if
+
+                // check if the transfer quantity is empty
+                if (parseInt(currentRowQty) === 0) {
+                    hasError = true;
+                    isInvalid_DB.value = true;
+                    validation_err_msg.value = currentRowPN + " " + app.appContext.config.globalProperties.$t("inboundpageLang.qty_empty");
+                    break;
+                } // if
+
+                // check if the transfer quantity is more than the current stock
+                if (parseInt(currentRowQty) > parseInt(currentRow.現有庫存)) {
+                    hasError = true;
+                    isInvalid_DB.value = true;
+                    validation_err_msg.value = currentRowPN + " " + app.appContext.config.globalProperties.$t("inboundpageLang.qty_exceed");
+                    break;
+                } // if
+
+                // check if the transfer quantity is more than 0 and the new location is empty
+                if (parseInt(currentRowQty) > 0 && currentRowNewLoc === "") {
+                    hasError = true;
+                    isInvalid_DB.value = true;
+                    validation_err_msg.value = currentRowPN + " " + app.appContext.config.globalProperties.$t("inboundpageLang.newloc_empty");
+                    break;
+                } // if
+
+                // check if the transfer quantity is more than 0 and the new location is the same as the old location
+                if (parseInt(currentRowQty) > 0 && currentRowNewLoc === currentRowLoc) {
+                    hasError = true;
+                    isInvalid_DB.value = true;
+                    validation_err_msg.value = currentRowPN + " " + app.appContext.config.globalProperties.$t("inboundpageLang.newloc_same");
+                    break;
+                } // if
+            } // for
+
             if (hasError) {
                 isInvalid_DB.value = true;
                 notyf.open({
@@ -181,39 +229,19 @@ export default defineComponent({
             // ----------------------------------------------
             // prepare the data arrays to be sent
             let pnArray = [];
-            let nameArray = [];
-            let specArray = [];
-            let priceArray = [];
-            let currencyArray = [];
-            let unitArray = [];
-            let mpqArray = [];
-            let moqArray = [];
-            let ltArray = [];
-            let gradeaArray = [];
-            let monthlyArray = [];
-            let dispatcherArray = [];
-            let safestockArray = [];
+            let ogLocArray = [];
+            let newLocArray = [];
+            let qtyArray = [];
             for (let j = 0; j < checkedRows.length; j++) {
                 pnArray.push(checkedRows[j].料號);
-                nameArray.push(checkedRows[j].品名);
-                specArray.push(checkedRows[j].規格);
-                priceArray.push(checkedRows[j].單價);
-                currencyArray.push(checkedRows[j].幣別);
-                unitArray.push(checkedRows[j].單位);
-                mpqArray.push(checkedRows[j].MPQ);
-                moqArray.push(checkedRows[j].MOQ);
-                ltArray.push(checkedRows[j].LT);
-                gradeaArray.push(checkedRows[j].A級資材);
-                monthlyArray.push(checkedRows[j].月請購);
-                dispatcherArray.push(checkedRows[j].發料部門);
-                safestockArray.push(checkedRows[j].安全庫存);
+                ogLocArray.push(checkedRows[j].儲位);
+                newLocArray.push(checkedRows[j].新儲位);
+                qtyArray.push(checkedRows[j].調撥數量);
             } // for
-
-            // console.log(pnArray, nameArray, specArray, priceArray, currencyArray, unitArray, mpqArray, moqArray, ltArray, gradeaArray, monthlyArray, dispatcherArray, safestockArray); // test
 
             // actually updating database now
             let start = Date.now();
-            let result = await locTransfer(pnArray, nameArray, specArray, priceArray, unitArray, currencyArray, mpqArray, moqArray, ltArray, gradeaArray, monthlyArray, dispatcherArray, safestockArray);
+            let result = await locTransfer(pnArray, ogLocArray, newLocArray, qtyArray);
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");
@@ -222,7 +250,7 @@ export default defineComponent({
             if (result === "success") {
                 notyf.open({
                     type: "success",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + JSON.parse(queryResult.value).record + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
@@ -231,8 +259,27 @@ export default defineComponent({
                         y: "bottom",
                     },
                 });
+
+                data.splice(0);
+                checkedRows.splice(0);
+                await getMats();
             } // if
             else {
+                if (errors.value.hasOwnProperty('insufficient_pn')) {
+                    // console.log(errors.value.insufficient_pn[0]); // test
+                    isInvalid_DB.value = true;
+                    let temp_str = "";
+                    for (let i = 0; i < errors.value.insufficient_pn.length; i++) {
+                        temp_str += errors.value.insufficient_pn[i] + "(" + errors.value.insufficient_oldLoc[i] + ")" + ", ";
+                    } // for
+                    // remove the last comma
+                    temp_str = temp_str.slice(0, -2);
+                    validation_err_msg.value = temp_str + " " + app.appContext.config.globalProperties.$t("inboundpageLang.altered_by_other_recently");
+                    data.splice(0);
+                    checkedRows.splice(0);
+                    await getMats();
+                } // if
+
                 notyf.open({
                     type: "error",
                     message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
@@ -492,7 +539,7 @@ export default defineComponent({
         });
 
         const updateCheckedRows = (rowsKey) => {
-            console.log(rowsKey); // test
+            // console.log(rowsKey); // test
             checkedRows = rowsKey;
         };
 

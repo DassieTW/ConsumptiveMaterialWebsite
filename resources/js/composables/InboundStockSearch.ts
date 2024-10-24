@@ -65,6 +65,26 @@ export default function useInboundStockSearch() {
         } // try catch
     } // getExistingStock
 
+    const getLocTransferRecord = async () => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/inbound/locTransferRecord', {
+                DB: getDB.data,
+            });
+
+            mats.value = JSON.stringify(response.data);
+            // console.log(JSON.stringify(response.data)); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            console.log(e); // test
+            return e;
+        } // try catch
+    } // getLocTransferRecord
+
     const uploadToDB = async (newStock, inboundCount, newInTransit) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
@@ -111,14 +131,19 @@ export default function useInboundStockSearch() {
             });
         } catch (e) {
             console.log(e); // test
-            return e;
+            errors.value = e.response.data;
+            return new Promise((resolve, reject) => {
+                resolve("failed");
+            });
         } // try catch
     }; // locTransfer
 
     return {
         mats,
+        errors,
         getMats,
         getExistingStock,
+        getLocTransferRecord,
         uploadToDB,
         locTransfer,
     } // return

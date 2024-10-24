@@ -47,6 +47,7 @@ import InboundStockTable from "./components/reusableUtilities/InboundStockTable.
 import InboundMonthTable from "./components/reusableUtilities/InboundMonthTable.vue";
 import InboundStockUploadTable from "./components/reusableUtilities/InboundStockUploadTable.vue";
 import InboundLocTransferTable from "./components/reusableUtilities/InboundLocTransfer.vue";
+import InboundLocTransferRecordTable from "./components/reusableUtilities/InboundLocTransferRecord.vue";
 import OutboundPickrecordTable from "./components/reusableUtilities/OutboundPickrecordTable.vue";
 import OutboundBackrecordTable from "./components/reusableUtilities/OutboundBackrecordTable.vue";
 import TransitSearchTable from "./components/reusableUtilities/TransitSearchTable.vue";
@@ -75,6 +76,7 @@ const app = createApp({
     "inbound-month-table": InboundMonthTable,
     "inbound-stock-upload-table": InboundStockUploadTable,
     "inbound-loc-transfer-table": InboundLocTransferTable,
+    "inbound-loc-transfer-record-table": InboundLocTransferRecordTable,
     "outbound-pickrecord-table": OutboundPickrecordTable,
     "outbound-backrecord-table": OutboundBackrecordTable,
     "transit-search-table": TransitSearchTable,

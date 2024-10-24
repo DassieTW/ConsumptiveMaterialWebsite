@@ -210,10 +210,12 @@ Route::post('/searchstock', function (Request $request) {
 });
 
 Route::post('/getExistingStock', 'api\InboundController@showStocks');
-Route::post('/uploadToDB', 'api\InboundController@update');
 
-//入庫-儲位調撥顯示資料
-Route::post('/change', 'api\InboundController@change');
+// 入庫 上傳
+Route::post('/uploadToDB', 'api\InboundController@update');
 
 //入庫-儲位調撥提交
 Route::post('/locTransfer', 'api\InboundController@locTransfer');
+
+//入庫-儲位調撥紀錄
+Route::post('/locTransferRecord', 'api\InboundController@showLocTransferRecord');

@@ -67,6 +67,15 @@ class InboundController extends Controller
         return \Response::json(['data' => $allResult, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showStocks
 
+    public function showLocTransferRecord(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
+        
+    } // showLocTransferRecord
+
     /**
      * Update the specified resource in storage.
      *
@@ -74,7 +83,7 @@ class InboundController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request) // 庫存新增 上傳
+    public function update(Request $request) // 入庫 上傳
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
@@ -187,13 +196,19 @@ class InboundController extends Controller
     //入庫-儲位調撥
     public function locTransfer(Request $request)
     {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+
         $user = $request->input('User');
         $number = json_decode($request->input('number'));
         $oldposition = json_decode($request->input('oldposition'));
         $amount = json_decode($request->input('amount'));
         $newposition = json_decode($request->input('newposition'));
 
+        // dd($number, $oldposition, $amount, $newposition); // test
         $insufficient_pn = [];
+        $insufficient_oldLoc = [];
         $now = Carbon::now();
 
         try {
@@ -203,9 +218,10 @@ class InboundController extends Controller
                 $oldLocStock = \DB::table('inventory')->where('料號', $number[$i])->where('儲位', $oldposition[$i])->sum('現有庫存');
                 $newLocStock = \DB::table('inventory')->where('料號', $number[$i])->where('儲位', $newposition[$i])->sum('現有庫存');
                 if ($newLocStock === null) $newLocStock = 0;
-                
+
                 if ($oldLocStock < $amount[$i]) {
                     array_push($insufficient_pn, $number[$i]);
+                    array_push($insufficient_oldLoc, $oldposition[$i]);
                 } // if
                 else {
                     \DB::table('inventory')
@@ -222,7 +238,7 @@ class InboundController extends Controller
                         ->insert([
                             '料號' => $number[$i],
                             '調動數量' => $amount[$i],
-                            '操作人' => $user['username'],
+                            '操作人' => $user,
                             '調出儲位' => $oldposition[$i],
                             '原調出儲位庫存' => $oldLocStock,
                             '接收儲位' => $newposition[$i],
@@ -240,7 +256,7 @@ class InboundController extends Controller
         } // try catch
 
         if (count($insufficient_pn) > 0) {
-            return \Response::json(['insufficient_pn' => $insufficient_pn], 422);
+            return \Response::json(['insufficient_pn' => $insufficient_pn, 'insufficient_oldLoc' => $insufficient_oldLoc], 422);
         } // if
         else {
             return \Response::json(['message' => 'all success']/* Status code here default is 200 ok*/);

@@ -151,79 +151,79 @@
                                 <td class="table-success"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
-                            <!-- <tr class="table-secondary">
-                                        <td colspan="2"></td>
-                                        <td colspan="2"></td>
-                                        <td colspan="2"></td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    {{-- ----------------------------------------------------------------------------------------- --}}
-                                    {{-- 條碼 --}}
-                                    <tr>
-                                        {{-- 4 --}}
-                                        <td rowspan="3" class="table-success">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
-                                            </svg>
-                                            <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
-                                        </td>
-                                        <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                            <tr class="table-secondary">
+                                <td colspan="2"></td>
+                                <td colspan="2"></td>
+                                <td colspan="2"></td>
+                                <td colspan="2"></td>
+                            </tr>
+                            {{-- ----------------------------------------------------------------------------------------- --}}
+                            {{-- 條碼 --}}
+                            <tr>
+                                {{-- 4 --}}
+                                <td rowspan="3" class="table-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
+                                        <path
+                                            d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                    </svg>
+                                    <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
+                                </td>
+                                <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
 
-                                        {{-- 3 --}}
-                                        <td rowspan="3" class="table-success">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
-                                            </svg>
-                                            <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
-                                        </td>
-                                        <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                {{-- 3 --}}
+                                <td rowspan="3" class="table-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
+                                        <path
+                                            d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                    </svg>
+                                    <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
+                                </td>
+                                <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
 
-                                        {{-- 2 --}}
-                                        <td rowspan="3" class="table-success">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
-                                            </svg>
-                                            <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
-                                        </td>
-                                        <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                                {{-- 2 --}}
+                                <td rowspan="3" class="table-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
+                                        <path
+                                            d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                    </svg>
+                                    <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
+                                </td>
+                                <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
 
-                                        {{-- 1 --}}
-                                        <td rowspan="3" class="table-success">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
-                                            </svg>
-                                            <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
-                                        </td>
-                                        <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
-                                    </tr>
-                                    <tr>
-                                        {{-- 4 --}}
-                                        <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
-                                        {{-- 3 --}}
-                                        <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
-                                        {{-- 2 --}}
-                                        <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
-                                        {{-- 1 --}}
-                                        <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
-                                    </tr>
-                                    <tr>
-                                        {{-- 4 --}}
-                                        <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
-                                        {{-- 3 --}}
-                                        <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
-                                        {{-- 2 --}}
-                                        <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
-                                        {{-- 1 --}}
-                                        <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
-                                    </tr> -->
+                                {{-- 1 --}}
+                                <td rowspan="3" class="table-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-upc align-middle" viewBox="0 0 16 16">
+                                        <path
+                                            d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                    </svg>
+                                    <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
+                                </td>
+                                <td class="table-success"><span>{!! __('templateWords.barcode_generator') !!}</span></td>
+                            </tr>
+                            <tr>
+                                {{-- 4 --}}
+                                <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                {{-- 3 --}}
+                                <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                {{-- 2 --}}
+                                <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                                {{-- 1 --}}
+                                <td class="table-success"><span>{!! __('templateWords.isnBarcode') !!}</span></td>
+                            </tr>
+                            <tr>
+                                {{-- 4 --}}
+                                <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                {{-- 3 --}}
+                                <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                {{-- 2 --}}
+                                <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                                {{-- 1 --}}
+                                <td class="table-success"><span>{!! __('templateWords.locBarcode') !!}</span></td>
+                            </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
                                 <td colspan="2"></td>
@@ -235,7 +235,7 @@
                             {{-- 入庫 --}}
                             <tr>
                                 {{-- 4 --}}
-                                <td rowspan="4" class="table-secondary">
+                                <td rowspan="5" class="table-secondary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -249,7 +249,7 @@
                                 </td>
 
                                 {{-- 3 --}}
-                                <td rowspan="4" class="table-secondary">
+                                <td rowspan="5" class="table-secondary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -263,7 +263,7 @@
                                 </td>
 
                                 {{-- 2 --}}
-                                <td rowspan="4" class="table-success">
+                                <td rowspan="5" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -274,7 +274,7 @@
                                 <td class="table-success"><span>{!! __('inboundpageLang.new') !!}</span></td>
 
                                 {{-- 1 --}}
-                                <td rowspan="4" class="table-success">
+                                <td rowspan="5" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
@@ -325,6 +325,20 @@
                                 <td class="table-success"><span>{!! __('inboundpageLang.locationchange') !!}</span></td>
                                 {{-- 1 --}}
                                 <td class="table-success"><span>{!! __('inboundpageLang.locationchange') !!}</span></td>
+                            </tr>
+                            <tr>
+                                {{-- 4 --}}
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('inboundpageLang.LocationChangeRecord') !!}</span>
+                                </td>
+                                {{-- 3 --}}
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('inboundpageLang.LocationChangeRecord') !!}</span>
+                                </td>
+                                {{-- 2 --}}
+                                <td class="table-success"><span>{!! __('inboundpageLang.LocationChangeRecord') !!}</span></td>
+                                {{-- 1 --}}
+                                <td class="table-success"><span>{!! __('inboundpageLang.LocationChangeRecord') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
