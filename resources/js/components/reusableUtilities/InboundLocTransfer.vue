@@ -328,13 +328,6 @@ export default defineComponent({
                     display: function (row, i) {
                         // console.log(row);
                         return (
-                            '<input type="hidden" id="number' +
-                            row.id +
-                            '" name="number' +
-                            i +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.料號 +
@@ -342,52 +335,38 @@ export default defineComponent({
                         );
                     },
                 },
-                // {
-                //     label: app.appContext.config.globalProperties.$t(
-                //         "basicInfoLang.pName"
-                //     ),
-                //     field: "品名",
-                //     width: "13ch",
-                //     sortable: true,
-                //     display: function (row, i) {
-                //         return (
-                //             '<input type="hidden" id="name' +
-                //             i +
-                //             '" name="name' +
-                //             i +
-                //             '" value="' +
-                //             row.品名 +
-                //             '">' +
-                //             '<div class="text-nowrap CustomScrollbar"' +
-                //             ' style="overflow-x: auto; width: 100%;">' +
-                //             row.品名 +
-                //             "</div>"
-                //         );
-                //     },
-                // },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "basicInfoLang.format"
+                        "basicInfoLang.pName"
                     ),
-                    field: "規格",
+                    field: "品名",
                     width: "13ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="format' +
-                            i +
-                            '" name="format' +
-                            i +
-                            '" value="' +
-                            row.規格 +
-                            '">' +
-                            '<div class="CustomScrollbar text-nowrap"' +
+                            '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.規格 +
+                            row.品名 +
                             "</div>"
                         );
                     },
                 },
+                // {
+                //     label: app.appContext.config.globalProperties.$t(
+                //         "basicInfoLang.format"
+                //     ),
+                //     field: "規格",
+                //     width: "13ch",
+                //     sortable: true,
+                //     display: function (row, i) {
+                //         return (
+                //             '<div class="CustomScrollbar text-nowrap"' +
+                //             ' style="overflow-x: auto; width: 100%;">' +
+                //             row.規格 +
+                //             "</div>"
+                //         );
+                //     },
+                // },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "inboundpageLang.nowstock"
@@ -397,13 +376,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="stock' +
-                            i +
-                            '" name="stock' +
-                            i +
-                            '" value="' +
-                            row.現有庫存 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
@@ -420,13 +392,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="position' +
-                            i +
-                            '" name="position' +
-                            i +
-                            '" value="' +
-                            row.儲位 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.儲位 +
@@ -460,13 +425,6 @@ export default defineComponent({
                     display: function (row, i) {
                         if (row.最後更新時間 === null || row.最後更新時間 === undefined) row.最後更新時間 = "N/A";
                         return (
-                            '<input type="hidden" id="updatetime' +
-                            i +
-                            '" name="updatetime' +
-                            i +
-                            '" value="' +
-                            row.最後更新時間 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.最後更新時間 +

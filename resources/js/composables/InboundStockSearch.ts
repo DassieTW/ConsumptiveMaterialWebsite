@@ -65,17 +65,19 @@ export default function useInboundStockSearch() {
         } // try catch
     } // getExistingStock
 
-    const getLocTransferRecord = async () => {
+    const getLocTransferRecord = async (timeRange, date1, date2) => {
         errors.value = "";
         let getDB = await axios.post('/getCurrentDB');
 
         try {
             let response = await axios.post('/api/inbound/locTransferRecord', {
                 DB: getDB.data,
+                timeRange: timeRange,
+                date1: date1,
+                date2: date2,
             });
 
             mats.value = JSON.stringify(response.data);
-            // console.log(JSON.stringify(response.data)); // test
             return new Promise((resolve, reject) => {
                 resolve("success");
             });

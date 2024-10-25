@@ -72,8 +72,50 @@ class InboundController extends Controller
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
+        $timeRange = json_decode($request->input('timeRange'));
+        $date1 = date(json_decode($request->input('date1')));
+        $date2 = date(json_decode($request->input('date2')));
+        $now = Carbon::now();
+        if ($date1 > $date2) {
+            $temp = $date2;
+            $date2 = $date1;
+            $date1 = $temp;
+        } // if
 
-        
+        if ($timeRange === "month") {
+            $allResult = \DB::table('LocTransferRecord')
+                ->where('操作時間', '>=', Carbon::now()->subMonth(1))
+                ->leftJoin('consumptive_material', 'LocTransferRecord.料號', '=', 'consumptive_material.料號')
+                ->leftJoin('人員信息', 'LocTransferRecord.操作人', '=', '人員信息.工號')
+                ->orderBy('操作時間', 'desc')
+                ->get();
+        } // if
+        else if ($timeRange === "quarter") {
+            $allResult = \DB::table('LocTransferRecord')
+                ->where('操作時間', '>=', Carbon::now()->subMonths(3))
+                ->leftJoin('consumptive_material', 'LocTransferRecord.料號', '=', 'consumptive_material.料號')
+                ->leftJoin('人員信息', 'LocTransferRecord.操作人', '=', '人員信息.工號')
+                ->orderBy('操作時間', 'desc')
+                ->get();
+        } // if
+        else if ($timeRange === "year") {
+            $allResult = \DB::table('LocTransferRecord')
+                ->where('操作時間', '>=', Carbon::now()->subYear(1))
+                ->leftJoin('consumptive_material', 'LocTransferRecord.料號', '=', 'consumptive_material.料號')
+                ->leftJoin('人員信息', 'LocTransferRecord.操作人', '=', '人員信息.工號')
+                ->orderBy('操作時間', 'desc')
+                ->get();
+        } // else if
+        else { // if it's a specific date range
+            $allResult = \DB::table('LocTransferRecord')
+                ->whereBetween('操作時間', [$date1, $date2])
+                ->leftJoin('consumptive_material', 'LocTransferRecord.料號', '=', 'consumptive_material.料號')
+                ->leftJoin('人員信息', 'LocTransferRecord.操作人', '=', '人員信息.工號')
+                ->orderBy('操作時間', 'desc')
+                ->get();
+        } // else
+
+        return \Response::json(['data' => $allResult, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showLocTransferRecord
 
     /**

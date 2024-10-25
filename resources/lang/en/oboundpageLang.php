@@ -32,8 +32,8 @@ return [
     'inputinreason' => 'Please enter a reason',
     'bound' => 'Library',
     'enterbound' => 'Please select the library',
-    'inpeople' => 'Inbound People',
-    'enterinpeople' => 'Please select the inbound people',
+    'inpeople' => 'Operator',
+    'enterinpeople' => 'Please select an operator',
     'amountzero' => 'The qty of storage cannot be less than or equal to 0',
     'inlist' => 'Inbound list number',
     'nocheck' => 'Please tick the items you want to delete/update',
@@ -140,7 +140,7 @@ return [
     'inputpickpeople' => 'Please input Picker ID',
     'inputbackpeople' => 'Please input Rejecter ID',
     'inputreceivepeople' => 'Please input Receiver ID',
-    'noinpeople' => 'The ID of the inbound people does not exist, please go to User Management-Maintenance -> Person Information',
-    'rfidinpeople' => 'Click here and tap the Inbound Staff\'s ID card',
+    'noinpeople' => 'The ID of the operator does not exist, please go to User Management-Maintenance -> Person Information',
+    'rfidinpeople' => 'Click here and tap the Staff\'s ID card',
 
 ];

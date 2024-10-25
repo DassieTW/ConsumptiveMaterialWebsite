@@ -32,8 +32,8 @@ return [
     'inputinreason' => '请输入入库原因',
     'bound' => '库别',
     'enterbound' => '请选择库别',
-    'inpeople' => '入库人员',
-    'enterinpeople' => '请选择入库人员',
+    'inpeople' => '人员',
+    'enterinpeople' => '请选择人员',
     'amountzero' => '入库数量不可小于等于零',
     'inlist' => '入库单号',
     'nocheck' => '请勾选欲删除/更新项目',
@@ -140,7 +140,7 @@ return [
     'inputpickpeople' => '请输入领料人员工号',
     'inputbackpeople' => '请输入退料人员工号',
     'inputreceivepeople' => '请输入收料人员工号',
-    'noinpeople' => '入库人员之工号不存在，请先到用户管理-人员讯息维护',
-    'rfidinpeople' => '请点这里感应入库人员识别证',
+    'noinpeople' => '人员之工号不存在，请先到用户管理-人员讯息维护',
+    'rfidinpeople' => '请点这里感应识别证',
 
 ];
