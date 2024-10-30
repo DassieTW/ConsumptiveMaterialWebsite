@@ -219,3 +219,7 @@ Route::post('/locTransfer', 'api\InboundController@locTransfer');
 
 //入庫-儲位調撥紀錄
 Route::post('/locTransferRecord', 'api\InboundController@showLocTransferRecord');
+
+//入庫-SSZ領料單
+Route::post('/ssz', 'api\InboundController@showSSZFlowNumber');
+Route::post('/ssz_info', 'api\InboundController@showSSZInfo');

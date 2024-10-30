@@ -118,6 +118,21 @@ class InboundController extends Controller
         return \Response::json(['data' => $allResult, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
     } // showLocTransferRecord
 
+    public function showSSZFlowNumber(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+        
+    } // showSSZFlowNumber
+
+    public function showSSZInfo(Request $request)
+    {
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $dbName = \DB::connection()->getDatabaseName(); // test
+    } // showSSZInfo
+
     /**
      * Update the specified resource in storage.
      *

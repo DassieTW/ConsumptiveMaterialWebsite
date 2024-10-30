@@ -5,13 +5,6 @@
 
 @section('js')
     <!--for this page's sepcified js -->
-    <script>
-        sessionStorage.setItem("inboundstockisn", null); // for later vue to post request
-        sessionStorage.setItem("inboundstockloc", null); // for later vue to post request
-        sessionStorage.setItem("inboundstocksend", null); // for later vue to post request
-        sessionStorage.setItem("inboundstockmonth", false); // for later vue to post request
-        sessionStorage.setItem("inboundstocknogood", false); // for later vue to post request
-    </script>
 @endsection
 @section('content')
     <div id="mountingPoint">
@@ -21,8 +14,6 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
-        <div class="row justify-content-center CustomScrollbar">
-            <inbound-stock-upload-table></inbound-stock-upload-table>
-        </div>
+        <inbound-stock-upload-table></inbound-stock-upload-table>
     </div>
 @endsection

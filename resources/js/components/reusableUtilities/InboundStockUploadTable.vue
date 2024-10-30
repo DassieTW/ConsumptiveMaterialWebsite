@@ -1,56 +1,23 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h3>{{ $t("inboundpageLang.upload") }}</h3>
+            <h3>{{ $t('inboundpageLang.new') }}</h3>
         </div>
-        <div class="card-body">
-            <div class="row justify-content-center mb-3">
-                <div class="col col-auto">
-                    <a :href="exampleUrl" download>
-                        {{ $t('inboundpageLang.exampleExcel') }}
-                    </a>
-                </div>
-
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <label class="col col-auto form-label">{{ $t('inboundpageLang.plz_upload') }}</label>
-                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="col col-auto">
-                    <input class="form-control" :class="{ 'is-invalid': isInvalid }" id="excel_input" type="file"
-                        name="select_file" @change="onInputChange" />
-                    <span v-if="isInvalid" class="invalid-feedback d-block" role="alert">
-                        <strong>{{ validation_err_msg }}</strong>
-                    </span>
-                </div>
-                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="row justify-content-center">
-                    <button type="submit" name="upload" class="col col-auto btn btn-lg btn-primary"
-                        @click="onUploadClick">
-                        {{ $t('inboundpageLang.upload1') }}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <button id="togglebtn" class="btn btn-primary col col-auto" type="button" data-bs-toggle="collapse"
-        data-bs-target="#importedtable" aria-expanded="false" aria-controls="importedtable" style="display: none;">
-    </button>
-
-    <div class="card collapse" id="importedtable">
         <div class="card-body">
             <div class="row justify-content-between">
                 <div class="row col col-auto">
                     <div class="col col-auto">
-                        <label for="pnInput1" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+                        <label for="sxbInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
                     </div>
-                    <div class="col col-6 p-0 m-0">
-                        <input id="pnInput1" class="text-center form-control form-control-lg"
-                            v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
+                    <div class="col col-auto p-0 m-0">
+                        <input id="sxbInput" class="text-center form-control form-control-lg"
+                            v-bind:placeholder="$t('monthlyPRpageLang.entersxb')" v-model="searchTerm" />
                     </div>
                 </div>
                 <div class="col col-auto">
-                    <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger" @click="deleteRow">
-                        <i class="bi bi-trash3-fill fs-4"></i>
+                    <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                        :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick('All')">
+                        <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
                     </button>
                 </div>
             </div>
@@ -58,31 +25,39 @@
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                 <strong>{{ validation_err_msg }}</strong>
             </span>
-            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :isSlotMode="true" :hasCheckbox="true"
-                :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
-                :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
-                <template v-slot:原儲位="{ row, key }">
+            <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false" :messages="table.messages"
+                :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+                :page-options="table.pageOptions" :sortable="table.sortable" :is-fixed-first-column="false">
+                <template v-slot:FlowNumber="{ row, key }">
                     <div class="col col-auto align-items-center m-0 p-0">
-                        <button @click="openLocDetails(row.料號)" type="button" data-bs-toggle="modal"
-                            data-bs-target="#detailTable" class="btn btn-outline-info my-0 px-1 py-0"
-                            style="border-radius: 20px;" :id="'oldloc' + row.id" :name="'oldloc' + key">Info</button>
+                        <div class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
+                            {{ row.FlowNumber }}
+                        </div>
+                    </div>
+                </template>
+                <template v-slot:SXB單號="{ row, key }">
+                    <div class="col col-auto align-items-center m-0 p-0">
+                        <button @click="openSSZDetails(row.SXB單號)" type="button" data-bs-toggle="modal"
+                            data-bs-target="#detailTable" class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0"
+                            style="border-radius: 20px;" :id="'sxb' + row.id" :name="'sxb' + key">More</button>
+                    </div>
+                </template>
+                <template v-slot:status="{ row, key }">
+                    <div class="col col-auto align-items-center m-0 p-0">
+                        <a v-if="row.status === '未簽核'" @click="openSSZDetails(row.SXB單號)" data-bs-toggle="modal"
+                            data-bs-target="#detailTable" class="m-0 p-0" style="color: #dca120;">
+                            {{ $t("monthlyPRpageLang.review_pending") }}
+                        </a>
+                        <a v-else class="m-0 p-0" @click="openSSZDetails(row.SXB單號)" data-bs-toggle="modal"
+                            data-bs-target="#detailTable" style="color: #2bb91b;">
+                            {{ $t("monthlyPRpageLang.review_complete") }}
+                        </a>
                     </div>
                 </template>
             </table-lite>
-            <div class="w-100" style="height: 1ch;"></div> <!-- breaks cols to a new line-->
-            <div class="row justify-content-center">
-                <div class="col col-auto">
-                    <button v-if="uploadToDBReady" type="submit" name="upload"
-                        class="col col-auto fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
-                        <i class="bi bi-inboxes-fill"></i>
-                        {{ $t('templateWords.inbound') }}
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
-
+    <!-- Modal -->
     <div class="modal fade" id="detailTable" tabindex="-1" aria-labelledby="detailTable" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -96,28 +71,34 @@
                     <div class="row justify-content-between">
                         <div class="row col col-auto">
                             <div class="col col-auto">
-                                <label for="pnInput2" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }}
+                                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }}
                                     :</label>
                             </div>
                             <div class="col col-auto p-0 m-0">
-                                <input id="pnInput2" class="text-center form-control form-control-lg"
+                                <input id="pnInput" class="text-center form-control form-control-lg"
                                     v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')"
                                     v-model="searchTerm2" />
                             </div>
                         </div>
                         <div class="col col-auto">
                             <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
-                                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick()">
+                                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick(modalTitle)">
                                 <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
                             </button>
                         </div>
                     </div>
-                    <div class="w-100" style="height: 1ch"></div>
-                    <!-- </div>breaks cols to a new line-->
+                    <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
                     <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false"
                         :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
                         :total="table2.totalRecordCount" :page-options="table2.pageOptions" :sortable="table2.sortable"
-                        :is-fixed-first-column="false">
+                        :is-fixed-first-column="false" @row-clicked="rowClicked">
+                        <template v-slot:relQty="{ row, key }">
+                            <div class="col col-auto align-items-center m-0 p-0">
+                                <div class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
+                                    {{ parseInt(row.relQty).toLocaleString("en-US") }} <small>{{ row.單位 }}</small>
+                                </div>
+                            </div>
+                        </template>
                     </table-lite>
                 </div>
                 <div v-if="showFooter" class="modal-footer justify-content-between">
@@ -144,164 +125,32 @@ import {
 } from "@vue/runtime-core";
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
-import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
-import useTransitSearch from "../../composables/TransitSearch.ts";
-import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
+import useSSZSearch from "../../composables/SSZSearch.ts";
 export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        let exampleUrl = ref(window.location.origin + '/download/StockExample.xlsx');
-        const app = getCurrentInstance(); // get the current instance
-        let thisHtmlLang = document
-            .getElementsByTagName("HTML")[0]
-            .getAttribute("lang");
+        const { mats_SSZ, mats_SSZInfo, getSSZ, getSSZ_info } = useSSZSearch(); // axios get the mats_SSZ data
 
-        // get the current locale from html tag
-        app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
-
-        const { mats, uploadToDB, getExistingStock } = useInboundStockSearch();
-        const { mats_inTransit, getTransit } = useTransitSearch(); // axios get the mats data
-        const { queryResult, locations, validateISN, getLocs } = useCommonlyUsedFunctions();
-
-        onBeforeMount(async () => {
-            await getTransit();
-            await getLocs();
-        });
-
-        let isInvalid = ref(false); // validation
-        let isInvalid_DB = ref(false); // add to DB validation
-        let validation_err_msg = ref("");
-        let uploadToDBReady = ref(false); // validation
-        let checkedRows = [];
-        const file = ref();
-        let input_data;
-        let sumInboundQuantity = {};
-
-        const findDuplicates = (arr) => {
-            let sorted_arr = arr.slice().sort(); // You can define the comparing function here. 
-            // JS by default uses a crappy string compare.
-            // (we use slice to clone the array so the original array won't be modified)
-            let results = [];
-            for (let i = 0; i < sorted_arr.length - 1; i++) {
-                if (sorted_arr[i + 1] == sorted_arr[i]) {
-                    results.push(sorted_arr[i]);
-                } // if
-            } // for
-            return results;
-        } // findDuplicates
-
-        // Helper function to deal with Objects
-        const deepCopyObject = (obj) => {
-            let tempObj = {};
-            for (let [key, value] of Object.entries(obj)) {
-                if (Array.isArray(value)) {
-                    tempObj[key] = deepCopy(value);
-                } // if
-                else {
-                    if (typeof value === 'object') {
-                        tempObj[key] = deepCopyObject(value);
-                    } // if
-                    else {
-                        tempObj[key] = value
-                    } // else
-                } // else
-            } // for
-            return tempObj;
-        } // deepCopyObject
-
-        const deepCopy = (arr) => {
-            let copy = [];
-            arr.forEach(elem => {
-                if (Array.isArray(elem)) {
-                    copy.push(deepCopy(elem))
-                } else {
-                    if (typeof elem === 'object') {
-                        copy.push(deepCopyObject(elem))
-                    } else {
-                        copy.push(elem)
-                    }
-                }
-            })
-            return copy;
-        } // deepCopy
-
-        const onUploadClick = async () => {
-            isInvalid_DB.value = false;
-            queryResult.value = "";
-            await triggerModal();
-            if (file.value) {
-                // console.log(file.value); // test
-                if (file.value.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.value.type == "application/vnd.ms-excel" || file.value.type == "application/vnd.ms-excel" || file.value.type == ".csv") {
-                    const reader = new FileReader();
-                    reader.onload = async (e) => {
-                        /* Parse data */
-                        const bstr = e.target.result;
-                        const wb = XLSX.read(bstr, { type: 'binary' });
-                        /* Get first worksheet */
-                        const wsname = wb.SheetNames[0];
-                        const ws = wb.Sheets[wsname];
-                        /* Convert array of arrays */
-                        input_data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-                        // console.log(input_data); // data[row#][col#]  test
-                        if (input_data === undefined || input_data[0] === undefined || input_data[0][0] === undefined || input_data[0][1] === undefined || input_data[0][2] === undefined || input_data[0][3] === undefined) {
-                            isInvalid.value = true;
-                            validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
-                        } // if
-                        else {
-                            let tempArr = Array();
-                            for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].toString().trim() != "" && input_data[i][0].toString().trim() != null) {
-                                    tempArr.push(input_data[i][0].toString().trim());
-                                } // if
-                                else {
-                                    input_data.splice(i, 1); // remove the empty row
-                                    i = i - 1;
-                                } // else
-                            } // for
-
-                            await triggerModal();
-                            await validateISN(tempArr);
-                        } // else
-                    };
-
-                    reader.readAsBinaryString(file.value);
-                } // if
-                else {
-                    isInvalid.value = true;
-                    validation_err_msg.value = app.appContext.config.globalProperties.$t("validation.mimetypes");
-                } // else
-            } // if
-            else {
-                isInvalid.value = true;
-                validation_err_msg.value = app.appContext.config.globalProperties.$t("validation.required");
-            } // else
-
-            file.value = null;
-            document.getElementById('excel_input').value = "";
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
-        } // onUploadClick
-
-        const onInputChange = (event) => {
-            isInvalid.value = false;
-            data.splice(0); // cleanup data from previous upload
-            queryResult.value = "";
-            file.value = event.target.files ? event.target.files[0] : null;
-            if ($("#importedtable").hasClass("show")) {
-                $("#togglebtn").click();
-            } // if
-        } // onInputChange
+        onBeforeMount(getSSZ);
 
         const searchTerm = ref(""); // Search text
         const searchTerm2 = ref(""); // Search text for modal table
         const modalTitle = ref("");
+        let isInvalid_DB = ref(false); // add to DB validation
         let showFooter = ref(false);
+        let AllRecords = [];
+
+        const app = getCurrentInstance(); // get the current instance
+        let thisHtmlLang = document
+            .getElementsByTagName("HTML")[0]
+            .getAttribute("lang");
+        // get the current locale from html tag
+        app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
         // pour the data in
         const data = reactive([]);
         const data2 = reactive([]);
-        // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
         const triggerModal = async () => {
             $("body").loadingModal({
@@ -314,22 +163,7 @@ export default defineComponent({
             });
         } // triggerModal
 
-        const openLocDetails = (PN) => {
-            // console.log("clicked!"); // test
-            modalTitle.value = PN;
-            data2.splice(0);
-            // console.log(JSON.parse(mats.value).data); // test
-            Object.assign(data2, JSON.parse(mats.value).data.flatMap((obj) => {
-                if (obj.料號 === PN) {
-                    return [obj];
-                } // if
-                else {
-                    return [];
-                } // else
-            }));
-        } // openLocDetails
-
-        const OutputExcelClick = async () => {
+        const OutputExcelClick = async (output_range) => {
             await triggerModal();
 
             // get today's date for filename
@@ -339,488 +173,104 @@ export default defineComponent({
             let yyyy = today.getFullYear();
             today = yyyy + "_" + mm + '_' + dd;
 
-            let rows = data2.map((obj) => {
-                return {
-                    "料號": obj.料號,
-                    "品名": obj.品名,
-                    "規格": obj.規格,
-                    "現有庫存": obj.現有庫存,
-                    "儲位": obj.儲位,
-                };
-            });
+            if (output_range === 'All') {
+                let rows = Array();
+                for (let i = 0; i < AllRecords.length; i++) {
+                    let tempObj = new Object;
+                    tempObj.單號 = AllRecords[i].SXB單號;
+                    tempObj.料號 = AllRecords[i].料號;
+                    tempObj.品名 = AllRecords[i].品名;
+                    tempObj.MOQ = AllRecords[i].MOQ;
+                    tempObj.本次請購數量 = AllRecords[i].本次請購數量;
+                    tempObj.總價 = parseFloat(AllRecords[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + AllRecords[i].幣別;
+                    tempObj.請購時間 = AllRecords[i].請購時間;
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+                    rows.push(tempObj);
+                } // for
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowstock"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
-                ]],
-                { origin: "A1" });
+                const worksheet = XLSX.utils.json_to_sheet(rows);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'ALL');
+                XLSX.writeFile(workbook,
+                    app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.SXB_search"
+                    ) + "(ALL)_" + today + ".xlsx", { compression: true });
+            } else {
+                let rows = Array();
+                for (let i = 0; i < data2.length; i++) {
+                    let tempObj = new Object;
+                    tempObj.單號 = data2[i].SXB單號;
+                    tempObj.料號 = data2[i].料號;
+                    tempObj.品名 = data2[i].品名;
+                    tempObj.MOQ = data2[i].MOQ;
+                    tempObj.本次請購數量 = data2[i].本次請購數量;
+                    tempObj.總價 = parseFloat(data2[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + data2[i].幣別;
+                    tempObj.請購時間 = data2[i].請購時間;
 
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.PR"));
-            XLSX.writeFile(workbook,
-                modalTitle.value + "_" + app.appContext.config.globalProperties.$t(
-                    "inboundpageLang.nowstock"
-                ) + "_" + today + ".xlsx", { compression: true });
+                    rows.push(tempObj);
+                } // for
+
+                const worksheet = XLSX.utils.json_to_sheet(rows);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, data2[0].SXB單號);
+                XLSX.writeFile(workbook,
+                    app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.SXB_search"
+                    ) + "(" + data2[0].SXB單號 + ")_" + today + ".xlsx", { compression: true });
+            } // if else
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         } // OutputExcelClick
-        
-        const deleteRow = () => {
-            if (checkedRows.length == 0) {
-                notyf.open({
-                    type: "warning",
-                    message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
 
-                return;
+        const openSSZDetails = (SXB) => {
+            // console.log("clicked!"); // test
+            modalTitle.value = SXB;
+            data2.splice(0);
+            for (let i = 0; i < AllRecords.length; i++) {
+                if (AllRecords[i].SXB單號 === SXB) {
+                    data2.push(AllRecords[i]);
+                } // if
+            } // for
+
+            if (data2[0].狀態 === '未簽核') {
+                showFooter.value = true;
             } // if
+            else {
+                showFooter.value = false;
+            } // else
+        } // openSSZDetails
 
-            for (let i = 0; i < checkedRows.length; i++) {
+        watch(mats_SSZ, async () => {
+            await triggerModal();
+            // console.log(JSON.parse(mats_SSZ.value)); // test
+            let allRowsObj = JSON.parse(mats_SSZ.value);
+            data.splice(0);
+            AllRecords = [];
+            for (let i = 0; i < allRowsObj.datas.length; i++) {
+                allRowsObj.datas[i].本次請購數量 = parseInt(
+                    allRowsObj.datas[i].本次請購數量
+                );
+
+                allRowsObj.datas[i].狀態 = allRowsObj.datas[i].SRM單號;
+                allRowsObj.datas[i].id = i + 1;
+                if (allRowsObj.datas[i].開單人員 === null || allRowsObj.datas[i].開單人員 === undefined) allRowsObj.datas[i].開單人員 = "N/A";
+                AllRecords.push(allRowsObj.datas[i]);
                 let indexOfObject = data.findIndex(object => {
-                    return parseInt(object.id) === parseInt(checkedRows[i].id);
+                    return (object.SXB單號 === allRowsObj.datas[i].SXB單號);
                 });
 
-                if (indexOfObject != -1) {
-                    data.splice(indexOfObject, 1);
+                if (indexOfObject === -1) {
+                    data.push(allRowsObj.datas[i]);
                 } // if
             } // for
 
-            document.querySelectorAll('.vtl-tbody-checkbox').forEach(el => el.checked = false);
-            if (document.querySelector(".vtl-thead-checkbox").checked) {
-                document.querySelector(".vtl-thead-checkbox").click();
-            } // if
-            checkedRows = [];
-
-        } // deleteRow
-
-        const onSendToDBClick = async () => {
-            await triggerModal();
-            isInvalid_DB.value = false;
-            let rowsCount = [];
-            let hasError = false;
-            let inbound_data = data.map((obj) => {
-                return [obj.料號, obj.入庫量, obj.新儲位, obj.入庫原因];
-            });
-            // console.log(data.length); //test
-            if (data.length <= 0) {
-                notyf.open({
-                    type: "warning",
-                    message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // if
-
-            // ----------------------------------------------
-            // validate if all the isn exist
-            for (let j = 0; j < data.length; j++) {
-                if (data[j].月請購 === "" || data[j].月請購 === null || data[j].月請購.toLowerCase() === "null") {
-                    hasError = true;
-                    rowsCount.push(j);
-                } // if
-            } // for
-
-            if (hasError) {
-                isInvalid_DB.value = true;
-                validation_err_msg.value =
-                    "Excel " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.row") +
-                    " " + rowsCount.map(row => row + 1).join(", ") + " " +
-                    "(" + rowsCount.map(row => data[row].料號).join(", ") + ") " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.noisn");
-
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // if
-
-            // ----------------------------------------------
-            // validate if all the loc exist
-            rowsCount = [];
-            for (let j = 0; j < data.length; j++) {
-                if (!locsArray.includes(data[j].新儲位)) {
-                    hasError = true;
-                    rowsCount.push(j);
-                } // if
-            } // for
-
-            if (hasError) {
-                isInvalid_DB.value = true;
-                validation_err_msg.value =
-                    "Excel " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.row") +
-                    " " + rowsCount.map(row => row + 1).join(", ") + " " +
-                    "(" + rowsCount.map(row => data[row].新儲位).join(", ") + ") " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.noloc");
-
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // if
-
-            // ----------------------------------------------
-            // validate if there's duplicate values in excel
-            let duplicatedArray = Array();
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].料號 != null && data[i].料號.trim() != "") {
-                    duplicatedArray.push(data[i].料號.toString().trim() + "_" + data[i].新儲位.toString().trim());
-                } // if
-            } // for
-
-            let findDuplicatesResult = findDuplicates(duplicatedArray);
-            // console.log(findDuplicatesResult); // test
-            if (findDuplicatesResult.length > 0) {
-                isInvalid_DB.value = true;
-                validation_err_msg.value =
-                    app.appContext.config.globalProperties.$t("inboundpageLang.repeated_isn_loc_pair") +
-                    " : " + findDuplicatesResult.map(entry => entry.split("_")[0] +
-                        " (" + entry.split("_")[1] + ")").join(", ");
-
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // if
-            // ----------------------------------------------
-            // check if inbound quantity greater than the intransit quantity
-            rowsCount = [];
-            for (let i = 0; i < data.length; i++) {
-                const 料號 = data[i].料號;
-                const 在途量 = parseInt(data[i].在途量);
-                if (sumInboundQuantity[料號] > 在途量) {
-                    hasError = true;
-                    rowsCount.push(i);
-                } // if
-            } // for
-
-            if (hasError) {
-                isInvalid_DB.value = true;
-                validation_err_msg.value =
-                    "Excel " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.row") +
-                    " " + rowsCount.map(row => row + 1).join(", ") + " " +
-                    "(" + rowsCount.map(row => data[row].料號).join(", ") + ") " +
-                    app.appContext.config.globalProperties.$t("inboundpageLang.inboundnum") + " > " + app.appContext.config.globalProperties.$t("inboundpageLang.transit");
-
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // if
-
-            // ----------------------------------------------
-            // get existing stock for sum up
-            let tempArr_isn = data.map((obj) => {
-                return obj.料號;
-            });
-
-            let tempArr_loc = data.map((obj) => {
-                return obj.新儲位;
-            });
-
-            // console.log(tempArr_loc); // test
-
-            let start = Date.now();
-            let newStock = data.map((obj) => {
-                return [obj.料號, obj.入庫量, obj.新儲位, obj.入庫原因];
-            });
-            // console.log(newStock); // test
-            let newInTransit;
-            let result = await getExistingStock(tempArr_isn, tempArr_loc); // get the existing stock
-            if (result === "success") {
-                for (let i = 0; i < newStock.length; i++) {
-                    let foundObj = JSON.parse(mats.value).data.find(
-                        (o) => {
-                            return (o.料號 === newStock[i][0].trim() && o.儲位 === newStock[i][2].trim());
-                        });
-
-                    if (foundObj !== undefined) {
-                        newStock[i][1] = parseInt(newStock[i][1]) + parseInt(foundObj.現有庫存);
-                    } // if
-                } // for
-
-                // convert InTransit to a two-dimensional array and deduct the sumInboundQuantity from it
-                newInTransit = JSON.parse(mats_inTransit.value).data.flatMap((obj) => {
-                    let value = parseInt(obj.請購數量) - sumInboundQuantity[obj.料號];
-                    value = value < 0 ? 0 : value;
-                    if (tempArr_isn.includes(obj.料號)) {
-                        return [[obj.料號, value]];
-                    } else {
-                        return [];
-                    } // if else
-                });
-            } // if
-            else {
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                console.log("Failed to get existing stock");
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                return;
-            } // else
-            let timeTaken = Date.now() - start;
-            console.log("Total time taken : " + timeTaken + " milliseconds");
-            // console.log(newStock); // test
-            // console.log(newInTransit); // test
-
-            // actually updating database now
-            start = Date.now();
-            result = await uploadToDB(newStock, inbound_data, newInTransit);
-            timeTaken = Date.now() - start;
-            console.log("Total time taken : " + timeTaken + " milliseconds");
-            $("body").loadingModal("hide");
-            $("body").loadingModal("destroy");
-
-            if (result === "success") {
-                uploadToDBReady.value = false;
-                notyf.open({
-                    type: "success",
-                    message: app.appContext.config.globalProperties.$t("inboundpageLang.change") + " " + app.appContext.config.globalProperties.$t("inboundpageLang.success"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                data.splice(0); // clean up the data
-                queryResult.value = "";
-                await getTransit();
-                await getLocs();
-            } // if
-            else {
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-            } // else
-        } // onSendToDBClick
-
-        let locsArray = Array();
-        watch(queryResult, async () => {
-            await triggerModal();
-            if (queryResult.value == "") {
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // if
-
-            let allRowsObj = JSON.parse(queryResult.value);
-            // console.log(allRowsObj.data.length);
-            let allRowsObj2 = JSON.parse(mats_inTransit.value);
-            // console.log(allRowsObj2.data); // test
-            let sumOfExistingStock;
-            let singleEntry = {};
-
-            // get existing stock for sum up
-            let tempArr_isn = Array();
-            for (let i = 1; i < input_data.length; i++) {
-                if (input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                    tempArr_isn.push(input_data[i][0].trim());
-                } // if
-            } // for
-            let result = await getExistingStock(tempArr_isn, []); // get the existing stock
-            if (result === "success") {
-                let tempArr = JSON.parse(mats.value).data;
-                // sum the entries with the same 料號                
-                sumOfExistingStock = Object.values(tempArr.reduce((acc, curr) => {
-                    let item = acc[curr.料號];
-                    if (item) {
-                        item.現有庫存 += parseInt(curr.現有庫存);
-                    } else {
-                        curr.現有庫存 = parseInt(curr.現有庫存);
-                        acc[curr.料號] = curr;
-                    } // if else
-
-                    return acc;
-                }, {}));
-            } // if
-            else {
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                console.log("Failed to get existing stock");
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                return;
-            } // else
-
-            for (let i = 1; i < input_data.length; i++) {
-                singleEntry.料號 = input_data[i][0].toString().trim();
-                tempArr_isn.push(singleEntry.料號);
-                singleEntry.入庫量 = Math.abs(parseInt(
-                    input_data[i][1]
-                ));
-
-                // Check if singleEntry.料號 is found in mats_inTransit
-                let foundInAllRowsObj2 = allRowsObj2.data.find(obj => obj.料號 === singleEntry.料號);
-                if (foundInAllRowsObj2) {
-                    singleEntry.在途量 = parseFloat(foundInAllRowsObj2.請購數量);
-                } else {
-                    singleEntry.在途量 = 0;
-                } // if else
-
-                // Check existing stock
-                foundInAllRowsObj2 = sumOfExistingStock.find(obj => obj.料號 === singleEntry.料號);
-                if (foundInAllRowsObj2) {
-                    singleEntry.現有庫存 = parseFloat(foundInAllRowsObj2.現有庫存);
-                } else {
-                    singleEntry.原儲位 = "N/A";
-                    singleEntry.現有庫存 = 0;
-                } // if else
-
-                singleEntry.新儲位 = input_data[i][2].toString().trim();
-                singleEntry.入庫原因 = input_data[i][3].toString().trim();
-                singleEntry.excel_row_num = i + 1;
-
-                if (data.length == 0) {
-                    singleEntry.id = 0;
-                } else {
-                    singleEntry.id = parseInt(data[data.length - 1].id) + 1;
-                } // if else
-
-                let indexOfObject = allRowsObj.data.findIndex(object => {
-                    return (object.料號 === singleEntry.料號);
-                });
-
-                if (indexOfObject != -1) { // if an existing record is found
-                    singleEntry = Object.assign(singleEntry, allRowsObj.data[indexOfObject]);
-                } // if
-                else {
-                    singleEntry.月請購 = "";
-                } // else
-
-                data.push(singleEntry);
-                singleEntry = {};
-            } // for
-
-            sumInboundQuantity = {};
-            sumInboundQuantity = data.reduce((acc, item) => {
-                const 料號 = item.料號;
-                const 入庫量 = parseInt(item.入庫量);
-                if (acc[料號]) {
-                    acc[料號] += 入庫量;
-                } else {
-                    acc[料號] = 入庫量;
-                } // if else
-                return acc;
-            }, {});
-
-            JSON.parse(locations.value).data.forEach(element => {
-                locsArray.push(element.儲存位置);
-            });
-
-            if (!$("#importedtable").hasClass("show")) {
-                $("#togglebtn").click();
-            } // if
-
-            uploadToDBReady.value = true;
+            // console.log(allRowsObj.datas); // test
+            // console.log(AllRecords); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
             table.isLoading = false;
         }); // watch for data change
-
-        watch(data, () => {
-            document.getElementsByClassName("vtl-table")[0].scrollIntoView({ behavior: "smooth" });
-        });
 
         // Table config
         const table = reactive({
@@ -828,287 +278,51 @@ export default defineComponent({
             columns: [
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.isn"
+                        "inboundpageLang.FlowNumber"
                     ),
-                    field: "料號",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
-                                '<div class="text-nowrap text-danger CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號 +
-                                "</div>"
-                            );
-                        } else { // isn exist in database
-                            return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號 +
-                                "</div>"
-                            );
-                        } // if else
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.pName"
-                    ),
-                    field: "品名",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="name' +
-                                i +
-                                '" name="name' +
-                                i +
-                                '" value="' +
-                                row.品名 +
-                                '">' +
-                                '<div class="CustomScrollbar text-nowrap text-danger"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                app.appContext.config.globalProperties.$t("inboundpageLang.noisn") +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="name' +
-                                i +
-                                '" name="name' +
-                                i +
-                                '" value="' +
-                                row.品名 +
-                                '">' +
-                                '<div class="CustomScrollbar text-nowrap"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.品名 +
-                                "</div>"
-                            );
-                        } // else
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.format"
-                    ),
-                    field: "規格",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="format' +
-                                i +
-                                '" name="format' +
-                                i +
-                                '" value="' +
-                                row.規格 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar text-danger"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                app.appContext.config.globalProperties.$t("inboundpageLang.noisn") +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="format' +
-                                i +
-                                '" name="format' +
-                                i +
-                                '" value="' +
-                                row.規格 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.規格 +
-                                "</div>"
-                            );
-                        } // else
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.stock"
-                    ),
-                    field: "庫存",
+                    field: "FlowNumber",
                     width: "10ch",
                     sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="stock' +
-                            i +
-                            '" name="stock' +
-                            i +
-                            '" value="' +
-                            row.現有庫存 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
-                            "</div>"
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.transit"
+                        "monthlyPRpageLang.status"
                     ),
-                    field: "在途量",
-                    width: "10ch",
+                    field: "狀態",
+                    width: "6ch",
                     sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="intransit' +
-                            i +
-                            '" name="intransit' +
-                            i +
-                            '" value="' +
-                            row.在途量 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.在途量 + '&nbsp;<small>' + row.單位 + '</small>' +
-                            "</div>"
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.inboundnum"
+                        "monthlyPRpageLang.info"
                     ),
-                    field: "入庫量",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (sumInboundQuantity[row.料號] > row.在途量) {
-                            return (
-                                '<input type="hidden" id="inbound' +
-                                i +
-                                '" name="inbound' +
-                                i +
-                                '" value="' +
-                                row.入庫量 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar text-danger"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.入庫量 + '&nbsp;<small>' + row.單位 + '</small>' +
-                                "</div>"
-                            );
-                        } else {
-                            return (
-                                '<input type="hidden" id="inbound' +
-                                i +
-                                '" name="inbound' +
-                                i +
-                                '" value="' +
-                                row.入庫量 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.入庫量 + '&nbsp;<small>' + row.單位 + '</small>' +
-                                "</div>"
-                            );
-                        } // if else
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.inreason"
-                    ),
-                    field: "入庫原因",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="oldloc' +
-                            i +
-                            '" name="oldloc' +
-                            i +
-                            '" value="' +
-                            row.入庫原因 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.入庫原因 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.oldloc"
-                    ),
-                    field: "原儲位",
-                    width: "10ch",
+                    field: "SXB單號",
+                    width: "4ch",
                     sortable: false,
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.newloc"
+                        "monthlyPRpageLang.pr_sender"
                     ),
-                    field: "新儲位",
-                    width: "12ch",
+                    field: "開單人員",
+                    width: "8ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (locsArray.includes(row.新儲位)) {
-                            return (
-                                '<input type="hidden" id="newloc' +
-                                i +
-                                '" name="newloc' +
-                                i +
-                                '" value="' +
-                                row.新儲位 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.新儲位 +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<input type="hidden" id="newloc' +
-                                i +
-                                '" name="newloc' +
-                                i +
-                                '" value="' +
-                                row.新儲位 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar text-danger"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.新儲位 + " (" + app.appContext.config.globalProperties.$t("inboundpageLang.noloc") +
-                                ")</div>"
-                            );
-                        } // else
+                        if (row.開單人員 === null || row.開單人員 === undefined) row.開單人員 = "N/A";
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.開單人員 +
+                            "</div>"
+                        );
                     },
                 },
             ],
             rows: computed(() => {
                 return data.filter((x) =>
-                    x.料號
+                    x.開單人員
                         .toLowerCase()
-                        .includes(searchTerm.value.toLowerCase()) ||
-                    x.品名
-                        .includes(searchTerm.value)
+                        .includes(searchTerm.value.toLowerCase())
                 );
             }),
             totalRecordCount: computed(() => {
@@ -1170,32 +384,17 @@ export default defineComponent({
             columns: [
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.isn"
+                        "basicInfoLang.isn"
                     ),
-                    field: "料號",
+                    field: "MatShort",
                     width: "14ch",
                     sortable: true,
+                    isKey: true,
                     display: function (row, i) {
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.料號 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.pName"
-                    ),
-                    field: "品名",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<div class="CustomScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.品名 +
+                            row.MatShort +
                             "</div>"
                         );
                     },
@@ -1204,46 +403,38 @@ export default defineComponent({
                     label: app.appContext.config.globalProperties.$t(
                         "inboundpageLang.format"
                     ),
-                    field: "規格",
+                    field: "Spec",
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.規格 +
+                            row.Spec +
                             "</div>"
                         );
                     },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.stock"
+                        "inboundpageLang.amount"
                     ),
-                    field: "庫存",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.現有庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.loc"
-                    ),
-                    field: "儲位",
+                    field: "relQty",
                     width: "12ch",
                     sortable: true,
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.mark"
+                    ),
+                    field: "SSZMemo",
+                    width: "11ch",
+                    sortable: true,
                     display: function (row, i) {
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.儲位 +
+                            row.SSZMemo +
                             "</div>"
                         );
                     },
@@ -1312,29 +503,23 @@ export default defineComponent({
             ],
         });
 
-        const updateCheckedRows = (rowsKey) => {
-            // console.log(rowsKey); // test
-            checkedRows = rowsKey;
+        /**
+        * Row clicked event
+        */
+        const rowClicked = (row) => {
+            // console.log("Row clicked!", row);
         };
 
         return {
-            exampleUrl,
-            isInvalid,
-            isInvalid_DB,
-            validation_err_msg,
-            uploadToDBReady,
             searchTerm,
             searchTerm2,
             table,
             table2,
             modalTitle,
-            openLocDetails,
             showFooter,
-            onUploadClick,
-            onInputChange,
-            onSendToDBClick,
-            updateCheckedRows,
-            deleteRow,
+            isInvalid_DB,
+            rowClicked,
+            openSSZDetails,
             OutputExcelClick,
         };
     }, // setup

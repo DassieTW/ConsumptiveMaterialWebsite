@@ -108,4 +108,5 @@ return [
     'within_a_month' => '一个月内',
     'within_three_months' => '三个月内',
     'within_a_year' => '一年内',
+    'FlowNumber' => 'SSZ领料单号',
 ];

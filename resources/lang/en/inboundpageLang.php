@@ -104,8 +104,9 @@ return [
     'rfidinpeople' => 'Please click here to tap ID card',
     'no_basic' => 'PN data not exist',
     'no_basic_are_highlighted' => 'PN in red indicates that the material info. is not maintained',
-    'stock_within_brackets' => 'Amounts between (brackets) are Stock before transfer',
+    'stock_within_brackets' => 'Amounts between (brackets) are stocks BEFORE transfer',
     'within_a_month' => 'Within a month',
     'within_three_months' => 'Within 3 months',
     'within_a_year' => 'Within a year',
+    'FlowNumber' => 'SSZ FlowNumber',
 ];
