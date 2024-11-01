@@ -155,7 +155,7 @@ return [
     'confirmpeople' => 'Confirm People',
     'confirmemail' => 'Confirm Email',
     'confirm_pr' => 'Confirm & Send PR',
-    'pr_sender' => 'PR Sender',
+    'pr_sender' => 'Applicant',
     'reason' => 'Enter a Reason',
     'submitspan' => 'Only the columns filled with SRM and Buying Qty > 0 will be submitted or exported',
     'duplicate_pr_warning1' => 'There are same PN within the last 20 days, same stock amount will be deducted on both PR.',

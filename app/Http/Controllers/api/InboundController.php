@@ -120,17 +120,50 @@ class InboundController extends Controller
 
     public function showSSZFlowNumber(Request $request)
     {
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
         \DB::purge(env("DB_CONNECTION"));
         $dbName = \DB::connection()->getDatabaseName(); // test
-        
+        $allResult = \DB::table('SSZNumber')
+            ->where('received_time', '>=', Carbon::now()->subYear(1))
+            ->orderBy('received_time', 'desc')
+            ->get();
     } // showSSZFlowNumber
 
     public function showSSZInfo(Request $request)
     {
-        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        $requestDB = $request->input("DB");
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
         \DB::purge(env("DB_CONNECTION"));
-        $dbName = \DB::connection()->getDatabaseName(); // test
+
+        $CompanyAlias = "";
+        if (str_contains($requestDB, "蘇州") || str_contains($requestDB, "BB1") || str_contains($requestDB, "M3") || str_contains($requestDB, "SMT Consumables management")) {
+            $CompanyAlias = "名碩";
+        } // if
+        else if (str_contains($requestDB, "巴淡")) {
+            $CompanyAlias = "PTB";
+        } // else if
+        else if (str_contains($requestDB, "PHP")) {
+            $CompanyAlias = "PHP";
+        } // else if
+        else if (str_contains($requestDB, "PVN")) {
+            $CompanyAlias = "PVN";
+        } // else if
+        else if (str_contains($requestDB, "HQ") || str_contains($requestDB, "新店")) {
+            $CompanyAlias = "和碩";
+        } // else if
+
+        $FlowNumberReceiveTime = \DB::table('SSZNumber')
+            ->where('received_time', '>=', Carbon::now()->subYear(1));
+
+        $allResult = \DB::table('SSZInfo')
+            ->joinSub($FlowNumberReceiveTime, 'sszNumber', function ($join) {
+                $join->on('SSZInfo.FlowNumber', '=', 'sszNumber.id');
+            })
+            ->where('SSZInfo.Company', 'like', $CompanyAlias . '%')
+            ->orderBy('sszNumber.received_time', 'desc')
+            ->get();
+
+        return \Response::json(['data' => $allResult, "dbName" => $requestDB], 200/* Status code here default is 200 ok*/);
     } // showSSZInfo
 
     /**

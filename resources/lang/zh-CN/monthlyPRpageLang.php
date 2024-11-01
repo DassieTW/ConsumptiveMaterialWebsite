@@ -152,7 +152,7 @@ return [
     'confirmpeople' => '确认人员',
     'confirmemail' => '确认信箱',
     'confirm_pr' => '确认 & 送出请购单',
-    'pr_sender' => '发送人',
+    'pr_sender' => '开单人',
     'reason' => '请填写原因',
     'submitspan' => '仅会提交或汇出有填写SRM单号以及本次请购数量>0那一行',
     'duplicate_pr_warning1' => '近20天内有相同料号的请购单，连续重复请购 系统在计算时 会扣除同样的库存',

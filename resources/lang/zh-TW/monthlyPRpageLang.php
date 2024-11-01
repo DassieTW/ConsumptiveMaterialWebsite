@@ -152,7 +152,7 @@ return [
     'confirmpeople' => '確認人員',
     'confirmemail' => '確認信箱',
     'confirm_pr' => '確認 & 送出請購單',
-    'pr_sender' => '發送者',
+    'pr_sender' => '開單人',
     'reason' => '請填寫原因',
     'submitspan' => '僅會提交或匯出有填寫SRM單號以及本次請購數量>0那一列',
     'duplicate_pr_warning1' => '近20天內有相同料號的請購單，連續重複請購 系統在計算時 會扣除同樣的庫存',

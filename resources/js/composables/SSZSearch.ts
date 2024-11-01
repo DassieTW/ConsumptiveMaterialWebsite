@@ -15,10 +15,11 @@ export default function useSSZSearch() {
 
     const getSSZ = async () => {
         errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
 
         try {
             let response = await axios.post('/api/inbound/ssz', {
-                DB: "Consumables management",
+                DB: getDB.data,
             });
 
             mats_SSZ.value = JSON.stringify(response.data);
@@ -34,10 +35,11 @@ export default function useSSZSearch() {
 
     const getSSZ_info = async () => {
         errors.value = "";
-
+        let getDB = await axios.post('/getCurrentDB');
+        // console.log(getDB.data); // test
         try {
             let response = await axios.post('/api/inbound/ssz_info', {
-                DB: "Consumables management",
+                DB: getDB.data,
             });
 
             mats_SSZInfo.value = JSON.stringify(response.data);

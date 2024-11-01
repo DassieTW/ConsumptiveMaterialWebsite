@@ -11,7 +11,7 @@
                     </div>
                     <div class="col col-auto p-0 m-0">
                         <input id="sxbInput" class="text-center form-control form-control-lg"
-                            v-bind:placeholder="$t('monthlyPRpageLang.entersxb')" v-model="searchTerm" />
+                            v-bind:placeholder="$t('inboundpageLang.enterSSZ')" v-model="searchTerm" />
                     </div>
                 </div>
                 <div class="col col-auto">
@@ -37,18 +37,18 @@
                 </template>
                 <template v-slot:SXB單號="{ row, key }">
                     <div class="col col-auto align-items-center m-0 p-0">
-                        <button @click="openSSZDetails(row.SXB單號)" type="button" data-bs-toggle="modal"
+                        <button @click="openSSZDetails(row.FlowNumber)" type="button" data-bs-toggle="modal"
                             data-bs-target="#detailTable" class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0"
                             style="border-radius: 20px;" :id="'sxb' + row.id" :name="'sxb' + key">More</button>
                     </div>
                 </template>
                 <template v-slot:status="{ row, key }">
                     <div class="col col-auto align-items-center m-0 p-0">
-                        <a v-if="row.status === '未簽核'" @click="openSSZDetails(row.SXB單號)" data-bs-toggle="modal"
-                            data-bs-target="#detailTable" class="m-0 p-0" style="color: #dca120;">
-                            {{ $t("monthlyPRpageLang.review_pending") }}
+                        <a v-if="row.status.toLowerCase().includes('reject')" @click="openSSZDetails(row.FlowNumber)"
+                            data-bs-toggle="modal" data-bs-target="#detailTable" class="m-0 p-0" style="color: red;">
+                            {{ $t("monthlyPRpageLang.review_cancel") }}
                         </a>
-                        <a v-else class="m-0 p-0" @click="openSSZDetails(row.SXB單號)" data-bs-toggle="modal"
+                        <a v-else class="m-0 p-0" @click="openSSZDetails(row.FlowNumber)" data-bs-toggle="modal"
                             data-bs-target="#detailTable" style="color: #2bb91b;">
                             {{ $t("monthlyPRpageLang.review_complete") }}
                         </a>
@@ -76,8 +76,7 @@
                             </div>
                             <div class="col col-auto p-0 m-0">
                                 <input id="pnInput" class="text-center form-control form-control-lg"
-                                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')"
-                                    v-model="searchTerm2" />
+                                    v-bind:placeholder="$t('inboundpageLang.enterisn_or_spec')" v-model="searchTerm2" />
                             </div>
                         </div>
                         <div class="col col-auto">
@@ -88,24 +87,41 @@
                         </div>
                     </div>
                     <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-                    <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false"
-                        :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
+                    <table-lite id="searchTable2" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
+                        :hasCheckbox="false" :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
                         :total="table2.totalRecordCount" :page-options="table2.pageOptions" :sortable="table2.sortable"
-                        :is-fixed-first-column="false" @row-clicked="rowClicked">
+                        @is-finished="table2.isLoading = false">
                         <template v-slot:relQty="{ row, key }">
                             <div class="col col-auto align-items-center m-0 p-0">
                                 <div class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
-                                    {{ parseInt(row.relQty).toLocaleString("en-US") }} <small>{{ row.單位 }}</small>
+                                    {{ parseInt(row.relQty).toLocaleString("en-US") }}
                                 </div>
+                            </div>
+                        </template>
+
+                        <template v-slot:新儲位="{ row, key }">
+                            <div v-if="!(row.status.toLowerCase().includes('reject'))" class="col col-auto p-0 m-0">
+                                <select v-model="row.新儲位" style="width: 11ch;"
+                                    class="col col-auto form-select form-select-lg ps-2 p-0 m-0"
+                                    :id="'newloc_' + row.MatShort" :name="'newloc_' + row.MatShort">
+                                    <option id="noneSelected" value="" disabled selected>
+                                        {{ $t('inboundpageLang.choose') }}
+                                    </option>
+                                    <option v-for="item in locsArray" :id="item" :value="item">
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div v-else>
+                                <span class="m-0 p-0" style="color: red;">
+                                    {{ $t("monthlyPRpageLang.review_cancel") }}
+                                </span>
                             </div>
                         </template>
                     </table-lite>
                 </div>
-                <div v-if="showFooter" class="modal-footer justify-content-between">
-                    <button @click="sxb_reject" type="button" class="btn btn-lg btn-danger" style="border-radius: 5px;">
-                        {{ $t('monthlyPRpageLang.review_cancel') }}
-                    </button>
-                    <button @click="sxb_approve" type="button" class="btn btn-lg btn-success"
+                <div v-if="showFooter" class="modal-footer justify-content-center">
+                    <button @click="ssz_claim" type="button" class="btn btn-lg btn-success"
                         style="border-radius: 5px;">
                         {{ $t('monthlyPRpageLang.review_complete') }}
                     </button>
@@ -126,20 +142,27 @@ import {
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useSSZSearch from "../../composables/SSZSearch.ts";
+import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
+
 export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats_SSZ, mats_SSZInfo, getSSZ, getSSZ_info } = useSSZSearch(); // axios get the mats_SSZ data
+        const { mats_SSZ, mats_SSZInfo, getSSZ, getSSZ_info } = useSSZSearch(); // axios get the mats_SSZInfo data
+        const { queryResult, locations, validateISN, getLocs } = useCommonlyUsedFunctions();
 
-        onBeforeMount(getSSZ);
+        onBeforeMount(async () => {
+            await getLocs();
+            await getSSZ_info();
+        });
 
         const searchTerm = ref(""); // Search text
         const searchTerm2 = ref(""); // Search text for modal table
         const modalTitle = ref("");
         let isInvalid_DB = ref(false); // add to DB validation
         let showFooter = ref(false);
-        let AllRecords = [];
+        const locsArray = reactive([]);
+
 
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
@@ -223,50 +246,46 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // OutputExcelClick
 
-        const openSSZDetails = (SXB) => {
-            // console.log("clicked!"); // test
-            modalTitle.value = SXB;
-            data2.splice(0);
-            for (let i = 0; i < AllRecords.length; i++) {
-                if (AllRecords[i].SXB單號 === SXB) {
-                    data2.push(AllRecords[i]);
-                } // if
-            } // for
+        const openSSZDetails = (SSZ) => {
+            modalTitle.value = SSZ;
+            searchTerm2.value = "";
 
-            if (data2[0].狀態 === '未簽核') {
-                showFooter.value = true;
+            let obj = data2.find(o => o.FlowNumber === SSZ);
+            if (obj.status.toLowerCase().includes('reject')) {
+                showFooter.value = false;
             } // if
             else {
-                showFooter.value = false;
+                showFooter.value = true;
             } // else
         } // openSSZDetails
 
-        watch(mats_SSZ, async () => {
+        const ssz_claim = async () => {
             await triggerModal();
-            // console.log(JSON.parse(mats_SSZ.value)); // test
-            let allRowsObj = JSON.parse(mats_SSZ.value);
+
+            console.log(data2); // test
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // ssz_claim
+
+        watch(mats_SSZInfo, async () => {
+            await triggerModal();
+            // console.log(JSON.parse(mats_SSZInfo.value)); // test
             data.splice(0);
-            AllRecords = [];
-            for (let i = 0; i < allRowsObj.datas.length; i++) {
-                allRowsObj.datas[i].本次請購數量 = parseInt(
-                    allRowsObj.datas[i].本次請購數量
-                );
+            data2.splice(0);
+            locsArray.splice(0);
+            let allRowsObj = JSON.parse(mats_SSZInfo.value);
 
-                allRowsObj.datas[i].狀態 = allRowsObj.datas[i].SRM單號;
-                allRowsObj.datas[i].id = i + 1;
-                if (allRowsObj.datas[i].開單人員 === null || allRowsObj.datas[i].開單人員 === undefined) allRowsObj.datas[i].開單人員 = "N/A";
-                AllRecords.push(allRowsObj.datas[i]);
-                let indexOfObject = data.findIndex(object => {
-                    return (object.SXB單號 === allRowsObj.datas[i].SXB單號);
-                });
+            JSON.parse(locations.value).data.forEach(element => {
+                locsArray.push(element.儲存位置);
+            });
 
-                if (indexOfObject === -1) {
-                    data.push(allRowsObj.datas[i]);
-                } // if
+            // get unique SSZ number and its status and push to data
+            Object.assign(data, [...new Map(allRowsObj.data.map(item => [item["FlowNumber"], item])).values()]);
+            for (let i = 0; i < allRowsObj.data.length; i++) {
+                allRowsObj.data[i].新儲位 = "";
+                data2.push(allRowsObj.data[i]);
             } // for
 
-            // console.log(allRowsObj.datas); // test
-            // console.log(AllRecords); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
             table.isLoading = false;
@@ -281,14 +300,14 @@ export default defineComponent({
                         "inboundpageLang.FlowNumber"
                     ),
                     field: "FlowNumber",
-                    width: "10ch",
+                    width: "8ch",
                     sortable: true,
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.status"
                     ),
-                    field: "狀態",
+                    field: "status",
                     width: "6ch",
                     sortable: true,
                 },
@@ -304,15 +323,15 @@ export default defineComponent({
                     label: app.appContext.config.globalProperties.$t(
                         "monthlyPRpageLang.pr_sender"
                     ),
-                    field: "開單人員",
+                    field: "Applicant",
                     width: "8ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.開單人員 === null || row.開單人員 === undefined) row.開單人員 = "N/A";
+                        if (row.Applicant === null || row.Applicant === undefined) row.Applicant = "N/A";
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.開單人員 +
+                            row.Applicant +
                             "</div>"
                         );
                     },
@@ -320,7 +339,7 @@ export default defineComponent({
             ],
             rows: computed(() => {
                 return data.filter((x) =>
-                    x.開單人員
+                    x.FlowNumber
                         .toLowerCase()
                         .includes(searchTerm.value.toLowerCase())
                 );
@@ -387,7 +406,7 @@ export default defineComponent({
                         "basicInfoLang.isn"
                     ),
                     field: "MatShort",
-                    width: "14ch",
+                    width: "13ch",
                     sortable: true,
                     isKey: true,
                     display: function (row, i) {
@@ -425,6 +444,14 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.newloc"
+                    ),
+                    field: "新儲位",
+                    width: "13ch",
+                    sortable: false,
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
                         "inboundpageLang.mark"
                     ),
                     field: "SSZMemo",
@@ -442,11 +469,11 @@ export default defineComponent({
             ],
             rows: computed(() => {
                 return data2.filter((x) =>
-                    x.料號
+                    x.FlowNumber === modalTitle.value &&
+                    (x.MatShort
                         .toLowerCase()
                         .includes(searchTerm2.value.toLowerCase()) ||
-                    x.品名
-                        .includes(searchTerm2.value)
+                        x.Spec.toLowerCase().includes(searchTerm2.value.toLowerCase()))
                 );
             }),
             totalRecordCount: computed(() => {
@@ -515,12 +542,13 @@ export default defineComponent({
             searchTerm2,
             table,
             table2,
+            locsArray,
             modalTitle,
             showFooter,
             isInvalid_DB,
-            rowClicked,
             openSSZDetails,
             OutputExcelClick,
+            ssz_claim,
         };
     }, // setup
 });

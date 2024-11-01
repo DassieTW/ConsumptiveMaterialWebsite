@@ -515,20 +515,7 @@ class BUController extends Controller
         } else {
             return redirect(route('member.login'));
         }
-    }
-
-
-
-
-    /*//調撥明細查詢頁面
-    public function searchdetail(Request $request)
-    {
-        if (Session::has('username')) {
-            return view('bu.searchdetail');
-        } else {
-            return redirect(route('member.login'));
-        }
-    }*/
+    } //picklistsubmit
 
     //調撥明細查詢
     public function searchdetailsub(Request $request)

@@ -98,6 +98,8 @@ return [
     'noloc' => 'Location does not exist',
     'enterisn' => 'Please enter PN',
     'enterisn_or_loc' => 'PN/Location',
+    'enterisn_or_spec' => 'PN/Spec',
+    'enterSSZ' => 'SSZ FlowNumber',
     'timepart' => 'Time period',
     'upload1' => 'Upload',
     'noinpeople' => 'The ID does not exist, please go to User Mgmt. -> Modify Staff Info.',
@@ -109,4 +111,5 @@ return [
     'within_three_months' => 'Within 3 months',
     'within_a_year' => 'Within a year',
     'FlowNumber' => 'SSZ FlowNumber',
+    'inbound_loc' => 'Inbound Loc.',
 ];

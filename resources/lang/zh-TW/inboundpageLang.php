@@ -98,6 +98,8 @@ return [
     'noloc' => '儲位不存在',
     'enterisn' => '請輸入料號',
     'enterisn_or_loc' => '料號/儲位',
+    'enterisn_or_spec' => '料號/規格',
+    'enterSSZ' => 'SSZ領料單號',
     'timepart' => '時間段',
     'upload1' => '上傳',
     'noinpeople' => '人員之工號不存在，請先到用戶管理-人員信息維護',
@@ -109,4 +111,5 @@ return [
     'within_three_months' => '三個月內',
     'within_a_year' => '一年內',
     'FlowNumber' => 'SSZ領料單號',
+    'inbound_loc' => '入庫儲位',
 ];
