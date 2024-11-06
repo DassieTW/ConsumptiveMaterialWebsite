@@ -120,9 +120,9 @@
                             </div>
                             <div v-else>
                                 <div class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
-                                    {{ row.ClaimedBy.split("_")[0] }}
+                                    {{ row.ClaimedBy }}
                                     <br />
-                                    {{ "(" + row.ClaimedBy.split("_")[1] + ")" }}
+                                    {{ "(" + row.initial_loc + ")" }}
                                 </div>
                             </div>
                         </template>
@@ -284,7 +284,7 @@ export default defineComponent({
 
         const ssz_claim = async () => {
             await triggerModal();
-            
+
             claim_a_mat(modalTitle.value, modalTitle.value);
             console.log(data2); // test
             $("body").loadingModal("hide");

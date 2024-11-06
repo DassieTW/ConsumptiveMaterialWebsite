@@ -35,6 +35,7 @@ class SSZInfo extends Model
         'ClaimedBy',
         'ClaimedStaff',
         'claimed_time',
+        'initial_loc',
     ];
 
     public function number_status()
