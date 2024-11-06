@@ -22,7 +22,7 @@ class SluggishStock extends Command
      *
      * @var string
      */
-    protected $description = '呆滯天數';
+    protected $description = '呆滯天數定期寄信';
 
     /**
      * Create a new command instance.
@@ -42,14 +42,15 @@ class SluggishStock extends Command
      */
     public function handle()
     {
+        $this->warn("Now Running [call:sluggish]");
         try {
             \Log::channel('dbquerys')->info('---------------------------開始寄信 by Sluggish Stock Command--------------------------');
             $this->mailservice->day();
             \Log::channel('dbquerys')->info('---------------------------寄信結束 by Sluggish Stock Command--------------------------');
-            $this->info("Command executed successfully!");
+            $this->info("[call:sluggish] Command executed successfully!");
         } catch (Exception $e) {
-            $this->error("Command execution failed with error : " . $e->getMessage());
-            \Log::error("Command execution failed with error : " . $e->getMessage());
+            $this->error("[call:sluggish] Command execution failed with error : " . $e->getMessage());
+            \Log::error("[call:sluggish] Command execution failed with error : " . $e->getMessage());
         } // try - catch
 
         return 0;

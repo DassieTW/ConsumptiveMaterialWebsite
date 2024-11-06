@@ -39,6 +39,7 @@ class CleanupBarcodeImg extends Command
      */
     public function handle()
     {
+        $this->warn("Now Running [barcodeimg:clear]");
         try {
             \Log::channel('dbquerys')->info('---------------------------清理條碼圖片開始--------------------------');
 
@@ -51,9 +52,9 @@ class CleanupBarcodeImg extends Command
             } // foreach
 
             \Log::channel('dbquerys')->info('---------------------------清理條碼圖片結束--------------------------');
-            $this->info("Command executed successfully!");
+            $this->info("[barcodeimg:clear] Command executed successfully!");
         } catch (Exception $e) {
-            $this->error("Command execution failed with error : " . $e->getMessage());
+            $this->error("Barcode Images CleanUp Command execution failed with error : " . $e->getMessage());
         } // try - catch
         return 0;
     }

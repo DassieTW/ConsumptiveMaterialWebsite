@@ -38,6 +38,7 @@ class CleanUpInventory extends Command
      */
     public function handle()
     {
+        $this->warn("Now Running [inventory:cleanup]");
         $databaseArray = config('database_list.databases');
         array_shift($databaseArray); // remove the 'Consumables management' db from array
         try {
@@ -51,7 +52,7 @@ class CleanUpInventory extends Command
             } // foreach
 
             \Log::channel('dbquerys')->info('---------------------------清理久未更新之0現有庫存條目結束--------------------------');
-            $this->info("Command executed successfully!");
+            $this->info("[inventory:cleanup] Command executed successfully!");
         } catch (Exception $e) {
             \Log::channel('dbquerys')->error("Inventory Clear Command execution failed with error : " . $e->getMessage());
             $this->error("Inventory Clear Command execution failed with error : " . $e->getMessage());

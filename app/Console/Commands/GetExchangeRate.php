@@ -39,8 +39,8 @@ class GetExchangeRate extends Command
     public function handle()
     {
         // $databaseArray = config('database_list.databases');
+        $this->warn("Fetching Exchange Rate...");
         try {
-            $this->warn("Fetching Exchange Rate...");
             $path = public_path('exchange_rate.json');
             if (!file_exists($path)) {
                 $newFile = fopen( public_path() . "/exchange_rate.json", "w");
@@ -50,8 +50,10 @@ class GetExchangeRate extends Command
             file_put_contents($path, "");
             $response = \Http::get('http://api.exchangeratesapi.io/v1/latest?access_key=' . env('Rate_API_Key'));
             file_put_contents($path, $response);
+            $this->info("Exchange Rate Fetched Successfully. " . \Carbon\Carbon::now());
+            $this->info($response);
         } catch (Exception $e) {
-            $this->error("Command execution failed with error : " . $e->getMessage());
+            $this->error("Exchange Rate Fetching Command execution failed with error : " . $e->getMessage());
         } // try - catch
         return 0;
     } // handle

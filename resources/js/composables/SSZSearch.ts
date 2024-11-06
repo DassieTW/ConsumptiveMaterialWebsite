@@ -53,10 +53,34 @@ export default function useSSZSearch() {
         } // try catch
     } // get getSSZ_info
 
+    const claim_a_mat = async (ssz_number, ) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+
+        try {
+            let response = await axios.post('/api/inbound/rejectSSZ', {
+                DB: getDB.data,
+                ssz: JSON.stringify(ssz_number),
+            });
+
+            console.log(response.data); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } catch (e) {
+            for (const key in e.response.data.errors) {
+                errors.value += e.response.data.errors[key][0] + '  ';
+            } // for each errors
+
+            console.log(e); // test
+        } // try catch
+    } // claim_a_mat
+
     return {
         mats_SSZ,
         mats_SSZInfo,
         getSSZ,
         getSSZ_info,
+        claim_a_mat,
     } // return
 } // useConsumptiveMaterials

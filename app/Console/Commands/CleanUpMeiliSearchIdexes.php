@@ -41,6 +41,7 @@ class CleanUpMeiliSearchIdexes extends Command
      */
     public function handle()
     {
+        $this->warn("Now Running [meilisearch:clear]");
         try {
             $this->searchClient = new Client(env('MEILISEARCH_HOST'));
             $this->searchClient->deleteAllIndexes();
@@ -53,7 +54,7 @@ class CleanUpMeiliSearchIdexes extends Command
                 'tw_title',
                 'cn_title'
             ]);
-            $this->info("Command executed successfully!");
+            $this->info("[meilisearch:clear] Command executed successfully!");
         } catch (Exception $e) {
             \Log::channel('errorlog')->error(" execution failed with error : " . $e->getMessage());
             $this->error("Clean Up MeiliSearch Idexes execution failed with error : " . $e->getMessage());

@@ -100,7 +100,8 @@
                         </template>
 
                         <template v-slot:新儲位="{ row, key }">
-                            <div v-if="!(row.status.toLowerCase().includes('reject'))" class="col col-auto p-0 m-0">
+                            <div v-if="!(row.status.toLowerCase().includes('reject')) && row.ClaimedStaff == null"
+                                class="col col-auto p-0 m-0">
                                 <select v-model="row.新儲位" style="width: 11ch;"
                                     class="col col-auto form-select form-select-lg ps-2 p-0 m-0"
                                     :id="'newloc_' + row.MatShort" :name="'newloc_' + row.MatShort">
@@ -112,18 +113,40 @@
                                     </option>
                                 </select>
                             </div>
-                            <div v-else>
+                            <div v-else-if="row.status.toLowerCase().includes('reject')">
                                 <span class="m-0 p-0" style="color: red;">
                                     {{ $t("monthlyPRpageLang.review_cancel") }}
                                 </span>
+                            </div>
+                            <div v-else>
+                                <div class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
+                                    {{ row.ClaimedBy.split("_")[0] }}
+                                    <br />
+                                    {{ "(" + row.ClaimedBy.split("_")[1] + ")" }}
+                                </div>
+                            </div>
+                        </template>
+                        <template v-slot:ClaimedStaff="{ row, key }">
+                            <div class="col col-auto align-items-center m-0 p-0">
+                                <div v-if="row.ClaimedStaff != null" class="text-nowrap CustomScrollbar"
+                                    style="overflow-x: auto; width: 100%;">
+                                    {{ row.ClaimedStaff + " (" + row.姓名 + ")" }}
+                                </div>
+                                <div v-else class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
+                                    N/A
+                                </div>
                             </div>
                         </template>
                     </table-lite>
                 </div>
                 <div v-if="showFooter" class="modal-footer justify-content-center">
-                    <button @click="ssz_claim" type="button" class="btn btn-lg btn-success"
-                        style="border-radius: 5px;">
-                        {{ $t('monthlyPRpageLang.review_complete') }}
+                    <button @click="ssz_claim" type="button" class="btn btn-lg btn-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-inboxes-fill align-middle mb-1" viewBox="0 0 16 16">
+                            <path
+                                d="M4.98 1a.5.5 0 0 0-.39.188L1.54 5H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0A.5.5 0 0 1 10 5h4.46l-3.05-3.812A.5.5 0 0 0 11.02 1H4.98zM3.81.563A1.5 1.5 0 0 1 4.98 0h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 10H1.883A1.5 1.5 0 0 1 .394 8.686l-.39-3.124a.5.5 0 0 1 .106-.374L3.81.563zM.125 11.17A.5.5 0 0 1 .5 11H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0 .5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 16H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .121-.393z" />
+                        </svg>
+                        {{ $t('inboundpageLang.page_name') }}
                     </button>
                 </div>
             </div>
@@ -148,7 +171,7 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats_SSZ, mats_SSZInfo, getSSZ, getSSZ_info } = useSSZSearch(); // axios get the mats_SSZInfo data
+        const { mats_SSZ, mats_SSZInfo, getSSZ, getSSZ_info, claim_a_mat } = useSSZSearch(); // axios get the mats_SSZInfo data
         const { queryResult, locations, validateISN, getLocs } = useCommonlyUsedFunctions();
 
         onBeforeMount(async () => {
@@ -261,7 +284,8 @@ export default defineComponent({
 
         const ssz_claim = async () => {
             await triggerModal();
-
+            
+            claim_a_mat(modalTitle.value, modalTitle.value);
             console.log(data2); // test
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
@@ -269,7 +293,6 @@ export default defineComponent({
 
         watch(mats_SSZInfo, async () => {
             await triggerModal();
-            // console.log(JSON.parse(mats_SSZInfo.value)); // test
             data.splice(0);
             data2.splice(0);
             locsArray.splice(0);
@@ -462,6 +485,31 @@ export default defineComponent({
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.SSZMemo +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.inbound_staff"
+                    ),
+                    field: "ClaimedStaff",
+                    width: "15ch",
+                    sortable: true,
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.inboundtime"
+                    ),
+                    field: "claimed_time",
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.claimed_time === null || row.claimed_time === undefined || row.claimed_time === "") row.claimed_time = "N/A";
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.claimed_time +
                             "</div>"
                         );
                     },

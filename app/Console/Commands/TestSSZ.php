@@ -39,6 +39,7 @@ class TestSSZ extends Command
      */
     public function handle()
     {
+        $this->warn("Now Running [test:ssz]");
         try {
             \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "HQ TEST Consumables management");
             \DB::purge(env("DB_CONNECTION"));
@@ -93,7 +94,7 @@ class TestSSZ extends Command
 
             \DB::commit();
         } catch (Exception $e) {
-            $this->error("Command execution failed with error : " . $e->getMessage());
+            $this->error("[test:ssz] Command execution failed with error : " . $e->getMessage());
         } // try - catch
         return 0;
     }

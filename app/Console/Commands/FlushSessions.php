@@ -37,11 +37,12 @@ class FlushSessions extends Command
      */
     public function handle()
     {
+        $this->warn("Now Running [session:flush]");
         try {
             \Session::getHandler()->gc(0); // Destroy all sessions which exist more 0 minutes
-            $this->info('Session data cleaned.');
+            $this->info('[session:flush] Session data cleaned.');
         } catch (\Exception $e) {
-            $this->error($e->getMessage());
+            $this->error("[session:flush] execution failed with error :" . $e->getMessage());
         } // try-catch
 
         return 0;

@@ -21,7 +21,7 @@ class SendSafeStockMail extends Command
      *
      * @var string
      */
-    protected $description = '安全庫存';
+    protected $description = '安全庫存定期寄信';
 
     /**
      * Create a new command instance.
@@ -46,15 +46,15 @@ class SendSafeStockMail extends Command
         // foreach ($posts as $post) {
         //     $post->forceDelete();
         // } // for each
-
+        $this->warn("Now Running [call:safestock]");
         try {
             \Log::channel('dbquerys')->info('---------------------------開始寄信 by Safe Stock Command--------------------------');
             $this->mailservice->download();
             \Log::channel('dbquerys')->info('---------------------------寄信結束 by Safe Stock Command--------------------------');
-            $this->info("Command executed successfully!");
+            $this->info("[call:safestock] Command executed successfully!");
         } catch (Exception $e) {
-            $this->error("Command execution failed with error : " . $e->getMessage());
-            \Log::error("Command execution failed with error : " . $e->getMessage());
+            $this->error("[call:safestock] Command execution failed with error : " . $e->getMessage());
+            \Log::error("[call:safestock] Command execution failed with error : " . $e->getMessage());
         } // try - catch
 
         return 0;

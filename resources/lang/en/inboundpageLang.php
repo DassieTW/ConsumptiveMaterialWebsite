@@ -65,7 +65,7 @@ return [
     'transiterror' => 'The receipt quantity cannot be greater than the in transit quantity',
     'delete' => 'Delete',
     'inlist' => 'Inbound list no.',
-    'inboundtime' => 'Inbound time',
+    'inboundtime' => 'Inbound Time',
     'mark' => 'Remarks',
     'download' => 'Download',
     'addtodatabase' => 'Add to Inventory',
@@ -112,4 +112,5 @@ return [
     'within_a_year' => 'Within a year',
     'FlowNumber' => 'SSZ FlowNumber',
     'inbound_loc' => 'Inbound Loc.',
+    'inbound_staff' => 'Inbound Operator',
 ];

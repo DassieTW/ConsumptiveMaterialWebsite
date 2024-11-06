@@ -32,6 +32,9 @@ class SSZInfo extends Model
         'Spec',
         'Keeper',
         'SSZMemo',
+        'ClaimedBy',
+        'ClaimedStaff',
+        'claimed_time',
     ];
 
     public function number_status()

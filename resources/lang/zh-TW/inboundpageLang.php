@@ -112,4 +112,5 @@ return [
     'within_a_year' => '一年內',
     'FlowNumber' => 'SSZ領料單號',
     'inbound_loc' => '入庫儲位',
+    'inbound_staff' => '入庫人員',
 ];

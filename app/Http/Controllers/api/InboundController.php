@@ -159,6 +159,7 @@ class InboundController extends Controller
             ->joinSub($FlowNumberReceiveTime, 'sszNumber', function ($join) {
                 $join->on('SSZInfo.FlowNumber', '=', 'sszNumber.id');
             })
+            ->leftJoin('人員信息', 'SSZInfo.ClaimedStaff', '=', '人員信息.工號')
             ->where('SSZInfo.Company', 'like', $CompanyAlias . '%')
             ->orderBy('sszNumber.received_time', 'desc')
             ->get();

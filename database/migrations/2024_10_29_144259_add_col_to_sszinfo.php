@@ -13,7 +13,7 @@ class AddColToSszinfo extends Migration
      */
     public function up()
     {
-        Schema::table('sszinfo', function (Blueprint $table) {
+        Schema::table('SSZInfo', function (Blueprint $table) {
             $table->string('ClaimedBy', 255)->nullable(true);
         });
     }
@@ -25,7 +25,7 @@ class AddColToSszinfo extends Migration
      */
     public function down()
     {
-        Schema::table('sszinfo', function (Blueprint $table) {
+        Schema::table('SSZInfo', function (Blueprint $table) {
             $table->dropColumn('ClaimedBy');
         });
     }
