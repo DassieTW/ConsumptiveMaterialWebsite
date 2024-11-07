@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
-use Session;
-use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Carbon\Carbon;
 use DB;
@@ -12,7 +9,6 @@ use Mail;
 use File;
 use App\Models\Inventory;
 use App\Models\whereInMultiCol;
-use Sentry\Util\JSON;
 
 /**
  * Class MailService
@@ -198,7 +194,7 @@ class MailService
 
             // 下載
             $now = Carbon::now()->format('Ymd');
-            $filename = $database . 'Safe Stock' . $now . '.xlsx';
+            $filename = $database . ' Safe Stock' . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
             header('Cache-Control: max-age=0');
@@ -229,12 +225,12 @@ class MailService
 
                     $message->bcc('Vincent6_Yeh@pegatroncorp.com');
 
-                    $message->attach(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
+                    $message->attach(public_path() . '/excel/' . $database . ' Safe Stock' . $now . '.xlsx');
                     $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
                 });
             }
 
-            File::delete(public_path() . '/excel/' . $database . 'Safe Stock' . $now . '.xlsx');
+            File::delete(public_path() . '/excel/' . $database . ' Safe Stock' . $now . '.xlsx');
 
             // ------ delete unused comment ----------
             $value_pairs = array();
@@ -333,7 +329,7 @@ class MailService
             } // for
 
             $now = Carbon::now()->format('Ymd');
-            $filename = $database . 'Passive Day' . $now . '.xlsx';
+            $filename = $database . ' Passive Day' . $now . '.xlsx';
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="' . $filename . '"; filename*=utf-8\'\'' . $filename . ';');
             header('Cache-Control: max-age=0');
@@ -364,12 +360,12 @@ class MailService
 
                     $message->bcc('Vincent6_Yeh@pegatroncorp.com');
 
-                    $message->attach(public_path() . '/excel/' . $database . 'Passive Day' . $now . '.xlsx');
+                    $message->attach(public_path() . '/excel/' . $database . ' Passive Day' . $now . '.xlsx');
                     $message->from('Consumables_Management_No-Reply@pegatroncorp.com', 'Consumables Management_No-Reply');
                 });
             } // if
 
-            File::delete(public_path() . '/excel/' . $database . 'Passive Day' . $now . '.xlsx');
+            File::delete(public_path() . '/excel/' . $database . ' Passive Day' . $now . '.xlsx');
 
             // ------ delete unused comment ----------
 

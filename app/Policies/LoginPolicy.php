@@ -108,17 +108,27 @@ class LoginPolicy         // 所有用戶管理相關權限
     public function canSwitchSites(Login $user)
     {
         // available_dblist清單有別廠才能切換廠別
-        if ( !is_null($user->available_dblist) && count(explode("_", $user->available_dblist)) > 1) {
+        if (!is_null($user->available_dblist) && count(explode("_", $user->available_dblist)) > 1) {
             return true;
         } else {
             return false;
         } // if else
     } // canSwitchSites
 
+    public function canSwitchToSysDB(Login $user)
+    {
+        // 權限0才能切換到系統DB(Consumables management)
+        if (intval($user->priority) == 0) {
+            return true;
+        } else {
+            return false;
+        } // if else
+    } // canSwitchToSysDB
+
     public function canAddSitesToUser(Login $user)
     {
         // 只有權限0 也就是我們IT 才能添加新DB到user的 "available_dblist"
-        if ( intval($user->priority) < 1) {
+        if (intval($user->priority) < 1) {
             return true;
         } else {
             return false;

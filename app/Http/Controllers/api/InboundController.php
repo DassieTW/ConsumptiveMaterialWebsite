@@ -136,7 +136,7 @@ class InboundController extends Controller
         \DB::purge(env("DB_CONNECTION"));
 
         $CompanyAlias = "";
-        if (str_contains($requestDB, "蘇州") || str_contains($requestDB, "BB1") || str_contains($requestDB, "M3") || str_contains($requestDB, "SMT Consumables management")) {
+        if (str_contains($requestDB, "蘇州") || str_contains($requestDB, "BB1") || str_contains($requestDB, "M3") || $requestDB === "SMT Consumables management") {
             $CompanyAlias = "名碩";
         } // if
         else if (str_contains($requestDB, "巴淡")) {

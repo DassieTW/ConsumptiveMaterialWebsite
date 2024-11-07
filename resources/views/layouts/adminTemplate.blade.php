@@ -254,10 +254,8 @@
                                                             {!! __('inboundpageLang.searchstock') !!}
                                                         </a>
                                                     </li>
-                                                    <li
-                                                        class="sidebar-item {{ isActiveRoute(['inbound.change']) }}">
-                                                        <a class="sidebar-link"
-                                                            href="{{ route('inbound.change') }}">
+                                                    <li class="sidebar-item {{ isActiveRoute(['inbound.change']) }}">
+                                                        <a class="sidebar-link" href="{{ route('inbound.change') }}">
                                                             {!! __('inboundpageLang.locationchange') !!}
                                                         </a>
                                                     </li>
@@ -1182,9 +1180,20 @@
                                             <path
                                                 d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
                                         </svg>
-                                        <span>{{ str_replace('Consumables management', '', \Session::get('database')) }}</span>
+                                        @if (strlen(str_replace('Consumables management', '', \Session::get('database'))) == 0)
+                                            <span>SysDB</span>
+                                        @else
+                                            <span>{{ str_replace('Consumables management', '', \Session::get('database')) }}</span>
+                                        @endif
                                     </a>
                                     <div class="collapse" id="sitesMenu">
+                                        @if (Auth::user()->can('canSwitchToSysDB', App\Models\Login::class) &&
+                                                strlen(str_replace('Consumables management', '', \Session::get('database'))) != 0)
+                                            <a class="dropdown-item justify-content-center"
+                                                href="{{ url('/switchSite/Consumables_management') }}" value="SysDB">
+                                                SysDB
+                                            </a>
+                                        @endif
                                         @for ($i = 0; $i < count(explode('_', \Auth::user()->available_dblist)); $i++)
                                             @if (\Session::get('database') != explode('_', \Auth::user()->available_dblist)[$i] . ' Consumables management')
                                                 <a class="dropdown-item justify-content-center"

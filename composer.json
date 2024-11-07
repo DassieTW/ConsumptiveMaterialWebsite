@@ -22,7 +22,7 @@
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.14",
         "laravel/scout": "^9.4",
-        "laravel/telescope": "^4.14",
+        "laravel/telescope": "^5.2",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "mariuzzo/laravel-js-localization": "^1.8",
@@ -74,12 +74,14 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta"
+            "@php artisan ide-helper:meta",
+            "@php artisan telescope:publish --ansi"
         ]
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+            ]
         }
     },
     "config": {

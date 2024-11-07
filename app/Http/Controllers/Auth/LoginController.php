@@ -369,6 +369,109 @@ class LoginController extends Controller
             \App::setLocale($previousUser->preferred_lang);
             session(['database' => $DBName]);
         } // if
+        else if ($request->user()->can('canSwitchToSysDB', Login::class)) {
+            $previousUser = \Auth::user();
+            $work_id = \Auth::user()->username;
+            $user_name = \Auth::user()->detail_info->姓名;
+            $dept_name = \Auth::user()->detail_info->部門;
+            $office_mail = \Auth::user()->detail_info->email;
+            $m_work_id = \Auth::user()->detail_info->主管工號;
+
+            $user_m = 人員信息::where([
+                '工號' => $m_work_id
+            ])->first();
+
+            if ($user_m !== null) {
+                $m_name = $user_m->姓名;
+                $m_dept_name = $user_m->部門;
+                $m_office_mail = $user_m->email;
+                $m2_work_id = $user_m->主管工號;
+
+                $user_m2 = 人員信息::where([
+                    '工號' => $m2_work_id
+                ])->first();
+
+                if ($user_m2 !== null) {
+                    $m2_name = $user_m2->姓名;
+                    $m2_dept_name = $user_m2->部門;
+                    $m2_office_mail = $user_m2->email;
+                } // if
+            } // if
+
+            $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now());
+
+            \Auth::logout();
+
+            $request->session()->invalidate();
+
+            $request->session()->regenerate();
+
+            $request->session()->flush();
+
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $DBName);
+            \DB::purge(env("DB_CONNECTION"));
+
+            // insert self & manager data
+            DB::table('人員信息')->upsert([
+                [
+                    '工號' => $work_id,
+                    '姓名' => $user_name,
+                    '部門' => $dept_name,
+                    'email' => $office_mail,
+                    '主管工號' => $m_work_id
+                ],
+            ], ['工號'], ['姓名', '部門', 'email', '主管工號']);
+
+            if ($user_m) {
+                DB::table('人員信息')->upsert([
+                    [
+                        '工號' => $m_work_id,
+                        '姓名' => $m_name,
+                        '部門' => $m_dept_name,
+                        'email' => $m_office_mail,
+                        '主管工號' => $m2_work_id
+                    ],
+                ], ['工號'], ['姓名', '部門', 'email', '主管工號']);
+            } // if
+
+            // insert manager's manager data
+            if ($user_m2) {
+                DB::table('人員信息')->upsert([
+                    [
+                        '工號' => $m2_work_id,
+                        '姓名' => $m2_name,
+                        '部門' => $m2_dept_name,
+                        'email' => $m2_office_mail,
+                    ],
+                ], ['工號'], ['姓名', '部門', 'email']);
+            } // if
+
+            $user = Login::updateOrCreate(
+                ['username' => $previousUser->username],
+                [
+                    'password' => $previousUser->password,
+                    'priority' => $previousUser->priority,
+                    'avatarChoice' => $previousUser->avatarChoice,
+                    'last_login_time' => $datetime,
+                    'update_priority_time' => $datetime,
+                    'available_dblist' => $previousUser->available_dblist,
+                    'preferred_lang' => $previousUser->preferred_lang,
+                ]
+            );
+
+            \Auth::login($user);
+            $request->session()->regenerate();
+            $usernameAuthed = \Auth::user()->username;
+            $prior = \Auth::user()->priority;
+            $avatarChoice = \Auth::user()->avatarChoice;
+            Session::put('username', $usernameAuthed);
+            Session::put('priority', $prior);
+            Session::put('avatarChoice', $avatarChoice);
+            Session::put('department', \Auth::user()->detail_info->部門);
+            Session::put('locale', $previousUser->preferred_lang);
+            \App::setLocale($previousUser->preferred_lang);
+            session(['database' => $DBName]);
+        } // else if
 
         return redirect()->back();
     } // switchSite
@@ -389,9 +492,12 @@ class LoginController extends Controller
 
         DB::table('login')
             ->insert([
-                'username' => $job_id, 'password' => "123456", 'priority' => 4,
+                'username' => $job_id,
+                'password' => "123456",
+                'priority' => 4,
                 'avatarChoice' => $profilePic,
-                'last_login_time' => $datetime, 'available_dblist' =>  str_replace(" Consumables management", "", $site)
+                'last_login_time' => $datetime,
+                'available_dblist' =>  str_replace(" Consumables management", "", $site)
             ]);
 
         $work_id = Session::get('work_id');

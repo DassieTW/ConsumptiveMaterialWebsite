@@ -66,8 +66,7 @@ class Tcpdf extends Pdf
         $pdf->AddPage();
 
         //  Set the appropriate font
-        // $pdf->SetFont($this->getFont());
-        $pdf->SetFont('cid0cs', '', null, '', false);
+        $pdf->SetFont($this->getFont());
         $pdf->writeHTML($this->generateHTMLAll());
 
         //  Document info

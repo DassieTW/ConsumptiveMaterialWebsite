@@ -31,13 +31,13 @@ class Kernel extends ConsoleKernel
         //     $out->writeln("Hello from Terminal");
         //     info("Test");
         // })->everyMinute()->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com');
-        $schedule->command('exchange:rate')->dailyAt("5:00")->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground();
-        $schedule->command('call:safestock')->dailyAt("6:00")->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground();
-        $schedule->command('call:sluggish')->dailyAt("6:00")->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground();
+        $schedule->command('exchange:rate')->dailyAt("5:00")->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground()->onOneServer();
+        $schedule->command('call:safestock')->dailyAt("6:00")->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground()->onOneServer();
+        $schedule->command('call:sluggish')->dailyAt("6:00")->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground()->onOneServer();
         $schedule->command('barcodeimg:clear')->daily()->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground();
         $schedule->command('logs:clear')->quarterly()->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground(); // At 03:00 in every 3 month.
         $schedule->command('log:clear')->quarterly()->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground(); // At 03:00 in every 3 month.
-        $schedule->command('telescope:prune')->weeklyOn(3, '8:00')->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground(); // Prune the laravel telescope records weekly
+        $schedule->command('telescope:prune_alldb --hours=48')->daily()->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground(); // Prune the laravel telescope database records
 
         // Clean up dated users
         $schedule->command('olduser:clear')->quarterly()->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground();

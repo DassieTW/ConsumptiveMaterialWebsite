@@ -10039,6 +10039,7 @@
          * @param array $server The server parameters ($_SERVER)
          * @param string|resource|null $content The raw body data
          * @return static 
+         * @throws BadRequestException When the URI is invalid
          * @static 
          */ 
         public static function create($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
