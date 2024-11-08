@@ -113,4 +113,5 @@ return [
     'FlowNumber' => 'SSZ领料单号',
     'inbound_loc' => '入库储位',
     'inbound_staff' => '入库人员',
+    'click_the_flow_number' => '点击领料单号把料件归类至储位',
 ];

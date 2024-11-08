@@ -213,6 +213,7 @@ class MailService
                         ->select('email')
                         ->whereNotNull('email')
                         ->where('priority', '<', 4)
+                        ->where('priority', '>', 0)
                         ->get()->toArray();
 
                     foreach ($emails as $email) {
@@ -349,6 +350,7 @@ class MailService
                         ->select('email')
                         ->whereNotNull('email')
                         ->where('priority', '<', 4)
+                        ->where('priority', '>', 0)
                         ->get()->toArray();
 
                     foreach ($emails as $email) {

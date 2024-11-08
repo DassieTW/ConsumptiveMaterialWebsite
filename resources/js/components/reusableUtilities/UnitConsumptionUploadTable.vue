@@ -785,10 +785,10 @@ export default defineComponent({
             totalRecordCount: computed(() => {
                 return table.rows.length;
             }),
-            sortable: {
-                order: "id",
-                sort: "asc",
-            },
+            // sortable: {
+            //     order: "id",
+            //     sort: "asc",
+            // },
             messages: {
                 pagingInfo:
                     app.appContext.config.globalProperties.$t(

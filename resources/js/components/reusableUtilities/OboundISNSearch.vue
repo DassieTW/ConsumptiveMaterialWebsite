@@ -161,7 +161,7 @@ export default defineComponent({
                 return table.rows.length;
             }),
             sortable: {
-                order: "id",
+                order: "料號",
                 sort: "asc",
             },
             messages: {

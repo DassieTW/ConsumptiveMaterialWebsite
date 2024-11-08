@@ -130,12 +130,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('call')
                 ->group(base_path('routes/web/call.php'));
 
-            // 載入 條碼 routes
-            Route::middleware(['web', 'auth', 'locale'])
-                ->namespace($this->namespace)
-                ->prefix('barcode')
-                ->group(base_path('routes/web/barcode.php'));
-
             // 載入 BU耗材管理 routes
             Route::middleware(['web', 'auth', 'locale'])
                 ->namespace($this->namespace)

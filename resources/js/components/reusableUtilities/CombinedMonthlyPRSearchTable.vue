@@ -1060,8 +1060,8 @@ export default defineComponent({
                 return table.rows.length;
             }),
             sortable: {
-                order: "id",
-                sort: "asc",
+                order: "匯率",
+                sort: "desc",
             },
             messages: {
                 pagingInfo:
@@ -1270,8 +1270,8 @@ export default defineComponent({
                 return table2.rows.length;
             }),
             sortable: {
-                order: "id",
-                sort: "asc",
+                order: "請購金額",
+                sort: "desc",
             },
             messages: {
                 pagingInfo:

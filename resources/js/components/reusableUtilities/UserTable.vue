@@ -417,8 +417,8 @@ export default defineComponent({
                 return table.rows.length;
             }),
             sortable: {
-                order: "id",
-                sort: "asc",
+                order: "last_login_time",
+                sort: "desc",
             },
             messages: {
                 pagingInfo:

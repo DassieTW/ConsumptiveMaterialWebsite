@@ -67,8 +67,8 @@ export const table = reactive({
         return table.rows.length;
     }),
     sortable: {
-        order: "id",
-        sort: "asc",
+        order: "需求與領用差異量",
+        sort: "desc",
     },
     messages: {
         pagingInfo:

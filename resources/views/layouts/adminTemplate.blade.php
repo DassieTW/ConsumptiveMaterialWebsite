@@ -194,35 +194,6 @@
                                                 </ul>
                                             </li>
                                         @endcan
-
-                                        <li class="sidebar-item {{ isActiveRoute(['barcode/', 'barcode.index']) }}">
-                                            <a data-bs-target="#barcodePages" data-bs-toggle="collapse"
-                                                class="sidebar-link collapsed" aria-expanded="false">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-upc align-middle me-2"
-                                                    viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
-                                                </svg>
-                                                <span class="align-middle">{!! __('templateWords.barcode_gen') !!}</span>
-                                            </a>
-                                            <ul id="barcodePages" class="sidebar-dropdown list-unstyled collapse"
-                                                data-bs-parent="#sidebar" style="">
-                                                <li class="sidebar-item {{ isActiveRoute(['barcode.index']) }}">
-                                                    <a class="sidebar-link" href="{{ url('barcode') }}">
-                                                        {!! __('templateWords.barcode_generator') !!}</a>
-                                                </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['barcode/isn_search']) }}">
-                                                    <a class="sidebar-link" href="{{ url('barcode/isn_search') }}">
-                                                        {!! __('templateWords.isnBarcode') !!}</a>
-                                                </li>
-                                                <li class="sidebar-item {{ isActiveRoute(['barcode/loc_search']) }}">
-                                                    <a class="sidebar-link" href="{{ url('barcode/loc_search') }}">
-                                                        {!! __('templateWords.locBarcode') !!}</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-
                                         @can('viewInbound', App\Models\Inbound::class)
                                             <li class="sidebar-item {{ isActiveRoute(['inbound/', 'inbound.index']) }}">
                                                 <a data-bs-target="#inbound" data-bs-toggle="collapse"

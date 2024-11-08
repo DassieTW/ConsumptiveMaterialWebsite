@@ -113,4 +113,5 @@ return [
     'FlowNumber' => 'SSZ FlowNumber',
     'inbound_loc' => 'Inbound Loc.',
     'inbound_staff' => 'Inbound Operator',
+    'click_the_flow_number' => 'Click on the SSZ FlowNumber to send the materials to the location',
 ];

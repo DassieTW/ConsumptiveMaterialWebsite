@@ -446,8 +446,8 @@ export default defineComponent({
                 return table.rows.length;
             }),
             sortable: {
-                order: "id",
-                sort: "asc",
+                order: "最後更新時間",
+                sort: "desc",
             },
             messages: {
                 pagingInfo:

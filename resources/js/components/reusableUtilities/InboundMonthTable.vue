@@ -331,8 +331,8 @@ export default defineComponent({
                 return table.rows.length;
             }),
             sortable: {
-                order: "id",
-                sort: "asc",
+                order: "月使用量",
+                sort: "desc",
             },
             messages: {
                 pagingInfo:

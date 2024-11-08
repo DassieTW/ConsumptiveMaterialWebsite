@@ -125,7 +125,6 @@ class InboundController extends Controller
         $dbName = \DB::connection()->getDatabaseName(); // test
         $allResult = \DB::table('SSZNumber')
             ->where('received_time', '>=', Carbon::now()->subYear(1))
-            ->orderBy('received_time', 'desc')
             ->get();
     } // showSSZFlowNumber
 
@@ -161,7 +160,6 @@ class InboundController extends Controller
             })
             ->leftJoin('人員信息', 'SSZInfo.ClaimedStaff', '=', '人員信息.工號')
             ->where('SSZInfo.Company', 'like', $CompanyAlias . '%')
-            ->orderBy('sszNumber.received_time', 'desc')
             ->get();
 
         return \Response::json(['data' => $allResult, "dbName" => $requestDB], 200/* Status code here default is 200 ok*/);

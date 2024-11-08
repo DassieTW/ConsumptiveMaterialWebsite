@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h3>{{ $t('inboundpageLang.new') }}</h3>
+            <h3>{{ $t('inboundpageLang.click_the_flow_number') }}</h3>
         </div>
         <div class="card-body">
             <div class="row justify-content-between">
@@ -29,17 +29,12 @@
                 :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
                 :page-options="table.pageOptions" :sortable="table.sortable" :is-fixed-first-column="false">
                 <template v-slot:FlowNumber="{ row, key }">
-                    <div class="col col-auto align-items-center m-0 p-0">
-                        <div class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
-                            {{ row.FlowNumber }}
-                        </div>
-                    </div>
-                </template>
-                <template v-slot:SXB單號="{ row, key }">
-                    <div class="col col-auto align-items-center m-0 p-0">
+                    <div class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
+                        <a @click="openSSZDetails(row.FlowNumber)" data-bs-toggle="modal" data-bs-target="#detailTable"
+                            class="m-0 p-0">{{ row.FlowNumber }} &nbsp;</a>
                         <button @click="openSSZDetails(row.FlowNumber)" type="button" data-bs-toggle="modal"
-                            data-bs-target="#detailTable" class="btn btn-outline-info btn-sm ms-1 my-0 px-1 py-0"
-                            style="border-radius: 20px;" :id="'sxb' + row.id" :name="'sxb' + key">More</button>
+                            data-bs-target="#detailTable" class="btn btn-outline-info btn-sm my-0 px-1 py-0"
+                            style="border-radius: 20px;" :name="'sxb' + key">More</button>
                     </div>
                 </template>
                 <template v-slot:status="{ row, key }">
@@ -302,8 +297,9 @@ export default defineComponent({
                 locsArray.push(element.儲存位置);
             });
 
-            // get unique SSZ number and its status and push to data
+            // get unique SSZ number and its status
             Object.assign(data, [...new Map(allRowsObj.data.map(item => [item["FlowNumber"], item])).values()]);
+
             for (let i = 0; i < allRowsObj.data.length; i++) {
                 allRowsObj.data[i].新儲位 = "";
                 data2.push(allRowsObj.data[i]);
@@ -323,7 +319,7 @@ export default defineComponent({
                         "inboundpageLang.FlowNumber"
                     ),
                     field: "FlowNumber",
-                    width: "8ch",
+                    width: "10ch",
                     sortable: true,
                 },
                 {
@@ -333,14 +329,6 @@ export default defineComponent({
                     field: "status",
                     width: "6ch",
                     sortable: true,
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.info"
-                    ),
-                    field: "SXB單號",
-                    width: "4ch",
-                    sortable: false,
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
@@ -359,6 +347,23 @@ export default defineComponent({
                         );
                     },
                 },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.updatetime"
+                    ),
+                    field: "received_time",
+                    width: "13ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.received_time === null || row.received_time === undefined) row.received_time = "N/A";
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.received_time +
+                            "</div>"
+                        );
+                    },
+                },
             ],
             rows: computed(() => {
                 return data.filter((x) =>
@@ -371,8 +376,8 @@ export default defineComponent({
                 return table.rows.length;
             }),
             sortable: {
-                order: "id",
-                sort: "asc",
+                order: "received_time",
+                sort: "desc",
             },
             messages: {
                 pagingInfo:
@@ -528,7 +533,7 @@ export default defineComponent({
                 return table2.rows.length;
             }),
             sortable: {
-                order: "id",
+                order: "MatShort",
                 sort: "asc",
             },
             messages: {

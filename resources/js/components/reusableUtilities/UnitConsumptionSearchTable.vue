@@ -549,7 +549,7 @@ export default defineComponent({
                 return table.rows.length;
             }),
             sortable: {
-                order: "id",
+                order: "料號90",
                 sort: "asc",
             },
             messages: {

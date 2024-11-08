@@ -524,22 +524,22 @@
 
                     <div class="p-5 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
                         <div class="flex items-center">
-                            <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                                class="w-8 h-8 text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                class="w-8 h-8 text-gray-600" viewBox="0 0 16 16">
                                 <path
-                                    d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5zM3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z" />
+                                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                             </svg>
                             <div class="ml-4 text-xl leading-7 font-semibold">
-                                <a href="{{ url('/barcode') }}"
-                                    class="underline text-gray-900 dark:text-black">條碼生成</a>
+                                <a href="{{ url('/call/diff') }}"
+                                    class="underline text-gray-900 dark:text-black">警報系統</a>
                             </div>
                         </div>
 
                         <div class="ml-12">
                             <div class="mt-2 text-gray-600 dark:text-gray-800 text-md">
-                                單筆產生料號/儲位條碼，或批量生成條碼，
-                                <br>結果可存至PDF印出，
-                                <br>亦可由資料庫取得料號與儲位條碼一次性生成。
+                                每日由系統寄發呆滯料件/安全庫存之警報信件、
+                                <br>透過月請購與SSZ領料單，
+                                <br>可取得請購量與實際領用量之差異。
                             </div>
                         </div>
                     </div>
