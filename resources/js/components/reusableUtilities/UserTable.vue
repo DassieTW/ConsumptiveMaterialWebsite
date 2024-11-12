@@ -182,8 +182,13 @@ export default defineComponent({
         async function submitNewDBList() {
             let dblist_str = "";
             let username = (clickedUser.value).split("(")[0];
+            // sort checkedDBs.value
+            checkedDBs.value.sort();
+            console.log(checkedDBs.value); // test
             checkedDBs.value.forEach((db) => {
-                dblist_str = dblist_str + "_" + db;
+                if (db !== "") {
+                    dblist_str = dblist_str + "_" + db;
+                } // if
             });
 
             if (checkedDBs.value.length > 0) {

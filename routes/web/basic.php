@@ -60,11 +60,15 @@ Route::post('/materialaddsubmit', [BasicInformationController::class, 'materiala
 Route::get('/material', function () {
     return view('basic.searchmaterial')->with(['data' => 發料部門::cursor()]);
 })->name('basic.material')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+// for accidnetly post before js ready
+Route::post('/material', function () {
+    return redirect()->route('basic.materialsearch');
+})->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //料件信息查詢
 Route::get('/materialsearch', function () {
     return view("basic.searchmaterialok");
-})->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+})->name('basic.materialsearch')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //料件信息刪除或修改
 Route::post('/materialchangeordel', [BasicInformationController::class, 'materialchangeordel'])->name('basic.materialchangeordel')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');

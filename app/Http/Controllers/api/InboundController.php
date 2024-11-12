@@ -152,7 +152,7 @@ class InboundController extends Controller
         } // else if
 
         $FlowNumberReceiveTime = \DB::table('SSZNumber')
-            ->where('received_time', '>=', Carbon::now()->subYear(1));
+            ->where('received_time', '>=', Carbon::now()->subMonth(6));
 
         $allResult = \DB::table('SSZInfo')
             ->joinSub($FlowNumberReceiveTime, 'sszNumber', function ($join) {
@@ -172,7 +172,7 @@ class InboundController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request) // 入庫 上傳
+    public function ssz_to_loc(Request $request) // 入庫
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
@@ -254,7 +254,6 @@ class InboundController extends Controller
             } // for
 
             $whole_load2 = array_chunk($res_arr_values2, 200, true);
-            // dump($whole_load2[0]); // test
             for ($i = 0; $i < count($whole_load2); $i++) {
                 $temp_record = \DB::table('inbound')
                     ->insert($whole_load2[$i]);
@@ -280,7 +279,7 @@ class InboundController extends Controller
             \DB::rollback();
             return \Response::json(['message' => $e->getmessage(), 'DB' => $dbName], 421/* Status code here default is 200 ok*/);
         } //try - catch
-    } // update
+    } // ssz_to_loc
 
     //入庫-儲位調撥
     public function locTransfer(Request $request)

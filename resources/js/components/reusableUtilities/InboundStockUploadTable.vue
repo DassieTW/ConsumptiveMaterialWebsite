@@ -31,9 +31,9 @@
                 <template v-slot:FlowNumber="{ row, key }">
                     <div class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
                         <a @click="openSSZDetails(row.FlowNumber)" data-bs-toggle="modal" data-bs-target="#detailTable"
-                            class="m-0 p-0">{{ row.FlowNumber }} &nbsp;</a>
+                            class="m-0 p-0">{{ row.FlowNumber }}</a>
                         <button @click="openSSZDetails(row.FlowNumber)" type="button" data-bs-toggle="modal"
-                            data-bs-target="#detailTable" class="btn btn-outline-info btn-sm my-0 px-1 py-0"
+                            data-bs-target="#detailTable" class="btn btn-outline-info btn-sm mx-1 my-0 px-1 py-0"
                             style="border-radius: 20px;" :name="'sxb' + key">More</button>
                     </div>
                 </template>
@@ -279,9 +279,49 @@ export default defineComponent({
 
         const ssz_claim = async () => {
             await triggerModal();
+            // get the objects that 新儲位 is not empty and id is modalTitle
+            let claimed_mats = data2.filter(x => x.新儲位 !== "" && x.FlowNumber === modalTitle.value);
+            console.log(claimed_mats); // test
 
-            claim_a_mat(modalTitle.value, modalTitle.value);
-            console.log(data2); // test
+            let result = "";
+            claim_a_mat(modalTitle.value, data2).then((value) => {
+                if (value === "success") {
+                    result = "success";
+                    getSSZ_info();
+                } // if
+                else {
+                    result = "failed";
+                    console.log(value);
+                } // else
+            });
+
+            if (result === "success") {
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         } // ssz_claim
@@ -292,7 +332,7 @@ export default defineComponent({
             data2.splice(0);
             locsArray.splice(0);
             let allRowsObj = JSON.parse(mats_SSZInfo.value);
-
+            // console.log(allRowsObj); // test
             JSON.parse(locations.value).data.forEach(element => {
                 locsArray.push(element.儲存位置);
             });

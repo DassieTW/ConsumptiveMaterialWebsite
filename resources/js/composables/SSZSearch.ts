@@ -58,7 +58,7 @@ export default function useSSZSearch() {
         let getDB = await axios.post('/getCurrentDB');
 
         try {
-            let response = await axios.post('/api/inbound/rejectSSZ', {
+            let response = await axios.post('/api/inbound/claimSSZ', {
                 DB: getDB.data,
                 ssz: JSON.stringify(ssz_number),
             });
@@ -68,11 +68,9 @@ export default function useSSZSearch() {
                 resolve("success");
             });
         } catch (e) {
-            for (const key in e.response.data.errors) {
-                errors.value += e.response.data.errors[key][0] + '  ';
-            } // for each errors
-
-            console.log(e); // test
+            return new Promise((resolve, reject) => {
+                reject(e.response);
+            });
         } // try catch
     } // claim_a_mat
 

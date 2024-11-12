@@ -222,3 +222,6 @@ Route::post('/locTransferRecord', 'api\InboundController@showLocTransferRecord')
 //入庫-SSZ領料單
 Route::post('/ssz', 'api\InboundController@showSSZFlowNumber');
 Route::post('/ssz_info', 'api\InboundController@showSSZInfo');
+
+//入庫-SSZ領料單-入儲位
+Route::post('/claimSSZ', 'api\InboundController@ssz_to_loc');

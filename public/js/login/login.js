@@ -57,7 +57,7 @@ $(function () {
     var site = $("#site").children("option:selected").val();
     //TEST DATABASE
     //site = 'M2-TEST-1112';
-    console.log(site); // test
+    // console.log(site); // test
 
     // clean up previous input results
     $(".is-invalid").removeClass("is-invalid");
@@ -86,17 +86,6 @@ $(function () {
       },
       success: function (data) {
         console.log(data.message); // test
-        /*notyf.success({
-                  message: "LogIn Success.",
-                  duration: 3000,   //miliseconds, use 0 for infinite duration
-                  ripple: true,
-                  dismissible: true,
-                  position: {
-                    x: "right",
-                    y: "bottom"
-                  }
-                });*/
-
         window.location.href = "/home";
       },
       error: function (err) {
