@@ -210,9 +210,6 @@ Route::post('/searchstock', function (Request $request) {
 
 Route::post('/getExistingStock', 'api\InboundController@showStocks');
 
-// 入庫 上傳
-Route::post('/uploadToDB', 'api\InboundController@update');
-
 //入庫-儲位調撥提交
 Route::post('/locTransfer', 'api\InboundController@locTransfer');
 

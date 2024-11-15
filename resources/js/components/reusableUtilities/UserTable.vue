@@ -266,6 +266,7 @@ export default defineComponent({
             await getUsers();
         } // DeleteUser
 
+        // remove available_dblist column for normal users
         watch(current_user, async () => {
             if (current_user.value.priority > 0) {
                 table.columns.splice(5, 2);
@@ -390,7 +391,7 @@ export default defineComponent({
                     ),
                     field: "available_dblist",
                     width: "10ch",
-                    sortable: false,
+                    sortable: true,
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(

@@ -100,7 +100,7 @@
                                 <select v-model="row.新儲位" style="width: 11ch;"
                                     class="col col-auto form-select form-select-lg ps-2 p-0 m-0"
                                     :id="'newloc_' + row.MatShort" :name="'newloc_' + row.MatShort">
-                                    <option id="noneSelected" value="" disabled selected>
+                                    <option id="noneSelected" value="" selected>
                                         {{ $t('inboundpageLang.choose') }}
                                     </option>
                                     <option v-for="item in locsArray" :id="item" :value="item">
@@ -159,6 +159,7 @@ import {
 } from "@vue/runtime-core";
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
+import useTransitSearch from "../../composables/TransitSearch.ts";
 import useSSZSearch from "../../composables/SSZSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
 
@@ -167,10 +168,12 @@ export default defineComponent({
     components: { TableLite },
     setup() {
         const { mats_SSZ, mats_SSZInfo, getSSZ, getSSZ_info, claim_a_mat } = useSSZSearch(); // axios get the mats_SSZInfo data
+        const { mats_inTransit, getTransit, updateInTransit } = useTransitSearch(); // axios get the mats_inTransit data
         const { queryResult, locations, validateISN, getLocs } = useCommonlyUsedFunctions();
 
         onBeforeMount(async () => {
             await getLocs();
+            await getTransit();
             await getSSZ_info();
         });
 
@@ -282,6 +285,27 @@ export default defineComponent({
             // get the objects that 新儲位 is not empty and id is modalTitle
             let claimed_mats = data2.filter(x => x.新儲位 !== "" && x.FlowNumber === modalTitle.value);
             console.log(claimed_mats); // test
+            console.log(JSON.parse(mats_inTransit.value).data); // test
+
+            if (claimed_mats.length === 0) {
+                notyf.open({
+                    type: "warning",
+                    message: app.appContext.config.globalProperties.$t("basicInfoLang.nodata"),
+                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                return;
+            } // if
+
+            
 
             let result = "";
             claim_a_mat(modalTitle.value, data2).then((value) => {

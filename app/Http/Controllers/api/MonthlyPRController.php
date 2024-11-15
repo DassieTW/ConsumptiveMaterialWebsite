@@ -380,7 +380,8 @@ class MonthlyPRController extends Controller
             ->joinSub($test, '在途量', function ($join) {
                 $join->on('在途量.料號', '=', 'consumptive_material.料號');
             })
-            ->where('請購數量', '>', 0)->get();
+            // ->where('請購數量', '>', 0)
+            ->get();
 
         //dd($datas);
         return \Response::json(['data' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
@@ -653,6 +654,11 @@ class MonthlyPRController extends Controller
 
                 $record = $record + $temp_record;
             } // for
+
+            // delete the record if the qty is 0
+            $delete_record = \DB::table('在途量')
+                ->where('請購數量', '<=', 0)
+                ->delete();
 
             \DB::commit();
 
