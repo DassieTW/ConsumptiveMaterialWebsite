@@ -60,8 +60,9 @@ export default function useInboundStockSearch() {
                 resolve("success");
             });
         } catch (e) {
-            console.log(e); // test
-            return e;
+            return new Promise((resolve, reject) => {
+                reject(e.response);
+            });
         } // try catch
     } // getExistingStock
 
@@ -86,31 +87,6 @@ export default function useInboundStockSearch() {
             return e;
         } // try catch
     } // getLocTransferRecord
-
-    const uploadToDB = async (newStock, inboundCount, newInTransit) => {
-        errors.value = "";
-        let getDB = await axios.post('/getCurrentDB');
-        let username = await axios.post('/getCurrentUsername');
-        let serialNum = Date.now();
-        try {
-            let response = await axios.post('/api/inbound/uploadToDB', {
-                DB: getDB.data,
-                User: username.data,
-                newStock: JSON.stringify(newStock),
-                inboundCount: JSON.stringify(inboundCount),
-                newInTransit: JSON.stringify(newInTransit),
-                serialNum: JSON.stringify(serialNum),
-            });
-
-            // console.log(response.data); // test
-            return new Promise((resolve, reject) => {
-                resolve("success");
-            });
-        } catch (e) {
-            console.log(e); // test
-            return e;
-        } // try catch
-    }; // uploadToDB
 
     const locTransfer = async (pnArray, ogLoc, newLoc, amount) => {
         errors.value = "";
@@ -146,7 +122,6 @@ export default function useInboundStockSearch() {
         getMats,
         getExistingStock,
         getLocTransferRecord,
-        uploadToDB,
         locTransfer,
     } // return
 } // useInboundStockSearch

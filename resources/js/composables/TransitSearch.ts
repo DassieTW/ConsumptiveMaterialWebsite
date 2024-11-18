@@ -45,13 +45,14 @@ export default function useTransitSearch() {
                 descr: JSON.stringify(descr)
             });
 
-            console.log(response.data); // test
+            // console.log(response.data); // test
             return new Promise((resolve, reject) => {
                 resolve("success");
             });
         } catch (e) {
-            console.log(e); // test
-            return e;
+            return new Promise((resolve, reject) => {
+                reject(e.response);
+            });
         } // try catch
     } // updateInTransit
 

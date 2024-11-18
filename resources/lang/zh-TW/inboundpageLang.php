@@ -114,4 +114,5 @@ return [
     'inbound_loc' => '入庫儲位',
     'inbound_staff' => '入庫人員',
     'click_the_flow_number' => '點擊領料單號將料件歸類至儲位',
+    'nowstock_failed' => '獲取現有庫存失敗',
 ];

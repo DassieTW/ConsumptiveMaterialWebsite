@@ -1,5 +1,5 @@
 const mix = require("laravel-mix");
-const { exec } = require('child_process');
+const { exec } = require("child_process");
 
 /*
  |--------------------------------------------------------------------------
@@ -12,7 +12,7 @@ const { exec } = require('child_process');
  |
  */
 
- mix.autoload({
+mix.autoload({
     jquery: [
         "$",
         "window.jQuery",
@@ -31,11 +31,14 @@ mix.js("resources/js/app.js", "public/js")
     .version()
     .sourceMaps()
     .after(() => {
-        exec('php artisan lang:js --quiet');
-        exec('php artisan lang:js resources/js/vue-translations.js --no-lib --quiet');
+        exec("php artisan lang:js --quiet");
+        exec(
+            "php artisan lang:js resources/js/vue-translations.js --no-lib --quiet"
+        );
     });
 
 const WebpackShellPlugin = require("webpack-shell-plugin-next");
+const { DefinePlugin } = require("webpack");
 
 // Add shell command plugin configured to create JavaScript language file
 mix.webpackConfig({
@@ -49,6 +52,11 @@ mix.webpackConfig({
                 "php artisan lang:js --quiet",
                 "php artisan lang:js resources/js/vue-translations.js --no-lib --quiet",
             ],
+        }),
+        new DefinePlugin({
+            __VUE_OPTIONS_API__: true,
+            __VUE_PROD_DEVTOOLS__: false,
+            __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
         }),
     ],
 });

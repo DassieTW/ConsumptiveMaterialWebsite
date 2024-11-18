@@ -121,17 +121,6 @@
                                 </div>
                             </div>
                         </template>
-                        <template v-slot:ClaimedStaff="{ row, key }">
-                            <div class="col col-auto align-items-center m-0 p-0">
-                                <div v-if="row.ClaimedStaff != null" class="text-nowrap CustomScrollbar"
-                                    style="overflow-x: auto; width: 100%;">
-                                    {{ row.ClaimedStaff + " (" + row.姓名 + ")" }}
-                                </div>
-                                <div v-else class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
-                                    N/A
-                                </div>
-                            </div>
-                        </template>
                     </table-lite>
                 </div>
                 <div v-if="showFooter" class="modal-footer justify-content-center">
@@ -160,6 +149,7 @@ import {
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useTransitSearch from "../../composables/TransitSearch.ts";
+import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
 import useSSZSearch from "../../composables/SSZSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
 
@@ -167,13 +157,13 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        const { mats_SSZ, mats_SSZInfo, getSSZ, getSSZ_info, claim_a_mat } = useSSZSearch(); // axios get the mats_SSZInfo data
+        const { mats_SSZInfo, getSSZ_info, claim_a_mat, updateBasicInfo } = useSSZSearch(); // axios get the mats_SSZInfo data
         const { mats_inTransit, getTransit, updateInTransit } = useTransitSearch(); // axios get the mats_inTransit data
-        const { queryResult, locations, validateISN, getLocs } = useCommonlyUsedFunctions();
+        const { mats, getExistingStock } = useInboundStockSearch(); // axios get the mats data
+        const { locations, validateISN, getLocs } = useCommonlyUsedFunctions();
 
         onBeforeMount(async () => {
             await getLocs();
-            await getTransit();
             await getSSZ_info();
         });
 
@@ -284,9 +274,6 @@ export default defineComponent({
             await triggerModal();
             // get the objects that 新儲位 is not empty and id is modalTitle
             let claimed_mats = data2.filter(x => x.新儲位 !== "" && x.FlowNumber === modalTitle.value);
-            console.log(claimed_mats); // test
-            console.log(JSON.parse(mats_inTransit.value).data); // test
-
             if (claimed_mats.length === 0) {
                 notyf.open({
                     type: "warning",
@@ -305,25 +292,63 @@ export default defineComponent({
                 return;
             } // if
 
-            
+            let pnArray = claimed_mats.map((obj) => {
+                return obj.MatShort;
+            });
+            let nameArray = claimed_mats.map((obj) => {
+                return "N/A";
+            });
+            let specArray = claimed_mats.map((obj) => {
+                return obj.Spec;
+            });
+            let priceArray = claimed_mats.map((obj) => {
+                return "9999.99";
+            });
+            let currencyArray = claimed_mats.map((obj) => {
+                return "USD";
+            });
+            let unitArray = claimed_mats.map((obj) => {
+                return "N/A";
+            });
+            let mpqArray = claimed_mats.map((obj) => {
+                return "9999";
+            });
+            let moqArray = claimed_mats.map((obj) => {
+                return "9999";
+            });
+            let ltArray = claimed_mats.map((obj) => {
+                return "9999.99";
+            });
+            let gradeaArray = claimed_mats.map((obj) => {
+                return "否";
+            });
+            let monthlyArray = claimed_mats.map((obj) => {
+                return "是";
+            });
+            let dispatcherArray = claimed_mats.map((obj) => {
+                return "N/A";
+            });
+            let safestockArray = claimed_mats.map((obj) => {
+                return "null";
+            });
 
-            let result = "";
-            claim_a_mat(modalTitle.value, data2).then((value) => {
+            // console.log(moqArray); // test
+            // return; // test
+            let result_basic_info_update = "";
+            await updateBasicInfo(pnArray, nameArray, specArray, priceArray, unitArray, currencyArray, mpqArray, moqArray, ltArray, gradeaArray, monthlyArray, dispatcherArray, safestockArray).then((value) => {
                 if (value === "success") {
-                    result = "success";
-                    getSSZ_info();
+                    result_basic_info_update = "success";
                 } // if
                 else {
                     result = "failed";
                     console.log(value);
                 } // else
             });
-
-            if (result === "success") {
+            if (result_basic_info_update === "success") {
                 notyf.open({
                     type: "success",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    message: app.appContext.config.globalProperties.$t("basicInfoLang.matsInfo") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 5000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
                     position: {
@@ -335,8 +360,171 @@ export default defineComponent({
             else {
                 notyf.open({
                     type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
+                    message: app.appContext.config.globalProperties.$t("basicInfoLang.matsInfo") + " " + app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 5000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // else
+
+            let start = Date.now();
+            let newStock = claimed_mats.map((obj) => {
+                return [obj.MatShort, obj.relQty, obj.新儲位];
+            });
+
+            let inbound_records = claimed_mats.map((obj) => {
+                return [obj.MatShort, obj.relQty, obj.新儲位, ("入庫(" + obj.FlowNumber + ")")];
+            });
+
+            let tempArr_isn = [];
+            let tempArr_loc = [];
+            newStock.forEach(element => {
+                tempArr_isn.push(element[0]);
+                tempArr_loc.push(element[2]);
+            });
+            let result_get_stock = "";
+            // get the existing stock
+            await getExistingStock(tempArr_isn, tempArr_loc).then((value) => {
+                if (value === "success") {
+                    result_get_stock = "success";
+                } // if
+                else {
+                    result_get_stock = "failed";
+                    console.log(value);
+                } // else
+            });
+            if (result_get_stock === "success") {
+                for (let i = 0; i < newStock.length; i++) {
+                    let foundObj = JSON.parse(mats.value).data.find(
+                        (o) => {
+                            return (o.料號 === newStock[i][0].trim() && o.儲位 === newStock[i][2].trim());
+                        });
+
+                    if (foundObj !== undefined) {
+                        newStock[i][1] = (parseInt(newStock[i][1]) + parseInt(foundObj.現有庫存)).toString();
+                    } // if
+                } // for
+            } // if
+            else {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                console.log("Failed to get existing stock");
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("inboundpageLang.nowstock_failed"),
+                    duration: 5000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                return;
+            } // else
+            let timeTaken = Date.now() - start;
+            console.log("Total time taken : " + timeTaken + " milliseconds");
+            // console.log(newStock); // test
+            // return; // test
+
+            let result_ssz_inbound = "";
+            await claim_a_mat(modalTitle.value, newStock, inbound_records).then((value) => {
+                if (value === "success") {
+                    result_ssz_inbound = "success";
+                    getSSZ_info();
+                } // if
+                else {
+                    result_ssz_inbound = "failed";
+                    console.log(value);
+                } // else
+            });
+
+            if (result_ssz_inbound === "success") {
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("inboundpageLang.page_name") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 5000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("inboundpageLang.page_name") + " " + app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 5000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                return;
+            } // else
+
+            await getTransit();
+            let isnArray = [];
+            let qtyArray = [];
+            let descriptionArray = [];
+            let result_transit_update = "";
+            // Find the claimed mats in transit
+            claimed_mats.forEach(element => {
+                let obj = JSON.parse(mats_inTransit.value).data.find(o => o.料號 === element.MatShort);
+                if (obj !== undefined) {
+                    isnArray.push(obj.料號);
+                    if (parseFloat(obj.請購數量) - parseFloat(element.relQty) < 0) {
+                        qtyArray.push("0");
+                    } // if
+                    else {
+                        qtyArray.push((parseFloat(obj.請購數量) - parseFloat(element.relQty)).toString());
+                    } // else
+
+                    descriptionArray.push("入庫(" + element.FlowNumber + ")");
+                } // if
+            });
+
+            await updateInTransit(isnArray, qtyArray, descriptionArray).then((value) => {
+                if (value === "success") {
+                    result_transit_update = "success";
+                    getTransit();
+                } // if
+                else {
+                    result_transit_update = "failed";
+                    console.log(value);
+                } // else
+            });
+
+            if (result_transit_update === "success") {
+                notyf.open({
+                    type: "success",
+                    message: app.appContext.config.globalProperties.$t("inboundpageLang.transit") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    duration: 5000, //miliseconds, use 0 for infinite duration
+                    ripple: true,
+                    dismissible: true,
+                    position: {
+                        x: "right",
+                        y: "bottom",
+                    },
+                });
+            } // if
+            else {
+                notyf.open({
+                    type: "error",
+                    message: app.appContext.config.globalProperties.$t("inboundpageLang.transit") + " " + app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
+                    duration: 5000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
                     position: {
@@ -565,6 +753,24 @@ export default defineComponent({
                     field: "ClaimedStaff",
                     width: "15ch",
                     sortable: true,
+                    display: function (row, i) {
+                        if (row.ClaimedStaff === null || row.ClaimedStaff === undefined || row.ClaimedStaff === "") {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                "N/A" +
+                                "</div>"
+                            );
+                        } // if
+                        else {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.ClaimedStaff + " (" + row.姓名 + ")" +
+                                "</div>"
+                            );
+                        } // else
+                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(

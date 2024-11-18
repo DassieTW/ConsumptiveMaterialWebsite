@@ -180,11 +180,10 @@ class InboundController extends Controller
         $record = 0;
         $record2 = 0;
         $record3 = 0;
-        $user = $request->input('User');
+        $user = $request->input('username');
         $newStock = json_decode($request->input('newStock'));
-        $inboundRecords = json_decode($request->input('inboundCount'));
-        $newInTransit = json_decode($request->input('newInTransit'));
-        $serialNum = json_decode($request->input('serialNum'));
+        $inboundRecords = json_decode($request->input('inboundRecords'));
+        $serialNum = json_decode($request->input('ssz')); // ssz flow number
         try {
             $res_arr_values = array();
             for ($i = 0; $i < count($newStock); $i++) {
@@ -222,23 +221,6 @@ class InboundController extends Controller
                 $res_arr_values2[] = $temp;
             } //for
 
-            $res_arr_values3 = array();
-            for ($i = 0; $i < count($newInTransit); $i++) {
-                $isn = $newInTransit[$i][0];
-                $amount = $newInTransit[$i][1];
-
-                $temp = array(
-                    "客戶" => null,
-                    "料號" => $isn,
-                    '請購數量' => $amount,
-                    '說明' => '入庫/Inbound',
-                    '修改人員' => $user,
-                    '最後更新時間' => Carbon::now()
-                );
-
-                $res_arr_values3[] = $temp;
-            } //for
-
             \DB::beginTransaction();
 
             // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
@@ -261,20 +243,44 @@ class InboundController extends Controller
                 $record2 = $record2 + $temp_record;
             } // for
 
+            \DB::commit();
+
+            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', "Consumables management");
+            \DB::purge(env("DB_CONNECTION"));
+
+            $res_arr_values3 = array();
+            for ($i = 0; $i < count($inboundRecords); $i++) {
+                $isn = $inboundRecords[$i][0];
+                $amount = $inboundRecords[$i][1];
+                $loc = $inboundRecords[$i][2];
+
+                $temp = array(
+                    'FlowNumber' => $serialNum,
+                    "MatShort" => $isn,
+                    'ClaimedBy' => str_replace(" Consumables management", "", $dbName),
+                    'ClaimedStaff' => $user,
+                    'claimed_time' => Carbon::now(),
+                    'initial_loc' => $loc
+                );
+
+                $res_arr_values3[] = $temp;
+            } //for
+
+            \DB::beginTransaction();
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
             $whole_load3 = array_chunk($res_arr_values3, 200, true);
             for ($i = 0; $i < count($whole_load3); $i++) {
-                $temp_record = \DB::table('在途量')->upsert(
+                $temp_record = \DB::table('SSZInfo')->upsert(
                     $whole_load3[$i],
-                    ['料號'],
-                    ['料號', '客戶', '請購數量', '說明', '修改人員', '最後更新時間']
+                    ['FlowNumber', 'MatShort'],
+                    ['ClaimedBy', 'ClaimedStaff', 'claimed_time', 'initial_loc']
                 );
 
                 $record3 = $record3 + $temp_record;
             } // for
-
             \DB::commit();
 
-            return \Response::json(['newStock' => $record, 'inbound' => $record2, 'inTransit' => $record3, 'DB' => $dbName]/* Status code here default is 200 ok*/);
+            return \Response::json(['newStock' => $record, 'inbound' => $record2, 'SSZInfo' => $record3, 'DB' => $dbName]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             \DB::rollback();
             return \Response::json(['message' => $e->getmessage(), 'DB' => $dbName], 421/* Status code here default is 200 ok*/);

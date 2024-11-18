@@ -122,4 +122,4 @@ export default function useUnitConsumptionSearch() {
         uploadToDB,
         deleteUC
     } // return
-} // useInboundStockSearch
+} // useUnitConsumptionSearch
