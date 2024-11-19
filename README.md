@@ -50,7 +50,7 @@ php artisan down --secret="someKey" --render="errors::503"
 # Then IT can access the website by the address below
 https://ptwsiteservice01.pega.corp.pegatron/someKey
 
-# In intra network, under this folder: 
+# In intra network, under this project's folder: 
 ```
 cp .env.server /home/it/PEGA_Projects/ConsumptiveMaterialWebsite/.env
 ```
@@ -67,3 +67,4 @@ https://laravel.com/docs/8.x/scheduling#running-the-scheduler
 ```
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 ```
+since we docker exec into the container, the {path-to-your-project} should be /var/www

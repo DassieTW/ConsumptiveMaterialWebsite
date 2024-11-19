@@ -16,7 +16,7 @@ use App\Models\Inventory;
 */
 
 Route::get('/', function () {
-    return view('member.infor');
+    return redirect(route('member.priority_list'));
 })->name('member.index');
 
 // Matches The "/member/sso" URL
@@ -103,5 +103,8 @@ Route::post('/numberchangeordel', [Auth\LoginController::class, 'numberchangeord
 
 // 表列權限頁面
 Route::get('/priority_list', function () {
-    return view('member.priority_list');
+    $user_name = \DB::table('人員信息')
+        ->where('工號', \Auth::user()->username)
+        ->get('姓名');
+    return view('member.priority_list')->with(['user_name' => $user_name->get(0)->姓名]);
 })->name('member.priority_list')->middleware('auth');

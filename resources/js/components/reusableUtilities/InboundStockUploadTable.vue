@@ -429,8 +429,6 @@ export default defineComponent({
             } // else
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
-            // console.log(newStock); // test
-            // return; // test
 
             let result_ssz_inbound = "";
             await claim_a_mat(modalTitle.value, newStock, inbound_records).then((value) => {

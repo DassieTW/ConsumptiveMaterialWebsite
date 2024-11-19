@@ -6,7 +6,7 @@
             </div>
             <div class="col col-6 p-0 m-0">
                 <input id="pnInput" class="text-center form-control form-control-lg"
-                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
+                    v-bind:placeholder="$t('inboundpageLang.enterisn_or_spec')" v-model="searchTerm" />
             </div>
         </div>
         <div class="col col-auto">
@@ -28,6 +28,11 @@
         :hasCheckbox="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
         @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+        <template v-slot:品名="{ row, key }">
+            <input v-model="row.品名" @input="CheckCurrentRow($event);"
+                class="form-control text-center align-self-center p-0 m-0" style="width: 13ch;" :id="'pname' + row.id"
+                :name="'pname' + key" :value="row.品名" />
+        </template>
         <template v-slot:單價_幣別="{ row, key }">
             <!-- DON'T Use input-group here. It messes with the z-index -->
             <div class="row">
@@ -499,15 +504,7 @@ export default defineComponent({
                     sortable: true,
                     isKey: true,
                     display: function (row, i) {
-                        // console.log(row);
                         return (
-                            '<input type="hidden" id="number' +
-                            row.id +
-                            '" name="number' +
-                            i +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.料號 +
@@ -522,21 +519,6 @@ export default defineComponent({
                     field: "品名",
                     width: "13ch",
                     sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="name' +
-                            i +
-                            '" name="name' +
-                            i +
-                            '" value="' +
-                            row.品名 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.品名 +
-                            "</div>"
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
@@ -547,13 +529,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="format' +
-                            i +
-                            '" name="format' +
-                            i +
-                            '" value="' +
-                            row.規格 +
-                            '">' +
                             '<div class="CustomScrollbar text-nowrap"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.規格 +
@@ -637,7 +612,7 @@ export default defineComponent({
                     x.料號
                         .toLowerCase()
                         .includes(searchTerm.value.toLowerCase()) ||
-                    x.品名
+                    x.規格
                         .includes(searchTerm.value)
                 );
             }),
@@ -697,7 +672,7 @@ export default defineComponent({
 
         const updateCheckedRows = (rowsKey) => {
             checkedRows = rowsKey;
-            console.log(rowsKey); // test
+            // console.log(rowsKey); // test
         };
 
         return {
