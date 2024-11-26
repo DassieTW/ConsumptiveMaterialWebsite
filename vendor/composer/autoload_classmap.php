@@ -37,7 +37,6 @@ return array(
     'App\\Http\\Controllers\\OboundController' => $baseDir . '/app/Http/Controllers/OboundController.php',
     'App\\Http\\Controllers\\OutboundController' => $baseDir . '/app/Http/Controllers/OutboundController.php',
     'App\\Http\\Controllers\\PostController' => $baseDir . '/app/Http/Controllers/PostController.php',
-    'App\\Http\\Controllers\\PriorityController' => $baseDir . '/app/Http/Controllers/PriorityController.php',
     'App\\Http\\Controllers\\api\\AlertController' => $baseDir . '/app/Http/Controllers/api/AlertController.php',
     'App\\Http\\Controllers\\api\\BasicInfoController' => $baseDir . '/app/Http/Controllers/api/BasicInfoController.php',
     'App\\Http\\Controllers\\api\\CommonlyUsedController' => $baseDir . '/app/Http/Controllers/api/CommonlyUsedController.php',

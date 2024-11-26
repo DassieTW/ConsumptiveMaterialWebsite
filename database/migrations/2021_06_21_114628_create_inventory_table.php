@@ -20,8 +20,6 @@ class CreateInventoryTable extends Migration
             $table->string('客戶別', 45);
             $table->dateTime('最後更新時間');
             $table->primary(array('料號','儲位','客戶別'));
-            //$table->timestamps();
-            //$table->softDeletes();
         });
     }
 

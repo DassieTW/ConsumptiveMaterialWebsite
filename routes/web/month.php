@@ -33,11 +33,6 @@ use App\Http\Controllers\MonthController;
 |
 */
 
-//月請購
-Route::get('/', function () {
-    return view('month.index');
-})->name('month.index')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //匯入非月請購資料頁面
 Route::get('/importnotmonth', function () {
     return view('month.importnotmonth');
@@ -47,11 +42,6 @@ Route::get('/importnotmonth', function () {
 Route::get('/importmonth', function () {
     return view('month.importmonth');
 })->name('month.importmonth')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//SRM單數量頁面
-Route::get('/srm', function () {
-    return view('month.srm')->with(['client' => 客戶別::cursor()])->with(['send' => 發料部門::cursor()]);
-})->name('month.srm')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 Route::get('/buylistmake', function () {
     return view('month.buylist')->with(['client' => 客戶別::cursor(), 'send' => 發料部門::cursor()]);
@@ -94,63 +84,13 @@ Route::get('/consumeadd', function () {
     return view('month.consumeadd');
 })->name('month.consumeadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//站位人力(新增)頁面
-Route::get('/standadd', function () {
-    $people = DB::table('login')
-        ->join('人員信息', function ($join) {
-            $join->on('人員信息.工號', '=', 'login.username');
-        })
-        ->where('priority', "=", 1)
-        ->whereNotNull('email')
-        ->get();
-    return view('month.standadd')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with([
-            'people' => $people
-        ]);
-})->name('month.standadd')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//站位人力(新增)
-Route::post('/standnew', [MonthController::class, 'standnew'])->name('month.standnew')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//提交站位人力
-Route::post('/standnewsubmit', [MonthController::class, 'standnewsubmit'])->name('month.standnewsubmit')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//站位人力(查詢與修改)頁面
-Route::get('/stand', function () {
-    return view('month.stand')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['send' => 發料部門::cursor()]);;
-})->name('month.stand')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //料號單耗(查詢)
 Route::get('/consume', function () {
     return view('month.consumesearch');
 })->name('month.consume')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
-//站位人力(查詢)ok
-Route::get('/standsearch', [MonthController::class, 'standsearch'])->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/standsearch', [MonthController::class, 'standsearch'])->name('month.standsearch')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
 //料號單耗(刪除或修改)
 Route::post('/consumechangeordelete', [MonthController::class, 'consumechangeordelete'])->name('month.consumechangeordelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//站位人力(刪除或修改)
-Route::post('/standchangeordelete', [MonthController::class, 'standchangeordelete'])->name('month.standchangeordelete')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-//新增站位上傳
-Route::get('/uploadstand', function () {
-    $people = DB::table('login')
-        ->join('人員信息', function ($join) {
-            $join->on('人員信息.工號', '=', 'login.username');
-        })
-        ->where('priority', "=", 1)
-        ->whereNotNull('email')
-        ->get();
-    return view('month.standadd')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])->with(['production' => 製程::cursor()])->with(['people' => $people]);
-})->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
-
-Route::post('/uploadstand', [MonthController::class, 'uploadstand'])->name('month.uploadstand')->middleware('can:viewMonthlyPR,App\Models\月請購_單耗');
 
 //單耗畫押page
 Route::get('/testconsume', function () {
@@ -190,48 +130,6 @@ Route::post('/testconsume', [MonthController::class, 'testconsumeOALogin'])->wit
 
 //test單耗畫押提交
 Route::post('/testconsume_submit', [MonthController::class, 'testconsume'])->name('month.testconsume_submit')->withoutMiddleware('auth');
-
-//站位畫押page
-Route::get('/teststand', function () {
-    if (strcmp(env('APP_ENV'), 'production') === 0 && request()->query('SSOfailed', 'false') == 'false') {
-        // redirect to MIS SSO page
-        $userKey = urlencode(base64_encode(env('SSO_Key')));
-        $sysType = urlencode(base64_encode(env('SSO_sysType')));
-        $SSO_URL = env('SSO_URL');
-        $ReDirToUrl = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . request()->getSession()->get('locale');
-        $ReDirToUrl = urlencode($ReDirToUrl);
-        $FailTo = env('APP_URL') . "/month/teststand?r=" . request()->r . "&u=" . request()->u . "&d=" . request()->d . "&l=" . request()->getSession()->get('locale') . "&SSOfailed=true";
-        $FailTo = urlencode($FailTo);
-        return redirect($SSO_URL . '?ReDirTo=' . $ReDirToUrl . '&FailTo=' . $FailTo . '&sysType=' . $sysType . '&userKey=' . $userKey);
-    } // if
-    else {
-        if (request()->filled('r')) {
-            $email = Crypt::decryptString(request()->r);
-            $username = Crypt::decryptString(request()->u);
-            $database = Crypt::decryptString(request()->d);
-            \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $database);
-            \DB::purge(env("DB_CONNECTION"));
-            $name = DB::table('login')
-                ->join('人員信息', function ($join) {
-                    $join->on('人員信息.工號', '=', 'login.username');
-                })
-                ->where('username', $username)->value('姓名');
-            return view('month.teststand')->with(['data' => 月請購_站位::cursor()->where('狀態', "待畫押")->where("畫押信箱", $email)])
-                ->with(['email' => $email])->with(['username' => $name])->with(['database' => $database]);
-        } else {
-            return abort(404);
-        } // if else
-    } // else
-})->withoutMiddleware('auth');
-
-// POST Route for SSO Redir
-Route::post('/teststand', [MonthController::class, 'teststandOALogin'])->withoutMiddleware('auth');
-
-//test站位畫押提交
-Route::post('/teststand_submit', [MonthController::class, 'teststand'])->name('month.teststand_submit')->withoutMiddleware('auth');
-
-//站位人力下載
-Route::post('/standdownload', [MonthController::class, 'standdownload'])->name('month.standdownload');
 
 //單耗下載
 Route::post('/consumedownload', [MonthController::class, 'consumedownload'])->name('month.consumedownload');

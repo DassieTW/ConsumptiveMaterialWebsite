@@ -334,18 +334,6 @@
                                                             {!! __('templateWords.isnConsumeUpdate') !!}
                                                         </a>
                                                     </li>
-                                                    {{-- <li
-                                                        class="sidebar-item {{ isActiveRoute(['month/standadd', 'month/standnewok', 'month/uploadstand', 'month/insertuploadstand']) }}">
-                                                        <a class="sidebar-link" href="{{ route('month.standadd') }}">
-                                                            {!! __('templateWords.standAdd') !!}
-                                                        </a>
-                                                    </li>
-                                                    <li
-                                                        class="sidebar-item {{ isActiveRoute(['month.stand', 'month/standsearch']) }}">
-                                                        <a class="sidebar-link" href="{{ route('month.stand') }}">
-                                                            {!! __('templateWords.standUpdate') !!}
-                                                        </a>
-                                                    </li> --}}
                                                     <li class="sidebar-item {{ isActiveRoute(['month/importmonth']) }}">
                                                         <a class="sidebar-link" href="{{ route('month.importmonth') }}">
                                                             {!! __('templateWords.importMonthlyData') !!}
@@ -589,9 +577,8 @@
                                                 </ul>
                                             </li>
                                         @endcan
-                                        {{-- @can('viewCheckInvent', App\Models\Checking_inventory::class)
-                                            <li
-                                                class="sidebar-item {{ isActiveRoute(['checking/', 'checking.index']) }}">
+                                        @can('viewCheckInvent', App\Models\Checking_inventory::class)
+                                            <li class="sidebar-item {{ isActiveRoute(['checking/', 'checking.index']) }}">
                                                 <a data-bs-target="#checking" data-bs-toggle="collapse"
                                                     class="sidebar-link collapsed" aria-expanded="false">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -609,28 +596,21 @@
                                                 </a>
                                                 <ul id="checking" class="sidebar-dropdown list-unstyled collapse"
                                                     data-bs-parent="#sidebar" style="">
-                                                    <li
-                                                        class="sidebar-item {{ isActiveRoute(['checking/create_new_table']) }}">
-                                                        <a class="sidebar-link"
-                                                            href="{{ route('checking.create_new_table') }}">
-                                                            {!! __('checkInvLang.create_new_table') !!}
-                                                        </a>
-                                                    </li>
                                                     <li class="sidebar-item {{ isActiveRoute(['checking.index']) }}">
                                                         <a class="sidebar-link" href="{{ route('checking.index') }}">
                                                             {!! __('checkInvLang.check') !!}
                                                         </a>
                                                     </li>
                                                     <li
-                                                        class="sidebar-item {{ isActiveRoute(['checking/check_result', 'checking.check_result']) }}">
+                                                        class="sidebar-item {{ isActiveRoute(['checking/check_record', 'checking.check_record']) }}">
                                                         <a class="sidebar-link"
-                                                            href="{{ route('checking.check_result') }}">
-                                                            {!! __('checkInvLang.check_result') !!}
+                                                            href="{{ route('checking.check_record') }}">
+                                                            {!! __('checkInvLang.check_record') !!}
                                                         </a>
                                                     </li>
                                                 </ul>
                                             </li>
-                                        @endcan --}}
+                                        @endcan
                                         <li class="sidebar-item {{ isActiveRoute(['member/', 'member.index']) }}">
                                             <a href="#auth" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed">
@@ -653,18 +633,6 @@
                                                     <li class="sidebar-item {{ isActiveRoute(['member/username']) }}">
                                                         <a class="sidebar-link" href="{{ route('member.username') }}">
                                                             {!! __('templateWords.UserInfo') !!}
-                                                            {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
-                                                        --}}
-                                                        </a>
-                                                    </li>
-                                                @endcan
-                                                @can('searchAndUpdatePeople', App\Models\Login::class)
-                                                    <li class="sidebar-item {{ isActiveRoute(['member/number']) }}">
-                                                        <a class="sidebar-link"
-                                                            href="{{ route('member.numbersearch') }}">
-                                                            {!! __('templateWords.PInfo') !!}
-                                                            {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
-                                                        --}}
                                                         </a>
                                                     </li>
                                                 @endcan
@@ -673,8 +641,7 @@
                                                     <a class="sidebar-link"
                                                         href="{{ route('member.priority_list') }}">
                                                         {!! __('loginPageLang.permission_details') !!}
-                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span>
-                                                    --}}
+                                                        {{-- <span class="sidebar-badge badge bg-primary">Pro</span> --}}
                                                     </a>
                                                 </li>
                                             </ul>

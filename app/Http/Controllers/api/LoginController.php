@@ -89,52 +89,5 @@ class LoginController extends Controller
             dd($e); // test
             return \Response::json(['message' => json_encode($e)], 420);
         } // try catch
-    } // username_del()
-
-    // to do, not yet move to API (used by Vue)
-    //人員信息刪除,新增
-    public function numberchangeordel(Request $request)
-    {
-        $select = $request->input('select');
-        $count = $request->input('count');
-        $number = $request->input('number');
-        $numbers = DB::table('人員信息')->pluck('工號');
-        $newname = $request->input('newname');
-        $newnumber = $request->input('newnumber');
-        $newdep = $request->input('newdep');
-
-        //delete
-        if ($select === "刪除") {
-            for ($i = 0; $i < $count; $i++) {
-                DB::beginTransaction();
-                try {
-                    DB::table('人員信息')
-                        ->where('工號', $number[$i])
-                        ->delete();
-                    DB::commit();
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-                }
-            }
-            return \Response::json(['message' => $count, 'status' => 202]/* Status code here default is 200 ok*/);
-        }
-        //new
-        else {
-
-            DB::beginTransaction();
-            //job number repeat
-            for ($i = 0; $i < count($numbers); $i++) {
-                if (strcasecmp($newnumber, $numbers[$i]) === 0) {
-                    return \Response::json(['message' => Lang::get('loginPageLang.jobrepeat')], 421/* Status code here default is 200 ok*/);
-                } else {
-                    continue;
-                }
-            }
-
-            DB::table('人員信息')->insert(['工號' => $newnumber, '姓名' => $newname, '部門' => $newdep]);
-            DB::commit();
-            return \Response::json(['message' => $count, 'status' => 201]/* Status code here default is 200 ok*/);
-        } // if else
-    } // numberchangeordel
+    } // username_del
 }

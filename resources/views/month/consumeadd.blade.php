@@ -24,6 +24,7 @@
         } // to prevent scientific notaion
     </script>
 @endsection
+
 @section('content')
     <div id="mountingPoint">
         <div class="row mb-2 mb-xl-3 justify-content-between">

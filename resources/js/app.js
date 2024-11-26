@@ -65,6 +65,8 @@ import OboundStockTable from "./components/reusableUtilities/OboundStockTable.vu
 import NewsTable from "./components/reusableUtilities/NewsTable.vue";
 import DemandRecieveDiffPage from './components/reusableUtilities/DemandRecieveDiffPage.vue';
 import UserTable from "./components/reusableUtilities/UserTable.vue";
+import CheckingInventoryUploadTable from "./components/reusableUtilities/CheckingInventoryUploadTable.vue";
+import CheckingInventoryRecord from "./components/reusableUtilities/CheckingInventoryRecord.vue";
 
 const app = createApp({
   components: {
@@ -94,6 +96,8 @@ const app = createApp({
     "news-table": NewsTable,
     "demand-recieve-diff-page": DemandRecieveDiffPage,
     "user-table": UserTable,
+    "checking-inventory-upload-table": CheckingInventoryUploadTable,
+    "checking-inventory-record": CheckingInventoryRecord,
   },
 });
 

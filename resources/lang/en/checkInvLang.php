@@ -14,7 +14,7 @@ return [
     */
     'page_name' => 'Stock-taking',
     'check' => 'Stocktake',
-    'check_result' => 'Result of Stocktaking',
+    'check_record' => 'Stocktaking Record',
     'no_table_found' => 'No table Found',
     'create_new_table' => 'Create New Table',
     'input_isn_barcode' => 'Scan In PN Barcode',

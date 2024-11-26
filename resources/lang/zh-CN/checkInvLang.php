@@ -14,7 +14,7 @@ return [
     */
     'page_name' => '盘点管理',
     'check' => '盘点',
-    'check_result' => '盘点结果',
+    'check_record' => '盘点记录',
     'no_table_found' => '无近期盘点表',
     'create_new_table' => '建立新盘点表',
     'input_isn_barcode' => '输入 料号条码',
