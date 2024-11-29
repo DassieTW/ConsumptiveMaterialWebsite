@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h3>{{ $t('monthlyPRpageLang.isnConsumeAdd') }}</h3>
+            <h3>{{ $t('checkInvLang.check') }}</h3>
         </div>
         <div class="card-body">
             <div class="row justify-content-center mb-3">
@@ -118,7 +118,7 @@ export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        let exampleUrl = ref(window.location.origin + '/download/ConsumeExample.xlsx');
+        let exampleUrl = ref(window.location.origin + '/download/CheckingExample.xlsx');
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
@@ -127,9 +127,11 @@ export default defineComponent({
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
         const { mats, mails, recordCount, getRejected, getCheckersMails, uploadToDB } = useUnitConsumptionSearch();
-        const { queryResult, manualResult, validateISN, validateISN_manual } = useCommonlyUsedFunctions();
+        const { queryResult, manualResult, locations, validateISN, validateISN_manual, getLocs } = useCommonlyUsedFunctions();
 
-        onBeforeMount(getCheckersMails);
+        onBeforeMount(async () => {
+            await getLocs();
+        });
 
         let isInvalid = ref(false); // file input validation
         let isInvalid_DB = ref(false); // add to DB validation
