@@ -29,7 +29,7 @@ return [
     'senddep' => 'Issuing department',
     'entersenddep' => 'Please select issuing department',
     'change' => 'Update',
-    'safe' => 'Safety Stock',
+    'safe' => 'S. Stock',
     'nostock' => 'There is no stock at present',
     'notmonth' => 'Non-monthly purchase consumables',
     'ismonth' => 'Monthly purchase consumables',

@@ -16,6 +16,12 @@
             :hasCheckbox="false" :messages="table.messages" :columns="table.columns" :rows="table.rows"
             :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
             @is-finished="table.isLoading = false">
+            <template v-slot:username="{ row, key }">
+                <div class="CustomScrollbar text-nowrap"
+                    style="overflow-x: auto; width: 100%; user-select: text; z-index: 1; position: relative;">
+                    {{ row.username }}
+                </div>
+            </template>
             <template v-slot:priority="{ row, key }">
                 <div v-if="row.current_user_priority == 0" class="m-0 p-0">
                     <select class="form-select text-center m-0 p-0" :id="row.username" style="width: 8ch;"
@@ -310,14 +316,6 @@ export default defineComponent({
                     field: "username",
                     width: "10ch",
                     sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<div class="CustomScrollbar text-nowrap"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.username +
-                            "</div>"
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(

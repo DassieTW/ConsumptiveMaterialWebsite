@@ -58,6 +58,7 @@ return [
     'has_exist_sheet_confirm' => '已有近期盘点表，请确认是否仍须建立新盘点表？',
 
     //check result lang
+    'upload' => '盘点结果上传',
     'time_range' => '时间',
     'checked' => '已盘点',
     'not_checked' => '未盘点',

@@ -37,8 +37,8 @@ return [
         '蘇州-治具 Consumables management',
         '巴淡-自動化 Consumables management',
         '巴淡-治具 Consumables management',
-        '越南-自動化 Consumables management',
-        '越南-治具 Consumables management',
+        '越南-FME Consumables management',
+        '越南-PE Consumables management',
         'HQ TEST Consumables management',
     ],
 

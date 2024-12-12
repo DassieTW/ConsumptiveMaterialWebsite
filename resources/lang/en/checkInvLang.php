@@ -13,8 +13,8 @@ return [
     |
     */
     'page_name' => 'Stock-taking',
-    'check' => 'Stocktake',
-    'check_record' => 'Stocktaking Record',
+    'check' => 'Stock-take',
+    'check_record' => 'Stock-taking Record',
     'no_table_found' => 'No table Found',
     'create_new_table' => 'Create New Table',
     'input_isn_barcode' => 'Scan In PN Barcode',
@@ -39,7 +39,7 @@ return [
     'edit' => 'Edit',
     'this' => 'This',
     'has' => 'Has',
-    'unchecked' => 'not yet stocktaked !',
+    'unchecked' => 'not yet stock-taked !',
     'update_success' => 'Update Success!',
     'update_failed' => 'Update Failed.',
     'sent_email_failed' => 'E-Mail Failed.',
@@ -58,9 +58,10 @@ return [
     'has_exist_sheet_confirm' => 'Existing sheets found, do you still want to create a new sheet?',
 
     //check result lang
+    'upload' => 'Upload Result',
     'time_range' => 'Time Range',
-    'checked' => 'Stocktaked',
-    'not_checked' => 'Not Stocktaked',
+    'checked' => 'Stockt-aked',
+    'not_checked' => 'Not Stock-taked',
     'check_not_right_amount' => 'Excess/Short',
     'search_by' => 'Search by',
     'sort_by' => 'Sort by',
