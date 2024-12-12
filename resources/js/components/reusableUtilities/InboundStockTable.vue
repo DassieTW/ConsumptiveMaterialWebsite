@@ -18,10 +18,17 @@
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
-        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-        :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
-        @return-checked-rows="updateCheckedRows"></table-lite>
+    <table-lite :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="false"
+        :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+        :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+        @is-finished="table.isLoading = false">
+        <template v-slot:料號="{ row, key }">
+            <div class="CustomScrollbar text-nowrap"
+                style="overflow-x: auto; width: 100%; user-select: text; z-index: 1; position: relative;">
+                {{ row.料號 }}
+            </div>
+        </template>
+    </table-lite>
 </template>
 
 <script>
@@ -119,14 +126,6 @@ export default defineComponent({
                     field: "料號",
                     width: "14ch",
                     sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.料號 +
-                            "</div>"
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
@@ -327,14 +326,9 @@ export default defineComponent({
             ],
         });
 
-        const updateCheckedRows = (rowsKey) => {
-            console.log(rowsKey);
-        };
-
         return {
             searchTerm,
             table,
-            updateCheckedRows,
             OutputExcelClick,
         };
     }, // setup

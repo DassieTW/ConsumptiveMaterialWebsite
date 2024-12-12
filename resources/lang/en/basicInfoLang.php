@@ -47,7 +47,7 @@ return [
     'lt' =>'LT',
     'gradea' =>'Grade-A',
     'belong' =>'Attr.',
-    'month' =>'Monthly PR',
+    'month' =>'Mthly PR',
     'safe' =>'Safety Stock',
     'enterisn' =>'Please Enter PN',
     'enterpName' =>'Please Enter Descr.',

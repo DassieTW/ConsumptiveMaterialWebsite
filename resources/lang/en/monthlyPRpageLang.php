@@ -46,7 +46,7 @@ return [
     'moq' => 'MOQ',
     'nextneed' => 'Demand PROX',
     'nowneed' => 'Demand INST',
-    'safe' => 'Safety Stock',
+    'safe' => 'S. Stock',
     'price' => 'Unit Price',
     'money' => 'Currency',
     'rate' => 'Exachange Rate',

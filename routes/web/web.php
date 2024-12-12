@@ -35,13 +35,6 @@ use MeiliSearch\Client;
 // })->where("any", ".*");
 // --------------- the about code gets any url of our website and intended to pass it to Vue Router ----------
 
-// for old site url
-if (env('APP_URL') === 'https://psz-bu6pe-05v.psz.corp.pegatron' || env('APP_URL') === 'http://172.22.252.160') {
-    Route::get('{any?}', function () {
-        return view('site_moved');
-    })->where('any', '.*')->withoutMiddleware('auth');
-} // if
-
 Route::get('/', function (Request $request) {
     if ($request->filled('S')) {
         // the redirected session is seperated from SSO session, so we need to login manaully
@@ -106,10 +99,6 @@ Route::get('/switchSite/{site_name}', [App\Http\Controllers\Auth\LoginController
 Route::get('/hello_world', function () {
     return view('hello_world');
 })->name('hello_world')->withoutMiddleware('auth');
-
-Route::get('/testwebsql', function () {
-    return view('websql');
-})->withoutMiddleware('auth');
 
 Route::get('/template_test', function () {
     return view('templateChart');
@@ -222,7 +211,7 @@ Route::get('/meiliSearchCleanUp', function () { // use this route when needed
     dd($testClient->getTasks());
 });
 
-// When OA Login Failed on MIS side. Use this route as Failto
+// When OA Login Failed on MIS side. Use this route as Fail To
 Route::get('/569', function () {
     return view("errors.569");
 })->name('error569')->withoutMiddleware('auth');

@@ -14,7 +14,7 @@ return [
     */
     'page_name' => '盤點管理',
     'check' => '盤點',
-    'check_result' => '盤點結果',
+    'check_record' => '盤點紀錄',
     'no_table_found' => '無近期盤點表',
     'create_new_table' => '建立新盤點表',
     'input_isn_barcode' => '輸入 料號條碼',
@@ -58,6 +58,7 @@ return [
     'has_exist_sheet_confirm' => '已有近期盤點表，請確認是否仍須建立新盤點表？',
 
     //check result lang
+    'upload' => '盤點結果上傳',
     'time_range' => '時間',
     'checked' => '已盤點',
     'not_checked' => '未盤點',

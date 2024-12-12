@@ -92,15 +92,6 @@ Route::get('/username', function () {
     return view('member.searchusername');
 })->name('member.username')->middleware('can:searchAndUpdateUser,App\Models\Login');
 
-
-//人員信息查詢頁面
-Route::get('/numbersearch', function () {
-    return view('member.searchnumberok')->with(['data' => 人員信息::cursor()]);
-})->name('member.numbersearch')->middleware('can:searchAndUpdatePeople,App\Models\Login');
-
-//人員信息刪除或修改
-Route::post('/numberchangeordel', [Auth\LoginController::class, 'numberchangeordel'])->name('member.numberchangeordel')->middleware('can:searchAndUpdatePeople,App\Models\Login');
-
 // 表列權限頁面
 Route::get('/priority_list', function () {
     $user_name = \DB::table('人員信息')

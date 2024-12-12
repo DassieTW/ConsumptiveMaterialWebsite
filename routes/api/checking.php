@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BasicInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,8 +54,6 @@ Route::post('/mats', function (Request $request) {
     return \Response::json(['datas' => $datas, 'senders' => $senders, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
 
-Route::post('/delete_pn', 'api\BasicInfoController@destroyPN');
-Route::post('/update_pn', 'api\BasicInfoController@updatePN');
-Route::post('/update_pn_fromSSZ', 'api\BasicInfoController@updatePN_fromSSZ');
-Route::post('/get_dispatcher', 'api\BasicInfoController@showDispatcher');
+Route::post('/delete', 'api\CheckingInventoryController@destroyRecord');
+Route::post('/update', 'api\CheckingInventoryController@updateRecord');
 
