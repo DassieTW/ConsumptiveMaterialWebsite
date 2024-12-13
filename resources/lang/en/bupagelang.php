@@ -30,7 +30,7 @@ return [
     'transamount' => 'Dialed Qty',
     'buyrecord' => 'Recent order record',
     'receivefac' => 'receive factory',
-    'senddep' => 'Issuing department',
+    'senddep' => 'Issuer',
     'buytime' => 'Recent order time',
     'enterfactory' => 'Please select factory',
     'return' => 'return',

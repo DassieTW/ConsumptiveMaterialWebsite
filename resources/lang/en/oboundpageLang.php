@@ -69,7 +69,7 @@ return [
     'pName' => 'Descr.',
     'format' => 'Spec.',
     'unit' => 'Unit',
-    'senddep' => 'Issuing department',
+    'senddep' => 'Issuer',
     'pickamount' => 'Quantity to be Collected',
     'mark' => 'Remarks',
     'enteramount' => 'Please Enter Qty',

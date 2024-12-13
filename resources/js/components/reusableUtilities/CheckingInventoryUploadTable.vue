@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h3>{{ $t('checkInvLang.check') }}</h3>
+            <h3>{{ $t('checkInvLang.upload') }}</h3>
         </div>
         <div class="card-body">
             <div class="row justify-content-center mb-3">
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col col-6 p-0 m-0">
                         <input id="pnInput" class="text-center form-control form-control-lg"
-                            v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
+                            v-bind:placeholder="$t('inboundpageLang.enterisn_or_spec')" v-model="searchTerm" />
                     </div>
                 </div>
                 <div class="col col-auto">
@@ -57,39 +57,11 @@
                 :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
-
-                <template v-slot:單耗="{ row, key }">
-                    <!-- DON'T Use input-group here. It messes with the z-index -->
-                    <div class="row">
-                        <input
-                            style="width:10ch; border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;"
-                            type="number" :id="'unitConsumption' + row.id" :name="'unitConsumption' + row.id"
-                            :value="ScientificNotaionToFixed(parseFloat(row.單耗))" v-model="row.單耗"
-                            class="form-control text-center p-0 m-0 col col-auto" step="0.000001" min="0" />
-                        <small class="input-group-text text-center p-0 m-0 col col-auto"
-                            style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">
-                            {{ row.單位 }}
-                        </small>
-                    </div>
-                </template>
             </table-lite>
 
             <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-            <div class="row justify-content-between align-items-center">
-                <label class="form-label col col-auto">{{ $t('monthlyPRpageLang.surepeopleemail') }}:</label>
-                <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
-                <div class="col col-auto">
-                    <div class="input-group">
-                        <select class="form-select form-select-lg col col-auto text-center" v-model="selected_mail">
-                            <option style="display: none;" disabled selected value="">
-                                {{ $t("monthlyPRpageLang.noemail") }}
-                            </option>
-                            <option v-for="mail in all_mails" :value="mail.email">{{ mail.姓名 }}</option>
-                        </select>
-                        <span class="input-group-text input-group-text-lg" id="emailTail">{{ selected_mail }}</span>
-                    </div>
-                </div>
+            <div class="row justify-content-center align-items-center">
                 <div class="col col-auto">
                     <button v-if="uploadToDBReady" name="upload"
                         class="col col-auto fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
@@ -126,10 +98,10 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const { mats, mails, recordCount, getRejected, getCheckersMails, uploadToDB } = useUnitConsumptionSearch();
         const { queryResult, manualResult, locations, validateISN, validateISN_manual, getLocs } = useCommonlyUsedFunctions();
 
         onBeforeMount(async () => {
+            table.isLoading = false;
             await getLocs();
         });
 
@@ -158,64 +130,6 @@ export default defineComponent({
             return results;
         } // findDuplicates
 
-        const addRejectedToTable = async () => {
-            await getRejected();
-            if (JSON.parse(mats.value).datas.length < 1) {
-                notyf.open({
-                    type: "warning",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.noload"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-            } // if
-            else {
-                // remove all the old rejected data in table
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i].doubleCheck) {
-                        data.splice(i, 1);
-                    } // if
-                } // for
-
-                let allRowsObj = JSON.parse(mats.value);
-                for (let i = 0; i < allRowsObj.datas.length; i++) {
-                    if (data.length == 0) {
-                        allRowsObj.datas[i].id = 0;
-                    } else {
-                        allRowsObj.datas[i].id = parseInt(data[data.length - 1].id) + 1;
-                    } // if else
-                    allRowsObj.datas[i].doubleCheck = true;
-
-                    // remove duplicate data from other input
-                    let indexOfObject = data.findIndex(object => {
-                        return (object.料號90 === allRowsObj.datas[i].料號90 && object.料號 === allRowsObj.datas[i].料號);
-                    });
-
-                    if (indexOfObject != -1) { // if an existing record is found in table
-                        data.splice(indexOfObject, 1);
-                    } // if
-
-                    data.push(allRowsObj.datas[i]);
-                } // for
-
-                notyf.open({
-                    type: "success",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + allRowsObj.datas.length + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.loadsuccess"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-            } // else
-        } // addRejectedToTable
-
         const onUploadClick = async () => {
             isInvalid_DB.value = false;
             await triggerModal();
@@ -236,15 +150,12 @@ export default defineComponent({
                         if (input_data === undefined || input_data[0] === undefined || input_data[0][0] === undefined || input_data[0][1] === undefined || input_data[0][2] === undefined) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
-                        } else if (input_data[0][0].trim() !== "90料號" || input_data[0][1].trim() !== "料號" || input_data[0][2].trim() !== "單耗") {
-                            isInvalid.value = true;
-                            validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
                             let tempArr = Array();
 
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][1] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                                    tempArr.push(input_data[i][1].trim());
+                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
+                                    tempArr.push(input_data[i][0].trim());
                                 } // if
                                 else {
                                     input_data.splice(i, 1); // remove the empty row
@@ -463,8 +374,8 @@ export default defineComponent({
         } // onSendToDBClick
 
         watch(queryResult, async () => {
-            // console.log(queryResult.value); // test
             await triggerModal();
+            console.log(input_data); // test
             if (queryResult.value == "") {
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
@@ -477,16 +388,9 @@ export default defineComponent({
             let singleEntry = {};
 
             for (let i = 1; i < input_data.length; i++) {
-                singleEntry.料號90 = input_data[i][0].toString().trim();
-                singleEntry.料號 = input_data[i][1].toString().trim();
-                singleEntry.單耗 = input_data[i][2];
-                singleEntry.doubleCheck = false;
-
-                if (data.length == 0) {
-                    singleEntry.id = 0;
-                } else {
-                    singleEntry.id = parseInt(data[data.length - 1].id) + 1;
-                } // if else
+                singleEntry.料號 = input_data[i][0].toString().trim();
+                singleEntry.儲位 = input_data[i][1].toString().trim();
+                singleEntry.盤點庫存 = parseInt(input_data[i][2]);
 
                 let indexOfObject = allRowsObj.data.findIndex(object => {
                     return (object.料號 === singleEntry.料號);
@@ -494,7 +398,6 @@ export default defineComponent({
 
                 if (indexOfObject != -1) { // if an existing record is found
                     singleEntry = Object.assign(singleEntry, allRowsObj.data[indexOfObject]);
-                    // console.log(singleEntry); // test
                 } // if
                 else {
                     singleEntry.月請購 = "";
@@ -510,44 +413,9 @@ export default defineComponent({
             table.isLoading = false;
         }); // watch for data change
 
-        watch(mails, async () => {
-            let allRowsObj = JSON.parse(mails.value);
-            // console.log(allRowsObj.data.length);
-            for (let i = 0; i < allRowsObj.data.length; i++) {
-                all_mails.push(allRowsObj.data[i]);
-            } // for
-            table.isLoading = false;
-        });
-
-        watch(selected_mail, () => {
-            if (selected_mail.value != undefined && selected_mail.value != "" && selected_mail.value != null) {
-                uploadToDBReady.value = true;
-            } // if
-        });
-
         watch(data, () => {
             document.getElementsByClassName("vtl-table")[0].scrollIntoView({ behavior: "smooth" });
         });
-
-        function ScientificNotaionToFixed(x) {
-            // toFixed
-            if (Math.abs(x) < 1.0) {
-                var e = parseInt(x.toString().split("e-")[1]);
-                if (e) {
-                    x *= Math.pow(10, e - 1);
-                    x = "0." + new Array(e).join("0") + x.toString().substring(2);
-                } // if
-            } else {
-                var e = parseInt(x.toString().split("+")[1]);
-                if (e > 20) {
-                    e -= 20;
-                    x /= Math.pow(10, e);
-                    x += new Array(e + 1).join("0");
-                } // if
-            } // if-else
-
-            return x;
-        } // to prevent scientific notaion
 
         // Table config
         const table = reactive({
@@ -575,21 +443,8 @@ export default defineComponent({
                                 row.料號 +
                                 "</div>"
                             );
-                        } else if (row.doubleCheck) {
-                            return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%; color: #e67300;">' +
-                                row.料號 +
-                                "</div>"
-                            );
-                        } else { // isn exist in database
+                        } // if
+                        else { // isn exist in database
                             return (
                                 '<input type="hidden" id="number' +
                                 i +
@@ -605,67 +460,6 @@ export default defineComponent({
                             );
                         } // if else
                     },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.90isn"
-                    ),
-                    field: "料號90",
-                    width: "14ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
-                            return (
-                                '<input type="hidden" id="number90' +
-                                i +
-                                '" name="number90' +
-                                i +
-                                '" value="' +
-                                row.料號90 +
-                                '">' +
-                                '<div class="text-nowrap text-danger CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號90 +
-                                "</div>"
-                            );
-                        } else if (row.doubleCheck) {
-                            return (
-                                '<input type="hidden" id="number90' +
-                                i +
-                                '" name="number90' +
-                                i +
-                                '" value="' +
-                                row.料號90 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%; color: #e67300;">' +
-                                row.料號90 +
-                                "</div>"
-                            );
-                        } else { // isn exist in database
-                            return (
-                                '<input type="hidden" id="number90' +
-                                i +
-                                '" name="number90' +
-                                i +
-                                '" value="' +
-                                row.料號90 +
-                                '">' +
-                                '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.料號90 +
-                                "</div>"
-                            );
-                        } // if else
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.consume"
-                    ),
-                    field: "單耗",
-                    width: "12ch",
-                    sortable: true,
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
@@ -749,23 +543,32 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.lt"
+                        "inboundpageLang.loc"
                     ),
-                    field: "LT",
-                    width: "8ch",
+                    field: "儲位",
+                    width: "12ch",
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="lt' +
-                            i +
-                            '" name="lt' +
-                            i +
-                            '" value="' +
-                            Math.round(row.LT) +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            Math.round(row.LT) +
+                            row.儲位 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.stock"
+                    ),
+                    field: "庫存",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.盤點庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
                             "</div>"
                         );
                     },
@@ -847,15 +650,11 @@ export default defineComponent({
             uploadToDBReady,
             searchTerm,
             table,
-            all_mails,
-            selected_mail,
             updateCheckedRows,
-            addRejectedToTable,
             onUploadClick,
             onInputChange,
             onSendToDBClick,
             CheckCurrentRow,
-            ScientificNotaionToFixed,
             deleteRow,
         };
     }, // setup

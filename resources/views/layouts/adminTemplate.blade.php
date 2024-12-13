@@ -577,7 +577,7 @@
                                                 </ul>
                                             </li>
                                         @endcan
-                                        {{-- @can('viewCheckInvent', App\Models\Checking_inventory::class)
+                                        @can('viewCheckInvent', App\Models\Checking_inventory::class)
                                             <li class="sidebar-item {{ isActiveRoute(['checking/', 'checking.index']) }}">
                                                 <a data-bs-target="#checking" data-bs-toggle="collapse"
                                                     class="sidebar-link collapsed" aria-expanded="false">
@@ -610,7 +610,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                        @endcan --}}
+                                        @endcan
                                         <li class="sidebar-item {{ isActiveRoute(['member/', 'member.index']) }}">
                                             <a href="#auth" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed">
@@ -633,6 +633,14 @@
                                                     <li class="sidebar-item {{ isActiveRoute(['member/username']) }}">
                                                         <a class="sidebar-link" href="{{ route('member.username') }}">
                                                             {!! __('templateWords.UserInfo') !!}
+                                                        </a>
+                                                    </li>
+                                                @endcan
+                                                @can('searchAndUpdatePeople', App\Models\Login::class)
+                                                    <li class="sidebar-item {{ isActiveRoute(['member/number']) }}">
+                                                        <a class="sidebar-link"
+                                                            href="{{ route('member.numbersearch') }}">
+                                                            {!! __('templateWords.PInfo') !!}
                                                         </a>
                                                     </li>
                                                 @endcan
