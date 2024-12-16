@@ -60,7 +60,7 @@ return [
     //check result lang
     'upload' => 'Upload Result',
     'time_range' => 'Time Range',
-    'checked' => 'Stockt-aked',
+    'checked' => 'Stock-taked',
     'not_checked' => 'Not Stock-taked',
     'check_not_right_amount' => 'Excess/Short',
     'search_by' => 'Search by',

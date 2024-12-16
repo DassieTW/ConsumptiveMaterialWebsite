@@ -77,6 +77,10 @@
                                 繁體中文</a></li>
                         <li><a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-CN') }}">
                                 简体中文</a></li>
+                        <li><a class="dropdown-item justify-content-center" href="{{ url('/lang/vi') }}">
+                                Tiếng Việt</a></li>
+                        <li><a class="dropdown-item justify-content-center" href="{{ url('/lang/id') }}">
+                                Bahasa Indonesia</a></li>
                     </ul>
                 </div>
             </ul>

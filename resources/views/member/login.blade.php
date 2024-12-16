@@ -35,7 +35,7 @@
     {{-- 使用asset時，須注意Laravel是抓http header裡面的Host作為base url，
     所以若域名不是ip而有經過轉換時要進到Nginx裡面的proxy_set_header裡面確認Host設定值，
     否則會抓到錯誤的Host導致找不到資源 --}}
-    
+
     <script src="{{ asset('/js/manifest.js') }}"></script>
     <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js?v=') . env('APP_VERSION') }}"></script>
@@ -84,11 +84,20 @@
                             {{ __('templateWords.language') }}</a>
                         <div class="collapse" id="langMenu">
                             <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
-                                English</a>
+                                English
+                            </a>
                             <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-TW') }}">
-                                繁體中文</a>
+                                繁體中文
+                            </a>
                             <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-CN') }}">
-                                简体中文</a>
+                                简体中文
+                            </a>
+                            <a class="dropdown-item justify-content-center" href="{{ url('/lang/vi') }}">
+                                Tiếng Việt
+                            </a>
+                            <a class="dropdown-item justify-content-center" href="{{ url('/lang/id') }}">
+                                Bahasa Indonesia
+                            </a>
                         </div>
                         {{-- <div class="dropdown-divider"></div> --}}
                         {{-- <a class="dropdown-item" href="#"><i class="align-middle mr-1"

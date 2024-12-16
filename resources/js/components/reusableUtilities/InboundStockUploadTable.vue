@@ -14,12 +14,12 @@
                             v-bind:placeholder="$t('inboundpageLang.enterSSZ')" v-model="searchTerm" />
                     </div>
                 </div>
-                <div class="col col-auto">
+                <!-- <div class="col col-auto">
                     <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
                         :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick('All')">
                         <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
                     </button>
-                </div>
+                </div> -->
             </div>
             <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
@@ -74,12 +74,12 @@
                                     v-bind:placeholder="$t('inboundpageLang.enterisn_or_spec')" v-model="searchTerm2" />
                             </div>
                         </div>
-                        <div class="col col-auto">
+                        <!-- <div class="col col-auto">
                             <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
                                 :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick(modalTitle)">
                                 <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
                             </button>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
                     <table-lite id="searchTable2" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
@@ -260,14 +260,6 @@ export default defineComponent({
         const openSSZDetails = (SSZ) => {
             modalTitle.value = SSZ;
             searchTerm2.value = "";
-
-            let obj = data2.find(o => o.FlowNumber === SSZ);
-            if (obj.status.toLowerCase().includes('reject')) {
-                showFooter.value = false;
-            } // if
-            else {
-                showFooter.value = true;
-            } // else
         } // openSSZDetails
 
         const ssz_claim = async () => {
@@ -532,9 +524,27 @@ export default defineComponent({
                 });
             } // else
 
+            await getSSZ_info();
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         } // ssz_claim
+
+        watch(modalTitle, async () => {
+            if (modalTitle.value !== "") {
+                showFooter.value = true;
+                let obj = data2.find(o => o.FlowNumber === modalTitle.value);
+                if (obj.status.toLowerCase().includes('reject')) {
+                    showFooter.value = false;
+                } // if
+
+                // if all the mats are claimed, then hide the footer
+                let claimed_mats = data2.filter(x => x.FlowNumber === modalTitle.value);
+                let unclaimed_mats = claimed_mats.filter(x => x.ClaimedBy === "" || x.ClaimedBy === null);
+                if (unclaimed_mats.length === 0) {
+                    showFooter.value = false;
+                } // if
+            } // if
+        }); // watch for data change
 
         watch(mats_SSZInfo, async () => {
             await triggerModal();
@@ -690,7 +700,7 @@ export default defineComponent({
                     display: function (row, i) {
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
+                            ' style="overflow-x: auto; width: 100%; user-select: text; z-index: 1; position: relative;">' +
                             row.MatShort +
                             "</div>"
                         );
