@@ -1,14 +1,14 @@
 <?php
 
 return array (
-  'page_name' => 'Manajemen inventaris',
+  'page_name' => 'Inventaris',
   'check' => 'inventaris',
   'check_record' => 'Catatan inventaris',
   'no_table_found' => 'Tidak ada daftar inventaris terbaru',
   'create_new_table' => 'Buat daftar inventaris baru',
-  'input_isn_barcode' => 'Masukkan kode bar nomor material',
+  'input_isn_barcode' => 'Masukkan kode bar material',
   'input_loc_barcode' => 'Masukkan kode bar lokasi penyimpanan',
-  'isn' => 'Nomor material',
+  'isn' => 'Material',
   'product_name' => 'Nama Produk',
   'loc' => 'Lokasi penyimpanan',
   'client' => 'Klien',
@@ -16,7 +16,7 @@ return array (
   'search' => 'Pencarian',
   'serial_number' => 'Nomor formulir',
   'no_such_loc' => 'Lokasi penyimpanan tidak ditemukan',
-  'no_such_isn' => 'Nomor material tidak ditemukan',
+  'no_such_isn' => 'Material tidak ditemukan',
   'no_results_found' => 'Informasi tidak ditemukan!',
   'inventory' => 'Inventaris',
   'checking_result' => 'Hasil',

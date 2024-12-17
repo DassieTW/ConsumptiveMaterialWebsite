@@ -1,12 +1,12 @@
 <?php
 
 return array (
-  'page_name' => 'Manajemen pengguna',
+  'page_name' => 'Pengguna',
   'username' => 'Nomor karyawan',
   'password' => 'Kata sandi',
   'site' => 'Pabrik',
   'username_placeholder' => 'Silakan masukkan nomor akun',
-  'username_search' => 'Cari akun/nama',
+  'username_search' => 'Akun/Nama',
   'password_placeholder' => 'Silakan masukkan kata sandi',
   'site_placeholder' => 'Silakan pilih pabrik',
   'welcome' => 'Selamat datang',

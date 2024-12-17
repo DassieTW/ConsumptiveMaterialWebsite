@@ -571,7 +571,7 @@ export default defineComponent({
                         "basicInfoLang.lt"
                     ),
                     field: "LT",
-                    width: "6ch",
+                    width: "7ch",
                     sortable: true,
                 },
                 {
@@ -595,7 +595,7 @@ export default defineComponent({
                         "basicInfoLang.senddep"
                     ),
                     field: "發料部門",
-                    width: "10ch",
+                    width: "12ch",
                     sortable: true,
                 },
                 {

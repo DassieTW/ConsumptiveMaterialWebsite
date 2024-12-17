@@ -2,12 +2,12 @@
 
 return array (
   'page_name' => 'Sistem alarm',
-  'safealert' => 'Peringatan stok aman',
-  'dayalert' => 'Peringatan jumlah hari stok pasif',
-  'diffalert' => 'Perbedaan permintaan vs penggunaan ',
+  'safealert' => 'Stok aman',
+  'dayalert' => 'Jumlah hari stok pasif',
+  'diffalert' => 'Permintaan vs Penggunaan',
   'callsys' => 'Sistem alarm',
   'client' => 'Klien',
-  'isn' => 'Nomor material',
+  'isn' => 'Material',
   'pName' => 'Nama Produk',
   'format' => 'Spesifikasi',
   'stock' => 'Jumlah Stok',
