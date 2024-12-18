@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'websiteName' => 'Manajemen Material',
   'language' => 'Bahasa/Language',
   'logout_btn' => 'Keluar',
@@ -32,6 +32,7 @@ return array (
   'standUpdate' => 'Tenaga kerja stasiun <br/> &nbsp;&nbsp;&nbsp; (Modifikasi)',
   'importNonMonthlyData' => 'Impor non-bulanan',
   'importMonthlyData' => 'Impor bulanan',
+  'PR' => 'Ekspor permintaan',
   'on_the_way_search' => 'Yang akan datang',
   'all_history_records' => 'Semua rekor',
   'past_three_months' => 'Dalam 3 bulan terakhir',

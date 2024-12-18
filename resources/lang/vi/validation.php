@@ -76,7 +76,7 @@ return array (
     'string' => 'The :attribute must not be greater than :max characters.',
     'array' => 'The :attribute must not have more than :max items.',
   ),
-  'mimes' => 'Lỗi định dạng file, chuyển thành : File Values ',
+  'mimes' => 'Lỗi định dạng file, chuyển thành : File Values',
   'mimetypes' => 'Lỗi định dạng file , chuyển thành: .xls hoặc .xlsx',
   'min' => 
   array (
@@ -92,7 +92,7 @@ return array (
   'password' => 'The password is incorrect.',
   'present' => 'The :attribute field must be present.',
   'regex' => 'Lỗi Format',
-  'required' => 'Chưa điền đủ thông tin ',
+  'required' => 'Chưa điền đủ thông tin',
   'required_if' => 'The :attribute field is required when :other is :value.',
   'required_unless' => 'The :attribute field is required unless :other is in :values.',
   'required_with' => 'The :attribute field is required when :values is present.',

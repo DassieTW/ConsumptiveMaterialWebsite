@@ -43,6 +43,7 @@ return [
     'standUpdate' => '站位人力(查詢與修改)',
     'importNonMonthlyData' => '匯入非月請購資料',
     'importMonthlyData' => '匯入月請購資料',
+    'PR' => '匯出所有請購明細',
     'on_the_way_search' => '在途數量',
 
     //date picker lang

@@ -357,7 +357,7 @@
                                                     @endcan
                                                     <li class="sidebar-item {{ isActiveRoute(['month/SendPRReview']) }}">
                                                         <a class="sidebar-link" href="{{ route('month.SendPRReview') }}">
-                                                            {!! __('monthlyPRpageLang.PR') !!}
+                                                            {!! __('templateWords.PR') !!}
                                                         </a>
                                                     </li>
                                                     <li class="sidebar-item {{ isActiveRoute(['month/sxb']) }}">
