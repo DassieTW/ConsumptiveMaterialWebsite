@@ -33,7 +33,7 @@
             <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
                 :hasCheckbox="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+                :is-loading="table.isLoading" @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
                 <template v-slot:調撥數量="{ row, key }">
                     <div class="row">
                         <input v-model="row.調撥數量" @input="CheckCurrentRow($event);"
@@ -98,6 +98,7 @@ export default defineComponent({
         let validation_err_msg = ref("");
 
         onBeforeMount(async () => {
+            table.isLoading = true;
             await getLocs();
             await getMats();
         });

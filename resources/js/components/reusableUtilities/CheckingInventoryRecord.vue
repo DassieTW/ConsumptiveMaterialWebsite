@@ -18,17 +18,20 @@
                     <div class="form-check form-check-inline col col-auto m-0">
                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
                             value="month" v-model="picked" checked>
-                        <label class="form-check-label" for="inlineRadio1">{{ $t('inboundpageLang.within_a_month') }}</label>
+                        <label class="form-check-label" for="inlineRadio1">{{ $t('inboundpageLang.within_a_month')
+                            }}</label>
                     </div>
                     <div class="form-check form-check-inline col col-auto m-0">
                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
                             value="quarter" v-model="picked">
-                        <label class="form-check-label" for="inlineRadio2">{{ $t('inboundpageLang.within_three_months') }}</label>
+                        <label class="form-check-label" for="inlineRadio2">{{ $t('inboundpageLang.within_three_months')
+                            }}</label>
                     </div>
                     <div class="form-check form-check-inline col col-auto m-0">
                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
                             value="year" v-model="picked">
-                        <label class="form-check-label" for="inlineRadio3">{{ $t('inboundpageLang.within_a_year') }}</label>
+                        <label class="form-check-label" for="inlineRadio3">{{ $t('inboundpageLang.within_a_year')
+                            }}</label>
                     </div>
                 </div>
             </div>
@@ -41,7 +44,7 @@
             <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
                 :hasCheckbox="false" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false">
+                :is-loading="table.isLoading" @is-finished="table.isLoading = false">
             </table-lite>
         </div>
     </div>
@@ -69,6 +72,7 @@ export default defineComponent({
         let validation_err_msg = ref("");
 
         onBeforeMount(async () => {
+            table.isLoading = true;
             await getLocTransferRecord(JSON.stringify("month"), JSON.stringify("none"), JSON.stringify("none"));
         });
 

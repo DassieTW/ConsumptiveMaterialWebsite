@@ -58,8 +58,8 @@
                 <strong>{{ validation_err_msg }}</strong>
             </span>
             <table-lite :is-fixed-first-column="true" :is-static-mode="true" :isSlotMode="true" :hasCheckbox="true"
-                :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
-                :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+                :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+                :page-options="table.pageOptions" :sortable="table.sortable" :is-loading="table.isLoading"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
 
                 <template v-slot:單耗="{ row, key }">
@@ -133,7 +133,10 @@ export default defineComponent({
         const { mats, mails, recordCount, getRejected, getCheckersMails, uploadToDB } = useUnitConsumptionSearch();
         const { queryResult, manualResult, validateISN, validateISN_manual } = useCommonlyUsedFunctions();
 
-        onBeforeMount(getCheckersMails);
+        onBeforeMount(async () => {
+            table.isLoading = true;
+            await getCheckersMails();
+        });
 
         let isInvalid = ref(false); // file input validation
         let isInvalid_DB = ref(false); // add to DB validation

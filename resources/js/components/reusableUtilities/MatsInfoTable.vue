@@ -27,7 +27,7 @@
     <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
         :hasCheckbox="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+        :is-loading="table.isLoading" @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
         <template v-slot:品名="{ row, key }">
             <input v-model="row.品名" @input="CheckCurrentRow($event);"
                 class="form-control text-center align-self-center p-0 m-0" style="width: 13ch;" :id="'pname' + row.id"
@@ -159,7 +159,10 @@ export default defineComponent({
         let isInvalid_DB = ref(false); // add to DB validation
         let validation_err_msg = ref("");
 
-        onBeforeMount(getMats);
+        onBeforeMount(async () => {
+            table.isLoading = true;
+            await getMats();
+        });
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance

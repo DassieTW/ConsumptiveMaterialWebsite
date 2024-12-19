@@ -1,8 +1,8 @@
 <template>
   <table-lite :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="false"
     :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-    :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
-    @row-clicked="rowClicked">
+    :page-options="table.pageOptions" :sortable="table.sortable" :is-loading="table.isLoading"
+    @is-finished="table.isLoading = false" @row-clicked="rowClicked">
   </table-lite>
 </template>
 
@@ -22,7 +22,10 @@ export default defineComponent({
   setup() {
     const { news, getNews } = useNewsSearch(); // axios get the news data
 
-    onBeforeMount(getNews);
+    onBeforeMount(async () => {
+      table.isLoading = true;
+      await getNews();
+    });
 
     const app = getCurrentInstance(); // get the current instance
     let thisHtmlLang = document

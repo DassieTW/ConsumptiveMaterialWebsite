@@ -26,6 +26,7 @@
         <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="true" :isStaticMode="true"
             :isSlotMode="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
             :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+            :is-loading="table.isLoading" @is-finished="table.isLoading = false"
             @return-checked-rows="updateCheckedRows">
             <template v-slot:料號="{ row, key }">
                 <div class="CustomScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
@@ -95,6 +96,7 @@ export default defineComponent({
 
 
         onBeforeMount(async () => {
+            table.isLoading = true;
             await getCurrency();
             await getMats();
         });

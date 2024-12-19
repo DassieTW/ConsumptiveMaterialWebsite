@@ -54,7 +54,7 @@
                 <strong>{{ validation_err_msg }}</strong>
             </span>
             <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false"
-                :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+                :is-loading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
             </table-lite>
@@ -96,8 +96,6 @@ export default defineComponent({
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
         const { mats, queryResult, uploadToDB, getDispatchers } = useConsumptiveMaterials(); // axios get the mats data
-
-        // onBeforeMount();
 
         let isInvalid = ref(false); // validation
         let isInvalid_DB = ref(false); // add to DB validation

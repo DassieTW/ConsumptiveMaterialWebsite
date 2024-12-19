@@ -68,7 +68,7 @@
                 <strong>{{ validation_err_msg }}</strong>
             </span>
             <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
-                :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+                :is-loading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
             </table-lite>

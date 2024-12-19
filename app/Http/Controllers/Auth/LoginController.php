@@ -273,7 +273,7 @@ class LoginController extends Controller
             $dept_name = \Auth::user()->detail_info->部門;
             $office_mail = \Auth::user()->detail_info->email;
             $m_work_id = \Auth::user()->detail_info->主管工號;
-
+            $user_m2 = null;
             $user_m = 人員信息::where([
                 '工號' => $m_work_id
             ])->first();

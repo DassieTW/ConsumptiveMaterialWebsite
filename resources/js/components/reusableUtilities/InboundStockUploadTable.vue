@@ -25,7 +25,7 @@
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                 <strong>{{ validation_err_msg }}</strong>
             </span>
-            <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false" :messages="table.messages"
+            <table-lite :is-loading="table.isLoading" :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false" :messages="table.messages"
                 :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
                 :page-options="table.pageOptions" :sortable="table.sortable" :is-fixed-first-column="false">
                 <template v-slot:FlowNumber="{ row, key }">
@@ -82,7 +82,7 @@
                         </div> -->
                     </div>
                     <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-                    <table-lite id="searchTable2" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
+                    <table-lite id="searchTable2" :is-loading="table2.isLoading" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
                         :hasCheckbox="false" :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
                         :total="table2.totalRecordCount" :page-options="table2.pageOptions" :sortable="table2.sortable"
                         @is-finished="table2.isLoading = false">
@@ -163,6 +163,8 @@ export default defineComponent({
         const { locations, validateISN, getLocs } = useCommonlyUsedFunctions();
 
         onBeforeMount(async () => {
+            table.isLoading = true;
+            table2.isLoading = true;
             await getLocs();
             await getSSZ_info();
         });
@@ -568,6 +570,7 @@ export default defineComponent({
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
             table.isLoading = false;
+            table2.isLoading = false;
         }); // watch for data change
 
         // Table config

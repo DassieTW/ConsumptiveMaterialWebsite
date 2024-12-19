@@ -38,7 +38,7 @@
                 </span>
             </div>
             <table-lite id="searchTable" :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
-                :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+                :is-loading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
 
@@ -153,8 +153,10 @@ export default defineComponent({
         const { mats, Currency, getMats_Buylist, getMats_nonMonthly, sendBuylistMail, submitBuylist, getCurrency } = useMonthlyPRSearch(); // axios get the mats data
         const { mats_SXB, getMats } = useSxbSearch(); // axios get the mats data
 
-        onBeforeMount(getCurrency);
-
+        onBeforeMount(async () => {
+            table.isLoading = true;
+            await getCurrency();
+        });
         const selectedValue2 = ref('USD');
         let isInvalid = ref(true); // validation
 
