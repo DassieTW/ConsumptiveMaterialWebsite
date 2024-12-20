@@ -109,11 +109,20 @@
                             {{ __('templateWords.language') }}</a>
                         <div class="collapse" id="langMenu">
                             <a class="dropdown-item justify-content-center" href="{{ url('/lang/en') }}">
-                                English</a>
+                                English
+                            </a>
                             <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-TW') }}">
-                                繁體中文</a>
+                                繁體中文
+                            </a>
                             <a class="dropdown-item justify-content-center" href="{{ url('/lang/zh-CN') }}">
-                                简体中文</a>
+                                简体中文
+                            </a>
+                            <a class="dropdown-item justify-content-center" href="{{ url('/lang/vi') }}">
+                                Tiếng Việt
+                            </a>
+                            <a class="dropdown-item justify-content-center" href="{{ url('/lang/id') }}">
+                                Bahasa Indonesia
+                            </a>
                         </div>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#"><i class="align-middle mr-1"

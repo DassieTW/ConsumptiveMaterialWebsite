@@ -41,7 +41,7 @@
             <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
                 :hasCheckbox="false" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false">
+                :is-loading="table.isLoading" @is-finished="table.isLoading = false">
             </table-lite>
         </div>
     </div>
@@ -69,6 +69,7 @@ export default defineComponent({
         let validation_err_msg = ref("");
 
         onBeforeMount(async () => {
+            table.isLoading = true;
             await getLocTransferRecord(JSON.stringify("month"), JSON.stringify("none"), JSON.stringify("none"));
         });
 

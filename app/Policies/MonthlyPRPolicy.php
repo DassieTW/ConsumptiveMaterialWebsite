@@ -21,7 +21,7 @@ class MonthlyPRPolicy         // 所有月請購相關權限
      */
     public function viewMonthlyPR(Login $user)   // 是否能使用月請購
     {
-        if (intval($user->priority) < 4) {
+        if (intval($user->priority) < 3) {
             return true;
         } else {
             return false;
@@ -37,7 +37,7 @@ class MonthlyPRPolicy         // 所有月請購相關權限
      */
     public function updateUnitPrice(Login $user)   // 是否更新單價
     {
-        if (intval($user->priority) < 4) {
+        if (intval($user->priority) < 3) {
             return true;
         } else {
             return false;

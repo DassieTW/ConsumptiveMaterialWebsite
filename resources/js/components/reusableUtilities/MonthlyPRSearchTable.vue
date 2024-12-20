@@ -41,6 +41,7 @@
             <table-lite id="searchTable" :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
                 :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
                 :page-options="table.pageOptions" :sortable="table.sortable" @return-checked-rows="updateCheckedRows"
+                :is-loading="table.isLoading" @is-finished="table.isLoading = false"
                 @row-clicked="rowClicked"></table-lite>
         </div>
     </div>
@@ -71,6 +72,10 @@ export default defineComponent({
 
         const { mats, getMats_MPS, deleteMPS } = useMonthlyPRSearch();
         const { queryResult, validateISN } = useCommonlyUsedFunctions();
+
+        onBeforeMount(async () => {
+            table.isLoading = true;
+        });
         const triggerSearchUpdate = async () => {
             await getMats_MPS();
 

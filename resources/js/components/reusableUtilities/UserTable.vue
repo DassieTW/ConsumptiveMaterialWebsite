@@ -15,7 +15,7 @@
         <table-lite id="searchTable" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
             :hasCheckbox="false" :messages="table.messages" :columns="table.columns" :rows="table.rows"
             :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-            @is-finished="table.isLoading = false">
+            :is-loading="table.isLoading" @is-finished="table.isLoading = false">
             <template v-slot:username="{ row, key }">
                 <div class="CustomScrollbar text-nowrap"
                     style="overflow-x: auto; width: 100%; user-select: text; z-index: 1; position: relative;">
@@ -116,6 +116,7 @@ export default defineComponent({
         const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser, db_list, getDBList, setPriority, setDBList, delUser } = useUserSearch(); // axios get the mats data
 
         onBeforeMount(async () => {
+            table.isLoading = true;
             await getDBList();
             await getCurrentUser();
             await getStaffs();

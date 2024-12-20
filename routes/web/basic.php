@@ -40,21 +40,13 @@ Route::get('/', function () {
 
 })->name('basic.index')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
-
-
-
 //basic information change or delete
-
-
 Route::post('/changeordelete', [BasicInformationController::class, 'changeordelete'])->name('basic.changeordelete')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //新增料件
 Route::get('/new', function () {
     return view('basic.new');
-})->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
-//新增料件提交
-Route::post('/materialaddsubmit', [BasicInformationController::class, 'materialaddsubmit'])->name('basic.materialaddsubmit')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
+})->middleware('can:addNewMats,App\Models\ConsumptiveMaterial');
 
 //料件信息查詢頁面
 Route::get('/material', function () {
@@ -69,18 +61,6 @@ Route::post('/material', function () {
 Route::get('/materialsearch', function () {
     return view("basic.searchmaterialok");
 })->name('basic.materialsearch')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
-//料件信息刪除或修改
-Route::post('/materialchangeordel', [BasicInformationController::class, 'materialchangeordel'])->name('basic.materialchangeordel')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
-//資料下載
-Route::post('/download', [BasicInformationController::class, 'download'])->name('basic.download')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
-//新增料件上傳
-Route::post('/upload', [BasicInformationController::class, 'uploadmaterial'])->name('basic.uploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
-
-//上傳資料新增至資料庫
-Route::post('/insertuploadmaterial', [BasicInformationController::class, 'insertuploadmaterial'])->name('basic.insertuploadmaterial')->middleware('can:viewBasicInfo,App\Models\ConsumptiveMaterial');
 
 //基礎資料上傳
 Route::get('/uploadbasic', function () {

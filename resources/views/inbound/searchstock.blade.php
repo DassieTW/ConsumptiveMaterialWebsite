@@ -50,13 +50,14 @@
                                     <label class="col col-auto form-label m-0 p-0">{!! __('inboundpageLang.loc') !!}</label>
                                     <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                                     <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <select class="form-select form-select-lg" id="position" name="position">
-                                            <option style="display: none" disabled selected>{!! __('inboundpageLang.enterloc') !!}
-                                            </option>
+                                        <input id="position" name="position" type="text"
+                                            list="position_datalist" class="form-control form-control-lg"
+                                            placeholder="{!! __('inboundpageLang.enterloc') !!}">
+                                        <datalist id="position_datalist">
                                             @foreach ($position as $position)
                                                 <option>{{ $position->儲存位置 }}</option>
                                             @endforeach
-                                        </select>
+                                        </datalist>
                                     </div>
 
                                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->

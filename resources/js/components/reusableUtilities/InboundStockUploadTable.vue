@@ -14,19 +14,19 @@
                             v-bind:placeholder="$t('inboundpageLang.enterSSZ')" v-model="searchTerm" />
                     </div>
                 </div>
-                <div class="col col-auto">
+                <!-- <div class="col col-auto">
                     <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
                         :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick('All')">
                         <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
                     </button>
-                </div>
+                </div> -->
             </div>
             <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                 <strong>{{ validation_err_msg }}</strong>
             </span>
-            <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false" :messages="table.messages"
-                :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+            <table-lite :is-loading="table.isLoading" :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false"
+                :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
                 :page-options="table.pageOptions" :sortable="table.sortable" :is-fixed-first-column="false">
                 <template v-slot:FlowNumber="{ row, key }">
                     <div class="text-nowrap CustomScrollbar" style="overflow-x: auto; width: 100%;">
@@ -74,17 +74,18 @@
                                     v-bind:placeholder="$t('inboundpageLang.enterisn_or_spec')" v-model="searchTerm2" />
                             </div>
                         </div>
-                        <div class="col col-auto">
+                        <!-- <div class="col col-auto">
                             <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
                                 :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick(modalTitle)">
                                 <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
                             </button>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-                    <table-lite id="searchTable2" :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true"
-                        :hasCheckbox="false" :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
-                        :total="table2.totalRecordCount" :page-options="table2.pageOptions" :sortable="table2.sortable"
+                    <table-lite id="searchTable2" :is-loading="table2.isLoading" :is-fixed-first-column="true"
+                        :isStaticMode="true" :isSlotMode="true" :hasCheckbox="false" :messages="table2.messages"
+                        :columns="table2.columns" :rows="table2.rows" :total="table2.totalRecordCount"
+                        :page-options="table2.pageOptions" :sortable="table2.sortable"
                         @is-finished="table2.isLoading = false">
                         <template v-slot:relQty="{ row, key }">
                             <div class="col col-auto align-items-center m-0 p-0">
@@ -152,6 +153,7 @@ import useTransitSearch from "../../composables/TransitSearch.ts";
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
 import useSSZSearch from "../../composables/SSZSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
+import useUserSearch from "../../composables/UserSearch.ts";
 
 export default defineComponent({
     name: "App",
@@ -161,9 +163,13 @@ export default defineComponent({
         const { mats_inTransit, getTransit, updateInTransit } = useTransitSearch(); // axios get the mats_inTransit data
         const { mats, getExistingStock } = useInboundStockSearch(); // axios get the mats data
         const { locations, validateISN, getLocs } = useCommonlyUsedFunctions();
+        const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser } = useUserSearch(); // axios get the mats data
 
         onBeforeMount(async () => {
+            table.isLoading = true;
+            table2.isLoading = true;
             await getLocs();
+            await getUsers();
             await getSSZ_info();
         });
 
@@ -260,14 +266,6 @@ export default defineComponent({
         const openSSZDetails = (SSZ) => {
             modalTitle.value = SSZ;
             searchTerm2.value = "";
-
-            let obj = data2.find(o => o.FlowNumber === SSZ);
-            if (obj.status.toLowerCase().includes('reject')) {
-                showFooter.value = false;
-            } // if
-            else {
-                showFooter.value = true;
-            } // else
         } // openSSZDetails
 
         const ssz_claim = async () => {
@@ -532,9 +530,30 @@ export default defineComponent({
                 });
             } // else
 
+            let temp_openedSSZ = modalTitle.value;
+            modalTitle.value = "";
+            await getSSZ_info();
+            modalTitle.value = temp_openedSSZ;
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
         } // ssz_claim
+
+        watch(modalTitle, async () => {
+            if (modalTitle.value !== "") {
+                showFooter.value = true;
+                let obj = data2.find(o => o.FlowNumber === modalTitle.value);
+                if (obj.status.toLowerCase().includes('reject')) {
+                    showFooter.value = false;
+                } // if
+
+                // if all the mats are claimed, then hide the footer
+                let claimed_mats = data2.filter(x => x.FlowNumber === modalTitle.value);
+                let unclaimed_mats = claimed_mats.filter(x => x.ClaimedBy === "" || x.ClaimedBy === null);
+                if (unclaimed_mats.length === 0) {
+                    showFooter.value = false;
+                } // if
+            } // if
+        }); // watch for data change
 
         watch(mats_SSZInfo, async () => {
             await triggerModal();
@@ -542,7 +561,7 @@ export default defineComponent({
             data2.splice(0);
             locsArray.splice(0);
             let allRowsObj = JSON.parse(mats_SSZInfo.value);
-            // console.log(allRowsObj); // test
+            // console.log(JSON.parse(users.value)); // test
             JSON.parse(locations.value).data.forEach(element => {
                 locsArray.push(element.儲存位置);
             });
@@ -552,12 +571,19 @@ export default defineComponent({
 
             for (let i = 0; i < allRowsObj.data.length; i++) {
                 allRowsObj.data[i].新儲位 = "";
+                allRowsObj.data[i].姓名 = "N/A";
+                // Find the claimed staff's 姓名 in users
+                let obj = JSON.parse(users.value).datas.find(o => o.工號 === allRowsObj.data[i].ClaimedStaff);
+                if (obj !== undefined) {
+                    allRowsObj.data[i].姓名 = obj.姓名;
+                } // if
                 data2.push(allRowsObj.data[i]);
             } // for
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
             table.isLoading = false;
+            table2.isLoading = false;
         }); // watch for data change
 
         // Table config
@@ -690,7 +716,7 @@ export default defineComponent({
                     display: function (row, i) {
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
+                            ' style="overflow-x: auto; width: 100%; user-select: text; z-index: 1; position: relative;">' +
                             row.MatShort +
                             "</div>"
                         );

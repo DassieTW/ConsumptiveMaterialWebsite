@@ -25,7 +25,7 @@
     <span class="invalid-feedback d-block" role="alert">
         <strong>{{ $t("inboundpageLang.no_basic_are_highlighted") }}</strong>
     </span>
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
+    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :is-loading="table.isLoading"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
         :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
         @return-checked-rows="updateCheckedRows"></table-lite>
@@ -48,7 +48,10 @@ export default defineComponent({
     setup() {
         const { mats, getMats, deleteRows } = useInboundListSearch(); // axios get the mats data
 
-        onBeforeMount(getMats);
+        onBeforeMount(async () => {
+            table.isLoading = true;
+            await getMats();
+        });
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance

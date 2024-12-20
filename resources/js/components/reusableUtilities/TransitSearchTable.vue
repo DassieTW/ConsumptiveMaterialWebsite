@@ -20,7 +20,7 @@
     <table-lite id="searchTable" :is-fixed-first-column="true" :hasCheckbox="false" :isStaticMode="true"
         :isSlotMode="true" :messages="table.messages" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-        @return-checked-rows="updateCheckedRows">
+        @return-checked-rows="updateCheckedRows" :is-loading="table.isLoading" @is-finished="table.isLoading = false">
         <template v-slot:請購數量="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <span class="m-0 p-0" style="width: 12ch;">
@@ -109,7 +109,10 @@ export default defineComponent({
 
         const { mats_inTransit, getTransit, updateInTransit } = useTransitSearch(); // axios get the mats_inTransit data
 
-        onBeforeMount(getTransit);
+        onBeforeMount(async() => {
+            table.isLoading = true;
+            await getTransit();
+        });
 
         let isInvalid = ref(false); // edit to DB validation for Qty
         let isInvalid2 = ref(false); // edit to DB validation for descr

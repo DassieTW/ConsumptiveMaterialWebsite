@@ -31,9 +31,9 @@
                 <strong>{{ validation_err_msg }}</strong>
             </span>
             <table-lite :is-fixed-first-column="true" :is-static-mode="true" :isSlotMode="true" :hasCheckbox="true"
-                :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
-                :rowClasses="table.rowClasses" :total="table.totalRecordCount" :page-options="table.pageOptions"
-                :sortable="table.sortable" @is-finished="table.isLoading = false"
+                :messages="table.messages" :columns="table.columns" :rows="table.rows" :rowClasses="table.rowClasses"
+                :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+                :is-loading="table.isLoading" @is-finished="table.isLoading = false"
                 @return-checked-rows="updateCheckedRows">
                 <template v-slot:單耗="{ row, key }">
                     <!-- DON'T Use input-group here. It messes with the z-index -->
@@ -46,7 +46,7 @@
                             step="0.000001" min="0">
                         <small class="input-group-text text-center p-0 m-0 col col-auto"
                             style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">{{
-                            row.單位 }}</small>
+                                row.單位 }}</small>
                     </div>
                 </template>
             </table-lite>
@@ -105,6 +105,7 @@ export default defineComponent({
         const { mats, mails, recordCount, getAll, getCheckersMails, uploadToDB, deleteUC } = useUnitConsumptionSearch();
 
         onBeforeMount(async () => {
+            table.isLoading = true;
             await getCheckersMails();
             await getAll();
         });

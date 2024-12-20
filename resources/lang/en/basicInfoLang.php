@@ -60,7 +60,7 @@ return [
     'enterlt' =>'Please Enter LT',
     'enteryorn' =>'Please Select Yes/No',
     'enterbelong' =>'Please select the attribution of consumables',
-    'entersenddep' =>'Please select issuing department',
+    'entersenddep' =>'Please select Issuer',
     'entersafe' =>'Please Enter Safety Stock',
     'consume' => 'Unit Cons.',
     'stand' => 'Station',

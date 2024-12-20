@@ -721,11 +721,6 @@ class BUController extends Controller
 
                 'number' => trans('bupagelang.enterisn'),
             ]);
-        } else if (strlen($number) !== 12) {
-            return back()->withErrors([
-
-                'number' => trans('bupagelang.isnlength'),
-            ]);
         } else {
             $database = config('database_list.databases');
 

@@ -10,7 +10,7 @@
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :isLoading="table.isLoading"
+    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :is-loading="table.isLoading"
         :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
         :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
         @return-checked-rows="updateCheckedRows"></table-lite>
@@ -32,7 +32,10 @@ export default defineComponent({
     setup() {
         const { mats, getMats } = useOutboundPickrecord(); // axios get the mats data
 
-        onBeforeMount(getMats);
+        onBeforeMount(async () => {
+            table.isLoading = true;
+            await getMats();
+        });
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document

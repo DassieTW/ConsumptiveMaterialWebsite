@@ -19,7 +19,7 @@
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
     <table-lite :is-fixed-first-column="true" :isStaticMode="true" :isSlotMode="true" :hasCheckbox="false"
-        :isLoading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+        :is-loading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
         @is-finished="table.isLoading = false">
         <template v-slot:料號="{ row, key }">
@@ -48,7 +48,10 @@ export default defineComponent({
 
     setup() {
         const { mats, getMats } = useInboundStockSearch(); // axios get the mats data
-        onBeforeMount(getMats);
+        onBeforeMount(async () => {
+            table.isLoading = true;
+            await getMats();
+        });
 
         const searchTerm = ref(""); // Search text
         const app = getCurrentInstance(); // get the current instance

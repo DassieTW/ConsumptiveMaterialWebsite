@@ -87,8 +87,8 @@ class LoginPolicy         // 所有用戶管理相關權限
 
     public function searchAndUpdatePeople(Login $user)
     {
-        // 權限123才能人員訊息 查詢/刪除
-        if (intval($user->priority) < 4) {
+        // 權限12才能人員訊息 查詢/刪除
+        if (intval($user->priority) < 3) {
             return true;
         } else {
             return false;
@@ -97,8 +97,8 @@ class LoginPolicy         // 所有用戶管理相關權限
 
     public function newPeopleInfo(Login $user)
     {
-        // 權限123才能新增人員信息
-        if (intval($user->priority) < 4) {
+        // 權限12才能新增人員信息
+        if (intval($user->priority) < 3) {
             return true;
         } else {
             return false;

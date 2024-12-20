@@ -20,7 +20,7 @@
     <!-- </div>breaks cols to a new line-->
     <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false" :messages="table.messages"
         :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :page-options="table.pageOptions"
-        :sortable="table.sortable" :is-fixed-first-column="false">
+        :sortable="table.sortable" :is-fixed-first-column="false" :is-loading="table.isLoading" @is-finished="table.isLoading = false">
         <template v-slot:SXB單號="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <button @click="openSXBDetails(row.SXB單號)" type="button" data-bs-toggle="modal"
@@ -81,7 +81,7 @@
                     <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false"
                         :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
                         :total="table2.totalRecordCount" :page-options="table2.pageOptions" :sortable="table2.sortable"
-                        :is-fixed-first-column="false" @row-clicked="rowClicked">
+                        :is-fixed-first-column="false" @row-clicked="rowClicked" :is-loading="table2.isLoading" @is-finished="table2.isLoading = false">
                     </table-lite>
                 </div>
                 <div v-if="showFooter" class="modal-footer justify-content-between">
@@ -115,7 +115,11 @@ export default defineComponent({
     setup() {
         const { mats_SXB, inTransit, getMats, SXB_Reject, SXB_Approve, getTransit } = useSxbSearch(); // axios get the mats_SXB data
 
-        onBeforeMount(getMats);
+        onBeforeMount(async() => {
+            table.isLoading = true;
+            table2.isLoading = true;
+            await getMats();
+        });
 
         const searchTerm = ref(""); // Search text
         const searchTerm2 = ref(""); // Search text for modal table
@@ -207,6 +211,7 @@ export default defineComponent({
 
         const openSXBDetails = (SXB) => {
             // console.log("clicked!"); // test
+            table2.isLoading = true;
             modalTitle.value = SXB;
             data2.splice(0);
             for (let i = 0; i < AllRecords.length; i++) {
@@ -221,6 +226,7 @@ export default defineComponent({
             else {
                 showFooter.value = false;
             } // else
+            table2.isLoading = false;
         } // openSXBDetails
 
         const sxb_reject = async () => {

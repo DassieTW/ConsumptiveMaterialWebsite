@@ -135,16 +135,13 @@ class InboundController extends Controller
         \DB::purge(env("DB_CONNECTION"));
 
         $CompanyAlias = "";
-        if (str_contains($requestDB, "蘇州") || str_contains($requestDB, "BB1") || str_contains($requestDB, "M3") || $requestDB === "SMT Consumables management") {
+        if (str_contains($requestDB, "蘇州") || str_contains($requestDB, "名碩") || str_contains($requestDB, "BB1") || str_contains($requestDB, "M3") || $requestDB === "SMT Consumables management") {
             $CompanyAlias = "名碩";
         } // if
         else if (str_contains($requestDB, "巴淡")) {
             $CompanyAlias = "PTB";
         } // else if
-        else if (str_contains($requestDB, "PHP")) {
-            $CompanyAlias = "PHP";
-        } // else if
-        else if (str_contains($requestDB, "PVN")) {
+        else if (str_contains($requestDB, "越南")) {
             $CompanyAlias = "PVN";
         } // else if
         else if (str_contains($requestDB, "HQ") || str_contains($requestDB, "新店")) {
@@ -152,14 +149,14 @@ class InboundController extends Controller
         } // else if
 
         $FlowNumberReceiveTime = \DB::table('SSZNumber')
-            ->where('received_time', '>=', Carbon::now()->subMonth(6));
+            ->where('received_time', '>=', Carbon::now()->subMonth(1));
 
         $allResult = \DB::table('SSZInfo')
+            ->where('SSZInfo.CostDept', 'like', 'K4%')
+            ->where('SSZInfo.Company', 'like', $CompanyAlias . '%')
             ->joinSub($FlowNumberReceiveTime, 'sszNumber', function ($join) {
                 $join->on('SSZInfo.FlowNumber', '=', 'sszNumber.id');
             })
-            ->leftJoin('人員信息', 'SSZInfo.ClaimedStaff', '=', '人員信息.工號')
-            ->where('SSZInfo.Company', 'like', $CompanyAlias . '%')
             ->get();
 
         return \Response::json(['data' => $allResult, "dbName" => $requestDB], 200/* Status code here default is 200 ok*/);

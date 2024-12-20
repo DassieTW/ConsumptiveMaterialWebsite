@@ -44,6 +44,7 @@ return [
     'standUpdate' => 'Station Manpower <br/> &nbsp;&nbsp;&nbsp; (Search & Update)',
     'importNonMonthlyData' => 'Import Non-Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
     'importMonthlyData' => 'Import Monthly <br/> &nbsp;&nbsp;&nbsp; PR Data',
+    'PR' => 'Export All PR Data',
     'on_the_way_search' => 'On-Order Qty',
 
     //date picker lang
