@@ -186,11 +186,13 @@
                                                         <a class="sidebar-link" href="{{ url('basic/material') }}">
                                                             {!! __('basicInfoLang.matsInfo') !!}</a>
                                                     </li>
-                                                    <li
-                                                        class="sidebar-item {{ isActiveRoute(['basic/new', 'basic.new']) }}">
-                                                        <a class="sidebar-link" href="{{ url('basic/new') }}">
-                                                            {!! __('basicInfoLang.newMats') !!}</a>
-                                                    </li>
+                                                    @can('addNewMats', App\Models\ConsumptiveMaterial::class)
+                                                        <li
+                                                            class="sidebar-item {{ isActiveRoute(['basic/new', 'basic.new']) }}">
+                                                            <a class="sidebar-link" href="{{ url('basic/new') }}">
+                                                                {!! __('basicInfoLang.newMats') !!}</a>
+                                                        </li>
+                                                    @endcan
                                                 </ul>
                                             </li>
                                         @endcan
@@ -576,7 +578,7 @@
                                                 </ul>
                                             </li>
                                         @endcan
-                                        @can('viewCheckInvent', App\Models\Checking_inventory::class)
+                                        {{-- @can('viewCheckInvent', App\Models\Checking_inventory::class)
                                             <li class="sidebar-item {{ isActiveRoute(['checking/', 'checking.index']) }}">
                                                 <a data-bs-target="#checking" data-bs-toggle="collapse"
                                                     class="sidebar-link collapsed" aria-expanded="false">
@@ -609,7 +611,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                        @endcan
+                                        @endcan --}}
                                         <li class="sidebar-item {{ isActiveRoute(['member/', 'member.index']) }}">
                                             <a href="#auth" data-bs-toggle="collapse"
                                                 class="sidebar-link collapsed">

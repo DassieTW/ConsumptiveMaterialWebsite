@@ -146,7 +146,8 @@
                                 <td class="table-secondary"><span
                                         class="text-decoration-line-through text-muted">{!! __('basicInfoLang.newMats') !!}</span></td>
                                 {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('basicInfoLang.newMats') !!}</span></td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('basicInfoLang.newMats') !!}</span></td>
                                 {{-- 1 --}}
@@ -177,17 +178,15 @@
                                 </td>
 
                                 {{-- 3 --}}
-                                <td rowspan="5" class="table-secondary">
+                                <td rowspan="5" class="table-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-inboxes-fill align-middle" viewBox="0 0 16 16">
                                         <path
                                             d="M4.98 1a.5.5 0 0 0-.39.188L1.54 5H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0A.5.5 0 0 1 10 5h4.46l-3.05-3.812A.5.5 0 0 0 11.02 1H4.98zM3.81.563A1.5 1.5 0 0 1 4.98 0h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 10H1.883A1.5 1.5 0 0 1 .394 8.686l-.39-3.124a.5.5 0 0 1 .106-.374L3.81.563zM.125 11.17A.5.5 0 0 1 .5 11H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0 .5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 16H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .121-.393z" />
                                     </svg>
-                                    <span
-                                        class="align-middle text-decoration-line-through text-muted">{!! __('templateWords.inbound') !!}</span>
+                                    <span>{!! __('templateWords.inbound') !!}</span>
                                 </td>
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('inboundpageLang.new') !!}</span>
+                                <td class="table-success"><span>{!! __('inboundpageLang.new') !!}</span>
                                 </td>
 
                                 {{-- 2 --}}
@@ -218,8 +217,7 @@
                                         class="text-decoration-line-through text-muted">{!! __('inboundpageLang.search') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('inboundpageLang.search') !!}</span>
+                                <td class="table-success"><span>{!! __('inboundpageLang.search') !!}</span>
                                 </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('inboundpageLang.search') !!}</span></td>
@@ -232,8 +230,7 @@
                                         class="text-decoration-line-through text-muted">{!! __('inboundpageLang.searchstock') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('inboundpageLang.searchstock') !!}</span>
+                                <td class="table-success"><span>{!! __('inboundpageLang.searchstock') !!}</span>
                                 </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('inboundpageLang.searchstock') !!}</span></td>
@@ -246,8 +243,7 @@
                                         class="text-decoration-line-through text-muted">{!! __('inboundpageLang.locationchange') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('inboundpageLang.locationchange') !!}</span>
+                                <td class="table-success"><span>{!! __('inboundpageLang.locationchange') !!}</span>
                                 </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('inboundpageLang.locationchange') !!}</span></td>
@@ -260,8 +256,7 @@
                                         class="text-decoration-line-through text-muted">{!! __('inboundpageLang.LocationChangeRecord') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('inboundpageLang.LocationChangeRecord') !!}</span>
+                                <td class="table-success"><span>{!! __('inboundpageLang.LocationChangeRecord') !!}</span>
                                 </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('inboundpageLang.LocationChangeRecord') !!}</span></td>
@@ -401,15 +396,18 @@
                                 </td>
 
                                 {{-- 3 --}}
-                                <td rowspan="8" class="table-success">
+                                <td rowspan="8" class="table-secondary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-cart2 align-middle" viewBox="0 0 16 16">
                                         <path
                                             d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
                                     </svg>
-                                    <span class="align-middle">{!! __('templateWords.monthly') !!}</span>
+                                    <span
+                                        class="align-middle text-decoration-line-through text-muted">{!! __('templateWords.monthly') !!}</span>
                                 </td>
-                                <td class="table-success"><span>{!! __('templateWords.isnConsumeAdd') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('templateWords.isnConsumeAdd') !!}</span>
+                                </td>
 
                                 {{-- 2 --}}
                                 <td rowspan="8" class="table-success">
@@ -439,7 +437,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.isnConsumeUpdate') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('templateWords.isnConsumeUpdate') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('templateWords.isnConsumeUpdate') !!}</span>
+                                </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('templateWords.isnConsumeUpdate') !!}</span></td>
                                 {{-- 1 --}}
@@ -451,7 +451,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.importMonthlyData') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('templateWords.importMonthlyData') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('templateWords.importMonthlyData') !!}</span>
+                                </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('templateWords.importMonthlyData') !!}</span></td>
                                 {{-- 1 --}}
@@ -463,7 +465,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.importNonMonthlyData') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('templateWords.importNonMonthlyData') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('templateWords.importNonMonthlyData') !!}</span>
+                                </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('templateWords.importNonMonthlyData') !!}</span></td>
                                 {{-- 1 --}}
@@ -475,7 +479,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span>
+                                </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('monthlyPRpageLang.UpdateUnitPrice') !!}</span></td>
                                 {{-- 1 --}}
@@ -487,7 +493,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('monthlyPRpageLang.PR') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('monthlyPRpageLang.PR') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('monthlyPRpageLang.PR') !!}</span>
+                                </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('monthlyPRpageLang.PR') !!}</span></td>
                                 {{-- 1 --}}
@@ -499,7 +507,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('monthlyPRpageLang.SXB_search') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('monthlyPRpageLang.SXB_search') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('monthlyPRpageLang.SXB_search') !!}</span>
+                                </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('monthlyPRpageLang.SXB_search') !!}</span></td>
                                 {{-- 1 --}}
@@ -511,190 +521,192 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.on_the_way_search') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('templateWords.on_the_way_search') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('templateWords.on_the_way_search') !!}</span>
+                                </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('templateWords.on_the_way_search') !!}</span></td>
                                 {{-- 1 --}}
                                 <td class="table-success"><span>{!! __('templateWords.on_the_way_search') !!}</span></td>
                             </tr>
                             {{-- ----------------------------------------------------------------------------------------- --}}
-                            <tr class="table-secondary">
+                            {{-- <tr class="table-secondary">
                                 <td colspan="2"></td>
                                 <td colspan="2"></td>
                                 <td colspan="2"></td>
                                 <td colspan="2"></td>
-                            </tr>
+                            </tr> --}}
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             {{-- O庫 --}}
-                            <tr>
-                                {{-- 4 --}}
-                                <td rowspan="12" class="table-success">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
-                                        <path
-                                            d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
-                                    </svg>
-                                    <span class="align-middle">{!! __('templateWords.obound') !!}</span>
-                                </td>
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('oboundpageLang.newMats') !!}</span>
-                                </td>
+                            <!-- <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td rowspan="12" class="table-success">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                                            fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+                                                                        </svg>
+                                                                        <span class="align-middle">{!! __('templateWords.obound') !!}</span>
+                                                                    </td>
+                                                                    <td class="table-secondary"><span
+                                                                            class="text-decoration-line-through text-muted">{!! __('oboundpageLang.newMats') !!}</span>
+                                                                    </td>
 
-                                {{-- 3 --}}
-                                <td rowspan="12" class="table-success">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
-                                        <path
-                                            d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
-                                    </svg>
-                                    <span class="align-middle">{!! __('templateWords.obound') !!}</span>
-                                </td>
-                                <td class="table-success"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
+                                                                    {{-- 3 --}}
+                                                                    <td rowspan="12" class="table-success">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                                            fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+                                                                        </svg>
+                                                                        <span class="align-middle">{!! __('templateWords.obound') !!}</span>
+                                                                    </td>
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
 
-                                {{-- 2 --}}
-                                <td rowspan="12" class="table-success">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
-                                        <path
-                                            d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
-                                    </svg>
-                                    <span class="align-middle">{!! __('templateWords.obound') !!}</span>
-                                </td>
-                                <td class="table-success"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td rowspan="12" class="table-success">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                                            fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+                                                                        </svg>
+                                                                        <span class="align-middle">{!! __('templateWords.obound') !!}</span>
+                                                                    </td>
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
 
-                                {{-- 1 --}}
-                                <td rowspan="12" class="table-success">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
-                                        <path
-                                            d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
-                                    </svg>
-                                    <span class="align-middle">{!! __('templateWords.obound') !!}</span>
-                                </td>
-                                <td class="table-success"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('oboundpageLang.matsInfo') !!}</span>
-                                </td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('oboundpageLang.inbound') !!}</span>
-                                </td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('oboundpageLang.inboundsearch') !!}</span>
-                                </td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('oboundpageLang.searchstock') !!}</span>
-                                </td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('oboundpageLang.picklist') !!}</span>
-                                </td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-secondary"><span
-                                        class="text-decoration-line-through text-muted">{!! __('oboundpageLang.pickrecord') !!}</span>
-                                </td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
-                            </tr>
-                            <tr>
-                                {{-- 4 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
-                                {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
-                                {{-- 2 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
-                                {{-- 1 --}}
-                                <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
-                            </tr>
+                                                                    {{-- 1 --}}
+                                                                    <td rowspan="12" class="table-success">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                                            fill="currentColor" class="bi bi-box-seam align-middle" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+                                                                        </svg>
+                                                                        <span class="align-middle">{!! __('templateWords.obound') !!}</span>
+                                                                    </td>
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.newMats') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-secondary"><span
+                                                                            class="text-decoration-line-through text-muted">{!! __('oboundpageLang.matsInfo') !!}</span>
+                                                                    </td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.matsInfo') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-secondary"><span
+                                                                            class="text-decoration-line-through text-muted">{!! __('oboundpageLang.inbound') !!}</span>
+                                                                    </td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.inbound') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-secondary"><span
+                                                                            class="text-decoration-line-through text-muted">{!! __('oboundpageLang.inboundsearch') !!}</span>
+                                                                    </td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.inboundsearch') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.stockupload') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-secondary"><span
+                                                                            class="text-decoration-line-through text-muted">{!! __('oboundpageLang.searchstock') !!}</span>
+                                                                    </td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.searchstock') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.pick') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-secondary"><span
+                                                                            class="text-decoration-line-through text-muted">{!! __('oboundpageLang.picklist') !!}</span>
+                                                                    </td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.picklist') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-secondary"><span
+                                                                            class="text-decoration-line-through text-muted">{!! __('oboundpageLang.pickrecord') !!}</span>
+                                                                    </td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.pickrecord') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.back') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.backlist') !!}</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    {{-- 4 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
+                                                                    {{-- 3 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
+                                                                    {{-- 2 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
+                                                                    {{-- 1 --}}
+                                                                    <td class="table-success"><span>{!! __('oboundpageLang.backrecord') !!}</span></td>
+                                                                </tr> -->
                             {{-- ----------------------------------------------------------------------------------------- --}}
                             <tr class="table-secondary">
                                 <td colspan="2"></td>
@@ -854,7 +866,9 @@
                                         class="text-decoration-line-through text-muted">{!! __('templateWords.PInfo') !!}</span>
                                 </td>
                                 {{-- 3 --}}
-                                <td class="table-success"><span>{!! __('templateWords.PInfo') !!}</span></td>
+                                <td class="table-secondary"><span
+                                        class="text-decoration-line-through text-muted">{!! __('templateWords.PInfo') !!}</span>
+                                </td>
                                 {{-- 2 --}}
                                 <td class="table-success"><span>{!! __('templateWords.PInfo') !!}</span></td>
                                 {{-- 1 --}}

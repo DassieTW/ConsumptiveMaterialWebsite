@@ -25,6 +25,7 @@ return [
         'M3-名碩 Consumables management',
         'SMT Consumables management',
         '巴淡-PTB 2廠 Consumables management',
+        '巴淡-PTB 2廠-辦公5S Consumables management',
         '巴淡-LOT11 Consumables management',
         '巴淡-PTSN Consumables management',
         '巴淡-SMT Consumables management',

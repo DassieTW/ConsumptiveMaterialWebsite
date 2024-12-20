@@ -23,5 +23,15 @@ class BasicInfoPolicy
         } else {
             return false;
         } // if else 
+    } // viewBasicInfo
+
+    // 權限3以上才能新增料件
+    public function addNewMats(Login $user)
+    {
+        if (intval($user->priority) < 3) {
+            return true;
+        } else {
+            return false;
+        } // if else 
     }
 }

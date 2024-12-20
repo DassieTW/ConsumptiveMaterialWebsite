@@ -14,7 +14,7 @@ class CreateInventoryChangeRecordsTable extends Migration
     public function up()
     {
         Schema::create('inventory_change_records', function (Blueprint $table) {
-            $table->id()->primary();
+            $table->id();
             $table->string('料號', 12);
             $table->string('儲位', 255);
             $table->integer('原庫存');
