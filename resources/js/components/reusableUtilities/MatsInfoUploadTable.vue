@@ -482,7 +482,7 @@ export default defineComponent({
                                 row.料號 +
                                 '">' +
                                 '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
+                                ' style="overflow-x: auto; width: 100%; user-select: text; z-index: 1; position: relative;">' +
                                 row.料號 +
                                 "</div>"
                             );

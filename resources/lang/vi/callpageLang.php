@@ -2,9 +2,9 @@
 
 return array (
   'page_name' => 'Hệ thống cảnh báo',
-  'safealert' => 'Tồn kho an toàn kho',
-  'dayalert' => 'Ngày không hoạt động',
-  'diffalert' => 'Yêu cầu & Cách dụng',
+  'safealert' => 'Cảnh báo an toàn kho',
+  'dayalert' => 'Cảnh báo số ngày tồn đọng',
+  'diffalert' => 'Yêu cầu & Lĩnh dùng bất thường',
   'callsys' => 'Hệ thống cảnh báo',
   'client' => 'Loại khách hàng',
   'isn' => 'Mã liệu',
