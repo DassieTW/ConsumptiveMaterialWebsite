@@ -166,11 +166,14 @@ export default defineComponent({
         const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser } = useUserSearch(); // axios get the mats data
 
         onBeforeMount(async () => {
+            let start = Date.now();
             table.isLoading = true;
             table2.isLoading = true;
             await getLocs();
             await getUsers();
             await getSSZ_info();
+            let timeTaken = Date.now() - start;
+            console.log("Total time taken for first query : " + timeTaken + " milliseconds");
         });
 
         const searchTerm = ref(""); // Search text
@@ -556,6 +559,7 @@ export default defineComponent({
         }); // watch for data change
 
         watch(mats_SSZInfo, async () => {
+            let start = Date.now();
             await triggerModal();
             data.splice(0);
             data2.splice(0);
@@ -584,6 +588,8 @@ export default defineComponent({
             $("body").loadingModal("destroy");
             table.isLoading = false;
             table2.isLoading = false;
+            let timeTaken = Date.now() - start;
+            console.log("Total time taken for data processed : " + timeTaken + " milliseconds");
         }); // watch for data change
 
         // Table config
