@@ -45,12 +45,21 @@ Route::get('/searchstock', function () {
 //入庫-庫存查詢結果
 Route::get('/searchstocksubmit', function () {
     Session::put("month", false);
+    Session::put("nogood", false);
     return view("inbound.searchstockok");
 })->middleware('can:viewInbound,App\Models\Inbound');
 
 //入庫-庫存查詢結果(月使用量)
 Route::get('/searchstocksubmit1', function () {
     Session::put("month", true);
+    Session::put("nogood", false);
+    return view("inbound.searchstockok");
+})->middleware('can:viewInbound,App\Models\Inbound');
+
+//入庫-庫存查詢結果(不良品)
+Route::get('/searchstocksubmit2', function () {
+    Session::put("month", false);
+    Session::put("nogood", true);
     return view("inbound.searchstockok");
 })->middleware('can:viewInbound,App\Models\Inbound');
 
