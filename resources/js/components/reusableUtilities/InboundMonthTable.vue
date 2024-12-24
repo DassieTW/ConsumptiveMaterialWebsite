@@ -18,10 +18,15 @@
     </div>
     <div class="w-100" style="height: 1ch"></div>
     <!-- </div>breaks cols to a new line-->
-    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="false" :is-loading="table.isLoading"
-        :messages="table.messages" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-        :page-options="table.pageOptions" :sortable="table.sortable" @is-finished="table.isLoading = false"
-        @return-checked-rows="updateCheckedRows"></table-lite>
+    <table-lite :is-fixed-first-column="true" :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false"
+        :is-loading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
+        :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
+        @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
+        <template v-slot:月請購="{ row, key }">
+            <span v-if="row.月請購 == '是'">{{ $t("basicInfoLang.yes") }}</span>
+            <span v-else>{{ $t("basicInfoLang.no") }}</span>
+        </template>
+    </table-lite>
 </template>
 
 <script>
@@ -73,17 +78,36 @@ export default defineComponent({
                 tempObj.料號 = data[i].料號;
                 tempObj.品名 = data[i].品名;
                 tempObj.規格 = data[i].規格;
-                tempObj.現有庫存 = data[i].現有庫存;
-                tempObj.單位 = data[i].單位;
+                tempObj.現有庫存 = data[i].現有庫存 + " " + data[i].單位;
                 tempObj.月使用量 = data[i].月使用量;
                 tempObj.庫存使用月數 = data[i].庫存使用月數;
                 tempObj.單價 = data[i].單價;
                 tempObj.幣別 = data[i].幣別;
-                tempObj.月請購 = data[i].月請購;
+                if (data[i].月請購 === '是') {
+                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.yes");
+                } else {
+                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.no");
+                } // if else
                 rows.push(tempObj);
             } // for
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.nowstock"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.monthuse"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.stockmonth"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.price"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.month"),
+                ]],
+                { origin: "A1" });
+
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("inboundpageLang.stockmonth"));
             XLSX.writeFile(workbook,
@@ -109,7 +133,6 @@ export default defineComponent({
         }); // watch for data change
 
         // Table config
-
         const table = reactive({
             isLoading: true,
             columns: [
@@ -304,21 +327,6 @@ export default defineComponent({
                     field: "月請購",
                     width: "10ch",
                     sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="month' +
-                            i +
-                            '" name="month' +
-                            i +
-                            '" value="' +
-                            row.月請購 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.月請購 +
-                            "</div>"
-                        );
-                    },
                 },
             ],
             rows: computed(() => {

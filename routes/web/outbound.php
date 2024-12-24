@@ -156,6 +156,3 @@ Route::post('/picklistsubmit', [OutboundController::class, 'picklistsubmit'])->n
 
 //提交退料單
 Route::post('/backlistsubmit', [OutboundController::class, 'backlistsubmit'])->name('outbound.backlistsubmit')->middleware('can:outboundReturnSerialNum,App\Models\Outbound');
-
-//資料下載
-Route::post('/download', [OutboundController::class, 'download'])->name('outbound.download')->middleware('can:viewOutbound,App\Models\Outbound');

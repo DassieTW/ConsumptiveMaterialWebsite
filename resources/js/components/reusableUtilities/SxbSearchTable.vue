@@ -20,7 +20,8 @@
     <!-- </div>breaks cols to a new line-->
     <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false" :messages="table.messages"
         :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :page-options="table.pageOptions"
-        :sortable="table.sortable" :is-fixed-first-column="false" :is-loading="table.isLoading" @is-finished="table.isLoading = false">
+        :sortable="table.sortable" :is-fixed-first-column="false" :is-loading="table.isLoading"
+        @is-finished="table.isLoading = false">
         <template v-slot:SXB單號="{ row, key }">
             <div class="col col-auto align-items-center m-0 p-0">
                 <button @click="openSXBDetails(row.SXB單號)" type="button" data-bs-toggle="modal"
@@ -47,7 +48,7 @@
     </table-lite>
 
     <!-- Modal -->
-    <div class="modal fade" id="detailTable" tabindex="-1" aria-labelledby="detailTable" aria-hidden="true">
+    <div class="modal fade" id="detailTable" tabindex="-1" aria-labelledby="detailTable" aria-hidden="false">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header justify-content-center">
@@ -81,7 +82,8 @@
                     <table-lite :is-static-mode="true" :isSlotMode="true" :hasCheckbox="false"
                         :messages="table2.messages" :columns="table2.columns" :rows="table2.rows"
                         :total="table2.totalRecordCount" :page-options="table2.pageOptions" :sortable="table2.sortable"
-                        :is-fixed-first-column="false" @row-clicked="rowClicked" :is-loading="table2.isLoading" @is-finished="table2.isLoading = false">
+                        :is-fixed-first-column="false" @row-clicked="rowClicked" :is-loading="table2.isLoading"
+                        @is-finished="table2.isLoading = false">
                     </table-lite>
                 </div>
                 <div v-if="showFooter" class="modal-footer justify-content-between">
@@ -115,7 +117,7 @@ export default defineComponent({
     setup() {
         const { mats_SXB, inTransit, getMats, SXB_Reject, SXB_Approve, getTransit } = useSxbSearch(); // axios get the mats_SXB data
 
-        onBeforeMount(async() => {
+        onBeforeMount(async () => {
             table.isLoading = true;
             table2.isLoading = true;
             await getMats();
@@ -175,6 +177,20 @@ export default defineComponent({
                 } // for
 
                 const worksheet = XLSX.utils.json_to_sheet(rows);
+
+                // change header name
+                XLSX.utils.sheet_add_aoa(worksheet,
+                    [[
+                        app.appContext.config.globalProperties.$t("checkInvLang.serial_number"),
+                        app.appContext.config.globalProperties.$t("basicInfoLang.isn"),
+                        app.appContext.config.globalProperties.$t("basicInfoLang.pName"),
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"),
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buytime"),
+                    ]],
+                    { origin: "A1" });
+
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, 'ALL');
                 XLSX.writeFile(workbook,
@@ -197,6 +213,20 @@ export default defineComponent({
                 } // for
 
                 const worksheet = XLSX.utils.json_to_sheet(rows);
+
+                // change header name
+                XLSX.utils.sheet_add_aoa(worksheet,
+                    [[
+                        app.appContext.config.globalProperties.$t("checkInvLang.serial_number"),
+                        app.appContext.config.globalProperties.$t("basicInfoLang.isn"),
+                        app.appContext.config.globalProperties.$t("basicInfoLang.pName"),
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"),
+                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buytime"),
+                    ]],
+                    { origin: "A1" });
+
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, data2[0].SXB單號);
                 XLSX.writeFile(workbook,
@@ -426,7 +456,7 @@ export default defineComponent({
             ],
             rows: computed(() => {
                 return data.filter((x) =>
-                
+
                     x.開單人員
                         .toLowerCase()
                         .includes(searchTerm.value.toLowerCase())

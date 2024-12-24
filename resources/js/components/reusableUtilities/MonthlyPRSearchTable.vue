@@ -182,15 +182,29 @@ export default defineComponent({
                 let tempObj = new Object;
                 tempObj.料號90 = data[i].料號90;
                 tempObj.料號 = data[i].料號;
-                tempObj.本月MPS = data[i].本月MPS;
-                tempObj.本月生產天數 = data[i].本月生產天數;
-                tempObj.下月MPS = data[i].下月MPS;
-                tempObj.下月生產天數 = data[i].下月生產天數;
+                tempObj.本月MPS = parseInt(data[i].本月MPS).toLocaleString('en', { useGrouping: true });
+                tempObj.本月生產天數 = parseInt(data[i].本月生產天數);
+                tempObj.下月MPS = parseInt(data[i].下月MPS).toLocaleString('en', { useGrouping: true });
+                tempObj.下月生產天數 = parseInt(data[i].下月生產天數);
                 tempObj.填寫時間 = data[i].填寫時間;
                 rows.push(tempObj);
             } // for
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.90isn"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowmps"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowday"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextmps"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextday"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.writetime"),
+                ]],
+                { origin: "A1" });
+
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("templateWords.monthly"));
             XLSX.writeFile(workbook,

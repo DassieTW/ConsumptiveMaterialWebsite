@@ -109,7 +109,7 @@ export default defineComponent({
 
         const { mats_inTransit, getTransit, updateInTransit } = useTransitSearch(); // axios get the mats_inTransit data
 
-        onBeforeMount(async() => {
+        onBeforeMount(async () => {
             table.isLoading = true;
             await getTransit();
         });
@@ -155,7 +155,7 @@ export default defineComponent({
             for (let i = 0; i < data.length; i++) {
                 let tempObj = new Object;
                 tempObj.料號 = data[i].料號;
-                tempObj.在途數量 = data[i].請購數量;
+                tempObj.在途數量 = parseInt(data[i].請購數量).toLocaleString('en', { useGrouping: true }) + " " + data[i].單位;
                 tempObj.說明 = data[i].說明;
                 tempObj.修改人員 = data[i].修改人員;
                 tempObj.最後更新時間 = data[i].最後更新時間;
@@ -164,6 +164,17 @@ export default defineComponent({
             } // for
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.description"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit_reviser"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.updatetime"),
+                ]],
+                { origin: "A1" });
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.on_the_way_search"));
             XLSX.writeFile(workbook,

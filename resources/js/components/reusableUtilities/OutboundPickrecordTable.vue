@@ -1,11 +1,19 @@
 <template>
-    <div class="row" style="text-align: left">
-        <div class="col col-auto">
-            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+    <div class="row justify-content-between">
+        <div class="row col col-auto">
+            <div class="col col-auto">
+                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            </div>
+            <div class="col col-auto p-0 m-0">
+                <input id="pnInput" class="text-center form-control form-control-lg"
+                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
+            </div>
         </div>
-        <div class="col col-3 p-0 m-0">
-            <input id="pnInput" class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
+        <div class="col col-auto">
+            <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick">
+                <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
+            </button>
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
@@ -48,6 +56,61 @@ export default defineComponent({
         const data = reactive([]);
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
+        const OutputExcelClick = () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = Array();
+            for (let i = 0; i < data.length; i++) {
+                let tempObj = new Object;
+                tempObj.料號 = data[i].料號;
+                tempObj.請購數量 = data[i].請購數量;
+                tempObj.說明 = data[i].說明;
+                rows.push(tempObj);
+            } // for
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.price"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowneed"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextneed"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowstock"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(USD)",
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
+                ]],
+                { origin: "A1" });
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("outboundpageLang.pickrecord"));
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "outboundpageLang.pickrecord"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
+
         watch(mats, () => {
             console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
@@ -56,7 +119,6 @@ export default defineComponent({
                 data.push(allRowsObj.datas[i]);
             } // for
 
-            document.getElementById("QueryFlag").click();
             table.isLoading = false;
         }); // watch for data change
 
@@ -529,6 +591,7 @@ export default defineComponent({
         return {
             searchTerm,
             table,
+            OutputExcelClick,
             updateCheckedRows,
         };
     }, // setup

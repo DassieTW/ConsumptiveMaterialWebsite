@@ -301,14 +301,43 @@ export default defineComponent({
                 tempObj.MPQ = parseInt(data[i].MPQ.toString());
                 tempObj.MOQ = parseInt(data[i].MOQ.toString());
                 tempObj.LT = parseInt(data[i].LT.toString());
-                tempObj.月請購 = data[i].月請購;
-                tempObj.A級資材 = data[i].A級資材;
+                if (data[i].月請購 === '是') {
+                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.yes");
+                } else {
+                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.no");
+                } // if else
+
+                if (data[i].A級資材 === '是') {
+                    tempObj.A級資材 = app.appContext.config.globalProperties.$t("basicInfoLang.yes");
+                } else {
+                    tempObj.A級資材 = app.appContext.config.globalProperties.$t("basicInfoLang.no");
+                } // if else
                 tempObj.發料部門 = data[i].發料部門;
                 tempObj.安全庫存 = data[i].安全庫存;
                 rows.push(tempObj);
             } // for
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("basicInfoLang.isn"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.pName"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.format"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.price"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.unit"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.mpq"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.moq"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.lt"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.month"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.gradea"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.senddep"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.safe"),
+                ]],
+                { origin: "A1" });
+
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("basicInfoLang.matssearch"));
             XLSX.writeFile(workbook,
