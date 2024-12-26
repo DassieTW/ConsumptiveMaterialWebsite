@@ -22,8 +22,6 @@ export default function useOutboundBackRecord() {
         let backrecordcheck = sessionStorage.getItem("backrecordcheck");
         let backrecordbegin = sessionStorage.getItem("backrecordbegin");
         let backrecordend = sessionStorage.getItem("backrecordend");
-        // let gettest = await axios.post('/basic/materialsearch');
-        // console.log(gettest); // test
 
         try {
             let response = await axios.post('/api/outbound/backrecord', {
