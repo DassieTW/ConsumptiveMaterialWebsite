@@ -32,8 +32,10 @@
                     </div>
                 </div>
             </div>
-            <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
-            <div class="row">
+            <div class="w-100" style="height: 0ch"></div><!-- </div>breaks cols to a new line-->
+            <div class="row justify-content-between">
+                <span class="col col-auto text-danger fw-bold">
+                </span>
                 <span class="col col-auto text-danger fw-bold">
                     {{ $t('inboundpageLang.stock_within_brackets') }}
                 </span>
@@ -136,7 +138,7 @@ export default defineComponent({
                     display: function (row, i) {
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
+                            ' style="overflow-x: auto; width: 100%; user-select: text; z-index: 1; position: relative;">' +
                             row.料號 +
                             "</div>"
                         );

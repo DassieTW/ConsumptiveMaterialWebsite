@@ -8,7 +8,6 @@
 @section('content')
     <div id="mountingPoint">
         <div class="row mb-2 mb-xl-3 justify-content-between">
-
             <h2 class="col-auto">{!! __('templateWords.inbound') !!}</h2>
             <div class="col-auto ml-auto text-right mt-n1 d-none d-sm-block">
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
@@ -16,7 +15,13 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3>{!! __('oboundpageLang.searchstock') !!}</h3>
+                @if (Session::get('month'))
+                    <h3>{!! __('inboundpageLang.stockmonth') !!}</h3>
+                @elseif (Session::get('nogood'))
+                    <h3>{!! __('inboundpageLang.nogood') !!}</h3>
+                @else
+                    <h3>{!! __('inboundpageLang.nowstock') !!}</h3>
+                @endif
             </div>
             <div class="card-body">
                 @if (Session::get('month'))

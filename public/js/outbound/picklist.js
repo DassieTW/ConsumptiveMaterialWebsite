@@ -1,11 +1,3 @@
-/*//show select 領料單號
-$("#list").on("change", function () {
-    var value = $("#list").val();
-    $("#test").find("tr").not("#require").hide();
-    var result_style = document.getElementById(value).style;
-    result_style.display = "table-row";
-    //document.getElementById("test").style.display = "block";
-});*/
 sessionStorage.clear();
 $.ajaxSetup({
     headers: {
@@ -362,10 +354,6 @@ $("#pickpeople").on("blur", function () {
 });
 
 $(function () {
-    var splittext = "儲位:";
-    if (locale === "en") splittext = "Location:";
-    if (locale === "zh-CN") splittext = "储位:";
-    if (locale === "zh-TW") splittext = "儲位:";
     $("#pickpeople").on("input", function () {
         $(window).on("keydown", function (event) {
             if (event.code === "Enter") {

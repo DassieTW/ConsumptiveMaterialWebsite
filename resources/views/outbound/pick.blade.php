@@ -57,7 +57,7 @@
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
                         <input class="form-control form-control-lg " type="text" id="number" name="number"
-                            placeholder="{!! __('outboundpageLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)">
+                            placeholder="{!! __('outboundpageLang.enterisn') !!}" >
                         <div class="invalid-feedback" id="numbererror" style="display:none; color:red;">
                             {!! __('outboundpageLang.isnlength') !!}</div>
                         <div class="invalid-feedback" id="numbererror1" style="display:none; color:red;">

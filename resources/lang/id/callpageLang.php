@@ -12,7 +12,7 @@ return array (
   'format' => 'Spesifikasi',
   'stock' => 'Jumlah Stok',
   'days' => 'Jumlah hari stok pasif',
-  'loc' => 'Lokasi penyimpanan',
+  'loc' => 'Lokasi',
   'mark' => 'Catatan',
   'return' => 'Kembali',
   'senddep' => 'Departemen yang mengeluarkan',

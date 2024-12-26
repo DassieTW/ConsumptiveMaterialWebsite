@@ -28,6 +28,10 @@
                 {{ row.料號 }}
             </div>
         </template>
+        <template v-slot:月請購="{ row, key }">
+            <span v-if="row.月請購 == '是'">{{ $t("basicInfoLang.yes") }}</span>
+            <span v-else>{{ $t("basicInfoLang.no") }}</span>
+        </template>
     </table-lite>
 </template>
 
@@ -80,10 +84,13 @@ export default defineComponent({
                 tempObj.料號 = data[i].料號;
                 tempObj.品名 = data[i].品名;
                 tempObj.規格 = data[i].規格;
-                tempObj.現有庫存 = data[i].現有庫存;
-                tempObj.單位 = data[i].單位;
+                tempObj.現有庫存 = data[i].現有庫存 + " " + data[i].單位;
                 tempObj.儲位 = data[i].儲位;
-                tempObj.月請購 = data[i].月請購;
+                if (data[i].月請購 === '是') {
+                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.yes");
+                } else {
+                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.no");
+                } // if else
                 tempObj.安全庫存 = data[i].安全庫存;
                 tempObj.單價 = data[i].單價;
                 tempObj.幣別 = data[i].幣別;
@@ -92,6 +99,23 @@ export default defineComponent({
             } // for
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.stock"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.month"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.safe"),
+                    app.appContext.config.globalProperties.$t("basicInfoLang.price"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.money"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.days"),
+                ]],
+                { origin: "A1" });
+
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("inboundpageLang.stock"));
             XLSX.writeFile(workbook,
@@ -201,14 +225,6 @@ export default defineComponent({
                     field: "月請購",
                     width: "10ch",
                     sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.月請購 +
-                            "</div>"
-                        );
-                    },
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(

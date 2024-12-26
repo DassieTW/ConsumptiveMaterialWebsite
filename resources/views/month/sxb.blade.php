@@ -29,7 +29,7 @@
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <input class="form-control form-control-lg @error('number') is-invalid @enderror"
                                         type="text" id="number" name="number" placeholder="{!! __('inboundpageLang.enterisn') !!}"
-                                        oninput="if(value.length>12)value=value.slice(0,12)">
+                                        >
                                     @error('number')
                                         <span class="invalid-feedback d-block" role="alert">
                                             <strong>{{ $message }}</strong>

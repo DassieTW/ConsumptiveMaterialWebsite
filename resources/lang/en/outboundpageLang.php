@@ -71,7 +71,7 @@ return [
     'backreason' => 'Return Reasons',
     'backamount' => 'Pre-return Qty',
     'realbackamount' => 'Actual Returned Qty',
-    'backdiffreason' => 'Reason of Actual Returned Diff',
+    'backdiffreason' => 'Reason of Diff',
     'receivepeople' => 'Receiver',
     'receivepeoplenum' => 'Receiver\'s ID',
     'enterreceivepeople' => 'Please select receivier',

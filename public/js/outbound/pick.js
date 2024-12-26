@@ -228,14 +228,7 @@ $(function () {
           document.getElementById("number").classList.add("is-invalid");
           document.getElementById("number").value = "";
           document.getElementById("number").focus();
-        }
-        //料號長度不為12
-        else if (err.status === 422) {
-          document.getElementById("numbererror").style.display = "block";
-          document.getElementById("number").classList.add("is-invalid");
-          document.getElementById("number").value = "";
-          document.getElementById("number").focus();
-        }
+        } // else if
       },
     });
   });

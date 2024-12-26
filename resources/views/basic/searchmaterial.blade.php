@@ -31,7 +31,7 @@
                                             checked value="1">
                                         <input class="form-control form-control-lg col col-auto" type="text"
                                             id="number" name="number" placeholder="{!! __('basicInfoLang.enterisn') !!}"
-                                            oninput="if(value.length>12)value=value.slice(0,12)">
+                                            >
                                         <span style="color: red;font-size:11px;">&nbsp;{!! __('basicInfoLang.searchisn') !!}</span>
                                     </div>
                                 </div>

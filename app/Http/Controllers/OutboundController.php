@@ -156,17 +156,16 @@ class OutboundController extends Controller
         $send = DB::table('consumptive_material')->where('料號', $number)->value('發料部門');
 
         if ($name !== null && $format !== null) {
-
             return \Response::json([
                 'number' => $number, 'line' => $line, 'backreason' => $backreason, 'name' => $name,
                 'format' => $format, 'unit' => $unit, 'send' => $send,
             ]/* Status code here default is 200 ok*/);
-        }
+        } // if
         //料號不存在
         else {
             return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
-        }
-    }
+        } // else
+    } // backadd
 
     //提交領料添加
     public function pickaddsubmit(Request $request)
@@ -422,54 +421,5 @@ class OutboundController extends Controller
             DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
         } //try - catch
-    }
-
-    //download
-    public function download(Request $request)
-    {
-        $spreadsheet = new Spreadsheet();
-        $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(12);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $titlecount = $request->input('titlecount');
-        $titlename = $request->input('titlename');
-        if ($titlename === "領料記錄表") {
-            $Alldata = DB::table('consumptive_material')
-                ->join('outbound', function ($join) {
-                    $join->on('outbound.料號', '=', 'consumptive_material.料號')
-                        ->whereNotNull('領料人員');
-                })->get();
-        } else {
-            $Alldata = DB::table('consumptive_material')
-                ->join('出庫退料', function ($join) {
-                    $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
-                        ->whereNotNull('收料人員');
-                })->get();
-        }
-        $count = count($Alldata);
-
-
-        //填寫表頭
-        for ($i = 0; $i < $titlecount; $i++) {
-            $worksheet->setCellValue([$i + 1, 1], $request->input('title')[$i]);
-        }
-
-        //填寫內容
-        for ($i = 0; $i < $titlecount; $i++) {
-            $string = $request->input('titlecol')[$i];
-            for ($j = 0; $j < $count; $j++) {
-                $worksheet->setCellValue([$i + 1, $j + 2], $Alldata[$j]->$string);
-            }
-        }
-
-
-        // 下載
-        $now = Carbon::now()->format('YmdHis');
-        $filename = rawurlencode($titlename) . $now . '.xlsx';
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $filename . '"');
-        header('Cache-Control: max-age=0');
-
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('php://output');
     }
 }

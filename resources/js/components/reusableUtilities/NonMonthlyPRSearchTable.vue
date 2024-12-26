@@ -73,7 +73,7 @@ export default defineComponent({
         onBeforeMount(async () => {
             table.isLoading = true;
         });
-        
+
         const triggerSearchUpdate = async () => {
             await getMats_nonMonthly();
 
@@ -177,12 +177,30 @@ export default defineComponent({
             for (let i = 0; i < data.length; i++) {
                 let tempObj = new Object;
                 tempObj.料號 = data[i].料號;
-                tempObj.請購數量 = data[i].請購數量;
+                tempObj.品名 = data[i].品名;
+                tempObj.當月需求 = parseInt(data[i].當月需求).toLocaleString('en', { useGrouping: true });
+                tempObj.下月需求 = parseInt(data[i].下月需求).toLocaleString('en', { useGrouping: true });
+                tempObj.請購數量 = parseInt(data[i].請購數量).toLocaleString('en', { useGrouping: true });
+                tempObj.單位 = data[i].單位;
                 tempObj.說明 = data[i].說明;
                 rows.push(tempObj);
             } // for
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowneed"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextneed"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount1"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.unit"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.description"),
+                ]],
+                { origin: "A1" });
+
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("templateWords.nonmonthly"));
             XLSX.writeFile(workbook,

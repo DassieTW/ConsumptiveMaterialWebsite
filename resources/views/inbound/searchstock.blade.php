@@ -38,7 +38,7 @@
                                         <input class="form-control form-control-lg @error('number') is-invalid @enderror"
                                             type="text" id="number" name="number"
                                             placeholder="{!! __('inboundpageLang.enterisn') !!}"
-                                            oninput="if(value.length>12)value=value.slice(0,12)">
+                                            >
                                         @error('number')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -50,9 +50,8 @@
                                     <label class="col col-auto form-label m-0 p-0">{!! __('inboundpageLang.loc') !!}</label>
                                     <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                                     <div class="col-lg-6  col-md-12 col-sm-12">
-                                        <input id="position" name="position" type="text"
-                                            list="position_datalist" class="form-control form-control-lg"
-                                            placeholder="{!! __('inboundpageLang.enterloc') !!}">
+                                        <input id="position" name="position" type="text" list="position_datalist"
+                                            class="form-control form-control-lg" placeholder="{!! __('inboundpageLang.enterloc') !!}">
                                         <datalist id="position_datalist">
                                             @foreach ($position as $position)
                                                 <option>{{ $position->儲存位置 }}</option>
@@ -72,20 +71,34 @@
                                             @endforeach
                                         </select>
                                     </div>
-
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                    <div class="row w-100 justify-content-center">
-                                        <div class="col col-auto">
-                                            <input class="basic" type="checkbox" id="month" name="month"
-                                                style="width:20px;height:20px;" value="1"> {!! __('inboundpageLang.stockmonth') !!}
-                                            <div class="w-100" style="height: 1ch;"></div>
-                                            <input class="basic" type="checkbox" id="nogood" name="nogood"
-                                                style="width:20px;height:20px;" value="2"> {!! __('inboundpageLang.nogood') !!}
+                                    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <div class="row justify-content-center">
+                                        <div class="form-check col col-auto">
+                                            <input class="basic form-check-input" type="radio" name="stock"
+                                                id="stock" value="0" checked>
+                                            <label class="form-check-label" for="stock">
+                                                {!! __('inboundpageLang.nowstock') !!}
+                                            </label>
+                                        </div>
+                                        <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
+                                        <div class="form-check col col-auto">
+                                            <input class="basic form-check-input" type="radio" name="month"
+                                                id="month" value="1">
+                                            <label class="form-check-label" for="month">
+                                                {!! __('inboundpageLang.stockmonth') !!}
+                                            </label>
+                                        </div>
+                                        <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
+                                        <div class="form-check col col-auto">
+                                            <input class="basic form-check-input" type="radio" name="nogood"
+                                                id="nogood" value="2">
+                                            <label class="form-check-label" for="nogood">
+                                                {!! __('inboundpageLang.nogood') !!}
+                                            </label>
                                         </div>
                                     </div>
 
-                                    <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                    <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
                                     <div class="row w-100 justify-content-center">
                                         <div class="col col-auto">
                                             <input type="submit" id="search" name="search"

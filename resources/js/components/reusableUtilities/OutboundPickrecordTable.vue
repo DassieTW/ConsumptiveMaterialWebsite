@@ -1,11 +1,19 @@
 <template>
-    <div class="row" style="text-align: left">
-        <div class="col col-auto">
-            <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+    <div class="row justify-content-between">
+        <div class="row col col-auto">
+            <div class="col col-auto">
+                <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+            </div>
+            <div class="col col-auto p-0 m-0">
+                <input id="pnInput" class="text-center form-control form-control-lg"
+                    v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
+            </div>
         </div>
-        <div class="col col-3 p-0 m-0">
-            <input id="pnInput" class="text-center form-control form-control-lg"
-                v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
+        <div class="col col-auto">
+            <button id="download" name="download" class="col col-auto btn btn-lg btn-success"
+                :value="$t('monthlyPRpageLang.download')" @click="OutputExcelClick">
+                <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
+            </button>
         </div>
     </div>
     <div class="w-100" style="height: 1ch"></div>
@@ -24,6 +32,7 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
+import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useOutboundPickrecord from "../../composables/OutboundPickRecordSearch.ts";
 export default defineComponent({
@@ -48,6 +57,74 @@ export default defineComponent({
         const data = reactive([]);
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
+        const OutputExcelClick = () => {
+            $("body").loadingModal({
+                text: "Loading...",
+                animation: "circle",
+            });
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = Array();
+            for (let i = 0; i < data.length; i++) {
+                let tempObj = new Object;
+                tempObj.料號 = data[i].料號;
+                tempObj.品名 = data[i].品名;
+                tempObj.規格 = data[i].規格;
+                tempObj.領用原因 = data[i].領用原因;
+                tempObj.線別 = data[i].線別;
+                tempObj.預領數量 = data[i].預領數量 + " " + data[i].單位;
+                tempObj.實際領用數量 = data[i].實際領用數量 + " " + data[i].單位;
+                tempObj.實領差異原因 = data[i].實領差異原因;
+                tempObj.儲位 = data[i].儲位;
+                tempObj.領料人員 = data[i].領料人員工號 + "(" + data[i].領料人員 + ")";
+                tempObj.發料人員 = data[i].發料人員工號 + "(" + data[i].發料人員 + ")";
+                tempObj.領料單號 = data[i].領料單號;
+                tempObj.開單時間 = data[i].開單時間;
+                tempObj.出庫時間 = data[i].出庫時間;
+                tempObj.備註 = data[i].備註;
+                rows.push(tempObj);
+            } // for
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("outboundpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.pName"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.format"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.usereason"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.line"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.pickamount"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.diffreason"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.loc"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.pickpeople"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.sendpeople"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.picklistnum"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.opentime"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.outboundtime"),
+                    app.appContext.config.globalProperties.$t("outboundpageLang.mark"),
+                ]],
+                { origin: "A1" });
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("outboundpageLang.pickrecord"));
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "outboundpageLang.pickrecord"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
+
         watch(mats, () => {
             console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
@@ -56,7 +133,6 @@ export default defineComponent({
                 data.push(allRowsObj.datas[i]);
             } // for
 
-            document.getElementById("QueryFlag").click();
             table.isLoading = false;
         }); // watch for data change
 
@@ -74,13 +150,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="number' +
-                            i +
-                            '" name="number' +
-                            i +
-                            '" value="' +
-                            row.料號 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.料號 +
@@ -88,53 +157,6 @@ export default defineComponent({
                         );
                     },
                 },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.usereason"
-                    ),
-                    field: "領用原因",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="usereason' +
-                            i +
-                            '" name="usereason' +
-                            i +
-                            '" value="' +
-                            row.領用原因 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.領用原因 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.line"
-                    ),
-                    field: "線別",
-                    width: "8ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="line' +
-                            i +
-                            '" name="line' +
-                            i +
-                            '" value="' +
-                            row.線別 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.線別 +
-                            "</div>"
-                        );
-                    },
-                },
-
                 {
                     label: app.appContext.config.globalProperties.$t(
                         "outboundpageLang.pName"
@@ -144,13 +166,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="name' +
-                            i +
-                            '" name="name' +
-                            i +
-                            '" value="' +
-                            row.品名 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.品名 +
@@ -167,16 +182,41 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="format' +
-                            i +
-                            '" name="format' +
-                            i +
-                            '" value="' +
-                            row.規格 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.規格 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.usereason"
+                    ),
+                    field: "領用原因",
+                    width: "12ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.領用原因 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.line"
+                    ),
+                    field: "線別",
+                    width: "8ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.線別 +
                             "</div>"
                         );
                     },
@@ -190,13 +230,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="pickamount' +
-                            i +
-                            '" name="pickamount' +
-                            i +
-                            '" value="' +
-                            row.預領數量 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.預領數量 + '&nbsp;<small>' + row.單位 + '</small>' +
@@ -213,40 +246,9 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="realpickamount' +
-                            i +
-                            '" name="realpickamount' +
-                            i +
-                            '" value="' +
-                            row.實際領用數量 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.實際領用數量 + '&nbsp;<small>' + row.單位 + '</small>' +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.mark"
-                    ),
-                    field: "備註",
-                    width: "10ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.備註 === null) row.備註 = "";
-                        return (
-                            '<input type="hidden" id="remark' +
-                            i +
-                            '" name="remark' +
-                            i +
-                            '" value="' +
-                            row.備註 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.備註 +
                             "</div>"
                         );
                     },
@@ -261,13 +263,6 @@ export default defineComponent({
                     display: function (row, i) {
                         if (row.實領差異原因 === null) row.實領差異原因 = "";
                         return (
-                            '<input type="hidden" id="diffreason' +
-                            i +
-                            '" name="diffreason' +
-                            i +
-                            '" value="' +
-                            row.實領差異原因 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.實領差異原因 +
@@ -284,13 +279,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="location' +
-                            i +
-                            '" name="location' +
-                            i +
-                            '" value="' +
-                            row.儲位 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.儲位 +
@@ -307,39 +295,9 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="pickpeople' +
-                            i +
-                            '" name="pickpeople' +
-                            i +
-                            '" value="' +
-                            row.領料人員 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.領料人員 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.pickpeoplenum"
-                    ),
-                    field: "領料人員工號",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="pickpeoplenum' +
-                            i +
-                            '" name="pickpeoplenum' +
-                            i +
-                            '" value="' +
-                            row.領料人員工號 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.領料人員工號 +
+                            row.領料人員工號 + '(' + row.領料人員 + ')' +
                             "</div>"
                         );
                     },
@@ -353,39 +311,9 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="sendpeople' +
-                            i +
-                            '" name="sendpeople' +
-                            i +
-                            '" value="' +
-                            row.發料人員 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.發料人員 +
-                            "</div>"
-                        );
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
-                        "outboundpageLang.sendpeoplenum"
-                    ),
-                    field: "發料人員工號",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        return (
-                            '<input type="hidden" id="sendpeoplenum' +
-                            i +
-                            '" name="sendpeoplenum' +
-                            i +
-                            '" value="' +
-                            row.發料人員工號 +
-                            '">' +
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.發料人員工號 +
+                            row.發料人員工號 + '(' + row.發料人員 + ')' +
                             "</div>"
                         );
                     },
@@ -399,13 +327,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="picklist' +
-                            i +
-                            '" name="picklist' +
-                            i +
-                            '" value="' +
-                            row.領料單號 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.領料單號 +
@@ -422,13 +343,6 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="opentime' +
-                            i +
-                            '" name="opentime' +
-                            i +
-                            '" value="' +
-                            row.開單時間 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.開單時間 +
@@ -445,16 +359,26 @@ export default defineComponent({
                     sortable: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="outboundtime' +
-                            i +
-                            '" name="outboundtime' +
-                            i +
-                            '" value="' +
-                            row.出庫時間 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.出庫時間 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.mark"
+                    ),
+                    field: "備註",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.備註 === null) row.備註 = "";
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.備註 +
                             "</div>"
                         );
                     },
@@ -529,6 +453,7 @@ export default defineComponent({
         return {
             searchTerm,
             table,
+            OutputExcelClick,
             updateCheckedRows,
         };
     }, // setup
