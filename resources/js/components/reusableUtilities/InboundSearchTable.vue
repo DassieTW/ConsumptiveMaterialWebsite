@@ -182,7 +182,7 @@ export default defineComponent({
                 let tempObj = new Object;
                 tempObj.入庫單號 = data[i].入庫單號;
                 tempObj.料號 = data[i].料號;
-                tempObj.入庫數量 = data[i].入庫數量;
+                tempObj.入庫數量 = data[i].入庫數量 + " " + data[i].單位;
                 tempObj.儲位 = data[i].儲位;
                 tempObj.入庫人員 = data[i].入庫人員;
                 tempObj.入庫原因 = data[i].入庫原因;
@@ -196,7 +196,14 @@ export default defineComponent({
             // change header name
             XLSX.utils.sheet_add_aoa(worksheet,
                 [[
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.inlist"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.inboundnum"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.inpeople"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.inreason"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.inboundtime"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.mark"),
                 ]],
                 { origin: "A1" });
 
@@ -239,13 +246,6 @@ export default defineComponent({
                     iskey: true,
                     display: function (row, i) {
                         return (
-                            '<input type="hidden" id="inboundlist' +
-                            i +
-                            '" name="inboundlist' +
-                            i +
-                            '" value="' +
-                            row.入庫單號 +
-                            '">' +
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.入庫單號 +
@@ -263,13 +263,6 @@ export default defineComponent({
                     display: function (row, i) {
                         if (row.單位 === null) {
                             return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
                                 '<div class="text-danger text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
@@ -277,13 +270,6 @@ export default defineComponent({
                             );
                         } else {
                             return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
                                 '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
@@ -302,13 +288,6 @@ export default defineComponent({
                     display: function (row, i) {
                         if (row.單位 === null) {
                             return (
-                                '<input type="hidden" id="inboundnum' +
-                                i +
-                                '" name="inboundnum' +
-                                i +
-                                '" value="' +
-                                row.入庫數量 +
-                                '">' +
                                 '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.入庫數量 + ' <small class="text-danger">' +
@@ -317,13 +296,6 @@ export default defineComponent({
                             );
                         } else {
                             return (
-                                '<input type="hidden" id="inboundnum' +
-                                i +
-                                '" name="inboundnum' +
-                                i +
-                                '" value="' +
-                                row.入庫數量 +
-                                '">' +
                                 '<div class="CustomScrollbar text-nowrap"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.入庫數量 + " <small>" + row.單位 + "</small>" +

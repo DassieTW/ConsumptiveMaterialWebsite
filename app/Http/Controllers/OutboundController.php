@@ -156,17 +156,16 @@ class OutboundController extends Controller
         $send = DB::table('consumptive_material')->where('料號', $number)->value('發料部門');
 
         if ($name !== null && $format !== null) {
-
             return \Response::json([
                 'number' => $number, 'line' => $line, 'backreason' => $backreason, 'name' => $name,
                 'format' => $format, 'unit' => $unit, 'send' => $send,
             ]/* Status code here default is 200 ok*/);
-        }
+        } // if
         //料號不存在
         else {
             return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
-        }
-    }
+        } // else
+    } // backadd
 
     //提交領料添加
     public function pickaddsubmit(Request $request)

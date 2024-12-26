@@ -37,7 +37,7 @@
         <div class="card-header">
             <h3>{!! __('bupagelang.searchlist') !!}</h3>
             <input class="form-control form-control-lg " type="text" id="numbersearch" name="numbersearch"
-                placeholder="{!! __('basicInfoLang.enterisn') !!}" oninput="if(value.length>12)value=value.slice(0,12)"
+                placeholder="{!! __('basicInfoLang.enterisn') !!}" 
                 style="width: 200px">
         </div>
         <div class="card-body">
