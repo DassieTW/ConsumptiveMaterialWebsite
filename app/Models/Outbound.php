@@ -39,5 +39,6 @@ class Outbound extends Model
         '領料單號',
         '開單時間',
         '出庫時間',
+        '開單人員',
     ];
 }
