@@ -129,8 +129,14 @@ class OutboundController extends Controller
         if ($name !== null && $format !== null) {
             if ($stock > 0) {
                 return \Response::json([
-                    'number' => $number, 'line' => $line, 'usereason' => $usereason, 'name' => $name,
-                    'format' => $format, 'unit' => $unit, 'send' => $send, 'showstock' => $showstock,
+                    'number' => $number,
+                    'line' => $line,
+                    'usereason' => $usereason,
+                    'name' => $name,
+                    'format' => $format,
+                    'unit' => $unit,
+                    'send' => $send,
+                    'showstock' => $showstock,
                 ]/* Status code here default is 200 ok*/);
             }
             //沒有庫存
@@ -157,8 +163,13 @@ class OutboundController extends Controller
 
         if ($name !== null && $format !== null) {
             return \Response::json([
-                'number' => $number, 'line' => $line, 'backreason' => $backreason, 'name' => $name,
-                'format' => $format, 'unit' => $unit, 'send' => $send,
+                'number' => $number,
+                'line' => $line,
+                'backreason' => $backreason,
+                'name' => $name,
+                'format' => $format,
+                'unit' => $unit,
+                'send' => $send,
             ]/* Status code here default is 200 ok*/);
         } // if
         //料號不存在
@@ -176,6 +187,8 @@ class OutboundController extends Controller
         $maxtime = date_create(date('Y-m-d', strtotime($max)));
         $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
         $interval = date_diff($maxtime, $nowtime);
+        $user = $request->user();
+        $now = Carbon::now();
         $interval = $interval->format('%R%a');
         $interval = (int)($interval);
         if ($interval > 0) {
@@ -186,36 +199,46 @@ class OutboundController extends Controller
             $num++;
             $num = strval($num);
             $opentime = $num;
-        }
+        } // else
 
         $Alldata = json_decode($request->input('AllData'));
 
-        DB::beginTransaction();
         try {
+            $res_arr_values = array();
             for ($i = 0; $i < $count; $i++) {
-                $line = $Alldata[0][$i];
-                $usereason = $Alldata[1][$i];
-                $number = $Alldata[2][$i];
-                $name = $Alldata[3][$i];
-                $format = $Alldata[4][$i];
-                $unit = $Alldata[5][$i];
-                $amount = $Alldata[6][$i];
                 $remark = $Alldata[7][$i];
                 if ($remark === null) $remark = '';
-                DB::table('outbound')
-                    ->insert([
-                        '領用原因' => $usereason, '線別' => $line,
-                        '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預領數量' => $amount,
-                        '實際領用數量' => $amount, '備註' => $remark, '領料單號' => $opentime, '開單時間' => Carbon::now()
-                    ]);
+                $temp = array(
+                    "領用原因" => $Alldata[1][$i],
+                    "線別" => $Alldata[0][$i],
+                    "料號" => $Alldata[2][$i],
+                    "品名" => $Alldata[3][$i],
+                    "規格" => $Alldata[4][$i],
+                    "單位" => $Alldata[5][$i],
+                    "預領數量" => $Alldata[6][$i],
+                    "實際領用數量" => $Alldata[6][$i],
+                    "備註" => $remark,
+                    "領料單號" => $opentime,
+                    "開單時間" => $now,
+                    "開單人員" => $user['username'],
+                );
+                $res_arr_values[] = $temp;
             } //for
+
+            DB::beginTransaction();
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 100, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                DB::table('outbound')
+                    ->insert($whole_load[$i]);
+            } // for
             DB::commit();
             return \Response::json(['message' => $opentime, 'record' => $count]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
         } // catch
-    }
+    } // pickaddsubmit
 
     //提交退料添加
     public function backaddsubmit(Request $request)
@@ -225,6 +248,8 @@ class OutboundController extends Controller
         $max = DB::table('出庫退料')->max('開單時間');
         $maxtime = date_create(date('Y-m-d', strtotime($max)));
         $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
+        $user = $request->user();
+        $now = Carbon::now();
         $interval = date_diff($maxtime, $nowtime);
         $interval = $interval->format('%R%a');
         $interval = (int)($interval);
@@ -236,27 +261,37 @@ class OutboundController extends Controller
             $num++;
             $num = strval($num);
             $opentime = $num;
-        }
+        } // else
         $Alldata = json_decode($request->input('AllData'));
 
-        DB::beginTransaction();
         try {
+            $res_arr_values = array();
             for ($i = 0; $i < $count; $i++) {
-                $line = $Alldata[0][$i];
-                $backreason = $Alldata[1][$i];
-                $number = $Alldata[2][$i];
-                $name = $Alldata[3][$i];
-                $format = $Alldata[4][$i];
-                $unit = $Alldata[5][$i];
-                $amount = $Alldata[6][$i];
                 $remark = $Alldata[7][$i];
                 if ($remark === null) $remark = '';
+                $temp = array(
+                    "退回原因" => $Alldata[1][$i],
+                    "線別" => $Alldata[0][$i],
+                    "料號" => $Alldata[2][$i],
+                    "品名" => $Alldata[3][$i],
+                    "規格" => $Alldata[4][$i],
+                    "單位" => $Alldata[5][$i],
+                    "預退數量" => $Alldata[6][$i],
+                    "實際退回數量" => $Alldata[6][$i],
+                    "備註" => $remark,
+                    "退料單號" => $opentime,
+                    "開單時間" => $now,
+                    "開單人員" => $user['username'],
+                );
+                $res_arr_values[] = $temp;
+            } // for
+
+            DB::beginTransaction();
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 100, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
                 DB::table('出庫退料')
-                    ->insert([
-                        '退回原因' => $backreason, '線別' => $line,
-                        '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預退數量' => $amount,
-                        '實際退回數量' => $amount, '備註' => $remark, '退料單號' => $opentime, '開單時間' => Carbon::now()
-                    ]);
+                    ->insert($whole_load[$i]);
             } // for
             DB::commit();
             return \Response::json(['message' => $opentime, 'record' => $count]/* Status code here default is 200 ok*/);
@@ -264,159 +299,179 @@ class OutboundController extends Controller
             DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
         } //catch
-    }
+    } // backaddsubmit
 
     //提交領料單
     public function picklistsubmit(Request $request)
     {
         $Alldata = json_decode($request->input('AllData'));
-        $count = count($Alldata[0]);
-        DB::beginTransaction();
+        $now = Carbon::now();
+        $record = 0;
         try {
-            for ($i = 0; $i < $count; $i++) {
-                $usereason = $Alldata[0][$i];
-                $line = $Alldata[1][$i];
-                $number = $Alldata[2][$i];
-                $name = $Alldata[3][$i];
-                $format = $Alldata[4][$i];
-                $unit = $Alldata[5][$i];
-                $advance = $Alldata[6][$i];
-                $amount = $Alldata[7][$i];
+            $res_arr_values = array();
+            $res_arr_values2 = array();
+            for ($i = 0; $i < count($Alldata[2]); $i++) {
+                $amount = intval($Alldata[7][$i]);
                 $remark = $Alldata[8][$i];
-                $reason = $Alldata[9][$i];
-                $list = $Alldata[10][$i];
-                $opentime = $Alldata[11][$i];
-                $position = $Alldata[12][$i];
-                $sendpeople = $request->input('sendpeople');
-                $pickpeople = $request->input('pickpeople');
+                if ($remark === null) $remark = '';
+                $temp = array(
+                    "領用原因" => $Alldata[0][$i],
+                    "線別" => $Alldata[1][$i],
+                    "料號" => $Alldata[2][$i],
+                    "品名" => $Alldata[3][$i],
+                    "規格" => $Alldata[4][$i],
+                    "單位" => $Alldata[5][$i],
+                    "預領數量" => $Alldata[6][$i],
+                    "實際領用數量" => $Alldata[7][$i],
+                    "實領差異原因" => $Alldata[9][$i],
+                    "備註" => $Alldata[8][$i],
+                    "領料單號" => $Alldata[10][$i],
+                    "開單時間" => $Alldata[11][$i],
+                    "儲位" => $Alldata[12][$i],
+                    "領料人員" => $request->input('pickpeople'),
+                    "發料人員" => $request->input('sendpeople'),
+                    "出庫時間" => $now,
+                );
 
-                $now = Carbon::now();
-                $sendname = DB::table('人員信息')->where('工號', $sendpeople)->value('姓名');
-                $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
-                $stock = DB::table('inventory')->where('料號', $number)->where('儲位', $position)->value('現有庫存');
+                $stock = DB::table('inventory')->where('料號', $Alldata[2][$i])->where('儲位', $Alldata[12][$i])->value('現有庫存');
+
+                $temp2 = array(
+                    "料號" => $Alldata[2][$i],
+                    "儲位" => $Alldata[12][$i],
+                    "現有庫存" => intval($stock) - $amount,
+                    "最後更新時間" => $now,
+                );
+
                 //庫存小於實際領用數量,無法出庫
                 if ($amount > $stock) {
-                    DB::rollBack();
-                    return \Response::json(['position' => $position, 'nowstock' => $stock, 'row' => $i], 421/* Status code here default is 200 ok*/);
+                    return \Response::json(['position' => $Alldata[12][$i], 'nowstock' => $stock, 'row' => $i], 421/* Status code here default is 200 ok*/);
                 } else {
-                    $test = DB::table('outbound')->where('領料單號', $list)->where('料號', $number)
-                        ->where('預領數量', $advance)->whereNull('發料人員')->get();
-
-                    if ($remark === null) $remark = '';
-
-                    if (($test->count()) > 0) {
-
-                        DB::table('outbound')
-                            ->where('領料單號', $list)
-                            ->where('料號', $number)
-                            ->where('預領數量', $advance)
-                            ->whereNUll('發料人員')
-                            ->update([
-                                '實際領用數量' => $amount, '實領差異原因' => $reason, '儲位' => $position,
-                                '領料人員' => $pickname, '領料人員工號' => $pickpeople, '發料人員' => $sendname, '發料人員工號' => $sendpeople,
-                                '出庫時間' => $now
-                            ]);
-                    } else {
-                        DB::table('outbound')
-                            ->insert([
-                                '領用原因' => $usereason, '線別' => $line,
-                                '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預領數量' => $advance,
-                                '實際領用數量' => $amount, '實領差異原因' => $reason, '備註' => $remark, '領料單號' => $list,
-                                '開單時間' => $opentime,  '儲位' => $position, '領料人員' => $pickname, '領料人員工號' => $pickpeople,
-                                '發料人員' => $sendname, '發料人員工號' => $sendpeople, '出庫時間' => $now
-                            ]);
-                    }
-
-                    DB::table('inventory')
-                        ->where('料號', $number)
-                        ->where('儲位', $position)
-                        ->update(['現有庫存' => $stock - $amount, '最後更新時間' => $now]);
+                    $res_arr_values[] = $temp;
+                    $res_arr_values2[] = $temp2;
                 } // else
             } //for
+
+            DB::beginTransaction();
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 100, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('outbound')->upsert(
+                    $whole_load[$i],
+                    ['領料單號', '料號', '預領數量'],
+                    ['領用原因', '線別', '品名', '規格', '單位', '實際領用數量', '實領差異原因', '備註', '開單時間', '儲位', '領料人員', '發料人員', '出庫時間']
+                );
+
+                $record = $record + $temp_record;
+            } // for
+
+            $whole_load2 = array_chunk($res_arr_values2, 100, true);
+            for ($i = 0; $i < count($whole_load2); $i++) {
+                $temp_record = \DB::table('inventory')->upsert(
+                    $whole_load2[$i],
+                    ['料號', '儲位'],
+                    ['現有庫存', '最後更新時間']
+                );
+            } // for
             DB::commit();
-            return \Response::json(['record' => $count, 'list' => $list]/* Status code here default is 200 ok*/);
+            return \Response::json(['record' => $record, 'list' => $Alldata[10][$i]]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 422/* Status code here default is 200 ok*/);
         } //try - catch
-    }
+    } // picklistsubmit
 
     //提交退料單
     public function backlistsubmit(Request $request)
     {
         $Alldata = json_decode($request->input('AllData'));
-        $count = count($Alldata[0]);
-        DB::beginTransaction();
+        $now = Carbon::now();
+        $record = 0;
         try {
-            for ($i = 0; $i < $count; $i++) {
-                $backreason = $Alldata[0][$i];
-                $line = $Alldata[1][$i];
-                $number = $Alldata[2][$i];
-                $name = $Alldata[3][$i];
-                $format = $Alldata[4][$i];
-                $unit = $Alldata[5][$i];
-                $advance = $Alldata[6][$i];
-                $amount = $Alldata[7][$i];
+            $res_arr_values = array(); // 退料
+            $res_arr_values2 = array(); // 良品
+            $res_arr_values3 = array(); // 不良品
+            for ($i = 0; $i < count($Alldata[2]); $i++) {
                 $remark = $Alldata[8][$i];
-                $reason = $Alldata[9][$i];
-                $list = $Alldata[10][$i];
-                $opentime = $Alldata[11][$i];
-                $position = $Alldata[12][$i];
-                $status = $Alldata[13][$i];
-                $backpeople = $request->input('backpeople');
-                $pickpeople = $request->input('pickpeople');
-                $now = Carbon::now();
-                $backname = DB::table('人員信息')->where('工號', $backpeople)->value('姓名');
-                $pickname = DB::table('人員信息')->where('工號', $pickpeople)->value('姓名');
-
-                if ($status === '良品') {
-                    $inventoryname = 'inventory';
-                } else {
-                    $inventoryname = '不良品inventory';
-                }
-
-                $stock = DB::table($inventoryname)->where('料號', $number)->where('儲位', $position)->value('現有庫存');
-
-                $test = DB::table('出庫退料')->where('退料單號', $list)->where('料號', $number)
-                    ->where('預退數量', $advance)->whereNull('收料人員')->get();
-
                 if ($remark === null) $remark = '';
+                $temp = array(
+                    "退回原因" => $Alldata[0][$i],
+                    "線別" => $Alldata[1][$i],
+                    "料號" => $Alldata[2][$i],
+                    "品名" => $Alldata[3][$i],
+                    "規格" => $Alldata[4][$i],
+                    "單位" => $Alldata[5][$i],
+                    "預退數量" => $Alldata[6][$i],
+                    "實際退回數量" => $Alldata[7][$i],
+                    "實退差異原因" => $Alldata[9][$i],
+                    "備註" => $remark,
+                    "退料單號" => $Alldata[10][$i],
+                    "開單時間" => $Alldata[11][$i],
+                    "儲位" => $Alldata[12][$i],
+                    "收料人員" => $request->input('pickpeople'),
+                    "退料人員" => $request->input('backpeople'),
+                    "入庫時間" => $now,
+                    "功能狀況" => $Alldata[13][$i],
+                );
+                $res_arr_values[] = $temp;
 
-                if (($test->count()) > 0) {
-
-                    DB::table('出庫退料')
-                        ->where('退料單號', $list)
-                        ->where('料號', $number)
-                        ->where('預退數量', $advance)
-                        ->whereNUll('收料人員')
-                        ->update([
-                            '實際退回數量' => $amount, '實退差異原因' => $reason, '儲位' => $position,
-                            '收料人員' => $pickname, '收料人員工號' => $pickpeople, '退料人員' => $backname, '退料人員工號' => $backpeople,
-                            '入庫時間' => $now, '功能狀況' => $status
-                        ]);
+                if ($Alldata[13][$i] === '良品') {
+                    $stock = DB::table('inventory')->where('料號', $Alldata[2][$i])->where('儲位', $Alldata[12][$i])->value('現有庫存');
+                    // 良品Array
+                    $temp2 = array(
+                        "料號" => $Alldata[2][$i],
+                        "儲位" => $Alldata[12][$i],
+                        "現有庫存" => intval($stock) + intval($Alldata[7][$i]),
+                        "最後更新時間" => $now,
+                    );
+                    $res_arr_values2[] = $temp2;
                 } else {
-                    DB::table('出庫退料')
-                        ->insert([
-                            '退回原因' => $backreason, '線別' => $line,
-                            '料號' => $number, '品名' => $name, '規格' => $format, '單位' => $unit, '預退數量' => $advance,
-                            '實際退回數量' => $amount, '實退差異原因' => $reason, '備註' => $remark, '退料單號' => $list,
-                            '開單時間' => $opentime,  '儲位' => $position, '收料人員' => $pickname, '收料人員工號' => $pickpeople,
-                            '退料人員' => $backname, '退料人員工號' => $backpeople, '入庫時間' => $now, '功能狀況' => $status,
-                        ]);
-                }
+                    $stock = DB::table('不良品inventory')->where('料號', $Alldata[2][$i])->where('儲位', $Alldata[12][$i])->value('現有庫存');
+                    // 不良品Array
+                    $temp3 = array(
+                        "料號" => $Alldata[2][$i],
+                        "儲位" => $Alldata[12][$i],
+                        "現有庫存" => intval($stock) + intval($Alldata[7][$i]),
+                        "最後更新時間" => $now,
+                    );
+                    $res_arr_values3[] = $temp3;
+                } // else
+            } // for
 
-                if ($stock === null) {
-                    DB::table($inventoryname)
-                        ->insert(['料號' => $number, '現有庫存' => $amount, '儲位' => $position, '最後更新時間' => $now]);
-                } else {
-                    DB::table($inventoryname)
-                        ->where('料號', $number)
-                        ->where('儲位', $position)
-                        ->update(['現有庫存' => $stock + $amount, '最後更新時間' => $now]);
-                }
-            } //for
+            DB::beginTransaction();
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 100, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('出庫退料')->upsert(
+                    $whole_load[$i],
+                    ['退料單號', '料號', '預退數量'],
+                    ['退回原因', '線別', '品名', '規格', '單位', '實際退回數量', '實退差異原因', '備註', '開單時間', '儲位', '收料人員', '退料人員', '入庫時間', '功能狀況']
+                );
+                $record = $record + $temp_record;
+            } // for
+
+            if (count($res_arr_values2) > 0) {
+                $whole_load2 = array_chunk($res_arr_values2, 100, true);
+                for ($i = 0; $i < count($whole_load2); $i++) {
+                    $temp_record = \DB::table('inventory')->upsert(
+                        $whole_load2[$i],
+                        ['料號', '儲位'],
+                        ['現有庫存', '最後更新時間']
+                    );
+                } // for
+            } // if
+
+            if (count($res_arr_values3) > 0) {
+                $whole_load3 = array_chunk($res_arr_values3, 100, true);
+                for ($i = 0; $i < count($whole_load3); $i++) {
+                    $temp_record = \DB::table('不良品inventory')->upsert(
+                        $whole_load3[$i],
+                        ['料號', '儲位'],
+                        ['現有庫存', '最後更新時間']
+                    );
+                } // for
+            } // if
             DB::commit();
-            return \Response::json(['record' => $count, 'list' => $list]/* Status code here default is 200 ok*/);
+            return \Response::json(['record' => $record, 'list' => $Alldata[10][$i]]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);

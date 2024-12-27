@@ -65,16 +65,7 @@
                                     </select>
                                 </div> --}}
 
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-                                <div class="row w-100 justify-content-center">
-                                    <div class="col col-auto">
-                                        <input class="basic" type="checkbox" id="date" name="date"
-                                            style="width:20px;height:20px;"> {!! __('outboundpageLang.timepart') !!}
-                                    </div>
-                                </div>
-
-                                <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
+                                <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
 
                                 <div class="row w-100 justify-content-center">
                                     <div class="col col-auto">
