@@ -26,7 +26,8 @@
                             @csrf
                             <div class="row w-100 justify-content-center mb-3">
 
-                                <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>
+                                <label class="col col-auto form-label m-0 p-0">{!! __('outboundpageLang.line') !!}</label>
+                                <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
                                     <select class="form-select form-select-lg" id="line" name="line">
                                         <option style="display: none" disabled selected>{!! __('outboundpageLang.enterline') !!}</option>
@@ -38,7 +39,8 @@
 
                                 <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
 
-                                <label class="col col-auto form-label">{!! __('outboundpageLang.isn') !!}</label>
+                                <label class="col col-auto form-label m-0 p-0">{!! __('outboundpageLang.isn') !!}</label>
+                                <div class="w-100" style="height: 0ch;"></div><!-- </div>breaks cols to a new line-->
                                 <div class="col-lg-6  col-md-12 col-sm-12">
                                     <input class="form-control form-control-lg @error('number') is-invalid @enderror"
                                         type="text" id="number" name="number" placeholder="{!! __('outboundpageLang.enterisn') !!}">
