@@ -26,12 +26,12 @@ class CreateOutboundTable extends Migration
             $table->integer('預領數量');
             $table->integer('實際領用數量');
             $table->string('備註', 45);
-            $table->string('實領差異原因', 45)->nullable();;
-            $table->string('儲位', 45)->nullable();;
-            $table->string('領料人員', 45)->nullable();;
-            $table->string('領料人員工號', 45)->nullable();;
-            $table->string('發料人員', 45)->nullable();;
-            $table->string('發料人員工號', 45)->nullable();;
+            $table->string('實領差異原因', 45)->nullable();
+            $table->string('儲位', 45)->nullable();
+            $table->string('領料人員', 45)->nullable();
+            $table->string('領料人員工號', 45)->nullable();
+            $table->string('發料人員', 45)->nullable();
+            $table->string('發料人員工號', 45)->nullable();
             $table->string('領料單號', 45);
             $table->dateTime('開單時間');
             $table->dateTime('出庫時間')->nullable();;

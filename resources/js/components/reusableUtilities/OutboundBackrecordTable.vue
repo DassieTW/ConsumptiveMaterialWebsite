@@ -84,10 +84,11 @@ export default defineComponent({
                 tempObj.實際退回數量 = data[i].實際退回數量 + " " + data[i].單位;
                 tempObj.實退差異原因 = data[i].實退差異原因;
                 tempObj.儲位 = data[i].儲位;
-                tempObj.收料人員 = data[i].收料人員工號 + "(" + data[i].收料人員 + ")";
-                tempObj.退料人員 = data[i].退料人員工號 + "(" + data[i].退料人員 + ")";
+                tempObj.收料人員 = data[i].收料人員;
+                tempObj.退料人員 = data[i].退料人員;
                 tempObj.退料單號 = data[i].退料單號;
                 tempObj.開單時間 = data[i].開單時間;
+                tempObj.開單人員 = data[i].開單人員;
                 tempObj.入庫時間 = data[i].入庫時間;
                 tempObj.備註 = data[i].備註;
                 rows.push(tempObj);
@@ -112,6 +113,7 @@ export default defineComponent({
                     app.appContext.config.globalProperties.$t("outboundpageLang.backpeople"),
                     app.appContext.config.globalProperties.$t("outboundpageLang.backlistnum"),
                     app.appContext.config.globalProperties.$t("outboundpageLang.opentime"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pr_sender"),
                     app.appContext.config.globalProperties.$t("outboundpageLang.inboundtime"),
                     app.appContext.config.globalProperties.$t("outboundpageLang.mark"),
                 ]],
@@ -152,7 +154,7 @@ export default defineComponent({
                     display: function (row, i) {
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
+                            ' style="overflow-x: auto; width: 100%; user-select: text; z-index: 1; position: relative;">' +
                             row.料號 +
                             "</div>"
                         );
@@ -314,7 +316,7 @@ export default defineComponent({
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.收料人員工號 + '(' + row.收料人員 + ')' +
+                            row.收料人員 +
                             "</div>"
                         );
                     },
@@ -330,7 +332,7 @@ export default defineComponent({
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.退料人員工號 + '(' + row.退料人員 + ')' +
+                            row.退料人員 +
                             "</div>"
                         );
                     },
@@ -363,6 +365,22 @@ export default defineComponent({
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.開單時間 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.pr_sender"
+                    ),
+                    field: "開單人員",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.開單人員 +
                             "</div>"
                         );
                     },

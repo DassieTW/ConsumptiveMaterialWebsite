@@ -22,13 +22,12 @@ Route::post('/pickrecord', function (Request $request) {
 
     $pickrecordline = json_decode($request->input('pickrecordline'));
     $pickrecordisn = json_decode($request->input('pickrecordisn'));
-    $pickrecordcheck = json_decode($request->input('pickrecordcheck'));
     $pickrecordbegin = date(json_decode($request->input('pickrecordbegin')));
     $pickrecordend = strtotime(json_decode($request->input('pickrecordend')));
 
     $end = date('Y-m-d H:i:s', strtotime('+ 1 day', $pickrecordend));
 
-    // dd($send);
+    // dd($pickrecordbegin); // test
     $datas = [];
     // dd(json_decode($request->input('LookInTargets'))); // test
 
@@ -37,11 +36,10 @@ Route::post('/pickrecord', function (Request $request) {
             $join->on('outbound.料號', '=', 'consumptive_material.料號')
                 ->whereNotNull('領料人員');
         })->where('consumptive_material.料號', 'like', $pickrecordisn . '%')
-        ->where('outbound.線別', 'like', $pickrecordline . '%')->get();
+        ->where('outbound.線別', 'like', $pickrecordline . '%')
+        ->whereBetween('出庫時間', [$pickrecordbegin, $end])
+        ->get();
 
-    if ($pickrecordcheck) {
-        $datas = $datas->whereBetween('出庫時間', [$pickrecordbegin, $end])->values();
-    }
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
 
@@ -52,7 +50,6 @@ Route::post('/backrecord', function (Request $request) {
 
     $backrecordline = json_decode($request->input('backrecordline'));
     $backrecordisn = json_decode($request->input('backrecordisn'));
-    $backrecordcheck = json_decode($request->input('backrecordcheck'));
     $backrecordbegin = date(json_decode($request->input('backrecordbegin')));
     $backrecordend = strtotime(json_decode($request->input('backrecordend')));
 
@@ -66,11 +63,9 @@ Route::post('/backrecord', function (Request $request) {
             $join->on('出庫退料.料號', '=', 'consumptive_material.料號')
                 ->whereNotNull('收料人員');
         })->where('consumptive_material.料號', 'like', $backrecordisn . '%')
-        ->where('出庫退料.線別', 'like', $backrecordline . '%')->get();
-
-    if ($backrecordcheck) {
-        $datas = $datas->whereBetween('入庫時間', [$backrecordbegin, $end])->values();
-    }
-
+        ->where('出庫退料.線別', 'like', $backrecordline . '%')
+        ->whereBetween('入庫時間', [$backrecordbegin, $end])
+        ->get();
+        
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });

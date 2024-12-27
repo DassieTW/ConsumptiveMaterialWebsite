@@ -305,7 +305,7 @@ $(function () {
         notyf.open({
           type: "success",
           message: mess,
-          duration: 3000, //miliseconds, use 0 for infinite duration
+          duration: 0, //miliseconds, use 0 for infinite duration
           ripple: true,
           dismissible: true,
           position: {

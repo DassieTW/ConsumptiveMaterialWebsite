@@ -82,10 +82,11 @@ export default defineComponent({
                 tempObj.實際領用數量 = data[i].實際領用數量 + " " + data[i].單位;
                 tempObj.實領差異原因 = data[i].實領差異原因;
                 tempObj.儲位 = data[i].儲位;
-                tempObj.領料人員 = data[i].領料人員工號 + "(" + data[i].領料人員 + ")";
-                tempObj.發料人員 = data[i].發料人員工號 + "(" + data[i].發料人員 + ")";
+                tempObj.領料人員 = data[i].領料人員;
+                tempObj.發料人員 = data[i].發料人員;
                 tempObj.領料單號 = data[i].領料單號;
                 tempObj.開單時間 = data[i].開單時間;
+                tempObj.開單人員 = data[i].開單人員;
                 tempObj.出庫時間 = data[i].出庫時間;
                 tempObj.備註 = data[i].備註;
                 rows.push(tempObj);
@@ -109,6 +110,7 @@ export default defineComponent({
                     app.appContext.config.globalProperties.$t("outboundpageLang.sendpeople"),
                     app.appContext.config.globalProperties.$t("outboundpageLang.picklistnum"),
                     app.appContext.config.globalProperties.$t("outboundpageLang.opentime"),
+                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pr_sender"),
                     app.appContext.config.globalProperties.$t("outboundpageLang.outboundtime"),
                     app.appContext.config.globalProperties.$t("outboundpageLang.mark"),
                 ]],
@@ -126,7 +128,7 @@ export default defineComponent({
         } // OutputExcelClick
 
         watch(mats, () => {
-            console.log(JSON.parse(mats.value)); // test
+            // console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
             //console.log(allRowsObj.datas.length);
             for (let i = 0; i < allRowsObj.datas.length; i++) {
@@ -151,7 +153,7 @@ export default defineComponent({
                     display: function (row, i) {
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
+                            ' style="overflow-x: auto; width: 100%; user-select: text; z-index: 1; position: relative;">' +
                             row.料號 +
                             "</div>"
                         );
@@ -297,7 +299,7 @@ export default defineComponent({
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.領料人員工號 + '(' + row.領料人員 + ')' +
+                            row.領料人員 +
                             "</div>"
                         );
                     },
@@ -313,7 +315,7 @@ export default defineComponent({
                         return (
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
-                            row.發料人員工號 + '(' + row.發料人員 + ')' +
+                            row.發料人員 +
                             "</div>"
                         );
                     },
@@ -346,6 +348,22 @@ export default defineComponent({
                             '<div class="text-nowrap CustomScrollbar"' +
                             ' style="overflow-x: auto; width: 100%;">' +
                             row.開單時間 +
+                            "</div>"
+                        );
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "monthlyPRpageLang.pr_sender"
+                    ),
+                    field: "開單人員",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.開單人員 +
                             "</div>"
                         );
                     },

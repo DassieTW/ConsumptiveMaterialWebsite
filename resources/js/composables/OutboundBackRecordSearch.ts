@@ -19,7 +19,6 @@ export default function useOutboundBackRecord() {
         let backrecordproduction = sessionStorage.getItem("backrecordproduction");
         let backrecordsend = sessionStorage.getItem("backrecordsend");
         let backrecordisn = sessionStorage.getItem("backrecordisn");
-        let backrecordcheck = sessionStorage.getItem("backrecordcheck");
         let backrecordbegin = sessionStorage.getItem("backrecordbegin");
         let backrecordend = sessionStorage.getItem("backrecordend");
 
@@ -30,7 +29,6 @@ export default function useOutboundBackRecord() {
                 backrecordproduction: backrecordproduction,
                 backrecordsend: backrecordsend,
                 backrecordisn: backrecordisn,
-                backrecordcheck: backrecordcheck,
                 backrecordbegin: backrecordbegin,
                 backrecordend: backrecordend
             });

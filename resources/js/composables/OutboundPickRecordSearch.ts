@@ -19,7 +19,6 @@ export default function useOutboundPickRecord() {
         let pickrecordproduction = sessionStorage.getItem("pickrecordproduction");
         let pickrecordsend = sessionStorage.getItem("pickrecordsend");
         let pickrecordisn = sessionStorage.getItem("pickrecordisn");
-        let pickrecordcheck = sessionStorage.getItem("pickrecordcheck");
         let pickrecordbegin = sessionStorage.getItem("pickrecordbegin");
         let pickrecordend = sessionStorage.getItem("pickrecordend");
 
@@ -30,7 +29,6 @@ export default function useOutboundPickRecord() {
                 pickrecordproduction: pickrecordproduction,
                 pickrecordsend: pickrecordsend,
                 pickrecordisn: pickrecordisn,
-                pickrecordcheck: pickrecordcheck,
                 pickrecordbegin: pickrecordbegin,
                 pickrecordend: pickrecordend
             });
