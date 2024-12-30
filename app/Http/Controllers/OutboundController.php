@@ -306,59 +306,88 @@ class OutboundController extends Controller
     {
         $Alldata = json_decode($request->input('AllData'));
         $now = Carbon::now();
+        $applicant = DB::table('outbound')->where('領料單號', $Alldata[10][0])->value('開單人員');
         $record = 0;
+        // sum the 實際領用數量 with the same 料號, 儲位, 線別, 領用原因 from Alldata
+        $groupedData = [];
+        foreach ($Alldata[2] as $index => $value) {
+            $key = $Alldata[2][$index] . '-' . $Alldata[12][$index] . '-' . $Alldata[1][$index] . '-' . $Alldata[0][$index];
+            if (!isset($groupedData[$key])) {
+                $groupedData[$key] = [
+                    "領用原因" => $Alldata[0][$index],
+                    "線別" => $Alldata[1][$index],
+                    "料號" => $Alldata[2][$index],
+                    "品名" => $Alldata[3][$index],
+                    "規格" => $Alldata[4][$index],
+                    "單位" => $Alldata[5][$index],
+                    "預領數量" => $Alldata[6][$index],
+                    "實際領用數量" => 0,
+                    "備註" => $Alldata[8][$index],
+                    "實領差異原因" => $Alldata[9][$index],
+                    "領料單號" => $Alldata[10][$index],
+                    "開單時間" => $Alldata[11][$index],
+                    "儲位" => $Alldata[12][$index],
+                    "領料人員" => $request->input('pickpeople'),
+                    "發料人員" => $request->input('sendpeople'),
+                    "開單人員" => $applicant,
+                    "出庫時間" => $now,
+                ];
+            } // if
+            $groupedData[$key]['實際領用數量'] += intval($Alldata[7][$index]);
+        } // foreach
+
+        $groupedData = array_values($groupedData);
+
         try {
             $res_arr_values = array();
             $res_arr_values2 = array();
-            for ($i = 0; $i < count($Alldata[2]); $i++) {
-                $amount = intval($Alldata[7][$i]);
-                $remark = $Alldata[8][$i];
-                if ($remark === null) $remark = '';
-                $temp = array(
-                    "領用原因" => $Alldata[0][$i],
-                    "線別" => $Alldata[1][$i],
-                    "料號" => $Alldata[2][$i],
-                    "品名" => $Alldata[3][$i],
-                    "規格" => $Alldata[4][$i],
-                    "單位" => $Alldata[5][$i],
-                    "預領數量" => $Alldata[6][$i],
-                    "實際領用數量" => $Alldata[7][$i],
-                    "實領差異原因" => $Alldata[9][$i],
-                    "備註" => $Alldata[8][$i],
-                    "領料單號" => $Alldata[10][$i],
-                    "開單時間" => $Alldata[11][$i],
-                    "儲位" => $Alldata[12][$i],
-                    "領料人員" => $request->input('pickpeople'),
-                    "發料人員" => $request->input('sendpeople'),
-                    "出庫時間" => $now,
-                );
-
-                $stock = DB::table('inventory')->where('料號', $Alldata[2][$i])->where('儲位', $Alldata[12][$i])->value('現有庫存');
+            for ($i = 0; $i < count($groupedData); $i++) {
+                $amount = $groupedData[$i]['實際領用數量'];
+                $temp = $groupedData[$i];
+                $stock = DB::table('inventory')->where('料號', $groupedData[$i]['料號'])->where('儲位', $groupedData[$i]['儲位'])->value('現有庫存');
 
                 $temp2 = array(
-                    "料號" => $Alldata[2][$i],
-                    "儲位" => $Alldata[12][$i],
+                    "料號" => $groupedData[$i]['料號'],
+                    "儲位" => $groupedData[$i]['儲位'],
                     "現有庫存" => intval($stock) - $amount,
                     "最後更新時間" => $now,
                 );
 
-                //庫存小於實際領用數量,無法出庫
-                if ($amount > $stock) {
-                    return \Response::json(['position' => $Alldata[12][$i], 'nowstock' => $stock, 'row' => $i], 421/* Status code here default is 200 ok*/);
-                } else {
-                    $res_arr_values[] = $temp;
-                    $res_arr_values2[] = $temp2;
-                } // else
+                // if the $res_arr_values2 is not empty and has the same value as the current 料號, 儲位, then deduct the amount to the $res_arr_values2
+                $pn_exists_inventory = false;
+                if (count($res_arr_values2) > 0) {
+                    foreach ($res_arr_values2 as $key => $value) {
+                        if ($value['料號'] === $groupedData[$i]['料號'] && $value['儲位'] === $groupedData[$i]['儲位']) {
+                            $temp2 = $value;
+                            $temp2['現有庫存'] = intval($temp2['現有庫存']) - $amount;
+                            $res_arr_values2[$key] = $temp2;
+                            $pn_exists_inventory = true;
+                            break;
+                        } // if
+                    } // foreach
+                } // if
+
+                $res_arr_values[] = $temp;
+                if (!$pn_exists_inventory) $res_arr_values2[] = $temp2;
             } //for
 
+            //庫存小於實際領用數量,無法出庫
+            foreach ($res_arr_values2 as $key => $value) {
+                if ($value['現有庫存'] < 0) {
+                    return \Response::json(['position' => $value['儲位'], 'nowstock' => $stock], 421/* Status code here default is 200 ok*/);
+                } // if
+            } // foreach
+
             DB::beginTransaction();
+            // delete the record first
+            DB::table('outbound')->where('領料單號', $Alldata[10][0])->delete();
             // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
             $whole_load = array_chunk($res_arr_values, 100, true);
             for ($i = 0; $i < count($whole_load); $i++) {
                 $temp_record = \DB::table('outbound')->upsert(
                     $whole_load[$i],
-                    ['領料單號', '料號', '預領數量'],
-                    ['領用原因', '線別', '品名', '規格', '單位', '實際領用數量', '實領差異原因', '備註', '開單時間', '儲位', '領料人員', '發料人員', '出庫時間']
+                    ['領料單號', '領用原因', '線別', '料號', '預領數量', '開單時間', '儲位'],
+                    ['品名', '規格', '單位', '實際領用數量', '實領差異原因', '備註', '領料人員', '發料人員', '出庫時間', '開單人員']
                 );
 
                 $record = $record + $temp_record;
@@ -384,67 +413,111 @@ class OutboundController extends Controller
     public function backlistsubmit(Request $request)
     {
         $Alldata = json_decode($request->input('AllData'));
+        $applicant = DB::table('出庫退料')->where('退料單號', $Alldata[10][0])->value('開單人員');
         $now = Carbon::now();
+        // sum the 實際退回數量 with the same 料號, 儲位, 線別, 退回原因, 功能狀況 from Alldata
+        $groupedData = [];
+        foreach ($Alldata[2] as $index => $value) {
+            $key = $Alldata[2][$index] . '-' . $Alldata[12][$index] . '-' . $Alldata[1][$index] . '-' . $Alldata[0][$index] . '-' . $Alldata[13][$index];
+            if (!isset($groupedData[$key])) {
+                $groupedData[$key] = [
+                    "退回原因" => $Alldata[0][$index],
+                    "線別" => $Alldata[1][$index],
+                    "料號" => $Alldata[2][$index],
+                    "品名" => $Alldata[3][$index],
+                    "規格" => $Alldata[4][$index],
+                    "單位" => $Alldata[5][$index],
+                    "預退數量" => $Alldata[6][$index],
+                    "實際退回數量" => 0,
+                    "備註" => $Alldata[8][$index],
+                    "實退差異原因" => $Alldata[9][$index],
+                    "退料單號" => $Alldata[10][$index],
+                    "開單時間" => $Alldata[11][$index],
+                    "儲位" => $Alldata[12][$index],
+                    "收料人員" => $request->input('pickpeople'),
+                    "退料人員" => $request->input('backpeople'),
+                    "開單人員" => $applicant,
+                    "入庫時間" => $now,
+                    "功能狀況" => $Alldata[13][$index],
+                ];
+            } // if
+            $groupedData[$key]['實際退回數量'] += intval($Alldata[7][$index]);
+        } // foreach
+
+        $groupedData = array_values($groupedData);
+
         $record = 0;
         try {
             $res_arr_values = array(); // 退料
             $res_arr_values2 = array(); // 良品
             $res_arr_values3 = array(); // 不良品
-            for ($i = 0; $i < count($Alldata[2]); $i++) {
-                $remark = $Alldata[8][$i];
-                if ($remark === null) $remark = '';
-                $temp = array(
-                    "退回原因" => $Alldata[0][$i],
-                    "線別" => $Alldata[1][$i],
-                    "料號" => $Alldata[2][$i],
-                    "品名" => $Alldata[3][$i],
-                    "規格" => $Alldata[4][$i],
-                    "單位" => $Alldata[5][$i],
-                    "預退數量" => $Alldata[6][$i],
-                    "實際退回數量" => $Alldata[7][$i],
-                    "實退差異原因" => $Alldata[9][$i],
-                    "備註" => $remark,
-                    "退料單號" => $Alldata[10][$i],
-                    "開單時間" => $Alldata[11][$i],
-                    "儲位" => $Alldata[12][$i],
-                    "收料人員" => $request->input('pickpeople'),
-                    "退料人員" => $request->input('backpeople'),
-                    "入庫時間" => $now,
-                    "功能狀況" => $Alldata[13][$i],
-                );
+            for ($i = 0; $i < count($groupedData); $i++) {
+                $temp = $groupedData[$i];
                 $res_arr_values[] = $temp;
 
-                if ($Alldata[13][$i] === '良品') {
-                    $stock = DB::table('inventory')->where('料號', $Alldata[2][$i])->where('儲位', $Alldata[12][$i])->value('現有庫存');
+                if ($groupedData[$i]['功能狀況'] === '良品') {
+                    $stock = DB::table('inventory')->where('料號', $groupedData[$i]['料號'])->where('儲位', $groupedData[$i]['儲位'])->value('現有庫存');
                     // 良品Array
                     $temp2 = array(
-                        "料號" => $Alldata[2][$i],
-                        "儲位" => $Alldata[12][$i],
-                        "現有庫存" => intval($stock) + intval($Alldata[7][$i]),
+                        "料號" => $groupedData[$i]['料號'],
+                        "儲位" => $groupedData[$i]['儲位'],
+                        "現有庫存" => intval($stock) + intval($groupedData[$i]['實際退回數量']),
                         "最後更新時間" => $now,
                     );
-                    $res_arr_values2[] = $temp2;
+
+                    // if the $res_arr_values2 is not empty and has the same value as the current 料號, 儲位, then deduct the amount to the $res_arr_values2
+                    $pn_exists_inventory = false;
+                    if (count($res_arr_values2) > 0) {
+                        foreach ($res_arr_values2 as $key => $value) {
+                            if ($value['料號'] === $groupedData[$i]['料號'] && $value['儲位'] === $groupedData[$i]['儲位']) {
+                                $temp2 = $value;
+                                $temp2['現有庫存'] = intval($temp2['現有庫存']) + intval($groupedData[$i]['實際退回數量']);
+                                $res_arr_values2[$key] = $temp2;
+                                $pn_exists_inventory = true;
+                                break;
+                            } // if
+                        } // foreach
+                    } // if
+
+                    if (!$pn_exists_inventory) $res_arr_values2[] = $temp2;
                 } else {
-                    $stock = DB::table('不良品inventory')->where('料號', $Alldata[2][$i])->where('儲位', $Alldata[12][$i])->value('現有庫存');
+                    $stock = DB::table('不良品inventory')->where('料號', $groupedData[$i]['料號'])->where('儲位', $groupedData[$i]['儲位'])->value('現有庫存');
                     // 不良品Array
                     $temp3 = array(
-                        "料號" => $Alldata[2][$i],
-                        "儲位" => $Alldata[12][$i],
-                        "現有庫存" => intval($stock) + intval($Alldata[7][$i]),
+                        "料號" => $groupedData[$i]['料號'],
+                        "儲位" => $groupedData[$i]['儲位'],
+                        "現有庫存" => intval($stock) + intval($groupedData[$i]['實際退回數量']),
                         "最後更新時間" => $now,
                     );
-                    $res_arr_values3[] = $temp3;
+
+                    // if the $res_arr_values3 is not empty and has the same value as the current 料號, 儲位, then deduct the amount to the $res_arr_values3
+                    $pn_exists_bad_inventory = false;
+                    if (count($res_arr_values3) > 0) {
+                        foreach ($res_arr_values3 as $key => $value) {
+                            if ($value['料號'] === $groupedData[$i]['料號'] && $value['儲位'] === $groupedData[$i]['儲位']) {
+                                $temp3 = $value;
+                                $temp3['現有庫存'] = intval($temp3['現有庫存']) + intval($groupedData[$i]['實際退回數量']);
+                                $res_arr_values3[$key] = $temp3;
+                                $pn_exists_bad_inventory = true;
+                                break;
+                            } // if
+                        } // foreach
+                    } // if
+
+                    if (!$pn_exists_bad_inventory) $res_arr_values3[] = $temp3;
                 } // else
             } // for
 
             DB::beginTransaction();
+            // delete the record first
+            DB::table('出庫退料')->where('退料單號', $Alldata[10][0])->delete();
             // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
             $whole_load = array_chunk($res_arr_values, 100, true);
             for ($i = 0; $i < count($whole_load); $i++) {
                 $temp_record = \DB::table('出庫退料')->upsert(
                     $whole_load[$i],
-                    ['退料單號', '料號', '預退數量'],
-                    ['退回原因', '線別', '品名', '規格', '單位', '實際退回數量', '實退差異原因', '備註', '開單時間', '儲位', '收料人員', '退料人員', '入庫時間', '功能狀況']
+                    ['退料單號', '退回原因', '線別', '料號', '儲位', '功能狀況'],
+                    ['品名', '規格', '單位', '實際退回數量', '實退差異原因', '備註', '開單時間', '收料人員', '退料人員', '入庫時間']
                 );
                 $record = $record + $temp_record;
             } // for

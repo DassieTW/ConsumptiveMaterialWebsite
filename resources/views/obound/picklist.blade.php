@@ -96,15 +96,13 @@
                                     <td>
                                         <select style="width: 150px" class="form-select form-select-lg"
                                             name="bound{{ $loop->index }}" id="bound{{ $loop->index }}" required>
-                                            <div id="locoption{{ $loop->index }}">
-                                                <option style="display: none" disabled selected value="">
-                                                    {!! __('oboundpageLang.enterbound') !!}</option>
-                                                @foreach ($test as $k => $a)
-                                                    @if ($a > 0)
-                                                        <option>庫別:{{ $k }} 現有庫存:{{ $a }}</option>
-                                                    @endif
-                                                @endforeach
-                                            </div>
+                                            <option style="display: none" disabled selected value="">
+                                                {!! __('oboundpageLang.enterbound') !!}</option>
+                                            @foreach ($test as $k => $a)
+                                                @if ($a > 0)
+                                                    <option>庫別:{{ $k }} 現有庫存:{{ $a }}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                     </td>
                                     <input type="hidden" id="count" name="count" value="{{ $loop->count }}">

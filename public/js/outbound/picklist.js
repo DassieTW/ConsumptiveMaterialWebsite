@@ -596,21 +596,25 @@ $(function () {
                 //儲位庫存小於實際領用數量
                 if (err.status === 421) {
                     console.log(err.responseJSON);
-                    document.getElementById("lessstock").style.display =
-                        "block";
+                    // find the last select with the value of err.responseJSON.position and get its id
+                    var lastSelectId;
+                    $("select").each(function () {
+                        if ($(this).val().indexOf(err.responseJSON.position) == 0 ) {
+                            lastSelectId = $(this).attr("id");
+                        } // if
+                    });
+                    lastSelectId = lastSelectId.replace("position", "");
+
+                    document.getElementById("lessstock").style.display = "block";
                     document
-                        .getElementById("position")
+                        .getElementById("position" + lastSelectId)
                         .classList.add("is-invalid");
+
                     document
-                        .getElementById("amount" + err.responseJSON.row)
+                        .getElementById("amount" + lastSelectId)
                         .classList.add("is-invalid");
 
                     if (err.responseJSON.position !== "actualzero") {
-                        $("#lessstock #row").html(
-                            Lang.get("outboundpageLang.row") +
-                                " : " +
-                                (err.responseJSON.row + 1)
-                        );
                         $("#lessstock #position").html(
                             Lang.get("outboundpageLang.nowloc") +
                                 " : " +
@@ -618,22 +622,12 @@ $(function () {
                                 "<br>" +
                                 Lang.get("outboundpageLang.stockless")
                         );
-                        $("#lessstock #nowstock").html(
-                            Lang.get("outboundpageLang.nowstock") +
-                                " : " +
-                                err.responseJSON.nowstock
-                        );
                         $("#lessstock #amount").html(
                             Lang.get("outboundpageLang.realpickamount") +
                                 " : " +
-                                amount[err.responseJSON.row]
+                                $("#amount" + lastSelectId).val()
                         );
                     } else {
-                        $("#lessstock #row").html(
-                            Lang.get("outboundpageLang.row") +
-                                " : " +
-                                (err.responseJSON.row + 1)
-                        );
                         $("#lessstock #position").html(
                             Lang.get("outboundpageLang.nowloc") +
                                 " : " +
@@ -642,7 +636,7 @@ $(function () {
                         $("#lessstock #amount").html(
                             Lang.get("outboundpageLang.realpickamount") +
                                 " : " +
-                                amount[err.responseJSON.row]
+                                $("#amount" + lastSelectId).val()
                         );
                     }
                 }

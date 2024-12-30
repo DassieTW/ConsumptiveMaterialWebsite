@@ -23,7 +23,6 @@
             <div class="card-body">
                 <form id="pick" class="row gx-6 gy-1 align-items-center">
                     @csrf
-
                     <div class="col-auto">
                         <label class="col col-auto form-label">{!! __('outboundpageLang.line') !!}</label>
                         <select class="form-select form-select-lg " id="line" name="line">
