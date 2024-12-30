@@ -96,18 +96,16 @@
                                         <td>
                                             <select style="width: 150px" class="form-select form-select-lg"
                                                 name="position{{ $loop->index }}" id="position{{ $loop->index }}">
-                                                <div id="locoption{{ $loop->index }}">
-                                                    <option style="display: none" disabled selected value="">
-                                                        {!! __('outboundpageLang.enterloc') !!}</option>
-                                                    @foreach ($test as $k => $a)
-                                                        @if ($a > 0)
-                                                            <option
-                                                                value="{{ $k . '_' . $a }}">
-                                                                {!! __('outboundpageLang.loc') !!}:{{ $k }}
-                                                                {{ '(' }}{!! __('outboundpageLang.nowstock') !!}:{{ $a .')' }}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </div>
+                                                <option style="display: none" disabled selected value="">
+                                                    {!! __('outboundpageLang.enterloc') !!}</option>
+                                                @foreach ($test as $k => $a)
+                                                    @if ($a > 0)
+                                                        <option value="{{ $k . '_' . $a }}">
+                                                            {!! __('outboundpageLang.loc') !!}:{{ $k }}
+                                                            {{ '(' }}{!! __('outboundpageLang.nowstock') !!}:{{ $a . ')' }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
                                                 <option value="actualzero">{!! __('outboundpageLang.realpickzero') !!}</option>
                                             </select>
                                         </td>
@@ -174,9 +172,7 @@
                     {{-- stock error --}}
                     <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
                     <div class="invalid-feedback" id="lessstock" style="display:none;">
-                        <h3 style="color: red" id="row"></h3>
                         <h3 style="color: red" id="position"></h3>
-                        <h3 style="color: red" id="nowstock"></h3>
                         <h3 style="color: red" id="amount"></h3>
                     </div>
 

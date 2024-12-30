@@ -109,7 +109,6 @@
         </div>
     </div>
     <div class="card w-100">
-
         <div class="card-body">
             <form id="pickadd" style="display: none">
                 @csrf
