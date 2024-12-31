@@ -402,7 +402,7 @@ class OutboundController extends Controller
                 );
             } // for
             DB::commit();
-            return \Response::json(['record' => $record, 'list' => $Alldata[10][$i]]/* Status code here default is 200 ok*/);
+            return \Response::json(['record' => $record, 'list' => $Alldata[10][0]]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 422/* Status code here default is 200 ok*/);
@@ -544,7 +544,7 @@ class OutboundController extends Controller
                 } // for
             } // if
             DB::commit();
-            return \Response::json(['record' => $record, 'list' => $Alldata[10][$i]]/* Status code here default is 200 ok*/);
+            return \Response::json(['record' => $record, 'list' => $Alldata[10][0]]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
