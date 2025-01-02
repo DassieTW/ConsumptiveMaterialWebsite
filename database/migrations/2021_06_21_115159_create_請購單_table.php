@@ -28,11 +28,7 @@ class Create請購單Table extends Migration
             $table->double('在途數量');
             $table->double('現有庫存');
             $table->double('本次請購數量');
-            $table->double('實際需求');
             $table->double('請購金額');
-            $table->string('請購占比', 45);
-            $table->double('需求金額');
-            $table->string('需求占比', 45);
             $table->dateTime('請購時間');
             $table->string('SXB單號', 45)->nullable();
             //$table->timestamps();
