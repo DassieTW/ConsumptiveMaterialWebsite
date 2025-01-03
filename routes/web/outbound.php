@@ -64,11 +64,8 @@ Route::get('/picklist', function () {
         ->select('outbound.*')
         ->get()->unique('領料單號');
     $num = count($datas);
-    // dd($datas);
     return view('outbound.picklistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->name('outbound.picklistpage')->middleware('can:outboundPickupSerialNum,App\Models\Outbound');
-
-//Route::post('/picklist', [OutboundController::class, 'picklistpage'])->name('outbound.picklistpage');
 
 //出庫-領料單
 Route::get('/picklistsub', function () {

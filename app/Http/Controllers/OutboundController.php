@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Login;
 use App\Models\人員信息;
-use App\Models\客戶別;
-use App\Models\機種;
-use App\Models\製程;
 use App\Models\線別;
 use App\Models\領用原因;
 use App\Models\退回原因;
@@ -182,24 +179,12 @@ class OutboundController extends Controller
     public function pickaddsubmit(Request $request)
     {
         $count = $request->input('count');
-        $j = '0001';
         $max = DB::table('outbound')->max('開單時間');
         $maxtime = date_create(date('Y-m-d', strtotime($max)));
         $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
-        $interval = date_diff($maxtime, $nowtime);
         $user = $request->user();
         $now = Carbon::now();
-        $interval = $interval->format('%R%a');
-        $interval = (int)($interval);
-        if ($interval > 0) {
-            $opentime = Carbon::now()->format('Ymd') . $j;
-        } else {
-            $num = DB::table('outbound')->max('領料單號');
-            $num = intval($num);
-            $num++;
-            $num = strval($num);
-            $opentime = $num;
-        } // else
+        $opentime = Carbon::now()->format('YmdHis');
 
         $Alldata = json_decode($request->input('AllData'));
 
@@ -244,24 +229,12 @@ class OutboundController extends Controller
     public function backaddsubmit(Request $request)
     {
         $count = $request->input('count');
-        $j = '0001';
         $max = DB::table('出庫退料')->max('開單時間');
         $maxtime = date_create(date('Y-m-d', strtotime($max)));
         $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
         $user = $request->user();
         $now = Carbon::now();
-        $interval = date_diff($maxtime, $nowtime);
-        $interval = $interval->format('%R%a');
-        $interval = (int)($interval);
-        if ($interval > 0) {
-            $opentime = Carbon::now()->format('Ymd') . $j;
-        } else {
-            $num = DB::table('出庫退料')->max('退料單號');
-            $num = intval($num);
-            $num++;
-            $num = strval($num);
-            $opentime = $num;
-        } // else
+        $opentime = Carbon::now()->format('YmdHis');
         $Alldata = json_decode($request->input('AllData'));
 
         try {

@@ -163,7 +163,7 @@ export default defineComponent({
         const { mats_inTransit, getTransit, updateInTransit } = useTransitSearch(); // axios get the mats_inTransit data
         const { mats, getExistingStock } = useInboundStockSearch(); // axios get the mats data
         const { locations, validateISN, getLocs } = useCommonlyUsedFunctions();
-        const { users, getUsers, staffs, getStaffs, current_user, getCurrentUser } = useUserSearch(); // axios get the mats data
+        const { users, getUsers, current_user, getCurrentUser } = useUserSearch(); // axios get the mats data
 
         onBeforeMount(async () => {
             let start = Date.now();
