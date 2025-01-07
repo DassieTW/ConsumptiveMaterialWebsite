@@ -728,8 +728,8 @@ class MonthlyPRController extends Controller
             if ($ReqAmount[$j] !== "0" || $ReqAmount[$j] != 0) {
                 $worksheet->setCellValue("A" . $i, $i - 2); // A
                 $worksheet->setCellValue("B" . $i, $PN[$j]); // B
-                $worksheet->setCellValue("C" . $i, $pName[$j]); // C
-                $worksheet->setCellValue("D" . $i, $Spec[$j]); // D
+                $worksheet->setCellValue("C" . $i, str_replace("\n", "", $pName[$j])); // C
+                $worksheet->setCellValue("D" . $i, str_replace("\n", "", $Spec[$j])); // D
                 $worksheet->setCellValue("E" . $i, strval($Unit_price[$j]) . " " . strtoupper($currency_name[$j])); // E
                 $worksheet->setCellValue("F" . $i, strval($nowNeed[$j])); // F
                 $worksheet->setCellValue("G" . $i, strval($nextNeed[$j])); // G
@@ -888,6 +888,8 @@ class MonthlyPRController extends Controller
             'MOQ' => $MOQ
         );
 
+        dd(str_replace("\n", "", $Spec[0])); // test
+
         Mail::send(
             'mail/pr_review',
             $data,
@@ -898,7 +900,6 @@ class MonthlyPRController extends Controller
                 $message->from('CM_No-Reply@pegatroncorp.com', 'Consumables_Management_No-Reply');
             }
         );
-
         \File::delete(public_path() . '/excel/' . $filename);
     } // sendconsumemail
 
