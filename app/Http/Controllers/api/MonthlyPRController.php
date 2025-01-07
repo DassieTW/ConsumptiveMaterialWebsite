@@ -888,7 +888,7 @@ class MonthlyPRController extends Controller
             'MOQ' => $MOQ
         );
 
-        dd(str_replace("\n", "", $Spec[0])); // test
+        // dd(str_replace("\n", "", $Spec[0])); // test
 
         Mail::send(
             'mail/pr_review',
