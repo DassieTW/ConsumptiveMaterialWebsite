@@ -73,7 +73,7 @@
         <template v-slot:MOQ="{ row, key }">
             <!-- DON'T Use input-group here. It messes with the z-index -->
             <div class="row">
-                <input v-model="row.MPQ" @input="CheckCurrentRow($event);"
+                <input v-model="row.MOQ" @input="CheckCurrentRow($event);"
                     class="form-control text-center p-0 m-0 col col-auto"
                     style="width: 5ch; border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;"
                     type="number" min="0" :id="'moq' + row.id" :name="'moq' + key" :value="row.MOQ" />
