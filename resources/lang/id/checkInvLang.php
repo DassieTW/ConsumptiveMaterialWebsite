@@ -3,6 +3,7 @@
 return array (
   'page_name' => 'Inventaris',
   'check' => 'inventaris',
+  'emptyList' => 'Unduh daftar inventaris kosong',
   'check_record' => 'Catatan inventaris',
   'no_table_found' => 'Tidak ada daftar inventaris terbaru',
   'create_new_table' => 'Buat daftar inventaris baru',

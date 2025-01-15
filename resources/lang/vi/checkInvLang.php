@@ -3,6 +3,7 @@
 return array (
   'page_name' => 'Quản lí kiểm kê',
   'check' => 'Kiểm kê',
+  'emptyList' => 'Tải xuống biểu kiểm kê trống',
   'check_record' => 'Hổ sơ kiểm kê',
   'no_table_found' => 'Không có biểu kiểm kê gần đây',
   'create_new_table' => 'Tạo biểu kiểm kê mới',

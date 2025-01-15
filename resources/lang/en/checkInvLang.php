@@ -14,6 +14,7 @@ return [
     */
     'page_name' => 'Stock-taking',
     'check' => 'Stock-take',
+    'emptyList' => 'Download Empty List',
     'check_record' => 'Stock-taking Record',
     'no_table_found' => 'No table Found',
     'create_new_table' => 'Create New Table',

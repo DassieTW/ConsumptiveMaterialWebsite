@@ -6,8 +6,8 @@
         <div class="card-body">
             <div class="row justify-content-center mb-3">
                 <div class="col col-auto">
-                    <a :href="exampleUrl" download>
-                        {{ $t('monthlyPRpageLang.exampleExcel') }}
+                    <a @click="OutputExcelClick" href="#">
+                        {{ $t('checkInvLang.emptyList') }}
                     </a>
                 </div>
 
@@ -31,42 +31,46 @@
             </div>
         </div>
     </div>
-    <div class="card">
+    <button id="togglebtn" class="btn btn-primary col col-auto" type="button" data-bs-toggle="collapse"
+        data-bs-target="#importedtable" aria-expanded="false" aria-controls="importedtable" style="display: none;">
+    </button>
+
+    <div class="card collapse" id="importedtable">
         <div class="card-body">
             <div class="row justify-content-between">
                 <div class="row col col-auto">
                     <div class="col col-auto">
-                        <label for="pnInput" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }} :</label>
+                        <label for="pnInput1" class="col-form-label">{{ $t("basicInfoLang.quicksearch") }}:
+                        </label>
                     </div>
-                    <div class="col col-6 p-0 m-0">
-                        <input id="pnInput" class="text-center form-control form-control-lg"
-                            v-bind:placeholder="$t('inboundpageLang.enterisn_or_spec')" v-model="searchTerm" />
+                    <div class="col col-auto p-0 m-0">
+                        <input id="pnInput1" class="text-center form-control form-control-lg"
+                            v-bind:placeholder="$t('inboundpageLang.enterisn_or_loc')" v-model="searchTerm" />
                     </div>
                 </div>
                 <div class="col col-auto">
-                    <button id="delete" name="delete" class="col col-auto btn btn-lg btn-danger" @click="deleteRow">
+                    <button v-if="uploadToDBReady" id="delete" name="delete" class="col col-auto btn btn-lg btn-danger"
+                        :value="$t('basicInfoLang.delete')" @click="deleteRow">
                         <i class="bi bi-trash3-fill fs-4"></i>
                     </button>
                 </div>
             </div>
             <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
-                <strong>{{ validation_err_msg }}</strong>
+                <strong style="white-space: pre-wrap;">{{ validation_err_msg }}</strong>
             </span>
-            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :isSlotMode="true" :hasCheckbox="true"
+            <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
                 :is-loading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
                 :total="table.totalRecordCount" :page-options="table.pageOptions" :sortable="table.sortable"
-                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows">
-            </table-lite>
+                @is-finished="table.isLoading = false" @return-checked-rows="updateCheckedRows"></table-lite>
 
-            <div class="w-100" style="height: 1ch;"></div><!-- </div>breaks cols to a new line-->
-
-            <div class="row justify-content-center align-items-center">
+            <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
+            <div class="row justify-content-center">
                 <div class="col col-auto">
-                    <button v-if="uploadToDBReady" name="upload"
+                    <button v-if="uploadToDBReady" type="submit" name="upload"
                         class="col col-auto fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
-                        <i class="bi bi-envelope-check-fill"></i>
-                        {{ $t('monthlyPRpageLang.submit') }}
+                        <i class="bi bi-cloud-upload-fill"></i>
+                        {{ $t('monthlyPRpageLang.upload1') }}
                     </button>
                 </div>
             </div>
@@ -84,13 +88,13 @@ import {
 } from "@vue/runtime-core";
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
-import useUnitConsumptionSearch from "../../composables/UnitConsumptionSearch.ts";
+import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
 export default defineComponent({
     name: "App",
     components: { TableLite },
     setup() {
-        let exampleUrl = ref(window.location.origin + '/download/CheckingExample.xlsx');
+        // let exampleUrl = ref(window.location.origin + '/download/CheckingExample.xlsx');
         const app = getCurrentInstance(); // get the current instance
         let thisHtmlLang = document
             .getElementsByTagName("HTML")[0]
@@ -98,10 +102,11 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
+        const { mats, getExistingStock } = useInboundStockSearch(); // axios get the mats data
         const { queryResult, manualResult, locations, validateISN, validateISN_manual, getLocs } = useCommonlyUsedFunctions();
 
         onBeforeMount(async () => {
-            table.isLoading = true;
+            table.isLoading = false;
             await getLocs();
         });
 
@@ -109,7 +114,6 @@ export default defineComponent({
         let isInvalid_DB = ref(false); // add to DB validation
         let validation_err_msg = ref("");
         let uploadToDBReady = ref(false); // validation
-        const all_mails = reactive([]);
         const file = ref();
         let input_data;
         let checkedRows = [];
@@ -129,6 +133,59 @@ export default defineComponent({
             } // for
             return results;
         } // findDuplicates
+
+        const OutputExcelClick = async () => {
+            await triggerModal();
+            await getExistingStock(new Array(0), new Array(0));
+            let allData = JSON.parse(mats.value).data;
+            // console.log(JSON.parse(mats.value).data); // test
+
+            // get today's date for filename
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = yyyy + "_" + mm + '_' + dd;
+
+            let rows = Array();
+            for (let i = 0; i < allData.length; i++) {
+                if (allData[i].料號 === "" || allData[i].料號 === null || allData[i].料號.toLowerCase() === "null") {
+                    continue;
+                } // if
+                let tempObj = new Object;
+                tempObj.料號 = allData[i].料號;
+                tempObj.品名 = allData[i].品名;
+                tempObj.規格 = allData[i].規格;
+                tempObj.現有庫存 = "";
+                tempObj.單位 = allData[i].單位;
+                tempObj.儲位 = allData[i].儲位;
+                rows.push(tempObj);
+            } // for
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // change header name
+            XLSX.utils.sheet_add_aoa(worksheet,
+                [[
+                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.stock"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.unit"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
+                ]],
+                { origin: "A1" });
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet);
+            XLSX.writeFile(workbook,
+                app.appContext.config.globalProperties.$t(
+                    "checkInvLang.check"
+                ) + "_" + today + ".xlsx", { compression: true });
+
+            $("body").loadingModal("hide");
+            $("body").loadingModal("destroy");
+        } // OutputExcelClick
 
         const onUploadClick = async () => {
             isInvalid_DB.value = false;
@@ -189,9 +246,12 @@ export default defineComponent({
 
         const onInputChange = (event) => {
             isInvalid.value = false;
-            // data.splice(0); // cleanup data from previous upload
+            data.splice(0); // cleanup data from previous upload
             queryResult.value = "";
             file.value = event.target.files ? event.target.files[0] : null;
+            if ($("#importedtable").hasClass("show")) {
+                $("#togglebtn").click();
+            } // if
         } // onInputChange
 
         function CheckCurrentRow(e) {
@@ -375,7 +435,11 @@ export default defineComponent({
 
         watch(queryResult, async () => {
             await triggerModal();
-            console.log(input_data); // test
+            validation_err_msg.value =
+                app.appContext.config.globalProperties.$t("barcodeGenerator.temp_save_error") +
+                " Excel " +
+                app.appContext.config.globalProperties.$t("monthlyPRpageLang.row");
+            // console.log(input_data); // test
             if (queryResult.value == "") {
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
@@ -384,30 +448,58 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(queryResult.value);
-            // console.log(allRowsObj.data); // test
+            let allLocsObj = JSON.parse(locations.value);
+            // console.log(allLocsObj); // test
             let singleEntry = {};
 
             for (let i = 1; i < input_data.length; i++) {
+                singleEntry.id = i;
                 singleEntry.料號 = input_data[i][0].toString().trim();
-                singleEntry.儲位 = input_data[i][1].toString().trim();
-                singleEntry.盤點庫存 = parseInt(input_data[i][2]);
+                singleEntry.品名 = input_data[i][1].toString().trim();
+                singleEntry.規格 = input_data[i][2].toString().trim();
+                singleEntry.盤點庫存 = parseInt(input_data[i][3]);
+                singleEntry.單位 = input_data[i][4].toString().trim();
+                singleEntry.儲位 = input_data[i][5].toString().trim();
 
                 let indexOfObject = allRowsObj.data.findIndex(object => {
                     return (object.料號 === singleEntry.料號);
                 });
 
-                if (indexOfObject != -1) { // if an existing record is found
-                    singleEntry = Object.assign(singleEntry, allRowsObj.data[indexOfObject]);
+                let indexOfObject2 = allLocsObj.data.findIndex(object => {
+                    return (object.儲存位置 === singleEntry.儲位);
+                });
+
+                if (indexOfObject != -1) { // if isn exist in consumptive_material table
+                    singleEntry.valid_isn = true;
                 } // if
                 else {
-                    singleEntry.月請購 = "";
+                    singleEntry.valid_isn = false;
                 } // else
 
+                if (indexOfObject2 != -1) { // if location exist in location table
+                    singleEntry.valid_loc = true;
+                } // if
+                else {
+                    singleEntry.valid_loc = false;
+                } // else
+
+                if (isNaN(singleEntry.盤點庫存) || singleEntry.valid_isn === false || singleEntry.valid_loc === false) {
+                    isInvalid_DB.value = true;
+
+                    validation_err_msg.value = validation_err_msg.value + " " + (i + 1) + ",";
+                } // if
                 data.push(singleEntry);
                 singleEntry = {};
             } // for
 
+            validation_err_msg.value = validation_err_msg.value.slice(0, -1); // Remove the last character ","
+
             // console.log(data); // test
+            if (!$("#importedtable").hasClass("show")) {
+                $("#togglebtn").click();
+            } // if
+
+            uploadToDBReady.value = !isInvalid_DB.value;
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
             table.isLoading = false;
@@ -429,15 +521,8 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
+                        if (row.valid_isn === false) { // if isn not exist in consumptive_material table
                             return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
                                 '<div class="text-nowrap text-danger CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
@@ -446,13 +531,6 @@ export default defineComponent({
                         } // if
                         else { // isn exist in database
                             return (
-                                '<input type="hidden" id="number' +
-                                i +
-                                '" name="number' +
-                                i +
-                                '" value="' +
-                                row.料號 +
-                                '">' +
                                 '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.料號 +
@@ -469,15 +547,8 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
+                        if (row.valid_isn === false) { // if isn not exist in consumptive_material table
                             return (
-                                '<input type="hidden" id="name' +
-                                i +
-                                '" name="name' +
-                                i +
-                                '" value="' +
-                                row.品名 +
-                                '">' +
                                 '<div class="CustomScrollbar text-nowrap text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn") +
@@ -485,19 +556,22 @@ export default defineComponent({
                             );
                         } // if
                         else {
-                            return (
-                                '<input type="hidden" id="name' +
-                                i +
-                                '" name="name' +
-                                i +
-                                '" value="' +
-                                row.品名 +
-                                '">' +
-                                '<div class="CustomScrollbar text-nowrap"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.品名 +
-                                "</div>"
-                            );
+                            if (row.品名 === "N/A") {
+                                return (
+                                    '<div class="CustomScrollbar text-nowrap text-danger"' +
+                                    ' style="overflow-x: auto; width: 100%;">' +
+                                    '<span class="text-danger fw-bold">' + row.品名 + '</span>' +
+                                    "</div>"
+                                );
+                            } // if
+                            else {
+                                return (
+                                    '<div class="CustomScrollbar text-nowrap"' +
+                                    ' style="overflow-x: auto; width: 100%;">' +
+                                    row.品名 +
+                                    "</div>"
+                                );
+                            } // else
                         } // else
                     },
                 },
@@ -509,15 +583,8 @@ export default defineComponent({
                     width: "14ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.月請購 === "" || row.月請購 === null || row.月請購.toLowerCase() === "null") { // if isn not exist in consumptive_material table
+                        if (row.valid_isn === false) { // if isn not exist in consumptive_material table
                             return (
-                                '<input type="hidden" id="format' +
-                                i +
-                                '" name="format' +
-                                i +
-                                '" value="' +
-                                row.規格 +
-                                '">' +
                                 '<div class="text-nowrap CustomScrollbar text-danger"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn") +
@@ -526,13 +593,6 @@ export default defineComponent({
                         } // if
                         else {
                             return (
-                                '<input type="hidden" id="format' +
-                                i +
-                                '" name="format' +
-                                i +
-                                '" value="' +
-                                row.規格 +
-                                '">' +
                                 '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.規格 +
@@ -549,12 +609,22 @@ export default defineComponent({
                     width: "12ch",
                     sortable: true,
                     display: function (row, i) {
-                        return (
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.儲位 +
-                            "</div>"
-                        );
+                        if (row.valid_loc === false) { // if location not exist in location table
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                '<span class="text-danger fw-bold">' + row.儲位 + '</span>' +
+                                "</div>"
+                            );
+                        } // if
+                        else {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.儲位 +
+                                "</div>"
+                            );
+                        } // else
                     },
                 },
                 {
@@ -565,12 +635,32 @@ export default defineComponent({
                     width: "10ch",
                     sortable: true,
                     display: function (row, i) {
-                        return (
-                            '<div class="text-nowrap CustomScrollbar"' +
-                            ' style="overflow-x: auto; width: 100%;">' +
-                            row.盤點庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
-                            "</div>"
-                        );
+                        if (!Number.isInteger(row.盤點庫存)) {
+                            if (row.單位 === "N/A") {
+                                return (
+                                    '<div class="text-nowrap CustomScrollbar"' +
+                                    ' style="overflow-x: auto; width: 100%;">' +
+                                    '<i class="bi bi-x-lg text-danger fw-bold"></i>' + '&nbsp;<small class="text-danger fw-bold">' + row.單位 + '</small>' +
+                                    "</div>"
+                                );
+                            } else {
+                                return (
+                                    '<div class="text-nowrap CustomScrollbar"' +
+                                    ' style="overflow-x: auto; width: 100%;">' +
+                                    '<i class="bi bi-x-lg text-danger fw-bold"></i>' + '&nbsp;<small>' + row.單位 + '</small>' +
+                                    "</div>"
+                                );
+                            } // else
+
+                        } // if
+                        else {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.盤點庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
+                                "</div>"
+                            );
+                        } // else
                     },
                 },
             ],
@@ -579,17 +669,17 @@ export default defineComponent({
                     x.料號
                         .toLowerCase()
                         .includes(searchTerm.value.toLowerCase()) ||
-                    x.品名
+                    x.儲位
                         .includes(searchTerm.value)
                 );
             }),
             totalRecordCount: computed(() => {
                 return table.rows.length;
             }),
-            // sortable: {
-            //     order: "id",
-            //     sort: "asc",
-            // },
+            sortable: {
+                order: "儲位",
+                sort: "asc",
+            },
             messages: {
                 pagingInfo:
                     app.appContext.config.globalProperties.$t(
@@ -643,13 +733,14 @@ export default defineComponent({
         };
 
         return {
-            exampleUrl,
+            // exampleUrl,
             isInvalid,
             isInvalid_DB,
             validation_err_msg,
             uploadToDBReady,
             searchTerm,
             table,
+            OutputExcelClick,
             updateCheckedRows,
             onUploadClick,
             onInputChange,
