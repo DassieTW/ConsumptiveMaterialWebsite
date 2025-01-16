@@ -14,6 +14,7 @@ return [
     */
     'page_name' => '盤點管理',
     'check' => '盤點',
+    'emptyList' => '下載空白盤點表',
     'check_record' => '盤點紀錄',
     'no_table_found' => '無近期盤點表',
     'create_new_table' => '建立新盤點表',
@@ -69,4 +70,5 @@ return [
     'all' => '全部', 
     'updated_by' => '盤點人',
     'updated_at' => '盤點時間',
+    'approver_priority_notice' => '權限1人員才能核准庫存變動',
 ];

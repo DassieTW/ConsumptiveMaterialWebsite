@@ -26,7 +26,112 @@ class CheckingInventoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+        \DB::purge(env("DB_CONNECTION"));
+        $database = \DB::connection()->getDatabaseName(); // test
+        $user = $request->input('username');
+        $stock_array = json_decode($request->input('stock_array'));
+        $pn_array = json_decode($request->input('pn_array'));
+        $loc_array = json_decode($request->input('loc_array'));
+        $serialNum = Carbon::now()->format('YmdHis');
+        $created_at = Carbon::now();
+        $record = 0;
+
+        try {
+            $priority = intval(\DB::table('login')->where('username', $user)->value('priority'));
+            // dd($priority); // test
+            $res_arr_values = array();
+            $res_arr_values2 = array();
+            if ($priority < 2) {
+                for ($i = 0; $i < count($pn_array); $i++) {
+                    $isn = $pn_array[$i];
+                    $amount = $stock_array[$i];
+                    $loc = $loc_array[$i];
+
+                    $temp = array(
+                        "料號" => $isn,
+                        '現有庫存' => $amount,
+                        '儲位' => $loc,
+                        "單號" => $serialNum,
+                        'updated_by' => $user,
+                        'created_at' => $created_at,
+                        'approved_by' => $user, // self approved since priority < 2
+                        'approved_at' => $created_at, // self approved since priority < 2
+                    );
+
+                    $temp2 = array(
+                        "料號" => $isn,
+                        '現有庫存' => $amount,
+                        '儲位' => $loc,
+                        '最後更新時間' => $created_at,
+                    );
+
+                    $res_arr_values[] = $temp;
+                    $res_arr_values2[] = $temp2;
+                } //for
+            } // if
+            else {
+                for ($i = 0; $i < count($pn_array); $i++) {
+                    $isn = $pn_array[$i];
+                    $amount = $stock_array[$i];
+                    $loc = $loc_array[$i];
+
+                    $temp = array(
+                        "料號" => $isn,
+                        '現有庫存' => $amount,
+                        '儲位' => $loc,
+                        "單號" => $serialNum,
+                        'updated_by' => $user,
+                        'created_at' => $created_at,
+                    );
+
+                    $res_arr_values[] = $temp;
+                } //for
+            } // else
+
+            \DB::beginTransaction();
+            if ($priority < 2) {
+                // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+                $whole_load = array_chunk($res_arr_values, 200, true);
+                for ($i = 0; $i < count($whole_load); $i++) {
+                    $temp_record = \DB::table('checking_inventory')->upsert(
+                        $whole_load[$i],
+                        ['料號', '儲位', '單號'],
+                        ['現有庫存', 'updated_by', 'created_at', 'approved_by', 'approved_at'],
+                    );
+
+                    $record = $record + $temp_record;
+                } // for
+
+                $whole_load2 = array_chunk($res_arr_values2, 200, true);
+                for ($i = 0; $i < count($whole_load2); $i++) {
+                    $temp_record = \DB::table('inventory')->upsert(
+                        $whole_load2[$i],
+                        ['料號', '儲位'],
+                        ['現有庫存', '最後更新時間'],
+                    );
+                } // for
+            } // if
+            else {
+                // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+                $whole_load = array_chunk($res_arr_values, 200, true);
+                for ($i = 0; $i < count($whole_load); $i++) {
+                    $temp_record = \DB::table('checking_inventory')->upsert(
+                        $whole_load[$i],
+                        ['料號', '儲位', '單號'],
+                        ['現有庫存', 'updated_by', 'created_at'],
+                    );
+
+                    $record = $record + $temp_record;
+                } // for
+            } // else
+
+            \DB::commit();
+            return \Response::json(['newStock' => $record, 'DB' => $database]/* Status code here default is 200 ok*/);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return \Response::json(['message' => $e->getmessage(), 'DB' => $database], 421/* Status code here default is 200 ok*/);
+        } //try - catch
     } // store
 
     /**
@@ -35,16 +140,40 @@ class CheckingInventoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function getCheckingRecords(Request $request)
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
         $database = \DB::connection()->getDatabaseName(); // test
+        $timeRange = json_decode($request->input('timeRange'));
 
-        $data = [];
-        $data = \DB::table('發料部門')->get();
-        return \Response::json(['data' => $data, "dbName" => $database]/* Status code here default is 200 ok*/);
-    } // show
+        if ($timeRange === "month") {
+            $allResult = \DB::table('checking_inventory')
+                ->where('created_at', '>=', Carbon::now()->subMonth(1))
+                ->leftJoin('consumptive_material', 'checking_inventory.料號', '=', 'consumptive_material.料號')
+                ->leftJoin('人員信息', 'checking_inventory.updated_by', '=', '人員信息.工號')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } // if
+        else if ($timeRange === "quarter") {
+            $allResult = \DB::table('checking_inventory')
+                ->where('created_at', '>=', Carbon::now()->subMonths(3))
+                ->leftJoin('consumptive_material', 'checking_inventory.料號', '=', 'consumptive_material.料號')
+                ->leftJoin('人員信息', 'checking_inventory.updated_by', '=', '人員信息.工號')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } // if
+        else { // year
+            $allResult = \DB::table('checking_inventory')
+                ->where('created_at', '>=', Carbon::now()->subYear(1))
+                ->leftJoin('consumptive_material', 'checking_inventory.料號', '=', 'consumptive_material.料號')
+                ->leftJoin('人員信息', 'checking_inventory.updated_by', '=', '人員信息.工號')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } // else
+
+        return \Response::json(['data' => $allResult, "dbName" => $database]/* Status code here default is 200 ok*/);
+    } // getCheckingRecords
 
     /**
      * Update the specified resource in storage.
@@ -53,23 +182,30 @@ class CheckingInventoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateRecord(Request $request)
+    public function approveCheckingRecords(Request $request)
     {
         \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
         \DB::purge(env("DB_CONNECTION"));
         $database = \DB::connection()->getDatabaseName(); // test
-
-        $pn = json_decode($request->input('pn'));
-        $name = json_decode($request->input('name'));
-        
+        $user = $request->input('username');
+        $serialNum = $request->input('serial_num');
+        $stock_array = json_decode($request->input('stock'));
+        $pn_array = json_decode($request->input('isn'));
+        $loc_array = json_decode($request->input('loc'));
+        $approve_at = Carbon::now();
         $record = 0;
-        // dd($safestock); // test
+
         try {
             $res_arr_values = array();
-            for ($i = 0; $i < count($pn); $i++) {
+            for ($i = 0; $i < count($pn_array); $i++) {
+                $isn = $pn_array[$i];
+                $stock = $stock_array[$i];
+                $loc = $loc_array[$i];
                 $temp = array(
-                    "料號" => $pn[$i],
-                    '品名' => $name[$i],
+                    "料號" => $isn,
+                    '現有庫存' => $stock,
+                    '儲位' => $loc,
+                    '最後更新時間' => $approve_at,
                 );
 
                 $res_arr_values[] = $temp;
@@ -77,26 +213,30 @@ class CheckingInventoryController extends Controller
 
             \DB::beginTransaction();
 
-            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
-            $whole_load = array_chunk($res_arr_values, 100, true);
-            for ($i = 0; $i < count($whole_load); $i++) {
-                $temp_record = \DB::table('consumptive_material')->upsert(
-                    $whole_load[$i],
-                    ['料號'],
-                    ['品名', '規格', '單價', '幣別', '單位', 'MPQ', 'MOQ', 'LT', '月請購', 'A級資材', '發料部門', '安全庫存']
-                );
+            \DB::table('checking_inventory')
+                ->where('單號', $serialNum)
+                ->update([
+                    'approved_by' => $user,
+                    'approved_at' => $approve_at,
+                ]);
 
-                $record = $record + $temp_record;
+            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
+            $whole_load = array_chunk($res_arr_values, 200, true);
+            for ($i = 0; $i < count($whole_load); $i++) {
+                $temp_record = \DB::table('inventory')->upsert(
+                    $whole_load[$i],
+                    ['料號', '儲位'],
+                    ['現有庫存', '最後更新時間'],
+                );
             } // for
 
             \DB::commit();
-
-            return \Response::json(['record' => $record]/* Status code here default is 200 ok*/);
+            return \Response::json(['count' => $record, 'DB' => $database]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             \DB::rollback();
-            return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => $e->getmessage(), 'DB' => $database], 421/* Status code here default is 200 ok*/);
         } //try - catch
-    } // updateRecord
+    } // approveCheckingRecords
 
     /**
      * Remove the specified resource from storage.
@@ -110,15 +250,14 @@ class CheckingInventoryController extends Controller
         \DB::purge(env("DB_CONNECTION"));
         $database = \DB::connection()->getDatabaseName(); // test
 
-        $count = count(json_decode($request->input('pn')));
-        $number = json_decode($request->input('pn'));
+        $number = $request->input('serial_num');
         \DB::beginTransaction();
         try {
-            \DB::table('consumptive_material')
-                ->whereIn('料號', $number)
+            \DB::table('checking_inventory')
+                ->where('單號', $number)
                 ->delete();
             \DB::commit();
-            return \Response::json(['message' => $count]/* Status code here default is 200 ok*/);
+            return \Response::json(['message' => "success"]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             \DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);

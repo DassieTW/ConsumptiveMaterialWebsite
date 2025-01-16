@@ -14,6 +14,7 @@ return [
     */
     'page_name' => '盘点管理',
     'check' => '盘点',
+    'emptyList' => '下载空白盘点表',
     'check_record' => '盘点记录',
     'no_table_found' => '无近期盘点表',
     'create_new_table' => '建立新盘点表',
@@ -69,4 +70,5 @@ return [
     'all' => '全部',
     'updated_by' => '盘点人',
     'updated_at' => '盘点时间',
+    'approver_priority_notice' => '权限1人员才能核准库存变动',
 ];

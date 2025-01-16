@@ -3,6 +3,7 @@
 return array (
   'page_name' => 'Quản lí kiểm kê',
   'check' => 'Kiểm kê',
+  'emptyList' => 'Tải xuống biểu kiểm kê trống',
   'check_record' => 'Hổ sơ kiểm kê',
   'no_table_found' => 'Không có biểu kiểm kê gần đây',
   'create_new_table' => 'Tạo biểu kiểm kê mới',
@@ -52,4 +53,5 @@ return array (
   'all' => 'Toàn bộ',
   'updated_by' => 'Người kiểm kê',
   'updated_at' => 'Thời gian kiểm kê',
+  'approver_priority_notice' => 'Chỉ có người có quyền 1 mới có thể phê duyệt thay đổi hàng tồn kho',
 );

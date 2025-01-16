@@ -37,7 +37,7 @@ return [
     'unit' => 'Unit',
     'buyamount1' => 'Req Qty',
     'info' => 'Info.',
-    'entersxb' => 'Sender ID',
+    'entersxb' => 'Work ID',
     'applydate' => 'Date',
     'srm' => 'SRM number',
     'buyamount' => 'Req Qty INST',
