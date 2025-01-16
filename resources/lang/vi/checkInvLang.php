@@ -53,4 +53,5 @@ return array (
   'all' => 'Toàn bộ',
   'updated_by' => 'Người kiểm kê',
   'updated_at' => 'Thời gian kiểm kê',
+  'approver_priority_notice' => 'Chỉ có người có quyền 1 mới có thể phê duyệt thay đổi hàng tồn kho',
 );

@@ -70,4 +70,5 @@ return [
     'all' => '全部', 
     'updated_by' => '盤點人',
     'updated_at' => '盤點時間',
+    'approver_priority_notice' => '權限1人員才能核准庫存變動',
 ];

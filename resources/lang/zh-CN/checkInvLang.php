@@ -70,4 +70,5 @@ return [
     'all' => '全部',
     'updated_by' => '盘点人',
     'updated_at' => '盘点时间',
+    'approver_priority_notice' => '权限1人员才能核准库存变动',
 ];

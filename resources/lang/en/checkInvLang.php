@@ -70,4 +70,5 @@ return [
     'all' => 'All', 
     'updated_by' => 'Updated By',
     'updated_at' => 'Updated At',
+    'approver_priority_notice' => 'Only Priority 1 can approve the stock change',
 ];

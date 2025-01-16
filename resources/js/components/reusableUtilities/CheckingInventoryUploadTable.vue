@@ -88,6 +88,7 @@ import {
 } from "@vue/runtime-core";
 import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
+import useCheckingInventory from "../../composables/CheckingInventory.ts";
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
 export default defineComponent({
@@ -104,6 +105,7 @@ export default defineComponent({
 
         const { mats, getExistingStock } = useInboundStockSearch(); // axios get the mats data
         const { queryResult, manualResult, locations, validateISN, validateISN_manual, getLocs } = useCommonlyUsedFunctions();
+        const { upload_checkig_result } = useCheckingInventory();
 
         onBeforeMount(async () => {
             table.isLoading = false;
@@ -204,7 +206,10 @@ export default defineComponent({
                         /* Convert array of arrays */
                         input_data = XLSX.utils.sheet_to_json(ws, { header: 1 });
                         // console.log(input_data); // data[row#][col#]  test
-                        if (input_data === undefined || input_data[0] === undefined || input_data[0][0] === undefined || input_data[0][1] === undefined || input_data[0][2] === undefined) {
+                        if (input_data === undefined || input_data[0] === undefined ||
+                            input_data[0][0] === undefined || input_data[0][1] === undefined ||
+                            input_data[0][2] === undefined || input_data[0][3] === undefined ||
+                            input_data[0][4] === undefined || input_data[0][5] === undefined) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
@@ -322,7 +327,7 @@ export default defineComponent({
             // ----------------------------------------------
             // validate if all the isn exist
             for (let j = 0; j < data.length && hasError == false; j++) {
-                if (data[j].月請購 === "" || data[j].月請購 === null || data[j].月請購.toLowerCase() === "null") {
+                if (!data[j].valid_isn) {
                     hasError = true;
                     rowsCount = j;
                 } // if
@@ -356,7 +361,7 @@ export default defineComponent({
             let duplicatedArray = Array();
             for (let i = 0; i < data.length; i++) {
                 if (data[i].料號 != null && data[i].料號.trim() != "") {
-                    duplicatedArray.push(data[i].料號.toString().trim() + "_" + data[i].料號90.toString().trim());
+                    duplicatedArray.push(data[i].料號.toString().trim() + "_" + data[i].儲位.toString());
                 } // if
             } // for
 
@@ -365,7 +370,7 @@ export default defineComponent({
             if (findDuplicatesResult.length > 0) {
                 isInvalid_DB.value = true;
                 validation_err_msg.value =
-                    app.appContext.config.globalProperties.$t("inboundpageLang.repeated_isn_90_pair") +
+                    app.appContext.config.globalProperties.$t("inboundpageLang.repeated_isn_loc_pair") +
                     " : " + findDuplicatesResult[0].split("_")[0] +
                     " (" + findDuplicatesResult[0].split("_")[1] + ")";
 
@@ -388,17 +393,17 @@ export default defineComponent({
             // ----------------------------------------------
             // prepare the data arrays to be sent
             let pnArray = [];
-            let pn90Array = [];
-            let ucArray = [];
+            let locArray = [];
+            let stockArray = [];
             for (let j = 0; j < data.length; j++) {
                 pnArray.push(data[j].料號);
-                pn90Array.push(data[j].料號90);
-                ucArray.push(data[j].單耗);
+                locArray.push(data[j].儲位);
+                stockArray.push(data[j].盤點庫存);
             } // for
-            // console.log(ucArray); //test
+            // console.log(stockArray); //test
             // actually updating database now
             let start = Date.now();
-            let result = await uploadToDB(pnArray, pn90Array, ucArray, selected_mail.value);
+            let result = await upload_checkig_result(pnArray, locArray, stockArray);
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");
@@ -408,7 +413,7 @@ export default defineComponent({
                 uploadToDBReady.value = false;
                 notyf.open({
                     type: "success",
-                    message: app.appContext.config.globalProperties.$t("monthlyPRpageLang.total") + " " + JSON.parse(recordCount.value).record + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.record") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.change") + " " + app.appContext.config.globalProperties.$t("monthlyPRpageLang.success"),
+                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_success"),
                     duration: 3000, //miliseconds, use 0 for infinite duration
                     ripple: true,
                     dismissible: true,
@@ -603,32 +608,6 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.loc"
-                    ),
-                    field: "儲位",
-                    width: "12ch",
-                    sortable: true,
-                    display: function (row, i) {
-                        if (row.valid_loc === false) { // if location not exist in location table
-                            return (
-                                '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                '<span class="text-danger fw-bold">' + row.儲位 + '</span>' +
-                                "</div>"
-                            );
-                        } // if
-                        else {
-                            return (
-                                '<div class="text-nowrap CustomScrollbar"' +
-                                ' style="overflow-x: auto; width: 100%;">' +
-                                row.儲位 +
-                                "</div>"
-                            );
-                        } // else
-                    },
-                },
-                {
-                    label: app.appContext.config.globalProperties.$t(
                         "inboundpageLang.stock"
                     ),
                     field: "庫存",
@@ -658,6 +637,32 @@ export default defineComponent({
                                 '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
                                 row.盤點庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
+                                "</div>"
+                            );
+                        } // else
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "inboundpageLang.loc"
+                    ),
+                    field: "儲位",
+                    width: "12ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.valid_loc === false) { // if location not exist in location table
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                '<span class="text-danger fw-bold">' + row.儲位 + '</span>' +
+                                "</div>"
+                            );
+                        } // if
+                        else {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.儲位 +
                                 "</div>"
                             );
                         } // else

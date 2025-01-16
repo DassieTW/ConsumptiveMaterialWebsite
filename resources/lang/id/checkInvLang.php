@@ -53,4 +53,5 @@ return array (
   'all' => 'Semua',
   'updated_by' => 'Staff inventaris',
   'updated_at' => 'Waktu inventaris',
+  'approver_priority_notice' => 'Hanya staff dengan prioritas 1 yang dapat menyetujui perubahan stok',
 );
