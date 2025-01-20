@@ -158,7 +158,8 @@ export default defineComponent({
                 tempObj.料號 = allData[i].料號;
                 tempObj.品名 = allData[i].品名;
                 tempObj.規格 = allData[i].規格;
-                tempObj.現有庫存 = "";
+                tempObj.現有庫存 = allData[i].現有庫存;
+                tempObj.盤點庫存 = "";
                 tempObj.單位 = allData[i].單位;
                 tempObj.儲位 = allData[i].儲位;
                 rows.push(tempObj);
@@ -172,7 +173,8 @@ export default defineComponent({
                     app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
                     app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
                     app.appContext.config.globalProperties.$t("inboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.stock"),
+                    app.appContext.config.globalProperties.$t("inboundpageLang.nowstock"),
+                    app.appContext.config.globalProperties.$t("checkInvLang.checking_result"),
                     app.appContext.config.globalProperties.$t("inboundpageLang.unit"),
                     app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
                 ]],
@@ -209,7 +211,8 @@ export default defineComponent({
                         if (input_data === undefined || input_data[0] === undefined ||
                             input_data[0][0] === undefined || input_data[0][1] === undefined ||
                             input_data[0][2] === undefined || input_data[0][3] === undefined ||
-                            input_data[0][4] === undefined || input_data[0][5] === undefined) {
+                            input_data[0][4] === undefined || input_data[0][5] === undefined ||
+                            input_data[0][6] === undefined ) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
@@ -462,9 +465,9 @@ export default defineComponent({
                 singleEntry.料號 = input_data[i][0].toString().trim();
                 singleEntry.品名 = input_data[i][1].toString().trim();
                 singleEntry.規格 = input_data[i][2].toString().trim();
-                singleEntry.盤點庫存 = parseInt(input_data[i][3]);
-                singleEntry.單位 = input_data[i][4].toString().trim();
-                singleEntry.儲位 = input_data[i][5].toString().trim();
+                singleEntry.盤點庫存 = parseInt(input_data[i][4]);
+                singleEntry.單位 = input_data[i][5].toString().trim();
+                singleEntry.儲位 = input_data[i][6].toString().trim();
 
                 let indexOfObject = allRowsObj.data.findIndex(object => {
                     return (object.料號 === singleEntry.料號);
@@ -608,7 +611,7 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.stock"
+                        "checkInvLang.checking_result"
                     ),
                     field: "庫存",
                     width: "10ch",
