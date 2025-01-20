@@ -42,7 +42,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('olduser:clear')->quarterly()->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground()->environments(['production']);
 
         // Clean up dated inventory
-        $schedule->command('inventory:cleanup')->quarterly()->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground()->environments(['production']);
+        $schedule->command('inventory:cleanup')->monthly()->timezone('Asia/Taipei')->appendOutputTo(storage_path('logs/laravel.log'))->emailOutputTo('Vincent6_Yeh@pegatroncorp.com')->runInBackground()->environments(['production']);
     } // schedule
 
     /**
