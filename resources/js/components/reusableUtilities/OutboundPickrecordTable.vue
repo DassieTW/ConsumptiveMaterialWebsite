@@ -32,7 +32,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useOutboundPickrecord from "../../composables/OutboundPickRecordSearch.ts";
 export default defineComponent({
@@ -57,7 +58,7 @@ export default defineComponent({
         const data = reactive([]);
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
-        const OutputExcelClick = () => {
+        const OutputExcelClick = async () => {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
@@ -70,58 +71,52 @@ export default defineComponent({
             let yyyy = today.getFullYear();
             today = yyyy + "_" + mm + '_' + dd;
 
-            let rows = Array();
-            for (let i = 0; i < data.length; i++) {
-                let tempObj = new Object;
-                tempObj.料號 = data[i].料號;
-                tempObj.品名 = data[i].品名;
-                tempObj.規格 = data[i].規格;
-                tempObj.領用原因 = data[i].領用原因;
-                tempObj.線別 = data[i].線別;
-                tempObj.預領數量 = data[i].預領數量 + " " + data[i].單位;
-                tempObj.實際領用數量 = data[i].實際領用數量 + " " + data[i].單位;
-                tempObj.實領差異原因 = data[i].實領差異原因;
-                tempObj.儲位 = data[i].儲位;
-                tempObj.領料人員 = data[i].領料人員;
-                tempObj.發料人員 = data[i].發料人員;
-                tempObj.領料單號 = data[i].領料單號;
-                tempObj.開單時間 = data[i].開單時間;
-                tempObj.開單人員 = data[i].開單人員;
-                tempObj.出庫時間 = data[i].出庫時間;
-                tempObj.備註 = data[i].備註;
-                rows.push(tempObj);
-            } // for
+            let workbook = new ExcelJS.Workbook();
+            let worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("outboundpageLang.pickrecord"));
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.isn"), key: '料號', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.pName"), key: '品名', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.format"), key: '規格', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.usereason"), key: '領用原因', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.line"), key: '線別', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.pickamount"), key: '預領數量', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount"), key: '實際領用數量', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.diffreason"), key: '實領差異原因', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.loc"), key: '儲位', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.pickpeople"), key: '領料人員', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.sendpeople"), key: '發料人員', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.picklistnum"), key: '領料單號', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.opentime"), key: '開單時間', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.pr_sender"), key: '開單人員', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.outboundtime"), key: '出庫時間', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.mark"), key: '備註', width: 20 }
+            ];
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("outboundpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.pName"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.usereason"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.line"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.pickamount"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.diffreason"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.loc"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.pickpeople"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.sendpeople"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.picklistnum"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.opentime"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pr_sender"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.outboundtime"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.mark"),
-                ]],
-                { origin: "A1" });
+            data.forEach(item => {
+                worksheet.addRow({
+                    料號: item.料號,
+                    品名: item.品名,
+                    規格: item.規格,
+                    領用原因: item.領用原因,
+                    線別: item.線別,
+                    預領數量: item.預領數量 + " " + item.單位,
+                    實際領用數量: item.實際領用數量 + " " + item.單位,
+                    實領差異原因: item.實領差異原因,
+                    儲位: item.儲位,
+                    領料人員: item.領料人員,
+                    發料人員: item.發料人員,
+                    領料單號: item.領料單號,
+                    開單時間: item.開單時間,
+                    開單人員: item.開單人員,
+                    出庫時間: item.出庫時間,
+                    備註: item.備註
+                });
+            });
 
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("outboundpageLang.pickrecord"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "outboundpageLang.pickrecord"
-                ) + "_" + today + ".xlsx", { compression: true });
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("outboundpageLang.pickrecord") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");

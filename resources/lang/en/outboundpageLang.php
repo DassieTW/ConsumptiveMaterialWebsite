@@ -114,4 +114,5 @@ return [
     'rfidinputsendpeople' => 'Click here and tap the Dispatcher\'s ID card',
     'rfidinputpickpeople' => 'Click here and tap the Picker\'s ID card',
     'realpickzero' => 'Acquired Qty is 0',
+    'download_example' => 'Download Example',
 ];

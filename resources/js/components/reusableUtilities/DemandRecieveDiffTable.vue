@@ -75,7 +75,8 @@ import {
     watch,
 } from "@vue/runtime-core";
 import { yearTag, monthTag, checkedRows, searchTerm, data, table, datasetBuyUSD, datasetRealUSD } from '../../composables/DiffTableStore.js';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useDiffSearch from "../../composables/DiffSearch.ts";
 import useMonthlyPRSearch from "../../composables/MonthlyPRSearch.ts";
@@ -117,34 +118,36 @@ export default defineComponent({
         const OutputExcelClick = async () => {
             await triggerModal();
 
-            // get today's date for filename
-            let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
-            let yyyy = today.getFullYear();
-            today = yyyy + "_" + mm + '_' + dd;
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Sheet 1');
 
-            let rows = Array();
-            for (let i = 0; i < data.length; i++) {
-                let tempObj = new Object;
-                tempObj.料號 = data[i].料號;
-                tempObj.品名 = data[i].品名;
-                tempObj.請購數量 = data[i].請購數量;
-                tempObj.實際領用數量 = data[i].實際領用數量;
-                tempObj.單位 = data[i].單位;
-                tempObj.需求與領用差異量 = data[i].需求與領用差異量;
-                tempObj.需求與領用差異 = data[i].需求與領用差異 + "%";
+            // Add header row
+            worksheet.addRow([
+                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
+                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
+                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
+                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
+                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
+                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
+                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
+            ]);
 
-                rows.push(tempObj);
-            } // for
+            // Add data rows
+            data.forEach(item => {
+                worksheet.addRow([
+                    item.料號,
+                    item.品名,
+                    item.請購數量,
+                    item.實際領用數量,
+                    item.單位,
+                    item.需求與領用差異量,
+                    `${item.需求與領用差異}%`
+                ]);
+            });
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "PR vs Acq " + yearTag.value + "_" + (monthTag.value + 1));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "callpageLang.req_vs_real_percent"
-                ) + ".xlsx", { compression: true });
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/octet-stream" });
+            FileSaver.saveAs(blob, `${app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent")}.xlsx`);
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");

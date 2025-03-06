@@ -87,7 +87,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useUnitConsumptionSearch from "../../composables/UnitConsumptionSearch.ts";
 export default defineComponent({
@@ -134,33 +135,38 @@ export default defineComponent({
             let rows = Array();
             for (let i = 0; i < data.length; i++) {
                 let tempObj = new Object;
-                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn")] = data[i].料號;
-                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.90isn")] = data[i].料號90;
-                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName")] = data[i].品名;
-                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.format")] = data[i].規格;
-                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.consume")] = data[i].單耗;
-                tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.email")] = data[i].畫押信箱;
-                if (data[i].狀態 === "已完成") {
-                    tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.status")] = app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_complete");
-                } // if
-                else { // 待畫押, 待重畫
-                    tempObj[app.appContext.config.globalProperties.$t("monthlyPRpageLang.status")] = app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_pending");
-                } // else
-
+                tempObj.isn = data[i].料號;
+                tempObj.isn90 = data[i].料號90;
+                tempObj.pName = data[i].品名;
+                tempObj.format = data[i].規格;
+                tempObj.consume = data[i].單耗;
+                tempObj.email = data[i].畫押信箱;
+                tempObj.status = data[i].狀態 === "已完成" ? app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_complete") : app.appContext.config.globalProperties.$t("monthlyPRpageLang.review_pending");
                 rows.push(tempObj);
             } // for
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.consume"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "monthlyPRpageLang.consume"
-                ) + "_" + today + ".xlsx", { compression: true });
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("monthlyPRpageLang.consume"));
+
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"), key: 'isn' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.90isn"), key: 'isn90' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName"), key: 'pName' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.format"), key: 'format' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.consume"), key: 'consume' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.email"), key: 'email' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.status"), key: 'status' }
+            ];
+
+            worksheet.addRows(rows);
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("monthlyPRpageLang.consume") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
-        } // OutputExcelClick
+        }
 
         const triggerModal = async () => {
             $("body").loadingModal({

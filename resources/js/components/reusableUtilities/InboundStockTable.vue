@@ -44,7 +44,8 @@ import {
     watch,
 } from "@vue/runtime-core";
 import TableLite from "./TableLite.vue";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
 export default defineComponent({
     name: "App",
@@ -65,63 +66,49 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const OutputExcelClick = () => {
+        const OutputExcelClick = async () => {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
             });
 
-            // get today's date for filename
-            let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            let yyyy = today.getFullYear();
-            today = yyyy + "_" + mm + '_' + dd;
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Sheet 1');
 
-            let rows = Array();
-            for (let i = 0; i < data.length; i++) {
-                let tempObj = new Object;
-                tempObj.料號 = data[i].料號;
-                tempObj.品名 = data[i].品名;
-                tempObj.規格 = data[i].規格;
-                tempObj.現有庫存 = data[i].現有庫存 + " " + data[i].單位;
-                tempObj.儲位 = data[i].儲位;
-                if (data[i].月請購 === '是') {
-                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.yes");
-                } else {
-                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.no");
-                } // if else
-                tempObj.安全庫存 = data[i].安全庫存;
-                tempObj.單價 = data[i].單價;
-                tempObj.幣別 = data[i].幣別;
-                tempObj.呆滯天數 = data[i].呆滯天數;
-                rows.push(tempObj);
-            } // for
+            const today = new Date().toISOString().slice(0, 10);
+            // Add header row
+            worksheet.addRow([
+                app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.format"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.stock"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
+                app.appContext.config.globalProperties.$t("basicInfoLang.month"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.safe"),
+                app.appContext.config.globalProperties.$t("basicInfoLang.price"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.money"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.days"),
+            ]);
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            // Add data rows
+            data.forEach(item => {
+                worksheet.addRow([
+                    item.料號,
+                    item.品名,
+                    item.規格,
+                    `${item.現有庫存} ${item.單位}`,
+                    item.儲位,
+                    item.月請購 === '是' ? app.appContext.config.globalProperties.$t("basicInfoLang.yes") : app.appContext.config.globalProperties.$t("basicInfoLang.no"),
+                    item.安全庫存,
+                    item.單價,
+                    item.幣別,
+                    item.呆滯天數
+                ]);
+            });
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.stock"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.month"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.safe"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.price"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.money"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.days"),
-                ]],
-                { origin: "A1" });
-
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("inboundpageLang.stock"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "inboundpageLang.stock"
-                ) + "_" + today + ".xlsx", { compression: true });
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/octet-stream" });
+            FileSaver.saveAs(blob, `${app.appContext.config.globalProperties.$t("inboundpageLang.stock")}_${today}.xlsx`);
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");

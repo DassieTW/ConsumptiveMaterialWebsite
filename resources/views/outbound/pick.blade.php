@@ -15,6 +15,7 @@
                 {{-- <vue-bread-crumb></vue-bread-crumb> --}}
             </div>
         </div>
+        <outbound-pick-mats-upload-table></outbound-pick-mats-upload-table>
 
         <div class="card w-100">
             <div class="card-header">

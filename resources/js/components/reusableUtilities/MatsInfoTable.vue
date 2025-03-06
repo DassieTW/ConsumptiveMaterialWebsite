@@ -147,7 +147,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useConsumptiveMaterials from "../../composables/ConsumptiveMaterials.ts";
 export default defineComponent({
@@ -288,10 +289,10 @@ export default defineComponent({
             let yyyy = today.getFullYear();
             today = yyyy + "_" + mm + '_' + dd;
 
-            let rows = Array();
+            let rows = [];
 
             for (let i = 0; i < data.length; i++) {
-                let tempObj = new Object;
+                let tempObj = {};
                 tempObj.料號 = data[i].料號;
                 tempObj.品名 = data[i].品名;
                 tempObj.規格 = data[i].規格;
@@ -317,37 +318,36 @@ export default defineComponent({
                 rows.push(tempObj);
             } // for
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("basicInfoLang.matssearch"));
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("basicInfoLang.isn"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.pName"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.format"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.price"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.unit"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.mpq"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.moq"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.lt"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.month"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.gradea"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.senddep"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.safe"),
-                ]],
-                { origin: "A1" });
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.isn"), key: '料號', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.pName"), key: '品名', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.format"), key: '規格', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.price"), key: '單價', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.money"), key: '幣別', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.unit"), key: '單位', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.mpq"), key: 'MPQ', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.moq"), key: 'MOQ', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.lt"), key: 'LT', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.month"), key: '月請購', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.gradea"), key: 'A級資材', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.senddep"), key: '發料部門', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.safe"), key: '安全庫存', width: 20 },
+            ];
 
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("basicInfoLang.matssearch"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "basicInfoLang.matssearch"
-                ) + "_" + today + ".xlsx", { compression: true });
+            rows.forEach((row) => {
+                worksheet.addRow(row);
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("basicInfoLang.matssearch") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
-        } // OutputExcelClick
+        }; // OutputExcelClick
 
         const triggerModal = async () => {
             $("body").loadingModal({

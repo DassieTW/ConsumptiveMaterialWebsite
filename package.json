@@ -48,7 +48,9 @@
         "bootstrap-icons": "^1.5.0",
         "caniuse-lite": "^1.0.30001680",
         "chart.js": "^4.4.2",
+        "exceljs": "^4.4.0",
         "feather-icons": "4.28.0",
+        "file-saver": "^2.0.5",
         "flatpickr": "4.6.6",
         "jquery-loadingModal": "^1.0.2",
         "jsvectormap": "1.1.1",
@@ -62,7 +64,6 @@
         "vue-loader": "^17.0.0",
         "vue-router": "^4.0.12",
         "vue3-langjs": "^1.0.2",
-        "vue3-table-lite": "^1.2.3",
-        "xlsx": "^0.18.5"
+        "vue3-table-lite": "^1.2.3"
     }
 }

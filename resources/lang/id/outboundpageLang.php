@@ -103,4 +103,5 @@ return array (
   'rfidinputsendpeople' => 'Silakan klik di sini untuk tap kartu identifikasi personel yang mengeluarkan material',
   'rfidinputpickpeople' => 'Silakan klik di sini untuk tap kartu identifikasi personel pengambilan material',
   'realpickzero' => 'Jumlah yang diterima adalah 0',
+  'download_example' => 'Unduh contoh',
 );

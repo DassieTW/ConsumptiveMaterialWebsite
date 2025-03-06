@@ -40,7 +40,8 @@ import {
     watch,
 } from "@vue/runtime-core";
 import TableLite from "./TableLite.vue";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import useInboundListSearch from "../../composables/InboundListSearch.ts";
 export default defineComponent({
     name: "App",
@@ -164,55 +165,45 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // DeleteRowsClick
 
-        const OutputExcelClick = () => {
+        const OutputExcelClick = async () => {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
             });
 
-            // get today's date for filename
-            let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            let yyyy = today.getFullYear();
-            today = yyyy + "_" + mm + '_' + dd;
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Sheet 1');
+            
+            let today = new Date().toISOString().slice(0, 10);
+            // Add header row
+            worksheet.addRow([
+                app.appContext.config.globalProperties.$t("inboundpageLang.inlist"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.inboundnum"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.inpeople"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.inreason"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.inboundtime"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.mark"),
+            ]);
 
-            let rows = Array();
-            for (let i = 0; i < data.length; i++) {
-                let tempObj = new Object;
-                tempObj.入庫單號 = data[i].入庫單號;
-                tempObj.料號 = data[i].料號;
-                tempObj.入庫數量 = data[i].入庫數量 + " " + data[i].單位;
-                tempObj.儲位 = data[i].儲位;
-                tempObj.入庫人員 = data[i].入庫人員;
-                tempObj.入庫原因 = data[i].入庫原因;
-                tempObj.入庫時間 = data[i].入庫時間;
-                tempObj.備註 = data[i].備註;
-                rows.push(tempObj);
-            } // for
+            // Add data rows
+            data.forEach(item => {
+                worksheet.addRow([
+                    item.入庫單號,
+                    item.料號,
+                    `${item.入庫數量} ${item.單位}`,
+                    item.儲位,
+                    item.入庫人員,
+                    item.入庫原因,
+                    item.入庫時間,
+                    item.備註
+                ]);
+            });
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
-
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("inboundpageLang.inlist"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.inboundnum"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.inpeople"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.inreason"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.inboundtime"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.mark"),
-                ]],
-                { origin: "A1" });
-
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("inboundpageLang.inlist"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "inboundpageLang.inlist"
-                ) + "_" + today + ".xlsx", { compression: true });
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/octet-stream" });
+            FileSaver.saveAs(blob, `${app.appContext.config.globalProperties.$t("inboundpageLang.inlist")}_${today}.xlsx`);
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");

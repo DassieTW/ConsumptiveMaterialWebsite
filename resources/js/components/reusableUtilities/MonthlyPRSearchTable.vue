@@ -55,7 +55,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useMonthlyPRSearch from "../../composables/MonthlyPRSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
@@ -164,7 +165,7 @@ export default defineComponent({
             $("body").loadingModal("destroy");
         } // deleteRow
 
-        const OutputExcelClick = () => {
+        const OutputExcelClick = async () => {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
@@ -177,9 +178,9 @@ export default defineComponent({
             let yyyy = today.getFullYear();
             today = yyyy + "_" + mm + '_' + dd;
 
-            let rows = Array();
+            let rows = [];
             for (let i = 0; i < data.length; i++) {
-                let tempObj = new Object;
+                let tempObj = {};
                 tempObj.料號90 = data[i].料號90;
                 tempObj.料號 = data[i].料號;
                 tempObj.本月MPS = parseInt(data[i].本月MPS).toLocaleString('en', { useGrouping: true });
@@ -190,31 +191,30 @@ export default defineComponent({
                 rows.push(tempObj);
             } // for
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("templateWords.monthly"));
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.90isn"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowmps"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowday"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextmps"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextday"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.writetime"),
-                ]],
-                { origin: "A1" });
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.90isn"), key: '料號90', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"), key: '料號', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowmps"), key: '本月MPS', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowday"), key: '本月生產天數', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextmps"), key: '下月MPS', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextday"), key: '下月生產天數', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.writetime"), key: '填寫時間', width: 20 },
+            ];
 
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("templateWords.monthly"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "templateWords.monthly"
-                ) + "_" + today + ".xlsx", { compression: true });
+            rows.forEach((row) => {
+                worksheet.addRow(row);
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("templateWords.monthly") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
-        } // OutputExcelClick
+        }; // OutputExcelClick
 
         const searchTerm = ref(""); // Search text
 

@@ -80,7 +80,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useConsumptiveMaterials from "../../composables/ConsumptiveMaterials.ts";
 export default defineComponent({

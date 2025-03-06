@@ -32,7 +32,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useOutboundBackrecord from "../../composables/OutboundBackRecordSearch.ts";
 export default defineComponent({
@@ -58,7 +59,7 @@ export default defineComponent({
         const data = reactive([]);
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
 
-        const OutputExcelClick = () => {
+        const OutputExcelClick = async () => {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
@@ -74,61 +75,58 @@ export default defineComponent({
             let rows = Array();
             for (let i = 0; i < data.length; i++) {
                 let tempObj = new Object;
-                tempObj.料號 = data[i].料號;
-                tempObj.品名 = data[i].品名;
-                tempObj.規格 = data[i].規格;
-                tempObj.退回原因 = data[i].退回原因;
-                tempObj.功能狀況 = data[i].功能狀況;
-                tempObj.線別 = data[i].線別;
-                tempObj.預退數量 = data[i].預退數量 + " " + data[i].單位;
-                tempObj.實際退回數量 = data[i].實際退回數量 + " " + data[i].單位;
-                tempObj.實退差異原因 = data[i].實退差異原因;
-                tempObj.儲位 = data[i].儲位;
-                tempObj.收料人員 = data[i].收料人員;
-                tempObj.退料人員 = data[i].退料人員;
-                tempObj.退料單號 = data[i].退料單號;
-                tempObj.開單時間 = data[i].開單時間;
-                tempObj.開單人員 = data[i].開單人員;
-                tempObj.入庫時間 = data[i].入庫時間;
-                tempObj.備註 = data[i].備註;
+                tempObj.isn = data[i].料號;
+                tempObj.pName = data[i].品名;
+                tempObj.format = data[i].規格;
+                tempObj.backReason = data[i].退回原因;
+                tempObj.status = data[i].功能狀況;
+                tempObj.line = data[i].線別;
+                tempObj.backAmount = data[i].預退數量 + " " + data[i].單位;
+                tempObj.realBackAmount = data[i].實際退回數量 + " " + data[i].單位;
+                tempObj.backDiffReason = data[i].實退差異原因;
+                tempObj.loc = data[i].儲位;
+                tempObj.receivePeople = data[i].收料人員;
+                tempObj.backPeople = data[i].退料人員;
+                tempObj.backListNum = data[i].退料單號;
+                tempObj.openTime = data[i].開單時間;
+                tempObj.sender = data[i].開單人員;
+                tempObj.inboundTime = data[i].入庫時間;
+                tempObj.mark = data[i].備註;
                 rows.push(tempObj);
-            } // for
+            }
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("outboundpageLang.backrecord"));
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("outboundpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.pName"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.backreason"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.status"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.line"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.backamount"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.realbackamount"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.backdiffreason"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.loc"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.receivepeople"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.backpeople"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.backlistnum"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.opentime"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pr_sender"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.inboundtime"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.mark"),
-                ]],
-                { origin: "A1" });
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.isn"), key: 'isn' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.pName"), key: 'pName' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.format"), key: 'format' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.backreason"), key: 'backReason' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.status"), key: 'status' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.line"), key: 'line' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.backamount"), key: 'backAmount' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.realbackamount"), key: 'realBackAmount' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.backdiffreason"), key: 'backDiffReason' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.loc"), key: 'loc' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.receivepeople"), key: 'receivePeople' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.backpeople"), key: 'backPeople' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.backlistnum"), key: 'backListNum' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.opentime"), key: 'openTime' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.pr_sender"), key: 'sender' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.inboundtime"), key: 'inboundTime' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.mark"), key: 'mark' }
+            ];
 
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("outboundpageLang.backrecord"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "outboundpageLang.backrecord"
-                ) + "_" + today + ".xlsx", { compression: true });
+            worksheet.addRows(rows);
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("outboundpageLang.backrecord") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
-        } // OutputExcelClick
+        }
 
         watch(mats, () => {
             let allRowsObj = JSON.parse(mats.value);

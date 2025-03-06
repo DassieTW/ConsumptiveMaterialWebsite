@@ -103,4 +103,5 @@ return array (
   'rfidinputsendpeople' => 'Hãy click vào đây và cảm ứng thẻ nhân viên phát liệu',
   'rfidinputpickpeople' => 'Hãy click vào đây và cảm ứng thẻ nhân viên lĩnh liệu',
   'realpickzero' => 'Số lượng lĩnh dùng thực tế là 0',
+  'download_example' => 'Tải xuống mẫu',
 );

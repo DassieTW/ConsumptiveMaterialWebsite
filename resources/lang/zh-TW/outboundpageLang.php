@@ -114,4 +114,5 @@ return [
     'rfidinputsendpeople' => '請點這裡感應發料人員識別證',
     'rfidinputpickpeople' => '請點這裡感應領料人員識別證',
     'realpickzero' => '實際領用數量為0',
+    'download_example' => '下載領料單範例',
 ];

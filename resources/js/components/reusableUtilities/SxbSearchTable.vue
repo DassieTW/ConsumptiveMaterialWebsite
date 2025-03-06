@@ -108,7 +108,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useSxbSearch from "../../composables/SxbSearch.ts";
 export default defineComponent({
@@ -161,79 +162,60 @@ export default defineComponent({
             let yyyy = today.getFullYear();
             today = yyyy + "_" + mm + '_' + dd;
 
+            let workbook = new ExcelJS.Workbook();
+            let worksheet;
+
             if (output_range === 'All') {
-                let rows = Array();
-                for (let i = 0; i < AllRecords.length; i++) {
-                    let tempObj = new Object;
-                    tempObj.單號 = AllRecords[i].SXB單號;
-                    tempObj.料號 = AllRecords[i].料號;
-                    tempObj.品名 = AllRecords[i].品名;
-                    tempObj.MOQ = AllRecords[i].MOQ;
-                    tempObj.本次請購數量 = AllRecords[i].本次請購數量;
-                    tempObj.總價 = parseFloat(AllRecords[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + AllRecords[i].幣別;
-                    tempObj.請購時間 = AllRecords[i].請購時間;
+                worksheet = workbook.addWorksheet('ALL');
+                worksheet.columns = [
+                    { header: app.appContext.config.globalProperties.$t("checkInvLang.serial_number"), key: '單號', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("basicInfoLang.isn"), key: '料號', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("basicInfoLang.pName"), key: '品名', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"), key: 'MOQ', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"), key: '本次請購數量', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"), key: '總價', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buytime"), key: '請購時間', width: 20 }
+                ];
 
-                    rows.push(tempObj);
-                } // for
-
-                const worksheet = XLSX.utils.json_to_sheet(rows);
-
-                // change header name
-                XLSX.utils.sheet_add_aoa(worksheet,
-                    [[
-                        app.appContext.config.globalProperties.$t("checkInvLang.serial_number"),
-                        app.appContext.config.globalProperties.$t("basicInfoLang.isn"),
-                        app.appContext.config.globalProperties.$t("basicInfoLang.pName"),
-                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
-                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
-                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"),
-                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buytime"),
-                    ]],
-                    { origin: "A1" });
-
-                const workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, 'ALL');
-                XLSX.writeFile(workbook,
-                    app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.SXB_search"
-                    ) + "(ALL)_" + today + ".xlsx", { compression: true });
+                AllRecords.forEach(item => {
+                    worksheet.addRow({
+                        單號: item.SXB單號,
+                        料號: item.料號,
+                        品名: item.品名,
+                        MOQ: item.MOQ,
+                        本次請購數量: item.本次請購數量,
+                        總價: parseFloat(item.請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + item.幣別,
+                        請購時間: item.請購時間
+                    });
+                });
             } else {
-                let rows = Array();
-                for (let i = 0; i < data2.length; i++) {
-                    let tempObj = new Object;
-                    tempObj.單號 = data2[i].SXB單號;
-                    tempObj.料號 = data2[i].料號;
-                    tempObj.品名 = data2[i].品名;
-                    tempObj.MOQ = data2[i].MOQ;
-                    tempObj.本次請購數量 = data2[i].本次請購數量;
-                    tempObj.總價 = parseFloat(data2[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + data2[i].幣別;
-                    tempObj.請購時間 = data2[i].請購時間;
+                worksheet = workbook.addWorksheet(data2[0].SXB單號);
+                worksheet.columns = [
+                    { header: app.appContext.config.globalProperties.$t("checkInvLang.serial_number"), key: '單號', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("basicInfoLang.isn"), key: '料號', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("basicInfoLang.pName"), key: '品名', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"), key: 'MOQ', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"), key: '本次請購數量', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"), key: '總價', width: 20 },
+                    { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buytime"), key: '請購時間', width: 20 }
+                ];
 
-                    rows.push(tempObj);
-                } // for
+                data2.forEach(item => {
+                    worksheet.addRow({
+                        單號: item.SXB單號,
+                        料號: item.料號,
+                        品名: item.品名,
+                        MOQ: item.MOQ,
+                        本次請購數量: item.本次請購數量,
+                        總價: parseFloat(item.請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + item.幣別,
+                        請購時間: item.請購時間
+                    });
+                });
+            }
 
-                const worksheet = XLSX.utils.json_to_sheet(rows);
-
-                // change header name
-                XLSX.utils.sheet_add_aoa(worksheet,
-                    [[
-                        app.appContext.config.globalProperties.$t("checkInvLang.serial_number"),
-                        app.appContext.config.globalProperties.$t("basicInfoLang.isn"),
-                        app.appContext.config.globalProperties.$t("basicInfoLang.pName"),
-                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
-                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
-                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"),
-                        app.appContext.config.globalProperties.$t("monthlyPRpageLang.buytime"),
-                    ]],
-                    { origin: "A1" });
-
-                const workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, data2[0].SXB單號);
-                XLSX.writeFile(workbook,
-                    app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.SXB_search"
-                    ) + "(" + data2[0].SXB單號 + ")_" + today + ".xlsx", { compression: true });
-            } // if else
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("monthlyPRpageLang.SXB_search") + (output_range === 'All' ? "(ALL)" : "(" + data2[0].SXB單號 + ")") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");

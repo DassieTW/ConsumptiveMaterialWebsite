@@ -135,7 +135,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useMonthlyPRSearch from "../../composables/MonthlyPRSearch.ts";
 import useSxbSearch from "../../composables/SxbSearch.ts";
@@ -241,10 +242,10 @@ export default defineComponent({
             let yyyy = today.getFullYear();
             today = yyyy + "_" + mm + '_' + dd;
 
-            let rows = Array();
+            let rows = [];
 
             for (let i = 0; i < data.length; i++) {
-                let tempObj = new Object;
+                let tempObj = {};
                 tempObj.料號 = data[i].料號;
                 tempObj.品名 = data[i].品名;
                 tempObj.規格 = data[i].規格;
@@ -262,38 +263,37 @@ export default defineComponent({
                 rows.push(tempObj);
             } // for
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("monthlyPRpageLang.PR"));
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.price"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowneed"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextneed"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowstock"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(USD)",
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"),
-                ]],
-                { origin: "A1" });
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"), key: '料號', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.pName"), key: '品名', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.format"), key: '規格', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.price"), key: '單價', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.money"), key: '幣別1', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowneed"), key: '當月需求', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.nextneed"), key: '下月需求', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowstock"), key: '現有庫存', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"), key: '在途量', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyamount"), key: '本次請購數量', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice"), key: '請購金額', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("basicInfoLang.money"), key: '幣別2', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.buyprice") + "(USD)", key: '匯率', width: 20 },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.moq"), key: 'MOQ', width: 20 },
+            ];
 
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.PR"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "monthlyPRpageLang.PR"
-                ) + "_" + today + ".xlsx", { compression: true });
+            rows.forEach((row) => {
+                worksheet.addRow(row);
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("monthlyPRpageLang.PR") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
-        } // OutputExcelClick
+        }; // OutputExcelClick
 
         const onSendClick = async (selectedOnly) => {
             await triggerModal();

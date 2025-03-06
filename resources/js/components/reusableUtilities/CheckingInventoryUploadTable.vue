@@ -86,7 +86,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useCheckingInventory from "../../composables/CheckingInventory.ts";
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
@@ -165,27 +166,24 @@ export default defineComponent({
                 rows.push(tempObj);
             } // for
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Sheet1');
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.nowstock"),
-                    app.appContext.config.globalProperties.$t("checkInvLang.checking_result"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.unit"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
-                ]],
-                { origin: "A1" });
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.isn"), key: '料號' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.pName"), key: '品名' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.format"), key: '規格' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.nowstock"), key: '現有庫存' },
+                { header: app.appContext.config.globalProperties.$t("checkInvLang.checking_result"), key: '盤點庫存' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.unit"), key: '單位' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.loc"), key: '儲位' }
+            ];
 
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet);
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "checkInvLang.check"
-                ) + "_" + today + ".xlsx", { compression: true });
+            worksheet.addRows(rows);
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("checkInvLang.check") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
@@ -198,29 +196,35 @@ export default defineComponent({
                 // console.log(file.value); // test
                 if (file.value.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.value.type == "application/vnd.ms-excel" || file.value.type == "application/vnd.ms-excel" || file.value.type == ".csv") {
                     const reader = new FileReader();
+                    reader.readAsArrayBuffer(file.value);
                     reader.onload = async (e) => {
                         /* Parse data */
-                        const bstr = e.target.result;
-                        const wb = XLSX.read(bstr, { type: 'binary' });
+                        const buffer = e.target.result;
+                        const workbook = new ExcelJS.Workbook();
+                        await workbook.xlsx.load(buffer);
                         /* Get first worksheet */
-                        const wsname = wb.SheetNames[0];
-                        const ws = wb.Sheets[wsname];
+                        const worksheet = workbook.worksheets[0];
                         /* Convert array of arrays */
-                        input_data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+                        input_data = [];
+                        worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+                            // remove "empty" values from array then push to input_data
+                            input_data.push(row.values.filter(function (el) {
+                                return el != null;
+                            }));
+                        });
                         // console.log(input_data); // data[row#][col#]  test
                         if (input_data === undefined || input_data[0] === undefined ||
-                            input_data[0][0] === undefined || input_data[0][1] === undefined ||
-                            input_data[0][2] === undefined || input_data[0][3] === undefined ||
-                            input_data[0][4] === undefined || input_data[0][5] === undefined ||
-                            input_data[0][6] === undefined ) {
+                            input_data[0][1] === undefined || input_data[0][2] === undefined ||
+                            input_data[0][3] === undefined || input_data[0][4] === undefined ||
+                            input_data[0][5] === undefined || input_data[0][6] === undefined) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
                             let tempArr = Array();
 
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                                    tempArr.push(input_data[i][0].trim());
+                                if (input_data[i][1] != undefined && input_data[i].length > 2 && input_data[i][1].trim() != "" && input_data[i][1].trim() != null) {
+                                    tempArr.push(input_data[i][1].trim());
                                 } // if
                                 else {
                                     input_data.splice(i, 1); // remove the empty row
@@ -233,8 +237,6 @@ export default defineComponent({
                             await validateISN(tempArr);
                         } // else
                     };
-
-                    reader.readAsBinaryString(file.value);
                 } // if
                 else {
                     isInvalid.value = true;
@@ -766,3 +768,4 @@ export default defineComponent({
     border-color: #196241;
 }
 </style>
+```
