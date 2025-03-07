@@ -217,7 +217,7 @@ export default defineComponent({
                 ...keepAttrs }) => keepAttrs);
 
             const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Sheet 1');
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("checkInvLang.check"));
 
             worksheet.columns = [
                 { header: app.appContext.config.globalProperties.$t("inboundpageLang.isn"), key: '料號' },

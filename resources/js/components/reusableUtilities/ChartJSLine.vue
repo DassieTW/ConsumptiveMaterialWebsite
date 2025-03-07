@@ -15,8 +15,6 @@
 
 <script>
 import { yearTag, monthTag, checkedRows, data, table, datasetBuyUSD, datasetRealUSD } from '../../composables/DiffTableStore.js';
-import ExcelJS from 'exceljs';
-import FileSaver from "file-saver";
 import { defineComponent, reactive, ref, computed } from "vue";
 import {
     getCurrentInstance,
