@@ -114,8 +114,7 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import ExcelJS from 'exceljs';
-import FileSaver from "file-saver";
+import * as XLSX from 'xlsx';
 import TableLite from "./TableLite.vue";
 import useUnitConsumptionSearch from "../../composables/UnitConsumptionSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";

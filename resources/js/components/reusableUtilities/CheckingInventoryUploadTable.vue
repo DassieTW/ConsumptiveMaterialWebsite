@@ -86,6 +86,7 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
+import * as XLSX from 'xlsx';
 import ExcelJS from 'exceljs';
 import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
@@ -196,35 +197,29 @@ export default defineComponent({
                 // console.log(file.value); // test
                 if (file.value.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.value.type == "application/vnd.ms-excel" || file.value.type == "application/vnd.ms-excel" || file.value.type == ".csv") {
                     const reader = new FileReader();
-                    reader.readAsArrayBuffer(file.value);
                     reader.onload = async (e) => {
                         /* Parse data */
-                        const buffer = e.target.result;
-                        const workbook = new ExcelJS.Workbook();
-                        await workbook.xlsx.load(buffer);
+                        const bstr = e.target.result;
+                        const wb = XLSX.read(bstr, { type: 'binary' });
                         /* Get first worksheet */
-                        const worksheet = workbook.worksheets[0];
+                        const wsname = wb.SheetNames[0];
+                        const ws = wb.Sheets[wsname];
                         /* Convert array of arrays */
-                        input_data = [];
-                        worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-                            // remove "empty" values from array then push to input_data
-                            input_data.push(row.values.filter(function (el) {
-                                return el != null;
-                            }));
-                        });
+                        input_data = XLSX.utils.sheet_to_json(ws, { header: 1 });
                         // console.log(input_data); // data[row#][col#]  test
                         if (input_data === undefined || input_data[0] === undefined ||
-                            input_data[0][1] === undefined || input_data[0][2] === undefined ||
-                            input_data[0][3] === undefined || input_data[0][4] === undefined ||
-                            input_data[0][5] === undefined || input_data[0][6] === undefined) {
+                            input_data[0][0] === undefined || input_data[0][1] === undefined ||
+                            input_data[0][2] === undefined || input_data[0][3] === undefined ||
+                            input_data[0][4] === undefined || input_data[0][5] === undefined ||
+                            input_data[0][6] === undefined ) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
                             let tempArr = Array();
 
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][1] != undefined && input_data[i].length > 2 && input_data[i][1].trim() != "" && input_data[i][1].trim() != null) {
-                                    tempArr.push(input_data[i][1].trim());
+                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
+                                    tempArr.push(input_data[i][0].trim());
                                 } // if
                                 else {
                                     input_data.splice(i, 1); // remove the empty row
@@ -237,6 +232,8 @@ export default defineComponent({
                             await validateISN(tempArr);
                         } // else
                     };
+
+                    reader.readAsBinaryString(file.value);
                 } // if
                 else {
                     isInvalid.value = true;
@@ -768,4 +765,3 @@ export default defineComponent({
     border-color: #196241;
 }
 </style>
-```
