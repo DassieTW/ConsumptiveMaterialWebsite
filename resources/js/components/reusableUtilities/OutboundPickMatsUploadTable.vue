@@ -90,7 +90,6 @@ import * as XLSX from 'xlsx';
 import ExcelJS from 'exceljs';
 import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
-import useCheckingInventory from "../../composables/CheckingInventory.ts";
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
 import useOutboundPickRecord from "../../composables/OutboundPickRecordSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
@@ -108,11 +107,11 @@ export default defineComponent({
 
         const { mats, getExistingStock } = useInboundStockSearch(); // axios get the mats data
         const { queryResult, manualResult, locations, validateISN, validateISN_manual, getLocs } = useCommonlyUsedFunctions();
-        const { upload_checkig_result } = useCheckingInventory();
+        const { reasons, getPickReason, lines, getLines } = useOutboundPickRecord();
 
         onBeforeMount(async () => {
             table.isLoading = false;
-            await getLocs();
+            await getExistingStock(new Array(0), new Array(0));
         });
 
         let isInvalid = ref(false); // file input validation
@@ -141,9 +140,18 @@ export default defineComponent({
 
         const OutputExcelClick = async () => {
             await triggerModal();
-            await getExistingStock(new Array(0), new Array(0));
+            await getLines();
+            await getPickReason();
             let allData = JSON.parse(mats.value).data;
-            // console.log(JSON.parse(mats.value).data); // test
+            let allLines = JSON.parse(lines.value).datas;
+            let allLines_arr = allLines.map((item) => {
+                return item.線別;
+            });
+            let allReasons = JSON.parse(reasons.value).datas;
+            let allReasons_arr = allReasons.map((item) => {
+                return item.領用原因;
+            });
+            // console.log(allReasons_arr); // test
 
             // get today's date for filename
             let today = new Date();
@@ -153,39 +161,77 @@ export default defineComponent({
             today = yyyy + "_" + mm + '_' + dd;
 
             let rows = Array();
-            for (let i = 0; i < allData.length; i++) {
-                if (allData[i].料號 === "" || allData[i].料號 === null || allData[i].料號.toLowerCase() === "null") {
-                    continue;
-                } // if
-                let tempObj = new Object;
-                tempObj.料號 = allData[i].料號;
-                tempObj.品名 = allData[i].品名;
-                tempObj.規格 = allData[i].規格;
-                tempObj.現有庫存 = allData[i].現有庫存;
-                tempObj.盤點庫存 = "";
-                tempObj.單位 = allData[i].單位;
-                tempObj.儲位 = allData[i].儲位;
-                rows.push(tempObj);
-            } // for
+            let tempObj = new Object;
+            tempObj.料號 = allData[0].料號;
+            tempObj.品名 = allData[0].品名;
+            tempObj.規格 = allData[0].規格;
+            tempObj.發料部門 = allData[0].發料部門;
+            tempObj.預領數量 = "";
+            tempObj.單位 = allData[0].單位;
+            tempObj.線別 = "";
+            tempObj.領用原因 = "";
+            tempObj.備註 = "";
+            rows.push(tempObj);
 
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("checkInvLang.check"));
 
             worksheet.columns = [
-                { header: app.appContext.config.globalProperties.$t("inboundpageLang.isn"), key: '料號' },
-                { header: app.appContext.config.globalProperties.$t("inboundpageLang.pName"), key: '品名' },
-                { header: app.appContext.config.globalProperties.$t("inboundpageLang.format"), key: '規格' },
-                { header: app.appContext.config.globalProperties.$t("inboundpageLang.nowstock"), key: '現有庫存' },
-                { header: app.appContext.config.globalProperties.$t("checkInvLang.checking_result"), key: '盤點庫存' },
-                { header: app.appContext.config.globalProperties.$t("inboundpageLang.unit"), key: '單位' },
-                { header: app.appContext.config.globalProperties.$t("inboundpageLang.loc"), key: '儲位' }
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.isn"), key: '料號' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.pName"), key: '品名' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.format"), key: '規格' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.senddep"), key: '發料部門' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.pickamount"), key: '預領數量' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.unit"), key: '單位' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.line"), key: '線別' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.usereason"), key: '領用原因' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.mark"), key: '備註' }
             ];
 
             worksheet.addRows(rows);
 
+            const ValidationRange_Line =  worksheet.getColumn('G');
+            ValidationRange_Line.eachCell((cell) => {
+                if (cell.row > 1) {
+                    cell.dataValidation = {
+                        type: 'list',
+                        allowBlank: false,
+                        errorStyle: 'stop',
+                        errorTitle: 'Invalid Data',
+                        error: 'Please enter a valid value',
+                        formulae: ['"'+allLines_arr.join(',')+'"']
+                    };
+                } // if
+            });
+
+            const ValidationRange_Reason =  worksheet.getColumn('H');
+            ValidationRange_Reason.eachCell((cell) => {
+                if (cell.row > 1) {
+                    cell.dataValidation = {
+                        type: 'list',
+                        allowBlank: false,
+                        errorStyle: 'stop',
+                        errorTitle: 'Invalid Data',
+                        error: 'Please enter a valid value',
+                        formulae: ['"'+allReasons_arr.join(',')+'"']
+                    };
+                } // if
+            });
+
+            // Add border to title row and set font to bold on col A to I
+            worksheet.getRow(1).eachCell((cell) => {
+                cell.font = { bold: true };
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            });
+
             const buffer = await workbook.xlsx.writeBuffer();
             const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("checkInvLang.check") + "_" + today + ".xlsx");
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("outboundpageLang.download_example") + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
