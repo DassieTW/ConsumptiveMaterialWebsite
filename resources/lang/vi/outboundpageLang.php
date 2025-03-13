@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'page_name' => 'Xuất kho',
   'pick' => 'Lĩnh liệu',
   'picklist' => 'Đơn lĩnh liệu',
@@ -104,4 +104,7 @@ return array (
   'rfidinputpickpeople' => 'Hãy click vào đây và cảm ứng thẻ nhân viên lĩnh liệu',
   'realpickzero' => 'Số lượng lĩnh dùng thực tế là 0',
   'download_example' => 'Tải xuống mẫu',
+  'no_line' => 'Dòng sản xuất không tồn tại',
+  'no_reason' => 'Nguyên nhân lĩnh dùng không tồn tại',
+  'repeated_isn_will_not_display' => 'Mã liệu+Dòng sản xuất+Nguyên nhân lĩnh dùng lặp lại sẽ không được hiển thị trong Excel',
 );

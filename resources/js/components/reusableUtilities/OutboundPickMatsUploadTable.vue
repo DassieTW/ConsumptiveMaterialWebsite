@@ -45,7 +45,7 @@
                     </div>
                     <div class="col col-auto p-0 m-0">
                         <input id="pnInput1" class="text-center form-control form-control-lg"
-                            v-bind:placeholder="$t('inboundpageLang.enterisn_or_loc')" v-model="searchTerm" />
+                            v-bind:placeholder="$t('monthlyPRpageLang.enterisn_or_descr')" v-model="searchTerm" />
                     </div>
                 </div>
                 <div class="col col-auto">
@@ -58,6 +58,9 @@
             <div class="w-100" style="height: 1ch"></div><!-- </div>breaks cols to a new line-->
             <span v-if="isInvalid_DB" class="invalid-feedback d-block" role="alert">
                 <strong style="white-space: pre-wrap;">{{ validation_err_msg }}</strong>
+            </span>
+            <span v-if="isDuplicated" class="invalid-feedback d-block" role="alert">
+                <strong style="white-space: pre-wrap;">{{ validation_err_msg_duplicated }}</strong>
             </span>
             <table-lite :is-fixed-first-column="true" :is-static-mode="true" :hasCheckbox="true"
                 :is-loading="table.isLoading" :messages="table.messages" :columns="table.columns" :rows="table.rows"
@@ -106,17 +109,20 @@ export default defineComponent({
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
         const { mats, getExistingStock } = useInboundStockSearch(); // axios get the mats data
-        const { queryResult, manualResult, locations, validateISN, validateISN_manual, getLocs } = useCommonlyUsedFunctions();
         const { reasons, getPickReason, lines, getLines } = useOutboundPickRecord();
 
         onBeforeMount(async () => {
             table.isLoading = false;
+            await getLines();
+            await getPickReason();
             await getExistingStock(new Array(0), new Array(0));
         });
 
         let isInvalid = ref(false); // file input validation
         let isInvalid_DB = ref(false); // add to DB validation
+        let isDuplicated = ref(false); // duplicated isn validation
         let validation_err_msg = ref("");
+        let validation_err_msg_duplicated = app.appContext.config.globalProperties.$t("outboundpageLang.repeated_isn_will_not_display");
         let uploadToDBReady = ref(false); // validation
         const file = ref();
         let input_data;
@@ -140,8 +146,6 @@ export default defineComponent({
 
         const OutputExcelClick = async () => {
             await triggerModal();
-            await getLines();
-            await getPickReason();
             let allData = JSON.parse(mats.value).data;
             let allLines = JSON.parse(lines.value).datas;
             let allLines_arr = allLines.map((item) => {
@@ -174,7 +178,7 @@ export default defineComponent({
             rows.push(tempObj);
 
             const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("checkInvLang.check"));
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("outboundpageLang.picklist"));
 
             worksheet.columns = [
                 { header: app.appContext.config.globalProperties.$t("outboundpageLang.isn"), key: '料號' },
@@ -190,7 +194,7 @@ export default defineComponent({
 
             worksheet.addRows(rows);
 
-            const ValidationRange_Line =  worksheet.getColumn('G');
+            const ValidationRange_Line = worksheet.getColumn('G');
             ValidationRange_Line.eachCell((cell) => {
                 if (cell.row > 1) {
                     cell.dataValidation = {
@@ -199,12 +203,12 @@ export default defineComponent({
                         errorStyle: 'stop',
                         errorTitle: 'Invalid Data',
                         error: 'Please enter a valid value',
-                        formulae: ['"'+allLines_arr.join(',')+'"']
+                        formulae: ['"' + allLines_arr.join(',') + '"']
                     };
                 } // if
             });
 
-            const ValidationRange_Reason =  worksheet.getColumn('H');
+            const ValidationRange_Reason = worksheet.getColumn('H');
             ValidationRange_Reason.eachCell((cell) => {
                 if (cell.row > 1) {
                     cell.dataValidation = {
@@ -213,7 +217,7 @@ export default defineComponent({
                         errorStyle: 'stop',
                         errorTitle: 'Invalid Data',
                         error: 'Please enter a valid value',
-                        formulae: ['"'+allReasons_arr.join(',')+'"']
+                        formulae: ['"' + allReasons_arr.join(',') + '"']
                     };
                 } // if
             });
@@ -255,18 +259,16 @@ export default defineComponent({
                         input_data = XLSX.utils.sheet_to_json(ws, { header: 1 });
                         // console.log(input_data); // data[row#][col#]  test
                         if (input_data === undefined || input_data[0] === undefined ||
-                            input_data[0][0] === undefined || input_data[0][1] === undefined ||
-                            input_data[0][2] === undefined || input_data[0][3] === undefined ||
-                            input_data[0][4] === undefined || input_data[0][5] === undefined ||
-                            input_data[0][6] === undefined) {
+                            input_data[0][0] === undefined || input_data[0][4] === undefined ||
+                            input_data[0][6] === undefined || input_data[0][7] === undefined) {
                             isInvalid.value = true;
                             validation_err_msg.value = app.appContext.config.globalProperties.$t("fileUploadErrors.Content_errors");
                         } else {
                             let tempArr = Array();
 
                             for (let i = 1; i < input_data.length; i++) {
-                                if (input_data[i][0] != undefined && input_data[i].length > 2 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
-                                    tempArr.push(input_data[i][0].trim());
+                                if (input_data[i][0] != undefined && input_data[i].length > 0 && input_data[i][0].trim() != "" && input_data[i][0].trim() != null) {
+                                    tempArr.push(input_data[i][0].trim().replaceAll('\n', ''));
                                 } // if
                                 else {
                                     input_data.splice(i, 1); // remove the empty row
@@ -276,7 +278,7 @@ export default defineComponent({
 
                             // console.log(tempArr); // test
                             await triggerModal();
-                            await validateISN(tempArr);
+                            await getExistingStock(tempArr, new Array(0));
                         } // else
                     };
 
@@ -301,7 +303,7 @@ export default defineComponent({
         const onInputChange = (event) => {
             isInvalid.value = false;
             data.splice(0); // cleanup data from previous upload
-            queryResult.value = "";
+            mats.value = "";
             file.value = event.target.files ? event.target.files[0] : null;
             if ($("#importedtable").hasClass("show")) {
                 $("#togglebtn").click();
@@ -404,41 +406,6 @@ export default defineComponent({
                 $("body").loadingModal("destroy");
                 return;
             } // if
-
-            // ----------------------------------------------
-            // validate if there's duplicate values in table
-            let duplicatedArray = Array();
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].料號 != null && data[i].料號.trim() != "") {
-                    duplicatedArray.push(data[i].料號.toString().trim() + "_" + data[i].儲位.toString());
-                } // if
-            } // for
-
-            let findDuplicatesResult = findDuplicates(duplicatedArray);
-            // console.log(findDuplicatesResult); // test
-            if (findDuplicatesResult.length > 0) {
-                isInvalid_DB.value = true;
-                validation_err_msg.value =
-                    app.appContext.config.globalProperties.$t("inboundpageLang.repeated_isn_loc_pair") +
-                    " : " + findDuplicatesResult[0].split("_")[0] +
-                    " (" + findDuplicatesResult[0].split("_")[1] + ")";
-
-                notyf.open({
-                    type: "error",
-                    message: app.appContext.config.globalProperties.$t("checkInvLang.update_failed"),
-                    duration: 3000, //miliseconds, use 0 for infinite duration
-                    ripple: true,
-                    dismissible: true,
-                    position: {
-                        x: "right",
-                        y: "bottom",
-                    },
-                });
-
-                $("body").loadingModal("hide");
-                $("body").loadingModal("destroy");
-                return;
-            } // if
             // ----------------------------------------------
             // prepare the data arrays to be sent
             let pnArray = [];
@@ -487,41 +454,139 @@ export default defineComponent({
             } // else
         } // onSendToDBClick
 
-        watch(queryResult, async () => {
+        watch(mats, async () => {
             await triggerModal();
+            if (input_data == undefined || input_data == null || input_data.length == 0) {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                table.isLoading = false;
+                return;
+            } // if
             validation_err_msg.value =
                 app.appContext.config.globalProperties.$t("barcodeGenerator.temp_save_error") +
                 " Excel " +
                 app.appContext.config.globalProperties.$t("monthlyPRpageLang.row");
             // console.log(input_data); // test
-            if (queryResult.value == "") {
+            if (mats.value == "") {
                 $("body").loadingModal("hide");
                 $("body").loadingModal("destroy");
                 table.isLoading = false;
                 return;
             } // if
 
-            let allRowsObj = JSON.parse(queryResult.value);
-            let allLocsObj = JSON.parse(locations.value);
-            // console.log(allLocsObj); // test
+            let allRowsObj = JSON.parse(mats.value);
+            let allLines = JSON.parse(lines.value);
+            let allReasons = JSON.parse(reasons.value);
+            // console.log(allRowsObj); // test
             let singleEntry = {};
 
             for (let i = 1; i < input_data.length; i++) {
                 singleEntry.id = i;
                 singleEntry.料號 = input_data[i][0].toString().trim();
-                singleEntry.品名 = input_data[i][1].toString().trim();
-                singleEntry.規格 = input_data[i][2].toString().trim();
-                singleEntry.盤點庫存 = parseInt(input_data[i][4]);
-                singleEntry.單位 = input_data[i][5].toString().trim();
-                singleEntry.儲位 = input_data[i][6].toString().trim();
+                if (input_data[i][1] === "" || input_data[i][1] === null || input_data[i][1] === undefined) {
+                    singleEntry.品名 = allRowsObj.data.find(object => {
+                        return (object.料號 === singleEntry.料號);
+                    }).品名;
+                } // if
+                else {
+                    singleEntry.品名 = input_data[i][1].toString().trim();
+                } // else
+
+                if (input_data[i][2] === "" || input_data[i][2] === null || input_data[i][2] === undefined) {
+                    singleEntry.規格 = allRowsObj.data.find(object => {
+                        return (object.料號 === singleEntry.料號);
+                    }).規格;
+                } // if
+                else {
+                    singleEntry.規格 = input_data[i][2].toString().trim();
+                } // else
+
+                if (input_data[i][3] === "" || input_data[i][3] === null || input_data[i][3] === undefined) {
+                    singleEntry.發料部門 = allRowsObj.data.find(object => {
+                        return (object.料號 === singleEntry.料號);
+                    }).發料部門;
+                } // if
+                else {
+                    singleEntry.發料部門 = input_data[i][3].toString().trim();
+                } // else
+                singleEntry.預領數量 = parseInt(input_data[i][4]);
+                if (input_data[i][5] === "" || input_data[i][5] === null || input_data[i][5] === undefined) {
+                    singleEntry.單位 = allRowsObj.data.find(object => {
+                        return (object.料號 === singleEntry.料號);
+                    }).單位;
+                } // if
+                else {
+                    singleEntry.單位 = input_data[i][5].toString().trim();
+                } // else
+
+                if (input_data[i][6] === "" || input_data[i][6] === null || input_data[i][6] === undefined) {
+                    singleEntry.線別 = "";
+                } // if
+                else {
+                    singleEntry.線別 = input_data[i][6].toString().trim();
+                } // else
+
+                if (input_data[i][7] === "" || input_data[i][7] === null || input_data[i][7] === undefined) {
+                    singleEntry.領用原因 = "";
+                } // if
+                else {
+                    singleEntry.領用原因 = input_data[i][7].toString().trim();
+                } // else
+
+                if (input_data[i][8] === "" || input_data[i][8] === null || input_data[i][8] === undefined) {
+                    singleEntry.備註 = "";
+                } // if
+                else {
+                    singleEntry.備註 = input_data[i][8].toString().trim();
+                } // else
+
+                // check if already exist in the table
+                let isExist = data.findIndex(object => {
+                    return (object.料號 === singleEntry.料號 && object.線別 === singleEntry.線別 && object.領用原因 === singleEntry.領用原因);
+                });
+
+                if (isExist != -1) {
+                    isDuplicated.value = true;
+                    continue;
+                } // if
 
                 let indexOfObject = allRowsObj.data.findIndex(object => {
                     return (object.料號 === singleEntry.料號);
                 });
 
-                let indexOfObject2 = allLocsObj.data.findIndex(object => {
-                    return (object.儲存位置 === singleEntry.儲位);
+                let indexOfObject2 = allLines.datas.findIndex(object => {
+                    return (object.線別 === singleEntry.線別);
                 });
+
+                let indexOfObject3 = allReasons.datas.findIndex(object => {
+                    return (object.領用原因 === singleEntry.領用原因);
+                });
+
+                // get the sum of the stock for the same pn
+                const sumStock = allRowsObj.data.reduce((acc, cur) => {
+                    const found = acc.find(val => val.料號 === cur.料號)
+                    if (found) {
+                        found.現有庫存 += Number(cur.現有庫存)
+                    } // if
+                    else {
+                        acc.push({ 料號: cur.料號, 現有庫存: Number(cur.現有庫存) })
+                    } // else
+                    return acc
+                }, []);
+                // console.log(sumStock); // test
+
+                // Check if 預領數量 exceeds the stock
+                let stock = sumStock.find(object => {
+                    return (object.料號 === singleEntry.料號);
+                });
+
+                // console.log(stock, singleEntry.預領數量); // test
+                if (parseInt(stock.現有庫存) < parseInt(singleEntry.預領數量)) {
+                    singleEntry.not_enough_stock = true;
+                } // if
+                else {
+                    singleEntry.not_enough_stock = false;
+                } // else
 
                 if (indexOfObject != -1) { // if isn exist in consumptive_material table
                     singleEntry.valid_isn = true;
@@ -530,18 +595,25 @@ export default defineComponent({
                     singleEntry.valid_isn = false;
                 } // else
 
-                if (indexOfObject2 != -1) { // if location exist in location table
-                    singleEntry.valid_loc = true;
+                if (indexOfObject2 != -1) {
+                    singleEntry.valid_line = true;
                 } // if
                 else {
-                    singleEntry.valid_loc = false;
+                    singleEntry.valid_line = false;
                 } // else
 
-                if (isNaN(singleEntry.盤點庫存) || singleEntry.valid_isn === false || singleEntry.valid_loc === false) {
-                    isInvalid_DB.value = true;
+                if (indexOfObject3 != -1) {
+                    singleEntry.valid_reason = true;
+                } // if
+                else {
+                    singleEntry.valid_reason = false;
+                } // else
 
+                if (isNaN(singleEntry.預領數量) || singleEntry.valid_isn === false || singleEntry.valid_line === false || singleEntry.valid_reason === false || singleEntry.not_enough_stock === true) {
+                    isInvalid_DB.value = true;
                     validation_err_msg.value = validation_err_msg.value + " " + (i + 1) + ",";
                 } // if
+
                 data.push(singleEntry);
                 singleEntry = {};
             } // for
@@ -569,7 +641,7 @@ export default defineComponent({
             columns: [
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.isn"
+                        "outboundpageLang.isn"
                     ),
                     field: "料號",
                     width: "14ch",
@@ -595,7 +667,7 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.pName"
+                        "outboundpageLang.pName"
                     ),
                     field: "品名",
                     width: "14ch",
@@ -631,7 +703,7 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.format"
+                        "outboundpageLang.format"
                     ),
                     field: "規格",
                     width: "14ch",
@@ -657,35 +729,25 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "checkInvLang.checking_result"
+                        "outboundpageLang.senddep"
                     ),
-                    field: "庫存",
+                    field: "發料部門",
                     width: "10ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (!Number.isInteger(row.盤點庫存)) {
-                            if (row.單位 === "N/A") {
-                                return (
-                                    '<div class="text-nowrap CustomScrollbar"' +
-                                    ' style="overflow-x: auto; width: 100%;">' +
-                                    '<i class="bi bi-x-lg text-danger fw-bold"></i>' + '&nbsp;<small class="text-danger fw-bold">' + row.單位 + '</small>' +
-                                    "</div>"
-                                );
-                            } else {
-                                return (
-                                    '<div class="text-nowrap CustomScrollbar"' +
-                                    ' style="overflow-x: auto; width: 100%;">' +
-                                    '<i class="bi bi-x-lg text-danger fw-bold"></i>' + '&nbsp;<small>' + row.單位 + '</small>' +
-                                    "</div>"
-                                );
-                            } // else
-
+                        if (row.valid_isn === false) { // if isn not exist in consumptive_material table
+                            return (
+                                '<div class="text-nowrap CustomScrollbar text-danger"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                app.appContext.config.globalProperties.$t("monthlyPRpageLang.noisn") +
+                                "</div>"
+                            );
                         } // if
                         else {
                             return (
                                 '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
-                                row.盤點庫存 + '&nbsp;<small>' + row.單位 + '</small>' +
+                                row.發料部門 +
                                 "</div>"
                             );
                         } // else
@@ -693,17 +755,61 @@ export default defineComponent({
                 },
                 {
                     label: app.appContext.config.globalProperties.$t(
-                        "inboundpageLang.loc"
+                        "outboundpageLang.pickamount"
                     ),
-                    field: "儲位",
-                    width: "12ch",
+                    field: "預領數量",
+                    width: "10ch",
                     sortable: true,
                     display: function (row, i) {
-                        if (row.valid_loc === false) { // if location not exist in location table
+                        if (!Number.isInteger(row.預領數量)) {
+                            if (row.單位 === "N/A") {
+                                return (
+                                    '<div class="text-nowrap CustomScrollbar"' +
+                                    ' style="overflow-x: auto; width: 100%;">' +
+                                    '<i class="bi bi-x-lg text-danger fw-bold"></i>' + '&nbsp;<small class="text-danger fw-bold">' + row.單位 + '</small>' +
+                                    "</div>"
+                                );
+                            } // if
+                            else {
+                                return (
+                                    '<div class="text-nowrap CustomScrollbar"' +
+                                    ' style="overflow-x: auto; width: 100%;">' +
+                                    '<i class="bi bi-x-lg text-danger fw-bold"></i>' + '&nbsp;<small>' + row.單位 + '</small>' +
+                                    "</div>"
+                                );
+                            } // else
+                        } // if
+                        else if (row.not_enough_stock === true) {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar text-danger"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                app.appContext.config.globalProperties.$t("outboundpageLang.stockless") +
+                                "</div>"
+                            );
+                        } // else if
+                        else {
                             return (
                                 '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
-                                '<span class="text-danger fw-bold">' + row.儲位 + '</span>' +
+                                row.預領數量 + '&nbsp;<small>' + row.單位 + '</small>' +
+                                "</div>"
+                            );
+                        } // else
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.line"
+                    ),
+                    field: "線別",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.valid_line === false) { // if location not exist in location table
+                            return (
+                                '<div class="text-nowrap CustomScrollbar text-danger"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                app.appContext.config.globalProperties.$t("outboundpageLang.no_line") +
                                 "</div>"
                             );
                         } // if
@@ -711,10 +817,52 @@ export default defineComponent({
                             return (
                                 '<div class="text-nowrap CustomScrollbar"' +
                                 ' style="overflow-x: auto; width: 100%;">' +
-                                row.儲位 +
+                                row.線別 +
                                 "</div>"
                             );
                         } // else
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.usereason"
+                    ),
+                    field: "領用原因",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        if (row.valid_reason === false) { // if location not exist in location table
+                            return (
+                                '<div class="text-nowrap CustomScrollbar text-danger"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                app.appContext.config.globalProperties.$t("outboundpageLang.no_reason") +
+                                "</div>"
+                            );
+                        } // if
+                        else {
+                            return (
+                                '<div class="text-nowrap CustomScrollbar"' +
+                                ' style="overflow-x: auto; width: 100%;">' +
+                                row.領用原因 +
+                                "</div>"
+                            );
+                        } // else
+                    },
+                },
+                {
+                    label: app.appContext.config.globalProperties.$t(
+                        "outboundpageLang.mark"
+                    ),
+                    field: "備註",
+                    width: "10ch",
+                    sortable: true,
+                    display: function (row, i) {
+                        return (
+                            '<div class="text-nowrap CustomScrollbar"' +
+                            ' style="overflow-x: auto; width: 100%;">' +
+                            row.備註 +
+                            "</div>"
+                        );
                     },
                 },
             ],
@@ -723,7 +871,7 @@ export default defineComponent({
                     x.料號
                         .toLowerCase()
                         .includes(searchTerm.value.toLowerCase()) ||
-                    x.儲位
+                    x.品名
                         .includes(searchTerm.value)
                 );
             }),
@@ -790,7 +938,9 @@ export default defineComponent({
             // exampleUrl,
             isInvalid,
             isInvalid_DB,
+            isDuplicated,
             validation_err_msg,
+            validation_err_msg_duplicated,
             uploadToDBReady,
             searchTerm,
             table,

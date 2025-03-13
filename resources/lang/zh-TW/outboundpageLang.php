@@ -90,7 +90,7 @@ return [
     'outpickok' => '出庫完成，領料單號',
     'outbackok' => '出庫完成，退料單號',
     'nowloc' => '目前儲位',
-    'stockless' => '庫存小於實際領用數量，無法出庫。',
+    'stockless' => '庫存小於實際領用數量，無法出庫',
     'add' => '添加',
     'success' => '成功',
     'delete' => '刪除',
@@ -115,4 +115,7 @@ return [
     'rfidinputpickpeople' => '請點這裡感應領料人員識別證',
     'realpickzero' => '實際領用數量為0',
     'download_example' => '下載領料單範例',
+    'no_line' => '線別不存在',
+    'no_reason' => '領用原因不存在',
+    'repeated_isn_will_not_display' => 'Excel中重複的料號+線別+領用原因不會顯示',
 ];
