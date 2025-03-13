@@ -40,17 +40,24 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  */
 
 /*!
- * @kurkle/color v0.3.2
+ * @kurkle/color v0.3.4
  * https://github.com/kurkle/color#readme
- * (c) 2023 Jukka Kurkela
+ * (c) 2024 Jukka Kurkela
  * Released under the MIT License
  */
 
 /*!
- * Chart.js v4.4.6
+ * Chart.js v4.4.8
  * https://www.chartjs.org
- * (c) 2024 Chart.js Contributors
+ * (c) 2025 Chart.js Contributors
  * Released under the MIT License
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
  */
 
 /*!
@@ -258,6 +265,8 @@ PERFORMANCE OF THIS SOFTWARE.
 /*! ./to-svg */
 
 /*! /home/travis/build/feathericons/feather/src/index.js */
+
+/*! Axios v1.8.3 Copyright (c) 2025 Matt Zabriskie and contributors */
 
 /*! ExcelJS 19-10-2023 */
 
@@ -637,25 +646,25 @@ PERFORMANCE OF THIS SOFTWARE.
  */
 
 /**
-* @vue/reactivity v3.5.12
+* @vue/reactivity v3.5.13
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
 
 /**
-* @vue/runtime-core v3.5.12
+* @vue/runtime-core v3.5.13
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
 
 /**
-* @vue/runtime-dom v3.5.12
+* @vue/runtime-dom v3.5.13
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
 
 /**
-* @vue/shared v3.5.12
+* @vue/shared v3.5.13
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
