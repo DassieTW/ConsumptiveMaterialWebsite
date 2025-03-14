@@ -87,6 +87,8 @@ import {
     watch,
 } from "@vue/runtime-core";
 import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useCheckingInventory from "../../composables/CheckingInventory.ts";
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
@@ -165,27 +167,24 @@ export default defineComponent({
                 rows.push(tempObj);
             } // for
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("checkInvLang.check"));
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.nowstock"),
-                    app.appContext.config.globalProperties.$t("checkInvLang.checking_result"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.unit"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
-                ]],
-                { origin: "A1" });
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.isn"), key: '料號' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.pName"), key: '品名' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.format"), key: '規格' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.nowstock"), key: '現有庫存' },
+                { header: app.appContext.config.globalProperties.$t("checkInvLang.checking_result"), key: '盤點庫存' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.unit"), key: '單位' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.loc"), key: '儲位' }
+            ];
 
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet);
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "checkInvLang.check"
-                ) + "_" + today + ".xlsx", { compression: true });
+            worksheet.addRows(rows);
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("checkInvLang.check") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");

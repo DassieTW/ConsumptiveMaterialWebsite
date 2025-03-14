@@ -37,9 +37,11 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
-import * as XLSX from 'xlsx';
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
+
 export default defineComponent({
     name: "App",
     components: { TableLite },
@@ -59,61 +61,47 @@ export default defineComponent({
         // get the current locale from html tag
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
-        const OutputExcelClick = () => {
+        const OutputExcelClick = async () => {
             $("body").loadingModal({
                 text: "Loading...",
                 animation: "circle",
             });
 
-            // get today's date for filename
-            let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            let yyyy = today.getFullYear();
-            today = yyyy + "_" + mm + '_' + dd;
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("inboundpageLang.stockmonth"));
 
-            let rows = Array();
-            for (let i = 0; i < data.length; i++) {
-                let tempObj = new Object;
-                tempObj.料號 = data[i].料號;
-                tempObj.品名 = data[i].品名;
-                tempObj.規格 = data[i].規格;
-                tempObj.現有庫存 = data[i].現有庫存 + " " + data[i].單位;
-                tempObj.月使用量 = data[i].月使用量;
-                tempObj.庫存使用月數 = data[i].庫存使用月數;
-                tempObj.單價 = data[i].單價;
-                tempObj.幣別 = data[i].幣別;
-                if (data[i].月請購 === '是') {
-                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.yes");
-                } else {
-                    tempObj.月請購 = app.appContext.config.globalProperties.$t("basicInfoLang.no");
-                } // if else
-                rows.push(tempObj);
-            } // for
+            let today = new Date().toISOString().slice(0, 10);
+            // Add header row
+            worksheet.addRow([
+                app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.format"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.nowstock"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.monthuse"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.stockmonth"),
+                app.appContext.config.globalProperties.$t("basicInfoLang.price"),
+                app.appContext.config.globalProperties.$t("basicInfoLang.money"),
+                app.appContext.config.globalProperties.$t("basicInfoLang.month"),
+            ]);
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            // Add data rows
+            data.forEach(item => {
+                worksheet.addRow([
+                    item.料號,
+                    item.品名,
+                    item.規格,
+                    `${item.現有庫存} ${item.單位}`,
+                    item.月使用量,
+                    item.庫存使用月數,
+                    item.單價,
+                    item.幣別,
+                    item.月請購 === '是' ? app.appContext.config.globalProperties.$t("basicInfoLang.yes") : app.appContext.config.globalProperties.$t("basicInfoLang.no")
+                ]);
+            });
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.nowstock"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.monthuse"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.stockmonth"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.price"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.money"),
-                    app.appContext.config.globalProperties.$t("basicInfoLang.month"),
-                ]],
-                { origin: "A1" });
-
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("inboundpageLang.stockmonth"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "inboundpageLang.stockmonth"
-                ) + "_" + today + ".xlsx", { compression: true });
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/octet-stream" });
+            FileSaver.saveAs(blob, `${app.appContext.config.globalProperties.$t("inboundpageLang.stockmonth")}_${today}.xlsx`);
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
@@ -123,7 +111,7 @@ export default defineComponent({
         const data = reactive([]);
         // const senders = reactive([]); // access the value by senders[0], senders[1] ...
         watch(mats, () => {
-            console.log(JSON.parse(mats.value)); // test
+            // console.log(JSON.parse(mats.value)); // test
             let allRowsObj = JSON.parse(mats.value);
             //console.log(allRowsObj.datas.length);
             for (let i = 0; i < allRowsObj.datas.length; i++) {

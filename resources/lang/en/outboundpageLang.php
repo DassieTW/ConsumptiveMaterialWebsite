@@ -90,7 +90,7 @@ return [
     'outpickok' => 'Outbound completed, Picklist number',
     'outbackok' => 'Outbound completed, Backlist number',
     'nowloc' => 'current storage location',
-    'stockless' => 'The inventory is less than the actual requisition quantity thus cannot be outbounded',
+    'stockless' => 'The inventory is less than the actual requisition qty thus cannot be outbounded',
     'add' => 'Add',
     'success' => 'Success',
     'delete' => 'delete',
@@ -114,4 +114,8 @@ return [
     'rfidinputsendpeople' => 'Click here and tap the Dispatcher\'s ID card',
     'rfidinputpickpeople' => 'Click here and tap the Picker\'s ID card',
     'realpickzero' => 'Acquired Qty is 0',
+    'download_example' => 'Download Example',
+    'no_line' => 'Line does not exist',
+    'no_reason' => 'Reason does not exist',
+    'repeated_isn_will_not_display' => 'Repeated ISN+Line+Reason will not be displayed in Excel',
 ];

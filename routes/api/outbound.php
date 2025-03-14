@@ -66,6 +66,34 @@ Route::post('/backrecord', function (Request $request) {
         ->where('出庫退料.線別', 'like', $backrecordline . '%')
         ->whereBetween('入庫時間', [$backrecordbegin, $end])
         ->get();
-        
+
     return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
 });
+
+Route::post('/pickreason', function (Request $request) {
+    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+    \DB::purge(env("DB_CONNECTION"));
+    $dbName = DB::connection()->getDatabaseName(); // test
+    // dd($send);
+    $datas = [];
+
+    $datas = DB::table('領用原因')
+        ->get();
+
+    return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
+});
+
+Route::post('/lines', function (Request $request) {
+    \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $request->input("DB"));
+    \DB::purge(env("DB_CONNECTION"));
+    $dbName = DB::connection()->getDatabaseName(); // test
+    // dd($send);
+    $datas = [];
+
+    $datas = DB::table('線別')
+        ->get();
+
+    return \Response::json(['datas' => $datas, "dbName" => $dbName], 200/* Status code here default is 200 ok*/);
+});
+
+Route::post('/addNewPicklist', 'api\OutboundController@storeNewPicklist');

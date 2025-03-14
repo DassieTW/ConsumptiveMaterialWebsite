@@ -136,7 +136,8 @@ import {
     onBeforeMount,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useCheckingInventory from "../../composables/CheckingInventory.ts";
 import useUserSearch from "../../composables/UserSearch.ts";
@@ -207,7 +208,6 @@ export default defineComponent({
 
         const OutputExcelClick = async (output_range) => {
             await triggerModal();
-            // console.log(AllRecords); // test
             let temp = AllRecords.filter(function (record) {
                 return record.單號 == output_range;
             });
@@ -215,31 +215,31 @@ export default defineComponent({
             let rows = temp.map(({
                 A級資材, LT, MOQ, MPQ, approved_at, approved_by, email, id, updated_by, 主管工號, 單價, 單號, 姓名, 安全庫存, 工號, 幣別, 月請購, 狀態, 發料部門, 部門,
                 ...keepAttrs }) => keepAttrs);
-            const worksheet = XLSX.utils.json_to_sheet(rows);
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.stock"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
-                    app.appContext.config.globalProperties.$t("outboundpageLang.opentime"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.format"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.unit"),
-                ]],
-                { origin: "A1" });
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("checkInvLang.check"));
 
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet);
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "checkInvLang.check"
-                ) + "_" + output_range + ".xlsx", { compression: true });
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.isn"), key: '料號' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.stock"), key: '現有庫存' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.loc"), key: '儲位' },
+                { header: app.appContext.config.globalProperties.$t("outboundpageLang.opentime"), key: '開單時間' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.pName"), key: '品名' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.format"), key: '規格' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.unit"), key: '單位' },
+            ];
+
+            rows.forEach(row => {
+                worksheet.addRow(row);
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("checkInvLang.check") + "_" + output_range + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
-        } // OutputExcelClick
+        };
 
         const checking_reject = async () => {
             await triggerModal();

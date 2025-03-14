@@ -92,7 +92,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useTransitSearch from "../../composables/TransitSearch.ts";
 import useCommonlyUsedFunctions from "../../composables/CommonlyUsedFunctions.ts";
@@ -154,33 +155,31 @@ export default defineComponent({
             let rows = Array();
             for (let i = 0; i < data.length; i++) {
                 let tempObj = new Object;
-                tempObj.料號 = data[i].料號;
-                tempObj.在途數量 = parseInt(data[i].請購數量).toLocaleString('en', { useGrouping: true }) + " " + data[i].單位;
-                tempObj.說明 = data[i].說明;
-                tempObj.修改人員 = data[i].修改人員;
-                tempObj.最後更新時間 = data[i].最後更新時間;
+                tempObj.isn = data[i].料號;
+                tempObj.transitQty = parseInt(data[i].請購數量).toLocaleString('en', { useGrouping: true }) + " " + data[i].單位;
+                tempObj.description = data[i].說明;
+                tempObj.reviser = data[i].修改人員;
+                tempObj.updateTime = data[i].最後更新時間;
 
                 rows.push(tempObj);
-            } // for
+            }
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("monthlyPRpageLang.on_the_way_search"));
 
-            // change header name
-            XLSX.utils.sheet_add_aoa(worksheet,
-                [[
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.description"),
-                    app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit_reviser"),
-                    app.appContext.config.globalProperties.$t("inboundpageLang.updatetime"),
-                ]],
-                { origin: "A1" });
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, app.appContext.config.globalProperties.$t("monthlyPRpageLang.on_the_way_search"));
-            XLSX.writeFile(workbook,
-                app.appContext.config.globalProperties.$t(
-                    "monthlyPRpageLang.on_the_way_search"
-                ) + "_" + today + ".xlsx", { compression: true });
+            worksheet.columns = [
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.isn"), key: 'isn' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit"), key: 'transitQty' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.description"), key: 'description' },
+                { header: app.appContext.config.globalProperties.$t("monthlyPRpageLang.transit_reviser"), key: 'reviser' },
+                { header: app.appContext.config.globalProperties.$t("inboundpageLang.updatetime"), key: 'updateTime' }
+            ];
+
+            worksheet.addRows(rows);
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            FileSaver.saveAs(blob, app.appContext.config.globalProperties.$t("monthlyPRpageLang.on_the_way_search") + "_" + today + ".xlsx");
 
             $("body").loadingModal("hide");
             $("body").loadingModal("destroy");

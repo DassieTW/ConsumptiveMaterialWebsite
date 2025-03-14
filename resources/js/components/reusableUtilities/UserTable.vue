@@ -106,7 +106,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useUserSearch from "../../composables/UserSearch.ts";
 export default defineComponent({

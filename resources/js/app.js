@@ -67,6 +67,7 @@ import DemandRecieveDiffPage from './components/reusableUtilities/DemandRecieveD
 import UserTable from "./components/reusableUtilities/UserTable.vue";
 import CheckingInventoryUploadTable from "./components/reusableUtilities/CheckingInventoryUploadTable.vue";
 import CheckingInventoryRecord from "./components/reusableUtilities/CheckingInventoryRecord.vue";
+import OutboundPickMatsUploadTable from "./components/reusableUtilities/OutboundPickMatsUploadTable.vue";
 
 const app = createApp({
   components: {
@@ -98,6 +99,7 @@ const app = createApp({
     "user-table": UserTable,
     "checking-inventory-upload-table": CheckingInventoryUploadTable,
     "checking-inventory-record": CheckingInventoryRecord,
+    "outbound-pick-mats-upload-table": OutboundPickMatsUploadTable,
   },
 });
 

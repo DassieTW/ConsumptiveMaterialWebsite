@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'page_name' => 'Stok keluar',
   'pick' => 'Pengambilan',
   'picklist' => 'Formulir pengambilan',
@@ -79,7 +79,7 @@ return array (
   'outpickok' => 'Stok keluar berhasil (pengambilan)',
   'outbackok' => 'Stok keluar berhasil (pengembalian)',
   'nowloc' => 'Lokasi saat ini',
-  'stockless' => 'Stok kurang dari jumlah sebenarnya yang diterima dan tidak dapat dikirim.',
+  'stockless' => 'Stok kurang dari jumlah sebenarnya yang diterima dan tidak dapat dikirim',
   'add' => 'Tambah baru',
   'success' => 'Sukses',
   'delete' => 'Hapus',
@@ -103,4 +103,8 @@ return array (
   'rfidinputsendpeople' => 'Silakan klik di sini untuk tap kartu identifikasi personel yang mengeluarkan material',
   'rfidinputpickpeople' => 'Silakan klik di sini untuk tap kartu identifikasi personel pengambilan material',
   'realpickzero' => 'Jumlah yang diterima adalah 0',
+  'download_example' => 'Unduh contoh',
+  'no_line' => 'Line tidak ada',
+  'no_reason' => 'Alasan tidak ada',
+  'repeated_isn_will_not_display' => 'Material+Line+Alasan pengambilan yang berulang tidak akan ditampilkan dalam Excel',
 );

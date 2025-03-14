@@ -147,7 +147,8 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
 import useTransitSearch from "../../composables/TransitSearch.ts";
 import useInboundStockSearch from "../../composables/InboundStockSearch.ts";
@@ -207,63 +208,44 @@ export default defineComponent({
         } // triggerModal
 
         const OutputExcelClick = async (output_range) => {
-            await triggerModal();
-
-            // get today's date for filename
-            let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            let yyyy = today.getFullYear();
-            today = yyyy + "_" + mm + '_' + dd;
-
-            if (output_range === 'All') {
-                let rows = Array();
-                for (let i = 0; i < AllRecords.length; i++) {
-                    let tempObj = new Object;
-                    tempObj.單號 = AllRecords[i].SXB單號;
-                    tempObj.料號 = AllRecords[i].料號;
-                    tempObj.品名 = AllRecords[i].品名;
-                    tempObj.MOQ = AllRecords[i].MOQ;
-                    tempObj.本次請購數量 = AllRecords[i].本次請購數量;
-                    tempObj.總價 = parseFloat(AllRecords[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + AllRecords[i].幣別;
-                    tempObj.請購時間 = AllRecords[i].請購時間;
-
-                    rows.push(tempObj);
-                } // for
-
-                const worksheet = XLSX.utils.json_to_sheet(rows);
-                const workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, 'ALL');
-                XLSX.writeFile(workbook,
-                    app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.SXB_search"
-                    ) + "(ALL)_" + today + ".xlsx", { compression: true });
-            } else {
-                let rows = Array();
-                for (let i = 0; i < data2.length; i++) {
-                    let tempObj = new Object;
-                    tempObj.單號 = data2[i].SXB單號;
-                    tempObj.料號 = data2[i].料號;
-                    tempObj.品名 = data2[i].品名;
-                    tempObj.MOQ = data2[i].MOQ;
-                    tempObj.本次請購數量 = data2[i].本次請購數量;
-                    tempObj.總價 = parseFloat(data2[i].請購金額).toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " " + data2[i].幣別;
-                    tempObj.請購時間 = data2[i].請購時間;
-
-                    rows.push(tempObj);
-                } // for
-
-                const worksheet = XLSX.utils.json_to_sheet(rows);
-                const workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, data2[0].SXB單號);
-                XLSX.writeFile(workbook,
-                    app.appContext.config.globalProperties.$t(
-                        "monthlyPRpageLang.SXB_search"
-                    ) + "(" + data2[0].SXB單號 + ")_" + today + ".xlsx", { compression: true });
-            } // if else
-
-            $("body").loadingModal("hide");
             $("body").loadingModal("destroy");
+
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("inboundpageLang.stock"));
+
+            // Add header row
+            worksheet.addRow([
+                app.appContext.config.globalProperties.$t("inboundpageLang.isn"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.pName"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.format"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.stock"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.loc"),
+                app.appContext.config.globalProperties.$t("basicInfoLang.month"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.safe"),
+                app.appContext.config.globalProperties.$t("basicInfoLang.price"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.money"),
+                app.appContext.config.globalProperties.$t("inboundpageLang.days"),
+            ]);
+
+            // Add data rows
+            data.forEach(item => {
+                worksheet.addRow([
+                    item.料號,
+                    item.品名,
+                    item.規格,
+                    `${item.現有庫存} ${item.單位}`,
+                    item.儲位,
+                    item.月請購 === '是' ? app.appContext.config.globalProperties.$t("basicInfoLang.yes") : app.appContext.config.globalProperties.$t("basicInfoLang.no"),
+                    item.安全庫存,
+                    item.單價,
+                    item.幣別,
+                    item.呆滯天數
+                ]);
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/octet-stream" });
+            FileSaver.saveAs(blob, `${app.appContext.config.globalProperties.$t("inboundpageLang.stock")}_${today}.xlsx`);
         } // OutputExcelClick
 
         const openSSZDetails = (SSZ) => {
