@@ -179,7 +179,15 @@ export default defineComponent({
 
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet(app.appContext.config.globalProperties.$t("outboundpageLang.picklist"));
+            const validationSheet = workbook.addWorksheet('ValidationItems');
 
+            // Add validation items to the new sheet
+            validationSheet.addRows([
+                ['Lines', ...allLines_arr],
+                ['Reasons', ...allReasons_arr]
+            ]);
+
+            // Define the columns for the main worksheet
             worksheet.columns = [
                 { header: app.appContext.config.globalProperties.$t("outboundpageLang.isn"), key: '料號' },
                 { header: app.appContext.config.globalProperties.$t("outboundpageLang.pName"), key: '品名' },
@@ -192,8 +200,10 @@ export default defineComponent({
                 { header: app.appContext.config.globalProperties.$t("outboundpageLang.mark"), key: '備註' }
             ];
 
+            // Add rows to the main worksheet
             worksheet.addRows(rows);
 
+            // Define data validation for the '線別' column
             const ValidationRange_Line = worksheet.getColumn('G');
             ValidationRange_Line.eachCell((cell) => {
                 if (cell.row > 1) {
@@ -203,11 +213,12 @@ export default defineComponent({
                         errorStyle: 'stop',
                         errorTitle: 'Invalid Data',
                         error: 'Please enter a valid value',
-                        formulae: ['"' + allLines_arr.join(',') + '"']
+                        formula1: 'ValidationItems!$B$1:$' + String.fromCharCode(65 + allLines_arr.length) + '$1'
                     };
                 } // if
             });
 
+            // Define data validation for the '領用原因' column
             const ValidationRange_Reason = worksheet.getColumn('H');
             ValidationRange_Reason.eachCell((cell) => {
                 if (cell.row > 1) {
@@ -217,7 +228,7 @@ export default defineComponent({
                         errorStyle: 'stop',
                         errorTitle: 'Invalid Data',
                         error: 'Please enter a valid value',
-                        formulae: ['"' + allReasons_arr.join(',') + '"']
+                        formula1: 'ValidationItems!$B$2:$' + String.fromCharCode(65 + allReasons_arr.length) + '$2'
                     };
                 } // if
             });
