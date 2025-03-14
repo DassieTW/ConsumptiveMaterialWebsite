@@ -182,10 +182,8 @@ export default defineComponent({
             const validationSheet = workbook.addWorksheet('ValidationItems');
 
             // Add validation items to the new sheet
-            validationSheet.addRows([
-                ['Lines', ...allLines_arr],
-                ['Reasons', ...allReasons_arr]
-            ]);
+            validationSheet.getColumn(1).values = ['Lines', ...allLines_arr];
+            validationSheet.getColumn(2).values = ['Reasons', ...allReasons_arr];
 
             // Define the columns for the main worksheet
             worksheet.columns = [
@@ -213,7 +211,7 @@ export default defineComponent({
                         errorStyle: 'stop',
                         errorTitle: 'Invalid Data',
                         error: 'Please enter a valid value',
-                        formula1: 'ValidationItems!$B$1:$' + String.fromCharCode(65 + allLines_arr.length) + '$1'
+                        formulae: ['ValidationItems!$A$2:$A$' + (allLines_arr.length + 1)]
                     };
                 } // if
             });
@@ -228,7 +226,7 @@ export default defineComponent({
                         errorStyle: 'stop',
                         errorTitle: 'Invalid Data',
                         error: 'Please enter a valid value',
-                        formula1: 'ValidationItems!$B$2:$' + String.fromCharCode(65 + allReasons_arr.length) + '$2'
+                        formulae: ['ValidationItems!$B$2:$B$' + (allReasons_arr.length + 1)]
                     };
                 } // if
             });
