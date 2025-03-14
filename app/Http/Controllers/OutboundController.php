@@ -65,9 +65,9 @@ class OutboundController extends Controller
                 ->with(['people1' => 人員信息::cursor()])
                 ->with(['check' => 人員信息::cursor()]);
         }
-    }
+    } // picklist
 
-    // //退料單
+    //退料單
     public function backlist(Request $request)
     {
         $list =  $request->input('list');
@@ -99,53 +99,7 @@ class OutboundController extends Controller
                 ->with(['locs' => 儲位::cursor()])
                 ->with(['check' => 人員信息::cursor()]);
         }
-    }
-
-    //領料添加
-    public function pickadd(Request $request)
-    {
-        $line = $request->input('line');
-        $usereason = $request->input('usereason');
-        $number = $request->input('number');
-        $name = DB::table('consumptive_material')->where('料號', $number)->value('品名');
-        $format = DB::table('consumptive_material')->where('料號', $number)->value('規格');
-        $unit = DB::table('consumptive_material')->where('料號', $number)->value('單位');
-        $send = DB::table('consumptive_material')->where('料號', $number)->value('發料部門');
-
-        $stock = DB::table('inventory')->where('料號', $number)->sum('現有庫存');
-
-
-        $showstock  = '';
-        $nowstock = DB::table('inventory')->where('料號', $number)->where('現有庫存', '>', 0)->pluck('現有庫存')->toArray();
-        $nowloc = DB::table('inventory')->where('料號', $number)->where('現有庫存', '>', 0)->pluck('儲位')->toArray();
-        $test = array_combine($nowloc, $nowstock);
-        foreach ($test as $k => $a) {
-            $showstock = $showstock . __('outboundpageLang.loc') . ' : ' . $k . ' ' . __('outboundpageLang.nowstock') . ' : ' . $a . "\r\n";
-        }
-
-        if ($name !== null && $format !== null) {
-            if ($stock > 0) {
-                return \Response::json([
-                    'number' => $number,
-                    'line' => $line,
-                    'usereason' => $usereason,
-                    'name' => $name,
-                    'format' => $format,
-                    'unit' => $unit,
-                    'send' => $send,
-                    'showstock' => $showstock,
-                ]/* Status code here default is 200 ok*/);
-            }
-            //沒有庫存
-            else {
-                return \Response::json(['message' => 'no stock'], 420/* Status code here default is 200 ok*/);
-            }
-        }
-        //沒有料號
-        else {
-            return \Response::json(['message' => 'no isn'], 421/* Status code here default is 200 ok*/);
-        }
-    }
+    } // backlist
 
     //退料添加
     public function backadd(Request $request)
@@ -174,56 +128,6 @@ class OutboundController extends Controller
             return \Response::json(['message' => 'no isn'], 420/* Status code here default is 200 ok*/);
         } // else
     } // backadd
-
-    //提交領料添加
-    public function pickaddsubmit(Request $request)
-    {
-        $count = $request->input('count');
-        $max = DB::table('outbound')->max('開單時間');
-        $maxtime = date_create(date('Y-m-d', strtotime($max)));
-        $nowtime = date_create(date('Y-m-d', strtotime(Carbon::now())));
-        $user = $request->user();
-        $now = Carbon::now();
-        $opentime = Carbon::now()->format('YmdHis');
-
-        $Alldata = json_decode($request->input('AllData'));
-
-        try {
-            $res_arr_values = array();
-            for ($i = 0; $i < $count; $i++) {
-                $remark = $Alldata[7][$i];
-                if ($remark === null) $remark = '';
-                $temp = array(
-                    "領用原因" => $Alldata[1][$i],
-                    "線別" => $Alldata[0][$i],
-                    "料號" => $Alldata[2][$i],
-                    "品名" => $Alldata[3][$i],
-                    "規格" => $Alldata[4][$i],
-                    "單位" => $Alldata[5][$i],
-                    "預領數量" => $Alldata[6][$i],
-                    "實際領用數量" => $Alldata[6][$i],
-                    "備註" => $remark,
-                    "領料單號" => $opentime,
-                    "開單時間" => $now,
-                    "開單人員" => $user['username'],
-                );
-                $res_arr_values[] = $temp;
-            } //for
-
-            DB::beginTransaction();
-            // chunk the parameter array first so it doesnt exceed the MSSQL hard limit
-            $whole_load = array_chunk($res_arr_values, 100, true);
-            for ($i = 0; $i < count($whole_load); $i++) {
-                DB::table('outbound')
-                    ->insert($whole_load[$i]);
-            } // for
-            DB::commit();
-            return \Response::json(['message' => $opentime, 'record' => $count]/* Status code here default is 200 ok*/);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);
-        } // catch
-    } // pickaddsubmit
 
     //提交退料添加
     public function backaddsubmit(Request $request)
@@ -522,5 +426,5 @@ class OutboundController extends Controller
             DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);
         } //try - catch
-    }
-}
+    } // backlistsubmit
+} // OutboundController

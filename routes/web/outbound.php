@@ -23,27 +23,17 @@ use Illuminate\Support\Facades\Cookie;
 |--------------------------------------------------------------------------
 | Web Routes for outbound type
 |--------------------------------------------------------------------------
-|
 */
-
-
 
 //出庫
 Route::get('/', function () {
     return view('outbound.index');
 })->name('outbound.index')->middleware('can:viewOutbound,App\Models\Outbound');
 
-
 //出庫-領料
 Route::get('/pick', function () {
-    return view('outbound.pick')->with(['client' => 客戶別::cursor()])
-        ->with(['machine' => 機種::cursor()])
-        ->with(['production' => 製程::cursor()])
-        ->with(['line' => 線別::cursor()])
-        ->with(['usereason' => 領用原因::cursor()]);
+    return view('outbound.pick');
 })->name('outbound.pick')->middleware('can:outboundPickup,App\Models\Outbound');
-
-//Route::post('/pick', [OutboundController::class, 'pick'])->name('outbound.pick');
 
 //出庫-退料
 Route::get('/back', function () {
@@ -53,8 +43,6 @@ Route::get('/back', function () {
         ->with(['line' => 線別::cursor()])
         ->with(['backreason' => 退回原因::cursor()]);
 })->name('outbound.back')->middleware('can:outboundReturn,App\Models\Outbound');
-
-//Route::post('/back', [OutboundController::class, 'back'])->name('outbound.back');
 
 //出庫-領料單頁面
 Route::get('/picklist', function () {
@@ -93,8 +81,6 @@ Route::get('/backlist', function () {
     return view('outbound.backlistpage')->with(['data' => $datas])->with(['data1' => 發料部門::cursor()])->with(['num' => $num]);
 })->name('outbound.backlistpage')->middleware('can:outboundReturnSerialNum,App\Models\Outbound');
 
-//Route::post('/backlist', [OutboundController::class, 'backlistpage'])->name('outbound.backlistpage');
-
 //出庫-退料單
 Route::get('/backlistsub', function () {
     $datas =  DB::table('出庫退料')
@@ -113,21 +99,15 @@ Route::get('/pickrecord', function () {
     return view('outbound.pickrecord')->with(['line' => 線別::cursor()]);
 })->name('outbound.pickrecord')->middleware('can:outboundPickupRecord,App\Models\Outbound');
 
-//Route::post('/pickrecord', [OutboundController::class, 'pickrecord'])->name('outbound.pickrecord');
-
 //出庫-領料紀錄表查詢
 Route::get('/pickrecordsearch', function () {
     return view("outbound.pickrecordsearchok");
 })->middleware('can:outboundPickupRecord,App\Models\Outbound');
 
-// Route::post('/pickrecordsearch', [OutboundController::class, 'pickrecordsearch'])->name('outbound.pickrecordsearch')->middleware('can:outboundPickupRecord,App\Models\Outbound');
-
 //出庫-退料紀錄表
 Route::get('/backrecord', function () {
     return view('outbound.backrecord')->with(['line' => 線別::cursor()]);
 })->name('outbound.backrecord')->middleware('can:outboundReturnRecord,App\Models\Outbound');
-
-//Route::post('/backrecord', [OutboundController::class, 'backrecord'])->name('outbound.backrecord');
 
 //出庫-退料紀錄表查詢
 Route::get('/backrecordsearch', function () {
@@ -136,14 +116,8 @@ Route::get('/backrecordsearch', function () {
 
 Route::post('/backrecordsearch', [OutboundController::class, 'backrecordsearch'])->name('outbound.backrecordsearch')->middleware('can:outboundReturnRecord,App\Models\Outbound');
 
-//領料添加
-Route::post('/pickadd', [OutboundController::class, 'pickadd'])->name('outbound.pickadd')->middleware('can:outboundPickup,App\Models\Outbound');
-
 //退料添加
 Route::post('/backadd', [OutboundController::class, 'backadd'])->name('outbound.backadd')->middleware('can:outboundReturn,App\Models\Outbound');
-
-//提交領料
-Route::post('/pickaddsubmit', [OutboundController::class, 'pickaddsubmit'])->name('outbound.pickaddsubmit')->middleware('can:outboundPickup,App\Models\Outbound');
 
 //提交退料
 Route::post('/backaddsubmit', [OutboundController::class, 'backaddsubmit'])->name('outbound.backaddsubmit')->middleware('can:outboundReturn,App\Models\Outbound');

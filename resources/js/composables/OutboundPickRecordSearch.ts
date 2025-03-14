@@ -86,6 +86,29 @@ export default function useOutboundPickRecord() {
         } // catch
     } // getLine
 
+    const uploadNewPickList = async (newpicklist) => {
+        errors.value = "";
+        let getDB = await axios.post('/getCurrentDB');
+        let username = await axios.post('/getCurrentUsername');
+        try {
+            let response = await axios.post('/api/outbound/addNewPicklist', {
+                DB: getDB.data,
+                username: username.data,
+                AllData: JSON.stringify(newpicklist),
+            });
+
+            console.log(response.data); // test
+            return new Promise((resolve, reject) => {
+                resolve("success");
+            });
+        } // try
+        catch (e) {
+            return new Promise((resolve, reject) => {
+                reject(e.response);
+            });
+        } // catch
+    } // uploadNewPickList
+
     return {
         mats,
         reasons,
@@ -93,5 +116,6 @@ export default function useOutboundPickRecord() {
         getMats,
         getPickReason,
         getLines,
+        uploadNewPickList,
     } // return
 } // useOutboundPickRecord

@@ -109,7 +109,7 @@ export default defineComponent({
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
         const { mats, getExistingStock } = useInboundStockSearch(); // axios get the mats data
-        const { reasons, getPickReason, lines, getLines } = useOutboundPickRecord();
+        const { reasons, getPickReason, lines, getLines, uploadNewPickList } = useOutboundPickRecord();
 
         onBeforeMount(async () => {
             table.isLoading = false;
@@ -356,7 +356,7 @@ export default defineComponent({
             isInvalid_DB.value = false;
             let rowsCount = 0;
             let hasError = false;
-            // console.log(data.length); //test
+
             if (data.length <= 0) {
                 notyf.open({
                     type: "warning",
@@ -407,19 +407,39 @@ export default defineComponent({
                 return;
             } // if
             // ----------------------------------------------
-            // prepare the data arrays to be sent
-            let pnArray = [];
-            let locArray = [];
-            let stockArray = [];
+            // prepare the data array to be sent
+            let picklistArry = new Array(8);
+            let isnArry = new Array();
+            let lineArry = new Array();
+            let reasonArry = new Array();
+            let pNameArry = new Array();
+            let formatArry = new Array();
+            let unitArry = new Array();
+            let qtyArry = new Array();
+            let noteArry = new Array();
             for (let j = 0; j < data.length; j++) {
-                pnArray.push(data[j].料號);
-                locArray.push(data[j].儲位);
-                stockArray.push(data[j].盤點庫存);
+                isnArry.push(data[j].料號);
+                lineArry.push(data[j].線別);
+                reasonArry.push(data[j].領用原因);
+                pNameArry.push(data[j].品名);
+                formatArry.push(data[j].規格);
+                unitArry.push(data[j].單位);
+                qtyArry.push(data[j].預領數量);
+                noteArry.push(data[j].備註);
             } // for
-            // console.log(stockArray); //test
+
+            picklistArry[0] = isnArry;
+            picklistArry[1] = lineArry;
+            picklistArry[2] = reasonArry;
+            picklistArry[3] = pNameArry;
+            picklistArry[4] = formatArry;
+            picklistArry[5] = unitArry;
+            picklistArry[6] = qtyArry;
+            picklistArry[7] = noteArry;
+
             // actually updating database now
             let start = Date.now();
-            let result = await upload_checkig_result(pnArray, locArray, stockArray);
+            let result = await uploadNewPickList(picklistArry);
             let timeTaken = Date.now() - start;
             console.log("Total time taken : " + timeTaken + " milliseconds");
             $("body").loadingModal("hide");
