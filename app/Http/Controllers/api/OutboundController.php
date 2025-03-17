@@ -66,7 +66,7 @@ class OutboundController extends Controller
                     ->insert($whole_load[$i]);
             } // for
             \DB::commit();
-            return \Response::json(['message' => $opentime]/* Status code here default is 200 ok*/);
+            return \Response::json(['serialNo' => $opentime]/* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             \DB::rollback();
             return \Response::json(['message' => $e->getmessage()], 420/* Status code here default is 200 ok*/);

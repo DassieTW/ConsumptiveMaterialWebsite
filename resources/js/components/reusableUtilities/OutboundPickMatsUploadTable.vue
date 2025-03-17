@@ -69,12 +69,20 @@
 
             <div class="w-100" style="height: 2ch;"></div><!-- </div>breaks cols to a new line-->
             <div class="row justify-content-center">
-                <div class="col col-auto">
-                    <button v-if="uploadToDBReady" type="submit" name="upload"
-                        class="col col-auto fs-3 text-center btn btn-lg btn-info" @click="onSendToDBClick">
+                <div v-if="uploadToDBReady" class="col col-auto">
+                    <button type="submit" name="upload" class="col col-auto fs-3 text-center btn btn-lg btn-info"
+                        @click="onSendToDBClick">
                         <i class="bi bi-cloud-upload-fill"></i>
                         {{ $t('monthlyPRpageLang.upload1') }}
                     </button>
+                </div>
+                <div v-if="showListNo" class="card text-bg-info" style="max-width: 50%;">
+                    <div class="card-body text-center m-0 p-0">
+                        <p class="card-text fs-2 fw-bold">{{ $t('outboundpageLang.picklistnum') }}</p>
+                    </div>
+                    <div class="card-body text-center m-0 p-0">
+                        <p class="card-text fs-1 fw-bold">{{ listNo }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,7 +117,7 @@ export default defineComponent({
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
         const { mats, getExistingStock } = useInboundStockSearch(); // axios get the mats data
-        const { reasons, getPickReason, lines, getLines, uploadNewPickList } = useOutboundPickRecord();
+        const { reasons, getPickReason, lines, getLines, listNo, uploadNewPickList } = useOutboundPickRecord();
 
         onBeforeMount(async () => {
             table.isLoading = false;
@@ -124,6 +132,7 @@ export default defineComponent({
         let validation_err_msg = ref("");
         let validation_err_msg_duplicated = app.appContext.config.globalProperties.$t("outboundpageLang.repeated_isn_will_not_display");
         let uploadToDBReady = ref(false); // validation
+        let showListNo = ref(false); // show list number
         const file = ref();
         let input_data;
         let checkedRows = [];
@@ -311,6 +320,9 @@ export default defineComponent({
 
         const onInputChange = (event) => {
             isInvalid.value = false;
+            showListNo.value = false;
+            isDuplicated.value = false;
+            uploadToDBReady.value = false;
             data.splice(0); // cleanup data from previous upload
             mats.value = "";
             file.value = event.target.files ? event.target.files[0] : null;
@@ -467,6 +479,8 @@ export default defineComponent({
                         y: "bottom",
                     },
                 });
+
+                showListNo.value = true;
             } // if
             else {
                 notyf.open({
@@ -506,7 +520,16 @@ export default defineComponent({
             let allRowsObj = JSON.parse(mats.value);
             let allLines = JSON.parse(lines.value);
             let allReasons = JSON.parse(reasons.value);
-            // console.log(allRowsObj); // test
+
+            if (allRowsObj.data.length == 0) {
+                $("body").loadingModal("hide");
+                $("body").loadingModal("destroy");
+                table.isLoading = false;
+                isInvalid.value = true;
+                validation_err_msg.value = app.appContext.config.globalProperties.$t("outboundpageLang.noisn");
+                return;
+            } // if
+
             let singleEntry = {};
 
             for (let i = 1; i < input_data.length; i++) {
@@ -592,6 +615,7 @@ export default defineComponent({
                 });
 
                 // get the sum of the stock for the same pn
+                // console.log(allRowsObj.data); // test
                 const sumStock = allRowsObj.data.reduce((acc, cur) => {
                     const found = acc.find(val => val.料號 === cur.料號)
                     if (found) {
@@ -971,6 +995,8 @@ export default defineComponent({
             validation_err_msg,
             validation_err_msg_duplicated,
             uploadToDBReady,
+            showListNo,
+            listNo,
             searchTerm,
             table,
             OutputExcelClick,

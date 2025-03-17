@@ -12,6 +12,7 @@ export default function useOutboundPickRecord() {
     const reasons = ref("");
     const lines = ref("");
     const errors = ref("");
+    const listNo = ref("");
     const router = useRouter();
 
     const getMats = async () => {
@@ -97,7 +98,7 @@ export default function useOutboundPickRecord() {
                 AllData: JSON.stringify(newpicklist),
             });
 
-            console.log(response.data); // test
+            listNo.value = response.data.serialNo;
             return new Promise((resolve, reject) => {
                 resolve("success");
             });
@@ -113,6 +114,7 @@ export default function useOutboundPickRecord() {
         mats,
         reasons,
         lines,
+        listNo,
         getMats,
         getPickReason,
         getLines,
