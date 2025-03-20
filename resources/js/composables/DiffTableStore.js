@@ -4,8 +4,8 @@ export const yearTag = ref(d.getFullYear()); // default to current year
 export const monthTag = ref(d.getMonth()); // default to current month
 export const checkedRows = reactive([]); // store the checked rows on the table
 
-export const datasetBuyUSD = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-export const datasetRealUSD = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+export const datasetNeed = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+export const datasetReal = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 export const searchTerm = ref(""); // Search text
 export const data = reactive([]);
 export const table = reactive({
@@ -32,18 +32,6 @@ export const table = reactive({
             },
         },
         {
-            label: Lang.get("monthlyPRpageLang.buyamount1"),
-            field: "請購數量",
-            width: "12ch",
-            sortable: true,
-        },
-        {
-            label: Lang.get("outboundpageLang.realpickamount"),
-            field: "實際領用數量",
-            width: "10ch",
-            sortable: true,
-        },
-        {
             label: Lang.get("callpageLang.req_vs_real"),
             field: "需求與領用差異量",
             width: "13ch",
@@ -53,6 +41,18 @@ export const table = reactive({
             label: Lang.get("callpageLang.req_vs_real_percent"),
             field: "需求與領用差異",
             width: "13ch",
+            sortable: true,
+        },
+        {
+            label: Lang.get("monthlyPRpageLang.nowneed"),
+            field: "當月需求",
+            width: "12ch",
+            sortable: true,
+        },
+        {
+            label: Lang.get("outboundpageLang.realpickamount"),
+            field: "實際領用數量",
+            width: "10ch",
             sortable: true,
         },
     ],
@@ -67,7 +67,7 @@ export const table = reactive({
         return table.rows.length;
     }),
     sortable: {
-        order: "需求與領用差異量",
+        order: "需求與領用差異",
         sort: "desc",
     },
     messages: {
