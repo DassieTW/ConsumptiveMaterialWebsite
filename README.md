@@ -225,4 +225,4 @@ cp .env.server /home/it/PEGA_Projects/ConsumptiveMaterialWebsite/.env
    php artisan migrateAll
    ```
 4. You should now have a working database that has all tables with 0 entries.🙂<br/>
-   You can edit the list on the User Management page to allow users including yourself to login the new database.
+   You can edit the list on the User Management page to allow users (including yourself) to login the new database.
