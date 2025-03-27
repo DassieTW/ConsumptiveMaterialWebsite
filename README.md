@@ -57,7 +57,7 @@ php artisan lang:js --quiet
 php artisan lang:js resources/js/vue-translations.js --no-lib --quiet
 ```
 ### Updating JavaScript or CSS
-Whenever you update a JavaScript or CSS file, make sure to update the version number in the `.env` file to ensure clients' browsers download the latest files.
+Whenever you update a JavaScript or CSS file, make sure to update the version number of `APP_VERSION` in the `.env` and `.env.server` file to ensure clients' browsers download the latest files.
 
 ## Deployment
 ### Output the Docker Images
