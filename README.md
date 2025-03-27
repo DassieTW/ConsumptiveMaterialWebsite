@@ -122,7 +122,7 @@ npx mix --production
 ```
 
 ## Scheduled Tasks
-To set up scheduled tasks on a new server container, follow the Laravel documentation:
+To set up scheduled tasks on a new server container, follow the Laravel documentation:<br/>
 https://laravel.com/docs/8.x/scheduling#running-the-scheduler
 ```bash
 docker exec -it <laradock-workspace container id> /bin/bash
