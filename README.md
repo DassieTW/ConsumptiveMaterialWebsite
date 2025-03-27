@@ -218,11 +218,11 @@ cp .env.server /home/it/PEGA_Projects/ConsumptiveMaterialWebsite/.env
    ⚠️**Remember to add a trailing ` Consumables management` after the name**⚠️<br/>
    ⚠️**DO NOT PUT ANY `_` IN NAME**⚠️<br/>
    <img width="246" alt="SSMS add new database" src="https://github.com/user-attachments/assets/08fe81a2-337a-46ea-a5dd-4040530a37ae" />
-3. Add the Whole DB Name to [Config File](./config/database_list.php)
-4. Run migration inside workspace container.<br/>
+2. Add the Whole DB Name to [Config File](./config/database_list.php)
+3. Run migration inside workspace container.<br/>
    Since it's in production enviornment, you should type `YES` or `Y` to confirm the migration for every database when prompted.
    ```bash
    php artisan migrateAll
    ```
-5. You should now have a working database that has all tables with 0 entries.🙂<br/>
+4. You should now have a working database that has all tables with 0 entries.🙂<br/>
    You can edit the list on the User Management page to allow users including yourself to login the new database.
