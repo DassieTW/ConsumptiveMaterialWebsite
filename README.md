@@ -31,7 +31,7 @@ It is built using **Laravel v8.83.29 (PHP v8.4.1)** and **Vue3** and it leverage
     composer dump-autoload
     php artisan storage:link
     php artisan key:generate
-    php artisan migrateAll:fresh --seed
+    php artisan migrateAll:fresh
     ```
 
 ## Development
