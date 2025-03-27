@@ -7,7 +7,7 @@ It is built using **Laravel v8.83.29 (PHP v8.4.1)** and **Vue3** and it leverage
 ## Setup
 ### Prerequisites
 - Docker
-- npm
+- npm/npx
 
 ### Installation
 1. Clone the website repository:
