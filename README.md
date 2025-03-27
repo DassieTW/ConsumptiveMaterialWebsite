@@ -212,3 +212,16 @@ Under intra network, inside the project folder:
 cd /home/it/PEGA_Projects/ConsumptiveMaterialWebsite
 cp .env.server /home/it/PEGA_Projects/ConsumptiveMaterialWebsite/.env
 ```
+
+## How to Add a New Database for a New Department/Factory
+1. Use SSMS (SQL Server Management Studio) to New a Database<br/>
+   ⚠️**Remember to add a trailing ` Consumables management` after the name**⚠️<br/>
+   ⚠️:**DO NOT PUT ANY `_` IN NAME**⚠️<br/>
+   <img width="246" alt="SSMS add new database" src="https://github.com/user-attachments/assets/08fe81a2-337a-46ea-a5dd-4040530a37ae" />
+3. Add the Whole DB Name to [Config File](./config/database_list.php)
+4. Run migration inside workspace container.<br/>
+   Since it's in production enviornment, you should type `YES` or `Y` to confirm the migration for every database when prompted.
+   ```bash
+   php artisan migrateAll
+   ```
+5. 
