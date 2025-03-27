@@ -42,7 +42,7 @@ class CleanUpInventory extends Command
         $databaseArray = config('database_list.databases');
         array_shift($databaseArray); // remove the 'Consumables management' db from array
         try {
-            \Log::channel('dbquerys')->info('---------------------------清理久未更新之0現有庫存條目--------------------------');
+            \Log::channel('dbquerys')->info('---------------------------清理0現有庫存條目--------------------------');
             foreach ($databaseArray as $site) {
                 \Config::set('database.connections.' . env("DB_CONNECTION") . '.database', $site);
                 \DB::purge(env("DB_CONNECTION"));
@@ -51,7 +51,7 @@ class CleanUpInventory extends Command
                     ->delete();
             } // foreach
 
-            \Log::channel('dbquerys')->info('---------------------------清理久未更新之0現有庫存條目結束--------------------------');
+            \Log::channel('dbquerys')->info('---------------------------清理0現有庫存條目結束--------------------------');
             $this->info("[inventory:cleanup] Command executed successfully!");
         } catch (Exception $e) {
             \Log::channel('dbquerys')->error("Inventory Clear Command execution failed with error : " . $e->getMessage());

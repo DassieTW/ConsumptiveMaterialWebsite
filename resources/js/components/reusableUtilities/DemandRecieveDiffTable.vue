@@ -179,7 +179,8 @@ export default defineComponent({
                         }, 0)
             } // else
 
-            // console.log(workdaysCount); // test
+            // console.log("workdays Count:" + workdaysCount); // test
+
             // loop thru outbound list and push to table
             for (let i = 0; i < all_data_sorted.outbound[inputMonth].length; i++) {
                 let singleEntry = {};
@@ -189,10 +190,12 @@ export default defineComponent({
 
                 let obj = all_data_sorted.buylist[inputMonth].find(o => o.料號 === singleEntry.料號);
                 if (obj) {
-                    singleEntry.當月需求 = parseFloat(obj.當月需求);
                     if (Number.isNaN(parseFloat(obj.當月需求))) {
                         singleEntry.當月需求 = 0;
                     } // if
+                    else {
+                        singleEntry.當月需求 = parseFloat(obj.當月需求);
+                    } // else
                 } // if
                 else { // 新入料
                     singleEntry.當月需求 = 0;
@@ -201,38 +204,43 @@ export default defineComponent({
                 singleEntry.單位 = tempArry[i].單位;
                 singleEntry.實際領用數量 = parseInt(tempArry[i].實際領用數量);
                 singleEntry.需求與領用差異量 = singleEntry.當月需求 - singleEntry.實際領用數量;
-                singleEntry.需求與領用差異 = 100 * (singleEntry.實際領用數量) / (singleEntry.當月需求 / 26 * workdaysCount);
-                if (Number.isNaN(singleEntry.需求與領用差異)) {
-                    singleEntry.需求與領用差異 = 0;
-                } // if
+                singleEntry.需求與領用差異 = 100 * (singleEntry.實際領用數量) / (singleEntry.當月需求 / 26 * workdaysCount); // 26 is the average workdays in a month, as requested by Lyra Mao
                 singleEntry.單價 = parseFloat(tempArry[i].單價);
                 singleEntry.幣別 = tempArry[i].幣別;
 
                 resultArray.push(singleEntry);
             } // for
 
-            // Since the outbound data is always later than the buylist data
-            // we can just compare the month's buylist data with the outbound data
+            // loop thru buylist and push to table
+            let alreadyPushed = false;
             for (let i = 0; i < all_data_sorted.buylist[inputMonth].length; i++) {
                 let tempMonthRecord = all_data_sorted.buylist[inputMonth];
                 let singleEntry = {};
                 singleEntry.料號 = tempMonthRecord[i].料號;
                 singleEntry.品名 = tempMonthRecord[i].品名;
-                singleEntry.當月需求 = parseFloat(tempMonthRecord[i].當月需求);
                 if (Number.isNaN(parseFloat(tempMonthRecord[i].當月需求))) {
                     singleEntry.當月需求 = 0;
                 } // if
+                else {
+                    singleEntry.當月需求 = parseFloat(tempMonthRecord[i].當月需求);
+                } // else
                 singleEntry.單位 = tempMonthRecord[i].單位;
-                singleEntry.實際領用數量 = 0;
-                singleEntry.需求與領用差異量 = singleEntry.當月需求 - singleEntry.實際領用數量;
-                singleEntry.需求與領用差異 = 100 * (singleEntry.當月需求 - singleEntry.實際領用數量) / ((singleEntry.當月需求 + singleEntry.實際領用數量) / 2);
-                if (Number.isNaN(singleEntry.需求與領用差異)) {
-                    singleEntry.需求與領用差異 = 0;
+                let obj = all_data_sorted.outbound[inputMonth].find(o => o.料號 === singleEntry.料號);
+                if (obj) {
+                    alreadyPushed = true;
                 } // if
+                else { // 未領用
+                    singleEntry.實際領用數量 = 0;
+                } // else
+                singleEntry.需求與領用差異量 = singleEntry.當月需求 - singleEntry.實際領用數量;
+                singleEntry.需求與領用差異 = 100 * (singleEntry.實際領用數量) / (singleEntry.當月需求 / 26 * workdaysCount); // 26 is the average workdays in a month, as requested by Lyra Mao
                 singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
                 singleEntry.幣別 = tempMonthRecord[i].幣別;
 
-                resultArray.push(singleEntry);
+                if (!alreadyPushed) {
+                    resultArray.push(singleEntry);
+                    alreadyPushed = false;
+                } // if
             } // for
         }; // SortCurrentMonthTable
 
