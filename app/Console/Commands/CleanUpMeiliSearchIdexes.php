@@ -52,7 +52,9 @@ class CleanUpMeiliSearchIdexes extends Command
             $this->searchClient->index('titles')->updateSearchableAttributes([
                 'en_title',
                 'tw_title',
-                'cn_title'
+                'cn_title',
+                'vi_title',
+                'id_title'
             ]);
             $this->info("[meilisearch:clear] Command executed successfully!");
         } catch (Exception $e) {

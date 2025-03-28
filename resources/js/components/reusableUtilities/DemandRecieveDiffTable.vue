@@ -58,8 +58,15 @@
                 </div>
             </template>
             <template v-slot:需求與領用差異="{ row, key }">
-                <div class="CustomScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
-                    {{ row.需求與領用差異 }}%
+                <div v-if="isNaN(row.需求與領用差異)" class="CustomScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
+                    0%
+                </div>
+                <div v-else-if="!isFinite(row.需求與領用差異)" class="CustomScrollbar text-nowrap"
+                    style="overflow-x: auto; width: 100%;">
+                    <span class="fs-3 m-0 p-0" style="height: 60%;">∞</span>
+                </div>
+                <div v-else class="CustomScrollbar text-nowrap" style="overflow-x: auto; width: 100%;">
+                    {{ row.需求與領用差異.toFixed(2) }}%
                 </div>
             </template>
         </table-lite>

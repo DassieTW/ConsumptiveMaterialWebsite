@@ -32,7 +32,9 @@ class HomeController extends Controller
         $this->searchClient->index('titles')->updateSearchableAttributes([
             'en_title',
             'tw_title',
-            'cn_title'
+            'cn_title',
+            'vi_title',
+            'id_title'
         ]);
     } // constructor
 
@@ -54,7 +56,7 @@ class HomeController extends Controller
         $searchResult = $this->searchClient->index('titles')->search(
             $request->input('inputStr'),
             [
-                'attributesToHighlight' => ['en_title', 'cn_title', 'tw_title', 'en_parentTitle', 'cn_parentTitle', 'tw_parentTitle'],
+                'attributesToHighlight' => ['en_title', 'cn_title', 'tw_title', 'en_parentTitle', 'cn_parentTitle', 'tw_parentTitle', 'vi_title', 'vi_parentTitle', 'id_title', 'id_parentTitle'],
                 'highlightPreTag' => '<mark>',
                 'highlightPostTag' => '</mark>'
             ]
