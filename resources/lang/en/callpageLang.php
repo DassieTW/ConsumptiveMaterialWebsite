@@ -37,6 +37,6 @@ return [
     'nowstock' => 'Available Stock',
     'saveremark' => 'Save Remark',
     'success' => 'Success',
-    "req_vs_real_percent" => "PR vs. Acq %",
+    "req_vs_real_percent" => "Real-Time Diff %",
     "req_vs_real" => "PR vs. Acq Qty",
 ];

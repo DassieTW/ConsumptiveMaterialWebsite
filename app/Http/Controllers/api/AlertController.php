@@ -38,33 +38,6 @@ class AlertController extends Controller
         // dd($dbName); // test
         $yearTag = $request->input('Year');
         try {
-            $result_buylist_LastYearLastMonth = DB::table('請購單')
-                ->leftjoin('consumptive_material', function ($join) {
-                    $join->on('consumptive_material.料號', '=', '請購單.料號');
-                })
-                ->select(
-                    'consumptive_material.料號',
-                    'consumptive_material.品名',
-                    'consumptive_material.單位',
-                    '請購單.MOQ',
-                    '請購單.SRM單號',
-                    '請購單.當月需求',
-                    '請購單.下月需求',
-                    '請購單.匯率',
-                    '請購單.單價',
-                    '請購單.在途數量',
-                    '請購單.幣別',
-                    '請購單.本次請購數量',
-                    '請購單.現有庫存',
-                    '請購單.規格',
-                    '請購單.請購時間',
-                    '請購單.請購金額',
-                )
-                ->where('SRM單號', '=', '已完成')
-                ->whereYear('請購時間', $yearTag - 1)
-                ->where('請購時間', '>=', date(strval($yearTag - 1) . "-11-01"))
-                ->get();
-
             $result_buylist = DB::table('請購單')
                 ->leftjoin('consumptive_material', function ($join) {
                     $join->on('consumptive_material.料號', '=', '請購單.料號');
@@ -91,9 +64,9 @@ class AlertController extends Controller
                 ->whereYear('請購時間', $yearTag)
                 ->get();
 
-            $result_inbound = DB::table('inbound')
+            $result_outbound = DB::table('outbound')
                 ->leftjoin('consumptive_material', function ($join) {
-                    $join->on('consumptive_material.料號', '=', 'inbound.料號');
+                    $join->on('consumptive_material.料號', '=', 'outbound.料號');
                 })
                 ->select(
                     'consumptive_material.料號',
@@ -101,19 +74,18 @@ class AlertController extends Controller
                     'consumptive_material.單價',
                     'consumptive_material.幣別',
                     'consumptive_material.單位',
-                    'inbound.儲位',
-                    'inbound.入庫原因',
-                    'inbound.入庫數量',
-                    'inbound.入庫單號',
-                    'inbound.入庫人員',
-                    'inbound.入庫時間',
-                    'inbound.備註',
+                    'outbound.領用原因',
+                    'outbound.實際領用數量',
+                    'outbound.領料單號',
+                    'outbound.領料人員',
+                    'outbound.出庫時間',
+                    'outbound.備註',
                 )
-                ->whereYear('inbound.入庫時間', $yearTag)
+                ->whereYear('outbound.出庫時間', $yearTag)
                 ->get();
 
-            // dd($result_inbound); // test
-            return \Response::json(['buylist_lastyear' => $result_buylist_LastYearLastMonth, 'buylist' => $result_buylist, 'inbound' => $result_inbound], 200 /* Status code here default is 200 ok*/);
+            // dd($result_outbound); // test
+            return \Response::json(['buylist' => $result_buylist, 'outbound' => $result_outbound], 200 /* Status code here default is 200 ok*/);
         } catch (\Exception $e) {
             dd($e);
             return \Response::json(['message' => $e->getmessage()], 421/* Status code here default is 200 ok*/);

@@ -28,8 +28,9 @@ export default function useDiffSearch() {
                 resolve("success");
             });
         } catch (e) {
-            console.log(e); // test
-            return e;
+            return new Promise((resolve, reject) => {
+                reject(e.response);
+            });
         } // try catch
     } // get mats
 

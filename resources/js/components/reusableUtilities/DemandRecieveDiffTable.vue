@@ -33,10 +33,10 @@
                     {{ row.料號 }}
                 </div>
             </template>
-            <template v-slot:請購數量="{ row, key }">
+            <template v-slot:當月需求="{ row, key }">
                 <div class="col col-auto align-items-center m-0 p-0">
                     <span class="m-0 p-0" style="width: 12ch;">
-                        {{ parseInt(row.請購數量).toLocaleString('en', { useGrouping: true }) }}
+                        {{ parseInt(row.當月需求).toLocaleString('en', { useGrouping: true }) }}
                         <small>{{ row.單位 }}</small>
                     </span>
                 </div>
@@ -74,7 +74,7 @@ import {
     onMounted,
     watch,
 } from "@vue/runtime-core";
-import { yearTag, monthTag, checkedRows, searchTerm, data, table, datasetBuyUSD, datasetRealUSD } from '../../composables/DiffTableStore.js';
+import { yearTag, monthTag, checkedRows, searchTerm, data, table, datasetNeed, datasetReal } from '../../composables/DiffTableStore.js';
 import ExcelJS from 'exceljs';
 import FileSaver from "file-saver";
 import TableLite from "./TableLite.vue";
@@ -93,12 +93,9 @@ export default defineComponent({
         app.appContext.config.globalProperties.$lang.setLocale(thisHtmlLang); // set the current locale to vue package
 
         const { mats, getMats } = useDiffSearch(); // axios get the mats data
-        const { Currency, getCurrency } = useMonthlyPRSearch(); // axios get the currency
-
 
         onBeforeMount(async () => {
             table.isLoading = true;
-            await getCurrency();
             await getMats();
         });
 
@@ -137,7 +134,7 @@ export default defineComponent({
                 worksheet.addRow([
                     item.料號,
                     item.品名,
-                    item.請購數量,
+                    item.當月需求,
                     item.實際領用數量,
                     item.單位,
                     item.需求與領用差異量,
@@ -154,322 +151,131 @@ export default defineComponent({
         } // OutputExcelClick
 
         const SortCurrentMonthTable = async (inputMonth, resultArray) => {
-            // 無法確定此廠這個月的入庫是來自固定前一個月的請購or固定提前(早兩個月)的請購
-            // 回頭一個月一個月找時 若有料號match 表示整批的請購月份也是現在的月份
-            // 將找到matching請購月份紀錄下來 loop完inbound list後
-            // 會在loop buylist時只取用此請購月份的資料 (作為有請購但沒有(尚未?)入庫的料)
-            let matchingBuylistMonth = -99;
-            // console.log(all_data_sorted); // test
-            // find the matching buylist month
-            for (let i = 0; i < all_data_sorted.inbound[inputMonth].length; i++) {
-                let tempArry = all_data_sorted.inbound[inputMonth];
-                for (let j = 1; j < 3; j++) {
-                    let prevBuylistMonth = inputMonth - j;
-                    if (prevBuylistMonth == -1) { // 去年12月請購
-                        let obj = all_data_sorted.buylist_lastyear[11].find(o => o.料號 === tempArry[i].料號);
-                        // console.log(obj); // test
-                        if (obj) {
-                            if (prevBuylistMonth > matchingBuylistMonth) {
-                                matchingBuylistMonth = prevBuylistMonth;
-                            } // if
-                            break;
-                        } // if
-                    } else if (prevBuylistMonth == -2) { // 去年11月請購
-                        let obj = all_data_sorted.buylist_lastyear[10].find(o => o.料號 === tempArry[i].料號);
-                        // console.log(obj); // test
-                        if (obj) {
-                            if (prevBuylistMonth > matchingBuylistMonth) {
-                                matchingBuylistMonth = prevBuylistMonth;
-                            } // if
-                            break;
-                        } // if
-                    } else { // 今年內請購
-                        let obj = all_data_sorted.buylist[prevBuylistMonth].find(o => o.料號 === tempArry[i].料號);
-                        if (obj) {
-                            if (prevBuylistMonth > matchingBuylistMonth) {
-                                matchingBuylistMonth = prevBuylistMonth;
-                            } // if
-                            break;
-                        } // if
-                    } // if else
-                } // for
-            } // for
+            // according to Lyra Mao, Buylist is always sent in the first few days of the month
+            // so we can safely assume that the outbound data is always later than the buylist data
 
-            // loop thru inbound list and push to table
-            for (let i = 0; i < all_data_sorted.inbound[inputMonth].length; i++) {
+            // console.log(inputMonth, new Date().getMonth()); // test 
+            let workdaysCount = -99;
+            // if the year and month is the current year and month
+            if (yearTag.value == new Date().getFullYear() && inputMonth == new Date().getMonth()) {
+                workdaysCount =
+                    [...new Array(new Date().getDate())]
+                        .reduce((acc, _, monthDay) => {
+                            const date = new Date()
+                            date.setDate(1 + monthDay)
+                            // ![0, 6].includes(date.getDay()) && acc++ // exclude weekends
+                            ![0].includes(date.getDay()) && acc++ // exclude sundays
+                            return acc
+                        }, 0)
+            } // if
+            else {
+                workdaysCount =
+                    [...new Array(new Date(yearTag.value, inputMonth + 1, 0).getDate())]
+                        .reduce((acc, _, monthDay) => {
+                            const date = new Date(yearTag.value, inputMonth, 1 + monthDay)
+                            // ![0, 6].includes(date.getDay()) && acc++ // exclude weekends
+                            ![0].includes(date.getDay()) && acc++ // exclude sundays
+                            return acc
+                        }, 0)
+            } // else
+
+            // console.log("workdays Count:" + workdaysCount); // test
+
+            // loop thru outbound list and push to table
+            for (let i = 0; i < all_data_sorted.outbound[inputMonth].length; i++) {
                 let singleEntry = {};
-                let tempArry = all_data_sorted.inbound[inputMonth];
+                let tempArry = all_data_sorted.outbound[inputMonth];
                 singleEntry.料號 = tempArry[i].料號;
                 singleEntry.品名 = tempArry[i].品名;
 
-                if (matchingBuylistMonth == -99) { // if the whole batch is newly inbound without any buy records
-                    singleEntry.請購數量 = 0;
-                } else if (matchingBuylistMonth == -1) { // if the batch's buy record is from last year Dec
-                    let obj = all_data_sorted.buylist_lastyear[11].find(o => o.料號 === singleEntry.料號);
-                    // console.log(obj); // test
-                    if (obj) {
-                        singleEntry.請購數量 = parseFloat(obj.本次請購數量);
-                        if (Number.isNaN(parseFloat(obj.本次請購數量))) {
-                            singleEntry.請購數量 = 0;
-                        } // if
+                let obj = all_data_sorted.buylist[inputMonth].find(o => o.料號 === singleEntry.料號);
+                if (obj) {
+                    if (Number.isNaN(parseFloat(obj.當月需求))) {
+                        singleEntry.當月需求 = 0;
                     } // if
-                    else { // 新入料
-                        singleEntry.請購數量 = 0;
+                    else {
+                        singleEntry.當月需求 = parseFloat(obj.當月需求);
                     } // else
-                } else if (matchingBuylistMonth == -2) { // if the batch's buy record is from last year Nov
-                    let obj = all_data_sorted.buylist_lastyear[10].find(o => o.料號 === singleEntry.料號);
-                    if (obj) {
-                        singleEntry.請購數量 = parseFloat(obj.本次請購數量);
-                        if (Number.isNaN(parseFloat(obj.本次請購數量))) {
-                            singleEntry.請購數量 = 0;
-                        } // if
-                    } // if
-                    else { // 新入料
-                        singleEntry.請購數量 = 0;
-                    } // else
-                } else { // if the batch's buy record is within this year
-                    let obj = all_data_sorted.buylist[matchingBuylistMonth].find(o => o.料號 === singleEntry.料號);
-                    if (obj) {
-                        singleEntry.請購數量 = parseFloat(obj.本次請購數量);
-                        if (Number.isNaN(parseFloat(obj.本次請購數量))) {
-                            singleEntry.請購數量 = 0;
-                        } // if
-                    } // if
-                    else { // 新入料
-                        singleEntry.請購數量 = 0;
-                    } // else
-                } // if else
+                } // if
+                else { // 新入料
+                    singleEntry.當月需求 = 0;
+                } // else
 
                 singleEntry.單位 = tempArry[i].單位;
-                singleEntry.實際領用數量 = parseInt(tempArry[i].入庫數量);
-                singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
-                singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
-                if (Number.isNaN(singleEntry.需求與領用差異)) {
-                    singleEntry.需求與領用差異 = 0;
-                } // if
+                singleEntry.實際領用數量 = parseInt(tempArry[i].實際領用數量);
+                singleEntry.需求與領用差異量 = singleEntry.當月需求 - singleEntry.實際領用數量;
+                singleEntry.需求與領用差異 = 100 * (singleEntry.實際領用數量) / (singleEntry.當月需求 / 26 * workdaysCount); // 26 is the average workdays in a month, as requested by Lyra Mao
                 singleEntry.單價 = parseFloat(tempArry[i].單價);
                 singleEntry.幣別 = tempArry[i].幣別;
 
                 resultArray.push(singleEntry);
             } // for
 
-            // fish out entries that are within buylist but not within inbound
-            if (matchingBuylistMonth == -99) {
-                // if the whole batch are all newly inbound without any corresponding buy records 
-                // OR if there's no inbound records
-                // 目前作法：直接抓上個月的請購資料
-                let prevBuylistMonth = inputMonth - 1;
-                if (prevBuylistMonth == -1) { // 去年12月請購
-                    for (let i = 0; i < all_data_sorted.buylist_lastyear[11].length; i++) {
-                        let tempMonthRecord = all_data_sorted.buylist_lastyear[11];
-                        let singleEntry = {};
-                        singleEntry.料號 = tempMonthRecord[i].料號;
-                        singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
-                            singleEntry.請購數量 = 0;
-                        } // if
-                        singleEntry.單位 = tempMonthRecord[i].單位;
-                        singleEntry.實際領用數量 = 0;
-                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
-                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
-                        if (Number.isNaN(singleEntry.需求與領用差異)) {
-                            singleEntry.需求與領用差異 = 0;
-                        } // if
-                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
-                        singleEntry.幣別 = tempMonthRecord[i].幣別;
+            // loop thru buylist and push to table
+            let alreadyPushed = false;
+            for (let i = 0; i < all_data_sorted.buylist[inputMonth].length; i++) {
+                let tempMonthRecord = all_data_sorted.buylist[inputMonth];
+                let singleEntry = {};
+                singleEntry.料號 = tempMonthRecord[i].料號;
+                singleEntry.品名 = tempMonthRecord[i].品名;
+                if (Number.isNaN(parseFloat(tempMonthRecord[i].當月需求))) {
+                    singleEntry.當月需求 = 0;
+                } // if
+                else {
+                    singleEntry.當月需求 = parseFloat(tempMonthRecord[i].當月需求);
+                } // else
+                singleEntry.單位 = tempMonthRecord[i].單位;
+                let obj = all_data_sorted.outbound[inputMonth].find(o => o.料號 === singleEntry.料號);
+                if (obj) {
+                    alreadyPushed = true;
+                } // if
+                else { // 未領用
+                    singleEntry.實際領用數量 = 0;
+                } // else
+                singleEntry.需求與領用差異量 = singleEntry.當月需求 - singleEntry.實際領用數量;
+                singleEntry.需求與領用差異 = 100 * (singleEntry.實際領用數量) / (singleEntry.當月需求 / 26 * workdaysCount); // 26 is the average workdays in a month, as requested by Lyra Mao
+                singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
+                singleEntry.幣別 = tempMonthRecord[i].幣別;
 
-                        resultArray.push(singleEntry);
-                    } // for
-                } else if (prevBuylistMonth == -2) { // 去年11月請購
-                    for (let i = 0; i < all_data_sorted.buylist_lastyear[10].length; i++) {
-                        let tempMonthRecord = all_data_sorted.buylist_lastyear[10];
-                        let singleEntry = {};
-                        singleEntry.料號 = tempMonthRecord[i].料號;
-                        singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
-                            singleEntry.請購數量 = 0;
-                        } // if
-                        singleEntry.單位 = tempMonthRecord[i].單位;
-                        singleEntry.實際領用數量 = 0;
-                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
-                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
-                        if (Number.isNaN(singleEntry.需求與領用差異)) {
-                            singleEntry.需求與領用差異 = 0;
-                        } // if
-                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
-                        singleEntry.幣別 = tempMonthRecord[i].幣別;
-
-                        resultArray.push(singleEntry);
-                    } // for
-                } else { // 今年內請購
-                    for (let i = 0; i < all_data_sorted.buylist[prevBuylistMonth].length; i++) {
-                        let tempMonthRecord = all_data_sorted.buylist[prevBuylistMonth];
-                        let singleEntry = {};
-                        singleEntry.料號 = tempMonthRecord[i].料號;
-                        singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
-                            singleEntry.請購數量 = 0;
-                        } // if
-                        singleEntry.單位 = tempMonthRecord[i].單位;
-                        singleEntry.實際領用數量 = 0;
-                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
-                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
-                        if (Number.isNaN(singleEntry.需求與領用差異)) {
-                            singleEntry.需求與領用差異 = 0;
-                        } // if
-                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
-                        singleEntry.幣別 = tempMonthRecord[i].幣別;
-
-                        resultArray.push(singleEntry);
-                    } // for
-                } // if else
-            } else if (matchingBuylistMonth == -1) { // if the batch's buy record is from last year Dec
-                for (let i = 0; i < all_data_sorted.buylist_lastyear[11].length; i++) {
-                    let tempMonthRecord = all_data_sorted.buylist_lastyear[11];
-                    let obj = resultArray.find(o => o.料號 === tempMonthRecord[i].料號);
-                    if (obj === undefined) {
-                        let singleEntry = {};
-                        singleEntry.料號 = tempMonthRecord[i].料號;
-                        singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
-                            singleEntry.請購數量 = 0;
-                        } // if
-                        singleEntry.單位 = tempMonthRecord[i].單位;
-                        singleEntry.實際領用數量 = 0;
-                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
-                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
-                        if (Number.isNaN(singleEntry.需求與領用差異)) {
-                            singleEntry.需求與領用差異 = 0;
-                        } // if
-                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
-                        singleEntry.幣別 = tempMonthRecord[i].幣別;
-
-                        resultArray.push(singleEntry);
-                    } // if
-                } // for
-            } else if (matchingBuylistMonth == -2) { // if the batch's buy record is from last year Nov
-                for (let i = 0; i < all_data_sorted.buylist_lastyear[10].length; i++) {
-                    let tempMonthRecord = all_data_sorted.buylist_lastyear[10];
-                    let obj = resultArray.find(o => o.料號 === tempMonthRecord[i].料號);
-                    if (obj === undefined) {
-                        let singleEntry = {};
-                        singleEntry.料號 = tempMonthRecord[i].料號;
-                        singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
-                            singleEntry.請購數量 = 0;
-                        } // if
-                        singleEntry.單位 = tempMonthRecord[i].單位;
-                        singleEntry.實際領用數量 = 0;
-                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
-                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
-                        if (Number.isNaN(singleEntry.需求與領用差異)) {
-                            singleEntry.需求與領用差異 = 0;
-                        } // if
-                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
-                        singleEntry.幣別 = tempMonthRecord[i].幣別;
-
-                        resultArray.push(singleEntry);
-                    } // if
-                } // for
-            } else { // if the batch's buy record is within this year
-                for (let i = 0; i < all_data_sorted.buylist[matchingBuylistMonth].length; i++) {
-                    let tempMonthRecord = all_data_sorted.buylist[matchingBuylistMonth];
-                    let obj = resultArray.find(o => o.料號 === tempMonthRecord[i].料號);
-                    if (obj === undefined) {
-                        let singleEntry = {};
-                        singleEntry.料號 = tempMonthRecord[i].料號;
-                        singleEntry.品名 = tempMonthRecord[i].品名;
-                        singleEntry.請購數量 = parseFloat(tempMonthRecord[i].本次請購數量);
-                        if (Number.isNaN(parseFloat(tempMonthRecord[i].本次請購數量))) {
-                            singleEntry.請購數量 = 0;
-                        } // if
-                        singleEntry.單位 = tempMonthRecord[i].單位;
-                        singleEntry.實際領用數量 = 0;
-                        singleEntry.需求與領用差異量 = singleEntry.請購數量 - singleEntry.實際領用數量;
-                        singleEntry.需求與領用差異 = 100 * (singleEntry.請購數量 - singleEntry.實際領用數量) / ((singleEntry.請購數量 + singleEntry.實際領用數量) / 2);
-                        if (Number.isNaN(singleEntry.需求與領用差異)) {
-                            singleEntry.需求與領用差異 = 0;
-                        } // if
-                        singleEntry.單價 = parseFloat(tempMonthRecord[i].單價);
-                        singleEntry.幣別 = tempMonthRecord[i].幣別;
-
-                        resultArray.push(singleEntry);
-                    } // if
-                } // for
-            } // if else
+                if (!alreadyPushed) {
+                    resultArray.push(singleEntry);
+                    alreadyPushed = false;
+                } // if
+            } // for
         }; // SortCurrentMonthTable
 
         const CalChartDatasets = async () => {
-            let tempBuyUSD = [];
-            let tempRealUSD = [];
+            let tempNeedAmount = [];
+            let tempRealAmount = [];
 
             let monthlyTemp = [];
-            let exchange_table = Currency.value.rates;
             for (let i = 0; i < 12; i++) { // loop thru whole year
                 monthlyTemp.splice(0); // clean up old records
                 await SortCurrentMonthTable(i, monthlyTemp); // get the sorted data by month
-                let currentMonthBuyTotalPrice = 0;
-                let currentMonthRealTotalPrice = 0;
+                let currentMonthNeedTotalAmount = 0;
+                let currentMonthRealTotalAmount = 0;
                 // console.log(monthlyTemp); // test
                 for (let j = 0; j < monthlyTemp.length; j++) {
                     if (monthlyTemp[j].料號) { // for safety measure
                         if (checkedRows.length > 0) {
                             if (checkedRows.find(o => o.料號 == monthlyTemp[j].料號) != undefined) {
-                                if (monthlyTemp[j].幣別 == "RMB") {
-                                    if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
-                                        currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
-                                    } // if
-
-                                    if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
-                                        currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
-                                    } // if
-                                } // if
-                                else {
-                                    if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
-                                        currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
-                                    } // if
-                                    if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
-                                        currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
-                                    } // if
-                                } // else
+                                currentMonthNeedTotalAmount += parseInt(monthlyTemp[j].當月需求);
+                                currentMonthRealTotalAmount += parseInt(monthlyTemp[j].實際領用數量);
                             } // if
                         } // if
                         else {
-                            if (monthlyTemp[j].幣別 == "RMB") {
-                                if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
-                                    currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
-                                } // if
-
-                                if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5)))) {
-                                    currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table['CNY'])).toFixed(5));
-                                } // if
-                            } // if
-                            else {
-                                if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
-                                    currentMonthBuyTotalPrice += parseFloat((parseFloat(monthlyTemp[j].請購數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
-                                } // if
-                                if (!Number.isNaN(parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5)))) {
-                                    currentMonthRealTotalPrice += parseFloat((parseFloat(monthlyTemp[j].實際領用數量) * parseFloat(monthlyTemp[j].單價) * (exchange_table['USD'] / exchange_table[monthlyTemp[j].幣別])).toFixed(5));
-                                } // if
-                            } // else
+                            currentMonthNeedTotalAmount += parseInt(monthlyTemp[j].當月需求);
+                            currentMonthRealTotalAmount += parseInt(monthlyTemp[j].實際領用數量);
                         } // else
-
                     } // if
                 } // for
 
-                tempBuyUSD.push(currentMonthBuyTotalPrice);
-                tempRealUSD.push(currentMonthRealTotalPrice);
+                tempNeedAmount.push(currentMonthNeedTotalAmount);
+                tempRealAmount.push(currentMonthRealTotalAmount);
             } // for
 
-            // console.log(tempRealUSD); // test
-            // console.log(tempBuyUSD); // test
-            datasetBuyUSD.value = tempBuyUSD;
-            datasetRealUSD.value = tempRealUSD;
+            datasetNeed.value = tempNeedAmount;
+            datasetReal.value = tempRealAmount;
         }; // CalChartDatasets
 
         watch(checkedRows, async () => {
@@ -511,16 +317,14 @@ export default defineComponent({
         }); // watch month change
 
         var all_data_sorted = {
-            buylist_lastyear: [],
             buylist: [],
-            inbound: []
+            outbound: []
         };
         watch(mats, async () => {
             await triggerModal();
             all_data_sorted = {
-                buylist_lastyear: [],
                 buylist: [],
-                inbound: []
+                outbound: []
             }; // clean up possible old records
             data.splice(0); // clean up possible old records
             if (mats.value == "") {
@@ -530,31 +334,6 @@ export default defineComponent({
             } // if
 
             let allRowsObj = JSON.parse(mats.value);
-
-            // sort the last year's last few months' buylist
-            for (let i = 0; i < 12; i++) {
-                let newArray = allRowsObj.buylist_lastyear.filter(function (el) {
-                    let sql_Date_To_JS_Date = new Date(el.請購時間.replace(' ', 'T'))
-                    return sql_Date_To_JS_Date.getMonth() == i;
-                });
-
-                // sum the entries with the same 料號                
-                let sum_result = Object.values(newArray.reduce((acc, curr) => {
-                    let item = acc[curr.料號];
-                    if (item) { // 匯率 其實是美金金額 不是真的匯率
-                        item.本次請購數量 += parseFloat(curr.本次請購數量);
-                        item.匯率 += parseFloat(curr.匯率);
-                    } else {
-                        curr.匯率 = parseFloat(curr.匯率);
-                        curr.本次請購數量 = parseFloat(curr.本次請購數量);
-                        acc[curr.料號] = curr;
-                    } // if else
-
-                    return acc;
-                }, {}));
-
-                all_data_sorted.buylist_lastyear[i] = sum_result;
-            } // for
 
             // sort the yearly buylist
             for (let i = 0; i < 12; i++) {
@@ -568,13 +347,16 @@ export default defineComponent({
                     let item = acc[curr.料號];
 
                     if (item) {
-                        item.匯率 = parseFloat(item.匯率) + parseFloat(curr.匯率);
-                        item.本次請購數量 = parseFloat(item.本次請購數量) + parseFloat(curr.本次請購數量);
+                        // set the current month demand to the latest entry
+                        if (new Date(curr.請購時間) > new Date(acc[curr.料號].請購時間)) {
+                            acc[curr.料號].當月需求 = parseFloat(curr.當月需求);
+                            acc[curr.料號].請購時間 = curr.請購時間;
+                        } // if
                     } else {
-                        curr.匯率 = parseFloat(curr.匯率);
-                        curr.本次請購數量 = parseFloat(curr.本次請購數量);
+                        curr.當月需求 = parseFloat(curr.當月需求);
                         acc[curr.料號] = curr;
                     } // if else
+
 
                     return acc;
                 }, {}));
@@ -582,10 +364,10 @@ export default defineComponent({
                 all_data_sorted.buylist[i] = sum_result;
             } // for
 
-            // sort the yearly inbound
+            // sort the yearly outbound
             for (let i = 0; i < 12; i++) {
-                let newArray = allRowsObj.inbound.filter(function (el) {
-                    let sql_Date_To_JS_Date = new Date(el.入庫時間.replace(' ', 'T'))
+                let newArray = allRowsObj.outbound.filter(function (el) {
+                    let sql_Date_To_JS_Date = new Date(el.出庫時間.replace(' ', 'T'))
                     return sql_Date_To_JS_Date.getMonth() == i;
                 });
 
@@ -594,16 +376,16 @@ export default defineComponent({
                     let item = acc[curr.料號];
 
                     if (item) {
-                        item.入庫數量 = parseInt(item.入庫數量) + parseInt(curr.入庫數量);
+                        item.實際領用數量 = parseInt(item.實際領用數量) + parseInt(curr.實際領用數量);
                     } else {
-                        curr.入庫數量 = parseInt(curr.入庫數量);
+                        curr.實際領用數量 = parseInt(curr.實際領用數量);
                         acc[curr.料號] = curr;
                     } // if else
 
                     return acc;
                 }, {}));
 
-                all_data_sorted.inbound[i] = sum_result;
+                all_data_sorted.outbound[i] = sum_result;
             } // for
 
             console.log(all_data_sorted); // test

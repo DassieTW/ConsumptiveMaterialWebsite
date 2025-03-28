@@ -7,7 +7,8 @@ It is built using **Laravel v8.83.29 (PHP v8.4.1)** and **Vue3** and it leverage
 ## Setup
 ### Prerequisites
 - Docker
-- npm
+- npm(for npx)
+- yarn
 
 ### Installation
 1. Clone the website repository:
@@ -30,7 +31,7 @@ It is built using **Laravel v8.83.29 (PHP v8.4.1)** and **Vue3** and it leverage
     composer dump-autoload
     php artisan storage:link
     php artisan key:generate
-    php artisan migrateAll:fresh --seed
+    php artisan migrateAll:fresh
     ```
 
 ## Development
@@ -56,7 +57,7 @@ php artisan lang:js --quiet
 php artisan lang:js resources/js/vue-translations.js --no-lib --quiet
 ```
 ### Updating JavaScript or CSS
-Whenever you update a JavaScript or CSS file, make sure to update the version number in the `.env` file to ensure clients' browsers download the latest files.
+Whenever you update a JavaScript or CSS file, make sure to update the version number of `APP_VERSION` in the `.env` and `.env.server` file to ensure clients' browsers download the latest files.
 
 ## Deployment
 ### Output the Docker Images
@@ -121,7 +122,7 @@ npx mix --production
 ```
 
 ## Scheduled Tasks
-To set up scheduled tasks on a new server container, follow the Laravel documentation:
+To set up scheduled tasks on a new server container, follow the Laravel documentation:<br/>
 https://laravel.com/docs/8.x/scheduling#running-the-scheduler
 ```bash
 docker exec -it <laradock-workspace container id> /bin/bash
@@ -211,3 +212,20 @@ Under intra network, inside the project folder:
 cd /home/it/PEGA_Projects/ConsumptiveMaterialWebsite
 cp .env.server /home/it/PEGA_Projects/ConsumptiveMaterialWebsite/.env
 ```
+
+## How to Add a New Database for a New Department/Factory
+1. Use SSMS (SQL Server Management Studio) to New a Database<br/>
+   ⚠️**Remember to add a trailing ` Consumables management` after the name**⚠️<br/>
+   ⚠️**DO NOT PUT ANY `_` IN NAME**⚠️<br/><br/>
+   <img width="246" alt="SSMS add new database" src="https://github.com/user-attachments/assets/08fe81a2-337a-46ea-a5dd-4040530a37ae" />
+2. Add the Whole DB Name to [Config File](./config/database_list.php)
+3. Run migration inside workspace container.<br/>
+   Since it's in production enviornment, you should type `YES` or `Y` to confirm the migration for every database when prompted.
+   ```bash
+   php artisan migrateAll
+   ```
+4. You should now have a working database that has all tables with 0 entries.🙂<br/>
+   You can edit the list on the User Management page to allow users (including yourself) to login the new database.
+
+## Contact
+For any questions or suggestions, please contact [vincent911016@gmail.com](mailto:vincent911016@gmail.com).

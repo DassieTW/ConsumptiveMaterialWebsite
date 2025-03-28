@@ -26,6 +26,6 @@ return array (
   'nowstock' => 'Tồn kho hiện tại',
   'saveremark' => 'Lưu lại ghi chú',
   'success' => 'Thành công',
-  'req_vs_real_percent' => 'Yêu cầu và lĩnh dùng bất thường',
+  'req_vs_real_percent' => 'Tỷ lệ chênh lệch thời gian thực',
   'req_vs_real' => 'Số lượng yêu cầu và lĩnh dùng bất thường',
 );

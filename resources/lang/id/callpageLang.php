@@ -26,6 +26,6 @@ return array (
   'nowstock' => 'Persediaan stok',
   'saveremark' => 'Simpan catatan',
   'success' => 'Sukses',
-  'req_vs_real_percent' => 'Perbedaan permintaan dan penggunaan',
+  'req_vs_real_percent' => 'Rasio perbedaan waktu nyata',
   'req_vs_real' => 'Perbedaan antara permintaan dan penggunaan',
 );
