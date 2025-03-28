@@ -21,7 +21,7 @@
             <div class="row justify-content-center">
                 <div class="card-body">
                     <div class="d-flex w-100">
-                        <form id="form1" method="POST">
+                        <form id="form1" class="w-100" method="POST">
                             @csrf
                             <div class="row justify-content-center mb-3">
                                 <label class="col col-auto form-label p-0 m-0">{!! __('monthlyPRpageLang.isn') !!}</label>

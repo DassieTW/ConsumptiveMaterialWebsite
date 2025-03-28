@@ -345,15 +345,16 @@ class LoginController extends Controller
 
             $user = Login::updateOrCreate(
                 ['username' => $previousUser->username],
-                [
-                    'password' => $previousUser->password,
-                    'priority' => $previousUser->priority,
-                    'avatarChoice' => $previousUser->avatarChoice,
-                    'last_login_time' => $datetime,
-                    'update_priority_time' => $datetime,
-                    'available_dblist' => $previousUser->available_dblist,
-                    'preferred_lang' => $previousUser->preferred_lang,
-                ]
+                array_merge(
+                    [
+                        'password' => $previousUser->password,
+                        'avatarChoice' => $previousUser->avatarChoice,
+                        'last_login_time' => $datetime,
+                        'available_dblist' => $previousUser->available_dblist,
+                        'preferred_lang' => $previousUser->preferred_lang,
+                    ],
+                    Login::where('username', $previousUser->username)->exists() ? [] : ['priority' => $previousUser->priority, 'update_priority_time' => $datetime]
+                )
             );
 
             \Auth::login($user);
@@ -448,15 +449,17 @@ class LoginController extends Controller
 
             $user = Login::updateOrCreate(
                 ['username' => $previousUser->username],
-                [
-                    'password' => $previousUser->password,
-                    'priority' => $previousUser->priority,
-                    'avatarChoice' => $previousUser->avatarChoice,
-                    'last_login_time' => $datetime,
-                    'update_priority_time' => $datetime,
-                    'available_dblist' => $previousUser->available_dblist,
-                    'preferred_lang' => $previousUser->preferred_lang,
-                ]
+                array_merge(
+                    [
+                        'password' => $previousUser->password,
+                        'avatarChoice' => $previousUser->avatarChoice,
+                        'last_login_time' => $datetime,
+                        'update_priority_time' => $datetime,
+                        'available_dblist' => $previousUser->available_dblist,
+                        'preferred_lang' => $previousUser->preferred_lang,
+                    ],
+                    Login::where('username', $previousUser->username)->exists() ? [] : ['priority' => $previousUser->priority]
+                )
             );
 
             \Auth::login($user);
