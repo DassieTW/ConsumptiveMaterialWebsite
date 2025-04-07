@@ -13,11 +13,11 @@ It is built using **Laravel v8.83.29 (PHP v8.4.1)** and **Vue3** and it leverage
 ### Installation
 1. Clone the website repository:
     ```bash
-    git clone https://github.com/VinTheMan/ConsumptiveMaterialWebsite.git
+    git clone https://github.com/Erichsu1017/ConsumptiveMaterialWebsite.git
     ```
 2. Clone the docker container setup repository:
     ```bash
-    git clone https://github.com/VinTheMan/MultiProjectLaradock.git
+    git clone https://github.com/Erichsu1017/MultiProjectLaradock.git
     ```
 3. Build the Docker containers:
     ```bash
