@@ -127,12 +127,12 @@ export default defineComponent({
 
             // Add header row
             worksheet.addRow([
-                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
-                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
-                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
-                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
-                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
-                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
+                app.appContext.config.globalProperties.$t("callpageLang.isn"),
+                app.appContext.config.globalProperties.$t("callpageLang.pName"),
+                app.appContext.config.globalProperties.$t("monthlyPRpageLang.nowneed"),
+                app.appContext.config.globalProperties.$t("outboundpageLang.realpickamount"),
+                app.appContext.config.globalProperties.$t("basicInfoLang.unit"),
+                app.appContext.config.globalProperties.$t("callpageLang.req_vs_real"),
                 app.appContext.config.globalProperties.$t("callpageLang.req_vs_real_percent"),
             ]);
 

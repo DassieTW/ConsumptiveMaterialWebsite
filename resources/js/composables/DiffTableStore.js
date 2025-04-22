@@ -32,18 +32,6 @@ export const table = reactive({
             },
         },
         {
-            label: Lang.get("callpageLang.req_vs_real"),
-            field: "需求與領用差異量",
-            width: "13ch",
-            sortable: true,
-        },
-        {
-            label: Lang.get("callpageLang.req_vs_real_percent"),
-            field: "需求與領用差異",
-            width: "13ch",
-            sortable: true,
-        },
-        {
             label: Lang.get("monthlyPRpageLang.nowneed"),
             field: "當月需求",
             width: "12ch",
@@ -53,6 +41,18 @@ export const table = reactive({
             label: Lang.get("outboundpageLang.realpickamount"),
             field: "實際領用數量",
             width: "10ch",
+            sortable: true,
+        },
+        {
+            label: Lang.get("callpageLang.req_vs_real"),
+            field: "需求與領用差異量",
+            width: "13ch",
+            sortable: true,
+        },
+        {
+            label: Lang.get("callpageLang.req_vs_real_percent"),
+            field: "需求與領用差異",
+            width: "13ch",
             sortable: true,
         },
     ],
