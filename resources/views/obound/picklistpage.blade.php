@@ -7,7 +7,7 @@
 @section('content')
     @if ($num > 0)
         <audio controls autoplay hidden>
-            <source id="audio_1" src="/sound/Opicklist.mp3" type="audio/mpeg">
+            <source id="audio_1" src="{{ __('outboundpageLang.audio.Opicklist') }}" type="audio/mpeg">
         </audio>
     @endif
 

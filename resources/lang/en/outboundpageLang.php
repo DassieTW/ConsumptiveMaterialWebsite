@@ -118,4 +118,12 @@ return [
     'no_line' => 'Line does not exist',
     'no_reason' => 'Reason does not exist',
     'repeated_isn_will_not_display' => 'Repeated ISN+Line+Reason will not be displayed in Excel',
+    'audio' => [
+        'sluggish_stock' => '/sound/sluggish_stock_en.mp3',
+        'low_safe_stock' => '/sound/low safe stock_en.mp3',
+        'Obacklist' => '/sound/Obacklist_en.mp3',
+        'Opicklist' => '/sound/opicklist_en.mp3',
+        'backlist' => '/sound/backlist_en.mp3',
+        'picklist' => '/sound/picklist_en.mp3',
+    ],
 ];

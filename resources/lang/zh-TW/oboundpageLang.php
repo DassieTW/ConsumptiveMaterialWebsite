@@ -142,4 +142,12 @@ return [
     'inputpickpeople' => '請輸入領料人員工號',
     'inputbackpeople' => '請輸入退料人員工號',
     'inputreceivepeople' => '請輸入收料人員工號',
+    'audio' => [
+        'sluggish_stock' => '/sound/sluggish_stock_zh-TW.mp3',
+        'low_safe_stock' => '/sound/low_safe_stock_zh-TW.mp3',
+        'Obacklist' => '/sound/Obacklist_zh-TW.mp3',
+        'Opicklist' => '/sound/Opicklist_zh-TW.mp3',
+        'backlist' => '/sound/backlist_zh-TW.mp3',
+        'picklist' => '/sound/picklist_zh-TW.mp3',
+    ],
 ];

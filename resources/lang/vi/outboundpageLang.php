@@ -107,4 +107,12 @@ return array(
   'no_line' => 'Dòng sản xuất không tồn tại',
   'no_reason' => 'Nguyên nhân lĩnh dùng không tồn tại',
   'repeated_isn_will_not_display' => 'Mã liệu+Dòng sản xuất+Nguyên nhân lĩnh dùng lặp lại sẽ không được hiển thị trong Excel',
+  'audio' => [
+    'sluggish_stock' => '/sound/sluggish_stock_vi.mp3',
+    'low_safe_stock' => '/sound/low safe stock_vi.mp3',
+    'Obacklist' => '/sound/Obacklist_vi.mp3',
+    'Opicklist' => '/sound/opicklist_vi.mp3',
+    'backlist' => '/sound/backlist_vi.mp3',
+    'picklist' => '/sound/picklist_vi.mp3',
+  ],
 );

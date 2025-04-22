@@ -16,7 +16,7 @@
 @section('content')
     @if ($num > 0)
         <audio controls autoplay hidden>
-            <source id="audio_1" src="/sound/low safe stock.mp3" type="audio/mpeg">
+            <source id="audio_1" src="{{ __('outboundpageLang.audio.low_safe_stock') }}" type="audio/mpeg">
         </audio>
     @endif
 

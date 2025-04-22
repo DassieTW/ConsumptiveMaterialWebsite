@@ -131,4 +131,12 @@ return array (
   'inputreceivepeople' => 'Silakan masukkan nomor karyawan penerima material',
   'noinpeople' => 'Nomor karyawan tidak terdaftar. Silakan buka Manajemen Pengguna-Pemeliharaan Informasi Personalia terlebih dahulu.',
   'rfidinpeople' => 'Silakan klik di sini untuk tap kartu identifikasi',
+  'audio' => [
+    'sluggish_stock' => '/sound/sluggish_stock_id.mp3',
+    'low_safe_stock' => '/sound/low safe stock_id.mp3',
+    'Obacklist' => '/sound/Obacklist_id.mp3',
+    'Opicklist' => '/sound/opicklist_id.mp3',
+    'backlist' => '/sound/backlist_id.mp3',
+    'picklist' => '/sound/picklist_id.mp3',
+  ],
 );
