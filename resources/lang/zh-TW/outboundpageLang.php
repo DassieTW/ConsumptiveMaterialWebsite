@@ -118,4 +118,12 @@ return [
     'no_line' => '線別不存在',
     'no_reason' => '領用原因不存在',
     'repeated_isn_will_not_display' => 'Excel中重複的料號+線別+領用原因不會顯示',
+    'audio' => [
+        'sluggish_stock' => '/sound/sluggish stock.mp3',
+        'low_safe_stock' => '/sound/low safe stock.mp3',
+        'Obacklist' => '/sound/Obacklist.mp3',
+        'Opicklist' => '/sound/Opicklist.mp3',
+        'backlist' => '/sound/backlist.mp3',
+        'picklist' => '/sound/picklist.mp3',
+    ],
 ];

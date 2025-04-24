@@ -107,4 +107,12 @@ return array(
   'no_line' => 'Line tidak ada',
   'no_reason' => 'Alasan tidak ada',
   'repeated_isn_will_not_display' => 'Material+Line+Alasan pengambilan yang berulang tidak akan ditampilkan dalam Excel',
+  'audio' => [
+    'sluggish_stock' => '/sound/sluggish_stock_id.mp3',
+    'low_safe_stock' => '/sound/low safe stock_id.mp3',
+    'Obacklist' => '/sound/Obacklist_id.mp3',
+    'Opicklist' => '/sound/opicklist_id.mp3',
+    'backlist' => '/sound/backlist_id.mp3',
+    'picklist' => '/sound/picklist_id.mp3',
+  ],
 );

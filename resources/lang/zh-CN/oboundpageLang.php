@@ -142,13 +142,4 @@ return [
     'inputreceivepeople' => '请输入收料人员工号',
     'noinpeople' => '人员之工号不存在，请先到用户管理-人员讯息维护',
     'rfidinpeople' => '请点这里感应识别证',
-    'audio' => [
-        'sluggish_stock' => '/sound/sluggish stock.mp3',
-        'low_safe_stock' => '/sound/low safe stock.mp3',
-        'Obacklist' => '/sound/Obacklist.mp3',
-        'Opicklist' => '/sound/Opicklist.mp3',
-        'backlist' => '/sound/backlist.mp3',
-        'picklist' => '/sound/picklist.mp3',
-    ],
-
 ];
