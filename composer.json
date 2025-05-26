@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "barryvdh/laravel-ide-helper": "^2.10",
         "doctrine/dbal": "^3.2",
         "fideloper/proxy": "^4.4",
@@ -89,7 +89,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "platform": {
-            "php": "8.2.3"
+            "php": "8.4.6"
         },
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
