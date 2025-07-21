@@ -40,7 +40,6 @@ return [
         '巴淡-治具 Consumables management',
         '越南-FME Consumables management',
         '越南-PE Consumables management',
-        'PELI Consumables management',
         'HQ TEST Consumables management',
     ],
 
