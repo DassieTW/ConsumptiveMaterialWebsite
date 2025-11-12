@@ -27,7 +27,7 @@ return [
         '巴淡-PTB 2廠 Consumables management',
         '巴淡-PTB 2廠-辦公5S Consumables management',
         '巴淡-LOT11 Consumables management',
-        '巴淡-PTSN Consumables management',
+        /*'巴淡-PTSN Consumables management',*/
         '巴淡-SMT Consumables management',
         '越南 PHP Consumables management',
         '越南 PVN Consumables management',
