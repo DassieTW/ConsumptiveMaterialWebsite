@@ -621,6 +621,7 @@ export default defineComponent({
                             "VND",
                             "IDR",
                             "INR",
+                            "EUR",
                         ];
 
                         let returnStr = "";
