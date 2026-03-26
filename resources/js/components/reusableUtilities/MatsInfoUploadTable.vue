@@ -631,6 +631,7 @@ export default defineComponent({
                             i;
 
                         currencyDict.forEach((element) => {
+                            console.log('比對:', row.幣別, element, row.幣別.toString().trim().toLowerCase() === element.toLowerCase());
                             if (row.幣別.toString().trim().toLowerCase() === element.toLowerCase()) {
                                 returnStr +=
                                     '" value="' +
