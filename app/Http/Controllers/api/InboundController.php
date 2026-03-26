@@ -144,6 +144,9 @@ class InboundController extends Controller
         else if (str_contains($requestDB, "越南")) {
             $CompanyAlias = "PVN";
         } // else if
+        else if (str_contains($requestDB, "PELI")) {
+            $CompanyAlias = "PELI";
+        } // else if
         else if (str_contains($requestDB, "HQ") || str_contains($requestDB, "新店")) {
             $CompanyAlias = "和碩";
         } // else if

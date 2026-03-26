@@ -106,7 +106,7 @@ export default defineComponent({
         let input_data;
 
         const findDuplicates = (arr) => {
-            let sorted_arr = arr.slice().sort(); // You can define the comparing function here. 
+            let sorted_arr = arr.slice().sort(); // You can define the comparing function here.
             // JS by default uses a crappy string compare.
             // (we use slice to clone the array so the original array won't be modified)
             let results = [];
@@ -620,6 +620,7 @@ export default defineComponent({
                             "TWD",
                             "VND",
                             "IDR",
+                            "INR",
                         ];
 
                         let returnStr = "";
