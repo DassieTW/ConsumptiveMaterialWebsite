@@ -44,11 +44,14 @@
                     style="width: 8ch; border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;"
                     class="form-select align-self-center ps-2 p-0 m-0 col col-auto" :id="'money' + row.id"
                     :name="'money' + key">
-                    <template v-for="item in currencyDict">
+                    <!-- <template v-for="item in currencyDict">
                         <option :selected="row.幣別 === item" :value="item">
                             {{ item }}
                         </option>
-                    </template>
+                    </template> -->
+                    <option v-for="item in currencyDict.value" :value="item">
+                        {{ item }}
+                    </option>
                 </select>
             </div>
         </template>
