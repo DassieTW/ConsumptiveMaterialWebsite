@@ -155,7 +155,7 @@ class InboundController extends Controller
             ->where('received_time', '>=', Carbon::now()->subMonth(1));
 
         $allResult = \DB::table('SSZInfo')
-            ->where('SSZInfo.CostDept', 'like', 'K4%')
+            ->where('SSZInfo.CostDept', 'like', 'K7%')
             ->where('SSZInfo.Company', 'like', $CompanyAlias . '%')
             ->joinSub($FlowNumberReceiveTime, 'sszNumber', function ($join) {
                 $join->on('SSZInfo.FlowNumber', '=', 'sszNumber.id');
